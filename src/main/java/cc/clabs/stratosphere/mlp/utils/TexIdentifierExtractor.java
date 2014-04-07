@@ -6,7 +6,7 @@
  *  | ._,_/_/ \_\_||_|
  *  | |
  *  |_|
- * 
+ *
  * ----------------------------------------------------------------------------
  * "THE BEER-WARE LICENSE" (Revision 42):
  * <rob ∂ CLABS dot CC> wrote this file. As long as you retain this notice you
@@ -26,11 +26,11 @@ import uk.ac.ed.ph.snuggletex.SnuggleInput;
 import uk.ac.ed.ph.snuggletex.SnuggleSession;
 
 /**
- * 
+ *
  * @author rob
  */
 public class TexIdentifierExtractor {
-    
+
     /**
      * list of false positive identifiers
      */
@@ -38,21 +38,21 @@ public class TexIdentifierExtractor {
         "sin", "cos", "tan", "min", "max", "inf", "lim", "log", "exp",
         "sup", "lim sup", "lim inf", "arg", "dim", "cosh",
         "arccos", "arcsin", "arctan", "rank", "ln", "det", "ker",
-        "sec", "cot", "csc", "tanh", "sinh", "coth", "cot",
+        "sec", "cot", "csc", "tanh", "sinh", "coth", "cot", "gr",
         "⋯", ":", "'", "′", "…", "∞", "Λ", "⋮", " ", " ", "~",
         ";", "#", "π", "e", "⋱", "{", "}", "%", "?",
-        
+
         // ignore identifier that are also english (stop-)words
         "a", "A", "i", "I",
-        
+
         // ignore special chars
         "$", "\\"
     );
-    
+
     /**
      * Returns a list of all identifers within a given formula.
      * The formula is coded in TeX.
-     * 
+     *
      * @param formula TeX representation of a formula
      * @return list of identifiers
      */
@@ -70,13 +70,13 @@ public class TexIdentifierExtractor {
             return new ArrayList<>();
         }
     }
-    
+
     /**
      * Returns a list of unique identifiers from a MathML string.
      * This function searches for all <mi/> or <ci/> tags within
      * the string.
-     * 
-     * @param mathml 
+     *
+     * @param mathml
      * @return a list of unique identifiers. When no identifiers were
      *         found, an empty list will be returned.
      */
@@ -92,10 +92,10 @@ public class TexIdentifierExtractor {
         }
         return list;
     }
-    
+
     /**
      * Returns a cleaned version of the TeX string.
-     * 
+     *
      * @param tex the TeX string
      * @return the cleaned TeX string
      */
@@ -111,6 +111,6 @@ public class TexIdentifierExtractor {
         // strip indices
         tex = tex.replaceAll( "^([^\\s\\\\\\{\\}])_[^\\s\\\\\\{\\}]$", "$1" );
         return tex;
-    } 
-    
+    }
+
 }
