@@ -20,10 +20,6 @@ import cc.clabs.stratosphere.mlp.utils.PlaintextDocumentBuilder;
 import cc.clabs.stratosphere.mlp.utils.StringUtils;
 import cc.clabs.stratosphere.mlp.utils.TexIdentifierExtractor;
 
-import eu.stratosphere.pact.common.type.Value;
-import eu.stratosphere.pact.common.type.base.PactInteger;
-import eu.stratosphere.pact.common.type.base.PactString;
-
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
@@ -31,9 +27,10 @@ import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
+import eu.stratosphere.types.IntValue;
+import eu.stratosphere.types.StringValue;
+import eu.stratosphere.types.Value;
 import org.eclipse.mylyn.wikitext.core.parser.MarkupParser;
 import org.eclipse.mylyn.wikitext.core.parser.markup.MarkupLanguage;
 import org.eclipse.mylyn.wikitext.mediawiki.core.MediaWikiLanguage;
@@ -43,28 +40,25 @@ import org.eclipse.mylyn.wikitext.mediawiki.core.MediaWikiLanguage;
  */
 public class WikiDocument implements Value {
     
-    private static final Log LOG = LogFactory.getLog( WikiDocument.class );
-
-    
     /*
      * Raw raw of the document
      */
-    private PactString raw = new PactString();
+    private StringValue raw = new StringValue();
     
     /*
      * Plaintext version of the document
      */
-    private PactString plaintext = new PactString();
+    private StringValue plaintext = new StringValue();
     
     /*
      * Title of the document
      */
-    private PactString title = new PactString();
+    private StringValue title = new StringValue();
     
     /*
      * Wikipedia id of the document
      */
-    private PactInteger id = new PactInteger();
+    private IntValue id = new IntValue();
     
     /**
      * Wikipedia pages belong to different namespaces. Below
@@ -93,7 +87,7 @@ public class WikiDocument implements Value {
      *  108	Book
      *  109	Book talk
      */
-    private PactInteger ns = new PactInteger();
+    private IntValue ns = new IntValue();
     
     /*
      * Holds all formulas found within the document. The key of
@@ -209,8 +203,7 @@ public class WikiDocument implements Value {
     
     /**
      * Sets the raw body of the document.
-     * 
-     * @param raw 
+     *
      */
     public void setText( String text ) {
         this.raw.setValue( StringUtils.unescapeEntities( text ) );
@@ -224,22 +217,27 @@ public class WikiDocument implements Value {
      * on identifier will be replaced in line with the identifier.
      */
     private void replaceMathTags() {
-        Pattern p = Pattern.compile( "<math>(.*?)</math>", Pattern.DOTALL );
+        Pattern p = Pattern.compile( "<math(.*?)>(.*?)</math>", Pattern.DOTALL );
         Matcher m;
         String key, formula, text = raw.getValue();
         
         while ( (m = p.matcher( text )).find() ) {
             
             key = " MATH" + Long.toHexString( (long) (Math.random() * 0x3b9aca00) ).toUpperCase() + " ";
-            formula = m.group( 1 ).trim();
-            
-            
-            ArrayList<String> identifiers = TexIdentifierExtractor.getAll( formula );
+            formula = m.group( 2 ).trim();
+            boolean augmention = !  m.group(1).isEmpty();
+            //augmention = false;
+            ArrayList<String> identifiers = TexIdentifierExtractor.getAll( formula,augmention );
             if ( identifiers.isEmpty() ) {
                 text = m.replaceFirst( "" );
             }
             else if ( identifiers.size() == 1 ) {
-                text = m.replaceFirst( identifiers.get( 0 ) );
+            	try{
+            		text = m.replaceFirst( identifiers.get( 0 ) );
+            	} catch(Exception e) {
+                    formulas.add( new PactFormula( key, formula ) );
+                    text = m.replaceFirst( key );
+            	}
             }
             else {
                 formulas.add( new PactFormula( key, formula ) );
@@ -250,7 +248,7 @@ public class WikiDocument implements Value {
             // add found identifers to the page wide list
             for ( String identifier : identifiers ) {
                 if ( knownIdentifiers.containsIdentifier( identifier ) ) continue;
-                knownIdentifiers.add( new PactString( identifier ) );
+                knownIdentifiers.add( new StringValue( identifier ) );
             }            
             
         }
