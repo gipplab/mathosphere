@@ -31,9 +31,12 @@ import java.util.regex.Pattern;
 import eu.stratosphere.types.IntValue;
 import eu.stratosphere.types.StringValue;
 import eu.stratosphere.types.Value;
+import java.util.HashMap;
+import java.util.Map;
 import org.eclipse.mylyn.wikitext.core.parser.MarkupParser;
 import org.eclipse.mylyn.wikitext.core.parser.markup.MarkupLanguage;
 import org.eclipse.mylyn.wikitext.mediawiki.core.MediaWikiLanguage;
+import org.json.JSONObject;
 
 /**
  * @author rob
@@ -94,12 +97,12 @@ public class WikiDocument implements Value {
      * the HashMap is the replacement string in the document and
      * the value contains the TeX String
      */
-    private PactFormulaList formulas = new PactFormulaList();
+    private FormulaList formulas = new FormulaList();
     
     /*
      * Stores all unique identifiers found in this document
      */
-    private PactIdentifiers knownIdentifiers = new PactIdentifiers();
+    private Identifiers knownIdentifiers = new Identifiers();
     
     /**
      * Returns a plaintext version of this document.
@@ -107,13 +110,15 @@ public class WikiDocument implements Value {
      * @return a plaintext string
      */
     public String getPlainText() {
-        StringWriter writer = new StringWriter();
-        MarkupParser parser = new MarkupParser();
-        MarkupLanguage wiki = new MediaWikiLanguage();
-        parser.setMarkupLanguage( wiki );
-        parser.setBuilder( new PlaintextDocumentBuilder( writer ) );
-        parser.parse( raw.getValue() );
-        plaintext.setValue( writer.toString() );
+        if ( plaintext.getValue().isEmpty() ) {
+            StringWriter writer = new StringWriter();
+            MarkupParser parser = new MarkupParser();
+            MarkupLanguage wiki = new MediaWikiLanguage();
+            parser.setMarkupLanguage( wiki );
+            parser.setBuilder( new PlaintextDocumentBuilder( writer ) );
+            parser.parse( raw.getValue() );
+            plaintext.setValue( writer.toString() );
+        }
         return plaintext.getValue();
     }
 
@@ -217,30 +222,33 @@ public class WikiDocument implements Value {
      * on identifier will be replaced in line with the identifier.
      */
     private void replaceMathTags() {
-        Pattern p = Pattern.compile( "<math(.*?)>(.*?)</math>", Pattern.DOTALL );
+        Pattern p = Pattern.compile( "<math(.*?)>(.*?)</math>(\n{2}?)", Pattern.DOTALL );
         Matcher m;
         String key, formula, text = raw.getValue();
+        boolean augmention, period;
         
         while ( (m = p.matcher( text )).find() ) {
-            
-            key = " MATH" + Long.toHexString( (long) (Math.random() * 0x3b9aca00) ).toUpperCase() + " ";
             formula = m.group( 2 ).trim();
-            boolean augmention = !  m.group(1).isEmpty();
-            //augmention = false;
-            ArrayList<String> identifiers = TexIdentifierExtractor.getAll( formula,augmention );
+            augmention = !m.group( 1 ).isEmpty();
+            // check if the formular terminates a sentence
+            period = formula.endsWith( "." ) || !m.group( 3 ).isEmpty();
+            key = " FORMULA" + ( period ? ". " : " ");
+            ArrayList<String> identifiers = augmention ?
+                    TexIdentifierExtractor.getAllfromMathML( formula ) :
+                    TexIdentifierExtractor.getAllfromTex( formula );
             if ( identifiers.isEmpty() ) {
-                text = m.replaceFirst( "" );
+                text = m.replaceFirst( key );
             }
             else if ( identifiers.size() == 1 ) {
-            	try{
+            	try {
             		text = m.replaceFirst( identifiers.get( 0 ) );
-            	} catch(Exception e) {
-                    formulas.add( new PactFormula( key, formula ) );
+            	} catch ( Exception e ) {
+                    formulas.add( new Formula( key, formula ) );
                     text = m.replaceFirst( key );
             	}
             }
             else {
-                formulas.add( new PactFormula( key, formula ) );
+                formulas.add( new Formula( key, formula ) );
                 text = m.replaceFirst( key );
             }
             
@@ -260,7 +268,7 @@ public class WikiDocument implements Value {
      * 
      * @return a list of all formulas
      */
-    public PactFormulaList getFormulas() {
+    public FormulaList getFormulas() {
         return formulas;
     }
 
@@ -270,8 +278,28 @@ public class WikiDocument implements Value {
      * 
      * @return a list of unique identifiers
      */
-    public PactIdentifiers getKnownIdentifiers() {
+    public Identifiers getKnownIdentifiers() {
         return knownIdentifiers;
     }
+    
+    @Override
+    public String toString() {
+        String s = toJSON().toString();
+        if ( s == null ) {
+            return "";
+        } else {
+            return s;
+        }
+    }
+
+    public JSONObject toJSON() {
+        Map<String, Object> json = new HashMap<>();
+        json.put( "title", title.getValue() );
+        json.put( "identifiers", knownIdentifiers.toString() );
+        json.put( "id", id.getValue() );
+        return new JSONObject( json );
+    }
+    
+    
     
 }

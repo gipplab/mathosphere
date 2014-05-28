@@ -23,12 +23,15 @@ import eu.stratosphere.types.StringValue;
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+import org.json.JSONObject;
 
 /**
  *
  * @author rob
  */
-public class PactWord implements Key {
+public class Word implements Key {
     
     
     /*
@@ -44,7 +47,7 @@ public class PactWord implements Key {
     /**
      * default constructor
      */
-    public PactWord() { }
+    public Word() { }
     
     
     /**
@@ -52,35 +55,24 @@ public class PactWord implements Key {
      * @param word
      * @param tag 
      */
-    public PactWord( final String word, final String tag ) {
-        this.word.setValue( word );
-        this.tag.setValue( tag );
+    public Word( final String word, final String tag ) {
+        setWord( word );
+        setTag( tag );
     }
     
     /**
-     * Constructor for PactWord. Replaces some odd conversions
+     * Constructor for Word. Replaces some odd conversions
      * from the Stanford Tagger.
      * 
      * @param word a TaggedWord (@see edu.stanford.nlp.ling.TaggedWord)
      */
-    public PactWord( TaggedWord word ) {
-        String v = word.value();
-        String t = word.tag();
-        if ( v.equals( "-LRB-" ) ) v = "(";
-        if ( v.equals( "-RRB-" ) ) v = ")";
-        if ( v.equals( "-LCB-" ) ) v = "{";
-        if ( v.equals( "-RCB-" ) ) v = "}";
-        if ( t.equals( "``" ) )    t = "\"";
-        if ( t.equals( "''" ) )    t = "\"";
-        if ( v.equals( "``" ) )    v = "\"";
-        if ( v.equals( "''" ) )    v = "\"";
-        if ( v.equals( "--" ) )    v = "-";
-        this.setWord( v );
-        this.setTag( t );
+    public Word( TaggedWord word ) {
+        setWord( word.value() );
+        setTag( word.tag() );
     }
     
     /**
-     * Returns this PactWord as a TaggedWord from the Stanford
+     * Returns this Word as a TaggedWord from the Stanford
      * NLP Project (@see edu.stanford.nlp.ling.TaggedWord).
      * 
      * @return a TaggedWord
@@ -104,7 +96,37 @@ public class PactWord implements Key {
      * @param string the string representation of the word
      */
     public final void setWord( final String string ) {
-        word.setValue( string );
+        String v = string;
+        switch ( v ) {
+            case "-LRB-":
+                v = "(";
+                break;
+            case "-RRB-":
+                v = ")";
+                break;
+            case "-LCB-":
+                v = "{";
+                break;
+            case "-RCB-":
+                v = "}";
+                break;
+            case "-LSB-":
+                v = "[";
+                break;
+            case "-RSB-":
+                v = "]";
+                break;
+            case "``":
+                v = "\"";
+                break;
+            case "''":
+                v = "\"";
+                break;
+            case "--":
+                v = "-";
+                break;
+        }
+        word.setValue( v );
     }
     
     /**
@@ -122,6 +144,15 @@ public class PactWord implements Key {
      * @param string a given string value
      */
     public final void setTag( final String string ) {
+        String t = string;
+        switch ( t ) {
+            case "``":
+                t = "\"";
+                break;
+            case "''":
+                t = "\"";
+                break;
+        }
         tag.setValue( string );
     }
 
@@ -139,7 +170,7 @@ public class PactWord implements Key {
 
     @Override
     public int compareTo( Key o ) {
-        PactWord other = (PactWord) o;
+        Word other = (Word) o;
         if (  this.word.equals( other.word ) &&  this.tag.equals( other.tag ) )
             return 0;
         else
@@ -148,7 +179,15 @@ public class PactWord implements Key {
     
     @Override
     public String toString() {
-        return this.getWord();
+        return toJSON().toString();
+        // return this.getWord() + "(" + this.getTag() + ")";
     }
 
+    
+    public JSONObject toJSON () {
+        Map<String, Object> json = new HashMap<>();
+        json.put( "word", getWord() );
+        json.put( "tag", getTag() );
+        return new JSONObject( json );
+    }
 }

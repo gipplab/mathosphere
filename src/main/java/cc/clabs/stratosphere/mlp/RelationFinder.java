@@ -24,15 +24,19 @@ import eu.stratosphere.api.common.Program;
 import eu.stratosphere.api.common.ProgramDescription;
 import eu.stratosphere.api.common.operators.FileDataSink;
 import eu.stratosphere.api.common.operators.FileDataSource;
+import eu.stratosphere.api.common.operators.GenericDataSink;
 import eu.stratosphere.api.common.operators.Order;
 import eu.stratosphere.api.common.operators.Ordering;
-import eu.stratosphere.api.java.record.functions.MapFunction;
 import eu.stratosphere.api.java.record.io.CsvOutputFormat;
 import eu.stratosphere.api.java.record.operators.CoGroupOperator;
 import eu.stratosphere.api.java.record.operators.MapOperator;
 import eu.stratosphere.api.java.record.operators.ReduceOperator;
 import eu.stratosphere.types.DoubleValue;
-import eu.stratosphere.types.IntValue;
+import eu.stratosphere.types.StringValue;
+import java.util.ArrayList;
+import java.util.Collection;
+
+import eu.stratosphere.client.LocalExecutor;
 
 public class RelationFinder implements Program, ProgramDescription {
 
@@ -43,19 +47,13 @@ public class RelationFinder implements Program, ProgramDescription {
     public Plan getPlan( String... args ) {
         // parse job parameters
         String dataset = args[0];
-        String output = args[1];
+        String outputdir = args[1];
         String model = args[2];
         
         String alpha = args[3];
         String beta  = args[4];
         String gamma = args[5];
         String threshold = args[6];
-        
-        //Configuration conf = GlobalConfiguration.getConfiguration();
-        // equals number of cores per node
-        //conf.setInteger( "pact.parallelization.max-intra-node-degree", 2 );
-        //conf.setBoolean( "jobmanager.profiling.enable", true );
-        //conf.setInteger( "pact.parallelization.degree", -1 );
 
         
         FileDataSource source = new FileDataSource( WikiDocumentEmitter.class, dataset, "Dumps" );
@@ -66,6 +64,7 @@ public class RelationFinder implements Program, ProgramDescription {
                 .input( source )
                 .build();
 
+        
         MapOperator sentences = MapOperator
                 .builder( SentenceEmitter.class )
                 .name( "Sentences" )
@@ -74,7 +73,7 @@ public class RelationFinder implements Program, ProgramDescription {
         sentences.setParameter( "POS-MODEL", model );
         
         CoGroupOperator candidates = CoGroupOperator
-                .builder( CandidateEmitter.class, IntValue.class, 0, 0 )
+                .builder( CandidateEmitter.class, StringValue.class, 0, 0 )
                 .name( "Candidates" )
                 .input1( doc )
                 .input2( sentences )
@@ -88,24 +87,67 @@ public class RelationFinder implements Program, ProgramDescription {
 
 
         ReduceOperator filter = ReduceOperator
-                .builder(FilterCandidates.class, IntValue.class, 0)
+                .builder( FilterCandidates.class, StringValue.class, 0)
                 .name( "Filter" )
                 .input( candidates )
                 .build();
         // order candidates by the identifier
-        filter.setGroupOrder( new Ordering( 1, PactRelation.class, Order.ASCENDING ) );
+        filter.setGroupOrder( new Ordering( 1, Relation.class, Order.ASCENDING ) );
         // sets the minimum threshold for a candidate's score
         filter.setParameter( "THRESHOLD", threshold );
 
-
-        FileDataSink out = new FileDataSink( CsvOutputFormat.class, output, filter, "Output" );
-        CsvOutputFormat.configureRecordFormat( out )
+        
+        CoGroupOperator patterns = CoGroupOperator
+                .builder( PatternMatcher.class, StringValue.class, 0, 0 )
+                .name( "Pattern Matcher" )
+                .input1( doc  )
+                .input2( sentences )
+                .build();
+        
+        CoGroupOperator evaluator = CoGroupOperator
+                .builder( AccuracyEvaluator.class, StringValue.class, 0, 0 )
+                .name( "Accuracy Evaluator" )
+                .input1( patterns )
+                .input2(candidates )
+                .build();
+        
+        ReduceOperator aggregator = ReduceOperator
+                .builder( AccuracyAggregator.class, StringValue.class, 0 )
+                .name( "Accuracy Aggregator" )
+                .input( evaluator )
+                .build();
+        
+        FileDataSink out1 = new FileDataSink( CsvOutputFormat.class, outputdir+"/pages.jsonp", doc, "Output Pages" );
+        CsvOutputFormat.configureRecordFormat( out1 )
+                .recordDelimiter( '\n' )
+                .fieldDelimiter( ' ' )
+                .field( WikiDocument.class, 1 );
+        // needs to be set to one
+        out1.setParameter( "pact.output.record.num-fields", 1 );
+        
+        FileDataSink out2 = new FileDataSink( CsvOutputFormat.class, outputdir+"/relations.jsonp", filter, "Output Relations" );
+        CsvOutputFormat.configureRecordFormat( out2 )
+                .recordDelimiter( '\n' )
+                .fieldDelimiter( ' ' )
+                .field( Relation.class, 0 );
+        
+        FileDataSink out3 = new FileDataSink( CsvOutputFormat.class, outputdir+"/evaluation.csv", evaluator, "Output Evaluation" );
+        CsvOutputFormat.configureRecordFormat( out3 )
                 .recordDelimiter( '\n' )
                 .fieldDelimiter( '\t' )
-                .field( PactRelation.class, 0 );
-                
-        Plan plan = new Plan( out, "Relation Finder" );
-        return plan;
+                .field( DoubleValue.class, 0 )
+                .field( DoubleValue.class, 1 )
+                .field( DoubleValue.class, 2 )
+                .field( DoubleValue.class, 3 )
+                .field( DoubleValue.class, 4 )
+                .field( DoubleValue.class, 5 )
+                .field( StringValue.class, 6 );
+        
+        Collection<GenericDataSink> sinks = new ArrayList<>();
+        sinks.add( out1 );
+        sinks.add( out2 );
+        sinks.add( out3 );
+        return new Plan( sinks, "Relation Finder" );
     }
 
     /**
@@ -114,6 +156,12 @@ public class RelationFinder implements Program, ProgramDescription {
     @Override
     public String getDescription() {
         return "Parameters: [DATASET] [OUTPUT] [MODEL] [ALPHA] [BETA] [GAMMA] [THRESHOLD]";
+    }
+    
+    public static void main(String[] args) throws Exception {
+        RelationFinder rf = new RelationFinder();
+        Plan plan = rf.getPlan( args );
+        LocalExecutor.execute(plan);
     }
     
 }

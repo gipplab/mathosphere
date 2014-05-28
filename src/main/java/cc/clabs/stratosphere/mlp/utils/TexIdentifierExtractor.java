@@ -21,15 +21,20 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import uk.ac.ed.ph.snuggletex.SnuggleEngine;
 import uk.ac.ed.ph.snuggletex.SnuggleInput;
 import uk.ac.ed.ph.snuggletex.SnuggleSession;
+import uk.ac.ed.ph.snuggletex.tokens.FlowToken;
 
 /**
  *
  * @author rob
  */
 public class TexIdentifierExtractor {
+    
+        private static final Log LOG = LogFactory.getLog( TexIdentifierExtractor.class );
 
 	/**
 	 * list of false positive identifiers
@@ -39,8 +44,8 @@ public class TexIdentifierExtractor {
                 "sup", "lim sup", "lim inf", "arg", "dim", "cosh", "arccos",
                 "arcsin", "arctan", "rank", "ln", "det", "ker", "sec", "cot",
                 "csc", "tanh", "sinh", "coth", "cot", "⋯", ":", "'", "′", "…",
-                "∞", "Λ", "⋮", " ", " ", "~", ";", "#", "π", "e", "⋱", "{", "}",
-                "%", "?",
+                "∞", "Λ", "⋮", " ", " ", "~", ";", "#", "e", "⋱", "{", "}",
+                "%", "?", "°", "′", "−", "★", "\"",
 
                 // ignore identifier that are also english (stop-)words
                 "a", "A", "i", "I",
@@ -48,7 +53,9 @@ public class TexIdentifierExtractor {
                 // ignore special chars
                 "$", "\\"
         );
-
+        
+        private static SnuggleSession session = ( new SnuggleEngine() ).createSession();
+      
 	/**
 	 * Returns a list of all identifers within a given formula. The formula is
 	 * coded in TeX.
@@ -58,24 +65,22 @@ public class TexIdentifierExtractor {
 	 * @param augmention
 	 * @return list of identifiers
 	 */
-	public static ArrayList<String> getAll( String formula, boolean augmention ) {
+        public static ArrayList<String> getAllfromTex( String formula ) {
 		// create vanilla SnuggleEngine and new SnuggleSession
-		String xml;
-		if (!augmention) {
-			SnuggleEngine engine = new SnuggleEngine();
-			SnuggleSession session = engine.createSession();
-			try {
-				SnuggleInput input = new SnuggleInput("$$ " + cleanupTexString(formula) + " $$");
-				session.parseInput(input);
-				xml = session.buildXMLString();
-			} catch (Exception e) {
-				return new ArrayList<>();
-			}
-		} else {
-			xml = formula;
-		}
-		return getIdentifiersFrom(xml);
+		String mathml;
+                try {
+                        SnuggleInput input = new SnuggleInput("$$ " + cleanupTexString(formula) + " $$");
+                        session.parseInput(input);
+                        mathml = session.buildXMLString();
+                } catch (Exception e) {
+                        return new ArrayList<>();
+                }
+		return getIdentifiersFrom(mathml);
 	}
+        
+        public static ArrayList<String> getAllfromMathML( String mathml ) {
+                return getIdentifiersFrom( mathml );
+        }
 
 	/**
 	 * Returns a list of unique identifiers from a MathML string. This function
@@ -87,8 +92,31 @@ public class TexIdentifierExtractor {
 	 */
 	private static ArrayList<String> getIdentifiersFrom(String mathml) {
 		ArrayList<String> list = new ArrayList<>();
-		Pattern p = Pattern.compile("<(mi)(.*?)>(.{1,10})</mi>", Pattern.DOTALL);
-		Matcher m = p.matcher(mathml);
+                Pattern subsuper = Pattern.compile( "<m(sub|sup)><mi>(.)</mi><m(n|i)>(.)</m\\3></m\\1>" );
+                Pattern mi = Pattern.compile("<(mi)(.*?)>(.{1,10})</mi>", Pattern.DOTALL);
+                Matcher m;
+                // check for single sub-/superscripts
+                while ( (m = subsuper.matcher( mathml )).find() ) {
+                    String identifier = m.group( 2 );
+                    String where = m.group( 1 );
+                    String what = m.group( 4 );
+                    // superscript number aren't identifiers at all
+                    if ( where.equals( "sup" ) && what.matches( "\\d" ) ) {
+                        what = "";
+                    }
+                    if ( !blacklist.contains( identifier ) ) {
+                        if ( where.equals( "sub" ) ) {
+                            what = StringUtils.getSubscriptChar( what );
+                        } else {
+                            what = StringUtils.getSuperscriptChar( what );
+                        }
+                        list.add( identifier + what );
+                    }
+                    // remove matched substring from mathml
+                    mathml = m.replaceFirst( "" );
+                }
+                // deal with all remaining identifiers
+		m = mi.matcher( mathml );
 		while (m.find()) {
 			String identifier = m.group(3);
 			if (blacklist.contains(identifier))
@@ -112,6 +140,8 @@ public class TexIdentifierExtractor {
 		tex = tex.replaceAll("\\\\(text|math(:?bb|bf|cal|frak|it|sf|tt))\\{.*?\\}", "");
 		// strip arbitrary operators
 		tex = tex.replaceAll("\\\\operatorname\\{.*?\\}", "");
+                // strip some unparseble stuff
+                tex = tex.replaceAll( "\\\\(rang|left|right|rangle|langle)|\\|", "");
 		// strip dim/log
 		tex = tex.replaceAll("\\\\(dim|log)_(\\w+)", "$1");
 		// strip "is element of" definitions
@@ -120,5 +150,6 @@ public class TexIdentifierExtractor {
 		tex = tex.replaceAll("^([^\\s\\\\\\{\\}])_[^\\s\\\\\\{\\}]$", "$1");
 		return tex;
 	}
+        
 
 }

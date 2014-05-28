@@ -6,7 +6,7 @@
  *  | ._,_/_/ \_\_||_|
  *  | |
  *  |_|
- * 
+ *
  * ----------------------------------------------------------------------------
  * "THE BEER-WARE LICENSE" (Revision 42):
  * <rob ∂ CLABS dot CC> wrote this file. As long as you retain this notice you
@@ -16,10 +16,11 @@
  */
 package cc.clabs.stratosphere.mlp.contracts;
 
-import cc.clabs.stratosphere.mlp.types.PactIdentifiers;
-import cc.clabs.stratosphere.mlp.types.PactRelation;
-import cc.clabs.stratosphere.mlp.types.PactSentence;
-import cc.clabs.stratosphere.mlp.types.PactWord;
+import cc.clabs.stratosphere.mlp.types.Identifiers;
+import cc.clabs.stratosphere.mlp.types.Relation;
+import cc.clabs.stratosphere.mlp.types.Sentence;
+import cc.clabs.stratosphere.mlp.types.Word;
+import cc.clabs.stratosphere.mlp.types.WikiDocument;
 import eu.stratosphere.api.java.record.functions.CoGroupFunction;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -28,10 +29,10 @@ import java.util.Iterator;
 import java.util.List;
 
 import eu.stratosphere.configuration.Configuration;
-import eu.stratosphere.types.IntValue;
 import eu.stratosphere.types.Record;
 import eu.stratosphere.types.StringValue;
 import eu.stratosphere.util.Collector;
+import java.util.Collections;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -40,13 +41,13 @@ import org.apache.commons.logging.LogFactory;
  * @author rob
  */
 public class CandidateEmitter extends CoGroupFunction{
-        
+
     private static final Log LOG = LogFactory.getLog( CandidateEmitter.class );
-        
-    private IntValue id = null;
-    
-    private PactIdentifiers identifiers = null;
-    
+
+    private StringValue title = null;
+
+    private Identifiers identifiers = null;
+
     private final static List<String> blacklist = Arrays.asList(
         "behavior", "infinity", "sum", "other",
         "=", "|", "·", "≥", "≤", "≠", "lim", "ƒ",
@@ -57,11 +58,11 @@ public class CandidateEmitter extends CoGroupFunction{
         "solution", "solutions",
         "result", "results"
     );
-    
+
     private Double α;
     private Double β;
     private Double γ;
-    
+
     @Override
     public void open(Configuration parameter) throws Exception {
       super.open( parameter );
@@ -70,75 +71,77 @@ public class CandidateEmitter extends CoGroupFunction{
       γ = Double.parseDouble( parameter.getString( "γ", "1" ) );
     }
 
-    
+
     @Override
     public void coGroup(Iterator<Record> left, Iterator<Record> right, Collector<Record> collector) throws Exception {
-
         // populating identifier list
         // we'll allways get one record from the left,
         // therefore, we don't need to iterate through
         // left
-        identifiers = left.next().getField( 2, PactIdentifiers.class );
-        
-
+        identifiers = left.next().getField( 1, WikiDocument.class ).getKnownIdentifiers();
         // populating sentences list
-        ArrayList<PactSentence> sentences =  new ArrayList<>();
+        ArrayList<Sentence> sentences =  new ArrayList<>();
         while ( right.hasNext() ) {
             Record next = right.next();
-            // id should always be the same
-            id = next.getField( 0, IntValue.class );
+            // title should always be the same
+            title = next.getField( 0, StringValue.class );
             // we need to clone the sentence objects, because of reused objects
-            sentences.add( (PactSentence) next.getField( 1, PactSentence.class ).clone() );
+            sentences.add( (Sentence) next.getField( 1, Sentence.class ).clone() );
         }
-                
         for ( StringValue identifier : identifiers ) {
-            ArrayList<PactSentence> list = new ArrayList<>();
-            // populate the list
-            for ( PactSentence sentence : sentences )
-                if ( sentence.containsWord( identifier ) )
-                    list.add( sentence );
             // emit the generated candidate sentences
-            for ( Record candidate : generateCandidates( list, identifier.getValue() ) ) {
+            for ( Record candidate : generateCandidates( sentences, identifier.getValue() ) ) {
                 collector.collect( candidate );
-                LOG.info( "candidate collected: " + candidate.toString() );
             }
-                
         }
-        
     }
-    
-    
+
     /**
      * 
      * @param sentences
-     * @param identifier
      * @return 
      */
-    private ArrayList<Record> generateCandidates( ArrayList<PactSentence> sentences, String identifier ) {
-        ArrayList<Record> candidates = new ArrayList<>();
+    private HashMap<String,Integer> generateFrequencies( ArrayList<Sentence> sentences ) {
         HashMap<String,Integer> ω = new HashMap<>();
-        Integer Ω = 0;
-        
+        Integer count = 0; String w;
         /*                         _
          *                        / |
          *   ____ ___ ___ ______  - |
          *  /  ._|   ) __|  __  ) | |
          * ( () ) | |> _) | || |  | |
          *  \__/   \_)___)|_||_|  |_|
-         * calculate the word frequencies for sentences
+         * calculate the word frequencies for all sentences
          */
-        for ( PactSentence sentence : sentences ) {
-            for ( PactWord word : sentence ) {
+        for ( Sentence sentence : sentences ) {
+            for ( Word word : sentence ) {
+                w = word.getWord().toLowerCase();
                 // only count words we're interested in
                 if ( filterWord( word ) ) continue;
-                Integer count = ( ω.containsKey( word.getWord() ) ) ?
-                        ω.get( word.getWord() ) + 1 : 1;
-                // update the maximun token frequency
-                Ω = Math.max( count, Ω );
-                ω.put( word.getWord(), count );
-            }            
+                count = ω.containsKey( w ) ?
+                    ω.get( w ) + 1 : 1;
+                ω.put( w, count );
+            }
         }
-                
+        return ω;
+    }
+
+    /**
+     *
+     * @param sentences
+     * @param identifier
+     * @return
+     */
+    private ArrayList<Record> generateCandidates( ArrayList<Sentence> sentences, String identifier  ) {
+        ArrayList<Record> candidates = new ArrayList<>();
+        ArrayList<Sentence> candidate_sentences = new ArrayList<>();
+        for ( Sentence sentence : sentences ) {
+            // only analyse sentences that contain the identifier
+            if ( !sentence.containsWord( identifier ) ) continue;
+            candidate_sentences.add( sentence );
+        }
+        // calculate the token frequencies for all words in the candidate sentences
+        HashMap<String,Integer> ω = generateFrequencies( sentences );
+        Integer Ω = Collections.max( ω.values() );
         /*                        ____
          *                       (___ \
          *  ____ ___ ___ ______    __) )
@@ -148,98 +151,100 @@ public class CandidateEmitter extends CoGroupFunction{
          * the kernel step
          */
         Integer index = -1; // will be zero on the first loop
-        for ( Iterator<PactSentence> it = sentences.iterator(); it.hasNext(); ) {
+        for ( Sentence sentence : candidate_sentences ) {
             index += 1;
-            PactSentence sentence = it.next();
-            
             ArrayList<Integer> positions = sentence.getWordPosition( identifier );
-            
             Integer position = -1; // will be zero on the first loop
-            for ( PactWord word : sentence ) {
+            for ( Word word : sentence ) {
                 position += 1;
                 if ( filterWord( word ) ) continue;
-                
-                Integer Δ = getMinimumDistance( position, positions );
-                Double score = getScore( Δ, ω.get( word.getWord() ), Ω, index );
-                
+                Integer pmin = getMinimumDistancePosition( position, positions );
+                Integer Δ = Math.abs(  pmin - position );
+                Integer ω0 = ω.get( word.getWord().toLowerCase() );
+                Double score = getScore( Δ, ω0, Ω, index );
                 // create a relation object
-                PactRelation relation = new PactRelation();
+                Relation relation = new Relation();
                 relation.setScore( score );
                 relation.setIdentifier( identifier );
                 relation.setWordPosition( position );
-                relation.setIdentifierPosition( position + Δ );
+                relation.setIdentifierPosition( pmin );
                 relation.setSentence( sentence );
-                relation.setId( id );
-                
-                // emit the relation            
+                relation.setTitle( title );
+                // emit the relation
                 Record record = new Record();
-                record.setField( 0, id );
+                record.setField( 0, title );
                 record.setField( 1, relation );
                 candidates.add( record );
             }
         }
         return candidates;
     }
-    
-    
+
+
     /**
-     * 
+     *
      * @param pos
      * @param positions
-     * @return 
+     * @return
      */
-    private Integer getMinimumDistance( Integer pos, ArrayList<Integer> positions ) {
-        Integer min = Integer.MAX_VALUE;
-        for ( Integer position : positions )
-            min = Math.min( min, position - pos );
+    private Integer getMinimumDistancePosition( Integer pos0, ArrayList<Integer> positions ) {
+        Integer Δ, Δmin = Integer.MAX_VALUE,
+                min = positions.get( 0 );
+        for ( Integer pos1 : positions ) {
+            Δ = pos1 - pos0;
+            if ( Δmin > Math.abs( Δ ) ) {
+                Δmin = Math.abs( Δ );
+                min = pos1;
+            }
+        }
         return min;
     }
-    
-    
+
+
     /**
-     * 
+     *
      * @param Δ
      * @param ω
      * @param Ω
      * @param x
-     * @return 
+     * @return
      */
-    private Double getScore( Integer Δ, Integer ω, Integer Ω, Integer x ) {        
-        Double dist = gaussian( (double) Δ, 5d / Math.sqrt( 2 * Math.log( 2 ) ) );
-        Double seq = gaussian( (double) x, 3d / Math.sqrt( 2 * Math.log( 2 ) ) );
+    private Double getScore( Integer Δ, Integer ω, Integer Ω, Integer x ) {
+        Double dist = gaussian( (double) Δ, Math.sqrt( Math.pow( 5d, 2d ) / ( 2d * Math.log( 2 ) ) )  );
+        Double seq = gaussian( (double) x, Math.sqrt( Math.pow( 3d, 2d ) / ( 2d * Math.log( 2 ) ) ) );
         Double freq = (double) ω / (double) Ω;
         return ( α * dist + β * seq + γ * freq ) / ( α + β + γ );
     }
-    
-    
+
+
     /**
      * Returns the value of the gaussian function
-     * at x. C is a real constant. One can control
-     * how steep the curve will fall down by choosing
-     * lower values of C.
-     * 
+     * at x. σ is the standard deviation.
+     *
      * @param x
-     * @param C
-     * @return 
+     * @param σ
+     * @return
      */
-    private Double gaussian( Double x, Double C ) {
-        return Math.exp( - Math.pow( x, 2d ) /
-               ( 2d * Math.pow( 2d * C, 2d ) ) );
+    private Double gaussian( Double x, Double σ ) {
+        return Math.exp(
+            - Math.pow( x, 2d ) /
+            ( 2d * Math.pow( σ, 2d ) )
+        );
     }
 
-     
+
     /**
      *
      * @param word
-     * @return 
+     * @return
      */
-    private boolean filterWord( PactWord word ) {
+    private boolean filterWord( Word word ) {
                // skip the identifier words
         return identifiers.containsIdentifier( word.getWord() ) ||
                // skip blacklisted words
                blacklist.contains( word.getWord() ) ||
-               // we're only interested in nouns, adjectives and entities
-               !word.getTag().matches( "NN[PS]{0,2}|ENTITY|JJ" );
+               // we're only interested in nouns, entities and links
+               !word.getTag().matches( "NN[PS]{0,2}|NP\\+?|NN\\+|LNK" );
     }
 
 

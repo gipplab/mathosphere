@@ -16,9 +16,8 @@
  */
 package cc.clabs.stratosphere.mlp.contracts;
 
-import cc.clabs.stratosphere.mlp.types.Relation;
 import eu.stratosphere.api.java.record.functions.ReduceFunction;
-import eu.stratosphere.configuration.Configuration;
+import eu.stratosphere.types.DoubleValue;
 import eu.stratosphere.types.Record;
 import eu.stratosphere.util.Collector;
 
@@ -28,43 +27,24 @@ import java.util.Iterator;
  *
  * @author rob
  */
-public class FilterCandidates extends ReduceFunction {
+public class AccuracyAggregator extends ReduceFunction {
         
-    
-    /**
-     * 
-     */
-    private Double threshold;
-    
-    /**
-     * 
-     */
     private final Record target = new Record();
 
-    
-    @Override
-    public void open(Configuration parameter) throws Exception {
-        super.open( parameter );
-        threshold = Double.parseDouble( parameter.getString( "THRESHOLD", "0.8" ) );
-    }
-    
-    
     @Override
     public void reduce( Iterator<Record> iterator, Collector<Record> collector ) throws Exception {
-        Relation relation;
         Record record;
+        
+        Double level = 0.8d;
+        Double accuracy = 0.9d;
         
         while ( iterator.hasNext() ) {
             record = iterator.next();
-            relation = record.getField( 1, Relation.class );
-            
-            // if the score is lesser than our minimum threshold
-            // we'll continue with the next word
-            if ( relation.getScore().getValue() < threshold ) continue;
             
             // emit
             target.clear();
-            target.setField( 0, relation );
+            target.setField( 0, new DoubleValue( level ) );
+            target.setField( 1, new DoubleValue( accuracy ) );
             collector.collect( target );
         }
     }

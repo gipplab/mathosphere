@@ -3,7 +3,6 @@ package cc.clabs.stratosphere.mlp.tests;
 import java.io.InputStream;
 import java.util.Scanner;
 
-import eu.stratosphere.api.java.record.io.FileInputFormat;
 import eu.stratosphere.configuration.Configuration;
 import eu.stratosphere.types.Record;
 import eu.stratosphere.types.StringValue;
@@ -11,9 +10,9 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import cc.clabs.stratosphere.mlp.io.WikiDocumentEmitter;
-import cc.clabs.stratosphere.mlp.types.PactFormula;
-import cc.clabs.stratosphere.mlp.types.PactFormulaList;
-import cc.clabs.stratosphere.mlp.types.PactIdentifiers;
+import cc.clabs.stratosphere.mlp.types.Formula;
+import cc.clabs.stratosphere.mlp.types.FormulaList;
+import cc.clabs.stratosphere.mlp.types.Identifiers;
 import cc.clabs.stratosphere.mlp.types.WikiDocument;
 import static org.junit.Assert.*;
 import static org.junit.matchers.JUnitMatchers.*;
@@ -27,7 +26,7 @@ public class IntegrationTest {
 		return out;
 	}
 	@Test
-	//@Ignore
+	@Ignore
 	public void testNormalDoc(){
 		String docString = getFileContents("wikienmathsample.xml");
 		WikiDocumentEmitter wikiDocumentEmitter = new WikiDocumentEmitter();
@@ -41,17 +40,17 @@ public class IntegrationTest {
 		wikiDocumentEmitter.readRecord(target, docString.getBytes(), 0, docString.length());
 		WikiDocument doc = (WikiDocument) target.getField( 0, WikiDocument.class );
 		assertThat(doc.getText(), containsString("Albedo depends on the [[frequency]] of the radiation."));
-		PactFormulaList formulae = doc.getFormulas();
-		for (PactFormula pactFormula : formulae) {
+		FormulaList formulae = doc.getFormulas();
+		for (Formula pactFormula : formulae) {
 			System.out.println(pactFormula.getHash());
 		}
-		PactIdentifiers identifier = doc.getKnownIdentifiers();
+		Identifiers identifier = doc.getKnownIdentifiers();
 		for (StringValue StringValue : identifier) {
 			System.out.println(StringValue.toString());
 		}
 	}
 	@Test
-	//@Ignore
+	@Ignore
 	public void testAugmentedDoc(){
 		String docString = getFileContents("augmentendwikitext.xml");
 		WikiDocumentEmitter wikiDocumentEmitter = new WikiDocumentEmitter();
@@ -63,11 +62,11 @@ public class IntegrationTest {
 		wikiDocumentEmitter.readRecord(target, docString.getBytes(), 0, docString.length());
 		WikiDocument doc = (WikiDocument) target.getField( 0, WikiDocument.class );
 		assertThat(doc.getText(), containsString("In [[classical mechanics]], the [[equation of motion]] is [[Newton's second law]], and equivalent formulations are the [[Euler–Lagrange equations]] and [[Hamilton's equations]]."));	
-//		PactFormulaList formulae = doc.getFormulas();
-//		for (PactFormula pactFormula : formulae) {
+//		FormulaList formulae = doc.getFormulas();
+//		for (Formula pactFormula : formulae) {
 //			System.out.println(pactFormula.getHash());
 //		}
-		PactIdentifiers identifier = doc.getKnownIdentifiers();
+		Identifiers identifier = doc.getKnownIdentifiers();
 		for (StringValue StringValue : identifier) {
 			System.out.println(StringValue.toString());
 		}
