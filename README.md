@@ -16,3 +16,9 @@ If uncertain, the `english-left3words-distsim.tagger` model is a good starting p
 Tested with http://nlp.stanford.edu/software/stanford-postagger-2012-11-11.zip ... the most recent version 
 http://nlp.stanford.edu/software/stanford-postagger-2014-01-04.zip
 is currently beeing tested.
+
+## Log
+
+To trace was was done on the MLP server
+install stratosphere via debian package
+physikerwelt@mlp:~/stanford-postagger-2014-01-04/models$ cp english-left3words-distsim.tagger ~
