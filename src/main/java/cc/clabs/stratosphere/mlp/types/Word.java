@@ -19,13 +19,13 @@ package cc.clabs.stratosphere.mlp.types;
 import edu.stanford.nlp.ling.TaggedWord;
 import eu.stratosphere.types.Key;
 import eu.stratosphere.types.StringValue;
+import org.json.JSONObject;
 
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import org.json.JSONObject;
 
 /**
  *
@@ -169,7 +169,7 @@ public class Word implements Key {
     }
 
     @Override
-    public int compareTo( Key o ) {
+    public int compareTo( Object o ) {
         Word other = (Word) o;
         if (  this.word.equals( other.word ) &&  this.tag.equals( other.tag ) )
             return 0;
