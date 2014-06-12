@@ -27,7 +27,7 @@ import java.io.IOException;
  *
  * @author rob
  */
-public class PactFormula implements Value {
+public class Formula implements Value {
     
     
     /*
@@ -43,7 +43,7 @@ public class PactFormula implements Value {
     /**
      * default constructor
      */
-    public PactFormula() { }
+    public Formula() { }
     
     
     /**
@@ -51,7 +51,7 @@ public class PactFormula implements Value {
      * @param hash
      * @param src 
      */
-    public PactFormula( final String hash, final String src ) {
+    public Formula( final String hash, final String src ) {
         this.hash.setValue( hash );
         this.hash.setValue( src );
     }

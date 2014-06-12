@@ -16,10 +16,9 @@
  */
 package cc.clabs.stratosphere.mlp.contracts;
 
-import cc.clabs.stratosphere.mlp.types.PactIdentifiers;
+import cc.clabs.stratosphere.mlp.types.Identifiers;
 import cc.clabs.stratosphere.mlp.types.WikiDocument;
 import eu.stratosphere.api.java.record.functions.MapFunction;
-import eu.stratosphere.types.IntValue;
 import eu.stratosphere.types.Record;
 import eu.stratosphere.types.StringValue;
 import eu.stratosphere.util.Collector;
@@ -35,8 +34,8 @@ public class DocumentProcessor extends MapFunction {
     private static final Log LOG = LogFactory.getLog( DocumentProcessor.class );
     
     private final StringValue plaintext = new StringValue();
-    private final PactIdentifiers list = new PactIdentifiers();
-    private final IntValue id = new IntValue();
+    private final Identifiers list = new Identifiers();
+    private final StringValue title = new StringValue();
     private final Record target = new Record();
    
     @Override
@@ -51,17 +50,16 @@ public class DocumentProcessor extends MapFunction {
 
         // generate a plaintext version of the document
         plaintext.setValue( doc.getPlainText() );
-        
+
         LOG.info( "Analyzed Page '"+ doc.getTitle() +"' (id: "+ doc.getId() +"), found identifiers: " + list.toString() );
         
         // set the id
-        id.setValue( doc.getId() );
+        title.setValue( doc.getTitle() );
                 
         // finally emit all parts
         target.clear();
-        target.setField( 0, id );
-        target.setField( 1, plaintext );
-        target.setField( 2, list );
+        target.setField( 0, title );
+        target.setField( 1, doc );
         collector.collect( target );   
     }
 }

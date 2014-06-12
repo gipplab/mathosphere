@@ -16,11 +16,19 @@
  */
 package cc.clabs.stratosphere.mlp.types;
 
-
 import eu.stratosphere.types.ListValue;
+import eu.stratosphere.types.StringValue;
 
 /**
  *
  * @author rob
  */
-public class PactFormulaList extends ListValue<PactFormula> { }
+public final class Identifiers extends ListValue<StringValue> {
+
+    public Boolean containsIdentifier ( String identifier ) {
+        Boolean found = false;
+        for ( StringValue i : this )
+            found = found || i.getValue().equals( identifier );
+        return found;
+    }
+}

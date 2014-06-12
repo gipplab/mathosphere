@@ -6,7 +6,7 @@
  *  | ._,_/_/ \_\_||_|
  *  | |
  *  |_|
- * 
+ *
  * ----------------------------------------------------------------------------
  * "THE BEER-WARE LICENSE" (Revision 42):
  * <rob ∂ CLABS dot CC> wrote this file. As long as you retain this notice you
@@ -27,22 +27,26 @@ import org.eclipse.mylyn.wikitext.core.parser.DocumentBuilder;
  * a document written in MediaWiki-Markup into plaintext. Most
  * of the structure of the document will ne stripped, including
  * linebreaks, headings, etc.
- * 
+ *
  * @author rob
  */
 public class PlaintextDocumentBuilder extends DocumentBuilder {
-    
+
     private StringWriter writer = new StringWriter();
     private StringWriter stream = null;
-    
+
     /**
      * These lists store all blocks within a block/span that will
      * not be rendered.
      */
     private LinkedList<BlockType> skipBlocks = new LinkedList<>();
     private LinkedList<SpanType> skipSpans = new LinkedList<>();
-   
-    
+    /**
+     * store all spans that will be rendered
+     */
+    private LinkedList<SpanType> passingSpans = new LinkedList<>();
+
+
     public PlaintextDocumentBuilder( StringWriter stream ) {
         this.stream = stream;
     }
@@ -53,7 +57,7 @@ public class PlaintextDocumentBuilder extends DocumentBuilder {
     @Override
     public void endDocument() {
         String doc = StringUtils.unescapeEntities( writer.toString() );
-                
+
         // remove remaining/undetected templates
         doc = Pattern.compile( "\\{\\{[^\\{]*?\\}\\}" ).matcher( doc ).replaceAll( "" );
         doc = Pattern.compile( "\\{\\{[^\\{]*?\\}\\}" ).matcher( doc ).replaceAll( "" );
@@ -65,7 +69,9 @@ public class PlaintextDocumentBuilder extends DocumentBuilder {
         // remove undetected emphasis tags
         doc = Pattern.compile( "'{2,}" ).matcher( doc ).replaceAll( "" );
         // comments
-        doc = Pattern.compile( "<!--.*?-->", Pattern.DOTALL ).matcher( doc ).replaceAll( "" );  
+        doc = Pattern.compile( "<!--.*?-->", Pattern.DOTALL ).matcher( doc ).replaceAll( "" );
+        // headings
+        doc = Pattern.compile( "([=]{2,4})[^\\n]*?\\1", Pattern.DOTALL ).matcher( doc ).replaceAll( "" );
         // references
         doc = Pattern.compile( "<references>.*?</references>", Pattern.DOTALL ).matcher( doc ).replaceAll( "" );
         doc = Pattern.compile( "<ref[^>/]*>.*?</ref>", Pattern.DOTALL ).matcher( doc ).replaceAll( "" );
@@ -80,15 +86,21 @@ public class PlaintextDocumentBuilder extends DocumentBuilder {
         doc = Pattern.compile( "\\[\\[[^\\[\\]]*]]" ).matcher( doc ).replaceAll( "" );
         // strip unneeded linebreaks, etc.
         doc = Pattern.compile( "\\n+" ).matcher( doc ).replaceAll( " " );
-        doc = Pattern.compile( "\\s+" ).matcher( doc ).replaceAll( " " ); 
+        doc = Pattern.compile( "\\s+" ).matcher( doc ).replaceAll( " " );
         // fix punctuation
-        doc = Pattern.compile( "([\\w])[ ]+([:;,\\.\\)])", Pattern.DOTALL ).matcher( doc ).replaceAll( "$1$1" );
+        //doc = Pattern.compile( "([\\w])[ ]+([:;,\\.\\)])", Pattern.DOTALL ).matcher( doc ).replaceAll( "$1$2" );
         // and strip parentheses from the plaintext
         //doc = Pattern.compile( "\\([^\\)]*\\)" ).matcher( doc ).replaceAll( "" );
-        
+        // remove language links
+        doc = Pattern.compile( "“[a-z]{2,3}:.*?”" ).matcher( doc ).replaceAll( "" );
+        // remove misc quotation symbols
+        doc = Pattern.compile( "'|\\\"" ).matcher( doc ).replaceAll( "" );
+        // reposition plurals into links
+        doc = Pattern.compile( "”(\\w)" ).matcher( doc ).replaceAll( "$1”" );
+
         // good hackers trim!
         doc = doc.trim();
-        
+
         stream.write( doc );
     }
 
@@ -104,7 +116,7 @@ public class PlaintextDocumentBuilder extends DocumentBuilder {
             case BULLETED_LIST:
                 if ( skipBlocks.size() > 0 ) skipBlocks.add( type );
                 break;
-            // block that will be skipped
+            // blocks that will be skipped
             case TIP:
             case WARNING:
             case INFORMATION:
@@ -140,11 +152,13 @@ public class PlaintextDocumentBuilder extends DocumentBuilder {
             case ITALIC:
             case SPAN:
             case STRONG:
+            case BOLD:
             case SUBSCRIPT:
             case SUPERSCRIPT:
             case UNDERLINED:
             case CITATION:
                 if ( skipSpans.size() > 0 ) skipSpans.add( type );
+                else passingSpans.add( type );
                 break;
             // span that will be skipped
             case INSERTED:
@@ -161,7 +175,7 @@ public class PlaintextDocumentBuilder extends DocumentBuilder {
         if ( !skipSpans.isEmpty() )
             skipSpans.removeLast();
         else
-            writer.write( " " );
+            passingSpans.removeLast();
     }
 
     @Override
@@ -179,6 +193,17 @@ public class PlaintextDocumentBuilder extends DocumentBuilder {
     public void characters( String text ) {
         if ( skipBlocks.size() > 0 ) return;
         if ( skipSpans.size() > 0 ) return;
+        if ( passingSpans.size() > 0 ) {
+            SpanType type = passingSpans.getLast();
+            switch ( type  ) {
+                case SUBSCRIPT:
+                    text = StringUtils.getSubscriptChar( text );
+                    break;
+                case SUPERSCRIPT:
+                    text = StringUtils.getSuperscriptChar( text );
+                    break;
+            }
+        }
         writer.write( text );
     }
 
@@ -208,12 +233,11 @@ public class PlaintextDocumentBuilder extends DocumentBuilder {
         if ( Pattern.compile( "https?:" ).matcher( full ).matches() ) return;
         // language links
         if ( Pattern.compile( "\\w{2}:" ).matcher( text ).matches() ) return;
-        
-        
+
         // when textfield is emtpy the link will be shown, except
         // anything in parentheses.
         if ( text.isEmpty() ) text = link.replaceAll( "\\(.*?\\)", "" );
-        writer.write( '"' + text + '"' );
+        writer.write( '\u201c' + text + '\u201d' );
     }
 
     @Override
@@ -226,12 +250,12 @@ public class PlaintextDocumentBuilder extends DocumentBuilder {
 
     @Override
     public void lineBreak() {
-        writer.write( " " );
+        writer.write( "\n" );
     }
 
     @Override
     public void charactersUnescaped( String literal ) {
         writer.write( literal );
     }
-    
+
 }

@@ -94,4 +94,4 @@ colorcodes
 drawlogo
 
 log INFO "sending mlp job to stratosphere"
-($CLIENT run -j $MLP -a file://$DATASET file://$OUTPUT $MODEL $ALPHA $BETA $GAMMA $THRESHOLD & tail -f -n 0 $LOGFILE) || die
+($CLIENT run -v -j $MLP -c cc.clabs.stratosphere.mlp.RelationFinder -a file://$DATASET file://$OUTPUTDIR $MODEL $ALPHA $BETA $GAMMA $THRESHOLD & tail -f -n 0 $LOGFILE) || die

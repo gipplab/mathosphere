@@ -23,19 +23,22 @@ import eu.stratosphere.types.StringValue;
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+import org.json.JSONObject;
 
 /**
  *
  * @author rob
  */
-public final class PactRelation implements Key {
+public class Relation implements Key, Cloneable {
 
     private DoubleValue score = new DoubleValue();
     private IntValue iposition = new IntValue();
     private IntValue wposition = new IntValue();
     private StringValue identifier = new StringValue();
-    private PactSentence sentence = new PactSentence();
-    private IntValue id = new IntValue();
+    private Sentence sentence = new Sentence();
+    private StringValue title = new StringValue();
     
     /**
      * 
@@ -62,6 +65,14 @@ public final class PactRelation implements Key {
     public void setScore( Double score ) {
         this.score = new DoubleValue( score );
     }
+    
+    
+    public String getDefinitionWord() {
+        return ( wposition != null ) ?
+            sentence.get( wposition.getValue() ).getWord() :
+            null;
+    }
+    
     
     /**
      * 
@@ -148,7 +159,7 @@ public final class PactRelation implements Key {
      * 
      * @return 
      */
-    public PactSentence getSentence() {
+    public Sentence getSentence() {
         return sentence;
     }
     
@@ -157,20 +168,25 @@ public final class PactRelation implements Key {
      * 
      * @param sentence 
      */
-    public void setSentence( PactSentence sentence ) {
+    public void setSentence( Sentence sentence ) {
         this.sentence = sentence;
     }
+
     
     /**
      * 
      * @return 
      */
-    public IntValue getId () {
-        return this.id;
+    public StringValue getTitle () {
+        return this.title;
     }
     
-    public void setId( IntValue id ) {
-        this.id = id;
+    public void setTitle( StringValue title ) {
+        this.title = title;
+    }
+    
+    public void setTitle( String title ) {
+        this.title = new StringValue( title );
     }
     
     @Override
@@ -180,7 +196,7 @@ public final class PactRelation implements Key {
         wposition.write( out );
         sentence.write( out );
         score.write( out );
-        id.write( out );
+        title.write( out );
     }
 
     @Override
@@ -190,12 +206,12 @@ public final class PactRelation implements Key {
         wposition.read( in );
         sentence.read( in );
         score.read( in );
-        id.read( in );
+        title.read( in );
     }
 
     @Override
     public int compareTo( Key o ) {
-        PactRelation other = (PactRelation) o;
+        Relation other = (Relation) o;
         // only and only if the identifier and the
         // sentences are equal, consider the relations
         // natural order as equal.
@@ -209,13 +225,49 @@ public final class PactRelation implements Key {
     
     @Override
     public String toString() {
-        String word = ((PactWord) sentence.get( wposition.getValue() )).getWord();
-        return String.format( "%d | %-2.2s | %-5f | %-18.18s | %s",
-            id.getValue(),
-            identifier.getValue(),
-            score.getValue(),
-            word,
-            sentence.toString() );
+        String s = toJSON().toString();
+        if ( s == null ) {
+            return "";
+        } else {
+            return s;
+        }
+        //String word = ((Word) sentence.get( wposition.getValue() )).getWord();
+        //return String.format( "%-18.18s | %-2.2s | %-5f | %-18.18s | %s",
+        //    title.getValue(),
+        //    identifier.getValue(),
+        //    score.getValue(),
+        //    word,
+        //    sentence.toString() );
+    }
+    
+    public JSONObject toJSON () {
+        String word;
+        try {
+            word = ((Word) sentence.get( wposition.getValue() )).getWord();
+        } catch ( Exception e ) {
+            word = "";
+        }
+        Map<String,Object> json = new HashMap<>();
+        json.put( "page", title.getValue() );
+        json.put( "identifier", identifier.getValue() );
+        json.put( "score", score.getValue() );
+        json.put( "word", word );
+        json.put( "identifier_position", iposition.getValue() );
+        json.put( "definition_position", wposition.getValue() );
+        json.put( "sentence", sentence.toJSON() );
+        return new JSONObject( json );
+    }
+    
+    @Override
+    public Object clone() {
+        Relation obj = new Relation();
+        obj.setIdentifier( new StringValue( identifier.getValue() ) );
+        obj.setIdentifierPosition( new IntValue( iposition.getValue() ) ) ;
+        obj.setScore( new DoubleValue( score.getValue() ) );
+        obj.setSentence( (Sentence) sentence.clone() );
+        obj.setTitle( new StringValue( title.getValue() ) );
+        obj.setWordPosition( new IntValue( wposition.getValue() ) );
+        return obj;
     }
 
 }

@@ -20,13 +20,17 @@ import eu.stratosphere.types.ListValue;
 import eu.stratosphere.types.StringValue;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 /**
  *
  * @author rob
  */
-public class PactSentence extends ListValue<PactWord> implements Cloneable {
+public class Sentence extends ListValue<Word> implements Cloneable {
     
     /**
      * 
@@ -37,7 +41,7 @@ public class PactSentence extends ListValue<PactWord> implements Cloneable {
         ArrayList<Integer> positions = new ArrayList<>();
         String token;
         Integer pos = -1;
-        Iterator<PactWord> it = this.iterator();
+        Iterator<Word> it = this.iterator();
         while ( it.hasNext() ) {
             pos += 1;
             token = it.next().getWord();
@@ -70,7 +74,7 @@ public class PactSentence extends ListValue<PactWord> implements Cloneable {
      * @param word
      * @return 
      */
-    public boolean containsWord( PactWord word ) {
+    public boolean containsWord( Word word ) {
         return containsWord( word.getWord() );
     }
     
@@ -78,17 +82,27 @@ public class PactSentence extends ListValue<PactWord> implements Cloneable {
     
     @Override
     public Object clone() {
-        PactSentence obj = new PactSentence();
+        Sentence obj = new Sentence();
         obj.addAll( this );
         return obj;
     }
     
     @Override
     public String toString() {
-        String buffer = "";
-        Iterator<PactWord> it = this.iterator();
-        while ( it.hasNext() ) buffer += it.next().getWord() + " ";
-        return buffer;
+        return toJSON().toString();
+        // String buffer = "";
+        // Iterator<PactWord> it = this.iterator();
+        // while ( it.hasNext() ) buffer += it.next().toString() + " ";
+        // return buffer;
+    }
+    
+    public JSONObject toJSON () {
+        JSONArray words = new JSONArray();
+        Iterator<Word> it = this.iterator();
+        while ( it.hasNext() ) words.put( it.next().toJSON() );
+        Map<String,Object> json = new HashMap<>();
+        json.put( "words", words );
+        return new JSONObject( json );
     }
     
 }

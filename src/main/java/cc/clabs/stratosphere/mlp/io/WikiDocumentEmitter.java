@@ -48,20 +48,33 @@ public class WikiDocumentEmitter extends TextInputFormat {
         super.readRecord( target, bytes, offset, numBytes );
         String content = target.getField( 0, StringValue.class ).getValue();
         
-        // search for a page-xml entity
-        Pattern pageRegex = Pattern.compile( "(?:<page>\\s+)(?:<title>)(.*?)(?:</title>)\\s+(?:<ns>)(.*?)(?:</ns>)\\s+(?:<id>)(.*?)(?:</id>)(?:.*?)(?:<text.*?>)(.*?)(?:</text>)", Pattern.DOTALL );
-        Matcher m = pageRegex.matcher( content );
-        // if the record does not contain parsable page-xml
-        if ( !m.find() ) return false;
+        Matcher m;
+        Pattern titleRegexp = Pattern.compile( "(?:<title>)(.*?)(?:</title>)" );
+        Pattern nsRegexp = Pattern.compile( "(?:<ns>)(.*?)(?:</ns>)" );
+        Pattern idRegexp = Pattern.compile( "(?:<revision>.*?<id>)(\\d+)(?:</id>)", Pattern.DOTALL );
+        Pattern textRegexp = Pattern.compile( "(?:<text.*?>)(.*?)(?:</text>)", Pattern.DOTALL );
+        
+        // parse title
+        m = titleRegexp.matcher( content ); if ( !m.find() ) return false;
+        String title = m.group( 1 );
+        // parse namespace
+        m = nsRegexp.matcher( content ); if ( !m.find() ) return false;
+        Integer ns = Integer.parseInt( m.group( 1 ) );
+        // parse revision id
+        m = idRegexp.matcher( content ); if ( !m.find() ) return false;
+        Integer id = Integer.parseInt( m.group( 1 ) );
+        // parse text
+        m = textRegexp.matcher( content ); if ( !m.find() ) return false;
+        String text = StringUtils.unescapeEntities( m.group( 1 ) );
         
         // otherwise create a WikiDocument object from the xml
         WikiDocument doc = new WikiDocument();
-        doc.setId( Integer.parseInt( m.group( 3 ) ) );
-        doc.setTitle( m.group( 1 ) );
-        doc.setNS( Integer.parseInt( m.group( 2 ) ) );
-        doc.setText( StringUtils.unescapeEntities( m.group( 4 ) ) );
+        doc.setId( id );
+        doc.setTitle( title );
+        doc.setNS( ns );
+        doc.setText( text );
         
-        // skip docs from namespaces other than
+        // skip docs from namespaces other than 0
         if ( doc.getNS() != 0 ) return false;
         
         target.setField( 0, doc );
