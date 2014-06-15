@@ -17,26 +17,22 @@
 package cc.clabs.stratosphere.mlp;
 
 import cc.clabs.stratosphere.mlp.contracts.*;
-import cc.clabs.stratosphere.mlp.io.*;
-import cc.clabs.stratosphere.mlp.types.*;
+import cc.clabs.stratosphere.mlp.io.WikiDocumentEmitter;
+import cc.clabs.stratosphere.mlp.types.Relation;
+import cc.clabs.stratosphere.mlp.types.WikiDocument;
 import eu.stratosphere.api.common.Plan;
 import eu.stratosphere.api.common.Program;
 import eu.stratosphere.api.common.ProgramDescription;
-import eu.stratosphere.api.common.operators.FileDataSink;
-import eu.stratosphere.api.common.operators.FileDataSource;
-import eu.stratosphere.api.common.operators.GenericDataSink;
 import eu.stratosphere.api.common.operators.Order;
 import eu.stratosphere.api.common.operators.Ordering;
 import eu.stratosphere.api.java.record.io.CsvOutputFormat;
-import eu.stratosphere.api.java.record.operators.CoGroupOperator;
-import eu.stratosphere.api.java.record.operators.MapOperator;
-import eu.stratosphere.api.java.record.operators.ReduceOperator;
+import eu.stratosphere.api.java.record.operators.*;
+import eu.stratosphere.client.LocalExecutor;
 import eu.stratosphere.types.DoubleValue;
 import eu.stratosphere.types.StringValue;
+
 import java.util.ArrayList;
 import java.util.Collection;
-
-import eu.stratosphere.client.LocalExecutor;
 
 public class RelationFinder implements Program, ProgramDescription {
 
@@ -143,7 +139,7 @@ public class RelationFinder implements Program, ProgramDescription {
                 .field( DoubleValue.class, 5 )
                 .field( StringValue.class, 6 );
         
-        Collection<GenericDataSink> sinks = new ArrayList<>();
+        Collection<FileDataSink> sinks = new ArrayList<>();
         sinks.add( out1 );
         sinks.add( out2 );
         sinks.add( out3 );
