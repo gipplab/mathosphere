@@ -54,7 +54,6 @@ public class CandidateEmitter extends CoGroupFunction{
         "×", "/", "\\", "-",
         "function", "functions",
         "equation", "equations",
-        "value", "values",
         "solution", "solutions",
         "result", "results"
     );
