@@ -10,6 +10,7 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
 import javax.xml.xpath.XPathExpression;
 import javax.xml.xpath.XPathExpressionException;
 import java.io.IOException;
@@ -20,8 +21,8 @@ public class QueryMapper extends FlatMapFunction<String, Query> {
     private final XPathExpression xName;
     private final XPathExpression xFormulae;
     private final XPathExpression xKeywords;
-    private final Query currentQuery = new Query();
     private final DocumentBuilder builder;
+    private Query currentQuery = new Query();
 
 
     public QueryMapper() throws XPathExpressionException, ParserConfigurationException {
@@ -52,6 +53,7 @@ public class QueryMapper extends FlatMapFunction<String, Query> {
         for (int i = 0, len = nodeList.getLength(); i < len; i++) {
             Node node = nodeList.item(i);
             final Node main = XMLHelper.getElementB(node, xName);
+            currentQuery = new Query();
             currentQuery.name = main.getTextContent();
 
             setFormulae(node);
@@ -76,7 +78,7 @@ public class QueryMapper extends FlatMapFunction<String, Query> {
         }
     }
 
-    private void setFormulae(Node node) throws ParserConfigurationException, SAXException, IOException, XPathExpressionException {
+    private void setFormulae(Node node) throws ParserConfigurationException, SAXException, IOException, XPathExpressionException, TransformerException {
         final NodeList formulae = XMLHelper.getElementsB(node, xFormulae);
         if (formulae == null) {
             currentQuery.formulae = null;
@@ -84,7 +86,9 @@ public class QueryMapper extends FlatMapFunction<String, Query> {
             currentQuery.formulae = new HashMap<>(1);
             for (int j = 0, len2 = formulae.getLength(); j < len2; j++) {
                 Document mathML = builder.newDocument();
-                mathML.importNode(formulae.item(j).getFirstChild(), true);
+                Node mathMLElement = XMLHelper.getElementB(formulae.item(j), "./math");
+                Node importedNode = mathML.importNode(mathMLElement, true);
+                mathML.appendChild(importedNode);
                 final String formulaID = formulae.item(j).getAttributes().getNamedItem("id").getNodeValue();
                 currentQuery.formulae.put(formulaID, mathML);
             }
