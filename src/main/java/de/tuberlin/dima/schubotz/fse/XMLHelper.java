@@ -30,6 +30,7 @@ import java.util.regex.Pattern;
 /**
  * The Class XMLHelper.
  */
+@SuppressWarnings("UnusedDeclaration")
 public final class XMLHelper {
 	
 	/** The factory. */
@@ -71,9 +72,9 @@ public final class XMLHelper {
 					String qname = n.node.getAttributes().getNamedItem("name").toString();				
 					if(n.qVar == null){
 						n.out="MYQVARNEW";
-						n.qVar=new HashMap<String, Integer>();
-						n.qVar.put(qname, 1);
-					} else {
+                        n.qVar = new HashMap<>();
+                        n.qVar.put(qname, 1);
+                    } else {
 						Integer qInt = n.qVar.get(qname);
 						if(qInt==null){
 							n.out="MYQVARNEW";
@@ -84,9 +85,9 @@ public final class XMLHelper {
 					}
 				}
 				if(n.node.hasChildNodes()){
-					String sChild= new String("");
-					for(Node childNode=n.node.getFirstChild();
-						    childNode!=null; childNode=childNode.getNextSibling()){
+                    String sChild = "";
+                    for (Node childNode = n.node.getFirstChild();
+                         childNode!=null; childNode=childNode.getNextSibling()){
 						Mynode ret = CompactForm(new Mynode(childNode, n.qVar));
 						String cn = ret.out;
 						n.qVar=ret.qVar;
@@ -213,9 +214,12 @@ public final class XMLHelper {
 				.newInstance();
 		 domFactory.setNamespaceAware(NamespaceAwareness);
 		 //domFactory.setValidating(true);
-		 domFactory.setIgnoringElementContentWhitespace(true);
-		DocumentBuilder builder = domFactory.newDocumentBuilder();
-		InputSource is = new InputSource(new StringReader(InputXMLString));
+        domFactory.setAttribute(
+                "http://apache.org/xml/features/dom/include-ignorable-whitespace",
+                Boolean.FALSE);
+        domFactory.setIgnoringElementContentWhitespace(true);
+        DocumentBuilder builder = domFactory.newDocumentBuilder();
+        InputSource is = new InputSource(new StringReader(InputXMLString));
 		is.setEncoding("UTF-8"); 
 		return  builder.parse(is);
 
@@ -229,6 +233,7 @@ public final class XMLHelper {
      * @return a list of unique identifiers. When no identifiers were
      *         found, an empty list will be returned.
      */
+    @SuppressWarnings("JavaDoc")
     public static Multiset<String> getIdentifiersFrom( String mathml ) {
         Multiset<String> list = HashMultiset.create();
         Pattern p = Pattern.compile( "<((m:)?[mc][ion])(.*?)>(.{1,4}?)</\\1>", Pattern.DOTALL );
@@ -243,11 +248,12 @@ public final class XMLHelper {
      * Returns a list of unique identifiers from a MathML string.
      * This function searches for all <mi/> or <ci/> tags within
      * the string.
-     * 
-     * @param mathml 
+     *
+     * @param mathml
      * @return a list of unique identifiers. When no identifiers were
      *         found, an empty list will be returned.
      */
+    @SuppressWarnings("JavaDoc")
     public static Multiset<String> getIdentifiersFromQuery( String mathml ) {
         Multiset<String> list = HashMultiset.create();
         Pattern p = Pattern.compile( "[mc][ion]\\[([^\\]]{1,4})\\]" );
@@ -328,6 +334,7 @@ public final class XMLHelper {
      * /**
      * The Class NdLst.
      */
+    @SuppressWarnings("UnusedDeclaration")
     public static class NdLst implements NodeList, Iterable<Node> {
 
         /**
@@ -341,7 +348,7 @@ public final class XMLHelper {
          * @param list the list
          */
         public NdLst(NodeList list) {
-            nodes = new ArrayList<Node>();
+            nodes = new ArrayList<>();
             for (int i = 0; i < list.getLength(); i++) {
                 if (!isWhitespaceNode(list.item(i))) {
                     nodes.add(list.item(i));
