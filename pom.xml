@@ -21,6 +21,12 @@
             <version>4.11</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>com.dp4j</groupId>
+            <artifactId>dp4j</artifactId>
+            <version>1.2</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
     <build>
     <plugins>

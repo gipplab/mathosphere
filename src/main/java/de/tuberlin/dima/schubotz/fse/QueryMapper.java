@@ -2,7 +2,6 @@ package de.tuberlin.dima.schubotz.fse;
 
 import eu.stratosphere.api.java.functions.FlatMapFunction;
 import eu.stratosphere.util.Collector;
-import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
@@ -14,28 +13,17 @@ import javax.xml.transform.TransformerException;
 import javax.xml.xpath.XPathExpression;
 import javax.xml.xpath.XPathExpressionException;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.HashMap;
 
 
-public class QueryMapper extends FlatMapFunction<String, Query> {
-    private final XPathExpression xName;
-    private final XPathExpression xFormulae;
-    private final XPathExpression xKeywords;
-    private final DocumentBuilder builder;
-    private Query currentQuery = new Query();
+public class QueryMapper extends FlatMapFunction<String, Query> implements Serializable{
 
 
-    public QueryMapper() throws XPathExpressionException, ParserConfigurationException {
-        final DocumentBuilderFactory dbf;
-        xName = XMLHelper.compileX("./num");
-        xFormulae = XMLHelper.compileX("./query/formula");
-        xKeywords = XMLHelper.compileX("./query/keyword");
-        dbf = DocumentBuilderFactory.newInstance();
-        dbf.setValidating(true);
-        dbf.setNamespaceAware(true);
-        dbf.setIgnoringElementContentWhitespace(true);
-        builder = dbf.newDocumentBuilder();
-    }
+
+
+    private Query currentQuery;
+
 
     /**
      * The core method of the FlatMapFunction. Takes an element from the input data set and transforms
@@ -52,6 +40,8 @@ public class QueryMapper extends FlatMapFunction<String, Query> {
 
         for (int i = 0, len = nodeList.getLength(); i < len; i++) {
             Node node = nodeList.item(i);
+            final XPathExpression xName;
+            xName = XMLHelper.compileX("./num");
             final Node main = XMLHelper.getElementB(node, xName);
             currentQuery = new Query();
             currentQuery.name = main.getTextContent();
@@ -65,6 +55,8 @@ public class QueryMapper extends FlatMapFunction<String, Query> {
     }
 
     private void setKeywords(Node node) throws ParserConfigurationException, SAXException, IOException, XPathExpressionException {
+        final XPathExpression xKeywords;
+        xKeywords = XMLHelper.compileX("./query/keyword");
         final NodeList keywords = XMLHelper.getElementsB(node, xKeywords);
         if (keywords == null) {
             currentQuery.keywords = null;
@@ -79,13 +71,23 @@ public class QueryMapper extends FlatMapFunction<String, Query> {
     }
 
     private void setFormulae(Node node) throws ParserConfigurationException, SAXException, IOException, XPathExpressionException, TransformerException {
+        final XPathExpression xFormulae;
+        final DocumentBuilder builder;
+            final DocumentBuilderFactory dbf;
+
+            dbf = DocumentBuilderFactory.newInstance();
+            dbf.setValidating(true);
+            dbf.setNamespaceAware(true);
+            dbf.setIgnoringElementContentWhitespace(true);
+            builder = dbf.newDocumentBuilder();
+        xFormulae = XMLHelper.compileX("./query/formula");
         final NodeList formulae = XMLHelper.getElementsB(node, xFormulae);
         if (formulae == null) {
             currentQuery.formulae = null;
         } else {
             currentQuery.formulae = new HashMap<>(1);
             for (int j = 0, len2 = formulae.getLength(); j < len2; j++) {
-                Document mathML = builder.newDocument();
+                com.sun.org.apache.xerces.internal.dom.DocumentImpl mathML = (com.sun.org.apache.xerces.internal.dom.DocumentImpl) builder.newDocument();
                 Node mathMLElement = XMLHelper.getElementB(formulae.item(j), "./math");
                 Node importedNode = mathML.importNode(mathMLElement, true);
                 mathML.appendChild(importedNode);
