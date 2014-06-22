@@ -14,9 +14,7 @@ import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 
-/**
- * Created by Moritz on 20.06.2014.
- */
+// TODO: Problems with encoding of UTF-8 chars
 public class DomSerial  //extends com.sun.org.apache.xerces.internal.dom.DocumentImpl
  implements Value {
     public Document document;
