@@ -100,7 +100,7 @@ public class MainProgram {
         DataSet rawQueryText = new DataSource<String>(env, format, BasicTypeInfo.STRING_TYPE_INFO);
         DataSet<Query> queryDataSet= rawQueryText.flatMap(new QueryMapper());
         DataSet<Tuple2<String,Integer>> articleDataSet = rawArticleText.map(new ArticleMapper());
-        articleDataSet.print();
+        articleDataSet.writeAsText(output);
     }
 
 

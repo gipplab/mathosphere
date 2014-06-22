@@ -17,7 +17,7 @@ public class ArticleMapper extends MapFunction<String,Tuple2<String,Integer>> {
             .compile("(<m:math|<math) (?:xmlns=\"http://www.w3.org/1998/Math/MathML\" )?id=\"(.*?)\"( alttext=\"(.*?)\")?(.*?)(</math>|</m:math>)");
     final static String FILENAME_INDICATOR = "Filename";
     final static Pattern filnamePattern = Pattern
-            .compile("<ARXIVFILESPLIT\\\\n"+FILENAME_INDICATOR + "=\"./\\d+/(\\d+)\\.(\\d+)/\\1.\\2_(\\d+)_(\\d+)\\.xhtml\">");
+            .compile("<ARXIVFILESPLIT\\\\n"+FILENAME_INDICATOR + "=\"\\./\\d+/(\\d+)\\.(\\d+)/\\1.\\2_(\\d+)_(\\d+)\\.xhtml\">");
     /** The Constant GRP_ID. */
     public final static int GRP_ID = 2;
 
