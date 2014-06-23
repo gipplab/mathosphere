@@ -4,6 +4,7 @@ import eu.stratosphere.api.java.DataSet;
 import eu.stratosphere.api.java.ExecutionEnvironment;
 import eu.stratosphere.api.java.io.TextInputFormat;
 import eu.stratosphere.api.java.operators.DataSource;
+import eu.stratosphere.api.java.tuple.Tuple2;
 import eu.stratosphere.api.java.typeutils.BasicTypeInfo;
 import eu.stratosphere.core.fs.Path;
 import org.apache.commons.logging.Log;
@@ -47,7 +48,7 @@ public class MainProgram {
      */
     public static final int RECORD_MATCH = 2;
     public static final Map<String, String> QueryDesc = new HashMap<>();
-    private static final String DOCUMENT_SEPARATOR = "</ARXIVFILESPLIT> \n";
+    public static final String DOCUMENT_SEPARATOR = "</ARXIVFILESPLIT>";
     public static final String RECOD_TYPE = "RECORD_TYPE";
     public static Map<String, String> TeXQueries = new HashMap<String, String>();
     /**
@@ -94,11 +95,12 @@ public class MainProgram {
         TextInputFormat format = new TextInputFormat(new Path(docsInput));
         format.setDelimiter(DOCUMENT_SEPARATOR);
         DataSet<String> rawArticleText = new DataSource<String>(env, format, BasicTypeInfo.STRING_TYPE_INFO);
-        TextInputFormat formatQueries = new TextInputFormat(new Path(docsInput));
+        TextInputFormat formatQueries = new TextInputFormat(new Path(queryInput));
         formatQueries.setDelimiter("</topics>"); //Do not split topics
-        DataSet<String> rawQueryText = new DataSource<String>(env, format, BasicTypeInfo.STRING_TYPE_INFO);
+        DataSet rawQueryText = new DataSource<String>(env, format, BasicTypeInfo.STRING_TYPE_INFO);
         DataSet<Query> queryDataSet= rawQueryText.flatMap(new QueryMapper());
-        queryDataSet.print();
+        DataSet<Tuple2<String,Integer>> articleDataSet = rawArticleText.map(new ArticleMapper());
+        articleDataSet.print();
     }
 
 
