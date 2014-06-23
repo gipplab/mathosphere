@@ -1,29 +1,24 @@
 package de.tuberlin.dima.schubotz.fse;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
-
 import java.io.File;
+
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
- 
-import org.w3c.dom.Attr;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-
+import org.w3c.dom.Node;
 import org.apache.commons.lang.StringUtils;
 
 public class ResultOutput {
@@ -31,27 +26,33 @@ public class ResultOutput {
 	String input_file;
 	String formula_file;
 	String output_path;
-	ArrayList<ArrayList<String>> data;
-	ArrayList<ArrayList<String>> formula; 
 	
-	public ResultOutput(String[] args) {
+	ArrayList<ArrayList<String>> data;
+	ArrayList<ArrayList<String>> formula;
+	
+	private static int resultID = 0;
+	private static int hitID = 0;
+	private static int formulaID = 0;
+	
+	public ResultOutput(String[] args, ResultData formattedData) {
 		filename = "group-id.ext";
-		input_file = (args.length > 0 ? args[0] : "/home/jjl4/Documents/input.csv");
-		output_path = (args.length > 1 ? args[1] : "/home/jjl4/Documents/");
-		formula_file = (args.length > 2 ? args[2] : "/home/jjl4/Documents/formula.csv");
-		data = new ArrayList<ArrayList<String>>(); //1000 results max
+		output_path = "/home/jjl4/Documents/";
+		data = formattedData.getDataAsArray();
+		formula = formattedData.getFormulaAsArray();
 	}
 	
 	public void outputSimple () throws IOException {	
 		ArrayList<String> writing = null;
 		String towrite = null;
 		PrintWriter bw = new PrintWriter(new FileWriter(output_path.concat((filename))));
+		//ranked: query id, result id, rank, filename, score, runtag (group-id_run_id), runtime??
 		//OUTPUT FORMAT:
 		//query id, 1, filename, rank, score, runtag (group-id_run_id)
 		while(!data.isEmpty()) {
-			writing = data.remove(0);
+			writing = data.remove(0);//get ArrayList<String> from data
 			writing.subList(4,writing.size()).clear(); //clear all entries after runtag
 			writing.add(1, "1"); //add 1
+			writing.remove(1); //remove result id
 			towrite = StringUtils.join(writing," ");
 			bw.println(towrite);
 		}
@@ -65,6 +66,63 @@ public class ResultOutput {
 		try {
 			DocumentBuilderFactory outFactory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder docBuilder = outFactory.newDocumentBuilder();
+			Document doc = docBuilder.newDocument();
+			doc.setXmlStandalone(true);
+			
+			//construct root nodes
+			Element rootElement = doc.createElement("results");
+			rootElement.setAttribute("xmlns", "http://ntcir−math.nii.ac.jp/");
+			
+			Element runElement = doc.createElement("run");
+			runElement.setAttribute("runtag", "FOO"); //TODO SET RUNTAG
+			runElement.setAttribute("runtime", "FOO"); //TODO SET RUNTIME
+			runElement.setAttribute("run_type", "FOO"); //TODO SET RUN_TYPE
+			
+			
+			//construct document given inputdata
+			//ranked: query id, result id, rank, filename, score, runtag (group-id_run_id), runtime??
+			//formula: formula id(contains query_id), for, xref, score, qvar(id, for, xref), qvar...?
+			doc.appendChild(rootElement);
+			//TODO working with one run
+			rootElement.appendChild(runElement);
+			
+			String curQueryID = data.get(0).get(0); //first query ID
+			String currentID = data.get(0).get(1); //first result ID
+			String curFormulaID = formula.get(0).get(0); //first formula ID
+			Node formulaElement = getFormula(doc, formula.get(0)); //first formula
+			ArrayList<String> formulaTemp = formula.remove(0);
+			Node hitElement = getHit(doc, data.get(0)); //first result
+			Node resultElement = getResult(doc, data.get(0));
+			runElement.appendChild(resultElement);//return initial result node based on query_id
+			
+			for (ArrayList<String> dataTemp : data) {
+				if (!currentID.startsWith(curQueryID)) { //if not part of last query
+					resultElement = getResult(doc, dataTemp);//add new query tag
+					runElement.appendChild(resultElement);
+					curQueryID = dataTemp.get(0); //get new current query id
+				}	
+				
+				resultElement.appendChild(hitElement); //add hit tag
+				while(curFormulaID.startsWith(currentID)) { //while in this resultid
+					hitElement.appendChild(formulaElement); //add formula tag
+					formulaTemp = formula.remove(0); //get next formula
+					formulaElement = getFormula(doc, formulaTemp);
+					curFormulaID = formulaTemp.get(0); //get next formula id
+				}
+				hitElement = getHit(doc, dataTemp); //get new hit
+				curFormulaID = formulaTemp.get(0); //get next formula
+				formulaElement = getFormula(doc, formulaTemp);
+				currentID = dataTemp.get(0); //get new current result ID
+			}
+			
+			
+			TransformerFactory transformerFactory = TransformerFactory.newInstance();
+			Transformer transformer = transformerFactory.newTransformer();
+			transformer.setOutputProperty(OutputKeys.VERSION, "1.0");
+			DOMSource source = new DOMSource(doc);
+			StreamResult result = new StreamResult(new File("/home/jjl4/Documents/output.xml"));
+			
+			transformer.transform(source, result);
 			
 		}catch (ParserConfigurationException pfe) {
 			pfe.printStackTrace();
@@ -72,61 +130,54 @@ public class ResultOutput {
 			te.printStackTrace();
 		}
 	}
-		
-	public void getData () throws IOException {
-		//DATA FORMAT:
-		//input_file: query id, filename, score, runtag (group-id_run_id), runtime??
-		//formula: query id, id, for, xref, score, qvar(for, xref), qvar...?
-		BufferedReader br = null;
-		BufferedReader br2 = null;
-		String line = "";
-		String csvSplit = ",";
-		br = new BufferedReader(new FileReader(input_file));
-		while ((line = br.readLine()) != null) {
-			// use comma as separator
-			data.add(new ArrayList<String>(Arrays.asList(line.split(csvSplit))));
-		}			
-		if (br != null) {
-			br.close();
-		}
-		//FORMAT: sort, add rank
-		Collections.sort(data, new ScoreComparator()); //sort by score
-		int i=0;
-		for (ArrayList<String> temp : data) {
-			temp.add(2, Integer.toString(i)); //add rank
-			i++;
-		}
-		br2 = new BufferedReader(new FileReader(formula_file));
-		while ((line = br2.readLine()) != null) {
-			// use comma as separator
-			formula.add(new ArrayList<String>(Arrays.asList(line.split(csvSplit))));
-		}			
-		if (br != null) {
-			br2.close();
-		}
+	
+	private Node getResult(Document doc, ArrayList<String> resultData) {
+		//ranked: query id, result id, rank, filename, score, runtag (group-id_run_id), runtime??
+		//formula: formula id, for, xref, score, qvar(id, for, xref), qvar...?
+		Element result = doc.createElement("result");
+		result.setAttribute("id", ResultOutput.getID("result"));
+		result.setAttribute("for", resultData.get(0)); //set query id
+		result.setAttribute("runtime", "FOO"); //TODO set RUNTIME
+		return result;
 	}
 	
-	private class ScoreComparator implements Comparator<ArrayList<String>> {
-		public int compare (ArrayList<String> y1, ArrayList<String> y2) {
-			int x = Integer.parseInt(y1.get(2));
-			int y = Integer.parseInt(y2.get(2));
-			if (x < y) { //sort by greatest score at top
-				return 1;
-			}else if (x > y) {
-				return -1;
-			}else {
-				return 0;
-			}
-		}
+	private Node getHit(Document doc, ArrayList<String> resultData) {
+		//ranked: query id, result id, rank, filename, score, runtag (group-id_run_id), runtime??
+		Element hit = doc.createElement("hit");
+		hit.setAttribute("id", ResultOutput.getID("hit"));
+		hit.setAttribute("xref", resultData.get(3)); //set filename
+		hit.setAttribute("score", resultData.get(4)); //set score
+		hit.setAttribute("rank", resultData.get(1)); //set rank
+		return hit;
 	}
 	
+	private Node getFormula(Document doc, ArrayList<String> formulaData) {
+		//formula: formula id, for, xref, score, qvar(id, for, xref), qvar...?
+		Element formula = doc.createElement("formula");
+		formula.setAttribute("id", formulaData.get(0)); //set id
+		formula.setAttribute("for", formulaData.get(1)); //set for
+		formula.setAttribute("xref", formulaData.get(2)); //set xref
+		formula.setAttribute("score", formulaData.get(3)); //set score
+		//TODO: ADD QVAR TREE
+		return formula;
+	}
+	
+	private static String getID(String tag) {
+		if (tag.equals("result")) {
+			return Integer.toString(resultID++);
+		}else if (tag.equals("hit")) {
+			return Integer.toString(hitID++);
+		}else {
+			return Integer.toString(formulaID++);
+		}
+	}
+			
 	public static void main(String[] args) {
-		ResultOutput run = new ResultOutput(args);
-		try {
-			run.getData();
-			run.outputSimple();
-		}catch (IOException e) {
-			System.out.printf("IOException: %s%n",e);
-		}
+		
+		ResultData formattedData = new ResultData();
+		ResultOutput run = new ResultOutput(args, formattedData);
+		System.out.println("data formatted");
+		run.outputXML();
+		System.out.println("xml created");
 	}
 }
