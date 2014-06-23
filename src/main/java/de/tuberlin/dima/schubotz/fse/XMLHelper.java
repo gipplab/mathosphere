@@ -196,7 +196,24 @@ public final class XMLHelper {
         return (NodeList) XPath.evaluate(node, XPathConstants.NODESET);
 
     }
+    /**
+     * Helper program: Extracts the specified XPATH expression
+     * from an XML-String.
+     *
+     * @param node  the node
+     * @param xString the x path
+     * @return NodeList
+     * @throws ParserConfigurationException the parser configuration exception
+     * @throws SAXException                 the sAX exception
+     * @throws IOException                  Signals that an I/O exception has occurred.
+     * @throws XPathExpressionException     the x path expression exception
+     */
+    public static NodeList getElementsB(Node node, String xString) throws ParserConfigurationException, SAXException,
+            IOException, XPathExpressionException {
+        XPathExpression xPath = compileX(xString);
+        return (NodeList) xPath.evaluate(node, XPathConstants.NODESET);
 
+    }
     /**
 	 * Helper program: Transforms a String to a XML Document.
 	 *
