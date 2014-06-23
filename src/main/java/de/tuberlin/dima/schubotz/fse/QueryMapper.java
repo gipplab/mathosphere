@@ -2,6 +2,7 @@ package de.tuberlin.dima.schubotz.fse;
 
 import eu.stratosphere.api.java.functions.FlatMapFunction;
 import eu.stratosphere.util.Collector;
+import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
@@ -87,12 +88,12 @@ public class QueryMapper extends FlatMapFunction<String, Query> implements Seria
         } else {
             currentQuery.formulae = new HashMap<>(1);
             for (int j = 0, len2 = formulae.getLength(); j < len2; j++) {
-                com.sun.org.apache.xerces.internal.dom.DocumentImpl mathML = (com.sun.org.apache.xerces.internal.dom.DocumentImpl) builder.newDocument();
+                Document mathML = builder.newDocument();
                 Node mathMLElement = XMLHelper.getElementB(formulae.item(j), "./math");
                 Node importedNode = mathML.importNode(mathMLElement, true);
                 mathML.appendChild(importedNode);
                 final String formulaID = formulae.item(j).getAttributes().getNamedItem("id").getNodeValue();
-                currentQuery.formulae.put(formulaID, mathML);
+                currentQuery.formulae.put(formulaID, XMLHelper.printDocument(mathML));
             }
         }
     }
