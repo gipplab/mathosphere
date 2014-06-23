@@ -10,6 +10,15 @@ public class TestUtils {
         return testQueryString;
     }
 
+    public static String getTestFile10() {
+        return getFileContents("test10.xml");
+    }
+
+    public static String getTestFile1() {
+        String[] split = getTestFile10().split(MainProgram.DOCUMENT_SEPARATOR,2);
+        return split[0];
+    }
+
     static String getFileContents(String fname) {
         InputStream is = TestUtils.class.getClassLoader().getResourceAsStream(fname);
         Scanner s = new Scanner(is, "UTF-8");
