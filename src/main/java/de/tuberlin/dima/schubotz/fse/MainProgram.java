@@ -86,16 +86,39 @@ public class MainProgram {
     }
     protected static void ConfigurePlan() throws XPathExpressionException, ParserConfigurationException {
         env = ExecutionEnvironment.getExecutionEnvironment();
+        
+        //Set up articleDataSet
         TextInputFormat format = new TextInputFormat(new Path(docsInput));
         format.setDelimiter(DOCUMENT_SEPARATOR);
+        //rawArticleText format: data set of strings, delimited by <ARXIFFILESPLIT>
         DataSet<String> rawArticleText = new DataSource<>(env, format, BasicTypeInfo.STRING_TYPE_INFO);
+        DataSet<Article> articleDataSet = rawArticleText.flatMap(new ArticleMapper());
+        
+        
+        //Set up querydataset
         TextInputFormat formatQueries = new TextInputFormat(new Path(queryInput));
         formatQueries.setDelimiter("</topics>"); //Do not split topics
         DataSet rawQueryText = new DataSource<>(env, formatQueries, BasicTypeInfo.STRING_TYPE_INFO);
         DataSet<Query> queryDataSet= rawQueryText.flatMap(new QueryMapper());
+        
         //queryDataSet.print();
+        
+        
+        /* Demo that produces document ID and num of formulae - uses old code
         DataSet<Tuple2<String, Integer>> articleDataSet = rawArticleText.flatMap(new ArticleMapper()).withBroadcastSet(queryDataSet, "Queries");
         articleDataSet.writeAsText(output);
+        */
+        
+        
+        //PHASE A: PLAIN TEXT SEARCH        
+        //Step 1. Loop through documents.
+        
+        
+        //Step 2. Extract plain text
+        
+        //Step 3. Filter queries based on whether plain text contains ALL of their keywords
+        
+        
     }
 
 
