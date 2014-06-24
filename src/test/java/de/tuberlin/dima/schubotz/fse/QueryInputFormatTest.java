@@ -19,7 +19,7 @@ public class QueryInputFormatTest {
     public void testStringToNodePrincipal() throws ParserConfigurationException, SAXException, XPathExpressionException, IOException {
         NodeList nodeList = XMLHelper.String2NodeList(TestUtils.getTestQueryString(), "/topics/topic");
 
-        assertEquals(nodeList.getLength(), 50);
+        assertEquals(50, nodeList.getLength());
         final XPathExpression xNum = XMLHelper.compileX("./num");
         final XPathExpression xTQ = XMLHelper.compileX("./query/formula/math/semantics/annotation");///m:annotation");
 

@@ -15,6 +15,11 @@
             <artifactId>stratosphere-java</artifactId>
             <version>0.5</version>
         </dependency>
+        <!--<dependency>
+            <groupId>net.sf.saxon</groupId>
+            <artifactId>Saxon-HE</artifactId>
+            <version>9.4</version>
+        </dependency>-->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
