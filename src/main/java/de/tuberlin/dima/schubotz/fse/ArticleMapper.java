@@ -5,13 +5,19 @@ import eu.stratosphere.api.java.functions.FlatMapFunction;
 import eu.stratosphere.api.java.tuple.Tuple2;
 import eu.stratosphere.configuration.Configuration;
 import eu.stratosphere.util.Collector;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import java.util.Collection;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.io.IOException;
+import java.net.*;
+
+import net.htmlparser.jericho.*;
 
 /**
  * Created by Moritz on 20.06.2014.
@@ -34,10 +40,14 @@ public class ArticleMapper extends FlatMapFunction<String, Tuple2<String, Intege
 
     /** The Constant FILENAME_INDICATOR. */
 
-    public String getPlainText() {
-        // TODO: implement html to plain text function... probably a library can be used here
-        return "";
+    public String getPlainText(String sourceURLString) throws IOException, MalformedURLException {
+    	//Using Jericho HTMLParser
+    	Source source=new Source(new URL(sourceURLString));
+    	source.fullSequentialParse();
+    	TextExtractor textExtractor=new TextExtractor(source);
+        return textExtractor.setIncludeAttributes(false).toString();
     }
+    
 
     public String observationsFromMml(Node mml) {
         return "";
@@ -52,7 +62,7 @@ public class ArticleMapper extends FlatMapFunction<String, Tuple2<String, Intege
      * @throws Exception This method may throw exceptions. Throwing an exception will cause the operation
      *                   to fail and may trigger recovery.
      */
-    public Tuple2<String, Integer> map(String value) throws Exception {
+    public Tuple2<String, Integer> map(String value) throws Exception { //demo, returns DocumentID and number of formulae
         String[] lines = value.trim().split("\\n", 2);
         if (lines.length < 2)
             return new Tuple2<>("",0);
@@ -74,8 +84,13 @@ public class ArticleMapper extends FlatMapFunction<String, Tuple2<String, Intege
     @Override
     public void open(Configuration parameters) throws Exception {
         Collection<Query> queries = getRuntimeContext().getBroadcastVariable("Queries");
-        for (Query query : queries) {
-// TODO:implement
+        for (Query query : queries) { 
+        	for (Map.Entry<String, String> formula : query.formulae.entrySet()) {
+        		Node node = XMLHelper.String2Doc(formula.getValue(),false);
+        		query.formulae.put(query.name+formula.getKey(),node);
+        		//watch for null keywords/variables
+        	}
+        	// TODO:implement similar loop for keywords
         }
 
         super.open(parameters);
@@ -91,7 +106,7 @@ public class ArticleMapper extends FlatMapFunction<String, Tuple2<String, Intege
      *                   to fail and may trigger recovery.
      */
     @Override
-    public void flatMap(String value, Collector<Tuple2<String, Integer>> out) throws Exception {
+    public void flatMap(String value, Collector<Tuple2<String, Integer>> out) throws Exception { 
         String[] lines = value.trim().split("\\n", 2);
         if (lines.length < 2)
             return;
@@ -107,6 +122,6 @@ public class ArticleMapper extends FlatMapFunction<String, Tuple2<String, Intege
         }
 
         int mathCount = XMLHelper.getElementsB(doc, "//math").getLength();
-
+        
     }
 }
