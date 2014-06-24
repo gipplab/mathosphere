@@ -2,6 +2,7 @@ package de.tuberlin.dima.schubotz.fse;
 
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Multiset;
+import eu.stratosphere.api.java.tuple.Tuple2;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -50,9 +51,47 @@ public final class XMLHelper {
 		Mynode n = new Mynode(node,null);
 		return CompactForm(n).out;
 	}
-	
-	/**
-	 * Compact form.
+
+    // <xPath,Name,Value>
+    private static ArrayList<Tuple2<String, String>> traverseNode(Node n, String p) {
+        ArrayList<Tuple2<String, String>> output = new ArrayList<>();
+        String nName;
+        if (n.getNodeType() != Node.TEXT_NODE) {
+            nName = n.getNodeName();
+            if (nName.startsWith("m:"))
+                nName = nName.substring(2);
+            if (nName.equals("mws:qvar"))
+                return new ArrayList<>();
+            p += "/" + nName;
+        }
+        String nValue = n.getNodeValue();
+        if (nValue != null) {
+            nValue = nValue.trim();
+            if (nValue.length() == 0) {
+                return new ArrayList<>();
+            }
+        } else {
+            nValue = "";
+        }
+
+        if (!n.hasChildNodes()) {
+            output.add(new Tuple2<>(p, nValue));
+        } else {
+            for (int i = 0; i < n.getChildNodes().getLength(); i++) {
+                output.addAll(traverseNode(n.getChildNodes().item(i), p));
+            }
+        }
+        return output;
+    }
+
+    public static ArrayList<Tuple2<String, String>> getMMLLeaves(Node n) throws ParserConfigurationException, SAXException, XPathExpressionException, IOException {
+        Node cmmlRoot = XMLHelper.getElementB(n, "./semantics/*[1]");
+        return traverseNode(cmmlRoot, "");
+
+    }
+
+    /**
+     * Compact form.
 	 *
 	 * @param n the n
 	 * @return the mynode
@@ -221,13 +260,12 @@ public final class XMLHelper {
 	 * @param NamespaceAwareness the namespace awareness
 	 * @return parsed document
 	 * @throws ParserConfigurationException the parser configuration exception
-	 * @throws SAXException the sAX exception
 	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 
 	public static Document String2Doc(String InputXMLString, boolean NamespaceAwareness)
-			throws ParserConfigurationException, SAXException, IOException{
-		DocumentBuilderFactory domFactory = DocumentBuilderFactory
+            throws ParserConfigurationException, IOException {
+        DocumentBuilderFactory domFactory = DocumentBuilderFactory
 				.newInstance();
 		 domFactory.setNamespaceAware(NamespaceAwareness);
 		 //domFactory.setValidating(true);
@@ -237,10 +275,16 @@ public final class XMLHelper {
         domFactory.setIgnoringElementContentWhitespace(true);
         DocumentBuilder builder = domFactory.newDocumentBuilder();
         InputSource is = new InputSource(new StringReader(InputXMLString));
-		is.setEncoding("UTF-8"); 
-		return  builder.parse(is);
+        is.setEncoding("UTF-8");
+        try {
+            return builder.parse(is);
+        } catch (SAXException e) {
+            System.out.println("cannot parse followig content\\n\\n" + InputXMLString);
+            e.printStackTrace();
+            return null;
+        }
 
-	}
+    }
     /**
      * Returns a list of unique identifiers from a MathML string.
      * This function searches for all <mi/> or <ci/> tags within
@@ -273,11 +317,31 @@ public final class XMLHelper {
     @SuppressWarnings("JavaDoc")
     public static Multiset<String> getIdentifiersFromQuery( String mathml ) {
         Multiset<String> list = HashMultiset.create();
-        Pattern p = Pattern.compile( "[mc][ion]\\[([^\\]]{1,4})\\]" );
+        Pattern p = Pattern.compile("[mc][ion]\\[([^\\]]{1,4})\\]");
         Matcher m = p.matcher( mathml );
         while ( m.find() ) {
             String identifier = m.group( 1 );
             list.add( identifier );
+        }
+        return list;
+    }
+
+    /**
+     * @param cmml
+     * @return
+     * @throws ParserConfigurationException
+     * @throws SAXException
+     * @throws XPathExpressionException
+     * @throws IOException
+     */
+    public static Multiset<String> getIdentifiersFromCmml(Node cmml) throws ParserConfigurationException, SAXException, XPathExpressionException, IOException, TransformerException {
+        Multiset<String> list = HashMultiset.create();
+        //System.out.println(printDocument(cmml));
+        NodeList identifier = getElementsB(cmml, "*//ci|*//co|*//cn"); //
+        int len = identifier.getLength();
+        System.out.println("found " + len + "elements");
+        for (int i = 0; i < len; i++) {
+            list.add(identifier.item(i).getTextContent().trim());
         }
         return list;
     }
@@ -312,6 +376,40 @@ public final class XMLHelper {
      */
     public static XPathExpression compileX(String xString) throws XPathExpressionException {
         return xpath.compile(xString);
+    }
+
+    public boolean compareNode(Node nQ, Node nN, Boolean considerLength, Map<String,Node> qvars){
+        if (nQ.hasChildNodes()) {
+            int nQChildLength = nQ.getChildNodes().getLength();
+            if (nN.hasChildNodes() &&
+                    (!considerLength || nQChildLength == nN.getChildNodes().getLength())) {
+                for (int i = 0; i < nQChildLength; i++) {
+                    if (!compareNode(nN.getChildNodes().item(i), nQ.getChildNodes().item(i), considerLength, qvars)) {
+                        return false;
+                    }
+                }
+            }
+        }
+        if (nQ.getNodeName().equals("mws:qvar")) {
+            if (qvars == null) {
+                qvars = new HashMap<>();
+            }
+            String qvarName = nQ.getAttributes().getNamedItem("name").getNodeValue();
+            if (qvars.containsKey(qvarName)) {
+                return compareNode(qvars.get(qvarName), nN, considerLength, qvars);
+            } else {
+                qvars.put(qvarName, nN);
+                return true;
+            }
+        } else {
+            //Attributes are ignored
+            return nQ.getNodeName().equals(nN.getNodeName()) &&
+                    nQ.getNodeValue().trim().equals(nN.getNodeValue().trim());
+        }
+    }
+
+    public void comileXQuery() {
+        //XQueryCompiler xqueryCompiler;
     }
 
     /**
@@ -410,5 +508,4 @@ public final class XMLHelper {
         }
     }
 
-	
 }
