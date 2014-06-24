@@ -15,6 +15,7 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.*;
 
 import net.htmlparser.jericho.*;
@@ -22,7 +23,7 @@ import net.htmlparser.jericho.*;
 /**
  * Created by Moritz on 20.06.2014.
  */
-public class ArticleMapper extends FlatMapFunction<String, Tuple2<String, Integer>> {
+public class ArticleMapper extends FlatMapFunction<String, Article> {
     /**
      * The Constant GRP_ID.
      */
@@ -40,9 +41,9 @@ public class ArticleMapper extends FlatMapFunction<String, Tuple2<String, Intege
 
     /** The Constant FILENAME_INDICATOR. */
 
-    public String getPlainText(String sourceURLString) throws IOException, MalformedURLException {
+    public static String getPlainText(InputStream is) throws IOException, MalformedURLException {
     	//Using Jericho HTMLParser
-    	Source source=new Source(new URL(sourceURLString));
+    	Source source=new Source(is);
     	source.fullSequentialParse();
     	TextExtractor textExtractor=new TextExtractor(source);
         return textExtractor.setIncludeAttributes(false).toString();
@@ -87,8 +88,8 @@ public class ArticleMapper extends FlatMapFunction<String, Tuple2<String, Intege
         for (Query query : queries) { 
         	for (Map.Entry<String, String> formula : query.formulae.entrySet()) {
         		Node node = XMLHelper.String2Doc(formula.getValue(),false);
-        		query.formulae.put(query.name+formula.getKey(),node);
-        		//watch for null keywords/variables
+        		//query.formulae.put(query.name+formula.getKey(),node);
+        		//up to 4 keywords. no null keywords
         	}
         	// TODO:implement similar loop for keywords
         }
@@ -106,7 +107,8 @@ public class ArticleMapper extends FlatMapFunction<String, Tuple2<String, Intege
      *                   to fail and may trigger recovery.
      */
     @Override
-    public void flatMap(String value, Collector<Tuple2<String, Integer>> out) throws Exception { 
+    public void flatMap(String value, Collector<Article> out) throws Exception {
+    	//returns filename, document contents
         String[] lines = value.trim().split("\\n", 2);
         if (lines.length < 2)
             return;
@@ -115,6 +117,8 @@ public class ArticleMapper extends FlatMapFunction<String, Tuple2<String, Intege
         if (matcher.find()) {
             docID = matcher.group(0);
         }
+        out.collect(new Article(docID, lines[1]));
+        /* Formula counter
         Document doc = XMLHelper.String2Doc(lines[1], false);
         NodeList MathMLElements = XMLHelper.getElementsB(doc, "//math");
         for (int i = 0; i < MathMLElements.getLength(); i++) {
@@ -122,6 +126,6 @@ public class ArticleMapper extends FlatMapFunction<String, Tuple2<String, Intege
         }
 
         int mathCount = XMLHelper.getElementsB(doc, "//math").getLength();
-        
+        */
     }
 }
