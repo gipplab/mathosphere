@@ -1,11 +1,15 @@
 package de.tuberlin.dima.schubotz.fse;
 
 import junit.framework.TestCase;
+import org.junit.Ignore;
+import org.junit.Test;
 
 import java.io.*;
 
 public class DomSerialTest extends TestCase {
 
+    @Test
+    @Ignore
     public void testRead() throws Exception {
         DomSerial doms = new DomSerial();
         InputStream is = new ByteArrayInputStream( TestUtils.getTestQueryString().getBytes());
@@ -14,6 +18,7 @@ public class DomSerialTest extends TestCase {
         assertEquals(XMLHelper.String2Doc(TestUtils.getTestQueryString(),true).getTextContent(), doms.document.getTextContent());
         //System.out.println(doms.document.getElementsByTagName("topic").item(0).getTextContent());
     }
+    @Ignore
     public void testWrite() throws Exception {
         DomSerial doms = new DomSerial();
         doms.document = XMLHelper.String2Doc(TestUtils.getTestQueryString(), true);
