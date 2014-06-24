@@ -37,6 +37,10 @@ public class QueryMapper extends FlatMapFunction<String, Query> implements Seria
      */
     @Override
     public void flatMap(String value, Collector<Query> out) throws Exception {
+        if (value.trim().length() == 0) return;
+        if ((!value.endsWith("</topics>"))) {
+            value += "</topics>";
+        }
         NodeList nodeList = XMLHelper.String2NodeList(value, "/topics/topic");
 
         for (int i = 0, len = nodeList.getLength(); i < len; i++) {

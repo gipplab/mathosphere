@@ -21,28 +21,18 @@ import java.util.Map;
  */
 
 public class MainProgram {
-    // set up execution environment
-    static final ExecutionEnvironment env = ExecutionEnvironment.getExecutionEnvironment();
     /**
      * The overall maximal results that can be returned per query.
      */
     public final static int MaxResultsPerQuery = 3000;
-
-    /**
-     * The Constant LUCENE.
-     */
-    public static final boolean LUCENE = false;
-
     /**
      * The Constant RECORD_WORD.
      */
     public static final int RECORD_WORD = 0;
-
     /**
      * The Constant RECORD_VARIABLE.
      */
     public static final int RECORD_VARIABLE = 1;
-
     /**
      * The Constant RECORD_MATCH.
      */
@@ -50,11 +40,13 @@ public class MainProgram {
     public static final Map<String, String> QueryDesc = new HashMap<>();
     public static final String DOCUMENT_SEPARATOR = "</ARXIVFILESPLIT>";
     public static final String RECOD_TYPE = "RECORD_TYPE";
-    public static Map<String, String> TeXQueries = new HashMap<String, String>();
     /**
      * The Constant LOG.
      */
     private static final Log LOG = LogFactory.getLog(MainProgram.class);
+    public static Map<String, String> TeXQueries = new HashMap<String, String>();
+    // set up execution environment
+    static ExecutionEnvironment env;
     /**
      * The number of parallel tasks to be executed
      */
@@ -86,20 +78,23 @@ public class MainProgram {
     public static void main(String[] args) throws Exception {
         parseArg(args);
         ConfigurePlan();
+        env.setDegreeOfParallelism(noSubTasks);
         env.execute("Mathosphere");
     }
     public static ExecutionEnvironment getExecutionEnvironment() throws Exception {
         return env;
     }
     protected static void ConfigurePlan() throws XPathExpressionException, ParserConfigurationException {
+        env = ExecutionEnvironment.getExecutionEnvironment();
         TextInputFormat format = new TextInputFormat(new Path(docsInput));
         format.setDelimiter(DOCUMENT_SEPARATOR);
-        DataSet<String> rawArticleText = new DataSource<String>(env, format, BasicTypeInfo.STRING_TYPE_INFO);
+        DataSet<String> rawArticleText = new DataSource<>(env, format, BasicTypeInfo.STRING_TYPE_INFO);
         TextInputFormat formatQueries = new TextInputFormat(new Path(queryInput));
         formatQueries.setDelimiter("</topics>"); //Do not split topics
-        DataSet rawQueryText = new DataSource<String>(env, format, BasicTypeInfo.STRING_TYPE_INFO);
+        DataSet rawQueryText = new DataSource<>(env, formatQueries, BasicTypeInfo.STRING_TYPE_INFO);
         DataSet<Query> queryDataSet= rawQueryText.flatMap(new QueryMapper());
-        DataSet<Tuple2<String,Integer>> articleDataSet = rawArticleText.map(new ArticleMapper());
+        //queryDataSet.print();
+        DataSet<Tuple2<String, Integer>> articleDataSet = rawArticleText.flatMap(new ArticleMapper()).withBroadcastSet(queryDataSet, "Queries");
         articleDataSet.writeAsText(output);
     }
 
