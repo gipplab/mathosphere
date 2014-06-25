@@ -6,7 +6,7 @@ import eu.stratosphere.api.java.tuple.Tuple5;
  * Schema according to @url{https://svn.mathweb.org/repos/NTCIR-Math/topics/ntcir11/lib/NTCIR11-results.rnc}
  * hit = element hit {id.att & score.att & xref.att & rank.att& formula*}
  */
-public class HitTuple extends Tuple5<String, String, String, Double, explicitDataSet<FormulaTuple>> {
+public class HitTuple extends Tuple5<String, String, String, Double, explicitDataSet<FormulaTuple>> implements Comparable<HitTuple> {
     public String getQueryID() {
         return getField(fields.id.ordinal());
     }
@@ -33,5 +33,15 @@ public class HitTuple extends Tuple5<String, String, String, Double, explicitDat
 
     public enum fields {
         id, xref, score, rank, formula
+    }
+    
+    public int compareTo(HitTuple hit) {
+    	if (this.getScore() > hit.getScore()) {
+    		return 1;
+    	}else if (this.getScore() < hit.getScore()) {
+    		return -1;
+    	}else {
+    		return 0;
+    	}
     }
 }
