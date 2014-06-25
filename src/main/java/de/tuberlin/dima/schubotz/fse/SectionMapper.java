@@ -1,7 +1,7 @@
 package de.tuberlin.dima.schubotz.fse;
 
 
-import eu.stratosphere.api.java.functions.FlatMapFunction;
+import eu.stratosphere.api.java.functions.MapFunction;
 import eu.stratosphere.api.java.tuple.Tuple2;
 import eu.stratosphere.configuration.Configuration;
 import eu.stratosphere.util.Collector;
@@ -11,7 +11,10 @@ import org.jsoup.Jsoup;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.xpath.XPathExpressionException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
@@ -21,7 +24,7 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class SectionMapper extends FlatMapFunction<String, SectionTuple> {
+public class SectionMapper extends MapFunction<String, SectionTuple> {
     /**
      * The Constant GRP_ID.
      */
@@ -53,33 +56,6 @@ public class SectionMapper extends FlatMapFunction<String, SectionTuple> {
         return "";
 
     }
-    /**
-     * The core method of the MapFunction. Takes an element from the input data set and transforms
-     * it into another element.
-     *
-     * @param value The input value.
-     * @return The value produced by the map function from the input value.
-     * @throws Exception This method may throw exceptions. Throwing an exception will cause the operation
-     *                   to fail and may trigger recovery.
-     */
-    public Tuple2<String, Integer> map(String value) throws Exception { //demo, returns DocumentID and number of formulae
-        String[] lines = value.trim().split("\\n", 2);
-        if (lines.length < 2)
-            return new Tuple2<>("",0);
-        Matcher matcher = filnamePattern.matcher(lines[0]);
-        String docID = null;
-        if (matcher.find()) {
-            docID = matcher.group(0);
-        }
-        Document doc = XMLHelper.String2Doc(lines[1], false);
-        NodeList MathMLElements = XMLHelper.getElementsB(doc, "//math");
-        for (int i = 0; i < MathMLElements.getLength(); i++) {
-            observationsFromMml(MathMLElements.item(i));
-        }
-
-        int mathCount = XMLHelper.getElementsB(doc,"//math").getLength();
-        return new Tuple2<>(docID, mathCount);
-    }
 
     @Override
     public void open(Configuration parameters) throws Exception {
@@ -104,42 +80,31 @@ public class SectionMapper extends FlatMapFunction<String, SectionTuple> {
         super.open(parameters);
     }
 
-    /**
-     * The core method of the FlatMapFunction. Takes an element from the input data set and transforms
-     * it into zero, one, or more elements.
+     /**
+     * The core method of the MapFunction. Takes an element from the input data set and transforms
+     * it into another element.
      *
      * @param value The input value.
-     * @param out   The collector for for emitting result values.
+     * @return The value produced by the map function from the input value.
      * @throws Exception This method may throw exceptions. Throwing an exception will cause the operation
      *                   to fail and may trigger recovery.
      */
     @Override
-    public void flatMap(String value, Collector<SectionTuple> out) throws Exception {
+    public SectionTuple map(String value) throws Exception {
         SectionTuple sectionTuple = new SectionTuple();
         String[] lines = value.trim().split("\\n", 2);
         if (lines.length < 2)
-            return;
-        Matcher matcher = filnamePattern.matcher(lines[0]);
-        String docID = null;
-        if (matcher.find()) {
-
-            SectionNameTuple sectionNameTuple = new SectionNameTuple(
-                    Integer.parseInt(matcher.group(1)),
-                    Integer.parseInt(matcher.group(2)),
-                    Integer.parseInt(matcher.group(3))
-            );
-        }
+            return null;
+        sectionTuple.setNamedField(SectionTuple.fields.name,getString(lines[0]));
         /* Formula counter */
-        Document doc = XMLHelper.String2Doc(lines[1], false);
-        String plainText = Jsoup.parse(lines[1]).text();
-        String[] tokens = plainText.toLowerCase().split("\\W+");
-        Integer j = 0;
-        for (String token : tokens) {
-            j++;
-            if (keywords.containsKey(token)) {
-                System.out.println("match for keyword " + j.toString() + token + keywords.get(token));
-            }
-        }
+        sectionTuple.setNamedField(SectionTuple.fields.keywords, extractKeywords(lines[1]));
+        sectionTuple.setNamedField(SectionTuple.fields.formulae, getFormulaeHits( lines[1]));
+
+
+    }
+
+    private explicitDataSet<FormulaTuple> getFormulaeHits(String line) throws ParserConfigurationException, IOException, SAXException, XPathExpressionException {
+        Document doc = XMLHelper.String2Doc(line, false);
         NodeList MathMLElements = XMLHelper.getElementsB(doc, "//math");
         for (int i = 0; i < MathMLElements.getLength(); i++) {
             for (Map.Entry<String, Node> entry : formulae.entrySet()) {
@@ -162,5 +127,31 @@ public class SectionMapper extends FlatMapFunction<String, SectionTuple> {
                 }
             }
         }
+    }
+
+    private explicitDataSet<KeyWordTuple> extractKeywords(String line) {
+        String plainText = Jsoup.parse(line).text();
+        String[] tokens = plainText.toLowerCase().split("\\W+");
+        Integer j = 0;
+        for (String token : tokens) {
+            j++;
+            if (keywords.containsKey(token)) {
+                System.out.println("match for keyword " + j.toString() + token + keywords.get(token));
+            }
+        }
+    }
+
+    private SectionNameTuple getString(String line) {
+        Matcher matcher = filnamePattern.matcher(line);
+        if (matcher.find()) {
+            return new SectionNameTuple(
+                    Integer.parseInt(matcher.group(1)),
+                    Integer.parseInt(matcher.group(2)),
+                    Integer.parseInt(matcher.group(3))
+            );
+        } else {
+            return null;
+        }
+
     }
 }
