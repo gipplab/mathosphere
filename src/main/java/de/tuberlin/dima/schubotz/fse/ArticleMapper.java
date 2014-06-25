@@ -21,7 +21,7 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class ArticleMapper extends FlatMapFunction<String, Hit> {
+public class ArticleMapper extends FlatMapFunction<String, HitTuple> {
     /**
      * The Constant GRP_ID.
      */
@@ -114,7 +114,7 @@ public class ArticleMapper extends FlatMapFunction<String, Hit> {
      *                   to fail and may trigger recovery.
      */
     @Override
-    public void flatMap(String value, Collector<Hit> out) throws Exception {
+    public void flatMap(String value, Collector<HitTuple> out) throws Exception {
         String[] lines = value.trim().split("\\n", 2);
         if (lines.length < 2)
             return;
@@ -138,11 +138,11 @@ public class ArticleMapper extends FlatMapFunction<String, Hit> {
         for (int i = 0; i < MathMLElements.getLength(); i++) {
             for (Map.Entry<String, Node> entry : formulae.entrySet()) {
                 if ( XMLHelper.compareNode(entry.getValue(),MathMLElements.item(i),true,null) ) {
-                    Hit hit = new Hit();
-                    hit.setQueryID(entry.getKey());
-                    hit.setScore(100.);
-                    hit.setXref(docID);
-                    out.collect(hit);
+                    HitTuple hitTuple = new HitTuple();
+                    hitTuple.setQueryID(entry.getKey());
+                    hitTuple.setScore(100.);
+                    hitTuple.setXref(docID);
+                    out.collect(hitTuple);
                 }
             }
         }

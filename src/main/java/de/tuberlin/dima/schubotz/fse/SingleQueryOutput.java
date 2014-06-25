@@ -15,12 +15,22 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-public class SingleQueryOutput extends GroupReduceFunction<Hit,Tuple2<String,String>> {
+public class SingleQueryOutput extends GroupReduceFunction<HitTuple, Tuple2<String, String>> {
     private static int resultID = 0;
     private static int hitID = 0;
     private static int formulaID = 0;
     private Document doc;
     private DocumentBuilder builder;
+
+    private static String getID(String tag) {
+        if (tag.equals("result")) {
+            return Integer.toString(resultID++);
+        } else if (tag.equals("hit")) {
+            return Integer.toString(hitID++);
+        } else {
+            return Integer.toString(formulaID++);
+        }
+    }
 
     private Node getResult(Document doc, ArrayList<String> resultData) {
         //ranked: query id, result id, rank, filename, f3, runtag (group-id_run_id), runtime??
@@ -32,7 +42,7 @@ public class SingleQueryOutput extends GroupReduceFunction<Hit,Tuple2<String,Str
         return result;
     }
 
-    private Node getHit(Document doc, Hit resultData, String rank) {
+    private Node getHit(Document doc, HitTuple resultData, String rank) {
         //ranked: query id, result id, rank, filename, f3, runtag (group-id_run_id), runtime??
         Element hit = doc.createElement("hit");
         hit.setAttribute("id", getID("hit"));
@@ -53,15 +63,6 @@ public class SingleQueryOutput extends GroupReduceFunction<Hit,Tuple2<String,Str
         return formula;
     }
 
-    private static String getID(String tag) {
-        if (tag.equals("result")) {
-            return Integer.toString(resultID++);
-        }else if (tag.equals("hit")) {
-            return Integer.toString(hitID++);
-        }else {
-            return Integer.toString(formulaID++);
-        }
-    }
     /**
      * Core method of the reduce function. It is called one per group of elements. If the reducer
      * is not grouped, than the entire data set is considered one group.
@@ -72,17 +73,17 @@ public class SingleQueryOutput extends GroupReduceFunction<Hit,Tuple2<String,Str
      *                   to fail and may trigger recovery.
      */
     @Override
-    public void reduce(Iterator<Hit> values, Collector<Tuple2<String, String>> out) throws Exception {
+    public void reduce(Iterator<HitTuple> values, Collector<Tuple2<String, String>> out) throws Exception {
         Document doc = builder.newDocument();
         Integer rank = 0;
         doc.setXmlStandalone(true);
         Element result = doc.createElement("result");
-        result.setAttribute("id",getID("result") );
+        result.setAttribute("id", getID("result"));
         result.setAttribute("for", values.next().f0); //set query id
         result.setAttribute("runtime", "FOO"); //TODO set RUNTIME
-        while (values.hasNext()){
+        while (values.hasNext()) {
             rank++;
-            result.appendChild(getHit(doc,values.next(),rank.toString()));
+            result.appendChild(getHit(doc, values.next(), rank.toString()));
         }
         doc.appendChild(result);
         String documentString = "error printing document";
