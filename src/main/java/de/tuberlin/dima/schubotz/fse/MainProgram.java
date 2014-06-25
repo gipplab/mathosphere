@@ -70,7 +70,7 @@ public class MainProgram {
         docsInput = (args.length > 1 ? args[1]
                 : "file:///mnt/ntcir-math/testdata/test10000.xml");
         queryInput = (args.length > 2 ? args[2]
-                : "file:///mnt/ntcir-math/queries/fquery.xml");
+                : "file:///mnt/ntcir-math/queries/fQuery.xml");
         output = (args.length > 3 ? args[3]
                 : "file:///mnt/ntcir-math/test-output/testout-"+ System.currentTimeMillis() +".xml");
     }
@@ -91,11 +91,13 @@ public class MainProgram {
         format.setDelimiter(DOCUMENT_SEPARATOR);
         //rawArticleText format: data set of strings, delimited by <ARXIFFILESPLIT>
         DataSet<String> rawArticleText = new DataSource<>(env, format, BasicTypeInfo.STRING_TYPE_INFO);        
-        
+
+
         //Set up querydataset
         TextInputFormat formatQueries = new TextInputFormat(new Path(queryInput));
         formatQueries.setDelimiter("</topics>"); //Do not split topics
         DataSet<String> rawQueryText = new DataSource<>(env, formatQueries, BasicTypeInfo.STRING_TYPE_INFO);
+
         DataSet<Query> queryDataSet= rawQueryText.flatMap(new QueryMapper());
       
         
