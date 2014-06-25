@@ -26,7 +26,10 @@ import org.w3c.dom.NodeList;
 
 
 public class KeywordMapper extends FlatMapFunction<String, KeyWordTuple> {
+	//Keyword token, KeywordID
     private Map<String, String> keywords;
+    //Filename, list of tokens
+    private ArrayList<String> docKeywords;
     
     final static String FILENAME_INDICATOR = "Filename";
     final static Pattern filnamePattern = Pattern
@@ -71,12 +74,7 @@ public class KeywordMapper extends FlatMapFunction<String, KeyWordTuple> {
         Matcher matcher = filnamePattern.matcher(lines[0]);
         String docID = null;
         if (matcher.find()) {
-
-            SectionNameTuple sectionNameTuple = new SectionNameTuple(
-                    Integer.parseInt(matcher.group(1)),
-                    Integer.parseInt(matcher.group(2)),
-                    Integer.parseInt(matcher.group(3))
-            );
+        	docID = matcher.group(0);
         }
         //Extract plaintext from article
         Document doc = XMLHelper.String2Doc(lines[1], false);
@@ -84,16 +82,16 @@ public class KeywordMapper extends FlatMapFunction<String, KeyWordTuple> {
         String[] tokens = plainText.toLowerCase().split("\\W+");
         Integer j = 0;
         
-        //TODO: Implement keyword results
+        KeyWordTuple keyTup = new KeyWordTuple(docID);
         //Keywords: keyword, id
         for (String token : tokens) {
             j++;
             if (keywords.containsKey(token)) {
-            	//add to keyword tuple list for reduction later
-//DEBUG OUTPUT 
-                System.out.println("match for keyword " + j.toString() + token + keywords.get(token));
+            	//add to tuple
+                keyTup.addKeyword(token);
             }
         }
+        out.collect(keyTup);
     }
 
 }
