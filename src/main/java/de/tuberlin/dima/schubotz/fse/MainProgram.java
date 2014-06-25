@@ -1,12 +1,9 @@
 package de.tuberlin.dima.schubotz.fse;
 
-import eu.stratosphere.api.common.operators.Order;
 import eu.stratosphere.api.java.DataSet;
 import eu.stratosphere.api.java.ExecutionEnvironment;
 import eu.stratosphere.api.java.io.TextInputFormat;
 import eu.stratosphere.api.java.operators.DataSource;
-import eu.stratosphere.api.java.operators.ReduceGroupOperator;
-import eu.stratosphere.api.java.tuple.Tuple2;
 import eu.stratosphere.api.java.typeutils.BasicTypeInfo;
 import eu.stratosphere.core.fs.Path;
 import org.apache.commons.logging.Log;
@@ -102,10 +99,11 @@ public class MainProgram {
         formatQueries.setDelimiter("</topics>"); //Do not split topics
         DataSet rawQueryText = new DataSource<>(env, formatQueries, BasicTypeInfo.STRING_TYPE_INFO);
         DataSet<Query> queryDataSet= rawQueryText.flatMap(new QueryMapper());
-        
+
         //queryDataSet.print();
-        DataSet<HitTuple> articleDataSet = rawArticleText.flatMap(new ArticleMapper()).withBroadcastSet(queryDataSet, "Queries");
-        ReduceGroupOperator<HitTuple, Tuple2<String, String>> result = articleDataSet
+        DataSet<SectionTuple> articleDataSet = rawArticleText.flatMap(new SectionMapper()).withBroadcastSet(queryDataSet, "Queries");
+        articleDataSet.writeAsText(output);
+       /* ReduceGroupOperator<HitTuple, Tuple2<String, String>> result = articleDataSet
                 .groupBy(HitTuple.fields.id.ordinal())
                 .sortGroup(HitTuple.fields.score.ordinal(), Order.DESCENDING)
                 .reduceGroup(new SingleQueryOutput());

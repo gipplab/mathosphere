@@ -6,14 +6,14 @@ import junit.framework.TestCase;
 
 import java.util.ArrayList;
 
-public class ArticleMapperTest extends TestCase {
+public class SectionMapperTest extends TestCase {
     public void testMap() throws Exception {
-        ArticleMapper articleMapper = new ArticleMapper();
-        final ArrayList<Article> articles = new ArrayList<>();
+        SectionMapper sectionMapper = new SectionMapper();
+        final ArrayList<SectionTuple> articles = new ArrayList<>();
 
-        Collector<Article> col = new Collector<Article>() {
+        Collector<SectionTuple> col = new Collector<SectionTuple>() {
             @Override
-            public void collect(Article article) {
+            public void collect(SectionTuple article) {
                 articles.add(article);
             }
 
@@ -23,7 +23,7 @@ public class ArticleMapperTest extends TestCase {
             }
         };
 
-        Tuple2<String, Integer> articleNum = articleMapper.map(TestUtils.getTestFile1());
+        Tuple2<String, Integer> articleNum = sectionMapper.map(TestUtils.getTestFile1());
         System.out.println(articleNum);/*
         articleMapper.flatMap(TestUtils.getTestFile1(), col);
         Article sample = articles.get(0);
