@@ -12,15 +12,15 @@ import junit.framework.TestCase;
 
 import java.util.ArrayList;
 
-public class ArticleMapperTest extends TestCase {
+public class SectionMapperTest extends TestCase {
     public void testMap() throws Exception {
-        ArticleMapper articleMapper = new ArticleMapper();
-        final ArrayList<HitTuple> hits = new ArrayList<>();
+        SectionMapper sectionMapper = new SectionMapper();
+        final ArrayList<SectionTuple> articles = new ArrayList<>();
 
-        Collector<HitTuple> col = new Collector<HitTuple>() {
+        Collector<SectionTuple> col = new Collector<SectionTuple>() {
             @Override
-            public void collect(HitTuple hit) {
-                hits.add(hit);
+            public void collect(SectionTuple article) {
+                articles.add(article);
             }
 
             @Override
@@ -29,19 +29,9 @@ public class ArticleMapperTest extends TestCase {
             }
         };
         
-        //Demo function test
-        Tuple2<String, Integer> articleNum = articleMapper.map(TestUtils.getTestFile10());
-        System.out.println(articleNum);
-        
-        ExecutionEnvironment env = ExecutionEnvironment.getExecutionEnvironment();
-        
-        articleMapper.flatMap(TestUtils.getTestFile1(), col);
-        
-        HitTuple hitsample = hits.get(0);
-        
-        System.out.println(hitsample.toString());
-
         /*
+        Tuple2<String, Integer> articleNum = sectionMapper.map(TestUtils.getTestFile1());
+        System.out.println(articleNum);/*
         articleMapper.flatMap(TestUtils.getTestFile1(), col);
         Article sample = articles.get(0);
         System.out.println(sample.content);

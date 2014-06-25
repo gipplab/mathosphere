@@ -16,7 +16,7 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class ArticleMapper extends FlatMapFunction<String, HitTuple> {
+public class SectionMapper extends FlatMapFunction<String, SectionTuple> {
     /**
      * The Constant GRP_ID.
      */
@@ -105,15 +105,21 @@ public class ArticleMapper extends FlatMapFunction<String, HitTuple> {
      *                   to fail and may trigger recovery.
      */
     @Override
-    public void flatMap(String value, Collector<HitTuple> out) throws Exception {
-    	//Split into lines 0: ARXIVFILENAME, 1: HTML 
+    public void flatMap(String value, Collector<SectionTuple> out) throws Exception {
+        SectionTuple sectionTuple = new SectionTuple();
+		//Split into lines 0: ARXIVFILENAME, 1: HTML
         String[] lines = value.trim().split("\\n", 2);
         if (lines.length < 2)
             return;
         Matcher matcher = filnamePattern.matcher(lines[0]);
         String docID = null;
         if (matcher.find()) {
-            docID = matcher.group(0);
+
+            SectionNameTuple sectionNameTuple = new SectionNameTuple(
+                    Integer.parseInt(matcher.group(1)),
+                    Integer.parseInt(matcher.group(2)),
+                    Integer.parseInt(matcher.group(3))
+            );
         }
         //Extract plaintext from article, match with keywords from all queries
         Document doc = XMLHelper.String2Doc(lines[1], false);
@@ -132,12 +138,22 @@ public class ArticleMapper extends FlatMapFunction<String, HitTuple> {
         NodeList MathMLElements = XMLHelper.getElementsB(doc, "//math");
         for (int i = 0; i < MathMLElements.getLength(); i++) {
             for (Map.Entry<String, Node> entry : formulae.entrySet()) {
-                if ( XMLHelper.compareNode(entry.getValue(),MathMLElements.item(i),true,null) ) {
+                Map<String, Node> qvars = null;
+                if ( XMLHelper.compareNode(entry.getValue(),MathMLElements.item(i),true,qvars) ) {
                     HitTuple hitTuple = new HitTuple();
+                    if (qvars != null){
+                        explicitDataSet<QVarTuple> qvarDataSet = new explicitDataSet<>();
+                        for (Map.Entry<String, Node> nodeEntry : qvars.entrySet()) {
+                            QVarTuple tuple = new QVarTuple();
+                            tuple.setQVar(nodeEntry.getKey());
+                            tuple.setXRef(nodeEntry.getValue().getAttributes().getNamedItem("id").getNodeValue());
+                            qvarDataSet.add(tuple);
+                        }
+                    }
                     hitTuple.setQueryID(entry.getKey());
                     hitTuple.setScore(100.); //TODO scoring formula
                     hitTuple.setXref(docID);
-                    out.collect(hitTuple);
+                    out.collect(sectionTuple);
                 }
             }
         }
