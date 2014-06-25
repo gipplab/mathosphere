@@ -78,7 +78,7 @@ public class QueryMapper extends FlatMapFunction<String, Query> implements Seria
     private void setFormulae(Node node) throws ParserConfigurationException, SAXException, IOException, XPathExpressionException, TransformerException {
         final XPathExpression xFormulae;
         final DocumentBuilder builder;
-            final DocumentBuilderFactory dbf;
+        final DocumentBuilderFactory dbf;
 
             dbf = DocumentBuilderFactory.newInstance();
             dbf.setValidating(true);
