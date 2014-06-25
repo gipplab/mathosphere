@@ -11,6 +11,8 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -23,7 +25,7 @@ import net.htmlparser.jericho.*;
 /**
  * Created by Moritz on 20.06.2014.
  */
-public class ArticleMapper extends FlatMapFunction<String, Article> {
+public class ArticleMapper extends FlatMapFunction<String, Hit> {
     /**
      * The Constant GRP_ID.
      */
@@ -38,7 +40,7 @@ public class ArticleMapper extends FlatMapFunction<String, Article> {
     final static String FILENAME_INDICATOR = "Filename";
     final static Pattern filnamePattern = Pattern
             .compile("<ARXIVFILESPLIT\\\\n" + FILENAME_INDICATOR + "=\"\\./\\d+/(\\d+)\\.(\\d+)/\\1.\\2_(\\d+)_(\\d+)\\.xhtml\">");
-
+    private Map<String,Node> formulae;
     /** The Constant FILENAME_INDICATOR. */
 
     public static String getPlainText(InputStream is) throws IOException, MalformedURLException {
@@ -84,14 +86,14 @@ public class ArticleMapper extends FlatMapFunction<String, Article> {
 
     @Override
     public void open(Configuration parameters) throws Exception {
+        formulae = new HashMap<>();
         Collection<Query> queries = getRuntimeContext().getBroadcastVariable("Queries");
-        for (Query query : queries) { 
-        	for (Map.Entry<String, String> formula : query.formulae.entrySet()) {
-        		Node node = XMLHelper.String2Doc(formula.getValue(),false);
-        		//query.formulae.put(query.name+formula.getKey(),node);
-        		//up to 4 keywords. no null keywords
-        	}
-        	// TODO:implement similar loop for keywords
+        for (Query query : queries) {
+            for (Map.Entry<String, String> formula : query.formulae.entrySet()) {
+                Node node = XMLHelper.String2Doc(formula.getValue(),false);
+                formulae.put(query.name+formula.getKey(),node);
+            }
+            // TODO:implement similar loop for keywords
         }
 
         super.open(parameters);
@@ -107,8 +109,7 @@ public class ArticleMapper extends FlatMapFunction<String, Article> {
      *                   to fail and may trigger recovery.
      */
     @Override
-    public void flatMap(String value, Collector<Article> out) throws Exception {
-    	//returns filename, document contents
+    public void flatMap(String value, Collector<Hit> out) throws Exception {
         String[] lines = value.trim().split("\\n", 2);
         if (lines.length < 2)
             return;
@@ -122,10 +123,15 @@ public class ArticleMapper extends FlatMapFunction<String, Article> {
         Document doc = XMLHelper.String2Doc(lines[1], false);
         NodeList MathMLElements = XMLHelper.getElementsB(doc, "//math");
         for (int i = 0; i < MathMLElements.getLength(); i++) {
-            observationsFromMml(MathMLElements.item(i));
+            for (Map.Entry<String, Node> entry : formulae.entrySet()) {
+                if ( XMLHelper.compareNode(entry.getValue(),MathMLElements.item(i),true,null) ) {
+                    Hit hit = new Hit();
+                    hit.setQueryID(entry.getKey());
+                    hit.setScore(100.);
+                    hit.setXref(docID);
+                    out.collect(hit);
+                }
+            }
         }
-
-        int mathCount = XMLHelper.getElementsB(doc, "//math").getLength();
-        */
     }
 }

@@ -1,10 +1,9 @@
 package de.tuberlin.dima.schubotz.fse;
 
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.io.File;
+import org.apache.commons.lang.StringUtils;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -15,11 +14,11 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.apache.commons.lang.StringUtils;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
 
 public class ResultOutput {
 	String filename;
@@ -45,9 +44,9 @@ public class ResultOutput {
 		ArrayList<String> writing = null;
 		String towrite = null;
 		PrintWriter bw = new PrintWriter(new FileWriter(output_path.concat((filename))));
-		//ranked: query id, result id, rank, filename, score, runtag (group-id_run_id), runtime??
+		//ranked: query id, result id, rank, filename, f3, runtag (group-id_run_id), runtime??
 		//OUTPUT FORMAT:
-		//query id, 1, filename, rank, score, runtag (group-id_run_id)
+		//query id, 1, filename, rank, f3, runtag (group-id_run_id)
 		while(!data.isEmpty()) {
 			writing = data.remove(0);//get ArrayList<String> from data
 			writing.subList(4,writing.size()).clear(); //clear all entries after runtag
@@ -80,8 +79,8 @@ public class ResultOutput {
 			
 			
 			//construct document given inputdata
-			//ranked: query id, result id, rank, filename, score, runtag (group-id_run_id), runtime??
-			//formula: formula id(contains query_id), for, xref, score, qvar(id, for, xref), qvar...?
+			//ranked: query id, result id, rank, filename, f3, runtag (group-id_run_id), runtime??
+			//formula: formula id(contains query_id), for, f1, f3, qvar(id, for, f1), qvar...?
 			doc.appendChild(rootElement);
 			//TODO working with one run
 			rootElement.appendChild(runElement);
@@ -132,8 +131,8 @@ public class ResultOutput {
 	}
 	
 	private Node getResult(Document doc, ArrayList<String> resultData) {
-		//ranked: query id, result id, rank, filename, score, runtag (group-id_run_id), runtime??
-		//formula: formula id, for, xref, score, qvar(id, for, xref), qvar...?
+		//ranked: query id, result id, rank, filename, f3, runtag (group-id_run_id), runtime??
+		//formula: formula id, for, f1, f3, qvar(id, for, f1), qvar...?
 		Element result = doc.createElement("result");
 		result.setAttribute("id", ResultOutput.getID("result"));
 		result.setAttribute("for", resultData.get(0)); //set query id
@@ -142,22 +141,22 @@ public class ResultOutput {
 	}
 	
 	private Node getHit(Document doc, ArrayList<String> resultData) {
-		//ranked: query id, result id, rank, filename, score, runtag (group-id_run_id), runtime??
+		//ranked: query id, result id, rank, filename, f3, runtag (group-id_run_id), runtime??
 		Element hit = doc.createElement("hit");
 		hit.setAttribute("id", ResultOutput.getID("hit"));
-		hit.setAttribute("xref", resultData.get(3)); //set filename
-		hit.setAttribute("score", resultData.get(4)); //set score
+		hit.setAttribute("f1", resultData.get(3)); //set filename
+		hit.setAttribute("f3", resultData.get(4)); //set f3
 		hit.setAttribute("rank", resultData.get(1)); //set rank
 		return hit;
 	}
 	
 	private Node getFormula(Document doc, ArrayList<String> formulaData) {
-		//formula: formula id, for, xref, score, qvar(id, for, xref), qvar...?
+		//formula: formula id, for, f1, f3, qvar(id, for, f1), qvar...?
 		Element formula = doc.createElement("formula");
 		formula.setAttribute("id", formulaData.get(0)); //set id
 		formula.setAttribute("for", formulaData.get(1)); //set for
-		formula.setAttribute("xref", formulaData.get(2)); //set xref
-		formula.setAttribute("score", formulaData.get(3)); //set score
+		formula.setAttribute("f1", formulaData.get(2)); //set f1
+		formula.setAttribute("f3", formulaData.get(3)); //set f3
 		//TODO: ADD QVAR TREE
 		return formula;
 	}
