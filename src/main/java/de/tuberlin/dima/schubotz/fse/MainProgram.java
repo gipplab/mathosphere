@@ -104,8 +104,11 @@ public class MainProgram {
         DataSet<Query> queryDataSet= rawQueryText.flatMap(new QueryMapper());
         
         //queryDataSet.print();
-        DataSet<Hit> articleDataSet = rawArticleText.flatMap(new ArticleMapper()).withBroadcastSet(queryDataSet, "Queries");
-        ReduceGroupOperator<Hit, Tuple2<String, String>> result = articleDataSet.groupBy(Hit.QUERYID_POS).sortGroup(Hit.SCORE_POS, Order.DESCENDING).reduceGroup(new SingleQueryOutput());
+        DataSet<HitTuple> articleDataSet = rawArticleText.flatMap(new ArticleMapper()).withBroadcastSet(queryDataSet, "Queries");
+        ReduceGroupOperator<HitTuple, Tuple2<String, String>> result = articleDataSet
+                .groupBy(HitTuple.fields.id.ordinal())
+                .sortGroup(HitTuple.fields.score.ordinal(), Order.DESCENDING)
+                .reduceGroup(new SingleQueryOutput());
         result.writeAsText(output);
         
         
