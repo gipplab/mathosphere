@@ -1,9 +1,11 @@
 package de.tuberlin.dima.schubotz.fse;
 
+import eu.stratosphere.api.common.operators.Order;
 import eu.stratosphere.api.java.DataSet;
 import eu.stratosphere.api.java.ExecutionEnvironment;
 import eu.stratosphere.api.java.io.TextInputFormat;
 import eu.stratosphere.api.java.operators.DataSource;
+import eu.stratosphere.api.java.operators.ReduceGroupOperator;
 import eu.stratosphere.api.java.tuple.Tuple2;
 import eu.stratosphere.api.java.typeutils.BasicTypeInfo;
 import eu.stratosphere.core.fs.Path;
@@ -92,7 +94,7 @@ public class MainProgram {
         format.setDelimiter(DOCUMENT_SEPARATOR);
         //rawArticleText format: data set of strings, delimited by <ARXIFFILESPLIT>
         DataSet<String> rawArticleText = new DataSource<>(env, format, BasicTypeInfo.STRING_TYPE_INFO);
-        DataSet<Article> articleDataSet = rawArticleText.flatMap(new ArticleMapper());
+        //DataSet<Article> articleDataSet = rawArticleText.flatMap(new ArticleMapper());
         
         
         //Set up querydataset
@@ -102,6 +104,12 @@ public class MainProgram {
         DataSet<Query> queryDataSet= rawQueryText.flatMap(new QueryMapper());
         
         //queryDataSet.print();
+        DataSet<HitTuple> articleDataSet = rawArticleText.flatMap(new ArticleMapper()).withBroadcastSet(queryDataSet, "Queries");
+        ReduceGroupOperator<HitTuple, Tuple2<String, String>> result = articleDataSet
+                .groupBy(HitTuple.fields.id.ordinal())
+                .sortGroup(HitTuple.fields.score.ordinal(), Order.DESCENDING)
+                .reduceGroup(new SingleQueryOutput());
+        result.writeAsText(output);
         
         
         /* Demo that produces document ID and num of formulae - uses old code

@@ -99,7 +99,7 @@ public class ResultData {
 		
 		
 		//DATA FORMAT:
-		//input_file: query id, result id, filename, score, runtag (group-id_run_id), runtime??
+		//input_file: query id, result id, filename, f3, runtag (group-id_run_id), runtime??
 		BufferedReader br = null;
 		BufferedReader br2 = null;
 		String line = "";
@@ -113,8 +113,8 @@ public class ResultData {
 			br.close();
 		}
 		//FORMAT: sort, add rank
-		//ranked: query id, result id, rank, filename, score, runtag (group-id_run_id), runtime??
-		Collections.sort(data, new ScoreComparator()); //sort by score
+		//ranked: query id, result id, rank, filename, f3, runtag (group-id_run_id), runtime??
+		Collections.sort(data, new ScoreComparator()); //sort by f3
 		int i=1; //rank starts at 1
 		for (ArrayList<String> temp : data) {
 			temp.add(2, Integer.toString(i)); //add rank
@@ -122,7 +122,7 @@ public class ResultData {
 		}
 		
 		//FORMULA FORMAT:
-		//formula: formula id, for, xref, score, qvar(id, for, xref), qvar...?
+		//formula: formula id, for, f1, f3, qvar(id, for, f1), qvar...?
 		br2 = new BufferedReader(new FileReader(formula_file));
 		line = "";
 		while ((line = br2.readLine()) != null) {
@@ -133,13 +133,13 @@ public class ResultData {
 		if (br2 != null) {
 			br2.close();
 		}
-		//FORMAT: sort by formula id and score
-		Collections.sort(formula, new FormulaComparator()); //sort by query id and score
+		//FORMAT: sort by formula id and f3
+		Collections.sort(formula, new FormulaComparator()); //sort by query id and f3
 	}
 	
 	private class ScoreComparator implements Comparator<ArrayList<String>> {
 		//DATA FORMAT:
-		//input_file: query id, result id, filename, score, runtag (group-id_run_id), runtime??
+		//input_file: query id, result id, filename, f3, runtag (group-id_run_id), runtime??
 		public int compare (ArrayList<String> y1, ArrayList<String> y2) {
 			String y1_ID = y1.get(0);
 			String y2_ID = y2.get(0);
@@ -149,8 +149,8 @@ public class ResultData {
 				return 1;
 			}else if (y1_ID.compareTo(y2_ID)==-1) {
 				return -1;
-			}else { //sort by score
-				if (y1_SCORE > y2_SCORE) { //sort by score with highest at top
+			}else { //sort by f3
+				if (y1_SCORE > y2_SCORE) { //sort by f3 with highest at top
 					return -1;
 				}else if (y1_SCORE < y2_SCORE) {
 					return 1;
@@ -163,7 +163,7 @@ public class ResultData {
 	
 	private class FormulaComparator implements Comparator<ArrayList<String>> {
 		//FORMULA FORMAT:
-		//formula: formula id, for, xref, score, qvar(id, for, xref), qvar...?
+		//formula: formula id, for, f1, f3, qvar(id, for, f1), qvar...?
 		public int compare (ArrayList<String> y1, ArrayList<String> y2) {
 			String y1_ID = y1.get(0);
 			String y2_ID = y2.get(0);
@@ -173,8 +173,8 @@ public class ResultData {
 				return 1;
 			}else if (y1_ID.compareTo(y2_ID)==-1) {
 				return -1;
-			}else { //sort by score
-				if (y1_SCORE > y2_SCORE) { //sort by highest score at top
+			}else { //sort by f3
+				if (y1_SCORE > y2_SCORE) { //sort by highest f3 at top
 					return -1;
 				}else if (y1_SCORE < y2_SCORE) {
 					return 1;
