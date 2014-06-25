@@ -33,8 +33,6 @@ public class SingleQueryOutput extends GroupReduceFunction<HitTuple, Tuple2<Stri
     }
 
     private Node getResult(Document doc, ArrayList<String> resultData) {
-        //ranked: query id, result id, rank, filename, f3, runtag (group-id_run_id), runtime??
-        //formula: formula id, for, f1, f3, qvar(id, for, f1), qvar...?
         Element result = doc.createElement("result");
         result.setAttribute("id", getID("result"));
         result.setAttribute("for", resultData.get(0)); //set query id
@@ -43,7 +41,7 @@ public class SingleQueryOutput extends GroupReduceFunction<HitTuple, Tuple2<Stri
     }
 
     private Node getHit(Document doc, HitTuple resultData, String rank) {
-        //ranked: query id, result id, rank, filename, f3, runtag (group-id_run_id), runtime??
+    	//TODO rename to id, xref, score, rank
         Element hit = doc.createElement("hit");
         hit.setAttribute("id", getID("hit"));
         hit.setAttribute("f1", resultData.getXref()); //set filename
@@ -54,6 +52,7 @@ public class SingleQueryOutput extends GroupReduceFunction<HitTuple, Tuple2<Stri
 
     private Node getFormula(Document doc, ArrayList<String> formulaData) {
         //formula: formula id, for, f1, f3, qvar(id, for, f1), qvar...?
+    	//TODO rename to id, for, xref, score
         Element formula = doc.createElement("formula");
         formula.setAttribute("id", formulaData.get(0)); //set id
         formula.setAttribute("for", formulaData.get(1)); //set for
@@ -74,6 +73,8 @@ public class SingleQueryOutput extends GroupReduceFunction<HitTuple, Tuple2<Stri
      */
     @Override
     public void reduce(Iterator<HitTuple> values, Collector<Tuple2<String, String>> out) throws Exception {
+    	//takes in HitTuples, outputs f0, documents
+    	//TODO: Implementing XML output
         Document doc = builder.newDocument();
         Integer rank = 0;
         doc.setXmlStandalone(true);
@@ -88,6 +89,7 @@ public class SingleQueryOutput extends GroupReduceFunction<HitTuple, Tuple2<Stri
         doc.appendChild(result);
         String documentString = "error printing document";
         try {
+//DEBUG OUTPUT
             documentString = XMLHelper.printDocument(doc);
         } catch (IOException e) {
             e.printStackTrace();
@@ -99,6 +101,7 @@ public class SingleQueryOutput extends GroupReduceFunction<HitTuple, Tuple2<Stri
 
     @Override
     public void open(Configuration parameters) throws Exception {
+    	//setup XML document builder
         super.open(parameters);
         final DocumentBuilderFactory dbf;
         dbf = DocumentBuilderFactory.newInstance();

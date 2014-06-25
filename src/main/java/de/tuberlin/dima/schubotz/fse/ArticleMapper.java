@@ -5,16 +5,11 @@ import eu.stratosphere.api.java.functions.FlatMapFunction;
 import eu.stratosphere.api.java.tuple.Tuple2;
 import eu.stratosphere.configuration.Configuration;
 import eu.stratosphere.util.Collector;
-import net.htmlparser.jericho.Source;
-import net.htmlparser.jericho.TextExtractor;
 import org.jsoup.Jsoup;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -33,21 +28,16 @@ public class ArticleMapper extends FlatMapFunction<String, HitTuple> {
     /** The Constant mathpattern. */
     final static Pattern mathpattern = Pattern
             .compile("(<m:math|<math) (?:xmlns=\"http://www.w3.org/1998/Math/MathML\" )?id=\"(.*?)\"( alttext=\"(.*?)\")?(.*?)(</math>|</m:math>)");
+    /** The Constant FILENAME_INDICATOR. */
     final static String FILENAME_INDICATOR = "Filename";
     final static Pattern filnamePattern = Pattern
             .compile("<ARXIVFILESPLIT\\\\n" + FILENAME_INDICATOR + "=\"\\./\\d+/(\\d+)\\.(\\d+)/\\1.\\2_(\\d+)_(\\d+)\\.xhtml\">");
-    private Map<String,Node> formulae;
-    private Map<String, String> keywords;
-    /** The Constant FILENAME_INDICATOR. */
-
-    public static String getPlainText(InputStream is) throws IOException, MalformedURLException {
-    	//Using Jericho HTMLParser
-    	Source source=new Source(is);
-    	source.fullSequentialParse();
-    	TextExtractor textExtractor=new TextExtractor(source);
-        return textExtractor.setIncludeAttributes(false).toString();
-    }
     
+    //maps queryid_formulaid, formula node
+    private Map<String,Node> formulae;
+    //maps keyword, keywordid
+    private Map<String, String> keywords;
+
 
     public String observationsFromMml(Node mml) {
         return "";
@@ -83,6 +73,7 @@ public class ArticleMapper extends FlatMapFunction<String, HitTuple> {
 
     @Override
     public void open(Configuration parameters) throws Exception {
+    	//Setup formulae, keywords from queries
         formulae = new HashMap<>();
         keywords = new HashMap<>();
         Collection<Query> queries = getRuntimeContext().getBroadcastVariable("Queries");
@@ -92,7 +83,7 @@ public class ArticleMapper extends FlatMapFunction<String, HitTuple> {
                 formulae.put(query.name+formula.getKey(),node);
             }
             for (Map.Entry<String, String> keyword : query.keywords.entrySet()) {
-                String[] tokens = keyword.getValue().toLowerCase().split("\\W+"); //What does this match?
+                String[] tokens = keyword.getValue().toLowerCase().split("\\W+"); //TODO What does this match?
                 Integer i = 0;
                 for (String token : tokens) {
                     i++;
@@ -115,6 +106,7 @@ public class ArticleMapper extends FlatMapFunction<String, HitTuple> {
      */
     @Override
     public void flatMap(String value, Collector<HitTuple> out) throws Exception {
+    	//Split into lines 0: ARXIVFILENAME, 1: HTML 
         String[] lines = value.trim().split("\\n", 2);
         if (lines.length < 2)
             return;
@@ -123,24 +115,27 @@ public class ArticleMapper extends FlatMapFunction<String, HitTuple> {
         if (matcher.find()) {
             docID = matcher.group(0);
         }
-        /* Formula counter */
+        //Extract plaintext from article, match with keywords from all queries
         Document doc = XMLHelper.String2Doc(lines[1], false);
         String plainText = Jsoup.parse(lines[1]).text();
         String[] tokens = plainText.toLowerCase().split("\\W+");
         Integer j = 0;
+        //TODO: Implement keyword results
         for (String token : tokens) {
             j++;
             if (keywords.containsKey(token)) {
+//DEBUG OUTPUT 
                 System.out.println("match for keyword " + j.toString() + token + keywords.get(token));
             }
         }
+        //Match query formulae exactly with document formulae
         NodeList MathMLElements = XMLHelper.getElementsB(doc, "//math");
         for (int i = 0; i < MathMLElements.getLength(); i++) {
             for (Map.Entry<String, Node> entry : formulae.entrySet()) {
                 if ( XMLHelper.compareNode(entry.getValue(),MathMLElements.item(i),true,null) ) {
                     HitTuple hitTuple = new HitTuple();
                     hitTuple.setQueryID(entry.getKey());
-                    hitTuple.setScore(100.);
+                    hitTuple.setScore(100.); //TODO scoring formula
                     hitTuple.setXref(docID);
                     out.collect(hitTuple);
                 }
