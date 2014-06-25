@@ -62,6 +62,12 @@
                             </manifestEntries>
                         </transformer>
                     </transformers>
+                    <archive>
+                    	<manifest>
+                    		<addClasspath>true</addClasspath>
+                    		<mainClass>de.tuberlin.dima.schubotz.fse.MainProgram</mainClass>
+                    	</manifest>
+                    </archive>
                 </configuration>
                 <executions>
                     <execution>
