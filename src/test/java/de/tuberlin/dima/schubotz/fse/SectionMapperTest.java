@@ -1,6 +1,12 @@
 package de.tuberlin.dima.schubotz.fse;
 
+import eu.stratosphere.api.java.DataSet;
+import eu.stratosphere.api.java.ExecutionEnvironment;
+import eu.stratosphere.api.java.io.TextInputFormat;
+import eu.stratosphere.api.java.operators.DataSource;
 import eu.stratosphere.api.java.tuple.Tuple2;
+import eu.stratosphere.api.java.typeutils.BasicTypeInfo;
+import eu.stratosphere.core.fs.Path;
 import eu.stratosphere.util.Collector;
 import junit.framework.TestCase;
 
@@ -22,7 +28,8 @@ public class SectionMapperTest extends TestCase {
 
             }
         };
-
+        
+        /*
         Tuple2<String, Integer> articleNum = sectionMapper.map(TestUtils.getTestFile1());
         System.out.println(articleNum);/*
         articleMapper.flatMap(TestUtils.getTestFile1(), col);

@@ -3,6 +3,8 @@ package de.tuberlin.dima.schubotz.fse;
 import java.io.InputStream;
 import java.util.Scanner;
 
+import eu.stratosphere.core.fs.Path;
+
 public class TestUtils {
     private final static String testQueryString = getFileContents("fQuery.xml");
 
@@ -17,6 +19,10 @@ public class TestUtils {
     public static String getTestFile1() {
         String[] split = getTestFile10().split(MainProgram.DOCUMENT_SEPARATOR,2);
         return split[0];
+    }
+    
+    public static Path getTestFile10Path() {
+    	return new Path("test10.xml");
     }
 
     static String getFileContents(String fname) {
