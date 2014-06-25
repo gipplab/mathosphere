@@ -378,7 +378,7 @@ public final class XMLHelper {
         return xpath.compile(xString);
     }
 
-    public boolean compareNode(Node nQ, Node nN, Boolean considerLength, Map<String,Node> qvars){
+    public static boolean compareNode(Node nQ, Node nN, Boolean considerLength, Map<String,Node> qvars){
         if (nQ.hasChildNodes()) {
             int nQChildLength = nQ.getChildNodes().getLength();
             if (nN.hasChildNodes() &&

@@ -1,9 +1,11 @@
 package de.tuberlin.dima.schubotz.fse;
 
+import eu.stratosphere.api.common.operators.Order;
 import eu.stratosphere.api.java.DataSet;
 import eu.stratosphere.api.java.ExecutionEnvironment;
 import eu.stratosphere.api.java.io.TextInputFormat;
 import eu.stratosphere.api.java.operators.DataSource;
+import eu.stratosphere.api.java.operators.ReduceGroupOperator;
 import eu.stratosphere.api.java.tuple.Tuple2;
 import eu.stratosphere.api.java.typeutils.BasicTypeInfo;
 import eu.stratosphere.core.fs.Path;
@@ -102,6 +104,9 @@ public class MainProgram {
         DataSet<Query> queryDataSet= rawQueryText.flatMap(new QueryMapper());
         
         //queryDataSet.print();
+        DataSet<Hit> articleDataSet = rawArticleText.flatMap(new ArticleMapper()).withBroadcastSet(queryDataSet, "Queries");
+        ReduceGroupOperator<Hit, Tuple2<String, String>> result = articleDataSet.groupBy(Hit.QUERYID_POS).sortGroup(Hit.SCORE_POS, Order.DESCENDING).reduceGroup(new SingleQueryOutput());
+        result.writeAsText(output);
         
         
         /* Demo that produces document ID and num of formulae - uses old code
