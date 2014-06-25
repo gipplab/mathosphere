@@ -94,7 +94,7 @@ public class MainProgram {
         format.setDelimiter(DOCUMENT_SEPARATOR);
         //rawArticleText format: data set of strings, delimited by <ARXIFFILESPLIT>
         DataSet<String> rawArticleText = new DataSource<>(env, format, BasicTypeInfo.STRING_TYPE_INFO);
-        DataSet<Article> articleDataSet = rawArticleText.flatMap(new ArticleMapper());
+        //DataSet<Article> articleDataSet = rawArticleText.flatMap(new ArticleMapper());
         
         
         //Set up querydataset

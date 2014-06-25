@@ -5,26 +5,22 @@ import eu.stratosphere.api.java.functions.FlatMapFunction;
 import eu.stratosphere.api.java.tuple.Tuple2;
 import eu.stratosphere.configuration.Configuration;
 import eu.stratosphere.util.Collector;
-
+import net.htmlparser.jericho.Source;
+import net.htmlparser.jericho.TextExtractor;
+import org.jsoup.Jsoup;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.*;
 
-import net.htmlparser.jericho.*;
-
-/**
- * Created by Moritz on 20.06.2014.
- */
 public class ArticleMapper extends FlatMapFunction<String, Hit> {
     /**
      * The Constant GRP_ID.
@@ -41,6 +37,7 @@ public class ArticleMapper extends FlatMapFunction<String, Hit> {
     final static Pattern filnamePattern = Pattern
             .compile("<ARXIVFILESPLIT\\\\n" + FILENAME_INDICATOR + "=\"\\./\\d+/(\\d+)\\.(\\d+)/\\1.\\2_(\\d+)_(\\d+)\\.xhtml\">");
     private Map<String,Node> formulae;
+    private Map<String, String> keywords;
     /** The Constant FILENAME_INDICATOR. */
 
     public static String getPlainText(InputStream is) throws IOException, MalformedURLException {
@@ -87,13 +84,21 @@ public class ArticleMapper extends FlatMapFunction<String, Hit> {
     @Override
     public void open(Configuration parameters) throws Exception {
         formulae = new HashMap<>();
+        keywords = new HashMap<>();
         Collection<Query> queries = getRuntimeContext().getBroadcastVariable("Queries");
         for (Query query : queries) {
             for (Map.Entry<String, String> formula : query.formulae.entrySet()) {
                 Node node = XMLHelper.String2Doc(formula.getValue(),false);
                 formulae.put(query.name+formula.getKey(),node);
             }
-            // TODO:implement similar loop for keywords
+            for (Map.Entry<String, String> keyword : query.keywords.entrySet()) {
+                String[] tokens = keyword.getValue().toLowerCase().split("\\W+"); //What does this match?
+                Integer i = 0;
+                for (String token : tokens) {
+                    i++;
+                    keywords.put(token, query.name + keyword.getKey() + i.toString());
+                }
+            }
         }
 
         super.open(parameters);
@@ -118,9 +123,17 @@ public class ArticleMapper extends FlatMapFunction<String, Hit> {
         if (matcher.find()) {
             docID = matcher.group(0);
         }
-        out.collect(new Article(docID, lines[1]));
-        /* Formula counter
+        /* Formula counter */
         Document doc = XMLHelper.String2Doc(lines[1], false);
+        String plainText = Jsoup.parse(lines[1]).text();
+        String[] tokens = plainText.toLowerCase().split("\\W+");
+        Integer j = 0;
+        for (String token : tokens) {
+            j++;
+            if (keywords.containsKey(token)) {
+                System.out.println("match for keyword " + j.toString() + token + keywords.get(token));
+            }
+        }
         NodeList MathMLElements = XMLHelper.getElementsB(doc, "//math");
         for (int i = 0; i < MathMLElements.getLength(); i++) {
             for (Map.Entry<String, Node> entry : formulae.entrySet()) {
