@@ -2,9 +2,7 @@ package de.tuberlin.dima.schubotz.fse;
 
 
 import eu.stratosphere.api.java.functions.MapFunction;
-import eu.stratosphere.api.java.tuple.Tuple2;
 import eu.stratosphere.configuration.Configuration;
-import eu.stratosphere.util.Collector;
 import net.htmlparser.jericho.Source;
 import net.htmlparser.jericho.TextExtractor;
 import org.jsoup.Jsoup;
@@ -38,7 +36,7 @@ public class SectionMapper extends MapFunction<String, SectionTuple> {
             .compile("(<m:math|<math) (?:xmlns=\"http://www.w3.org/1998/Math/MathML\" )?id=\"(.*?)\"( alttext=\"(.*?)\")?(.*?)(</math>|</m:math>)");
     final static String FILENAME_INDICATOR = "Filename";
     final static Pattern filnamePattern = Pattern
-            .compile("<ARXIVFILESPLIT\\\\n" + FILENAME_INDICATOR + "=\"\\./\\d+/(\\d+)\\.(\\d+)/\\1.\\2_(\\d+)_(\\d+)\\.xhtml\">");
+            .compile("<ARXIVFILESPLIT\\\\n" + FILENAME_INDICATOR + "=\"\\./\\d+/(.*?)/\\1_(\\d+)_(\\d+)\\.xhtml\">");
     private Map<String,Node> formulae;
     private Map<String, String> keywords;
     /** The Constant FILENAME_INDICATOR. */
@@ -95,21 +93,24 @@ public class SectionMapper extends MapFunction<String, SectionTuple> {
         String[] lines = value.trim().split("\\n", 2);
         if (lines.length < 2)
             return null;
-        sectionTuple.setNamedField(SectionTuple.fields.name,getString(lines[0]));
+        sectionTuple.setNamedField(SectionTuple.fields.name, getDocName(lines[0]));
         /* Formula counter */
         sectionTuple.setNamedField(SectionTuple.fields.keywords, extractKeywords(lines[1]));
         sectionTuple.setNamedField(SectionTuple.fields.formulae, getFormulaeHits( lines[1]));
 
 
+        return sectionTuple;
     }
 
-    private explicitDataSet<FormulaTuple> getFormulaeHits(String line) throws ParserConfigurationException, IOException, SAXException, XPathExpressionException {
+    private explicitDataSet<ResultTuple> getFormulaeHits(String line) throws ParserConfigurationException, IOException, SAXException, XPathExpressionException {
+        explicitDataSet<ResultTuple> formulaTuples = new explicitDataSet<>();
         Document doc = XMLHelper.String2Doc(line, false);
         NodeList MathMLElements = XMLHelper.getElementsB(doc, "//math");
         for (int i = 0; i < MathMLElements.getLength(); i++) {
             for (Map.Entry<String, Node> entry : formulae.entrySet()) {
                 Map<String, Node> qvars = null;
                 if ( XMLHelper.compareNode(entry.getValue(),MathMLElements.item(i),true,qvars) ) {
+                    ResultTuple resultTuple = new ResultTuple();
                     HitTuple hitTuple = new HitTuple();
                     if (qvars != null){
                         explicitDataSet<QVarTuple> qvarDataSet = new explicitDataSet<>();
@@ -122,11 +123,12 @@ public class SectionMapper extends MapFunction<String, SectionTuple> {
                     }
                     hitTuple.setQueryID(entry.getKey());
                     hitTuple.setScore(100.);
-                    hitTuple.setXref(docID);
-                    out.collect(sectionTuple);
+                    resultTuple.addHit(hitTuple);
+                    formulaTuples.add(resultTuple);
                 }
             }
         }
+        return formulaTuples;
     }
 
     private explicitDataSet<KeyWordTuple> extractKeywords(String line) {
@@ -139,13 +141,14 @@ public class SectionMapper extends MapFunction<String, SectionTuple> {
                 System.out.println("match for keyword " + j.toString() + token + keywords.get(token));
             }
         }
+        return null;
     }
 
-    private SectionNameTuple getString(String line) {
+    private SectionNameTuple getDocName(String line) {
         Matcher matcher = filnamePattern.matcher(line);
         if (matcher.find()) {
             return new SectionNameTuple(
-                    Integer.parseInt(matcher.group(1)),
+                    matcher.group(1),
                     Integer.parseInt(matcher.group(2)),
                     Integer.parseInt(matcher.group(3))
             );
