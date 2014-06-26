@@ -295,10 +295,11 @@ public final class XMLHelper {
 			.newInstance();
 		domFactory.setNamespaceAware( NamespaceAwareness );
 		//domFactory.setValidating(true);
+		//domFactory.setIgnoringElementContentWhitespace( true );
 		domFactory.setAttribute(
 			"http://apache.org/xml/features/dom/include-ignorable-whitespace",
 			Boolean.FALSE );
-		domFactory.setIgnoringElementContentWhitespace( true );
+
 		return domFactory.newDocumentBuilder();
 	}
 
@@ -396,8 +397,18 @@ public final class XMLHelper {
 		return xpath.compile( xString );
 	}
 
-	public static boolean compareNode (Node nQ, Node nN, Boolean considerLength, Map<String, Node> qvars) {
-		System.out.println("current query tree:");
+	public static double cacluateSimilarityScore(Node nQ, Node nN, Map<String, Node> qvars) throws Exception {
+		nQ.normalize();
+		nN.normalize();
+		if(compareNode( nQ,nN, true,qvars )){
+			return 100;
+		} else {
+			//TODO add more options here
+			return 0;
+		}
+	}
+	public static boolean compareNode (Node nQ, Node nN, Boolean considerLength, Map<String, Node> qvars) throws Exception {
+		/*System.out.println("current query tree:");
 		try {
 			System.out.println(printDocument(nQ));
 		}catch (Exception e) {
@@ -408,6 +419,9 @@ public final class XMLHelper {
 			System.out.println(printDocument(nN));
 		}catch (Exception e) {
 			e.printStackTrace();
+		}// END OF DEBUG OUTPUT */
+		if ( qvars == null){
+			throw new Exception( "qvars array must not be null");
 		}
 		if ( nQ.hasChildNodes() ) {
 			int nQChildLength = nQ.getChildNodes().getLength();
@@ -415,7 +429,7 @@ public final class XMLHelper {
 				(!considerLength || nQChildLength == nN.getChildNodes().getLength()) ) {
 				//loop through all childnodes
 				for ( int i = 0; i < nQChildLength; i++ ) {
-System.out.println("recurse to "+ nQ.getChildNodes().item( i )+"vs"+nN.getChildNodes().item( i )); //DEBUG
+					System.out.println("recurse to "+ nQ.getChildNodes().item( i )+"vs"+nN.getChildNodes().item( i )); //DEBUG
 					if ( !compareNode(nQ.getChildNodes().item( i ), nN.getChildNodes().item( i ), considerLength, qvars ) ) {
 						return false;
 					}
@@ -425,9 +439,6 @@ System.out.println("recurse to "+ nQ.getChildNodes().item( i )+"vs"+nN.getChildN
 		//at this point: a)no child nodes in nQ or nN, b)  
 		//check for qvar descendant, add to qvar hashmap for checking
 		if ( nQ.getNodeName().equals( "mws:qvar" ) ) {
-			if ( qvars == null ) {
-				qvars = new HashMap<>();
-			}
 			String qvarName = nQ.getAttributes().getNamedItem( "name" ).getNodeValue();
 			if ( qvars.containsKey( qvarName ) ) {
 				return compareNode( qvars.get( qvarName ), nN, considerLength, qvars );
