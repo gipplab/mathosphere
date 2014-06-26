@@ -2,7 +2,6 @@ package de.tuberlin.dima.schubotz.fse;
 
 import eu.stratosphere.api.java.DataSet;
 import eu.stratosphere.api.java.ExecutionEnvironment;
-import eu.stratosphere.api.java.functions.CrossFunction;
 import eu.stratosphere.api.java.functions.GroupReduceFunction;
 import eu.stratosphere.api.java.io.TextInputFormat;
 import eu.stratosphere.api.java.operators.DataSource;
@@ -88,12 +87,7 @@ public class KeywordMapperTest extends TestCase {
     			}
     		}
     	}
-    	/* no idea if this works */
-    	@Override
-    	public void combine(Iterator<KeyWordTuple> in, Collector<Tuple2<String, String>> out) {
-    		// in some cases combine() calls can simply be forwarded to reduce().
-    		this.reduce(in, out);
-    	}
+
     	
     	@Override
         public void open(Configuration parameters) throws Exception {
