@@ -1,16 +1,14 @@
 package de.tuberlin.dima.schubotz.fse;
 
 import com.google.common.collect.Multiset;
-
 import eu.stratosphere.api.java.tuple.Tuple2;
 import junit.framework.TestCase;
-
 import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import static de.tuberlin.dima.schubotz.fse.XMLHelper.getIdentifiersFromCmml;
 
@@ -19,6 +17,25 @@ public class XMLHelperTest extends TestCase {
     public void testCompactForm() throws Exception {
 
     }
+	public void testGrading() throws Exception{
+		String testFile1 = TestUtils.getTestQueryString();
+		//Get nodelist of all <math> descendants of <root><topic>
+		NodeList MathMLElements = XMLHelper.String2NodeList(testFile1, "/topics//math");//"/topics/topic/query/formula/math" topic/query/formula
+
+		//working with f1.1, recurse through and print to test if generated correctly
+
+		int count = MathMLElements.getLength();
+		if (count > 0) {
+			HashMap<String, Node> qvars = new HashMap<>();
+			assertEquals( 0., XMLHelper.cacluateSimilarityScore( MathMLElements.item( 1 ), MathMLElements.item( 2 ), qvars ) );
+			assertEquals( 100., XMLHelper.cacluateSimilarityScore( MathMLElements.item( 1 ), MathMLElements.item( 1 ), qvars ) );
+			NodeList testnode = XMLHelper.String2NodeList( TestUtils.getTestResultForTest11(), "*//math" );
+			assertEquals(100., XMLHelper.cacluateSimilarityScore( MathMLElements.item( 10 ), testnode.item( 0 ),  qvars ) );
+		} else {
+			fail("no math element  ");
+		}
+	}
+
 	public void testCompareNode() throws Exception {
 		String testFile1 = TestUtils.getTestQueryString();
 		//Get nodelist of all <math> descendants of <root><topic>
@@ -31,8 +48,10 @@ public class XMLHelperTest extends TestCase {
 	    
 		int count = MathMLElements.getLength();
 		if (count > 0) {
-			assertFalse( XMLHelper.compareNode( MathMLElements.item(  1 ), MathMLElements.item( 2 ) ,true,null));
-			assertTrue( XMLHelper.compareNode( MathMLElements.item(  1 ), MathMLElements.item( 1 ) ,true,null));
+			HashMap<String, Node> qvars = new HashMap<>();
+			assertFalse( XMLHelper.compareNode( MathMLElements.item( 1 ), MathMLElements.item( 2 ), true, qvars ) );
+			assertTrue( XMLHelper.compareNode( MathMLElements.item( 1 ), MathMLElements.item( 1 ), true, qvars ) );
+			System.out.println(qvars.toString());
 		} else {
 			fail("no math element  ");
 		}
