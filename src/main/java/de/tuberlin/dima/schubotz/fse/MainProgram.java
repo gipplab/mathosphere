@@ -4,6 +4,10 @@ import eu.stratosphere.api.java.DataSet;
 import eu.stratosphere.api.java.ExecutionEnvironment;
 import eu.stratosphere.api.java.io.TextInputFormat;
 import eu.stratosphere.api.java.operators.DataSource;
+import eu.stratosphere.api.java.operators.FlatMapOperator;
+import eu.stratosphere.api.java.operators.ProjectOperator;
+import eu.stratosphere.api.java.tuple.Tuple2;
+import eu.stratosphere.api.java.tuple.Tuple3;
 import eu.stratosphere.api.java.typeutils.BasicTypeInfo;
 import eu.stratosphere.core.fs.Path;
 import org.apache.commons.logging.Log;
@@ -101,10 +105,16 @@ public class MainProgram {
         DataSet<Query> queryDataSet= rawQueryText.flatMap(new QueryMapper());
 
         //queryDataSet.print();
-        DataSet<SectionTuple> articleDataSet = rawArticleText.flatMap(new SectionMapper()).withBroadcastSet(queryDataSet, "Queries");
-        articleDataSet.writeAsText(output);
-       /* ReduceGroupOperator<HitTuple, Tuple2<String, String>> result = articleDataSet
-                .groupBy(HitTuple.fields.id.ordinal())
+        DataSet<SectionTuple> articleDataSet = rawArticleText.map(new SectionMapper()).withBroadcastSet(queryDataSet, "Queries");
+        ProjectOperator<SectionTuple, Tuple2<SectionNameTuple, explicitDataSet>> formulaMatches = articleDataSet.project(SectionTuple.fields.name.ordinal(),
+                SectionTuple.fields.formulae.ordinal()).types(SectionNameTuple.class, explicitDataSet.class);
+        //Projection<SectionTuple> keyWordMatches = articleDataSet.project(SectionTuple.fields.name.ordinal(),
+        //        SectionTuple.fields.keywords.ordinal());
+        FlatMapOperator<Tuple2<SectionNameTuple, explicitDataSet>, Tuple3<String, SectionNameTuple, ResultTuple>>
+                mathHits = formulaMatches.flatMap(new ExtractExplictDatasetMapper());
+        mathHits.writeAsText(output);
+        /*result = mathHits
+                .groupBy(1)
                 .sortGroup(HitTuple.fields.score.ordinal(), Order.DESCENDING)
                 .reduceGroup(new SingleQueryOutput());
         result.writeAsText(output);

@@ -1,6 +1,5 @@
 package de.tuberlin.dima.schubotz.fse;
 
-import eu.stratosphere.api.java.tuple.Tuple2;
 import eu.stratosphere.util.Collector;
 import junit.framework.TestCase;
 
@@ -23,7 +22,7 @@ public class SectionMapperTest extends TestCase {
             }
         };
 
-        Tuple2<String, Integer> articleNum = sectionMapper.map(TestUtils.getTestFile1());
+        /*Tuple2<String, Integer> articleNum = sectionMapper.map(TestUtils.getTestFile1());
         System.out.println(articleNum);/*
         articleMapper.flatMap(TestUtils.getTestFile1(), col);
         Article sample = articles.get(0);

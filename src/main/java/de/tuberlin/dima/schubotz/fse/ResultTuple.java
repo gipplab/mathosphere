@@ -1,6 +1,5 @@
 package de.tuberlin.dima.schubotz.fse;
 
-import eu.stratosphere.api.java.DataSet;
 import eu.stratosphere.api.java.tuple.Tuple3;
 
 /**
@@ -8,12 +7,19 @@ import eu.stratosphere.api.java.tuple.Tuple3;
  * result = element result {id.att & for.att & runtime.att & hit+}
  */
 public class ResultTuple extends Tuple3<String, Double, explicitDataSet<HitTuple>> {
-    public DataSet<HitTuple> getHits() {
+    public explicitDataSet<HitTuple> getHits() {
         return getField(fields.hits.ordinal());
     }
 
-    public void setHits(DataSet<HitTuple> hits) {
+    public void setHits(explicitDataSet<HitTuple> hits) {
         setField(hits, fields.hits.ordinal());
+    }
+
+    public void addHit(HitTuple h){
+        if(getHits()==null){
+            setHits(new explicitDataSet<HitTuple>());
+        }
+        getHits().add(h);
     }
 
     public String getFor() {
