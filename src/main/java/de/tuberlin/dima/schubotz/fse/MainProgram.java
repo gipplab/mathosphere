@@ -5,16 +5,20 @@ import eu.stratosphere.api.java.ExecutionEnvironment;
 import eu.stratosphere.api.java.io.TextInputFormat;
 import eu.stratosphere.api.java.operators.DataSource;
 import eu.stratosphere.api.java.operators.FlatMapOperator;
+import eu.stratosphere.api.java.tuple.Tuple2;
 import eu.stratosphere.api.java.tuple.Tuple4;
 import eu.stratosphere.api.java.tuple.Tuple7;
 import eu.stratosphere.api.java.typeutils.BasicTypeInfo;
+import eu.stratosphere.core.fs.FileSystem.WriteMode;
 import eu.stratosphere.core.fs.Path;
 import eu.stratosphere.types.StringValue;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPathExpressionException;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -97,20 +101,30 @@ public class MainProgram {
 		format.setDelimiter( DOCUMENT_SEPARATOR );
 		//rawArticleText format: data set of strings, delimited by <ARXIFFILESPLIT>
 		DataSet<String> rawArticleText = new DataSource<>( env, format, BasicTypeInfo.STRING_TYPE_INFO );
-		DataSet<Tuple4<String, Integer, Integer, StringValue>> sectionDataSet = rawArticleText.map( new TitleExtractionMapper() );
+		
+		
+		//DataSet<Tuple4<String, Integer, Integer, StringValue>> sectionDataSet = rawArticleText.map( new TitleExtractionMapper() );
 
 
 		//Set up querydataset
 		TextInputFormat formatQueries = new TextInputFormat( new Path( queryInput ) );
-		formatQueries.setDelimiter( "</topics>" ); //Do not split topics
-		DataSet rawQueryText = new DataSource<>( env, formatQueries, BasicTypeInfo.STRING_TYPE_INFO );
-		DataSet<Query> queryDataSet = rawQueryText.flatMap( new QueryMapper() );
-
-		FlatMapOperator<Tuple4<String, Integer, Integer, StringValue>, Tuple7<String, Integer, Integer, String, String, Double, StringValue>> mathHits = sectionDataSet.
-			flatMap( new FormulaMapper() )
-			.withBroadcastSet( queryDataSet,"Queries" );
-
-		mathHits.writeAsText( output );
+		formatQueries.setDelimiter( "</topic>" ); 
+		DataSet rawQueryText = new DataSource<>( env, formatQueries, BasicTypeInfo.STRING_TYPE_INFO ); //TODO: something is blank
+		
+		
+		
+		/**PHASE A: extract LaTeX, tokenize, compare all*/
+		//returns doc/query id, tokenized latex split by <SPLIT>
+		DataSet<Tuple2<String,String>> queryDataSet = rawQueryText.flatMap(new QueryLatexMapper());
+		DataSet<Tuple2<String,String>> sectionDataSet = rawArticleText.flatMap(new SectionLatexMapper());
+		
+		//sectionDataSet.writeAsText("/home/jjl4/test.txt", WriteMode.OVERWRITE); //DEBUG
+		//queryDataSet.writeAsText("/home/jjl4/test2.txt", WriteMode.OVERWRITE); 
+		
+		
+		//Phase B: extract CMML, tokenize, compare all
+		
+		
 
 
 		//Return all matches of query keywords in format SectionTuple, sort by score, reduce to f0, document
@@ -139,16 +153,6 @@ public class MainProgram {
         DataSet<Tuple2<String, Integer>> articleDataSet = rawArticleText.flatMap(new ArticleMapper()).withBroadcastSet(queryDataSet, "Queries");
         articleDataSet.writeAsText(output);
         */
-
-
-		//PHASE A: PLAIN TEXT SEARCH
-		//Step 1. Loop through documents.
-
-
-		//Step 2. Extract plain text
-
-		//Step 3. Filter queries based on whether plain text contains ALL of their keywords
-
 
 	}
 
