@@ -15,6 +15,18 @@ public class XMLHelperTest extends TestCase {
     public void testCompactForm() throws Exception {
 
     }
+	public void testCompareNode() throws Exception {
+		String testFile1 = TestUtils.getTestQueryString();
+		Document doc = XMLHelper.String2Doc(testFile1, false);
+		NodeList MathMLElements = XMLHelper.String2NodeList(testFile1, "/topics//math");//"/topics/topic/query/formula/math" topic/query/formula
+		int count = MathMLElements.getLength();
+		if (count > 0) {
+			assertFalse( XMLHelper.compareNode( MathMLElements.item(  1 ), MathMLElements.item( 2 ) ,true,null));
+			assertTrue( XMLHelper.compareNode( MathMLElements.item(  1 ), MathMLElements.item( 1 ) ,true,null));
+		} else {
+			fail("no math element  ");
+		}
+	}
 
     public void testGetMMLLeaves() throws Exception {
         String testFile1 = TestUtils.getTestQueryString();
