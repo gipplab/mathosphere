@@ -11,8 +11,10 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
+import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpression;
 import javax.xml.xpath.XPathExpressionException;
+import javax.xml.xpath.XPathFactory;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.HashMap;
@@ -93,6 +95,17 @@ public class QueryMapper extends FlatMapFunction<String, Query> implements Seria
 				Document mathML = builder.newDocument();
 				Node mathMLElement = XMLHelper.getElementB( formulae.item( j ), "./math" );
 				Node importedNode = mathML.importNode( mathMLElement, true );
+				XPathFactory xpathFactory = XPathFactory.newInstance();
+				// XPath to find empty text nodes.
+				XPathExpression xpathExp = xpathFactory.newXPath().compile(
+					"//text()[normalize-space(.) = '']");
+				NodeList emptyTextNodes = (NodeList)
+					xpathExp.evaluate(mathML, XPathConstants.NODESET);
+				// Remove each empty text node from document.
+				for (int i = 0; i < emptyTextNodes.getLength(); i++) {
+					Node emptyTextNode = emptyTextNodes.item(i);
+					emptyTextNode.getParentNode().removeChild(emptyTextNode);
+				}
 				mathML.appendChild( importedNode );
 				final String formulaID = formulae.item( j ).getAttributes().getNamedItem( "id" ).getNodeValue();
 				currentQuery.formulae.put( formulaID, XMLHelper.printDocument( mathML ) );
