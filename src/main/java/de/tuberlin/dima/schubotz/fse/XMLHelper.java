@@ -397,10 +397,13 @@ public final class XMLHelper {
 		return xpath.compile( xString );
 	}
 
-	public static double cacluateSimilarityScore(Node nQ, Node nN, Map<String, Node> qvars) throws Exception {
-		nQ.normalize();
-		nN.normalize();
-		if(compareNode( nQ,nN, true,qvars )){
+	public static double cacluateSimilarityScore(Node query, Node node, Map<String, Node> qvars) throws Exception {
+		query.normalize();
+		node.normalize();
+		qvars.clear();
+		Node qml = getElementB( query, "//semantics/*[1]" );
+		Node nml = getElementB( node,"//semantics/annotation-xml/*[1]" );
+		if(compareNode( qml,nml, true,qvars )){
 			return 100;
 		} else {
 			//TODO add more options here
@@ -408,7 +411,7 @@ public final class XMLHelper {
 		}
 	}
 	public static boolean compareNode (Node nQ, Node nN, Boolean considerLength, Map<String, Node> qvars) throws Exception {
-		/*System.out.println("current query tree:");
+		System.out.println("current query tree:");
 		try {
 			System.out.println(printDocument(nQ));
 		}catch (Exception e) {
