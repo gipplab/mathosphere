@@ -6,12 +6,12 @@ import java.util.HashMap;
 import java.util.HashSet;
 
 public class explicitDataSet<T extends Tuple> extends HashSet<T> {
-    HashMap<?,T> getAsHashMap(Integer keyFieldNo){
-        HashMap<Object, T> map = new HashMap<>();
-        for (T h : this) {
-            map.put(h.getField(keyFieldNo),h);
-        }
-        return map;
-    }
+	HashMap<?, T> getAsHashMap (Integer keyFieldNo) {
+		HashMap<Object, T> map = new HashMap<>();
+		for ( T h : this ) {
+			map.put( h.getField( keyFieldNo ), h );
+		}
+		return map;
+	}
 
 }
