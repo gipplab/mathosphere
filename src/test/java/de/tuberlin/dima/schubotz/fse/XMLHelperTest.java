@@ -27,10 +27,8 @@ public class XMLHelperTest extends TestCase {
 		int count = MathMLElements.getLength();
 		if (count > 0) {
 			HashMap<String, Node> qvars = new HashMap<>();
-			assertEquals( 0., XMLHelper.cacluateSimilarityScore( MathMLElements.item( 1 ), MathMLElements.item( 2 ), qvars ) );
-			assertEquals( 100., XMLHelper.cacluateSimilarityScore( MathMLElements.item( 1 ), MathMLElements.item( 1 ), qvars ) );
 			NodeList testnode = XMLHelper.String2NodeList( TestUtils.getTestResultForTest11(), "*//math" );
-			assertEquals(100., XMLHelper.cacluateSimilarityScore( MathMLElements.item( 10 ), testnode.item( 0 ),  qvars ) );
+			assertEquals(100., XMLHelper.cacluateSimilarityScore( MathMLElements.item( 11 ), testnode.item( 0 ),  qvars ) );
 		} else {
 			fail("no math element  ");
 		}
@@ -79,7 +77,7 @@ public class XMLHelperTest extends TestCase {
         if (count > 0) {
             for (int i = 0; i < count; i++) {
                 Multiset<String> identifiersFromCmml = getIdentifiersFromCmml(MathMLElements.item(i));
-                System.out.println(identifiersFromCmml);
+                System.out.println(i+" : "+identifiersFromCmml);
             }
 
         }
