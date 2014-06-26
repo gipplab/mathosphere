@@ -357,7 +357,7 @@ public final class XMLHelper {
 		//System.out.println(printDocument(cmml));
 		NodeList identifier = getElementsB( cmml, "*//ci|*//co|*//cn" ); //
 		int len = identifier.getLength();
-		System.out.println( "found " + len + "elements" );
+		System.out.println( "found " + len + "elements" ); 
 		for ( int i = 0; i < len; i++ ) {
 			list.add( identifier.item( i ).getTextContent().trim() );
 		}
@@ -397,18 +397,33 @@ public final class XMLHelper {
 	}
 
 	public static boolean compareNode (Node nQ, Node nN, Boolean considerLength, Map<String, Node> qvars) {
+		System.out.println("current query tree:");
+		try {
+			System.out.println(printDocument(nQ));
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		System.out.println("current comp tree:");
+		try {
+			System.out.println(printDocument(nN));
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
 		if ( nQ.hasChildNodes() ) {
 			int nQChildLength = nQ.getChildNodes().getLength();
 			if ( nN.hasChildNodes() &&
 				(!considerLength || nQChildLength == nN.getChildNodes().getLength()) ) {
+				//loop through all childnodes
 				for ( int i = 0; i < nQChildLength; i++ ) {
-					System.out.println("recurse to "+ nN.getChildNodes().item( i )+"vs"+nQ.getChildNodes().item( i ));
-					if ( !compareNode( nN.getChildNodes().item( i ), nQ.getChildNodes().item( i ), considerLength, qvars ) ) {
+System.out.println("recurse to "+ nQ.getChildNodes().item( i )+"vs"+nN.getChildNodes().item( i )); //DEBUG
+					if ( !compareNode(nQ.getChildNodes().item( i ), nN.getChildNodes().item( i ), considerLength, qvars ) ) {
 						return false;
 					}
 				}
 			}
 		}
+		//at this point: a)no child nodes in nQ or nN, b)  
+		//check for qvar descendant, add to qvar hashmap for checking
 		if ( nQ.getNodeName().equals( "mws:qvar" ) ) {
 			if ( qvars == null ) {
 				qvars = new HashMap<>();
@@ -421,9 +436,17 @@ public final class XMLHelper {
 				return true;
 			}
 		} else {
-			//Attributes are ignored
-			return ((nQ.getNodeName()!= null) || nQ.getNodeName().equals( nN.getNodeName() )) &&
-				nQ.getNodeValue().trim().equals( nN.getNodeValue().trim() );
+			//Attributes are ignored, child nodelists are not equal in length and/or considerlength is false
+			if (nQ.getNodeName().equals(nN.getNodeName())) {
+				try {
+					return nQ.getNodeValue().trim().equals(nN.getNodeValue().trim());
+				} catch (NullPointerException e) {
+					//NodeValue does not exist
+					return true;
+				}
+			}else {
+				return false;
+			}
 		}
 	}
 
