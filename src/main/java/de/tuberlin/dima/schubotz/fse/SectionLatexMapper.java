@@ -2,9 +2,11 @@ package de.tuberlin.dima.schubotz.fse;
 
 import java.io.Serializable;
 import java.util.Map;
+import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.commons.lang.StringEscapeUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -16,7 +18,9 @@ import eu.stratosphere.util.Collector;
 public class SectionLatexMapper extends FlatMapFunction<String, Tuple2<String,String>> implements Serializable{
 	final static String FILENAME_INDICATOR = "Filename";
 	final static Pattern filnamePattern = Pattern
-				 .compile( "<ARXIVFILESPLIT\\\\n" + FILENAME_INDICATOR + "=\"\\./\\d+/(.*?)/\\1_(\\d+)_(\\d+)\\.xhtml\">" );
+	         .compile( "<ARXIVFILESPLIT\\\\n" + FILENAME_INDICATOR + "=\"\\./\\d+/(.*?)/\\1_(\\d+)_(\\d+)\\.xhtml\">" );
+	
+	String TEX_SPLIT = MainProgram.TEX_SPLIT;
 
 	/**
 	 * The core method of the MapFunction. Takes an element from the input data set and transforms
@@ -39,9 +43,15 @@ public class SectionLatexMapper extends FlatMapFunction<String, Tuple2<String,St
 		Matcher matcher = filnamePattern.matcher( lines[0] );
 		String docID = null;
 		if ( matcher.find() ) {
-			docID = matcher.group( 0 );
+			docID = matcher.group(1) + "_" + matcher.group(2) + "_" + matcher.group(3) + ".xhtml";
+		} else {
+			System.out.println("null docID!");
+			return; 
 		}
 		String latex = "";
+		String curLatex = "";
+		StringTokenizer tok;
+		String nextTok = "";
 		Node node;
 		//Parse string as XML
 		Document doc = XMLHelper.String2Doc(lines[1], false); //string, not namespace aware
@@ -50,7 +60,20 @@ public class SectionLatexMapper extends FlatMapFunction<String, Tuple2<String,St
 		for (int i = 0; i < LatexElements.getLength(); i++ ) {
 			node = LatexElements.item(i); 
 			if (node.getAttributes().getNamedItem("encoding").getNodeValue().equals(new String("application/x-tex"))){ //check if latex
-				latex=latex.concat("<SPLIT>" + node.getFirstChild().getNodeValue()); //ArrayLists non serializable so make do with this...
+				//tokenize latex
+				//from https://github.com/TU-Berlin/mathosphere/blob/TFIDF/math-tests/src/main/java/de/tuberlin/dima/schubotz/fse/MathFormula.java.normalizeTex
+				curLatex = node.getFirstChild().getNodeValue();
+				curLatex = StringEscapeUtils.unescapeHtml(curLatex);
+				curLatex = curLatex.replaceAll("\\\\qvar\\{(.*?)\\}", "");
+				curLatex= curLatex.replace("{", " ");
+				curLatex = curLatex.replace("}", " ");
+				tok = new StringTokenizer(curLatex,"\\()[]+-*:1234567890,; |\t=_^*/.~!<>&\"", true);
+				while (tok.hasMoreTokens()) {
+					nextTok = tok.nextToken();
+					if (!(nextTok.equals(" "))) {
+						latex=latex.concat(TEX_SPLIT + nextTok);//TODO ArrayLists non serializable so make do with this... 
+					}
+				}
 			}
 		}
 
