@@ -109,9 +109,9 @@ public class MainProgram {
 		FlatMapOperator<Tuple4<String, Integer, Integer, StringValue>, Tuple7<String, Integer, Integer, String, String, Double, StringValue>>
 			mathHits = sectionDataSet.flatMap( new FormulaMapper() )
 				.withBroadcastSet( queryDataSet, "Queries" );
-		mathHits.writeAsText( output );
-		/*mathHits.print();
-		ReduceGroupOperator<HitTuple, Tuple2<String, String>>
+		mathHits.writeAsText( output );  /*
+		mathHits.print(); //*/
+		/* ReduceGroupOperator<HitTuple, Tuple2<String, String>>
 			result = mathHits
 			.groupBy(HitTuple.fields.id.ordinal())
 			.sortGroup(HitTuple.fields.score.ordinal(), Order.DESCENDING)
