@@ -404,19 +404,30 @@ public final class XMLHelper {
 			return 0;
 		}
 	}
-	public static double cacluateSimilarityScore(Node query, Node node, Map<String, Node> qvars) throws Exception {
+	public static double cacluateSimilarityScore(Node query, Node node, Map<String, Node> qvars)  {
 		query.normalize();
 		node.normalize();
 		qvars.clear();
-		Node qml = getElementB( query, "//semantics/*[1]" );
-		Node nml = getElementB( node,"//semantics/annotation-xml/*[1]" );
-		if(compareNode( qml,nml, true,qvars )){
-			return 100;
-		} else {
-
-			//TODO add more options here
-			return 0;
+		Node qml = null;
+		try {
+			qml = getElementB( query, "//semantics/*[1]" );
+			Node nml = getElementB( node,"//semantics/annotation-xml/*[1]" );
+			if(compareNode( qml,nml, true,qvars )){
+				return 100.;
+			}
+		} catch ( ParserConfigurationException e ) {
+			e.printStackTrace();
+		} catch ( SAXException e ) {
+			e.printStackTrace();
+		} catch ( IOException e ) {
+			e.printStackTrace();
+		} catch ( XPathExpressionException e ) {
+			e.printStackTrace();
+		} catch ( Exception e ) {
+			e.printStackTrace();
 		}
+			//TODO add more options here
+		return 0.;
 	}
 	public static boolean compareNode (Node nQ, Node nN, Boolean considerLength, Map<String, Node> qvars) throws Exception {
 		/*System.out.println("current query tree:");

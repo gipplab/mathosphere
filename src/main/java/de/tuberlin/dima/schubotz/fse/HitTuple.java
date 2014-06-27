@@ -8,6 +8,7 @@ import org.w3c.dom.Node;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 import java.io.IOException;
+import java.util.Random;
 
 /**
  * Schema according to @url{https://svn.mathweb.org/repos/NTCIR-Math/topics/ntcir11/lib/NTCIR11-results.rnc}
@@ -64,11 +65,12 @@ public class HitTuple extends Tuple5<String, String, String, Double, explicitDat
 	}
 	public Element getNode () throws ParserConfigurationException {
 		Document doc = XMLHelper.getNewDocument();
+		Random random = new Random();
 		Element result = doc.createElement( "hit" );
-		result.setAttribute( "id", "1" );
+		result.setAttribute( "id", (new Integer( random.nextInt())).toString() );
 		result.setAttribute( "xref", getXRef() );
 		result.setAttribute( "score", getScore().toString() );
-		result.setAttribute( "rank", "1" );
+		result.setAttribute( "rank", "unique-rank-string" );
 		for ( FormulaTuple tuple : getFormulae() ) {
 			//TODO: Check if this works
 			Node importedNode = doc.importNode( tuple.getNode(), true );
