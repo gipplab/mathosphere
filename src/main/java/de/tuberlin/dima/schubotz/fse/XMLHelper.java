@@ -408,7 +408,7 @@ public final class XMLHelper {
 		}
 	}
 	public static boolean compareNode (Node nQ, Node nN, Boolean considerLength, Map<String, Node> qvars) throws Exception {
-		System.out.println("current query tree:");
+		/*System.out.println("current query tree:");
 		try {
 			System.out.println(printDocument(nQ));
 		}catch (Exception e) {
@@ -429,7 +429,7 @@ public final class XMLHelper {
 				(!considerLength || nQChildLength == nN.getChildNodes().getLength()) ) {
 				//loop through all childnodes
 				for ( int i = 0; i < nQChildLength; i++ ) {
-					System.out.println("recurse to "+ nQ.getChildNodes().item( i )+"vs"+nN.getChildNodes().item( i )); //DEBUG
+					//System.out.println("recurse to "+ nQ.getChildNodes().item( i )+"vs"+nN.getChildNodes().item( i )); //DEBUG
 					if ( !compareNode(nQ.getChildNodes().item( i ), nN.getChildNodes().item( i ), considerLength, qvars ) ) {
 						return false;
 					}
