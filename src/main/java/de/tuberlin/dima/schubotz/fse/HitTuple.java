@@ -3,6 +3,7 @@ package de.tuberlin.dima.schubotz.fse;
 import eu.stratosphere.api.java.tuple.Tuple5;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
@@ -70,7 +71,8 @@ public class HitTuple extends Tuple5<String, String, String, Double, explicitDat
 		result.setAttribute( "rank", "1" );
 		for ( FormulaTuple tuple : getFormulae() ) {
 			//TODO: Check if this works
-			result.appendChild(  tuple.getNode() );
+			Node importedNode = doc.importNode( tuple.getNode(), true );
+			result.appendChild(  importedNode );
 		}
 		return result;
 	}
