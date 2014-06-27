@@ -45,72 +45,77 @@ public class FormulaMapper extends FlatMapFunction<Tuple4<String, Integer, Integ
 	 *                   to fail and may trigger recovery.
 	 */
 	@Override
-	public void flatMap (Tuple4<String, Integer, Integer, StringValue> value, Collector<Tuple7<String, Integer, Integer, String, String, Double, StringValue>> out)  {
-		NodeList MathMLElements;
-		if ( value == null || value.f3.getValue().length()<10 )
+	public void flatMap (Tuple4<String, Integer, Integer, StringValue> value, Collector<Tuple7<String, Integer, Integer, String, String, Double, StringValue>> out) {
+		NodeList mathMLElements;
+		if ( value == null || value.f3.getValue().length() < 10 )
 			return;
 		try {
 			Document doc = XMLHelper.String2Doc( value.f3.getValue(), false );
 			//System.out.println("processing:"+value.f3.getValue());
-			MathMLElements = XMLHelper.getElementsB( doc, "//math" );
-		for ( int i = 0; i < MathMLElements.getLength(); i++ ) {
+			mathMLElements = XMLHelper.getElementsB( doc, "//math" );
+			// TODO: This loop must loop over queries not formulae
 			for ( Tuple4<String, String, Node, Multiset<String>> entry : formulae ) {
-				Map<String, Node> qvars = new HashMap<>(  );
-				Multiset<String> actualElements;
-				try {
-					actualElements = XMLHelper.getIdentifiersFromCmml( XMLHelper.getElementB( MathMLElements.item( i ), "//semantics/annotation-xml" ) );
-				} catch ( Exception e ){
-					 actualElements =  HashMultiset.create();
-					 e.printStackTrace();
+				Double globalScore=0.;
+				String filename = value.getField( 0 ) + "_" + value.getField( 1 ) + "_" + value.getField( 2 ) + ".xhtml";
+				ResultTuple resultTuple = new ResultTuple();
+				HitTuple hitTuple = new HitTuple();
+				for ( int i = 0; i < mathMLElements.getLength(); i++ ) {
+					Map<String, Node> qvars = new HashMap<>();
+					Multiset<String> actualElements;
+					try {
+						actualElements = XMLHelper.getIdentifiersFromCmml( XMLHelper.getElementB( mathMLElements.item( i ), "//semantics/annotation-xml" ) );
+					} catch ( Exception e ) {
+						actualElements = HashMultiset.create();
+						e.printStackTrace();
+					}
+					double score = 0.;
+					if ( actualElements.size() > 0 )
+						score = XMLHelper.calulateBagScore( entry.f3, actualElements );
+					if ( score > 0. ) {
+						score += XMLHelper.cacluateSimilarityScore( entry.f2, mathMLElements.item( i ), qvars );
+						//System.out.println( "Found result for " + entry.f0 + "(" + entry.f1 + ") in " + value.f0 );
+						FormulaTuple formulaTuple = new FormulaTuple();
+						formulaTuple.setScore( score );
+						String formulaID = mathMLElements.item( i ).getAttributes().getNamedItem( "id" ).getNodeValue();
+						formulaTuple.setXRef( filename + "#" + formulaID );
+						formulaTuple.setFor( entry.f1 );
+						if ( qvars != null ) {
+							explicitDataSet<QVarTuple> qvarDataSet = new explicitDataSet<>();
+							for ( Map.Entry<String, Node> nodeEntry : qvars.entrySet() ) {
+								QVarTuple tuple = new QVarTuple();
+								tuple.setQVar( nodeEntry.getKey() );
+								tuple.setXRef( nodeEntry.getValue().getAttributes().getNamedItem( "id" ).getNodeValue() );
+								qvarDataSet.add( tuple );
+							}
+							formulaTuple.setQVar( qvarDataSet );
+						}
+						resultTuple.setFor( entry.f0 );
+
+						hitTuple.addFormula( formulaTuple );
+						hitTuple.setQueryID( entry.f1 );
+						hitTuple.setScore( globalScore );
+						hitTuple.setXref( filename );
+						resultTuple.addHit( hitTuple );
+
+					}
+					globalScore += score;
 				}
-				double score =0.;
-				if( actualElements.size() > 0 )
-					score = XMLHelper.calulateBagScore( entry.f3, actualElements );
-				if ( score>0.  ) {
-					calculateResult( value, MathMLElements, i, entry, qvars, score );
+				if(globalScore>0.){
+					for ( int j = 0; j < 3; j++ ) {
+						result.setField( value.getField( j ), j );
+					}
+					result.f3 = resultTuple.getFor();
+					result.f4 = filename;//resultTuple.getFor(); //hitTuple.getXRef();
+					result.f5 = globalScore;
+					result.f6 = new StringValue( hitTuple.toString() );
 					out.collect( result );
 				}
 			}
-		}
-		} catch ( Exception e ){
+		} catch ( Exception e ) {
 			e.printStackTrace();
-			return ;
+			return;
 		}
 	}
 
-	private void calculateResult (Tuple4<String, Integer, Integer, StringValue> value, NodeList mathMLElements, int i, Tuple4<String, String, Node, Multiset<String>> entry, Map<String, Node> qvars, double score) {
-		String filename = value.getField( 0 )+"_"+value.getField( 1 )+"_"+value.getField( 2 )+".xhtml";
-		score += XMLHelper.cacluateSimilarityScore( entry.f2, mathMLElements.item( i ), qvars );
-		//System.out.println( "Found result for " + entry.f0 + "(" + entry.f1 + ") in " + value.f0 );
-		ResultTuple resultTuple = new ResultTuple();
-		HitTuple hitTuple = new HitTuple();
-		FormulaTuple formulaTuple = new FormulaTuple();
-		formulaTuple.setScore( score );
-		String formulaID = mathMLElements.item( i ).getAttributes().getNamedItem( "id" ).getNodeValue();
-		formulaTuple.setXRef( formulaID );
-		formulaTuple.setFor( entry.f1 );
-		if ( qvars != null ) {
-			explicitDataSet<QVarTuple> qvarDataSet = new explicitDataSet<>();
-			for ( Map.Entry<String, Node> nodeEntry : qvars.entrySet() ) {
-				QVarTuple tuple = new QVarTuple();
-				tuple.setQVar( nodeEntry.getKey() );
-				tuple.setXRef( nodeEntry.getValue().getAttributes().getNamedItem( "id" ).getNodeValue() );
-				qvarDataSet.add( tuple );
-			}
-			formulaTuple.setQVar( qvarDataSet );
-		}
-		resultTuple.setFor( value.getField( 0 )+"_"+value.getField( 1 )+"_"+value.getField( 2 )+".xhtml");
 
-		hitTuple.addFormula( formulaTuple );
-		hitTuple.setQueryID( entry.f1 );
-		hitTuple.setScore( score );
-		resultTuple.addHit( hitTuple );
-		for ( int j = 0; j < 3; j++ ) {
-			result.setField( value.getField( j ), j );
-		}
-		result.f3 = resultTuple.getFor();
-		result.f4 = resultTuple.getFor(); //hitTuple.getXRef();
-		result.f5 = hitTuple.getScore();
-		result.f6 = new StringValue( hitTuple.toString() );
-	}
 }
