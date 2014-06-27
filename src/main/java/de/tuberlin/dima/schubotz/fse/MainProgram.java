@@ -1,5 +1,6 @@
 package de.tuberlin.dima.schubotz.fse;
 
+import eu.stratosphere.api.common.operators.Order;
 import eu.stratosphere.api.java.DataSet;
 import eu.stratosphere.api.java.ExecutionEnvironment;
 import eu.stratosphere.api.java.io.TextInputFormat;
@@ -109,6 +110,7 @@ public class MainProgram {
 		FlatMapOperator<Tuple4<String, Integer, Integer, StringValue>, Tuple7<String, Integer, Integer, String, String, Double, StringValue>>
 			mathHits = sectionDataSet.flatMap( new FormulaMapper() )
 				.withBroadcastSet( queryDataSet, "Queries" );
+		mathHits.groupBy( 3 ).sortGroup( 5, Order.DESCENDING ).reduceGroup( new FormulaReducer() );
 		//mathHits.writeAsText( output );  /*
 		mathHits.print(); //*/
 		/* ReduceGroupOperator<HitTuple, Tuple2<String, String>>
