@@ -18,19 +18,20 @@ public class XMLHelperTest extends TestCase {
 
     }
 	public void testGrading() throws Exception{
-		String testFile1 = TestUtils.getTestQueryString();
+		String testFile1 = TestUtils.getTestQueryString(); //fQuery.xml
 		//Get nodelist of all <math> descendants of <root><topic>
 		NodeList MathMLElements = XMLHelper.String2NodeList(testFile1, "/topics//math");//"/topics/topic/query/formula/math" topic/query/formula
 
-		//working with f1.1, recurse through and print to test if generated correctly
-
+		Node nl;
 		int count = MathMLElements.getLength();
 		if (count > 0) {
 			HashMap<String, Node> qvars = new HashMap<>();
-			assertEquals( 0., XMLHelper.cacluateSimilarityScore( MathMLElements.item( 1 ), MathMLElements.item( 2 ), qvars ) );
-			assertEquals( 100., XMLHelper.cacluateSimilarityScore( MathMLElements.item( 1 ), MathMLElements.item( 1 ), qvars ) );
+			//assertEquals( 0., XMLHelper.cacluateSimilarityScore( MathMLElements.item( 1 ), MathMLElements.item( 2 ), qvars ) );
+			//assertEquals( 100., XMLHelper.cacluateSimilarityScore( MathMLElements.item( 1 ), MathMLElements.item( 1 ), qvars ) );
 			NodeList testnode = XMLHelper.String2NodeList( TestUtils.getTestResultForTest11(), "*//math" );
-			assertEquals(100., XMLHelper.cacluateSimilarityScore( MathMLElements.item( 10 ), testnode.item( 0 ),  qvars ) );
+			nl = MathMLElements.item(10);
+			System.out.println(XMLHelper.printDocument(nl));
+			assertEquals(100., XMLHelper.cacluateSimilarityScore( MathMLElements.item(11), testnode.item( 0 ),  qvars ) );
 		} else {
 			fail("no math element  ");
 		}
