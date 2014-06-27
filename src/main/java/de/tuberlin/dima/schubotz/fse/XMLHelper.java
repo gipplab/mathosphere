@@ -278,7 +278,7 @@ public final class XMLHelper {
 		try {
 			return builder.parse( is );
 		} catch ( SAXException e ) {
-			System.out.println( "cannot parse followig content\\n\\n" + InputXMLString );
+			System.out.println( "cannot parse following content\\n\\n" + InputXMLString );
 			e.printStackTrace();
 			return null;
 		}
@@ -358,7 +358,7 @@ public final class XMLHelper {
 		//System.out.println(printDocument(cmml));
 		NodeList identifier = getElementsB( cmml, "*//ci|*//co|*//cn" ); //
 		int len = identifier.getLength();
-		System.out.println( "found " + len + "elements" ); 
+		// System.out.println( "found " + len + "elements" );
 		for ( int i = 0; i < len; i++ ) {
 			list.add( identifier.item( i ).getTextContent().trim() );
 		}
@@ -397,15 +397,37 @@ public final class XMLHelper {
 		return xpath.compile( xString );
 	}
 
-	public static double cacluateSimilarityScore(Node nQ, Node nN, Map<String, Node> qvars) throws Exception {
-		nQ.normalize();
-		nN.normalize();
-		if(compareNode( nQ,nN, true,qvars )){
-			return 100;
+	public static double calulateBagScore(Multiset reference, Multiset actual){
+		if (reference.containsAll(  actual )){
+			return  10.;
 		} else {
-			//TODO add more options here
 			return 0;
 		}
+	}
+	public static double cacluateSimilarityScore(Node query, Node node, Map<String, Node> qvars)  {
+		query.normalize();
+		node.normalize();
+		qvars.clear();
+		Node qml = null;
+		try {
+			qml = getElementB( query, "//semantics/*[1]" );
+			Node nml = getElementB( node,"//semantics/annotation-xml/*[1]" );
+			if(compareNode( qml,nml, true,qvars )){
+				return 100.;
+			}
+		} catch ( ParserConfigurationException e ) {
+			e.printStackTrace();
+		} catch ( SAXException e ) {
+			e.printStackTrace();
+		} catch ( IOException e ) {
+			e.printStackTrace();
+		} catch ( XPathExpressionException e ) {
+			e.printStackTrace();
+		} catch ( Exception e ) {
+			e.printStackTrace();
+		}
+			//TODO add more options here
+		return 0.;
 	}
 	public static boolean compareNode (Node nQ, Node nN, Boolean considerLength, Map<String, Node> qvars) throws Exception {
 		/*System.out.println("current query tree:");

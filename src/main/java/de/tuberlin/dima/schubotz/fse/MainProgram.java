@@ -158,9 +158,6 @@ public class MainProgram {
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
-		
-
-		
 
 	}
 
