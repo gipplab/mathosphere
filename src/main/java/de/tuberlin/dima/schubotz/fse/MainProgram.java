@@ -106,11 +106,18 @@ public class MainProgram {
 		DataSet rawQueryText = new DataSource<>( env, formatQueries, BasicTypeInfo.STRING_TYPE_INFO );
 		DataSet<Query> queryDataSet = rawQueryText.flatMap( new QueryMapper() );
 
-		FlatMapOperator<Tuple4<String, Integer, Integer, StringValue>, Tuple7<String, Integer, Integer, String, String, Double, StringValue>> mathHits = sectionDataSet.
-			flatMap( new FormulaMapper() )
-			.withBroadcastSet( queryDataSet,"Queries" );
-
+		FlatMapOperator<Tuple4<String, Integer, Integer, StringValue>, Tuple7<String, Integer, Integer, String, String, Double, StringValue>>
+			mathHits = sectionDataSet.flatMap( new FormulaMapper() )
+				.withBroadcastSet( queryDataSet, "Queries" );
 		mathHits.writeAsText( output );
+		/*mathHits.print();
+		ReduceGroupOperator<HitTuple, Tuple2<String, String>>
+			result = mathHits
+			.groupBy(HitTuple.fields.id.ordinal())
+			.sortGroup(HitTuple.fields.score.ordinal(), Order.DESCENDING)
+			.reduceGroup(new SingleQueryOutput());
+
+		mathHits.print( output );
 
 
 		//Return all matches of query keywords in format SectionTuple, sort by score, reduce to f0, document

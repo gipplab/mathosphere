@@ -1,7 +1,6 @@
 package de.tuberlin.dima.schubotz.fse;
 
 import eu.stratosphere.api.java.tuple.Tuple5;
-import eu.stratosphere.types.DoubleValue;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -13,7 +12,7 @@ import java.io.IOException;
  * Schema according to @url{https://svn.mathweb.org/repos/NTCIR-Math/topics/ntcir11/lib/NTCIR11-results.rnc}
  * formula = element formula {id.att & score.att & xref.att & for.att & qvar*}
  */
-public class FormulaTuple extends Tuple5<Integer, String, String, DoubleValue, explicitDataSet<QVarTuple>> {
+public class FormulaTuple extends Tuple5<Integer, String, String, Double, explicitDataSet<QVarTuple>> {
 	public explicitDataSet<QVarTuple> getQVar () {
 		return getField( fields.qvar.ordinal() );
 	}
@@ -47,13 +46,14 @@ public class FormulaTuple extends Tuple5<Integer, String, String, DoubleValue, e
 	}
 
 	public Double getScore () {
-		DoubleValue field = getField( fields.id.ordinal() );
-		return field.getValue();
+		Double score = getField( fields.score.ordinal() );
+		if (score == null )
+			score =0.;
+		return score;
 	}
 
 	public void setScore (Double score) {
-		DoubleValue field = new DoubleValue( score );
-		setField( field, fields.score.ordinal() );
+		setField( score, fields.score.ordinal() );
 	}
 	public Element getNode () throws ParserConfigurationException {
 		Document doc = XMLHelper.getNewDocument();

@@ -1,8 +1,8 @@
 package de.tuberlin.dima.schubotz.fse;
 
 
+import com.google.common.collect.Multiset;
 import eu.stratosphere.api.java.functions.FlatMapFunction;
-import eu.stratosphere.api.java.tuple.Tuple3;
 import eu.stratosphere.api.java.tuple.Tuple4;
 import eu.stratosphere.api.java.tuple.Tuple7;
 import eu.stratosphere.configuration.Configuration;
@@ -13,11 +13,12 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
 
 public class FormulaMapper extends FlatMapFunction<Tuple4<String, Integer, Integer, StringValue>, Tuple7<String, Integer, Integer, String, String, Double, StringValue>> {
 	private final Tuple7<String, Integer, Integer, String, String, Double, StringValue> result = new Tuple7<>();
-	private explicitDataSet<Tuple3<String, String, Node>> formulae;
+	private explicitDataSet<Tuple4<String, String, Node, Multiset<String>>> formulae;
 
 	@Override
 	public void open (Configuration parameters) throws Exception {
@@ -27,7 +28,7 @@ public class FormulaMapper extends FlatMapFunction<Tuple4<String, Integer, Integ
 		for ( Query query : queries ) {
 			for ( Map.Entry<String, String> formula : query.formulae.entrySet() ) {
 				Node node = XMLHelper.String2Doc( formula.getValue(), false );
-				formulae.add( new Tuple3<>( query.name, formula.getKey(), node ) );
+				formulae.add( new Tuple4<>( query.name, formula.getKey(), node, XMLHelper.getIdentifiersFrom( formula.getValue() ) ) );
 			}
 		}
 		super.open( parameters );
@@ -50,15 +51,21 @@ public class FormulaMapper extends FlatMapFunction<Tuple4<String, Integer, Integ
 		//System.out.println("processing:"+value.f3.getValue());
 		NodeList MathMLElements = XMLHelper.getElementsB( doc, "//math" );
 		for ( int i = 0; i < MathMLElements.getLength(); i++ ) {
-			for ( Tuple3<String, String, Node> entry : formulae ) {
-				Map<String, Node> qvars = null;
-				if ( XMLHelper.compareNode( entry.f2, MathMLElements.item( i ), false, qvars ) ) {
-					System.out.println("Found result for "+entry.f0+"("+entry.f1+") in " + value.f0 );
+			for ( Tuple4<String, String, Node, Multiset<String>> entry : formulae ) {
+				Map<String, Node> qvars = new HashMap<>(  );
+				Multiset<String> actualElements = XMLHelper.getIdentifiersFromCmml( XMLHelper.getElementB( MathMLElements.item( i ), "./semantics/annotation-xml" ) );
+				double score =0.;
+				if( actualElements.size() > 0 )
+					score = XMLHelper.calulateBagScore( entry.f3, actualElements );
+				if ( score>0.  ) {
+					score += XMLHelper.cacluateSimilarityScore( entry.f2, MathMLElements.item( i ), qvars );
+					//System.out.println( "Found result for " + entry.f0 + "(" + entry.f1 + ") in " + value.f0 );
 					ResultTuple resultTuple = new ResultTuple();
 					HitTuple hitTuple = new HitTuple();
 					FormulaTuple formulaTuple = new FormulaTuple();
+					formulaTuple.setScore( score );
 					String formulaID = MathMLElements.item( i ).getAttributes().getNamedItem( "id" ).getNodeValue();
-					formulaTuple.setXRef(  formulaID );
+					formulaTuple.setXRef( formulaID );
 					if ( qvars != null ) {
 						explicitDataSet<QVarTuple> qvarDataSet = new explicitDataSet<>();
 						for ( Map.Entry<String, Node> nodeEntry : qvars.entrySet() ) {
@@ -69,15 +76,17 @@ public class FormulaMapper extends FlatMapFunction<Tuple4<String, Integer, Integ
 						}
 						formulaTuple.setQVar( qvarDataSet );
 					}
-					hitTuple.addFormula(formulaTuple);
+					resultTuple.setFor( value.getField( 0 )+"_"+value.getField( 1 )+"_"+value.getField( 2 )+".xhtml");
+
+					hitTuple.addFormula( formulaTuple );
 					hitTuple.setQueryID( entry.f1 );
-					hitTuple.setScore( 100. );
+					hitTuple.setScore( score );
 					resultTuple.addHit( hitTuple );
 					for ( int j = 0; j < 3; j++ ) {
 						result.setField( value.getField( j ), j );
 					}
 					result.f3 = resultTuple.getFor();
-					result.f4 = hitTuple.getXRef();
+					result.f4 = resultTuple.getFor(); //hitTuple.getXRef();
 					result.f5 = hitTuple.getScore();
 					result.f6 = new StringValue( hitTuple.toString() );
 					out.collect( result );

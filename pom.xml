@@ -62,12 +62,14 @@
                             </manifestEntries>
                         </transformer>
                     </transformers>
+<!-- Seems to be invalid
                     <archive>
                     	<manifest>
                     		<addClasspath>true</addClasspath>
                     		<mainClass>de.tuberlin.dima.schubotz.fse.MainProgram</mainClass>
                     	</manifest>
                     </archive>
+-->
                 </configuration>
                 <executions>
                     <execution>

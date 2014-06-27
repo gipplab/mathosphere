@@ -38,8 +38,12 @@ public class ResultTuple extends Tuple3<String, Double, explicitDataSet<HitTuple
 		setField( runtime, fields.runtime.ordinal() );
 	}
 
+	public void setXRef (String XRef) {
+		setField( XRef, fields.xref.ordinal() ) ;
+	}
+
 	public enum fields {
-		aFor, runtime, hits
+		aFor, runtime, hits,xref
 	}
 
 }
