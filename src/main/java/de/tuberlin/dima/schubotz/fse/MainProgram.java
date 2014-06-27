@@ -1,31 +1,24 @@
 package de.tuberlin.dima.schubotz.fse;
 
-import eu.stratosphere.api.common.operators.Order;
-import eu.stratosphere.api.java.DataSet;
-import eu.stratosphere.api.java.ExecutionEnvironment;
-import eu.stratosphere.api.java.io.TextInputFormat;
-import eu.stratosphere.api.java.io.TextOutputFormat;
-import eu.stratosphere.api.java.operators.DataSource;
-import eu.stratosphere.api.java.operators.FlatMapOperator;
-import eu.stratosphere.api.java.operators.SortedGrouping;
-import eu.stratosphere.api.java.tuple.Tuple2;
-import eu.stratosphere.api.java.tuple.Tuple3;
-import eu.stratosphere.api.java.tuple.Tuple4;
-import eu.stratosphere.api.java.tuple.Tuple6;
-import eu.stratosphere.api.java.tuple.Tuple7;
-import eu.stratosphere.api.java.typeutils.BasicTypeInfo;
-import eu.stratosphere.core.fs.FileSystem.WriteMode;
-import eu.stratosphere.core.fs.Path;
-import eu.stratosphere.types.StringValue;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPathExpressionException;
 
-import java.util.HashMap;
-import java.util.Map;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import eu.stratosphere.api.common.operators.Order;
+import eu.stratosphere.api.java.DataSet;
+import eu.stratosphere.api.java.ExecutionEnvironment;
+import eu.stratosphere.api.java.io.TextInputFormat;
+import eu.stratosphere.api.java.operators.DataSource;
+import eu.stratosphere.api.java.tuple.Tuple2;
+import eu.stratosphere.api.java.tuple.Tuple6;
+import eu.stratosphere.api.java.typeutils.BasicTypeInfo;
+import eu.stratosphere.core.fs.FileSystem.WriteMode;
+import eu.stratosphere.core.fs.Path;
 
 /**
  * Performs the queries for the NTCIR-Math11-Workshop 2014 fully automated.
@@ -116,7 +109,7 @@ public class MainProgram {
 		//Set up querydataset
 		TextInputFormat formatQueries = new TextInputFormat( new Path( queryInput ) );
 		formatQueries.setDelimiter( "</topic>" ); 
-		DataSet rawQueryText = new DataSource<>( env, formatQueries, BasicTypeInfo.STRING_TYPE_INFO ); //TODO: something is blank - maybe in how it splits
+		DataSet<String> rawQueryText = new DataSource<>( env, formatQueries, BasicTypeInfo.STRING_TYPE_INFO ); //TODO: something is blank - maybe in how it splits
 		
 		
 		/**TODO IMPLEMENT ADDITIONAL SCORING METHODS */

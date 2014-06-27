@@ -1,9 +1,7 @@
 package de.tuberlin.dima.schubotz.fse;
 
-import java.io.IOException;
 import java.util.Iterator;
 
-import eu.stratosphere.api.common.io.FileOutputFormat;
 import eu.stratosphere.api.java.functions.GroupReduceFunction;
 import eu.stratosphere.api.java.tuple.Tuple3;
 import eu.stratosphere.api.java.tuple.Tuple6;

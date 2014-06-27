@@ -1,10 +1,7 @@
 package de.tuberlin.dima.schubotz.fse;
 
 import java.io.Serializable;
-import java.util.Map;
 import java.util.StringTokenizer;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.apache.commons.lang.StringEscapeUtils;
 import org.w3c.dom.Document;
