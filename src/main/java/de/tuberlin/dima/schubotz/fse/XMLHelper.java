@@ -541,6 +541,7 @@ public final class XMLHelper {
 		/* (non-Javadoc)
 		 * @see org.w3c.dom.NodeList#item(int)
 		 */
+		@Override
 		public Node item (int index) {
 			return nodes.get( index );
 		}
@@ -548,6 +549,7 @@ public final class XMLHelper {
 		/* (non-Javadoc)
 		 * @see org.w3c.dom.NodeList#getLength()
 		 */
+		@Override
 		public int getLength () {
 			return nodes.size();
 		}
@@ -555,6 +557,7 @@ public final class XMLHelper {
 		/* (non-Javadoc)
 		 * @see java.lang.Iterable#iterator()
 		 */
+		@Override
 		public Iterator<Node> iterator () {
 			return nodes.iterator();
 		}
