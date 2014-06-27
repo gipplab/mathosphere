@@ -175,7 +175,7 @@ public final class XMLHelper {
 		Document doc = String2Doc( InputXMLString, false );
 		XPathFactory factory = XPathFactory.newInstance();
 		XPath xpath = factory.newXPath();
-		XPathExpression expr = xpath.compile( XPath );
+		XPathExpression expr = xpath.compile( XPath ); //compile XML tag extractor sent as param
 
 		Object result = expr.evaluate( doc, XPathConstants.NODESET );
 		return (NodeList) result;
@@ -256,7 +256,7 @@ public final class XMLHelper {
 	public static NodeList getElementsB (Node node, String xString) throws ParserConfigurationException, SAXException,
 		IOException, XPathExpressionException {
 		XPathExpression xPath = compileX( xString );
-		return (NodeList) xPath.evaluate( node, XPathConstants.NODESET );
+		return (NodeList) xPath.evaluate(node, XPathConstants.NODESET);
 
 	}
 
@@ -429,15 +429,14 @@ public final class XMLHelper {
 				(!considerLength || nQChildLength == nN.getChildNodes().getLength()) ) {
 				//loop through all childnodes
 				for ( int i = 0; i < nQChildLength; i++ ) {
-					System.out.println("recurse to "+ nQ.getChildNodes().item( i )+"vs"+nN.getChildNodes().item( i )); //DEBUG
+					//System.out.println("recurse to "+ nQ.getChildNodes().item( i )+"vs"+nN.getChildNodes().item( i )); //DEBUG
 					if ( !compareNode(nQ.getChildNodes().item( i ), nN.getChildNodes().item( i ), considerLength, qvars ) ) {
 						return false;
 					}
 				}
 			}
-		}
-		//at this point: a)no child nodes in nQ or nN, b)  
-		//check for qvar descendant, add to qvar hashmap for checking
+		}  
+		//check for qvar descendant, add to qvar hashmap for checking (required for checking multiple qvars)
 		if ( nQ.getNodeName().equals( "mws:qvar" ) ) {
 			String qvarName = nQ.getAttributes().getNamedItem( "name" ).getNodeValue();
 			if ( qvars.containsKey( qvarName ) ) {
@@ -447,7 +446,7 @@ public final class XMLHelper {
 				return true;
 			}
 		} else {
-			//Attributes are ignored, child nodelists are not equal in length and/or considerlength is false
+			//Attributes are ignored; child nodelists are not equal in length and considerlength is false OR reached lowest level: therefore check nodevalue
 			if (nQ.getNodeName().equals(nN.getNodeName())) {
 				try {
 					return nQ.getNodeValue().trim().equals(nN.getNodeValue().trim());
