@@ -21,6 +21,8 @@ public class SectionLatexMapper extends FlatMapFunction<String, Tuple2<String,St
 	         .compile( "<ARXIVFILESPLIT\\\\n" + FILENAME_INDICATOR + "=\"\\./\\d+/(.*?)/\\1_(\\d+)_(\\d+)\\.xhtml\">" );
 	
 	String TEX_SPLIT = MainProgram.TEX_SPLIT;
+	
+	//static int counter = 0; //DEBUG
 
 	/**
 	 * The core method of the MapFunction. Takes an element from the input data set and transforms
@@ -48,6 +50,8 @@ public class SectionLatexMapper extends FlatMapFunction<String, Tuple2<String,St
 			System.out.println("null docID!");
 			return; 
 		}
+		//counter++;
+		//System.out.println(docID + String.valueOf(counter)); //DEBUG
 		String latex = "";
 		String curLatex = "";
 		StringTokenizer tok;
@@ -62,7 +66,11 @@ public class SectionLatexMapper extends FlatMapFunction<String, Tuple2<String,St
 			if (node.getAttributes().getNamedItem("encoding").getNodeValue().equals(new String("application/x-tex"))){ //check if latex
 				//tokenize latex
 				//from https://github.com/TU-Berlin/mathosphere/blob/TFIDF/math-tests/src/main/java/de/tuberlin/dima/schubotz/fse/MathFormula.java.normalizeTex
-				curLatex = node.getFirstChild().getNodeValue();
+				try {
+					curLatex = node.getFirstChild().getNodeValue();
+				} catch (NullPointerException e) {
+					continue;
+				}
 				curLatex = StringEscapeUtils.unescapeHtml(curLatex);
 				curLatex = curLatex.replaceAll("\\\\qvar\\{(.*?)\\}", "");
 				curLatex= curLatex.replace("{", " ");
