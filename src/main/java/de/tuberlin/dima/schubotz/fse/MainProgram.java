@@ -109,7 +109,7 @@ public class MainProgram {
 		FlatMapOperator<Tuple4<String, Integer, Integer, StringValue>, Tuple7<String, Integer, Integer, String, String, Double, StringValue>>
 			mathHits = sectionDataSet.flatMap( new FormulaMapper() )
 				.withBroadcastSet( queryDataSet, "Queries" );
-		mathHits.writeAsText( output );  /*
+		//mathHits.writeAsText( output );  /*
 		mathHits.print(); //*/
 		/* ReduceGroupOperator<HitTuple, Tuple2<String, String>>
 			result = mathHits
