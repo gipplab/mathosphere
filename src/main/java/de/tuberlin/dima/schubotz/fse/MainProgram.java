@@ -1,23 +1,24 @@
 package de.tuberlin.dima.schubotz.fse;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.xpath.XPathExpressionException;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import eu.stratosphere.api.common.operators.Order;
 import eu.stratosphere.api.java.DataSet;
 import eu.stratosphere.api.java.ExecutionEnvironment;
 import eu.stratosphere.api.java.io.TextInputFormat;
 import eu.stratosphere.api.java.operators.DataSource;
-import eu.stratosphere.api.java.operators.FlatMapOperator;
-import eu.stratosphere.api.java.tuple.Tuple4;
-import eu.stratosphere.api.java.tuple.Tuple7;
+import eu.stratosphere.api.java.tuple.Tuple2;
+import eu.stratosphere.api.java.tuple.Tuple6;
 import eu.stratosphere.api.java.typeutils.BasicTypeInfo;
+import eu.stratosphere.core.fs.FileSystem.WriteMode;
 import eu.stratosphere.core.fs.Path;
-import eu.stratosphere.types.StringValue;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.xpath.XPathExpressionException;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Performs the queries for the NTCIR-Math11-Workshop 2014 fully automated.
@@ -47,6 +48,11 @@ public class MainProgram {
 	 * The Constant LOG.
 	 */
 	private static final Log LOG = LogFactory.getLog( MainProgram.class );
+	
+	public static final String TEX_SPLIT = "<S>";
+	
+	public static final String RUNTAG_LATEX = "fse_LATEX";
+	
 	public static Map<String, String> TeXQueries = new HashMap<String, String>();
 	// set up execution environment
 	static ExecutionEnvironment env;
@@ -76,7 +82,7 @@ public class MainProgram {
 		queryInput = (args.length > 2 ? args[2]
 			: "file:///mnt/ntcir-math/queries/fQuery.xml");
 		output = (args.length > 3 ? args[3]
-			: "file:///mnt/ntcir-math/test-output/testout-" + System.currentTimeMillis() + ".xml");
+			: "file:///mnt/ntcir-math/test-output/LATEXtestout-" + System.currentTimeMillis() + ".xml");
 	}
 
 	public static void main (String[] args) throws Exception {
@@ -98,66 +104,60 @@ public class MainProgram {
 		format.setDelimiter( DOCUMENT_SEPARATOR );
 		//rawArticleText format: data set of strings, delimited by <ARXIFFILESPLIT>
 		DataSet<String> rawArticleText = new DataSource<>( env, format, BasicTypeInfo.STRING_TYPE_INFO );
-		DataSet<Tuple4<String, Integer, Integer, StringValue>> sectionDataSet = rawArticleText.map( new TitleExtractionMapper() );
-
-
+		
+		
 		//Set up querydataset
 		TextInputFormat formatQueries = new TextInputFormat( new Path( queryInput ) );
-		formatQueries.setDelimiter( "</topics>" ); //Do not split topics
-		DataSet rawQueryText = new DataSource<>( env, formatQueries, BasicTypeInfo.STRING_TYPE_INFO );
-		DataSet<Query> queryDataSet = rawQueryText.flatMap( new QueryMapper() );
-
-		FlatMapOperator<Tuple4<String, Integer, Integer, StringValue>, Tuple7<String, Integer, Integer, String, String, Double, StringValue>>
-			mathHits = sectionDataSet.flatMap( new FormulaMapper() )
-				.withBroadcastSet( queryDataSet, "Queries" );
-		mathHits.groupBy( 3 ).sortGroup( 5, Order.DESCENDING ).reduceGroup( new FormulaReducer() );
-		//mathHits.writeAsText( output );  /*
-		mathHits.print(); //*/
-		/* ReduceGroupOperator<HitTuple, Tuple2<String, String>>
-			result = mathHits
-			.groupBy(HitTuple.fields.id.ordinal())
-			.sortGroup(HitTuple.fields.score.ordinal(), Order.DESCENDING)
-			.reduceGroup(new SingleQueryOutput());
-
-		mathHits.print( output );
-
-
-		//Return all matches of query keywords in format SectionTuple, sort by score, reduce to f0, document
-		//SingleQueryOutput outputs XML document as well
-
-		//queryDataSet.print();
-		//DataSet<SectionTuple> articleDataSet = rawArticleText.map( new SectionMapper() ).withBroadcastSet( queryDataSet, "Queries" );
-		//ProjectOperator<SectionTuple, Tuple2<SectionNameTuple, explicitDataSet>> formulaMatches = articleDataSet.project( SectionTuple.fields.name.ordinal(),
-	//		SectionTuple.fields.formulae.ordinal() ).types( SectionNameTuple.class, explicitDataSet.class );
-		//Projection<SectionTuple> keyWordMatches = articleDataSet.project(SectionTuple.fields.name.ordinal(),
-		//        SectionTuple.fields.keywords.ordinal());
-
-
-		/*result = mathHits
-                .groupBy(1)
-        DataSet<SectionTuple> articleDataSet = rawArticleText.flatMap(new SectionMapper()).withBroadcastSet(queryDataSet, "Queries");
-        articleDataSet.writeAsText(output);
-       /* ReduceGroupOperator<HitTuple, Tuple2<String, String>> result = articleDataSet
-                .groupBy(HitTuple.fields.id.ordinal())
-                .sortGroup(HitTuple.fields.score.ordinal(), Order.DESCENDING)
-                .reduceGroup(new SingleQueryOutput());
-        result.writeAsText(output);
-        
-        
-        /* Demo that produces document ID and num of formulae - uses old code
-        DataSet<Tuple2<String, Integer>> articleDataSet = rawArticleText.flatMap(new ArticleMapper()).withBroadcastSet(queryDataSet, "Queries");
-        articleDataSet.writeAsText(output);
-        */
-
-
-		//PHASE A: PLAIN TEXT SEARCH
-		//Step 1. Loop through documents.
-
-
-		//Step 2. Extract plain text
-
-		//Step 3. Filter queries based on whether plain text contains ALL of their keywords
-
+		formatQueries.setDelimiter( "</topic>" ); 
+		DataSet<String> rawQueryText = new DataSource<>( env, formatQueries, BasicTypeInfo.STRING_TYPE_INFO ); //TODO: something is blank - maybe in how it splits
+		
+		
+		/**TODO IMPLEMENT ADDITIONAL SCORING METHODS */
+		
+		
+		/**PHASE A: extract LaTeX, tokenize*/
+		//returns doc/query id, tokenized latex split by <S>
+		DataSet<Tuple2<String,String>> queryDataSet = null;
+		DataSet<Tuple2<String,String>> sectionDataSet = null; 
+		try {
+			queryDataSet = rawQueryText.flatMap(new QueryLatexMapper());
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		try {
+			sectionDataSet = rawArticleText.flatMap(new SectionLatexMapper());
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		
+		
+		
+		/**PHASE B: compare LaTeX, get number of hits, group by ID, sort by score, limit to 20 per query, genreate rank and runtag */
+		//TODO fix null result as a result of split? maybe keep this as it makes sure score is at least 1
+		//returns queryid,1,docid,,rank,numhits,runtag
+		//TODO optimize so that queryid,docid are seen by Stratosphere as constants
+		DataSet<Tuple6<String,Integer,String,Integer,Integer,String>> latexMatches = null;
+		try {
+			 latexMatches= sectionDataSet.flatMap(new QuerySectionMatcher())
+					 					  .withBroadcastSet(queryDataSet, "Queries")
+										  //Group by queryid
+										  .groupBy(0)
+										  //Sort by score: result: queryid, docid, numhits
+										  .sortGroup(2, Order.DESCENDING)
+										  //Limit to 20 per query (20x50=1000), add rank/score
+										  .reduceGroup(new OutputSimple());
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+			
+		
+		/**PHASE C: output*/
+		try {
+			//latexMatches.writeAsCsv("/home/jjl4/testRegExp.txt","\n"," ",WriteMode.OVERWRITE); //DEBUG 
+			latexMatches.writeAsCsv(output,"\n"," ",WriteMode.OVERWRITE);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
 
 	}
 

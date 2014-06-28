@@ -3,7 +3,6 @@ package de.tuberlin.dima.schubotz.fse;
 import com.google.common.collect.Multiset;
 import eu.stratosphere.api.java.tuple.Tuple2;
 import junit.framework.TestCase;
-import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
@@ -18,12 +17,11 @@ public class XMLHelperTest extends TestCase {
 
     }
 	public void testGrading() throws Exception{
-		String testFile1 = TestUtils.getTestQueryString();
+		String testFile1 = TestUtils.getTestQueryString(); //fQuery.xml
 		//Get nodelist of all <math> descendants of <root><topic>
 		NodeList MathMLElements = XMLHelper.String2NodeList(testFile1, "/topics//math");//"/topics/topic/query/formula/math" topic/query/formula
 
-		//working with f1.1, recurse through and print to test if generated correctly
-
+		Node nl;
 		int count = MathMLElements.getLength();
 		if (count > 0) {
 			HashMap<String, Node> qvars = new HashMap<>();
@@ -57,7 +55,6 @@ public class XMLHelperTest extends TestCase {
 
     public void testGetMMLLeaves() throws Exception {
         String testFile1 = TestUtils.getTestQueryString();
-        Document doc = XMLHelper.String2Doc(testFile1, false);
         NodeList MathMLElements = XMLHelper.String2NodeList(testFile1, "/topics//math");//"/topics/topic/query/formula/math" topic/query/formula
         int count = MathMLElements.getLength();
         if (count > 0) {
@@ -71,7 +68,6 @@ public class XMLHelperTest extends TestCase {
 
     public void testGetIdentifiersFromCmml() throws Exception {
         String testFile1 = TestUtils.getTestQueryString();
-        Document doc = XMLHelper.String2Doc(testFile1, false);
         NodeList MathMLElements = XMLHelper.String2NodeList(testFile1, "/topics//math/semantics/*[1]");//"/topics/topic/query/formula/math" topic/query/formula
         int count = MathMLElements.getLength();
         if (count > 0) {
