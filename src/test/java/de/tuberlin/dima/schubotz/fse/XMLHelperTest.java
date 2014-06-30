@@ -1,15 +1,18 @@
 package de.tuberlin.dima.schubotz.fse;
 
-import com.google.common.collect.Multiset;
-import eu.stratosphere.api.java.tuple.Tuple2;
-import junit.framework.TestCase;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
+import static de.tuberlin.dima.schubotz.fse.XMLHelper.getIdentifiersFromCmml;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import static de.tuberlin.dima.schubotz.fse.XMLHelper.getIdentifiersFromCmml;
+import junit.framework.TestCase;
+
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+
+import com.google.common.collect.Multiset;
+
+import eu.stratosphere.api.java.tuple.Tuple2;
 
 public class XMLHelperTest extends TestCase {
 

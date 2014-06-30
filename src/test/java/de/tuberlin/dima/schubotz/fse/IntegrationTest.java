@@ -1,9 +1,10 @@
 package de.tuberlin.dima.schubotz.fse;
 
+import org.junit.Test;
+
 import eu.stratosphere.api.common.Plan;
 import eu.stratosphere.api.java.ExecutionEnvironment;
 import eu.stratosphere.client.LocalExecutor;
-import org.junit.Test;
 
 public class IntegrationTest {
     @Test

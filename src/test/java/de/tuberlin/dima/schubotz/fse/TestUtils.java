@@ -1,9 +1,9 @@
 package de.tuberlin.dima.schubotz.fse;
 
-import eu.stratosphere.core.fs.Path;
-
 import java.io.InputStream;
 import java.util.Scanner;
+
+import eu.stratosphere.core.fs.Path;
 
 public class TestUtils {
     private final static String testQueryString = getFileContents("fQuery.xml");
