@@ -1,7 +1,5 @@
 package de.tuberlin.dima.schubotz.fse;
 
-import java.io.Serializable;
-
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -9,9 +7,8 @@ import org.w3c.dom.NodeList;
 import eu.stratosphere.api.java.functions.FlatMapFunction;
 import eu.stratosphere.util.Collector;
 
-public class QueryMapper extends FlatMapFunction<String, QueryTuple> implements Serializable{
+public class QueryMapper extends FlatMapFunction<String, QueryTuple> {
 	String TEX_SPLIT = MainProgram.STR_SPLIT;
-
 	
 	/**
 	 * The core method of the MapFunction. Takes an element from the input data set and transforms
@@ -25,6 +22,7 @@ public class QueryMapper extends FlatMapFunction<String, QueryTuple> implements 
 	@Override
 	public void flatMap (String value, Collector<QueryTuple> out) throws Exception {
 		Node node; 
+		String[] tokens;
 		
 		//Deal with edge cases left by Stratosphere split on <topic>
 		if ( value.trim().length() == 0 || value.startsWith("\r\n</topics>")) return; 
@@ -51,7 +49,10 @@ public class QueryMapper extends FlatMapFunction<String, QueryTuple> implements 
 		for (int i = 0; i < KeyWordElements.getLength(); i++ ) {
 			node = KeyWordElements.item(i); 
 			try {
-				tup.addKeyword(node.getFirstChild().getNodeValue());
+				tokens = node.getFirstChild().getNodeValue().toLowerCase().split( "\\W+" );
+				for (String token : tokens) {
+					tup.addKeyword(token);
+				}
 			} catch (NullPointerException e) {
 				continue;
 			}

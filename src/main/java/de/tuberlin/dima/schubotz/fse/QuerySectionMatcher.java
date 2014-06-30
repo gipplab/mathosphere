@@ -5,8 +5,6 @@ import java.util.Collection;
 import java.util.HashSet;
 
 import eu.stratosphere.api.java.functions.FlatMapFunction;
-import eu.stratosphere.api.java.tuple.Tuple2;
-import eu.stratosphere.api.java.tuple.Tuple3;
 import eu.stratosphere.util.Collector;
 
 public class QuerySectionMatcher extends FlatMapFunction<SectionTuple,ResultTuple> {
@@ -25,8 +23,9 @@ public class QuerySectionMatcher extends FlatMapFunction<SectionTuple,ResultTupl
 	public void flatMap(SectionTuple in,Collector<ResultTuple> out) {
 		HashSet<String> a;
 		HashSet<String> b;
-		Integer hits = new Integer(0);
-		//Takes in sectionID, latex string tokenized split by <S>, outputs QueryID,DocID,Numhits
+		int latexHits = 0;
+		int keywordHits = 0;
+		//Takes in sectionID, latex string tokenized split by <S>, outputs QueryID,DocID,NumlatexHits
 		HashSet<String> sectionLatex = new HashSet<String>(Arrays.asList(in.getLatex().split(TEX_SPLIT))); //split into set
 		Collection<QueryTuple> queries = getRuntimeContext().getBroadcastVariable("Queries");
 		boolean sectionLarger;
@@ -45,11 +44,12 @@ public class QuerySectionMatcher extends FlatMapFunction<SectionTuple,ResultTupl
 			}
 			for (String e : a) {
 				if (b.contains(e)) {
-					hits++;
+					latexHits++;
 				}
 			}
-			out.collect(new ResultTuple(query.getID(),in.getID(),hits));
-			hits = 0;
+			//TODO KEYWORD MATCHING: KEYWORDS ARE IN LATEX AS WELL AS IN PLAINTEXT 
+			out.collect(new ResultTuple(query.getID(),in.getID(),latexHits));
+			latexHits = 0;
 		}
 	}
 
