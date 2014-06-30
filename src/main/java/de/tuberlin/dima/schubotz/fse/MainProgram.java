@@ -137,14 +137,15 @@ public class MainProgram {
 		// TODO IMPLEMENT ADDITIONAL SCORING METHODS 
 		
 		
-		
 		/**PHASE A: extract LaTeX and keywords */
 		//TODO extract plaintext from query as well?
 		DataSet<QueryTuple> queryDataSet = rawQueryText.flatMap(new QueryMapper());
 		DataSet<SectionTuple> sectionDataSet = rawArticleText.flatMap(new SectionMapper()); 
 		
 		
-		/**PHASE B: compare LaTeX, get number of hits, group by ID, sort by score, limit to 1000 per query, generate rank and runtag */
+		queryDataSet.writeAsCsv("/home/jjl4/testRegExp.txt","\n",",",WriteMode.OVERWRITE); //DEBUG
+/*		
+		*//**PHASE B: compare LaTeX, get number of hits, group by ID, sort by score, limit to 1000 per query, generate rank and runtag *//*
 		//TODO fix null result as a result of split? maybe keep this as it makes sure score is at least 1
 		DataSet<ResultTuple> latexMatches = sectionDataSet.flatMap(new QuerySectionMatcher())
 														  .withBroadcastSet(queryDataSet, "Queries"); 
@@ -155,14 +156,14 @@ public class MainProgram {
 														.sortGroup(2, Order.DESCENDING) 
 														.reduceGroup(new OutputSimple());			
 		
-		/**PHASE C: output*/
+		*//**PHASE C: output*//*
 		try {
 			output.writeAsCsv("/home/jjl4/testRegExp.txt","\n"," ",WriteMode.OVERWRITE); //DEBUG 
 			//latexMatches.writeAsCsv(output,"\n"," ",WriteMode.OVERWRITE);
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
-
+*/
 	}
 
 

@@ -13,8 +13,11 @@ public class LatexHelper {
 	public static StringTokenizer tokenize (String latex) {
 		latex = StringEscapeUtils.unescapeHtml(latex);
 		latex = latex.replaceAll("\\\\qvar\\{(.*?)\\}", "");
-		latex= latex.replace("{", " ");
+		latex = latex.replace("{", " ");
 		latex = latex.replace("}", " ");
+		latex = latex.replace("\n","");
+		latex = latex.replace("\r","");
+		latex = latex.trim();
 		StringTokenizer tok = new StringTokenizer(latex,"\\()[]+-*:1234567890,; |\t=_^*/.~!<>&\"", true);
 		return tok;
 	}

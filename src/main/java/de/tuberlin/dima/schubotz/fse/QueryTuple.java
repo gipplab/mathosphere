@@ -44,7 +44,7 @@ public class QueryTuple extends Tuple3<String,String,String> {
 		return this.f1;
 	}
 	public void addKeyword (String keyword) {
-		this.f2.concat(split + keyword);
+		this.f2 = this.f2.concat(split.concat(keyword));
 	}
 	public enum fields {
 		queryid,latex,keywords
