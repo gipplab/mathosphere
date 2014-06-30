@@ -53,6 +53,8 @@ public class MainProgram {
 	
 	public static final String RUNTAG_LATEX = "fse_LATEX";
 	
+	public static final int QUERYLIMIT = 1000; 
+	
 	public static Map<String, String> TeXQueries = new HashMap<String, String>();
 	// set up execution environment
 	static ExecutionEnvironment env;
@@ -132,7 +134,7 @@ public class MainProgram {
 		
 		
 		
-		/**PHASE B: compare LaTeX, get number of hits, group by ID, sort by score, limit to 20 per query, genreate rank and runtag */
+		/**PHASE B: compare LaTeX, get number of hits, group by ID, sort by score, limit to 1000 per query, generate rank and runtag */
 		//TODO fix null result as a result of split? maybe keep this as it makes sure score is at least 1
 		//returns queryid,1,docid,,rank,numhits,runtag
 		//TODO optimize so that queryid,docid are seen by Stratosphere as constants
@@ -144,7 +146,7 @@ public class MainProgram {
 										  .groupBy(0)
 										  //Sort by score: result: queryid, docid, numhits
 										  .sortGroup(2, Order.DESCENDING)
-										  //Limit to 20 per query (20x50=1000), add rank/score
+										  //Limit to 1000 per query, add rank/score
 										  .reduceGroup(new OutputSimple());
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
@@ -153,8 +155,8 @@ public class MainProgram {
 		
 		/**PHASE C: output*/
 		try {
-			//latexMatches.writeAsCsv("/home/jjl4/testRegExp.txt","\n"," ",WriteMode.OVERWRITE); //DEBUG 
-			latexMatches.writeAsCsv(output,"\n"," ",WriteMode.OVERWRITE);
+			latexMatches.writeAsCsv("/home/jjl4/testRegExp.txt","\n"," ",WriteMode.OVERWRITE); //DEBUG 
+			//latexMatches.writeAsCsv(output,"\n"," ",WriteMode.OVERWRITE);
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}

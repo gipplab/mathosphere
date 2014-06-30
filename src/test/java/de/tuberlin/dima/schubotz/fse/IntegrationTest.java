@@ -9,7 +9,7 @@ public class IntegrationTest {
     @Test
     public void TestLocalExecution() throws Exception {
     	try {
-	        String inputFilename = "file://" + getClass().getClassLoader().getResources("test1000.xml").nextElement().getPath();
+	        String inputFilename = "file://" + getClass().getClassLoader().getResources("test10000.xml").nextElement().getPath();
 	        System.out.println("testing on: " + inputFilename);
 	        String queryFile = "file://" + getClass().getClassLoader().getResources("fQuery.xml").nextElement().getPath();
 	        String outputFilename = "file://" + getClass().getClassLoader().getResources("test.out").nextElement().getPath();
