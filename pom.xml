@@ -1,0 +1,94 @@
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>de.tuberlin.schubotz</groupId>
+    <artifactId>math-tests</artifactId>
+    <version>0.0.2-SNAPSHOT</version>
+    <dependencies>
+        <dependency>
+            <groupId>eu.stratosphere</groupId>
+            <artifactId>stratosphere-clients</artifactId>
+            <version>0.5</version>
+        </dependency>
+        <dependency>
+            <groupId>eu.stratosphere</groupId>
+            <artifactId>stratosphere-java</artifactId>
+            <version>0.5</version>
+        </dependency>
+        <!--<dependency>
+            <groupId>net.sf.saxon</groupId>
+            <artifactId>Saxon-HE</artifactId>
+            <version>9.4</version>
+        </dependency>-->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.11</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.dp4j</groupId>
+            <artifactId>dp4j</artifactId>
+            <version>1.2</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>net.htmlparser.jericho</groupId>
+            <artifactId>jericho-html</artifactId>
+            <version>3.3</version>
+        </dependency>
+        <dependency>
+            <!-- jsoup HTML parser library @ http://jsoup.org/ -->
+            <groupId>org.jsoup</groupId>
+            <artifactId>jsoup</artifactId>
+            <version>1.7.3</version>
+        </dependency>
+    </dependencies>
+    <build>
+        <plugins>
+
+            <!-- build as single jar with all dependencies -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>1.7.1</version>
+                <configuration>
+                    <finalName>${project.artifactId}</finalName>
+                    <transformers>
+                        <transformer
+                                implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                            <manifestEntries>
+                                <Pact-Assembler-Class>de.tuberlin.dima.schubotz.fse.FilterMath</Pact-Assembler-Class>
+                            </manifestEntries>
+                        </transformer>
+                    </transformers>
+<!-- Seems to be invalid
+                    <archive>
+                    	<manifest>
+                    		<addClasspath>true</addClasspath>
+                    		<mainClass>de.tuberlin.dima.schubotz.fse.MainProgram</mainClass>
+                    	</manifest>
+                    </archive>
+-->
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.1</version>
+                <configuration>
+                    <source>1.7</source>
+                    <target>1.7</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>
