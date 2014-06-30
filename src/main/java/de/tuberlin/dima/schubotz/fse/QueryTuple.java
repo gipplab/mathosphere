@@ -1,7 +1,5 @@
 package de.tuberlin.dima.schubotz.fse;
 
-import java.io.Serializable;
-
 import eu.stratosphere.api.java.tuple.Tuple3;
 
 /**
@@ -42,6 +40,9 @@ public class QueryTuple extends Tuple3<String,String,String> {
 	}
 	public String getLatex() {
 		return this.f1;
+	}
+	public String getKeywords() {
+		return this.f2;
 	}
 	public void addKeyword (String keyword) {
 		this.f2 = this.f2.concat(split.concat(keyword));

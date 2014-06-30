@@ -1,6 +1,7 @@
 package de.tuberlin.dima.schubotz.fse;
 
-import java.io.Serializable;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -9,15 +10,32 @@ import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 
 import eu.stratosphere.api.java.functions.FlatMapFunction;
+import eu.stratosphere.configuration.Configuration;
 import eu.stratosphere.util.Collector;
 
-public class SectionMapper extends FlatMapFunction<String, SectionTuple> implements Serializable{
+public class SectionMapper extends FlatMapFunction<String, SectionTuple> {
 	final static String FILENAME_INDICATOR = "Filename";
 	final static Pattern filnamePattern = Pattern
 	         .compile( "<ARXIVFILESPLIT\\\\n" + FILENAME_INDICATOR + "=\"\\./\\d+/(.*?)/\\1_(\\d+)_(\\d+)\\.xhtml\">" );
 	
 	String TEX_SPLIT = MainProgram.STR_SPLIT;
 	
+	HashSet<String> keywords; 
+
+	@Override
+	public void open (Configuration parameters) throws Exception {
+		//Get set of all keywords from queries
+		keywords = new HashSet<String>();
+		Collection<QueryTuple> queries = getRuntimeContext().getBroadcastVariable( "Queries" );
+		for (QueryTuple query : queries) {
+			String[] tokens = query.getKeywords().split( "<S>" ); //get list of keywords
+			for ( String token : tokens ) {
+				keywords.add(token);
+			}
+		}
+
+		super.open( parameters );
+	}
 
 	/**
 	 * The core method of the MapFunction. Takes an element from the input data set and transforms
@@ -57,7 +75,9 @@ public class SectionMapper extends FlatMapFunction<String, SectionTuple> impleme
 		String[] tokens = plainText.toLowerCase().split( "\\W+" ); //split on repeating non-word characters
 		SectionTuple tup = new SectionTuple(docID,latex,"");
 		for (String token : tokens) {
-			tup.addPlaintext(token);
+			if (keywords.contains(token)) {
+				tup.addPlaintext(token);
+			}
 		}
 		out.collect(tup);
 		

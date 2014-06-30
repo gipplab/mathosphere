@@ -3,8 +3,8 @@ package de.tuberlin.dima.schubotz.fse;
 import eu.stratosphere.api.java.tuple.Tuple3;
 /**
  * Tuple storing data extracted from documents.
- * In form of ID,Latex,Keywords. Latex and
- * keywords are strings, with their tokens
+ * In form of ID,Latex,Plaintext. Latex and
+ * plaintext are strings, with their tokens
  * split by MainProgram.STR_SPLIT.
  */
 public class SectionTuple extends Tuple3<String,String,String> {
@@ -15,7 +15,7 @@ public class SectionTuple extends Tuple3<String,String,String> {
 	 * to "" for all fields.
 	 * @param id
 	 * @param latex
-	 * @param keywords
+	 * @param plaintext
 	 */
 	public SectionTuple() {
 		this.f0 = "";
