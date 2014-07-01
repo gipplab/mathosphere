@@ -1,5 +1,9 @@
 package de.tuberlin.dima.schubotz.fse;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -78,14 +82,28 @@ public class MainProgram {
 	 * The Output XML file with the calculated results
 	 */
 	static String output;
+	/**
+	 * Input file of map of keywords to number of documents that contain that keyword
+	 */
+	static String keywordDocsMapInput;
+	static Map<String,Integer> keywordDocsMap;
+	/**
+	 * Input file of map of latex tokens to number of documents that contain that token 
+	 */
+	static String latexDocsMapInput;
+	static Map<String,Integer> latexDocsMap;
+	/**
+	 * Total number of documents
+	 */
+	static Integer numDocs = 0;
 	/** 
 	 * Score added per keyword hit
 	 */
-	static int KeywordScore = 10;
+	static int KeywordScore = 3;
 	/**
 	 * Score added per plaintext hit
 	 */
-	static int plaintextScore = 1;
+	static int PlaintextScore = 1;
 	/**
 	 * Score added per latex token hit
 	 */
@@ -102,13 +120,24 @@ public class MainProgram {
 			: "file:///mnt/ntcir-math/queries/fQuery.xml");
 		output = (args.length > 3 ? args[3]
 			: "file:///mnt/ntcir-math/test-output/LATEXtestout-" + System.currentTimeMillis() + ".xml");
+		keywordDocsMapInput = (args.length > 4 ? args[4]
+			: "file:///mnt/ntcir-math/queries/keywordDocsMap.csv");
+		latexDocsMapInput = (args.length > 5 ? args[5]
+			: "file:///mnt/ntcir-math/queries/latexDocsMap.csv");
+		numDocs = (args.length > 6 ? Integer.valueOf(args[6]) : 10000);
 	}
 
 	public static void main (String[] args) throws Exception {
 		parseArg( args );
-		ConfigurePlan();
-		env.setDegreeOfParallelism( noSubTasks );
-		env.execute( "Mathosphere" );
+		try {
+			ConfigurePlan();
+			env.setDegreeOfParallelism( noSubTasks );
+			env.execute( "Mathosphere" );
+		} catch (Exception e) {
+			System.out.println("Aborting!");
+			System.exit(0);
+		}
+		System.exit(1);
 	}
 
 	public static ExecutionEnvironment getExecutionEnvironment () throws Exception {
@@ -119,12 +148,23 @@ public class MainProgram {
 	 * @throws XPathExpressionException
 	 * @throws ParserConfigurationException
 	 */
-	protected static void ConfigurePlan () throws XPathExpressionException, ParserConfigurationException {
+	protected static void ConfigurePlan () throws XPathExpressionException, ParserConfigurationException, Exception {
 		env = ExecutionEnvironment.getExecutionEnvironment();
 
+		//Generate keywordDocsMap and latexDocsMap from preprocessed generated files
+		try {
+			keywordDocsMap = csvToMap(keywordDocsMapInput);
+			latexDocsMap = csvToMap(latexDocsMapInput);
+		} catch (Exception e) {
+			System.out.println("DocsMapInput issue!");
+			e.printStackTrace();
+			throw new Exception();
+		}
+		
+		
 		//Set up articleDataSet
 		TextInputFormat format = new TextInputFormat( new Path( docsInput ) );
-		format.setDelimiter( DOCUMENT_SEPARATOR ); //TODO fix stratosphere split issues for Queries and Documents
+		format.setDelimiter( DOCUMENT_SEPARATOR ); //WATCH fix stratosphere split issues for Queries and Documents
 		DataSet<String> rawArticleText = new DataSource<>( env, format, BasicTypeInfo.STRING_TYPE_INFO );
 		
 		
@@ -137,24 +177,19 @@ public class MainProgram {
 		// TODO IMPLEMENT ADDITIONAL SCORING METHODS 
 		
 		
-		/**PHASE A: extract LaTeX and keywords */
-		//TODO extract plaintext from query as well?
+		//PHASE A: extract LaTeX and keywords 
 		DataSet<QueryTuple> queryDataSet = rawQueryText.flatMap(new QueryMapper());
-		DataSet<SectionTuple> sectionDataSet = rawArticleText.flatMap(new SectionMapper()).withBroadcastSet(queryDataSet, "Queries");
+		DataSet<SectionTuple> sectionDataSet = rawArticleText.flatMap(new SectionMapper());
 		
-		//sectionDataSet.writeAsCsv("/home/jjl4/testRegExp.txt","\n","ARGH",WriteMode.OVERWRITE); //DEBUG
 		
-		/**PHASE B: compare LaTeX, get number of hits, group by ID, sort by score, limit to 1000 per query, generate rank and runtag */
-		//TODO fix null result as a result of split? maybe keep this as it makes sure score is at least 1
+		//PHASE B: compare LaTeX and keywords, score
+		//WATCH fix null result as a result of split? maybe keep this as it makes sure score is at least 1
 		DataSet<ResultTuple> latexMatches = sectionDataSet.flatMap(new QuerySectionMatcher())
 														  .withBroadcastSet(queryDataSet, "Queries"); 
 		
 		
-		
-		
-		/**PHASE C: output*/
-		DataSet<OutputSimpleTuple> output = latexMatches
-														//Group by queryid
+		//PHASE C: output
+		DataSet<OutputSimpleTuple> output = latexMatches//Group by queryid
 														.groupBy(0)
 														//Sort by score <queryid, docid, score>
 														.sortGroup(2, Order.DESCENDING) 
@@ -167,7 +202,17 @@ public class MainProgram {
 		}
 
 	}
-
-
+	
+	public static Map<String,Integer> csvToMap(String in) throws FileNotFoundException, IOException {
+		Map<String,Integer> out = new HashMap<String,Integer>();
+		BufferedReader br = new BufferedReader(new FileReader(in));
+        String line = "";
+        while ((line = br.readLine()) != null) {
+        	String parts[] = line.split(",");
+        	out.put(parts[0],Integer.valueOf(parts[1]));
+        }
+        br.close();
+        return out;
+	}
 }
 

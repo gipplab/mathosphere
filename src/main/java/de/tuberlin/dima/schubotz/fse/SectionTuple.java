@@ -39,8 +39,11 @@ public class SectionTuple extends Tuple3<String,String,String> {
 	public String getLatex() {
 		return this.f1;
 	}
+	public String getKeywords() {
+		return this.f2;
+	}
 	public void addPlaintext (String token) {
-		this.f2.concat(split + token);
+		this.f2 = this.f2.concat(split + token);
 	}
 	public enum fields {
 		queryid,latex,plaintext
