@@ -24,16 +24,8 @@ public class SectionMapper extends FlatMapFunction<String, SectionTuple> {
 
 	@Override
 	public void open (Configuration parameters) throws Exception {
-		//Get set of all keywords from queries
-		keywords = new HashSet<String>();
-		Collection<QueryTuple> queries = getRuntimeContext().getBroadcastVariable( "Queries" );
-		for (QueryTuple query : queries) {
-			String[] tokens = query.getKeywords().split( "<S>" ); //get list of keywords
-			for ( String token : tokens ) {
-				keywords.add(token);
-			}
-		}
-
+		//Get set of all keywords 
+		keywords = (HashSet<String>) MainProgram.keywordDocsMap.keySet();
 		super.open( parameters );
 	}
 
@@ -51,7 +43,7 @@ public class SectionMapper extends FlatMapFunction<String, SectionTuple> {
 		//Split into lines 0: ARXIVFILENAME, 1: HTML
 		String[] lines = value.trim().split( "\\n", 2 );
 		if ( lines.length < 2 ) { 
-			System.out.println(value);
+			System.out.println(value); //DEBUG
 			return;
 		}
 		Matcher matcher = filnamePattern.matcher( lines[0] );

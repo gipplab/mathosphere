@@ -7,16 +7,16 @@ import eu.stratosphere.api.java.tuple.Tuple3;
  * In format queryid,docid,score
  */
 public class ResultTuple extends Tuple3<String,String,Integer> {
-	/**
-	 * @param queryId
-	 * @param docId
-	 * @param score
-	 */
 	public ResultTuple() {
 		this.f0 = "";
 		this.f1 = "";
 		this.f2 = 0;
 	}
+	/**
+	 * @param queryId
+	 * @param docId
+	 * @param score
+	 */
 	public ResultTuple(String queryId, String docId, Integer score) {
 		this.f0 = queryId;
 		this.f1 = docId;
