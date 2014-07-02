@@ -3,6 +3,12 @@ package de.tuberlin.dima.schubotz.fse;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+
+import org.apache.commons.lang.StringEscapeUtils;
+
+import com.google.common.collect.HashMultiset;
 
 import eu.stratosphere.api.java.functions.FlatMapFunction;
 import eu.stratosphere.util.Collector;
@@ -25,73 +31,60 @@ public class QuerySectionMatcher extends FlatMapFunction<SectionTuple,ResultTupl
 	 * it into another element.
 	 *
 	 * @param value The input value.
-	 * @return The value produced by the map function from the input value.
+	 * @return The value produced by the map function from the input value. 
 	 * @throws Exception This method may throw exceptions. Throwing an exception will cause the operation
 	 *                   to fail and may trigger recovery.
 	 */
 	@Override
 	public void flatMap(SectionTuple in,Collector<ResultTuple> out) {
-		HashSet<String> queryLatex;
-		HashSet<String> queryKeywords;
-		HashSet<String> a;
-		HashSet<String> b;
-		int latexHits = 0;
-		int keywordHits = 0;
-		//Takes in sectionID, latex string tokenized split by <S>, outputs QueryID,DocID,NumlatexHits
-		HashSet<String> sectionLatex = new HashSet<String>(Arrays.asList(in.getLatex().split(SPLIT))); 
-		HashSet<String> sectionKeywords = new HashSet<String>(Arrays.asList(in.getKeywords().split(SPLIT))); 
+		HashMultiset<String> queryLatex;
+		HashMultiset<String> queryKeywords;
+		double latexScore = 0;
+		double keywordScore = 0;
+		
+		//Construct set of term frequencies for latex and keywords
+		HashMultiset<String> sectionLatex = HashMultiset.create(Arrays.asList(in.getLatex().split(SPLIT)));
+		HashMultiset<String> sectionKeywords = HashMultiset.create(Arrays.asList(in.getKeywords().split(SPLIT)));
+		
+		//Loop through queries and calculate tfidf scores
 		Collection<QueryTuple> queries = getRuntimeContext().getBroadcastVariable("Queries");
-		boolean sectionLarger;
-		//Loop through queries
 		for (QueryTuple query : queries) {
-			queryLatex = new HashSet<String>(Arrays.asList(query.getLatex().split(SPLIT))); 
+			queryLatex = HashMultiset.create(Arrays.asList(query.getLatex().split(SPLIT)));
+			latexScore = calculateTFIDFScore(queryLatex, sectionLatex, MainProgram.latexDocsMultiset);
 			
-			//Latex token match
-			sectionLarger = (sectionLatex.size() > queryLatex.size()) ? true : false;
-			//loop through smaller set
-			if (sectionLarger) {
-				a = queryLatex;
-				b = sectionLatex;
-			}else {
-				b = queryLatex;
-				a = sectionLatex;
-			}
-			for (String e : a) {
-				if (b.contains(e)) {
-					latexHits++;
-				}
-			}
+			queryKeywords = HashMultiset.create(Arrays.asList(query.getKeywords().split(SPLIT)));
+			keywordScore = calculateTFIDFScore(queryKeywords, sectionKeywords, MainProgram.keywordDocsMultiset);
 			
-			//Keyword match
-			queryKeywords = new HashSet<String>(Arrays.asList(query.getKeywords().split(SPLIT))); 
-			
-			sectionLarger = (sectionKeywords.size() > queryKeywords.size()) ? true : false;
-			//loop through smaller set
-			if (sectionLarger) {
-				a = queryKeywords;
-				b = sectionKeywords;
-			}else {
-				b = queryKeywords;
-				a = sectionKeywords;
-			}
-			for (String e : a) {
-				if (b.contains(e)) {
-					keywordHits++;
-				}
-			}
-			
-			int score = calculateScore(latexHits, keywordHits);
-			out.collect(new ResultTuple(query.getID(),in.getID(),score));
-			latexHits = 0;
-			keywordHits = 0;
+			out.collect(new ResultTuple(query.getID(),in.getID(),keywordScore + latexScore));
 		}
 	}
+	
 	/**
-	 * @param latexHits
-	 * @param keywordHits
+	 * @param queryTokens
+	 * @param sectionTokens
+	 * @param map - map to use: either keywordDocsMap or latexDocsMap
 	 * @return
 	 */
-	private int calculateScore(int latexHits, int keywordHits) {
-		return keywordHits*KEYWORDSCORE + latexHits*LATEXSCORE;
+	private double calculateTFIDFScore(HashMultiset<String> queryTokens, HashMultiset<String> sectionTokens, HashMultiset<String> map) {
+		double termTotal = sectionTokens.size(); //total number of terms in current section
+		double termFreqDoc; //frequency in current section
+		double termFreqTotal; //number of documents that contain the term
+		double docTotal = MainProgram.numDocs; 
+		
+		//Calculations based on http://tfidf.com/
+		double tf = 0d; //term frequency
+		double idf = 0d; //inverse document frequency
+		double total = 0d;
+				
+		for (String element : queryTokens.elementSet()) {
+			termFreqDoc = sectionTokens.count(element);
+			termFreqTotal = map.count(element);
+			tf = termFreqDoc / termTotal; //can be zero but not undefined
+			idf = Math.log(docTotal / (1d + termFreqTotal)); //will never be undefined due to +1
+			total += tf * idf;
+		}
+		
+		return total;
+		
 	}
 }

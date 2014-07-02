@@ -16,7 +16,7 @@ public class OutputSimple extends GroupReduceFunction<ResultTuple, OutputSimpleT
 	@Override
 	public void reduce(Iterator<ResultTuple> in, Collector<OutputSimpleTuple> out) {
 		int current = 0;
-		Tuple3<String,String,Integer> curTup;
+		ResultTuple curTup;
 		// for each element in group
 		while(in.hasNext() && current < MainProgram.QUERYLIMIT) {
 			curTup = in.next();

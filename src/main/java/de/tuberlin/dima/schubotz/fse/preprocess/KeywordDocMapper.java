@@ -24,7 +24,9 @@ public class KeywordDocMapper extends FlatMapFunction<String, Tuple2<String,Inte
 		for (QueryTuple query : queries) {
 			String[] tokens = query.getKeywords().split( "<S>" ); //get list of keywords
 			for ( String token : tokens ) {
-				keywords.add(token);
+				if (!token.equals("")) {
+					keywords.add(token);
+				}
 			}
 		}
 	}

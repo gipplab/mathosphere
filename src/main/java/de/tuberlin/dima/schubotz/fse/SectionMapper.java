@@ -9,6 +9,8 @@ import org.jsoup.Jsoup;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 
+import com.google.common.collect.HashMultiset;
+
 import eu.stratosphere.api.java.functions.FlatMapFunction;
 import eu.stratosphere.configuration.Configuration;
 import eu.stratosphere.util.Collector;
@@ -20,12 +22,12 @@ public class SectionMapper extends FlatMapFunction<String, SectionTuple> {
 	
 	String TEX_SPLIT = MainProgram.STR_SPLIT;
 	
-	HashSet<String> keywords; 
+	HashMultiset<String> keywords; 
 
 	@Override
 	public void open (Configuration parameters) throws Exception {
 		//Get set of all keywords 
-		keywords = (HashSet<String>) MainProgram.keywordDocsMap.keySet();
+		keywords = (HashMultiset<String>) MainProgram.keywordDocsMultiset;
 		super.open( parameters );
 	}
 
@@ -43,7 +45,7 @@ public class SectionMapper extends FlatMapFunction<String, SectionTuple> {
 		//Split into lines 0: ARXIVFILENAME, 1: HTML
 		String[] lines = value.trim().split( "\\n", 2 );
 		if ( lines.length < 2 ) { 
-			System.out.println(value); //DEBUG
+			System.out.println("Null document (SectionMapper): " + value); //DEBUG output null document
 			return;
 		}
 		Matcher matcher = filnamePattern.matcher( lines[0] );
@@ -52,7 +54,8 @@ public class SectionMapper extends FlatMapFunction<String, SectionTuple> {
 			docID = matcher.group(1) + "_" + matcher.group(2) + "_" + matcher.group(3) + ".xhtml";
 		} else {
 			System.out.println("null docID!");
-			return; 
+			docID = "this_was_null";
+			return; //DEBUG for expectedmatch 
 		}
 		
 		//Parse string as XML
@@ -68,7 +71,8 @@ public class SectionMapper extends FlatMapFunction<String, SectionTuple> {
 		SectionTuple tup = new SectionTuple(docID,latex,"");
 		for (String token : tokens) {
 			if (keywords.contains(token)) {
-				tup.addPlaintext(token);
+				if (!token.equals(""))
+					tup.addPlaintext(token);
 			}
 		}
 		out.collect(tup);
