@@ -51,7 +51,8 @@ public class QueryMapper extends FlatMapFunction<String, QueryTuple> {
 			try {
 				tokens = node.getFirstChild().getNodeValue().toLowerCase().split( "\\W+" );
 				for (String token : tokens) {
-					tup.addKeyword(token);
+					if (!token.equals(""))
+						tup.addKeyword(token);
 				}
 			} catch (NullPointerException e) {
 				continue;

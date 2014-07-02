@@ -1,6 +1,7 @@
 package de.tuberlin.dima.schubotz.fse;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
@@ -12,6 +13,8 @@ import javax.xml.xpath.XPathExpressionException;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
+import com.google.common.collect.HashMultiset;
 
 import eu.stratosphere.api.common.operators.Order;
 import eu.stratosphere.api.java.DataSet;
@@ -86,12 +89,12 @@ public class MainProgram {
 	 * Input file of map of keywords to number of documents that contain that keyword
 	 */
 	static String keywordDocsMapInput;
-	static Map<String,Integer> keywordDocsMap;
+	static HashMultiset<String> keywordDocsMultiset;
 	/**
 	 * Input file of map of latex tokens to number of documents that contain that token 
 	 */
 	static String latexDocsMapInput;
-	static Map<String,Integer> latexDocsMap;
+	static HashMultiset<String> latexDocsMultiset;
 	/**
 	 * Total number of documents
 	 */
@@ -124,7 +127,7 @@ public class MainProgram {
 			: "file:///mnt/ntcir-math/queries/keywordDocsMap.csv");
 		latexDocsMapInput = (args.length > 5 ? args[5]
 			: "file:///mnt/ntcir-math/queries/latexDocsMap.csv");
-		numDocs = (args.length > 6 ? Integer.valueOf(args[6]) : 10000);
+		numDocs = (args.length > 6 ? Integer.valueOf(args[6]) : 9999);
 	}
 
 	public static void main (String[] args) throws Exception {
@@ -153,8 +156,8 @@ public class MainProgram {
 
 		//Generate keywordDocsMap and latexDocsMap from preprocessed generated files
 		try {
-			keywordDocsMap = csvToMap(keywordDocsMapInput);
-			latexDocsMap = csvToMap(latexDocsMapInput);
+			keywordDocsMultiset = csvToMultiset(keywordDocsMapInput);
+			latexDocsMultiset = csvToMultiset(latexDocsMapInput);
 		} catch (Exception e) {
 			System.out.println("DocsMapInput issue!");
 			e.printStackTrace();
@@ -176,7 +179,6 @@ public class MainProgram {
 		
 		// TODO IMPLEMENT ADDITIONAL SCORING METHODS 
 		
-		
 		//PHASE A: extract LaTeX and keywords 
 		DataSet<QueryTuple> queryDataSet = rawQueryText.flatMap(new QueryMapper());
 		DataSet<SectionTuple> sectionDataSet = rawArticleText.flatMap(new SectionMapper());
@@ -189,27 +191,26 @@ public class MainProgram {
 		
 		
 		//PHASE C: output
-		DataSet<OutputSimpleTuple> output = latexMatches//Group by queryid
+		DataSet<OutputSimpleTuple> outputTuples = latexMatches//Group by queryid
 														.groupBy(0)
 														//Sort by score <queryid, docid, score>
 														.sortGroup(2, Order.DESCENDING) 
 														.reduceGroup(new OutputSimple());			
-		try {
-			output.writeAsCsv("/home/jjl4/testRegExp.txt","\n"," ",WriteMode.OVERWRITE); //DEBUG 
-			//latexMatches.writeAsCsv(output,"\n"," ",WriteMode.OVERWRITE);
+		try { 
+			outputTuples.writeAsCsv(output,"\n"," ",WriteMode.OVERWRITE);
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
 
 	}
 	
-	public static Map<String,Integer> csvToMap(String in) throws FileNotFoundException, IOException {
-		Map<String,Integer> out = new HashMap<String,Integer>();
+	public static HashMultiset<String> csvToMultiset(String in) throws FileNotFoundException, IOException {
+		HashMultiset<String> out = HashMultiset.create();
 		BufferedReader br = new BufferedReader(new FileReader(in));
         String line = "";
         while ((line = br.readLine()) != null) {
-        	String parts[] = line.split(",");
-        	out.put(parts[0],Integer.valueOf(parts[1]));
+        	String parts[] = line.split(" ");
+        	out.add(parts[0], Integer.valueOf(parts[1]));
         }
         br.close();
         return out;

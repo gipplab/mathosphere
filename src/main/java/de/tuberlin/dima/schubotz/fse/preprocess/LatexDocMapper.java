@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.apache.commons.lang.StringEscapeUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 
@@ -28,7 +29,9 @@ public class LatexDocMapper extends FlatMapFunction<String, Tuple2<String,Intege
 		for (QueryTuple query : queries) {
 			String[] tokens = query.getLatex().split( "<S>" ); //get list of latex
 			for ( String token : tokens ) {
-				latex.add(token);
+				if (!token.equals("")) {
+					latex.add(token);
+				}
 			}
 		}
 	}
@@ -36,11 +39,10 @@ public class LatexDocMapper extends FlatMapFunction<String, Tuple2<String,Intege
 	@Override
 	public void flatMap (String value, Collector<Tuple2<String,Integer>> out) throws Exception {
 		//Takes in document, outputs tuple of <latex token, 1> for every token in document contained in set of query latex
-		
 		//Remove <ARXIV> and <?xml
 		String[] lines = value.trim().split( "\\n", 2 );
 		if ( lines.length < 2 ) { 
-			System.out.println(value); //DEBUG
+			System.out.println("Null document (LatexDocMapper): " + value); //DEBUG output null document
 			return;
 		}
 		//Parse string as XML
@@ -48,8 +50,8 @@ public class LatexDocMapper extends FlatMapFunction<String, Tuple2<String,Intege
 		NodeList LatexElements = XMLHelper.getElementsB(doc, "//annotation"); //get all annotation tags
 		
 		//Extract latex
-		String latex = LatexHelper.extract(LatexElements);
-		String[] tokens = latex.split( "<S>" );
+		String sectionLatex = LatexHelper.extract(LatexElements);
+		String[] tokens = sectionLatex.split( "<S>" );
 		Set<String> tokenSet = new HashSet<String>(Arrays.asList(tokens)); //remove repeats
 		
 		//Loop through and output

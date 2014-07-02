@@ -45,6 +45,11 @@ public class SectionTuple extends Tuple3<String,String,String> {
 	public void addPlaintext (String token) {
 		this.f2 = this.f2.concat(split + token);
 	}
+	@Override
+	public String toString() {
+		//Debug purposes
+		return this.f0 + "," + this.f1 + "," + this.f2;
+	}
 	public enum fields {
 		queryid,latex,plaintext
 	}

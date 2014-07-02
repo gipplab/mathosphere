@@ -112,8 +112,8 @@ public class ProcessData {
 			}
 		}).print();
 		
-		keyDocResults.writeAsCsv(keywordDocsMapOutput,"\n",",",WriteMode.OVERWRITE);
-		latexDocResults.writeAsCsv(latexDocsMapOutput,"\n",",",WriteMode.OVERWRITE);
+		keyDocResults.writeAsCsv(keywordDocsMapOutput,"\n"," ",WriteMode.OVERWRITE);
+		latexDocResults.writeAsCsv(latexDocsMapOutput,"\n"," ",WriteMode.OVERWRITE);
 		
 		
 	}
