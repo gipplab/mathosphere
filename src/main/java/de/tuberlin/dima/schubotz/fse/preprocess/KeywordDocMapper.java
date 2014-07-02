@@ -38,7 +38,6 @@ public class KeywordDocMapper extends FlatMapFunction<String, Tuple2<String,Inte
 		String plainText = Jsoup.parse(value).text();
 		String[] tokens = plainText.toLowerCase().split( "\\W+" ); //split on repeating non-word characters
 		Set<String> tokenSet = new HashSet<String>(Arrays.asList(tokens)); //remove repeats
-		
 		//Loop through and output
 		for (String token : tokenSet) {
 			if (keywords.contains(token)) {

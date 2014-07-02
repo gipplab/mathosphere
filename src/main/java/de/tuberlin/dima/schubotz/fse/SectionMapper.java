@@ -55,7 +55,7 @@ public class SectionMapper extends FlatMapFunction<String, SectionTuple> {
 		} else {
 			System.out.println("null docID!");
 			docID = "this_was_null";
-			return; //DEBUG for expectedmatch 
+			//return; //DEBUG for non arxiv document input
 		}
 		
 		//Parse string as XML
@@ -75,7 +75,9 @@ public class SectionMapper extends FlatMapFunction<String, SectionTuple> {
 					tup.addPlaintext(token);
 			}
 		}
-		out.collect(tup);
+		if (!tup.getKeywords().equals("") || !tup.getLatex().equals("")) {
+			out.collect(tup);
+		}
 		
 	}
 

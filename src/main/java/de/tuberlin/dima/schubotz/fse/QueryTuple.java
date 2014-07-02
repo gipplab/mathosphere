@@ -45,7 +45,11 @@ public class QueryTuple extends Tuple3<String,String,String> {
 		return this.f2;
 	}
 	public void addKeyword (String keyword) {
-		this.f2 = this.f2.concat(split.concat(keyword));
+		if (!this.f2.equals("")) {
+			this.f2 = this.f2.concat(split.concat(keyword));
+		}else {
+			this.f2 = keyword;
+		}
 	}
 	@Override
 	public String toString() {
