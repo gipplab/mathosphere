@@ -185,7 +185,6 @@ public class MainProgram {
 		
 		
 		//PHASE B: compare LaTeX and keywords, score
-		//WATCH fix null result as a result of split? maybe keep this as it makes sure score is at least 1
 		DataSet<ResultTuple> latexMatches = sectionDataSet.flatMap(new QuerySectionMatcher())
 														  .withBroadcastSet(queryDataSet, "Queries"); 
 		

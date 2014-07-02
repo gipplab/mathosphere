@@ -43,7 +43,11 @@ public class SectionTuple extends Tuple3<String,String,String> {
 		return this.f2;
 	}
 	public void addPlaintext (String token) {
-		this.f2 = this.f2.concat(split + token);
+		if (!this.f2.equals("")) {
+			this.f2 = this.f2.concat(split + token);
+		}else {
+			this.f2 = token;
+		}
 	}
 	@Override
 	public String toString() {

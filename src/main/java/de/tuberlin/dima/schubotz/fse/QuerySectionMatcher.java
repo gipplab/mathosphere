@@ -49,11 +49,22 @@ public class QuerySectionMatcher extends FlatMapFunction<SectionTuple,ResultTupl
 		//Loop through queries and calculate tfidf scores
 		Collection<QueryTuple> queries = getRuntimeContext().getBroadcastVariable("Queries");
 		for (QueryTuple query : queries) {
-			queryLatex = HashMultiset.create(Arrays.asList(query.getLatex().split(SPLIT)));
-			latexScore = calculateTFIDFScore(queryLatex, sectionLatex, MainProgram.latexDocsMultiset);
+boolean debug = false;
+if (in.getID().contains("0705.0473_1_3")) {
+System.out.println(query.toString());
+System.out.println(in.toString());
+System.out.println(Arrays.asList(in.getLatex().split(SPLIT)));
+debug = true;
+}
+			if (!sectionLatex.isEmpty()) {
+				queryLatex = HashMultiset.create(Arrays.asList(query.getLatex().split(SPLIT)));
+				latexScore = calculateTFIDFScore(queryLatex, sectionLatex, MainProgram.latexDocsMultiset, debug);
+			}
 			
-			queryKeywords = HashMultiset.create(Arrays.asList(query.getKeywords().split(SPLIT)));
-			keywordScore = calculateTFIDFScore(queryKeywords, sectionKeywords, MainProgram.keywordDocsMultiset);
+			if (!sectionKeywords.isEmpty()) {
+				queryKeywords = HashMultiset.create(Arrays.asList(query.getKeywords().split(SPLIT)));
+				keywordScore = calculateTFIDFScore(queryKeywords, sectionKeywords, MainProgram.keywordDocsMultiset, debug);
+			}
 			
 			out.collect(new ResultTuple(query.getID(),in.getID(),keywordScore + latexScore));
 		}
@@ -65,7 +76,7 @@ public class QuerySectionMatcher extends FlatMapFunction<SectionTuple,ResultTupl
 	 * @param map - map to use: either keywordDocsMap or latexDocsMap
 	 * @return
 	 */
-	private double calculateTFIDFScore(HashMultiset<String> queryTokens, HashMultiset<String> sectionTokens, HashMultiset<String> map) {
+	private double calculateTFIDFScore(HashMultiset<String> queryTokens, HashMultiset<String> sectionTokens, HashMultiset<String> map, boolean debug) {
 		double termTotal = sectionTokens.size(); //total number of terms in current section
 		double termFreqDoc; //frequency in current section
 		double termFreqTotal; //number of documents that contain the term
@@ -82,8 +93,16 @@ public class QuerySectionMatcher extends FlatMapFunction<SectionTuple,ResultTupl
 			tf = termFreqDoc / termTotal; //can be zero but not undefined
 			idf = Math.log(docTotal / (1d + termFreqTotal)); //will never be undefined due to +1
 			total += tf * idf;
+if (debug) {
+//DEBUG output
+System.out.println("Term: " + element);
+System.out.println("Freq in Doc: " + termFreqDoc);
+System.out.println("Num doc with term: " + termFreqTotal);
+System.out.println("tf: " + tf);
+System.out.println("idf: " + idf);
+System.out.println("total: " + total);
+}
 		}
-		
 		return total;
 		
 	}
