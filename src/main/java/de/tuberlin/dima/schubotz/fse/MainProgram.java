@@ -1,7 +1,6 @@
 package de.tuberlin.dima.schubotz.fse;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
@@ -99,18 +98,7 @@ public class MainProgram {
 	 * Total number of documents
 	 */
 	static Integer numDocs = 0;
-	/** 
-	 * Score added per keyword hit
-	 */
-	static int KeywordScore = 3;
-	/**
-	 * Score added per plaintext hit
-	 */
-	static int PlaintextScore = 1;
-	/**
-	 * Score added per latex token hit
-	 */
-	static int LatexScore = 1;
+	static double keywordDivide = 6.36; //TODO Amount to de-weight keywords by: tfidf_keyword / keywordDivide 
 
 	
 	protected static void parseArg (String[] args) {

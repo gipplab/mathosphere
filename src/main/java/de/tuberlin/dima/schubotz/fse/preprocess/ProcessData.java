@@ -1,5 +1,8 @@
 package de.tuberlin.dima.schubotz.fse.preprocess;
 
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.xpath.XPathExpressionException;
+
 import de.tuberlin.dima.schubotz.fse.QueryMapper;
 import de.tuberlin.dima.schubotz.fse.QueryTuple;
 import eu.stratosphere.api.java.DataSet;
@@ -13,9 +16,6 @@ import eu.stratosphere.api.java.tuple.Tuple2;
 import eu.stratosphere.api.java.typeutils.BasicTypeInfo;
 import eu.stratosphere.core.fs.FileSystem.WriteMode;
 import eu.stratosphere.core.fs.Path;
-
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.xpath.XPathExpressionException;
 
 public class ProcessData {
 	static int noSubTasks;

@@ -2,11 +2,6 @@ package de.tuberlin.dima.schubotz.fse;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-
-import org.apache.commons.lang.StringEscapeUtils;
 
 import com.google.common.collect.HashMultiset;
 
@@ -18,14 +13,6 @@ public class QuerySectionMatcher extends FlatMapFunction<SectionTuple,ResultTupl
 	 * Split for tex and keywords
 	 */
 	String SPLIT = MainProgram.STR_SPLIT;
-	/**
-	 * Score for latex
-	 */
-	int LATEXSCORE = MainProgram.LatexScore;
-	/**
-	 * Score for keywords
-	 */
-	int KEYWORDSCORE = MainProgram.KeywordScore;
 	/**
 	 * The core method of the MapFunction. Takes an element from the input data set and transforms
 	 * it into another element.
@@ -49,24 +36,25 @@ public class QuerySectionMatcher extends FlatMapFunction<SectionTuple,ResultTupl
 		//Loop through queries and calculate tfidf scores
 		Collection<QueryTuple> queries = getRuntimeContext().getBroadcastVariable("Queries");
 		for (QueryTuple query : queries) {
-boolean debug = false;
-if (in.getID().contains("0705.0473_1_3")) {
-System.out.println(query.toString());
-System.out.println(in.toString());
-System.out.println(Arrays.asList(in.getLatex().split(SPLIT)));
-debug = true;
-}
+//boolean debug = false; 
+//if (in.getID().contains("5478_1_6") && query.getID().contains("Math-1")) { //DEBUG output
+//System.out.println(query.toString());
+//System.out.println(in.toString());
+//System.out.println(Arrays.asList(in.getLatex().split(SPLIT)));
+//debug = true;
+//}
 			if (!sectionLatex.isEmpty()) {
 				queryLatex = HashMultiset.create(Arrays.asList(query.getLatex().split(SPLIT)));
-				latexScore = calculateTFIDFScore(queryLatex, sectionLatex, MainProgram.latexDocsMultiset, debug);
+				latexScore = calculateTFIDFScore(queryLatex, sectionLatex, MainProgram.latexDocsMultiset);
 			}
 			
 			if (!sectionKeywords.isEmpty()) {
 				queryKeywords = HashMultiset.create(Arrays.asList(query.getKeywords().split(SPLIT)));
-				keywordScore = calculateTFIDFScore(queryKeywords, sectionKeywords, MainProgram.keywordDocsMultiset, debug);
+				keywordScore = calculateTFIDFScore(queryKeywords, sectionKeywords, MainProgram.keywordDocsMultiset);
 			}
 			
-			out.collect(new ResultTuple(query.getID(),in.getID(),keywordScore + latexScore));
+			
+			out.collect(new ResultTuple(query.getID(),in.getID(),(keywordScore/6.36) + latexScore));
 		}
 	}
 	
@@ -76,7 +64,7 @@ debug = true;
 	 * @param map - map to use: either keywordDocsMap or latexDocsMap
 	 * @return
 	 */
-	private double calculateTFIDFScore(HashMultiset<String> queryTokens, HashMultiset<String> sectionTokens, HashMultiset<String> map, boolean debug) {
+	private double calculateTFIDFScore(HashMultiset<String> queryTokens, HashMultiset<String> sectionTokens, HashMultiset<String> map) {
 		double termTotal = sectionTokens.size(); //total number of terms in current section
 		double termFreqDoc; //frequency in current section
 		double termFreqTotal; //number of documents that contain the term
@@ -93,16 +81,20 @@ debug = true;
 			tf = termFreqDoc / termTotal; //can be zero but not undefined
 			idf = Math.log(docTotal / (1d + termFreqTotal)); //will never be undefined due to +1
 			total += tf * idf;
-if (debug) {
-//DEBUG output
-System.out.println("Term: " + element);
-System.out.println("Freq in Doc: " + termFreqDoc);
-System.out.println("Num doc with term: " + termFreqTotal);
-System.out.println("tf: " + tf);
-System.out.println("idf: " + idf);
-System.out.println("total: " + total);
-}
+//if (debug) {
+////DEBUG output
+//System.out.println("Term: " + element);
+//System.out.println("Freq in Doc: " + termFreqDoc);
+//System.out.println("Num doc with term: " + termFreqTotal);
+//System.out.println("tf: " + tf);
+//System.out.println("idf: " + idf);
+//System.out.println("total: " + total);
+//}
 		}
+//if (debug) {
+//	System.out.println("end total: " + total);
+//	System.out.println("END END END END");
+//}
 		return total;
 		
 	}

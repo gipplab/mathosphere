@@ -43,6 +43,7 @@ public class QueryMapper extends FlatMapFunction<String, QueryTuple> {
 		NodeList LatexElements = XMLHelper.getElementsB(doc, "//*[name()='m:annotation']"); //get all annotation tags 
 		String latex = LatexHelper.extract(LatexElements);
 		
+		
 		//Extract keywords from query
 		NodeList KeyWordElements = XMLHelper.getElementsB(doc, "//*[name()='keyword']"); //get all keyword tags
 		QueryTuple tup = new QueryTuple(queryID,latex,"");
@@ -51,7 +52,7 @@ public class QueryMapper extends FlatMapFunction<String, QueryTuple> {
 			try {
 				tokens = node.getFirstChild().getNodeValue().toLowerCase().split( "\\W+" );
 				for (String token : tokens) {
-					if (!token.equals(""))
+					if (!token.equals("") && !(token == null))
 						tup.addKeyword(token);
 				}
 			} catch (NullPointerException e) {

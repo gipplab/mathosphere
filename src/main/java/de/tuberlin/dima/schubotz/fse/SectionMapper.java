@@ -1,7 +1,5 @@
 package de.tuberlin.dima.schubotz.fse;
 
-import java.util.Collection;
-import java.util.HashSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -55,7 +53,7 @@ public class SectionMapper extends FlatMapFunction<String, SectionTuple> {
 		} else {
 			System.out.println("null docID!");
 			docID = "this_was_null";
-			//return; //DEBUG for non arxiv document input
+			return; //DEBUG for non arxiv document input
 		}
 		
 		//Parse string as XML
