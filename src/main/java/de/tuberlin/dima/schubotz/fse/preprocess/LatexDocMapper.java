@@ -17,7 +17,6 @@ import java.util.Set;
 
 public class LatexDocMapper extends FlatMapFunction<String, Tuple2<String,Integer>>{
 	HashSet<String> latex;
-	
 	@Override
 	public void open(Configuration parameters) {
 		//Get latex from queries
