@@ -23,6 +23,7 @@ public class ProcessData {
 	static String queryInput;
 	static String keywordDocsMapOutput;
 	static String latexDocsMapOutput;
+	static String numDocsOutput;
 	
 	public static final String DOCUMENT_SEPARATOR = "</ARXIVFILESPLIT>";
 	
@@ -47,6 +48,8 @@ public class ProcessData {
 			: "file:///mnt/ntcir-math/queries/keywordDocsMap.csv");
 		latexDocsMapOutput = (args.length > 4 ? args[4]
 			: "file:///mnt/ntcir-math/queries/latexDocsMap.csv");
+		numDocsOutput = (args.length > 5 ? args[5]
+			: "file:///mnt/ntcir-math/queries/numDocs.txt");
 	}
 	
 	public static void main (String[] args) throws Exception {
@@ -98,7 +101,7 @@ public class ProcessData {
 																.groupBy(0) //group by keyword
 																.aggregate(Aggregations.SUM,1); //aggregate based on field 1
 		
-		//Count total number of documents and output - WATCH FOR NULL ERRORS 
+		//Count total number of documents and output - TODO write test for this 
 		System.out.println("Number of documents");
 		rawArticleText.map(new MapFunction<String,Integer>() {
 			@Override
@@ -110,7 +113,7 @@ public class ProcessData {
 			public Integer reduce(Integer in1, Integer in2) {
 				return in1 + in2;
 			}
-		}).print();
+		}).writeAsText(numDocsOutput,WriteMode.OVERWRITE);
 		
 		keyDocResults.writeAsCsv(keywordDocsMapOutput,"\n"," ",WriteMode.OVERWRITE);
 		latexDocResults.writeAsCsv(latexDocsMapOutput,"\n"," ",WriteMode.OVERWRITE);

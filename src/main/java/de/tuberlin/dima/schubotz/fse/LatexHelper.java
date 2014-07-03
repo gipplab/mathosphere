@@ -32,8 +32,9 @@ public class LatexHelper {
 		StringTokenizer tok;
 		String nextTok;
 		String out = "";
-		if (LatexElements == null)
+		if (LatexElements == null) {
 			return out;
+		}
 		for (int i = 0; i < LatexElements.getLength(); i++ ) {
 			node = LatexElements.item(i); 
 			if (node.getAttributes().getNamedItem("encoding").getNodeValue().equals(new String("application/x-tex"))){ //check if latex
