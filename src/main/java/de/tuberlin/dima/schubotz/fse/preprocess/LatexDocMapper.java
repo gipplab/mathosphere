@@ -1,5 +1,13 @@
 package de.tuberlin.dima.schubotz.fse.preprocess;
 
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.NodeList;
+
 import de.tuberlin.dima.schubotz.fse.LatexHelper;
 import de.tuberlin.dima.schubotz.fse.QueryTuple;
 import de.tuberlin.dima.schubotz.fse.XMLHelper;
@@ -7,13 +15,6 @@ import eu.stratosphere.api.java.functions.FlatMapFunction;
 import eu.stratosphere.api.java.tuple.Tuple2;
 import eu.stratosphere.configuration.Configuration;
 import eu.stratosphere.util.Collector;
-import org.w3c.dom.Document;
-import org.w3c.dom.NodeList;
-
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
 
 public class LatexDocMapper extends FlatMapFunction<String, Tuple2<String,Integer>>{
 	HashSet<String> latex;

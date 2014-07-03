@@ -1,10 +1,10 @@
 package de.tuberlin.dima.schubotz.fse;
 
+import java.util.StringTokenizer;
+
 import org.apache.commons.lang.StringEscapeUtils;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-
-import java.util.StringTokenizer;
 
 public class LatexHelper {
 	
@@ -49,7 +49,11 @@ public class LatexHelper {
 				while (tok.hasMoreTokens()) {
 					nextTok = tok.nextToken();
 					if (!(nextTok.equals(" ")) && !(nextTok.equals(""))) {
-						out=out.concat(TEX_SPLIT + nextTok);//TODO ArrayLists non serializable so make do with this... 
+						if (!out.equals("")) {
+							out=out.concat(TEX_SPLIT + nextTok);//TODO ArrayLists non serializable so make do with this...
+						} else {
+							out = nextTok;
+						}
 					}
 				}
 			}

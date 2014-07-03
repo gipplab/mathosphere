@@ -3,7 +3,6 @@ package de.tuberlin.dima.schubotz.fse;
 import java.util.Iterator;
 
 import eu.stratosphere.api.java.functions.GroupReduceFunction;
-import eu.stratosphere.api.java.tuple.Tuple3;
 import eu.stratosphere.util.Collector;
 
 /**
