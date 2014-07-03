@@ -17,7 +17,6 @@ import java.util.Set;
 
 public class LatexDocMapper extends FlatMapFunction<String, Tuple2<String,Integer>>{
 	HashSet<String> latex;
-	NodeList LatexElements;
 	@Override
 	public void open(Configuration parameters) {
 		//Get latex from queries
@@ -35,8 +34,9 @@ public class LatexDocMapper extends FlatMapFunction<String, Tuple2<String,Intege
 	
 	@Override
 	public void flatMap (String value, Collector<Tuple2<String,Integer>> out) {
-		//Takes in document, outputs tuple of <latex token, 1> for every token in document contained in set of query latex
+		//Takes in document, outputs tuple of <latex token, 1> for every document containing a token contained in set of query latex
 		//Remove <ARXIV> and <?xml
+		NodeList LatexElements;
 		String[] lines = value.trim().split( "\\n", 2 );
 		if ( lines.length < 2 ) { 
 			System.out.println("Null document (LatexDocMapper): " + value); //DEBUG output null document
@@ -45,20 +45,21 @@ public class LatexDocMapper extends FlatMapFunction<String, Tuple2<String,Intege
 		try {
 			//Parse string as XML
 			Document doc = XMLHelper.String2Doc( lines[1], false );
-			NodeList LatexElements = XMLHelper.getElementsB( doc, "//annotation" ); //get all annotation tags
+			LatexElements= XMLHelper.getElementsB( doc, "//annotation" ); //get all annotation tags
 		} catch ( Exception e ){
 			System.out.println("Could not parse document:"+lines[0] );
 			LatexElements = null;
 		}
 		//Extract latex
 		String sectionLatex = LatexHelper.extract(LatexElements);
-		String[] tokens = sectionLatex.split( "<S>" );
-		Set<String> tokenSet = new HashSet<String>(Arrays.asList(tokens)); //remove repeats
-		
-		//Loop through and output
-		for (String token : tokenSet) {
-			if (latex.contains(token)) {
-				out.collect(new Tuple2<String,Integer>(token, 1));
+		if (!sectionLatex.equals("")) {
+			String[] tokens = sectionLatex.split("<S>"); 
+			Set<String> tokenSet = new HashSet<String>(Arrays.asList(tokens)); //remove repeats (only want number of documents)
+			//Loop through and output
+			for (String token : tokenSet) {
+				if (latex.contains(token)) {
+					out.collect(new Tuple2<String,Integer>(token, 1));
+				}
 			}
 		}
 	}
