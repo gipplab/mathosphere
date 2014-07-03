@@ -1,10 +1,10 @@
 package de.tuberlin.dima.schubotz.fse;
 
-import java.util.StringTokenizer;
-
 import org.apache.commons.lang.StringEscapeUtils;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+
+import java.util.StringTokenizer;
 
 public class LatexHelper {
 	
@@ -32,6 +32,8 @@ public class LatexHelper {
 		StringTokenizer tok;
 		String nextTok;
 		String out = "";
+		if (LatexElements == null)
+			return out;
 		for (int i = 0; i < LatexElements.getLength(); i++ ) {
 			node = LatexElements.item(i); 
 			if (node.getAttributes().getNamedItem("encoding").getNodeValue().equals(new String("application/x-tex"))){ //check if latex
