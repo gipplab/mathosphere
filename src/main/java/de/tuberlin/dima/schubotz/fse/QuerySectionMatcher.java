@@ -14,13 +14,15 @@ public class QuerySectionMatcher extends FlatMapFunction<SectionTuple,ResultTupl
 	final String SPLIT;
 	final HashMultiset<String> latexDocsMultiset;
 	final HashMultiset<String> keywordDocsMultiset;
+	final Integer numDocs;
 	double latexScore = 0;
 	double keywordScore = 0;
 	double finalScore =0.;
-	public QuerySectionMatcher (String split, HashMultiset<String> latexDocsMultiset, HashMultiset<String> keywordDocsMultiset) {
+	public QuerySectionMatcher (String split, HashMultiset<String> latexDocsMultiset, HashMultiset<String> keywordDocsMultiset, Integer numDocs) {
 		SPLIT = split;
 		this.latexDocsMultiset = latexDocsMultiset;
 		this.keywordDocsMultiset = keywordDocsMultiset;
+		this.numDocs = numDocs;
 	}
 
 	/**
@@ -66,9 +68,11 @@ public class QuerySectionMatcher extends FlatMapFunction<SectionTuple,ResultTupl
 				keywordScore = 0.;
 			}
 			finalScore = (keywordScore/6.36) + latexScore;
-			if( finalScore == Double.NaN )
+
+			if( Double.isNaN( finalScore )  )
 				finalScore = 0;
-			out.collect(new ResultTuple(query.getID(),in.getID(), finalScore));
+			//System.out.println("F:"+finalScore+"K"+keywordScore+"L"+latexScore);
+			out.collect( new ResultTuple( query.getID(), in.getID(), finalScore ) );
 		}
 	}
 	
@@ -82,7 +86,6 @@ public class QuerySectionMatcher extends FlatMapFunction<SectionTuple,ResultTupl
 		double termTotal = sectionTokens.size(); //total number of terms in current section
 		double termFreqDoc; //frequency in current section
 		double termFreqTotal; //number of documents that contain the term
-		double docTotal = MainProgram.numDocs; 
 		
 		//Calculations based on http://tfidf.com/
 		double tf = 0d; //term frequency
@@ -93,7 +96,7 @@ public class QuerySectionMatcher extends FlatMapFunction<SectionTuple,ResultTupl
 			termFreqDoc = sectionTokens.count(element);
 			termFreqTotal = map.count(element);
 			tf = termFreqDoc / termTotal; //can be zero but not undefined
-			idf = Math.log(docTotal / (1d + termFreqTotal)); //will never be undefined due to +1
+			idf = Math.log(numDocs / (1d + termFreqTotal)); //will never be undefined due to +1
 			total += tf * idf;
 //if (debug) {
 ////DEBUG output

@@ -20,7 +20,7 @@ public class ResultTuple extends Tuple3<String,String,Double> {
 	public ResultTuple(String queryId, String docId, Double score) {
 		this.f0 = queryId;
 		this.f1 = docId;
-		this.f2 = Double.valueOf(String.format("%.3f%n",score));
+		this.f2 = score;//Double.valueOf(String.format("%.3f%n",score));
 	}
 	public enum fields {
 		queryId,docId,score
