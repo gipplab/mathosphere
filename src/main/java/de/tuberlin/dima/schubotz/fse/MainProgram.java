@@ -1,20 +1,6 @@
 package de.tuberlin.dima.schubotz.fse;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.xpath.XPathExpressionException;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import com.google.common.collect.HashMultiset;
-
 import eu.stratosphere.api.common.operators.Order;
 import eu.stratosphere.api.java.DataSet;
 import eu.stratosphere.api.java.ExecutionEnvironment;
@@ -23,6 +9,17 @@ import eu.stratosphere.api.java.operators.DataSource;
 import eu.stratosphere.api.java.typeutils.BasicTypeInfo;
 import eu.stratosphere.core.fs.FileSystem.WriteMode;
 import eu.stratosphere.core.fs.Path;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.xpath.XPathExpressionException;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Performs the queries for the NTCIR-Math11-Workshop 2014 fully automated.
@@ -169,11 +166,11 @@ public class MainProgram {
 		
 		//PHASE A: extract LaTeX and keywords 
 		DataSet<QueryTuple> queryDataSet = rawQueryText.flatMap(new QueryMapper());
-		DataSet<SectionTuple> sectionDataSet = rawArticleText.flatMap(new SectionMapper());
+		DataSet<SectionTuple> sectionDataSet = rawArticleText.flatMap(new SectionMapper(keywordDocsMultiset));
 		
 		
 		//PHASE B: compare LaTeX and keywords, score
-		DataSet<ResultTuple> latexMatches = sectionDataSet.flatMap(new QuerySectionMatcher())
+		DataSet<ResultTuple> latexMatches = sectionDataSet.flatMap(new QuerySectionMatcher( STR_SPLIT, latexDocsMultiset, keywordDocsMultiset ))
 														  .withBroadcastSet(queryDataSet, "Queries"); 
 		
 		

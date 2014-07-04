@@ -1,18 +1,26 @@
 package de.tuberlin.dima.schubotz.fse;
 
-import java.util.Arrays;
-import java.util.Collection;
-
 import com.google.common.collect.HashMultiset;
-
 import eu.stratosphere.api.java.functions.FlatMapFunction;
 import eu.stratosphere.util.Collector;
+
+import java.util.Arrays;
+import java.util.Collection;
 
 public class QuerySectionMatcher extends FlatMapFunction<SectionTuple,ResultTuple> {
 	/**
 	 * Split for tex and keywords
 	 */
-	String SPLIT = MainProgram.STR_SPLIT;
+	final String SPLIT;
+	final HashMultiset<String> latexDocsMultiset;
+	final HashMultiset<String> keywordDocsMultiset;
+
+	public QuerySectionMatcher (String split, HashMultiset<String> latexDocsMultiset, HashMultiset<String> keywordDocsMultiset) {
+		SPLIT = split;
+		this.latexDocsMultiset = latexDocsMultiset;
+		this.keywordDocsMultiset = keywordDocsMultiset;
+	}
+
 	/**
 	 * The core method of the MapFunction. Takes an element from the input data set and transforms
 	 * it into another element.
@@ -45,12 +53,12 @@ public class QuerySectionMatcher extends FlatMapFunction<SectionTuple,ResultTupl
 //}
 			if (!sectionLatex.isEmpty()) {
 				queryLatex = HashMultiset.create(Arrays.asList(query.getLatex().split(SPLIT)));
-				latexScore = calculateTFIDFScore(queryLatex, sectionLatex, MainProgram.latexDocsMultiset);
+				latexScore = calculateTFIDFScore(queryLatex, sectionLatex, latexDocsMultiset);
 			}
 			
 			if (!sectionKeywords.isEmpty()) {
 				queryKeywords = HashMultiset.create(Arrays.asList(query.getKeywords().split(SPLIT)));
-				keywordScore = calculateTFIDFScore(queryKeywords, sectionKeywords, MainProgram.keywordDocsMultiset);
+				keywordScore = calculateTFIDFScore(queryKeywords, sectionKeywords, keywordDocsMultiset);
 			}
 			
 			
