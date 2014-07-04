@@ -1,17 +1,14 @@
 package de.tuberlin.dima.schubotz.fse;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
+import com.google.common.collect.HashMultiset;
+import eu.stratosphere.api.java.functions.FlatMapFunction;
+import eu.stratosphere.util.Collector;
 import org.jsoup.Jsoup;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 
-import com.google.common.collect.HashMultiset;
-
-import eu.stratosphere.api.java.functions.FlatMapFunction;
-import eu.stratosphere.configuration.Configuration;
-import eu.stratosphere.util.Collector;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class SectionMapper extends FlatMapFunction<String, SectionTuple> {
 	final static String FILENAME_INDICATOR = "Filename";
@@ -20,14 +17,12 @@ public class SectionMapper extends FlatMapFunction<String, SectionTuple> {
 	
 	String TEX_SPLIT = MainProgram.STR_SPLIT;
 	
-	HashMultiset<String> keywords; 
+	HashMultiset<String> keywords;
 
-	@Override
-	public void open (Configuration parameters) throws Exception {
-		//Get set of all keywords 
-		keywords = (HashMultiset<String>) MainProgram.keywordDocsMultiset;
-		super.open( parameters );
+	public SectionMapper (HashMultiset<String> keywords) {
+		this.keywords = keywords;
 	}
+
 
 	/**
 	 * The core method of the MapFunction. Takes an element from the input data set and transforms
