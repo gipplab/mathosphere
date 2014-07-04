@@ -14,7 +14,9 @@ public class QuerySectionMatcher extends FlatMapFunction<SectionTuple,ResultTupl
 	final String SPLIT;
 	final HashMultiset<String> latexDocsMultiset;
 	final HashMultiset<String> keywordDocsMultiset;
-
+	double latexScore = 0;
+	double keywordScore = 0;
+	double finalScore =0.;
 	public QuerySectionMatcher (String split, HashMultiset<String> latexDocsMultiset, HashMultiset<String> keywordDocsMultiset) {
 		SPLIT = split;
 		this.latexDocsMultiset = latexDocsMultiset;
@@ -25,7 +27,7 @@ public class QuerySectionMatcher extends FlatMapFunction<SectionTuple,ResultTupl
 	 * The core method of the MapFunction. Takes an element from the input data set and transforms
 	 * it into another element.
 	 *
-	 * @param value The input value.
+	 * @param in The input value.
 	 * @return The value produced by the map function from the input value. 
 	 * @throws Exception This method may throw exceptions. Throwing an exception will cause the operation
 	 *                   to fail and may trigger recovery.
@@ -34,8 +36,7 @@ public class QuerySectionMatcher extends FlatMapFunction<SectionTuple,ResultTupl
 	public void flatMap(SectionTuple in,Collector<ResultTuple> out) {
 		HashMultiset<String> queryLatex;
 		HashMultiset<String> queryKeywords;
-		double latexScore = 0;
-		double keywordScore = 0;
+
 		
 		//Construct set of term frequencies for latex and keywords
 		HashMultiset<String> sectionLatex = HashMultiset.create(Arrays.asList(in.getLatex().split(SPLIT)));
@@ -54,15 +55,20 @@ public class QuerySectionMatcher extends FlatMapFunction<SectionTuple,ResultTupl
 			if (!sectionLatex.isEmpty()) {
 				queryLatex = HashMultiset.create(Arrays.asList(query.getLatex().split(SPLIT)));
 				latexScore = calculateTFIDFScore(queryLatex, sectionLatex, latexDocsMultiset);
+			} else {
+				latexScore = 0.;
 			}
 			
 			if (!sectionKeywords.isEmpty()) {
 				queryKeywords = HashMultiset.create(Arrays.asList(query.getKeywords().split(SPLIT)));
 				keywordScore = calculateTFIDFScore(queryKeywords, sectionKeywords, keywordDocsMultiset);
+			} else {
+				keywordScore = 0.;
 			}
-			
-			
-			out.collect(new ResultTuple(query.getID(),in.getID(),(keywordScore/6.36) + latexScore));
+			finalScore = (keywordScore/6.36) + latexScore;
+			if( finalScore == Double.NaN )
+				finalScore = 0;
+			out.collect(new ResultTuple(query.getID(),in.getID(), finalScore));
 		}
 	}
 	
