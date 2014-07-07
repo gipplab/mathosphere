@@ -184,6 +184,8 @@ public class MainProgram {
 			outputTuples.writeAsCsv(output,"\n"," ",WriteMode.OVERWRITE);
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
+			e.printStackTrace();
+			return;
 		}
 
 	}

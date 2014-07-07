@@ -1,38 +1,84 @@
 package de.tuberlin.dima.schubotz.fse;
 
+import static org.junit.Assert.assertEquals;
+
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.Collection;
+
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
 
 import eu.stratosphere.api.common.Plan;
 import eu.stratosphere.api.java.ExecutionEnvironment;
 import eu.stratosphere.client.LocalExecutor;
 
+@RunWith(Parameterized.class)
 public class IntegrationTest {
+	private Integer numDocs;
+	private String debugOutput;
+	
+	@Parameterized.Parameters
+	public static Collection<Object[]> inputNumDocs() {
+		return Arrays.asList(new Object[][] {
+			{9,"/home/jjl4/"} //DEBUG test parameters
+		});
+	}
+	public IntegrationTest(Integer numDocs, String debugOutput) {
+		this.numDocs = numDocs;
+		this.debugOutput = debugOutput;
+	}
     @Test
     public void TestLocalExecution() throws Exception {
+    	String keywordDocsFilename="";
+    	String latexDocsFilename="";
+    	String outputFilename;
     	try {
-	        String inputFilename = "file://" + getClass().getClassLoader().getResources("test10000.xml").nextElement().getPath(); //DEBUG input filename
+	        String inputFilename = "file://" + getClass().getClassLoader().getResources("test" +
+	        																			new Integer(numDocs + 1).toString() + 
+	        																			".xml").nextElement().getPath(); 
 	        System.out.println("Integration testing on: " + inputFilename);
 	        String queryFile = "file://" + getClass().getClassLoader().getResources("fQuery.xml").nextElement().getPath();
-	        String outputFilename = "file://" + getClass().getClassLoader().getResources("test.out").nextElement().getPath();
-	        String keywordDocsFilename = "file://" + getClass().getClassLoader().getResources("keywordDocsMap.csv").nextElement().getPath();
-	        String latexDocsFilename = "file://" + getClass().getClassLoader().getResources("latexDocsMap.csv").nextElement().getPath();
-			//DEBUG file IO
-//			keywordDocsFilename = "/home/jjl4/keywordDocsMap.csv";
-//			latexDocsFilename = "/home/jjl4/latexDocsMap.csv";
-//			outputFilename = "/home/jjl4/output.csv";
-	        
-	        
+	        if (!debugOutput.equals("")) {
+	        	keywordDocsFilename = debugOutput + "keywordDocsMap.csv";
+	        	latexDocsFilename = debugOutput + "latexDocsMap.csv";
+	        	outputFilename = debugOutput + "output.csv";
+	        	
+	        } else {
+		        keywordDocsFilename = "file://" + getClass().getClassLoader().getResources("keywordDocsMap.csv").nextElement().getPath();
+		        latexDocsFilename = "file://" + getClass().getClassLoader().getResources("latexDocsMap.csv").nextElement().getPath();
+		        outputFilename = "file://" + getClass().getClassLoader().getResources("test.out").nextElement().getPath();
+	        }
+	        outputFilename +=  + Math.random() * Integer.MAX_VALUE;
 	        MainProgram.parseArg(new String[]{"16", inputFilename,
-	        								  queryFile, outputFilename + Math.random() * Integer.MAX_VALUE,
+	        								  queryFile, outputFilename,
 	        								  keywordDocsFilename, latexDocsFilename,
-	        								  "9999"}); //DEBUG input numdoc
+	        								  numDocs.toString()}); 
 	        MainProgram.ConfigurePlan();
+        } catch (Exception e) {
+        	System.out.println("File IO/Configuration error. Check parameters, plan configuration.");
+        	e.printStackTrace();
+        	return;
+        }
+        try {
 	        ExecutionEnvironment env = MainProgram.getExecutionEnvironment();
 	        Plan plan = env.createProgramPlan();//rc.getPlan(inputFilename, outputFilename + Math.random() * Integer.MAX_VALUE, "1.5", "0");
 	        LocalExecutor.execute(plan);
-    	}catch (Exception e) {
+        } catch (Exception e) {
+        	System.out.println("Execution error. Check execution, add fault tolerance.");
+        	e.printStackTrace();
+        	return;
+        }
+        
+        //read output file, check if correct number of lines
+        try {
+        	assertEquals(TestUtils.countLines(outputFilename),numDocs * 50);
+        } catch (IOException e) {
+        	System.out.println("Output file error");
     		e.printStackTrace();
-    	}
+    		return;
+        }
+        
     }
-    
 }
