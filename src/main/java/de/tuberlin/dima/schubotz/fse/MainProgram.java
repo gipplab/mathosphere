@@ -6,6 +6,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPathExpressionException;
@@ -56,6 +57,10 @@ public class MainProgram {
 	 * Delimiter used in between Tex and Keyword tokens
 	 */
 	public static final String STR_SPLIT = "<S>";
+	/**
+	 * Delimiter for words in document/queries
+	 */
+	public static final Pattern WORD_SPLIT = Pattern.compile("\\W+", Pattern.UNICODE_CHARACTER_CLASS); 
 	/**
 	 * Runtag ID
 	 */

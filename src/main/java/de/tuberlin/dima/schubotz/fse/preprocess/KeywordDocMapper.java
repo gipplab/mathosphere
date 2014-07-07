@@ -4,9 +4,11 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 import org.jsoup.Jsoup;
 
+import de.tuberlin.dima.schubotz.fse.MainProgram;
 import de.tuberlin.dima.schubotz.fse.QueryTuple;
 import eu.stratosphere.api.java.functions.FlatMapFunction;
 import eu.stratosphere.api.java.tuple.Tuple2;
@@ -15,6 +17,7 @@ import eu.stratosphere.util.Collector;
 
 public class KeywordDocMapper extends FlatMapFunction<String, Tuple2<String,Integer>> {
 	HashSet<String> keywords;
+	Pattern WORD_SPLIT = MainProgram.WORD_SPLIT;
 	
 	@Override
 	public void open(Configuration parameters) {
@@ -43,7 +46,7 @@ public class KeywordDocMapper extends FlatMapFunction<String, Tuple2<String,Inte
 			e.printStackTrace();
 			return;
 		}
-		String[] tokens = plainText.toLowerCase().split( "\\W+" ); //split on repeating non-word characters
+		String[] tokens = WORD_SPLIT.split(plainText.toLowerCase()); 
 		Set<String> tokenSet = new HashSet<String>(Arrays.asList(tokens)); //remove repeats (only want number of documents)
 
 		//Loop through and output
