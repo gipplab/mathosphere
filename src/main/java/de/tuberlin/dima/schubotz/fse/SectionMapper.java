@@ -48,9 +48,9 @@ public class SectionMapper extends FlatMapFunction<String, SectionTuple> {
 		if ( matcher.find() ) {
 			docID = matcher.group(1) + "_" + matcher.group(2) + "_" + matcher.group(3) + ".xhtml";
 		} else {
-			System.out.println("null docID!");
+			System.out.println("null docID! (possible non ARXIV document input)");
 			docID = "this_was_null";
-			return; //DEBUG for non arxiv document input
+			//return; //DEBUG for non arxiv document input
 		}
 		
 		//Parse string as XML

@@ -22,16 +22,18 @@ import eu.stratosphere.client.LocalExecutor;
 @RunWith(Parameterized.class)
 public class ProcessDataTest {
 	private Integer numDocs;
+	private String inputFile;
 	private String debugOutput;
 	
 	@Parameterized.Parameters
 	public static Collection<Object[]> inputNumDocs() {
 		return Arrays.asList(new Object[][] {
-			{9,"/home/jjl4/"} //DEBUG test parameters
+			{1,"expectedMatch.xml","/home/jjl4/"} //DEBUG test parameters
 		});
 	}
-	public ProcessDataTest(Integer numDocs, String debugOutput) {
+	public ProcessDataTest(Integer numDocs, String inputFile, String debugOutput) {
 		this.numDocs = numDocs;
+		this.inputFile = inputFile;
 		this.debugOutput = debugOutput;
 	}
 	@Test
@@ -40,9 +42,7 @@ public class ProcessDataTest {
 		String latexDocsFilename;
 		String numDocsFilename;
 		try {
-			String inputFilename = "file://" + getClass().getClassLoader().getResources("test" +
-																						new Integer(numDocs+1).toString() + 
-																						".xml").nextElement().getPath();
+			String inputFilename = "file://" + getClass().getClassLoader().getResources(inputFile).nextElement().getPath();
 			System.out.println("ProcessData testing on: " + inputFilename);
 			String queryFile = "file://" + getClass().getClassLoader().getResources("fQuery.xml").nextElement().getPath();
 			if (!debugOutput.equals("")) {
