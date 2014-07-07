@@ -1,5 +1,7 @@
 package de.tuberlin.dima.schubotz.fse;
 
+import java.util.regex.Pattern;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -9,6 +11,7 @@ import eu.stratosphere.util.Collector;
 
 public class QueryMapper extends FlatMapFunction<String, QueryTuple> {
 	String TEX_SPLIT = MainProgram.STR_SPLIT;
+	Pattern WORD_SPLIT = MainProgram.WORD_SPLIT;
 	
 	/**
 	 * The core method of the MapFunction. Takes an element from the input data set and transforms
@@ -53,7 +56,7 @@ public class QueryMapper extends FlatMapFunction<String, QueryTuple> {
 		for (int i = 0; i < KeyWordElements.getLength(); i++ ) {
 			node = KeyWordElements.item(i); 
 			try {
-				tokens = node.getFirstChild().getNodeValue().toLowerCase().split( "\\W+" );
+				tokens = WORD_SPLIT.split(node.getFirstChild().getNodeValue().toLowerCase());
 				for (String token : tokens) {
 					if (!token.equals("")) {
 						tup.addKeyword(token);

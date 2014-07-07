@@ -18,6 +18,7 @@ public class SectionMapper extends FlatMapFunction<String, SectionTuple> {
 	         .compile( "<ARXIVFILESPLIT\\\\n" + FILENAME_INDICATOR + "=\"\\./\\d+/(.*?)/\\1_(\\d+)_(\\d+)\\.xhtml\">" );
 	
 	String TEX_SPLIT = MainProgram.STR_SPLIT;
+	Pattern WORD_SPLIT = MainProgram.WORD_SPLIT;
 	
 	HashMultiset<String> keywords;
 
@@ -61,8 +62,15 @@ public class SectionMapper extends FlatMapFunction<String, SectionTuple> {
 		String latex = LatexHelper.extract(LatexElements);
 		
 		//Extract plaintext from article
-		String plainText = Jsoup.parse(value).text();
-		String[] tokens = plainText.toLowerCase().split( "\\W+" ); //split on repeating non-word characters
+		String plainText;
+		try {
+			plainText = Jsoup.parse(value).text();
+		} catch (Exception e) {
+			System.out.println("Jsoup could not parse the document (SectionMapper)");
+			e.printStackTrace();
+			return;
+		}
+		String[] tokens = WORD_SPLIT.split(plainText.toLowerCase()); 
 		SectionTuple tup = new SectionTuple(docID,latex,"");
 		for (String token : tokens) {
 			if (keywords.contains(token)) {

@@ -28,7 +28,7 @@ public class ProcessDataTest {
 	@Parameterized.Parameters
 	public static Collection<Object[]> inputNumDocs() {
 		return Arrays.asList(new Object[][] {
-			{1,"expectedMatch.xml","/home/jjl4/"} //DEBUG test parameters
+			{9999,"test10000.xml","/home/jjl4/"} //DEBUG test parameters
 		});
 	}
 	public ProcessDataTest(Integer numDocs, String inputFile, String debugOutput) {

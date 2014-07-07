@@ -23,7 +23,7 @@ public class IntegrationTest {
 	@Parameterized.Parameters
 	public static Collection<Object[]> inputNumDocs() {
 		return Arrays.asList(new Object[][] {
-			{1,"expectedMatch.xml","/home/jjl4/"} //DEBUG test parameters
+			{9999,"test10000.xml","/home/jjl4/"} //DEBUG test parameters
 		});
 	}
 	public IntegrationTest(Integer numDocs, String inputFile, String debugOutput) {
@@ -73,7 +73,12 @@ public class IntegrationTest {
         
         //read output file, check if correct number of lines
         try {
-        	assertEquals(TestUtils.countLines(outputFilename),numDocs * 50);
+        	if (numDocs >= 1000) {
+        		assertEquals(TestUtils.countLines(outputFilename),1000 * 50);
+        	} else {
+        		assertEquals(TestUtils.countLines(outputFilename),numDocs * 50);
+        	}
+        	
         } catch (IOException e) {
         	System.out.println("Output file error");
     		e.printStackTrace();
