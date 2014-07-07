@@ -10,7 +10,7 @@ public class LatexHelper {
 	
 	private static String TEX_SPLIT = MainProgram.STR_SPLIT;
 	
-	public static StringTokenizer tokenize (String latex) { //TODO fix '= ' not equal to '='
+	public static StringTokenizer tokenize (String latex) { 
 		latex = StringEscapeUtils.unescapeHtml(latex);
 		latex = latex.replaceAll("\\\\qvar\\{(.*?)\\}", "");
 		latex = latex.replace("{", " ");
@@ -50,7 +50,7 @@ public class LatexHelper {
 					nextTok = tok.nextToken();
 					if (!(nextTok.equals(" ")) && !(nextTok.equals(""))) {
 						if (!out.equals("")) {
-							out=out.concat(TEX_SPLIT + nextTok);//TODO ArrayLists non serializable so make do with this...
+							out=out.concat(TEX_SPLIT + nextTok.trim());//TODO ArrayLists non serializable so make do with this...
 						} else {
 							out = nextTok;
 						}

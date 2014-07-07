@@ -1,5 +1,9 @@
 package de.tuberlin.dima.schubotz.fse;
 
+import java.io.BufferedInputStream;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.Scanner;
 
@@ -34,5 +38,31 @@ public class TestUtils {
         String out = s.hasNext() ? s.next() : "";
         s.close();
         return out;
+    }
+    
+    public static int countLines(String filename) throws IOException {
+    	InputStream is = new BufferedInputStream(new FileInputStream(filename));
+    	try {
+    		byte[] c = new byte[1024];
+    		int count = 0;
+    		int readChars = 0;
+    		boolean readingLine = false;
+    		while((readChars = is.read(c)) != -1) {
+    			readingLine = true;
+    			for (int i=0; i < readChars; i++) {
+    				if(c[i] == '\n') {
+    					readingLine = false;
+    					count++;
+    				}
+    			}
+    		}
+    		return readingLine ? ++count : count;
+    	} catch (FileNotFoundException e) {
+    		System.out.println("File not found or given directory is incorrect.");
+    		e.printStackTrace();
+    		return 0;
+    	} finally {
+    		is.close();
+    	}
     }
 }
