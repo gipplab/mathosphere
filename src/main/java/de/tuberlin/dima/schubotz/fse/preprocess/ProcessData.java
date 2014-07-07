@@ -100,7 +100,6 @@ public class ProcessData {
 																.aggregate(Aggregations.SUM,1); //aggregate based on field 1
 		
 		//Count total number of documents and output
-		System.out.println("Number of documents");
 		rawArticleText.map(new MapFunction<String,Integer>() {
 			@Override
 			public Integer map(String in) {

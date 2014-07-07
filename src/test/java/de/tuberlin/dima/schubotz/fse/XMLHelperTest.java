@@ -30,7 +30,7 @@ public class XMLHelperTest extends TestCase {
 			NodeList testnode = XMLHelper.String2NodeList( TestUtils.getTestResultForTest11(), "*//math" );
 			//TODO assertEquals(100., XMLHelper.cacluateSimilarityScore( MathMLElements.item( 11 ), testnode.item( 0 ),  qvars ) );
 		} else {
-			fail("no math element  ");
+			fail("no math element");
 		}
 	}
 
@@ -51,7 +51,7 @@ public class XMLHelperTest extends TestCase {
 			assertTrue( XMLHelper.compareNode( MathMLElements.item( 1 ), MathMLElements.item( 1 ), true, qvars ) );
 			System.out.println(qvars.toString());
 		} else {
-			fail("no math element  ");
+			fail("no math element");
 		}
 	}
 
