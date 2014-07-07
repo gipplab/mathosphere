@@ -1,14 +1,16 @@
 package de.tuberlin.dima.schubotz.fse;
 
-import com.google.common.collect.HashMultiset;
-import eu.stratosphere.api.java.functions.FlatMapFunction;
-import eu.stratosphere.util.Collector;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import org.jsoup.Jsoup;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import com.google.common.collect.HashMultiset;
+
+import eu.stratosphere.api.java.functions.FlatMapFunction;
+import eu.stratosphere.util.Collector;
 
 public class SectionMapper extends FlatMapFunction<String, SectionTuple> {
 	final static String FILENAME_INDICATOR = "Filename";
