@@ -74,9 +74,7 @@ public class ProcessData {
 	 * @throws ParserConfigurationException
 	 */
 	public static void ConfigurePlan () throws XPathExpressionException, ParserConfigurationException, Exception {
-		env = ExecutionEnvironment.getExecutionEnvironment();
-		//Get keyword set and latex set
-		
+		env = ExecutionEnvironment.getExecutionEnvironment();	
 		//Set up articleDataSet
 		TextInputFormat format = new TextInputFormat( new Path( docsInput ) );
 		format.setDelimiter( DOCUMENT_SEPARATOR ); //WATCH fix stratosphere split issues for Queries and Documents
