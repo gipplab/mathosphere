@@ -77,7 +77,7 @@ public class ProcessData {
 		env = ExecutionEnvironment.getExecutionEnvironment();	
 		//Set up articleDataSet
 		TextInputFormat format = new TextInputFormat( new Path( docsInput ) );
-		format.setDelimiter( DOCUMENT_SEPARATOR ); //WATCH fix stratosphere split issues for Queries and Documents
+		format.setDelimiter( DOCUMENT_SEPARATOR ); 
 		DataSet<String> rawArticleText = new DataSource<>( env, format, BasicTypeInfo.STRING_TYPE_INFO );
 		
 		//Set up querydataset

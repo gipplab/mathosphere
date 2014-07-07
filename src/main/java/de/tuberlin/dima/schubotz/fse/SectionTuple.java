@@ -8,7 +8,7 @@ import eu.stratosphere.api.java.tuple.Tuple3;
  * split by MainProgram.STR_SPLIT.
  */
 public class SectionTuple extends Tuple3<String,String,String> {
-	private String split = MainProgram.STR_SPLIT;
+	private String split = MainProgram.STR_SPLIT; //WATCH for errors accessing global variables
 	
 	/**
 	 * Constructor for this class. Default 

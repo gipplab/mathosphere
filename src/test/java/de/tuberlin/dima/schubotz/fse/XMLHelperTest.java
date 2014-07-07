@@ -24,7 +24,6 @@ public class XMLHelperTest extends TestCase {
 		//Get nodelist of all <math> descendants of <root><topic>
 		NodeList MathMLElements = XMLHelper.String2NodeList(testFile1, "/topics//math");//"/topics/topic/query/formula/math" topic/query/formula
 
-		Node nl;
 		int count = MathMLElements.getLength();
 		if (count > 0) {
 			HashMap<String, Node> qvars = new HashMap<>();
