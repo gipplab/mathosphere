@@ -35,7 +35,14 @@ public class KeywordDocMapper extends FlatMapFunction<String, Tuple2<String,Inte
 	public void flatMap(String value, Collector<Tuple2<String,Integer>> out) {
 		//Takes in document, outputs tuple of <keyword,1> for every document containing keyword contained in set of query keywords
 		//Extract plaintext from article
-		String plainText = Jsoup.parse(value).text();
+		String plainText = "";
+		try {
+			plainText = Jsoup.parse(value).text();
+		} catch (Exception e){
+			System.out.println("JSoup could not parse document (KeywordDocMapper)");
+			e.printStackTrace();
+			return;
+		}
 		String[] tokens = plainText.toLowerCase().split( "\\W+" ); //split on repeating non-word characters
 		Set<String> tokenSet = new HashSet<String>(Arrays.asList(tokens)); //remove repeats (only want number of documents)
 
