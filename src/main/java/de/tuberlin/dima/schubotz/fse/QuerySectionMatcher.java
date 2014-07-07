@@ -1,11 +1,12 @@
 package de.tuberlin.dima.schubotz.fse;
 
-import com.google.common.collect.HashMultiset;
-import eu.stratosphere.api.java.functions.FlatMapFunction;
-import eu.stratosphere.util.Collector;
-
 import java.util.Arrays;
 import java.util.Collection;
+
+import com.google.common.collect.HashMultiset;
+
+import eu.stratosphere.api.java.functions.FlatMapFunction;
+import eu.stratosphere.util.Collector;
 
 public class QuerySectionMatcher extends FlatMapFunction<SectionTuple,ResultTuple> {
 	/**
