@@ -18,13 +18,19 @@ import eu.stratosphere.util.Collector;
 
 public class LatexDocMapper extends FlatMapFunction<String, Tuple2<String,Integer>>{
 	HashSet<String> latex;
+	String STR_SPLIT;
+	
+	public LatexDocMapper(String STR_SPLIT) {
+		this.STR_SPLIT = STR_SPLIT;
+	}
+	
 	@Override
 	public void open(Configuration parameters) {
 		//Get latex from queries
 		latex = new HashSet<String>();
 		Collection<QueryTuple> queries = getRuntimeContext().getBroadcastVariable( "Queries" );
 		for (QueryTuple query : queries) {
-			String[] tokens = query.getLatex().split( "<S>" ); //get list of latex
+			String[] tokens = query.getLatex().split(STR_SPLIT); //get list of latex
 			for ( String token : tokens ) {
 				if (!token.equals("")) {
 					latex.add(token);
@@ -54,7 +60,7 @@ public class LatexDocMapper extends FlatMapFunction<String, Tuple2<String,Intege
 		//Extract latex
 		String sectionLatex = LatexHelper.extract(LatexElements);
 		if (!sectionLatex.equals("")) {
-			String[] tokens = sectionLatex.split("<S>"); 
+			String[] tokens = sectionLatex.split(STR_SPLIT); 
 			Set<String> tokenSet = new HashSet<String>(Arrays.asList(tokens)); //remove repeats (only want number of documents)
 			//Loop through and output
 			for (String token : tokenSet) {

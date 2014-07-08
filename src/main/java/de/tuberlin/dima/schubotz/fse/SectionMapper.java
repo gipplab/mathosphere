@@ -17,12 +17,14 @@ public class SectionMapper extends FlatMapFunction<String, SectionTuple> {
 	final static Pattern filnamePattern = Pattern
 	         .compile( "<ARXIVFILESPLIT\\\\n" + FILENAME_INDICATOR + "=\"\\./\\d+/(.*?)/\\1_(\\d+)_(\\d+)\\.xhtml\">" );
 	
-	String TEX_SPLIT = MainProgram.STR_SPLIT;
-	Pattern WORD_SPLIT = MainProgram.WORD_SPLIT;
+	Pattern WORD_SPLIT;
+	String STR_SPLIT;
 	
 	HashMultiset<String> keywords;
 
-	public SectionMapper (HashMultiset<String> keywords) {
+	public SectionMapper (Pattern WORD_SPLIT, String STR_SPLIT, HashMultiset<String> keywords) {
+		this.WORD_SPLIT = WORD_SPLIT;		
+		this.STR_SPLIT = STR_SPLIT;
 		this.keywords = keywords;
 	}
 
@@ -71,7 +73,7 @@ public class SectionMapper extends FlatMapFunction<String, SectionTuple> {
 			return;
 		}
 		String[] tokens = WORD_SPLIT.split(plainText.toLowerCase()); 
-		SectionTuple tup = new SectionTuple(docID,latex,"");
+		SectionTuple tup = new SectionTuple(docID,latex,"",STR_SPLIT);
 		for (String token : tokens) {
 			if (keywords.contains(token)) {
 				if (!token.equals(""))

@@ -17,7 +17,13 @@ import eu.stratosphere.util.Collector;
 
 public class KeywordDocMapper extends FlatMapFunction<String, Tuple2<String,Integer>> {
 	HashSet<String> keywords;
-	Pattern WORD_SPLIT = MainProgram.WORD_SPLIT;
+	Pattern WORD_SPLIT;
+	String STR_SPLIT;
+	public KeywordDocMapper(Pattern WORD_SPLIT, String STR_SPLIT) {
+		this.WORD_SPLIT = WORD_SPLIT;
+		this.STR_SPLIT = STR_SPLIT;
+	}
+	
 	
 	@Override
 	public void open(Configuration parameters) {
@@ -25,7 +31,7 @@ public class KeywordDocMapper extends FlatMapFunction<String, Tuple2<String,Inte
 		keywords = new HashSet<String>();
 		Collection<QueryTuple> queries = getRuntimeContext().getBroadcastVariable( "Queries" );
 		for (QueryTuple query : queries) {
-			String[] tokens = query.getKeywords().split( "<S>" ); //get list of keywords
+			String[] tokens = query.getKeywords().split(STR_SPLIT); //get list of keywords
 			for ( String token : tokens ) {
 				if (!token.equals("")) {
 					keywords.add(token);

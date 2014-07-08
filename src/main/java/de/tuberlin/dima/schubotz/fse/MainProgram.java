@@ -56,15 +56,15 @@ public class MainProgram {
 	/**
 	 * Delimiter used in between Tex and Keyword tokens
 	 */
-	public static final String STR_SPLIT = "<S>";
+	public static final String STR_SPLIT = "<LSJDLFKSJDFLK>";
 	/**
 	 * Delimiter for words in document/queries
 	 */
-	public static final Pattern WORD_SPLIT = Pattern.compile("\\W+", Pattern.UNICODE_CHARACTER_CLASS); 
+	public static final Pattern WORD_SPLIT = Pattern.compile("[^\\w]+",Pattern.UNICODE_CHARACTER_CLASS);//"\\W+", Pattern.UNICODE_CHARACTER_CLASS); 
 	/**
 	 * Runtag ID
 	 */
-	public static final String RUNTAG_LATEX = "fse_LATEX";
+	public static final String RUNTAG = "fse_LATEX";
 	/**
 	 * Limit of results per query
 	 */
@@ -173,12 +173,12 @@ public class MainProgram {
 		// TODO IMPLEMENT ADDITIONAL SCORING METHODS 
 		
 		//PHASE A: extract LaTeX and keywords 
-		DataSet<QueryTuple> queryDataSet = rawQueryText.flatMap(new QueryMapper());
-		DataSet<SectionTuple> sectionDataSet = rawArticleText.flatMap(new SectionMapper(keywordDocsMultiset));
+		DataSet<QueryTuple> queryDataSet = rawQueryText.flatMap(new QueryMapper(WORD_SPLIT, STR_SPLIT));
+		DataSet<SectionTuple> sectionDataSet = rawArticleText.flatMap(new SectionMapper(WORD_SPLIT, STR_SPLIT, keywordDocsMultiset));
 		
 		
 		//PHASE B: compare LaTeX and keywords, score
-		DataSet<ResultTuple> latexMatches = sectionDataSet.flatMap(new QuerySectionMatcher( STR_SPLIT, latexDocsMultiset, keywordDocsMultiset, numDocs ))
+		DataSet<ResultTuple> latexMatches = sectionDataSet.flatMap(new QuerySectionMatcher(STR_SPLIT, latexDocsMultiset, keywordDocsMultiset, numDocs ))
 														  .withBroadcastSet(queryDataSet, "Queries"); 
 		
 		
@@ -187,7 +187,7 @@ public class MainProgram {
 														.groupBy(0)
 														//Sort by score <queryid, docid, score>
 														.sortGroup(2, Order.DESCENDING) 
-														.reduceGroup(new OutputSimple());			
+														.reduceGroup(new OutputSimple(QUERYLIMIT,RUNTAG));			
 		try { 
 			outputTuples.writeAsCsv(output,"\n"," ",WriteMode.OVERWRITE);
 		} catch (Exception e) {

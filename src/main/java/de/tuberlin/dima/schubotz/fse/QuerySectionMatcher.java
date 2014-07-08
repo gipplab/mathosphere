@@ -12,15 +12,15 @@ public class QuerySectionMatcher extends FlatMapFunction<SectionTuple,ResultTupl
 	/**
 	 * Split for tex and keywords
 	 */
-	final String SPLIT;
+	final String STR_SPLIT;
 	final HashMultiset<String> latexDocsMultiset;
 	final HashMultiset<String> keywordDocsMultiset;
 	final Integer numDocs;
 	double latexScore = 0;
 	double keywordScore = 0;
 	double finalScore =0.;
-	public QuerySectionMatcher (String split, HashMultiset<String> latexDocsMultiset, HashMultiset<String> keywordDocsMultiset, Integer numDocs) {
-		SPLIT = split;
+	public QuerySectionMatcher (String STR_SPLIT, HashMultiset<String> latexDocsMultiset, HashMultiset<String> keywordDocsMultiset, Integer numDocs) {
+		this.STR_SPLIT = STR_SPLIT;
 		this.latexDocsMultiset = latexDocsMultiset;
 		this.keywordDocsMultiset = keywordDocsMultiset;
 		this.numDocs = numDocs;
@@ -42,8 +42,8 @@ public class QuerySectionMatcher extends FlatMapFunction<SectionTuple,ResultTupl
 
 		
 		//Construct set of term frequencies for latex and keywords
-		HashMultiset<String> sectionLatex = HashMultiset.create(Arrays.asList(in.getLatex().split(SPLIT)));
-		HashMultiset<String> sectionKeywords = HashMultiset.create(Arrays.asList(in.getKeywords().split(SPLIT)));
+		HashMultiset<String> sectionLatex = HashMultiset.create(Arrays.asList(in.getLatex().split(STR_SPLIT)));
+		HashMultiset<String> sectionKeywords = HashMultiset.create(Arrays.asList(in.getKeywords().split(STR_SPLIT)));
 		
 		//Loop through queries and calculate tfidf scores
 		Collection<QueryTuple> queries = getRuntimeContext().getBroadcastVariable("Queries");
@@ -56,14 +56,14 @@ public class QuerySectionMatcher extends FlatMapFunction<SectionTuple,ResultTupl
 //debug = true;
 //}
 			if (!sectionLatex.isEmpty()) {
-				queryLatex = HashMultiset.create(Arrays.asList(query.getLatex().split(SPLIT)));
+				queryLatex = HashMultiset.create(Arrays.asList(query.getLatex().split(STR_SPLIT)));
 				latexScore = calculateTFIDFScore(queryLatex, sectionLatex, latexDocsMultiset);
 			} else {
 				latexScore = 0.;
 			}
 			
 			if (!sectionKeywords.isEmpty()) {
-				queryKeywords = HashMultiset.create(Arrays.asList(query.getKeywords().split(SPLIT)));
+				queryKeywords = HashMultiset.create(Arrays.asList(query.getKeywords().split(STR_SPLIT)));
 				keywordScore = calculateTFIDFScore(queryKeywords, sectionKeywords, keywordDocsMultiset);
 			} else {
 				keywordScore = 0.;

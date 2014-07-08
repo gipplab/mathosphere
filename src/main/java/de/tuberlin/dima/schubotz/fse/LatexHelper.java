@@ -8,7 +8,7 @@ import org.w3c.dom.NodeList;
 
 public class LatexHelper {
 	
-	private static String TEX_SPLIT = MainProgram.STR_SPLIT;
+	private static String TEX_SPLIT = MainProgram.STR_SPLIT; //WATCH for global variable access
 	
 	public static StringTokenizer tokenize (String latex) { 
 		latex = StringEscapeUtils.unescapeHtml(latex);
