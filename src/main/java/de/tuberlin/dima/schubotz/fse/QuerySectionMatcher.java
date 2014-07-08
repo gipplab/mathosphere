@@ -68,11 +68,12 @@ public class QuerySectionMatcher extends FlatMapFunction<SectionTuple,ResultTupl
 			} else {
 				keywordScore = 0.;
 			}
-			finalScore = (keywordScore/6.36) + latexScore;
+			finalScore = (keywordScore/6.36) + latexScore; //TODO why is keywordScore and/or latexScore producing NaN?
 
-			if( Double.isNaN( finalScore )  )
+			if( Double.isNaN( finalScore )  ) { 
+				System.out.println("NaN hit! Latex: " + Double.toString(latexScore) + " Keyword: " + Double.toString(keywordScore)); //DEBUG output
 				finalScore = 0;
-			//System.out.println("F:"+finalScore+"K"+keywordScore+"L"+latexScore);
+			}
 			out.collect( new ResultTuple( query.getID(), in.getID(), finalScore ) );
 		}
 	}
@@ -84,6 +85,15 @@ public class QuerySectionMatcher extends FlatMapFunction<SectionTuple,ResultTupl
 	 * @return
 	 */
 	private double calculateTFIDFScore(HashMultiset<String> queryTokens, HashMultiset<String> sectionTokens, HashMultiset<String> map) {
+		/*
+		 * NaN possibilities:
+		 * -1) The total number of terms in the document is zero (tf = x/0)- 
+		 * -2) The total number of documents that contains the term is -1-
+		 * -3) The total number of documents is <= 0-
+		 * -4) numDocs is so high that it is NaN- 
+		 * -5) count(element) is returning NaN or <= -1-
+		 * 6) size() is returning NaN or zero 
+		 */
 		double termTotal = sectionTokens.size(); //total number of terms in current section
 		double termFreqDoc; //frequency in current section
 		double termFreqTotal; //number of documents that contain the term
@@ -97,7 +107,7 @@ public class QuerySectionMatcher extends FlatMapFunction<SectionTuple,ResultTupl
 			termFreqDoc = sectionTokens.count(element);
 			termFreqTotal = map.count(element);
 			tf = termFreqDoc / termTotal; //can be zero but not undefined
-			idf = Math.log(numDocs / (1d + termFreqTotal)); //will never be undefined due to +1
+			idf = Math.log(((double) numDocs) / (1d + termFreqTotal)); //will never be undefined due to +1
 			total += tf * idf;
 //if (debug) {
 ////DEBUG output

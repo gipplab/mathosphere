@@ -53,7 +53,7 @@ public class SectionMapper extends FlatMapFunction<String, SectionTuple> {
 		} else {
 			System.out.println("null docID! (possible non ARXIV document input)");
 			docID = "this_was_null";
-			//return; //DEBUG for non arxiv document input
+			return; //DEBUG for non arxiv document input
 		}
 		
 		//Parse string as XML
