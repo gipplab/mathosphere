@@ -8,7 +8,6 @@ import java.util.regex.Pattern;
 
 import org.jsoup.Jsoup;
 
-import de.tuberlin.dima.schubotz.fse.MainProgram;
 import de.tuberlin.dima.schubotz.fse.QueryTuple;
 import eu.stratosphere.api.java.functions.FlatMapFunction;
 import eu.stratosphere.api.java.tuple.Tuple2;

@@ -56,11 +56,11 @@ public class MainProgram {
 	/**
 	 * Delimiter used in between Tex and Keyword tokens
 	 */
-	public static final String STR_SPLIT = "<LSJDLFKSJDFLK>";
+	public static final String STR_SPLIT = "<S>";
 	/**
 	 * Delimiter for words in document/queries
 	 */
-	public static final Pattern WORD_SPLIT = Pattern.compile("[^\\w]+",Pattern.UNICODE_CHARACTER_CLASS);//"\\W+", Pattern.UNICODE_CHARACTER_CLASS); 
+	public static final Pattern WORD_SPLIT = Pattern.compile("\\W+", Pattern.UNICODE_CHARACTER_CLASS); 
 	/**
 	 * Runtag ID
 	 */

@@ -1,7 +1,5 @@
 package de.tuberlin.dima.schubotz.fse;
 
-import java.io.Serializable;
-
 import eu.stratosphere.api.java.tuple.Tuple3;
 
 /**
