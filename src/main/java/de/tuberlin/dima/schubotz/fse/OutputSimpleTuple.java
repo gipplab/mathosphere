@@ -7,7 +7,7 @@ import eu.stratosphere.api.java.tuple.Tuple6;
  * In format: queryId,delim(1),docId,rank,score,runtag
  */
 public class OutputSimpleTuple extends Tuple6<String,Integer,String,Integer,Double,String> {
-	final static String runtag = MainProgram.RUNTAG_LATEX; //WATCH for errors accessing global variables
+	String runtag;
 	/**
 	 * @param queryId
 	 * @param docId
@@ -21,9 +21,9 @@ public class OutputSimpleTuple extends Tuple6<String,Integer,String,Integer,Doub
 		this.f2 = "";
 		this.f3 = 1;
 		this.f4 = 0.0;
-		this.f5 = runtag;
+		this.f5 = "DEFAULT_RUNTAG";
 	}
-	public OutputSimpleTuple(String queryId,String docId,Integer rank,Double score) {
+	public OutputSimpleTuple(String queryId,String docId,Integer rank,Double score,String runtag) {
 		this.f0 = queryId;
 		this.f1 = 1;
 		this.f2 = docId;

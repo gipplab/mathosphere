@@ -1,16 +1,18 @@
 package de.tuberlin.dima.schubotz.fse;
 
+import java.io.Serializable;
+
 import eu.stratosphere.api.java.tuple.Tuple3;
 
 /**
  * Tuple storing data extracted from queries.
  * In form of ID,Latex,Keywords. Latex and
  * keywords are strings, with their tokens
- * split by MainProgram.STR_SPLIT.
+ * split by parameter STR_SPLIT.
  */
 
 public class QueryTuple extends Tuple3<String,String,String> {
-	private String split = MainProgram.STR_SPLIT; //WATCH for errors accessing global variables
+	private String split;
 	
 	/**
 	 * Constructor for this class. Default 
@@ -18,16 +20,19 @@ public class QueryTuple extends Tuple3<String,String,String> {
 	 * @param id
 	 * @param latex
 	 * @param keywords
+	 * @param STR_SPLIT
 	 */
 	public QueryTuple() {
 		this.f0 = "";
 		this.f1 = "";
 		this.f2 = "";
+		this.split = "<S>";
 	}
-	public QueryTuple(String id, String latex, String keywords) {
+	public QueryTuple(String id, String latex, String keywords, String STR_SPLIT) {
 		this.f0 = id;
 		this.f1 = latex;
 		this.f2 = keywords;
+		this.split = STR_SPLIT;
 	}
 	public void setNamedField (fields f, Object value) {
 		setField( value, f.ordinal() );

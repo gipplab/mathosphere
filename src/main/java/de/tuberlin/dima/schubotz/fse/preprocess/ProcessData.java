@@ -1,8 +1,11 @@
 package de.tuberlin.dima.schubotz.fse.preprocess;
 
+import java.util.regex.Pattern;
+
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPathExpressionException;
 
+import de.tuberlin.dima.schubotz.fse.MainProgram;
 import de.tuberlin.dima.schubotz.fse.QueryMapper;
 import de.tuberlin.dima.schubotz.fse.QueryTuple;
 import eu.stratosphere.api.java.DataSet;
@@ -24,6 +27,9 @@ public class ProcessData {
 	static String keywordDocsMapOutput;
 	static String latexDocsMapOutput;
 	static String numDocsOutput;
+	
+	public static String STR_SPLIT = MainProgram.STR_SPLIT;
+	public static Pattern WORD_SPLIT = MainProgram.WORD_SPLIT;
 	
 	public static final String DOCUMENT_SEPARATOR = "</ARXIVFILESPLIT>";
 	
@@ -85,16 +91,16 @@ public class ProcessData {
 		formatQueries.setDelimiter( "</topic>" ); 
 		DataSet<String> rawQueryText = new DataSource<>( env, formatQueries, BasicTypeInfo.STRING_TYPE_INFO ); 
 		
-		DataSet<QueryTuple> queryDataSet = rawQueryText.flatMap(new QueryMapper());
+		DataSet<QueryTuple> queryDataSet = rawQueryText.flatMap(new QueryMapper(WORD_SPLIT, STR_SPLIT));
 		
 		//Construct map of query keyword: number of docs containing that keyword
-		DataSet<Tuple2<String,Integer>> keyDocResults = rawArticleText.flatMap(new KeywordDocMapper())
+		DataSet<Tuple2<String,Integer>> keyDocResults = rawArticleText.flatMap(new KeywordDocMapper(WORD_SPLIT, STR_SPLIT))
 																.withBroadcastSet(queryDataSet, "Queries")
 																.groupBy(0) //group by keyword
 																.aggregate(Aggregations.SUM, 1); //aggregate based on field 1
 		
 		//Construct map of latex tokens: number of docs containing that token
-		DataSet<Tuple2<String,Integer>> latexDocResults = rawArticleText.flatMap(new LatexDocMapper())
+		DataSet<Tuple2<String,Integer>> latexDocResults = rawArticleText.flatMap(new LatexDocMapper(STR_SPLIT))
 																.withBroadcastSet(queryDataSet, "Queries")
 																.groupBy(0) //group by keyword
 																.aggregate(Aggregations.SUM,1); //aggregate based on field 1

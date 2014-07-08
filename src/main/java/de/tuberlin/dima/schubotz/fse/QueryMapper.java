@@ -10,8 +10,14 @@ import eu.stratosphere.api.java.functions.FlatMapFunction;
 import eu.stratosphere.util.Collector;
 
 public class QueryMapper extends FlatMapFunction<String, QueryTuple> {
-	String TEX_SPLIT = MainProgram.STR_SPLIT;
-	Pattern WORD_SPLIT = MainProgram.WORD_SPLIT;
+	Pattern WORD_SPLIT;
+	String STR_SPLIT;
+	
+	public QueryMapper(Pattern WORD_SPLIT, String STR_SPLIT) {
+		this.WORD_SPLIT = WORD_SPLIT;
+		this.STR_SPLIT = STR_SPLIT;
+	}
+	
 	
 	/**
 	 * The core method of the MapFunction. Takes an element from the input data set and transforms
@@ -52,7 +58,7 @@ public class QueryMapper extends FlatMapFunction<String, QueryTuple> {
 		
 		//Extract keywords from query
 		NodeList KeyWordElements = XMLHelper.getElementsB(doc, "//*[name()='keyword']"); //get all keyword tags
-		QueryTuple tup = new QueryTuple(queryID,latex,"");
+		QueryTuple tup = new QueryTuple(queryID,latex,"",STR_SPLIT);
 		for (int i = 0; i < KeyWordElements.getLength(); i++ ) {
 			node = KeyWordElements.item(i); 
 			try {
