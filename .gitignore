@@ -8,4 +8,4 @@ target
 src/test/resources/test100.xml
 src/test/resources/test1000.xml
 src/test/resources/test10000.xml
-
+src/test/resources/augmentedWikiDump.xml
