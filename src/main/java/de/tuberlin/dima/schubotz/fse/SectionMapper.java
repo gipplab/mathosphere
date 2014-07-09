@@ -3,6 +3,8 @@ package de.tuberlin.dima.schubotz.fse;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.jsoup.Jsoup;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
@@ -16,7 +18,7 @@ public class SectionMapper extends FlatMapFunction<String, SectionTuple> {
 	final static String FILENAME_INDICATOR = "Filename";
 	final static Pattern filnamePattern = Pattern
 	         .compile( "<ARXIVFILESPLIT\\\\n" + FILENAME_INDICATOR + "=\"\\./\\d+/(.*?)/\\1_(\\d+)_(\\d+)\\.xhtml\">" );
-	
+	private static final Log LOG = LogFactory.getLog(SectionMapper.class);
 	Pattern WORD_SPLIT;
 	String STR_SPLIT;
 	
@@ -43,7 +45,7 @@ public class SectionMapper extends FlatMapFunction<String, SectionTuple> {
 		//Split into lines 0: ARXIVFILENAME, 1: HTML
 		String[] lines = value.trim().split( "\\n", 2 );
 		if ( lines.length < 2 ) { 
-			System.out.println("Null document (SectionMapper): " + value); //DEBUG output null document
+			LOG.warn("Null document: " + value); 
 			return;
 		}
 		Matcher matcher = filnamePattern.matcher( lines[0] );
@@ -51,9 +53,8 @@ public class SectionMapper extends FlatMapFunction<String, SectionTuple> {
 		if ( matcher.find() ) {
 			docID = matcher.group(1) + "_" + matcher.group(2) + "_" + matcher.group(3) + ".xhtml";
 		} else {
-			System.out.println("null docID! (possible non ARXIV document input)");
-			docID = "this_was_null";
-			return; //DEBUG for non arxiv document input
+			LOG.warn("null docID! (possible non ARXIV document input)");
+			return; 
 		}
 		
 		//Parse string as XML
@@ -68,8 +69,7 @@ public class SectionMapper extends FlatMapFunction<String, SectionTuple> {
 		try {
 			plainText = Jsoup.parse(value).text();
 		} catch (Exception e) {
-			System.out.println("Jsoup could not parse the document (SectionMapper)");
-			e.printStackTrace();
+			LOG.warn("Jsoup could not parse the document", e);
 			return;
 		}
 		String[] tokens = WORD_SPLIT.split(plainText.toLowerCase()); 

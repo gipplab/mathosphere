@@ -53,6 +53,7 @@ public class MainProgram {
 	 * The Constant LOG.
 	 */
 	private static final Log LOG = LogFactory.getLog( MainProgram.class );
+	private static boolean debug = true; //DEBUG changer
 	/**
 	 * Delimiter used in between Tex and Keyword tokens
 	 */
@@ -148,14 +149,8 @@ public class MainProgram {
 		env = ExecutionEnvironment.getExecutionEnvironment();
 
 		//Generate keywordDocsMap and latexDocsMap from preprocessed generated files
-		try {
-			keywordDocsMultiset = csvToMultiset(keywordDocsMapInput);
-			latexDocsMultiset = csvToMultiset(latexDocsMapInput);
-		} catch (Exception e) {
-			System.out.println("DocsMapInput issue!");
-			e.printStackTrace();
-			throw new Exception();
-		}
+		keywordDocsMultiset = csvToMultiset(keywordDocsMapInput);
+		latexDocsMultiset = csvToMultiset(latexDocsMapInput);
 		
 		
 		//Set up articleDataSet
@@ -178,7 +173,7 @@ public class MainProgram {
 		
 		
 		//PHASE B: compare LaTeX and keywords, score
-		DataSet<ResultTuple> latexMatches = sectionDataSet.flatMap(new QuerySectionMatcher(STR_SPLIT, latexDocsMultiset, keywordDocsMultiset, numDocs ))
+		DataSet<ResultTuple> latexMatches = sectionDataSet.flatMap(new QuerySectionMatcher(STR_SPLIT, latexDocsMultiset, keywordDocsMultiset, numDocs, debug))
 														  .withBroadcastSet(queryDataSet, "Queries"); 
 		
 		
@@ -187,14 +182,8 @@ public class MainProgram {
 														.groupBy(0)
 														//Sort by score <queryid, docid, score>
 														.sortGroup(2, Order.DESCENDING) 
-														.reduceGroup(new OutputSimple(QUERYLIMIT,RUNTAG));			
-		try { 
-			outputTuples.writeAsCsv(output,"\n"," ",WriteMode.OVERWRITE);
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-			e.printStackTrace();
-			return;
-		}
+														.reduceGroup(new OutputSimple(QUERYLIMIT,RUNTAG));			 
+		outputTuples.writeAsCsv(output,"\n"," ",WriteMode.OVERWRITE);
 
 	}
 	

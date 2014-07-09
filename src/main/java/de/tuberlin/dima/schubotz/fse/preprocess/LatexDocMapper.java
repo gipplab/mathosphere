@@ -5,11 +5,14 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 
 import de.tuberlin.dima.schubotz.fse.LatexHelper;
 import de.tuberlin.dima.schubotz.fse.QueryTuple;
+import de.tuberlin.dima.schubotz.fse.SectionMapper;
 import de.tuberlin.dima.schubotz.fse.XMLHelper;
 import eu.stratosphere.api.java.functions.FlatMapFunction;
 import eu.stratosphere.api.java.tuple.Tuple2;
@@ -19,6 +22,7 @@ import eu.stratosphere.util.Collector;
 public class LatexDocMapper extends FlatMapFunction<String, Tuple2<String,Integer>>{
 	HashSet<String> latex;
 	String STR_SPLIT;
+	private static final Log LOG = LogFactory.getLog(LatexDocMapper.class);
 	
 	public LatexDocMapper(String STR_SPLIT) {
 		this.STR_SPLIT = STR_SPLIT;
@@ -46,7 +50,7 @@ public class LatexDocMapper extends FlatMapFunction<String, Tuple2<String,Intege
 		NodeList LatexElements;
 		String[] lines = value.trim().split( "\\n", 2 );
 		if ( lines.length < 2 ) { 
-			System.out.println("Null document (LatexDocMapper): " + value); //DEBUG output null document
+			LOG.warn("Null document (LatexDocMapper): " + value); 
 			return;
 		}
 		try {
@@ -54,7 +58,7 @@ public class LatexDocMapper extends FlatMapFunction<String, Tuple2<String,Intege
 			Document doc = XMLHelper.String2Doc( lines[1], false );
 			LatexElements= XMLHelper.getElementsB( doc, "//annotation" ); //get all annotation tags
 		} catch ( Exception e ){
-			System.out.println("Could not parse document:"+lines[0] );
+			LOG.warn("XMLHelper could not parse document:"+lines[0], e);
 			LatexElements = null;
 		}
 		//Extract latex

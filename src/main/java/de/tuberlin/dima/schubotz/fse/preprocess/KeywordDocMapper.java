@@ -6,9 +6,12 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.regex.Pattern;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.jsoup.Jsoup;
 
 import de.tuberlin.dima.schubotz.fse.QueryTuple;
+import de.tuberlin.dima.schubotz.fse.SectionMapper;
 import eu.stratosphere.api.java.functions.FlatMapFunction;
 import eu.stratosphere.api.java.tuple.Tuple2;
 import eu.stratosphere.configuration.Configuration;
@@ -18,6 +21,8 @@ public class KeywordDocMapper extends FlatMapFunction<String, Tuple2<String,Inte
 	HashSet<String> keywords;
 	Pattern WORD_SPLIT;
 	String STR_SPLIT;
+	private static final Log LOG = LogFactory.getLog(KeywordDocMapper.class);
+	
 	public KeywordDocMapper(Pattern WORD_SPLIT, String STR_SPLIT) {
 		this.WORD_SPLIT = WORD_SPLIT;
 		this.STR_SPLIT = STR_SPLIT;
@@ -47,7 +52,7 @@ public class KeywordDocMapper extends FlatMapFunction<String, Tuple2<String,Inte
 		try {
 			plainText = Jsoup.parse(value).text();
 		} catch (Exception e){
-			System.out.println("JSoup could not parse document (KeywordDocMapper)");
+			LOG.warn("JSoup could not parse document: " + value, e);
 			e.printStackTrace();
 			return;
 		}
