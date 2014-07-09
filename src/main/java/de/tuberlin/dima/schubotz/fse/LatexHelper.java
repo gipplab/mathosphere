@@ -10,9 +10,10 @@ public class LatexHelper {
 	
 	private static String TEX_SPLIT = MainProgram.STR_SPLIT; 
 	
-	public static StringTokenizer tokenize (String latex) { 
+	public static StringTokenizer tokenize (String latex) {
 		latex = StringEscapeUtils.unescapeHtml(latex);
-		latex = latex.replaceAll("\\\\qvar\\{(.*?)\\}", "");
+		latex = latex.replaceAll("\\\\qvar\\{(.*?)\\}", ""); //TODO check if this is what we want to do
+		latex = latex.replaceAll("\\\\displaystyle", ""); 
 		latex = latex.replace("{", " ");
 		latex = latex.replace("}", " ");
 		latex = latex.replace("\n"," "); 

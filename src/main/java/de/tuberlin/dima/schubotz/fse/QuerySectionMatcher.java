@@ -103,7 +103,7 @@ public class QuerySectionMatcher extends FlatMapFunction<SectionTuple,ResultTupl
 		double idf = 0d; //inverse document frequency
 		double total = 0d;
 				
-		for (String element : queryTokens.elementSet()) {
+		for (String element : queryTokens.elementSet()) { //strips duplicates in query due to multiple formulas
 			termFreqDoc = sectionTokens.count(element);
 			termFreqTotal = map.count(element);
 			tf = termFreqDoc / termTotal; //can be zero but not undefined
