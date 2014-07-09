@@ -3,6 +3,9 @@ package de.tuberlin.dima.schubotz.fse;
 import java.util.Arrays;
 import java.util.Collection;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import com.google.common.collect.HashMultiset;
 
 import eu.stratosphere.api.java.functions.FlatMapFunction;
@@ -19,11 +22,15 @@ public class QuerySectionMatcher extends FlatMapFunction<SectionTuple,ResultTupl
 	double latexScore = 0;
 	double keywordScore = 0;
 	double finalScore =0.;
-	public QuerySectionMatcher (String STR_SPLIT, HashMultiset<String> latexDocsMultiset, HashMultiset<String> keywordDocsMultiset, Integer numDocs) {
+	private static Log LOG = LogFactory.getLog(QuerySectionMatcher.class);
+	private boolean debug;
+	
+	public QuerySectionMatcher (String STR_SPLIT, HashMultiset<String> latexDocsMultiset, HashMultiset<String> keywordDocsMultiset, Integer numDocs, boolean debug) {
 		this.STR_SPLIT = STR_SPLIT;
 		this.latexDocsMultiset = latexDocsMultiset;
 		this.keywordDocsMultiset = keywordDocsMultiset;
 		this.numDocs = numDocs;
+		this.debug = debug;
 	}
 
 	/**
@@ -48,13 +55,16 @@ public class QuerySectionMatcher extends FlatMapFunction<SectionTuple,ResultTupl
 		//Loop through queries and calculate tfidf scores
 		Collection<QueryTuple> queries = getRuntimeContext().getBroadcastVariable("Queries");
 		for (QueryTuple query : queries) {
-//boolean debug = false; 
-//if (in.getID().contains("5478_1_6") && query.getID().contains("Math-1")) { //DEBUG output
-//System.out.println(query.toString());
-//System.out.println(in.toString());
-//System.out.println(Arrays.asList(in.getLatex().split(SPLIT)));
-//debug = true;
-//}
+			if (in.getID().contains("5478_1_6") && query.getID().contains("Math-1")) { //DEBUG changer
+				debug = true;
+			} else {
+				debug = false;
+			}
+			if (debug) {  
+				LOG.info(query.toString());
+				LOG.info(in.toString());
+				LOG.info(Arrays.asList(in.getLatex().split(STR_SPLIT)));
+			}
 			if (!sectionLatex.isEmpty()) {
 				queryLatex = HashMultiset.create(Arrays.asList(query.getLatex().split(STR_SPLIT)));
 				latexScore = calculateTFIDFScore(queryLatex, sectionLatex, latexDocsMultiset);
@@ -71,7 +81,7 @@ public class QuerySectionMatcher extends FlatMapFunction<SectionTuple,ResultTupl
 			finalScore = (keywordScore/6.36) + latexScore; //TODO why is keywordScore and/or latexScore producing NaN?
 
 			if( Double.isNaN( finalScore )  ) { 
-				System.out.println("NaN hit! Latex: " + Double.toString(latexScore) + " Keyword: " + Double.toString(keywordScore)); //DEBUG output
+				LOG.warn("NaN hit! Latex: " + Double.toString(latexScore) + " Keyword: " + Double.toString(keywordScore)); 
 				finalScore = 0;
 			}
 			out.collect( new ResultTuple( query.getID(), in.getID(), finalScore ) );
@@ -109,20 +119,19 @@ public class QuerySectionMatcher extends FlatMapFunction<SectionTuple,ResultTupl
 			tf = termFreqDoc / termTotal; //can be zero but not undefined
 			idf = Math.log(((double) numDocs) / (1d + termFreqTotal)); //will never be undefined due to +1
 			total += tf * idf;
-//if (debug) {
-////DEBUG output
-//System.out.println("Term: " + element);
-//System.out.println("Freq in Doc: " + termFreqDoc);
-//System.out.println("Num doc with term: " + termFreqTotal);
-//System.out.println("tf: " + tf);
-//System.out.println("idf: " + idf);
-//System.out.println("total: " + total);
-//}
+			if (debug) {
+				LOG.info("Term: " + element);
+				LOG.info("Freq in Doc: " + termFreqDoc);
+				LOG.info("Num doc with term: " + termFreqTotal);
+				LOG.info("tf: " + tf);
+				LOG.info("idf: " + idf);
+				LOG.info("total: " + total);
+			}
 		}
-//if (debug) {
-//	System.out.println("end total: " + total);
-//	System.out.println("END END END END");
-//}
+		if (debug) {
+			LOG.info("end total: " + total);
+			LOG.info("END END END END");
+		}
 		return total;
 		
 	}

@@ -2,6 +2,8 @@ package de.tuberlin.dima.schubotz.fse;
 
 import java.util.regex.Pattern;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -12,6 +14,7 @@ import eu.stratosphere.util.Collector;
 public class QueryMapper extends FlatMapFunction<String, QueryTuple> {
 	Pattern WORD_SPLIT;
 	String STR_SPLIT;
+	private static final Log LOG = LogFactory.getLog(QueryMapper.class);
 	
 	public QueryMapper(Pattern WORD_SPLIT, String STR_SPLIT) {
 		this.WORD_SPLIT = WORD_SPLIT;
@@ -35,7 +38,7 @@ public class QueryMapper extends FlatMapFunction<String, QueryTuple> {
 		
 		//Deal with edge cases left by Stratosphere split on <topic>
 		if ( value.trim().length() == 0 || value.startsWith("\r\n</topics>")) {
-			System.out.println("Corrupt query " + value); //DEBUG output null query 
+			LOG.warn("Corrupt query " + value);  
 			return; 
 		}
 		if ( (!value.endsWith( "</topic>" )) ) {
