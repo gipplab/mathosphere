@@ -16,6 +16,14 @@ import org.apache.commons.logging.LogFactory;
 
 import com.google.common.collect.HashMultiset;
 
+import de.tuberlin.dima.schubotz.fse.mappers.OutputSimple;
+import de.tuberlin.dima.schubotz.fse.mappers.QueryMapper;
+import de.tuberlin.dima.schubotz.fse.mappers.QuerySectionMatcher;
+import de.tuberlin.dima.schubotz.fse.mappers.SectionMapper;
+import de.tuberlin.dima.schubotz.fse.types.OutputSimpleTuple;
+import de.tuberlin.dima.schubotz.fse.types.QueryTuple;
+import de.tuberlin.dima.schubotz.fse.types.ResultTuple;
+import de.tuberlin.dima.schubotz.fse.types.SectionTuple;
 import eu.stratosphere.api.common.operators.Order;
 import eu.stratosphere.api.java.DataSet;
 import eu.stratosphere.api.java.ExecutionEnvironment;
@@ -53,7 +61,7 @@ public class MainProgram {
 	 * The Constant LOG.
 	 */
 	private static final Log LOG = LogFactory.getLog( MainProgram.class );
-	private static boolean debug = true; //DEBUG changer
+	private static boolean debug; 
 	/**
 	 * Delimiter used in between Tex and Keyword tokens
 	 */
@@ -107,7 +115,7 @@ public class MainProgram {
 	static double keywordDivide = 6.36; //TODO Amount to de-weight keywords by: tfidf_keyword / keywordDivide 
 
 	
-	protected static void parseArg (String[] args) {
+	protected static void parseArg (String[] args) throws Exception {
 		// parse job parameters
 		noSubTasks = (args.length > 0 ? Integer.parseInt( args[0] )
 			: 16);
@@ -121,7 +129,12 @@ public class MainProgram {
 			: "file:///mnt/ntcir-math/queries/keywordDocsMap.csv");
 		latexDocsMapInput = (args.length > 5 ? args[5]
 			: "file:///mnt/ntcir-math/queries/latexDocsMap.csv");
-		numDocs = (args.length > 6 ? Integer.valueOf(args[6]) : 9999);
+		if (args.length > 6) {
+			numDocs = Integer.valueOf(args[6]);
+		} else {
+			throw new Exception("numDocs not given!");
+		}
+		debug = (args.length > 7 ? (args[7].equals("debug") ? true : false) : false);
 	}
 
 	public static void main (String[] args) throws Exception {

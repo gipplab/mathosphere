@@ -6,8 +6,8 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPathExpressionException;
 
 import de.tuberlin.dima.schubotz.fse.MainProgram;
-import de.tuberlin.dima.schubotz.fse.QueryMapper;
-import de.tuberlin.dima.schubotz.fse.QueryTuple;
+import de.tuberlin.dima.schubotz.fse.mappers.QueryMapper;
+import de.tuberlin.dima.schubotz.fse.types.QueryTuple;
 import eu.stratosphere.api.java.DataSet;
 import eu.stratosphere.api.java.ExecutionEnvironment;
 import eu.stratosphere.api.java.aggregation.Aggregations;

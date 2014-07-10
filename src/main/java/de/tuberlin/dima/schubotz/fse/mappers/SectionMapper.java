@@ -1,4 +1,4 @@
-package de.tuberlin.dima.schubotz.fse;
+package de.tuberlin.dima.schubotz.fse.mappers;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -11,6 +11,9 @@ import org.w3c.dom.NodeList;
 
 import com.google.common.collect.HashMultiset;
 
+import de.tuberlin.dima.schubotz.fse.types.SectionTuple;
+import de.tuberlin.dima.schubotz.utils.LatexHelper;
+import de.tuberlin.dima.schubotz.utils.XMLHelper;
 import eu.stratosphere.api.java.functions.FlatMapFunction;
 import eu.stratosphere.util.Collector;
 
@@ -62,7 +65,7 @@ public class SectionMapper extends FlatMapFunction<String, SectionTuple> {
 		NodeList LatexElements = XMLHelper.getElementsB(doc, "//annotation"); //get all annotation tags
 		
 		//Extract latex
-		String latex = LatexHelper.extract(LatexElements);
+		String latex = LatexHelper.extract(LatexElements, STR_SPLIT);
 		
 		//Extract plaintext from article
 		String plainText;

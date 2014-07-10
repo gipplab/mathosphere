@@ -1,4 +1,4 @@
-package de.tuberlin.dima.schubotz.fse;
+package de.tuberlin.dima.schubotz.fse.mappers;
 
 import java.util.regex.Pattern;
 
@@ -8,6 +8,9 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import de.tuberlin.dima.schubotz.fse.types.QueryTuple;
+import de.tuberlin.dima.schubotz.utils.LatexHelper;
+import de.tuberlin.dima.schubotz.utils.XMLHelper;
 import eu.stratosphere.api.java.functions.FlatMapFunction;
 import eu.stratosphere.util.Collector;
 
@@ -56,7 +59,7 @@ public class QueryMapper extends FlatMapFunction<String, QueryTuple> {
 		
 		//Extract latex
 		NodeList LatexElements = XMLHelper.getElementsB(doc, "//*[name()='m:annotation']"); //get all annotation tags 
-		String latex = LatexHelper.extract(LatexElements);
+		String latex = LatexHelper.extract(LatexElements, STR_SPLIT);
 		
 		
 		//Extract keywords from query

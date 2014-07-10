@@ -1,4 +1,4 @@
-package de.tuberlin.dima.schubotz.fse;
+package de.tuberlin.dima.schubotz.utils;
 
 import java.io.IOException;
 import java.io.StringReader;

@@ -20,7 +20,7 @@ import eu.stratosphere.api.java.ExecutionEnvironment;
 import eu.stratosphere.client.LocalExecutor;
 
 @RunWith(Parameterized.class)
-public class ProcessDataTest {
+public class MainProcessDataTest {
 	private Integer numDocs;
 	private String inputFile;
 	private String debugOutput;
@@ -31,7 +31,7 @@ public class ProcessDataTest {
 			{9999,"test10000.xml","/home/jjl4/"} //DEBUG test parameters
 		});
 	}
-	public ProcessDataTest(Integer numDocs, String inputFile, String debugOutput) {
+	public MainProcessDataTest(Integer numDocs, String inputFile, String debugOutput) {
 		this.numDocs = numDocs;
 		this.inputFile = inputFile;
 		this.debugOutput = debugOutput;
