@@ -24,6 +24,7 @@ import de.tuberlin.dima.schubotz.fse.types.OutputSimpleTuple;
 import de.tuberlin.dima.schubotz.fse.types.QueryTuple;
 import de.tuberlin.dima.schubotz.fse.types.ResultTuple;
 import de.tuberlin.dima.schubotz.fse.types.SectionTuple;
+import de.tuberlin.dima.schubotz.utils.CSVMultisetHelper;
 import eu.stratosphere.api.common.operators.Order;
 import eu.stratosphere.api.java.DataSet;
 import eu.stratosphere.api.java.ExecutionEnvironment;
@@ -162,8 +163,8 @@ public class MainProgram {
 		env = ExecutionEnvironment.getExecutionEnvironment();
 
 		//Generate keywordDocsMap and latexDocsMap from preprocessed generated files
-		keywordDocsMultiset = csvToMultiset(keywordDocsMapInput);
-		latexDocsMultiset = csvToMultiset(latexDocsMapInput);
+		keywordDocsMultiset = CSVMultisetHelper.csvToMultiset(keywordDocsMapInput);
+		latexDocsMultiset = CSVMultisetHelper.csvToMultiset(latexDocsMapInput);
 		
 		
 		//Set up articleDataSet
@@ -198,18 +199,6 @@ public class MainProgram {
 														.reduceGroup(new OutputSimple(QUERYLIMIT,RUNTAG));			 
 		outputTuples.writeAsCsv(output,"\n"," ",WriteMode.OVERWRITE);
 
-	}
-	
-	public static HashMultiset<String> csvToMultiset(String in) throws FileNotFoundException, IOException {
-		HashMultiset<String> out = HashMultiset.create();
-		BufferedReader br = new BufferedReader(new FileReader(in));
-        String line = "";
-        while ((line = br.readLine()) != null) {
-        	String parts[] = line.split(" ");
-        	out.add(parts[0], Integer.valueOf(parts[1]));
-        }
-        br.close();
-        return out;
 	}
 }
 
