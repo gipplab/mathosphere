@@ -60,14 +60,10 @@ public class ProcessData {
 	
 	public static void main (String[] args) throws Exception {
 		parseArg( args );
-		try {
-			ConfigurePlan();
-			env.setDegreeOfParallelism( noSubTasks );
-			env.execute( "Mathosphere Process Data" );
-		} catch (Exception e) {
-			System.out.println("Aborting!");
-			System.exit(0);
-		}
+		ConfigurePlan();
+		env.setDegreeOfParallelism( noSubTasks );
+		env.execute( "Mathosphere Process Data" );
+		System.out.println("Aborting!");
 		System.exit(1);
 	}
 	

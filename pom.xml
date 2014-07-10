@@ -1,7 +1,7 @@
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>de.tuberlin.schubotz</groupId>
+    <groupId>de.tuberlin.dima.schubotz</groupId>
     <artifactId>math-tests</artifactId>
     <version>0.0.2-SNAPSHOT</version>
     <dependencies>
@@ -51,7 +51,26 @@
     </dependencies>
     <build>
         <plugins>
-
+	        <plugin>
+	        	<groupId>org.codehaus.mojo</groupId>
+	        	<artifactId>build-helper-maven-plugin</artifactId>
+	        	<version>1.7</version>
+	        	<executions>
+	          		<execution>
+	            		<id>add-source</id>
+	            		<phase>generate-sources</phase>
+	            		<goals>
+	              			<goal>add-source</goal>
+	            		</goals>
+	            		<configuration>
+	              			<sources>
+	                			<source>src/wikipedia</source>
+	                			<source>src/utils</source>
+	              			</sources>
+	            		</configuration>
+	          		</execution>
+	        	</executions>
+	      	</plugin>
             <!-- build as single jar with all dependencies -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

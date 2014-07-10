@@ -16,7 +16,7 @@ import eu.stratosphere.api.java.ExecutionEnvironment;
 import eu.stratosphere.client.LocalExecutor;
 
 @RunWith(Parameterized.class)
-public class MainIntegrationTest {
+public class IntegrationTest {
 	private Integer numDocs;
 	private String inputFile;
 	private String outputDir;
@@ -28,7 +28,7 @@ public class MainIntegrationTest {
 			{9999,"test10000.xml","/home/jjl4/", true} //DEBUG test parameters
 		});
 	}
-	public MainIntegrationTest(Integer numDocs, String inputFile, String output, Boolean debug) {
+	public IntegrationTest(Integer numDocs, String inputFile, String output, Boolean debug) {
 		this.numDocs = numDocs;
 		this.inputFile = inputFile;
 		this.outputDir = output;

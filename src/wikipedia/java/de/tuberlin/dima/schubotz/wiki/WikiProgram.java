@@ -1,5 +1,7 @@
 package de.tuberlin.dima.schubotz.wiki;
 
+import java.util.regex.Pattern;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -10,6 +12,10 @@ import org.apache.commons.logging.LogFactory;
  */
 public class WikiProgram {
 	private static final Log LOG = LogFactory.getLog(WikiProgram.class);
+	
+	public static final String STR_SPLIT = "<S>";
+	public static final Pattern WORD_SPLIT = Pattern.compile("\\W+", Pattern.UNICODE_CHARACTER_CLASS); 
+	
 	
 	protected static void parseArg(String[] args) throws Exception {
 		
