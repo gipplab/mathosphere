@@ -63,7 +63,6 @@ public class ProcessData {
 		ConfigurePlan();
 		env.setDegreeOfParallelism( noSubTasks );
 		env.execute( "Mathosphere Process Data" );
-		System.out.println("Aborting!");
 		System.exit(1);
 	}
 	
