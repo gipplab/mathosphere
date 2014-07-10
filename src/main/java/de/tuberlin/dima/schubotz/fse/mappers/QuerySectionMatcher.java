@@ -11,6 +11,7 @@ import com.google.common.collect.HashMultiset;
 import de.tuberlin.dima.schubotz.fse.types.QueryTuple;
 import de.tuberlin.dima.schubotz.fse.types.ResultTuple;
 import de.tuberlin.dima.schubotz.fse.types.SectionTuple;
+import de.tuberlin.dima.schubotz.utils.TFIDFHelper;
 import eu.stratosphere.api.java.functions.FlatMapFunction;
 import eu.stratosphere.util.Collector;
 
@@ -70,14 +71,14 @@ public class QuerySectionMatcher extends FlatMapFunction<SectionTuple,ResultTupl
 			}
 			if (!sectionLatex.isEmpty()) {
 				queryLatex = HashMultiset.create(Arrays.asList(query.getLatex().split(STR_SPLIT)));
-				latexScore = calculateTFIDFScore(queryLatex, sectionLatex, latexDocsMultiset);
+				latexScore = TFIDFHelper.calculateTFIDFScore(queryLatex, sectionLatex, latexDocsMultiset, numDocs, debug);
 			} else {
 				latexScore = 0.;
 			}
 			
 			if (!sectionKeywords.isEmpty()) {
 				queryKeywords = HashMultiset.create(Arrays.asList(query.getKeywords().split(STR_SPLIT)));
-				keywordScore = calculateTFIDFScore(queryKeywords, sectionKeywords, keywordDocsMultiset);
+				keywordScore = TFIDFHelper.calculateTFIDFScore(queryKeywords, sectionKeywords, keywordDocsMultiset, numDocs, debug);
 			} else {
 				keywordScore = 0.;
 			}
@@ -89,53 +90,5 @@ public class QuerySectionMatcher extends FlatMapFunction<SectionTuple,ResultTupl
 			}
 			out.collect( new ResultTuple( query.getID(), in.getID(), finalScore ) );
 		}
-	}
-	
-	/**
-	 * @param queryTokens
-	 * @param sectionTokens
-	 * @param map - map to use: either keywordDocsMap or latexDocsMap
-	 * @return
-	 */
-	private double calculateTFIDFScore(HashMultiset<String> queryTokens, HashMultiset<String> sectionTokens, HashMultiset<String> map) {
-		/*
-		 * NaN possibilities:
-		 * -1) The total number of terms in the document is zero (tf = x/0)- 
-		 * -2) The total number of documents that contains the term is -1-
-		 * -3) The total number of documents is <= 0-
-		 * -4) numDocs is so high that it is NaN- 
-		 * -5) count(element) is returning NaN or <= -1-
-		 * 6) size() is returning NaN or zero 
-		 */
-		double termTotal = sectionTokens.size(); //total number of terms in current section
-		double termFreqDoc; //frequency in current section
-		double termFreqTotal; //number of documents that contain the term
-		
-		//Calculations based on http://tfidf.com/
-		double tf = 0d; //term frequency
-		double idf = 0d; //inverse document frequency
-		double total = 0d;
-				
-		for (String element : queryTokens.elementSet()) { //strips duplicates in query due to multiple formulas
-			termFreqDoc = sectionTokens.count(element);
-			termFreqTotal = map.count(element);
-			tf = termFreqDoc / termTotal; //can be zero but not undefined
-			idf = Math.log(((double) numDocs) / (1d + termFreqTotal)); //will never be undefined due to +1
-			total += tf * idf;
-			if (debug) {
-				LOG.info("Term: " + element);
-				LOG.info("Freq in Doc: " + termFreqDoc);
-				LOG.info("Num doc with term: " + termFreqTotal);
-				LOG.info("tf: " + tf);
-				LOG.info("idf: " + idf);
-				LOG.info("total: " + total);
-			}
-		}
-		if (debug) {
-			LOG.info("end total: " + total);
-			LOG.info("END END END END");
-		}
-		return total;
-		
 	}
 }

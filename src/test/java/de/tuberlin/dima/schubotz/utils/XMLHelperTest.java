@@ -1,4 +1,4 @@
-package de.tuberlin.dima.schubotz.fse;
+package de.tuberlin.dima.schubotz.utils;
 
 import static de.tuberlin.dima.schubotz.utils.XMLHelper.getIdentifiersFromCmml;
 

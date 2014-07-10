@@ -10,6 +10,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
+import de.tuberlin.dima.schubotz.utils.TestUtils;
 import eu.stratosphere.api.common.Plan;
 import eu.stratosphere.api.java.ExecutionEnvironment;
 import eu.stratosphere.client.LocalExecutor;

@@ -1,4 +1,4 @@
-package de.tuberlin.dima.schubotz.fse;
+package de.tuberlin.dima.schubotz.utils;
 
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Scanner;
 
+import de.tuberlin.dima.schubotz.fse.MainProgram;
 import eu.stratosphere.core.fs.Path;
 
 public class TestUtils {
