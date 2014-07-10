@@ -1,4 +1,4 @@
-package de.tuberlin.dima.schubotz.fse;
+package de.tuberlin.dima.schubotz.fse.mappers;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -8,6 +8,9 @@ import org.apache.commons.logging.LogFactory;
 
 import com.google.common.collect.HashMultiset;
 
+import de.tuberlin.dima.schubotz.fse.types.QueryTuple;
+import de.tuberlin.dima.schubotz.fse.types.ResultTuple;
+import de.tuberlin.dima.schubotz.fse.types.SectionTuple;
 import eu.stratosphere.api.java.functions.FlatMapFunction;
 import eu.stratosphere.util.Collector;
 

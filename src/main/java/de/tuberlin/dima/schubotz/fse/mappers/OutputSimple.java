@@ -1,7 +1,9 @@
-package de.tuberlin.dima.schubotz.fse;
+package de.tuberlin.dima.schubotz.fse.mappers;
 
 import java.util.Iterator;
 
+import de.tuberlin.dima.schubotz.fse.types.OutputSimpleTuple;
+import de.tuberlin.dima.schubotz.fse.types.ResultTuple;
 import eu.stratosphere.api.java.functions.GroupReduceFunction;
 import eu.stratosphere.util.Collector;
 

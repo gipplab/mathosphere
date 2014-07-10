@@ -10,10 +10,9 @@ import org.apache.commons.logging.LogFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 
-import de.tuberlin.dima.schubotz.fse.LatexHelper;
-import de.tuberlin.dima.schubotz.fse.QueryTuple;
-import de.tuberlin.dima.schubotz.fse.SectionMapper;
-import de.tuberlin.dima.schubotz.fse.XMLHelper;
+import de.tuberlin.dima.schubotz.fse.types.QueryTuple;
+import de.tuberlin.dima.schubotz.utils.LatexHelper;
+import de.tuberlin.dima.schubotz.utils.XMLHelper;
 import eu.stratosphere.api.java.functions.FlatMapFunction;
 import eu.stratosphere.api.java.tuple.Tuple2;
 import eu.stratosphere.configuration.Configuration;
@@ -62,7 +61,7 @@ public class LatexDocMapper extends FlatMapFunction<String, Tuple2<String,Intege
 			LatexElements = null;
 		}
 		//Extract latex
-		String sectionLatex = LatexHelper.extract(LatexElements);
+		String sectionLatex = LatexHelper.extract(LatexElements, STR_SPLIT);
 		if (!sectionLatex.equals("")) {
 			String[] tokens = sectionLatex.split(STR_SPLIT); 
 			Set<String> tokenSet = new HashSet<String>(Arrays.asList(tokens)); //remove repeats (only want number of documents)

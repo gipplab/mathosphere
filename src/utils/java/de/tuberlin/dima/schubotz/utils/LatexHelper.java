@@ -1,4 +1,4 @@
-package de.tuberlin.dima.schubotz.fse;
+package de.tuberlin.dima.schubotz.utils;
 
 import java.util.StringTokenizer;
 
@@ -6,9 +6,11 @@ import org.apache.commons.lang.StringEscapeUtils;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import de.tuberlin.dima.schubotz.fse.MainProgram;
+
 public class LatexHelper {
 	
-	private static String TEX_SPLIT = MainProgram.STR_SPLIT; 
+	private static String TEX_SPLIT; 
 	
 	public static StringTokenizer tokenize (String latex) {
 		latex = StringEscapeUtils.unescapeHtml(latex);
@@ -25,9 +27,9 @@ public class LatexHelper {
 	
 	/**
 	 * @param LatexElements
-	 * @return out String of latex tokens split by MainProgram.STR_SPLIT
+	 * @return out String of latex tokens
 	 */
-	public static String extract(NodeList LatexElements) {
+	public static String extract(NodeList LatexElements, String TEX_SPLIT) {
 		String curLatex;
 		Node node;
 		StringTokenizer tok;

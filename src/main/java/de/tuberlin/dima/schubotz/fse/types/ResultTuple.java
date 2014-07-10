@@ -1,4 +1,4 @@
-package de.tuberlin.dima.schubotz.fse;
+package de.tuberlin.dima.schubotz.fse.types;
 
 import eu.stratosphere.api.java.tuple.Tuple3;
 
