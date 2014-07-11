@@ -43,7 +43,7 @@ public class WikiQueryMapper extends FlatMapFunction<String,WikiQueryTuple>{
 			doc = XMLHelper.String2Doc(in,false);
 			main = XMLHelper.getElementB(doc, "//num"); //Query ID tag is <num>
 		} catch (Exception e) {
-			LOG.warn("Unable to parse XML: " + in);
+			LOG.warn("Unable to parse XML in query: " + in);
 			return;
 		}
 		String queryID = main.getTextContent();
@@ -51,7 +51,7 @@ public class WikiQueryMapper extends FlatMapFunction<String,WikiQueryTuple>{
 		try {
 			LatexElements = XMLHelper.getElementsB(doc, "//*[name()='m:annotation']"); //get all annotation tags
 		} catch (Exception e) {
-			LOG.warn("Unable to find annotation tags: " + in);
+			LOG.warn("Unable to find annotation tags in query: " + in);
 		}
 		String latex = LatexHelper.extract(LatexElements, STR_SPLIT);
 		
