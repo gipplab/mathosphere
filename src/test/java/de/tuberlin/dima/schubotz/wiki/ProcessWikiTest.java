@@ -30,7 +30,8 @@ public class ProcessWikiTest {
 	@Parameterized.Parameters
 	public static Collection<Object[]> inputParam () {
 		return Arrays.asList(new Object[][] 
-				{{"file:///home/jjl4/sampleWikiDump.xml", "file:///home/jjl4/"}}); //DEBUG test parameters
+				//{{"file:///home/jjl4/augmentedWikiDump.xml", "file:///home/jjl4/"}}); //DEBUG test parameters
+				{{"", "file:///home/jjl4/"}});
 	}
 	public ProcessWikiTest (String debugWikiInput, String debugOutput) {
 		this.debugWikiInput = debugWikiInput;
@@ -40,6 +41,9 @@ public class ProcessWikiTest {
 	public void TestProcessWiki() throws Exception{
 		String debugLatexOutput = debugOutput + "latexWikiMap.csv";
 		String debugNumWikiOutput = debugOutput + "numWiki.txt";
+		if (debugWikiInput.equals("")) {
+			debugWikiInput = "file://" + getClass().getClassLoader().getResources("sampleWikiDump.xml").nextElement().getPath();
+		}
 		try {
 			String wikiQueryInput = "file://" + getClass().getClassLoader().getResources("wikiQuery.xml").nextElement().getPath();
 			ProcessWiki.parseArgs(new String[]{"16",

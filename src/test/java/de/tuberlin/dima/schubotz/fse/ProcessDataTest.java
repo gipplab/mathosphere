@@ -2,6 +2,7 @@ package de.tuberlin.dima.schubotz.fse;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.fail;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -70,7 +71,7 @@ public class ProcessDataTest {
 	        Plan plan = env.createProgramPlan();
 	        LocalExecutor.execute(plan);
 		} catch (Exception e) {
-			System.out.println("Execution error.");
+			fail("Execution error.");
 			e.printStackTrace();
 			return;
 		}
@@ -85,7 +86,7 @@ public class ProcessDataTest {
 			br = new BufferedReader(new FileReader(new File(latexDocsFilename)));
 			assertNotNull(br.readLine());
 		} catch (FileNotFoundException e) {
-			System.out.println("Files not outputted or given directory is incorrect.");
+			fail("Files not outputted or given directory is incorrect.");
 			e.printStackTrace();
 		} finally {
 			br.close();

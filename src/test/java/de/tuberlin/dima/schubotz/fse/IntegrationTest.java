@@ -1,6 +1,7 @@
 package de.tuberlin.dima.schubotz.fse;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -61,7 +62,7 @@ public class IntegrationTest {
 	        								  (debug ? "debug" : "")}); 
 	        MainProgram.ConfigurePlan();
         } catch (Exception e) {
-        	System.out.println("File IO/Configuration error. Check parameters, plan configuration.");
+        	fail("File IO/Configuration error. Check parameters, plan configuration.");
         	e.printStackTrace();
         	return;
         }
@@ -70,7 +71,7 @@ public class IntegrationTest {
 	        Plan plan = env.createProgramPlan();
 	        LocalExecutor.execute(plan);
         } catch (Exception e) {
-        	System.out.println("Execution error. Check execution, add fault tolerance.");
+        	fail("Execution error. Check execution, add fault tolerance.");
         	e.printStackTrace();
         	return;
         }
@@ -84,7 +85,7 @@ public class IntegrationTest {
         	}
         	
         } catch (IOException e) {
-        	System.out.println("Output file error");
+        	fail("Output file error");
     		e.printStackTrace();
     		return;
         }
