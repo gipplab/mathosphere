@@ -58,7 +58,7 @@ public class QueryMapper extends FlatMapFunction<String, QueryTuple> {
 			//Extract query id from XML
 			main = XMLHelper.getElementB(doc, "//num");
 		} catch (Exception e) {
-			LOG.warn("Unable to parse XML: " + value);
+			LOG.warn("Unable to parse XML in query: " + value);
 			return;
 		}
 		String queryID = main.getTextContent();
@@ -68,7 +68,7 @@ public class QueryMapper extends FlatMapFunction<String, QueryTuple> {
 		try {
 			LatexElements = XMLHelper.getElementsB(doc, "//*[name()='m:annotation']"); //get all annotation tags
 		} catch (Exception e) {
-			LOG.warn("Unable to find annotation tags: " + value);
+			LOG.warn("Unable to find annotation tags in query: " + value);
 		}
 		String latex = LatexHelper.extract(LatexElements, STR_SPLIT);
 		
