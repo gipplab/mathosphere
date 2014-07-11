@@ -41,17 +41,17 @@ public class TFIDFHelper {
 			idf = Math.log(((double) numDocs) / (1d + termFreqTotal)); //will never be undefined due to +1
 			total += tf * idf;
 			if (debug) {
-				LOG.info("Term: " + element);
-				LOG.info("Freq in Doc: " + termFreqDoc);
-				LOG.info("Num doc with term: " + termFreqTotal);
-				LOG.info("tf: " + tf);
-				LOG.info("idf: " + idf);
-				LOG.info("total: " + total);
+				LOG.debug("Term: " + element);
+				LOG.debug("Freq in Doc: " + termFreqDoc);
+				LOG.debug("Num doc with term: " + termFreqTotal);
+				LOG.debug("tf: " + tf);
+				LOG.debug("idf: " + idf);
+				LOG.debug("total: " + total);
 			}
 		}
 		if (debug) {
-			LOG.info("end total: " + total);
-			LOG.info("END END END END");
+			LOG.debug("end total: " + total);
+			LOG.debug("END END END END");
 		}
 		return total;
 		

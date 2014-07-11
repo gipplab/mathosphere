@@ -65,9 +65,9 @@ public class QuerySectionMatcher extends FlatMapFunction<SectionTuple,ResultTupl
 				debug = false;
 			}
 			if (debug) {  
-				LOG.info(query.toString());
-				LOG.info(in.toString());
-				LOG.info(Arrays.asList(in.getLatex().split(STR_SPLIT)));
+				LOG.debug(query.toString());
+				LOG.debug(in.toString());
+				LOG.debug(Arrays.asList(in.getLatex().split(STR_SPLIT)));
 			}
 			if (!sectionLatex.isEmpty()) {
 				queryLatex = HashMultiset.create(Arrays.asList(query.getLatex().split(STR_SPLIT)));

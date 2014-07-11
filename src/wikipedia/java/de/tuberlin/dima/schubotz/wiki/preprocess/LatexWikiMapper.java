@@ -59,10 +59,10 @@ public class LatexWikiMapper extends FlatMapFunction<String,Tuple2<String,Intege
 	public void flatMap(String in, Collector<Tuple2<String,Integer>> out) {
 		//Check for edge cases created from stratosphere split
 		if (in.startsWith("<mediawiki")) {
-			LOG.info("Hit mediawiki header document.");
+			LOG.debug("Hit mediawiki header document.");
 			return;
 		}else if (in.startsWith("</mediawiki")) {
-			LOG.info("Hit mediawiki end doc.");
+			LOG.debug("Hit mediawiki end doc.");
 			return;
 		}
 		if (!in.endsWith("</page>")) {
