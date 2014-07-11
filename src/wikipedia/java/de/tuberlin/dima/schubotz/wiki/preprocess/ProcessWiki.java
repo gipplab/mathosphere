@@ -14,8 +14,10 @@ import de.tuberlin.dima.schubotz.wiki.types.WikiQueryTuple;
 import eu.stratosphere.api.common.io.FileOutputFormat;
 import eu.stratosphere.api.java.DataSet;
 import eu.stratosphere.api.java.ExecutionEnvironment;
+import eu.stratosphere.api.java.aggregation.Aggregations;
 import eu.stratosphere.api.java.io.TextInputFormat;
 import eu.stratosphere.api.java.operators.DataSource;
+import eu.stratosphere.api.java.tuple.Tuple2;
 import eu.stratosphere.api.java.typeutils.BasicTypeInfo;
 import eu.stratosphere.configuration.Configuration;
 import eu.stratosphere.core.fs.FileInputSplit;
@@ -85,7 +87,12 @@ public class ProcessWiki {
 		
 		DataSet<WikiQueryTuple> wikiQuerySet = rawWikiQueryText.flatMap(new WikiQueryMapper(STR_SPLIT));
 		
+		DataSet<Tuple2<String,Integer>> latexWikiResults = rawWikiText.flatMap(new LatexWikiMapper(STR_SPLIT))
+																		.withBroadcastSet(wikiQuerySet, "Queries")
+																		.groupBy(0) //group by latex
+																		.aggregate(Aggregations.SUM,1); //sum counts
 		
-		wikiQuerySet.writeAsCsv(latexWikiMapOutput, "\n", ",", WriteMode.OVERWRITE); 
+		
+		latexWikiResults.writeAsCsv(latexWikiMapOutput, "\n", ",", WriteMode.OVERWRITE); 
 	}
 }
