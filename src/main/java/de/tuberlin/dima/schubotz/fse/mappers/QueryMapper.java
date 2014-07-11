@@ -39,26 +39,37 @@ public class QueryMapper extends FlatMapFunction<String, QueryTuple> {
 		Node node; 
 		String[] tokens;
 		
-		//Deal with edge cases left by Stratosphere split on <topic>
-		if ( value.trim().length() == 0 || value.startsWith("\r\n</topics>")) {
+		//Deal with edge cases left by Stratosphere split on </topic>
+		if ( value.trim().length() == 0 || value.startsWith("\r\n</topics>")) { //TODO switch to system property
 			LOG.warn("Corrupt query " + value);  
 			return; 
 		}
-		if ( (!value.endsWith( "</topic>" )) ) {
+		if ( value.startsWith("<?xml")) {
+			value += "</topic></topics>";
+		}else if (!value.endsWith( "</topic>" )) {
 			value += "</topic>";
 		}
-		if ( value.startsWith("<?xml")) {
-			value += "</topics>";
-		}
-		//Parse string as XML
-		Document doc = XMLHelper.String2Doc(value,false); 
 		
-		//Extract query id from XML
-		Node main = XMLHelper.getElementB(doc, "//num");
+		Document doc;
+		Node main;
+		try {
+			//Parse string as XML
+			doc = XMLHelper.String2Doc(value,false); 
+			//Extract query id from XML
+			main = XMLHelper.getElementB(doc, "//num");
+		} catch (Exception e) {
+			LOG.warn("Unable to parse XML: " + value);
+			return;
+		}
 		String queryID = main.getTextContent();
 		
 		//Extract latex
-		NodeList LatexElements = XMLHelper.getElementsB(doc, "//*[name()='m:annotation']"); //get all annotation tags 
+		NodeList LatexElements = null;
+		try {
+			LatexElements = XMLHelper.getElementsB(doc, "//*[name()='m:annotation']"); //get all annotation tags
+		} catch (Exception e) {
+			LOG.warn("Unable to find annotation tags: " + value);
+		}
 		String latex = LatexHelper.extract(LatexElements, STR_SPLIT);
 		
 		
