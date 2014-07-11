@@ -67,7 +67,6 @@ public class LatexHelper {
 				} catch (NullPointerException e) {
 					continue;
 				}
-				LOG.info(curLatex);
 				out.append(constructOutput(curLatex, TEX_SPLIT));
 			}
 		}

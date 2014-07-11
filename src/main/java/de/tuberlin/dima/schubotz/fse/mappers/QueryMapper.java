@@ -40,7 +40,7 @@ public class QueryMapper extends FlatMapFunction<String, QueryTuple> {
 		String[] tokens;
 		
 		//Deal with edge cases left by Stratosphere split on </topic>
-		if ( value.trim().length() == 0 || value.startsWith("\r\n</topics>")) { //TODO switch to system property
+		if ( value.trim().length() == 0 || value.startsWith("\r\n</topics>")) { 
 			LOG.warn("Corrupt query " + value);  
 			return; 
 		}

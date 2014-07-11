@@ -74,7 +74,6 @@ public class ProcessWiki {
 	}
 	public static void ConfigurePlan() throws IOException, URISyntaxException {
 		env = ExecutionEnvironment.getExecutionEnvironment();
-		Configuration config = new Configuration();
 		
 		TextInputFormat formatWiki = new TextInputFormat(new Path(wikiInput));
 		//TODO make these splits nicer
