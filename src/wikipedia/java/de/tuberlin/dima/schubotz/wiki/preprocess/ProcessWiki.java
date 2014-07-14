@@ -92,6 +92,6 @@ public class ProcessWiki {
 																		.aggregate(Aggregations.SUM,1); //sum counts
 		
 		
-		latexWikiResults.writeAsCsv(latexWikiMapOutput, "\n", ",", WriteMode.OVERWRITE); 
+		latexWikiResults.writeAsCsv(latexWikiMapOutput, "\n", " ", WriteMode.OVERWRITE); 
 	}
 }
