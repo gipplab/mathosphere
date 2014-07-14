@@ -193,7 +193,8 @@ public class MainProgram {
 		
 		
 		//PHASE B: compare LaTeX and keywords, score
-		DataSet<ResultTuple> latexMatches = sectionDataSet.flatMap(new QuerySectionMatcher(STR_SPLIT, latexDocsMultiset, keywordDocsMultiset, numDocs, debug))
+		DataSet<ResultTuple> latexMatches = sectionDataSet.flatMap(new QuerySectionMatcher(STR_SPLIT, latexDocsMultiset, keywordDocsMultiset,
+																						   numDocs, keywordDivide, debug))
 														  .withBroadcastSet(queryDataSet, "Queries"); 
 		
 		

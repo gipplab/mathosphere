@@ -25,17 +25,21 @@ public class QuerySectionMatcher extends FlatMapFunction<SectionTuple,ResultTupl
 	final HashMultiset<String> keywordDocsMultiset;
 	Collection<QueryTuple> queries;
 	final Integer numDocs;
+	double weight;
 	double latexScore = 0;
 	double keywordScore = 0;
 	double finalScore =0.;
 	private static Log LOG = LogFactory.getLog(QuerySectionMatcher.class);
 	private boolean debug;
 	
-	public QuerySectionMatcher (String STR_SPLIT, HashMultiset<String> latexDocsMultiset, HashMultiset<String> keywordDocsMultiset, Integer numDocs, boolean debug) {
+	public QuerySectionMatcher (String STR_SPLIT, HashMultiset<String> latexDocsMultiset,
+								HashMultiset<String> keywordDocsMultiset, Integer numDocs,
+								Double weight, boolean debug) {
 		this.STR_SPLIT = STR_SPLIT;
 		this.latexDocsMultiset = latexDocsMultiset;
 		this.keywordDocsMultiset = keywordDocsMultiset;
 		this.numDocs = numDocs;
+		this.weight = weight;
 		this.debug = debug;
 	}
 	
