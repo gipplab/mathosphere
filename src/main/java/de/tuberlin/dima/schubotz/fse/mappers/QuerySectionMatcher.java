@@ -62,7 +62,9 @@ public class QuerySectionMatcher extends FlatMapFunction<SectionTuple,ResultTupl
 		//Construct set of term frequencies for latex and keywords
 		HashMultiset<String> sectionLatex = HashMultiset.create(Arrays.asList(in.getLatex().split(STR_SPLIT)));
 		HashMultiset<String> sectionKeywords = HashMultiset.create(Arrays.asList(in.getKeywords().split(STR_SPLIT)));
-		
+		if (sectionLatex.isEmpty() && sectionKeywords.isEmpty()) {
+			return;
+		}
 		//Loop through queries and calculate tfidf scores
 		for (QueryTuple query : queries) {
 			if (in.getID().contains("5478_1_6") && query.getID().contains("Math-1")) { //DEBUG changer
