@@ -47,8 +47,10 @@ public class SectionMapper extends FlatMapFunction<String, SectionTuple> {
 	public void flatMap (String value, Collector<SectionTuple> out) throws Exception {
 		//Split into lines 0: ARXIVFILENAME, 1: HTML
 		String[] lines = value.trim().split( "\\n", 2 );
-		if ( lines.length < 2 ) { 
-			LOG.warn("Null document: " + value); 
+		if ( lines.length < 2) {
+			if (LOG.isWarnEnabled()) {
+				LOG.warn("Null document: " + value);
+			}
 			return;
 		}
 		Matcher matcher = filnamePattern.matcher( lines[0] );
@@ -56,7 +58,9 @@ public class SectionMapper extends FlatMapFunction<String, SectionTuple> {
 		if ( matcher.find() ) {
 			docID = matcher.group(1) + "_" + matcher.group(2) + "_" + matcher.group(3) + ".xhtml";
 		} else {
-			LOG.warn("null docID! (possible non ARXIV document input)");
+			if (LOG.isWarnEnabled()) {
+				LOG.warn("null docID! (possible non ARXIV document input)");
+			}
 			return; 
 		}
 		
@@ -72,7 +76,9 @@ public class SectionMapper extends FlatMapFunction<String, SectionTuple> {
 		try {
 			plainText = Jsoup.parse(value).text();
 		} catch (Exception e) {
-			LOG.warn("Jsoup could not parse the document", e);
+			if (LOG.isWarnEnabled()) {
+				LOG.warn("Jsoup could not parse the document", e);
+			}
 			return;
 		}
 		String[] tokens = WORD_SPLIT.split(plainText.toLowerCase()); 

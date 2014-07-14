@@ -70,7 +70,7 @@ public class QuerySectionMatcher extends FlatMapFunction<SectionTuple,ResultTupl
 			} else {
 				debug = false;
 			}
-			if (debug) {  
+			if (LOG.isDebugEnabled() && debug) {  
 				LOG.debug(query.toString());
 				LOG.debug(in.toString());
 				LOG.debug(Arrays.asList(in.getLatex().split(STR_SPLIT)));
@@ -90,8 +90,10 @@ public class QuerySectionMatcher extends FlatMapFunction<SectionTuple,ResultTupl
 			}
 			finalScore = (keywordScore/6.36) + latexScore; //TODO why is keywordScore and/or latexScore producing NaN?
 
-			if( Double.isNaN( finalScore )  ) { 
-				LOG.warn("NaN hit! Latex: " + Double.toString(latexScore) + " Keyword: " + Double.toString(keywordScore)); 
+			if( Double.isNaN( finalScore )) {
+				if (LOG.isWarnEnabled() ) {
+					LOG.warn("NaN hit! Latex: " + Double.toString(latexScore) + " Keyword: " + Double.toString(keywordScore));
+				}
 				finalScore = 0;
 			}
 			out.collect( new ResultTuple( query.getID(), in.getID(), finalScore ) );

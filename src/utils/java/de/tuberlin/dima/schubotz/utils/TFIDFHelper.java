@@ -40,7 +40,7 @@ public class TFIDFHelper {
 			tf = termFreqDoc / termTotal; //can be zero but not undefined
 			idf = Math.log(((double) numDocs) / (1d + termFreqTotal)); //will never be undefined due to +1
 			total += tf * idf;
-			if (debug) {
+			if (debug && LOG.isDebugEnabled()) {
 				LOG.debug("Term: " + element);
 				LOG.debug("Freq in Doc: " + termFreqDoc);
 				LOG.debug("Num doc with term: " + termFreqTotal);
@@ -49,7 +49,7 @@ public class TFIDFHelper {
 				LOG.debug("total: " + total);
 			}
 		}
-		if (debug) {
+		if (debug && LOG.isDebugEnabled()) {
 			LOG.debug("end total: " + total);
 			LOG.debug("END END END END");
 		}

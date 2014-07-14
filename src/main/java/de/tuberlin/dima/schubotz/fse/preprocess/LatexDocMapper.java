@@ -48,8 +48,10 @@ public class LatexDocMapper extends FlatMapFunction<String, Tuple2<String,Intege
 		//Remove <ARXIV> and <?xml
 		NodeList LatexElements;
 		String[] lines = value.trim().split( "\\n", 2 );
-		if ( lines.length < 2 ) { 
-			LOG.warn("Null document (LatexDocMapper): " + value); 
+		if ( lines.length < 2) {
+			if (LOG.isWarnEnabled()) {
+				LOG.warn("Null document (LatexDocMapper): " + value);
+			}
 			return;
 		}
 		try {
@@ -57,7 +59,9 @@ public class LatexDocMapper extends FlatMapFunction<String, Tuple2<String,Intege
 			Document doc = XMLHelper.String2Doc( lines[1], false );
 			LatexElements= XMLHelper.getElementsB( doc, "//annotation" ); //get all annotation tags
 		} catch ( Exception e ){
-			LOG.warn("XMLHelper could not parse document:"+lines[0], e);
+			if (LOG.isWarnEnabled()) {
+				LOG.warn("XMLHelper could not parse document:"+lines[0], e);
+			}
 			LatexElements = null;
 		}
 		//Extract latex

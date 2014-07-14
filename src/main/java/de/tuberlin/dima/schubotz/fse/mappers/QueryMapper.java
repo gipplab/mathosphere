@@ -40,8 +40,10 @@ public class QueryMapper extends FlatMapFunction<String, QueryTuple> {
 		String[] tokens;
 		
 		//Deal with edge cases left by Stratosphere split on </topic>
-		if ( value.trim().length() == 0 || value.startsWith("\r\n</topics>")) { 
-			LOG.warn("Corrupt query " + value);  
+		if ( value.trim().length() == 0 || value.startsWith("\r\n</topics>")) {
+			if (LOG.isWarnEnabled()) {
+				LOG.warn("Corrupt query " + value);
+			}
 			return; 
 		}
 		if ( value.startsWith("<?xml")) {
@@ -58,7 +60,9 @@ public class QueryMapper extends FlatMapFunction<String, QueryTuple> {
 			//Extract query id from XML
 			main = XMLHelper.getElementB(doc, "//num");
 		} catch (Exception e) {
-			LOG.warn("Unable to parse XML in query: " + value);
+			if (LOG.isWarnEnabled()) {
+				LOG.warn("Unable to parse XML in query: " + value);
+			}
 			return;
 		}
 		String queryID = main.getTextContent();
@@ -68,7 +72,9 @@ public class QueryMapper extends FlatMapFunction<String, QueryTuple> {
 		try {
 			LatexElements = XMLHelper.getElementsB(doc, "//*[name()='m:annotation']"); //get all annotation tags
 		} catch (Exception e) {
-			LOG.warn("Unable to find annotation tags in query: " + value);
+			if (LOG.isWarnEnabled()) {
+				LOG.warn("Unable to find annotation tags in query: " + value);
+			}
 		}
 		String latex = LatexHelper.extract(LatexElements, STR_SPLIT);
 		
