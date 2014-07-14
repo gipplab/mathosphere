@@ -15,7 +15,8 @@ import eu.stratosphere.util.Collector;
 
 public class WikiQueryMapper extends FlatMapFunction<String,WikiQueryTuple>{
 	Log LOG = LogFactory.getLog(WikiQueryMapper.class);
-	String STR_SPLIT;	
+	String STR_SPLIT;
+	final String endQuery = System.getProperty("line.separator") + "</topics>"; //used to search for last query weirdness
 	
 	public WikiQueryMapper(String STR_SPLIT) {
 		this.STR_SPLIT = STR_SPLIT;
@@ -24,10 +25,7 @@ public class WikiQueryMapper extends FlatMapFunction<String,WikiQueryTuple>{
 	@Override
 	public void flatMap(String in, Collector<WikiQueryTuple> out) {
 		//Dealing with badly formatted html as a result of Stratosphere split
-		StringBuilder endDoc = new StringBuilder(); //used to search for weird doc at the end of file
-		endDoc.append(System.getProperty("line.separator"));
-		endDoc.append("</topics>");
-		if (in.trim().length() == 0 || in.startsWith(endDoc.toString())) { 
+		if (in.trim().length() == 0 || in.startsWith(endQuery)) { 
 			if (LOG.isWarnEnabled()) {
 				LOG.warn("Corrupt query: " + in);
 			}
