@@ -27,8 +27,10 @@ public class WikiQueryMapper extends FlatMapFunction<String,WikiQueryTuple>{
 		StringBuilder endDoc = new StringBuilder(); //used to search for weird doc at the end of file
 		endDoc.append(System.getProperty("line.separator"));
 		endDoc.append("</topics>");
-		if (in.trim().length() == 0 || in.startsWith(endDoc.toString())) {
-			LOG.warn("Corrupt query: " + in);
+		if (in.trim().length() == 0 || in.startsWith(endDoc.toString())) { 
+			if (LOG.isWarnEnabled()) {
+				LOG.warn("Corrupt query: " + in);
+			}
 			return;
 		}
 		if (in.startsWith("<?xml ")) {
@@ -43,7 +45,9 @@ public class WikiQueryMapper extends FlatMapFunction<String,WikiQueryTuple>{
 			doc = XMLHelper.String2Doc(in,false);
 			main = XMLHelper.getElementB(doc, "//num"); //Query ID tag is <num>
 		} catch (Exception e) {
-			LOG.warn("Unable to parse XML in query: " + in);
+			if (LOG.isWarnEnabled()) {
+				LOG.warn("Unable to parse XML in query: " + in);
+			}
 			return;
 		}
 		String queryID = main.getTextContent();
@@ -51,7 +55,9 @@ public class WikiQueryMapper extends FlatMapFunction<String,WikiQueryTuple>{
 		try {
 			LatexElements = XMLHelper.getElementsB(doc, "//*[name()='m:annotation']"); //get all annotation tags
 		} catch (Exception e) {
-			LOG.warn("Unable to find annotation tags in query: " + in);
+			if (LOG.isWarnEnabled()) {
+				LOG.warn("Unable to find annotation tags in query: " + in);
+			}
 		}
 		String latex = LatexHelper.extract(LatexElements, STR_SPLIT);
 		

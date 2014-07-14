@@ -59,10 +59,14 @@ public class LatexWikiMapper extends FlatMapFunction<String,Tuple2<String,Intege
 	public void flatMap(String in, Collector<Tuple2<String,Integer>> out) {
 		//Check for edge cases created from stratosphere split
 		if (in.startsWith("<mediawiki")) {
-			LOG.debug("Hit mediawiki header document.");
+			if (LOG.isDebugEnabled()) {
+				LOG.debug("Hit mediawiki header document.");
+			}
 			return;
 		}else if (in.startsWith("</mediawiki")) {
-			LOG.debug("Hit mediawiki end doc.");
+			if (LOG.isDebugEnabled()) {
+				LOG.debug("Hit mediawiki end doc.");
+			}
 			return;
 		}
 		if (!in.endsWith("</page>")) {
@@ -75,7 +79,9 @@ public class LatexWikiMapper extends FlatMapFunction<String,Tuple2<String,Intege
 			doc = Jsoup.parse(in); //using jsoup b/c wiki html is TERRIBLE
 			LatexElements = doc.select("annotation[encoding=application/x-tex]");
 		} catch (Exception e) {
-			LOG.warn("Unable to parse wiki using Jsoup: " + in);
+			if (LOG.isWarnEnabled()) {
+				LOG.warn("Unable to parse wiki using Jsoup: " + in);
+			}
 			return;
 		}
 		String sectionLatex = LatexHelper.extract(LatexElements, STR_SPLIT);

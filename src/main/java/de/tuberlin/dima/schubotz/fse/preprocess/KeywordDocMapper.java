@@ -51,7 +51,9 @@ public class KeywordDocMapper extends FlatMapFunction<String, Tuple2<String,Inte
 		try {
 			plainText = Jsoup.parse(value).text();
 		} catch (Exception e){
-			LOG.warn("JSoup could not parse document: " + value, e);
+			if (LOG.isWarnEnabled()) {
+				LOG.warn("JSoup could not parse document: " + value, e);
+			}
 			e.printStackTrace();
 			return;
 		}
