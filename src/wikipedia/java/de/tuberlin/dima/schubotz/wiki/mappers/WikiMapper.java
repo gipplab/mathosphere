@@ -1,8 +1,28 @@
 package de.tuberlin.dima.schubotz.wiki.mappers;
 
+import java.util.Collection;
+import java.util.HashSet;
+
+import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
+
+import de.tuberlin.dima.schubotz.utils.LatexHelper;
+import de.tuberlin.dima.schubotz.wiki.types.WikiQueryTuple;
+import de.tuberlin.dima.schubotz.wiki.types.WikiTuple;
+import eu.stratosphere.api.java.functions.FlatMapFunction;
+import eu.stratosphere.configuration.Configuration;
+import eu.stratosphere.util.Collector;
+
 public class WikiMapper extends FlatMapFunction<String, WikiTuple> {
 	HashSet<String> latex;
 	String STR_SPLIT;
+	Log LOG = LogFactory.getLog(WikiMapper.class);
+	
+	final String endDoc = System.getProperty("line.separator") + "</mediawiki"; //used to search for last document weirdness
 	
 	public WikiMapper (String STR_SPLIT) {
 		this.STR_SPLIT = STR_SPLIT;
@@ -25,14 +45,39 @@ public class WikiMapper extends FlatMapFunction<String, WikiTuple> {
 	public void flatMap (String in, Collector<WikiTuple> out) throws Exception {
 		//Check for edge cases created from stratosphere split
 		if (in.startsWith("<mediawiki")) {
-			LOG.debug("Hit mediawiki header document.");
+			if (LOG.isDebugEnabled()) {
+				LOG.debug("Hit mediawiki header document.");
+			}
 			return;
-		}else if (in.startsWith("</mediawiki")) {
-			LOG.debug("Hit mediawiki end doc.");
+		}else if (in.startsWith(endDoc)) {
+			if (LOG.isDebugEnabled()) {
+				LOG.debug("Hit mediawiki end doc.");
+			}
 			return;
 		}
 		if (!in.endsWith("</page>")) {
 			in += "</page>";
+		}
+		
+		in = StringEscapeUtils.unescapeHtml(in); //WATCH cpu bottleneck?
+		Document doc;
+		Elements LatexElements;
+		try {
+			doc = Jsoup.parse(in); //using jsoup b/c wiki html is TERRIBLE
+			LatexElements = doc.select("annotation[encoding=application/x-tex]");
+		} catch (Exception e) {
+			if (LOG.isWarnEnabled()) {
+				LOG.warn("Unable to parse wiki using Jsoup: " + in);
+			}
+			return;
+		}
+		String sectionLatex = LatexHelper.extract(LatexElements, STR_SPLIT);
+		try {
+			String docID = doc.select("title").first().text();
+			out.collect(new WikiTuple(docID, sectionLatex));
+		} catch (NullPointerException e) {
+			LOG.warn("Null title encountered: " + in, e);
+			return;
 		}
 	}
 

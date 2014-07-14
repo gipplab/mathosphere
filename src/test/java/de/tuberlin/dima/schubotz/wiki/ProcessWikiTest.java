@@ -30,8 +30,8 @@ public class ProcessWikiTest {
 	@Parameterized.Parameters
 	public static Collection<Object[]> inputParam () {
 		return Arrays.asList(new Object[][] 
-				//{{"file:///home/jjl4/augmentedWikiDump.xml", "file:///home/jjl4/"}}); //DEBUG test parameters
-				{{"", "file:///home/jjl4/"}});
+				{{"file:///home/jjl4/augmentedWikiDump.xml", "file:///home/jjl4/"}}); //DEBUG test parameters
+				//{{"", "file:///home/jjl4/"}});
 	}
 	public ProcessWikiTest (String debugWikiInput, String debugOutput) {
 		this.debugWikiInput = debugWikiInput;
@@ -53,8 +53,8 @@ public class ProcessWikiTest {
 											   debugNumWikiOutput,
 											   "debug"});
 		} catch (IOException e) {
-			fail("Missing input files IO Exception");
 			e.printStackTrace();
+			fail("Missing input files IO Exception");
 			return;
 		}
 		try {
