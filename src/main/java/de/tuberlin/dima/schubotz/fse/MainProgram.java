@@ -125,7 +125,7 @@ public class MainProgram {
 		queryInput = (args.length > 2 ? args[2]
 			: "file:///mnt/ntcir-math/queries/fQuery.xml");
 		output = (args.length > 3 ? args[3]
-			: "file:///mnt/ntcir-math/test-output/LATEXtestout-" + System.currentTimeMillis() + ".xml");
+			: "file:///mnt/ntcir-math/test-output/LATEXtestout-" + System.currentTimeMillis() + ".csv");
 		keywordDocsMapInput = (args.length > 4 ? args[4]
 			: "file:///mnt/ntcir-math/queries/keywordDocsMap.csv");
 		latexDocsMapInput = (args.length > 5 ? args[5]
@@ -139,7 +139,13 @@ public class MainProgram {
 	}
 
 	public static void main (String[] args) throws Exception {
-		parseArg( args );
+		try {
+			parseArg( args );
+		} catch (Exception e) {
+			LOG.fatal("Arguments incorrect.", e);
+			e.printStackTrace();
+			System.exit(0);
+		}
 		try {
 			ConfigurePlan();
 			env.setDegreeOfParallelism( noSubTasks );
