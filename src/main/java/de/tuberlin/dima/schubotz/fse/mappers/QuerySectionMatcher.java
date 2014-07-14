@@ -13,6 +13,7 @@ import de.tuberlin.dima.schubotz.fse.types.ResultTuple;
 import de.tuberlin.dima.schubotz.fse.types.SectionTuple;
 import de.tuberlin.dima.schubotz.utils.TFIDFHelper;
 import eu.stratosphere.api.java.functions.FlatMapFunction;
+import eu.stratosphere.configuration.Configuration;
 import eu.stratosphere.util.Collector;
 
 public class QuerySectionMatcher extends FlatMapFunction<SectionTuple,ResultTuple> {
@@ -22,6 +23,7 @@ public class QuerySectionMatcher extends FlatMapFunction<SectionTuple,ResultTupl
 	final String STR_SPLIT;
 	final HashMultiset<String> latexDocsMultiset;
 	final HashMultiset<String> keywordDocsMultiset;
+	Collection<QueryTuple> queries;
 	final Integer numDocs;
 	double latexScore = 0;
 	double keywordScore = 0;
@@ -35,6 +37,11 @@ public class QuerySectionMatcher extends FlatMapFunction<SectionTuple,ResultTupl
 		this.keywordDocsMultiset = keywordDocsMultiset;
 		this.numDocs = numDocs;
 		this.debug = debug;
+	}
+	
+	@Override
+	public void open(Configuration parameters) {
+		queries = getRuntimeContext().getBroadcastVariable("Queries"); 
 	}
 
 	/**
@@ -57,7 +64,6 @@ public class QuerySectionMatcher extends FlatMapFunction<SectionTuple,ResultTupl
 		HashMultiset<String> sectionKeywords = HashMultiset.create(Arrays.asList(in.getKeywords().split(STR_SPLIT)));
 		
 		//Loop through queries and calculate tfidf scores
-		Collection<QueryTuple> queries = getRuntimeContext().getBroadcastVariable("Queries");
 		for (QueryTuple query : queries) {
 			if (in.getID().contains("5478_1_6") && query.getID().contains("Math-1")) { //DEBUG changer
 				debug = true;
