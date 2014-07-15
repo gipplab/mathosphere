@@ -50,22 +50,6 @@ public class LatexWikiMapper extends FlatMapFunction<String,Tuple2<String,Intege
 	}
 	@Override
 	public void flatMap(String in, Collector<Tuple2<String,Integer>> out) {
-		//Check for edge cases created from stratosphere split
-		if (in.startsWith("<mediawiki")) {
-			if (LOG.isDebugEnabled()) {
-				LOG.debug("Hit mediawiki header document.");
-			}
-			return;
-		}else if (in.startsWith("</mediawiki")) {
-			if (LOG.isDebugEnabled()) {
-				LOG.debug("Hit mediawiki end doc.");
-			}
-			return;
-		}
-		if (!in.endsWith("</page>")) {
-			in += "</page>";
-		}
-		in = StringEscapeUtils.unescapeHtml(in); //WATCH cpu bottleneck?
 		Document doc;
 		Elements LatexElements;
 		try {

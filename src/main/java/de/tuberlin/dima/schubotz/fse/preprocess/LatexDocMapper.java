@@ -50,12 +50,6 @@ public class LatexDocMapper extends FlatMapFunction<String, Tuple2<String,Intege
 		//Remove <ARXIV> and <?xml
 		NodeList LatexElements;
 		String[] lines = value.trim().split( "\\n", 2 );
-		if ( lines.length < 2) {
-			if (LOG.isWarnEnabled()) {
-				LOG.warn("Null document (LatexDocMapper): " + value);
-			}
-			return;
-		}
 		try {
 			//Parse string as XML
 			Document doc = XMLHelper.String2Doc( lines[1], false );
