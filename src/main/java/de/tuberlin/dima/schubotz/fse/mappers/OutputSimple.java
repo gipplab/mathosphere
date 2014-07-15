@@ -13,9 +13,11 @@ import eu.stratosphere.util.Collector;
  * @return OutputSimpleTuple
  *
  */
+@SuppressWarnings("serial")
 public class OutputSimple extends GroupReduceFunction<ResultTuple, OutputSimpleTuple> {
 	int queryLimit;
 	String runtag;
+	@SuppressWarnings("hiding")
 	public OutputSimple(int queryLimit, String runtag) {
 		this.queryLimit = queryLimit;
 		this.runtag = runtag;

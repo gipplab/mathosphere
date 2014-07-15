@@ -122,7 +122,7 @@ public class MainProgram {
 	/**
 	 * Total number of documents
 	 */
-	public static Integer numDocs = 0;
+	public static int numDocs = 0;
 	/**
 	 * Whether or not to do low level debugging (TODO clean this)
 	 */
@@ -146,7 +146,7 @@ public class MainProgram {
 		if (args.length > 6) {
 			numDocs = Integer.valueOf(args[6]);
 		} else {
-			throw new Exception("numDocs not given!");
+			throw new Exception("numDocs not given or is not a number!");
 		}
 		debug = (args.length > 7 ? (args[7].equals("debug") ? true : false) : false);
 	}
@@ -178,6 +178,7 @@ public class MainProgram {
 	 * @throws XPathExpressionException
 	 * @throws ParserConfigurationException
 	 */
+	@SuppressWarnings("serial")
 	protected static void ConfigurePlan () throws XPathExpressionException, ParserConfigurationException, Exception {
 		env = ExecutionEnvironment.getExecutionEnvironment();
 		
@@ -192,7 +193,9 @@ public class MainProgram {
 		TextInputFormat formatQueries = new TextInputFormat(new Path(queryInput));
 		formatQueries.setDelimiter(QUERY_SEPARATOR); 
 		DataSet<String> rawQueryText = new DataSource<>(env, formatQueries, BasicTypeInfo.STRING_TYPE_INFO);
-		//TODO No known better way of formatting the results of splitting with QUERY_SEPARATOR
+		
+		
+		//Clean up queries TODO No known better way of formatting the results of splitting with QUERY_SEPARATOR
 		DataSet<String> cleanQueryText = rawQueryText.flatMap(new FlatMapFunction<String, String>() {
 			@Override
 			public void flatMap(String in, Collector<String> out) throws Exception {

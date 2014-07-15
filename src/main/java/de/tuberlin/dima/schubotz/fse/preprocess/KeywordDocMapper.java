@@ -16,12 +16,14 @@ import eu.stratosphere.api.java.tuple.Tuple2;
 import eu.stratosphere.configuration.Configuration;
 import eu.stratosphere.util.Collector;
 
+@SuppressWarnings("serial")
 public class KeywordDocMapper extends FlatMapFunction<String, Tuple2<String,Integer>> {
 	HashSet<String> keywords;
 	Pattern WORD_SPLIT;
 	String STR_SPLIT;
 	private static final Log LOG = LogFactory.getLog(KeywordDocMapper.class);
 	
+	@SuppressWarnings("hiding")
 	public KeywordDocMapper(Pattern WORD_SPLIT, String STR_SPLIT) {
 		this.WORD_SPLIT = WORD_SPLIT;
 		this.STR_SPLIT = STR_SPLIT;

@@ -74,6 +74,7 @@ public class ProcessData {
 	 * @throws XPathExpressionException
 	 * @throws ParserConfigurationException
 	 */
+	@SuppressWarnings("serial")
 	public static void ConfigurePlan () throws XPathExpressionException, ParserConfigurationException, Exception {
 		env = ExecutionEnvironment.getExecutionEnvironment();	
 		//Set up articleDataSet

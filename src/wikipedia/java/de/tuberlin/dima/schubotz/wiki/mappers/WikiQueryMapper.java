@@ -6,6 +6,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import de.tuberlin.dima.schubotz.fse.MainProgram;
 import de.tuberlin.dima.schubotz.utils.LatexHelper;
 import de.tuberlin.dima.schubotz.utils.XMLHelper;
 import de.tuberlin.dima.schubotz.wiki.types.WikiQueryTuple;
@@ -13,30 +14,24 @@ import eu.stratosphere.api.java.functions.FlatMapFunction;
 import eu.stratosphere.util.Collector;
 
 
+@SuppressWarnings("serial")
 public class WikiQueryMapper extends FlatMapFunction<String,WikiQueryTuple>{
 	Log LOG = LogFactory.getLog(WikiQueryMapper.class);
+	/**
+	 * See {@link MainProgram#STR_SPLIT}
+	 */
 	String STR_SPLIT;
-	final String endQuery = System.getProperty("line.separator") + "</topics>"; //used to search for last query weirdness
 	
+	/**
+	 * @param STR_SPLIT {@link MainProgram#STR_SPLIT} sent as parameter to ensure serializability
+	 */
+	@SuppressWarnings("hiding")
 	public WikiQueryMapper(String STR_SPLIT) {
 		this.STR_SPLIT = STR_SPLIT;
 	}
 	
 	@Override
 	public void flatMap(String in, Collector<WikiQueryTuple> out) {
-		//Dealing with badly formatted html as a result of Stratosphere split
-		if (in.trim().length() == 0 || in.startsWith(endQuery)) { 
-			if (LOG.isWarnEnabled()) {
-				LOG.warn("Corrupt query: " + in);
-			}
-			return;
-		}
-		if (in.startsWith("<?xml ")) {
-			in += "</topic></topics>";
-		}else if (!in.endsWith("</topic>")) {
-			in += "</topic>";
-		}
-		
 		Document doc;
 		Node main;
 		try {

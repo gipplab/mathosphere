@@ -32,6 +32,7 @@ public class ProcessDataTest {
 			{9999,"test10000.xml","/home/jjl4/"} //DEBUG test parameters
 		});
 	}
+	@SuppressWarnings("hiding")
 	public ProcessDataTest(Integer numDocs, String inputFile, String debugOutput) {
 		this.numDocs = numDocs;
 		this.inputFile = inputFile;

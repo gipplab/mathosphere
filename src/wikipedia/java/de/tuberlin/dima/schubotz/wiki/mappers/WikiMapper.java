@@ -17,6 +17,7 @@ import eu.stratosphere.api.java.functions.FlatMapFunction;
 import eu.stratosphere.configuration.Configuration;
 import eu.stratosphere.util.Collector;
 
+@SuppressWarnings("serial")
 public class WikiMapper extends FlatMapFunction<String, WikiTuple> {
 	HashSet<String> latex;
 	String STR_SPLIT;
@@ -24,6 +25,7 @@ public class WikiMapper extends FlatMapFunction<String, WikiTuple> {
 	
 	final String endDoc = System.getProperty("line.separator") + "</mediawiki"; //used to search for last document weirdness
 	
+	@SuppressWarnings("hiding")
 	public WikiMapper (String STR_SPLIT) {
 		this.STR_SPLIT = STR_SPLIT;
 	}

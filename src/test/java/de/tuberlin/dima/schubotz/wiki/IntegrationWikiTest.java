@@ -31,10 +31,10 @@ public class IntegrationWikiTest {
 	@Parameterized.Parameters
 	public static Collection<Object[]> inputNumDocs() {
 		return Arrays.asList(new Object[][] {
-				{9999,"/home/jjl4/","/home/jjl4/", true} //DEBUG test parameters
+				{new Integer(9999),"/home/jjl4/","/home/jjl4/", Boolean.valueOf(true)} //DEBUG test parameters
 		});
 	}
-
+	@SuppressWarnings("hiding")
 	public IntegrationWikiTest(Integer numWiki, String inputDir, String outputDir, Boolean debug) {
 		this.numWiki = numWiki;
 		this.inputDir = inputDir;
@@ -79,7 +79,7 @@ public class IntegrationWikiTest {
 		BufferedReader br = null; 
 		try {
 			br = new BufferedReader(new FileReader(new File(new URI(wikiOutput).getPath())));
-			assertEquals(br.readLine() != null, true);
+			assertEquals(Boolean.valueOf(br.readLine() != null), true);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 			fail("Files not outputted or given directory is incorrect.");

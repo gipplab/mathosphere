@@ -4,6 +4,7 @@ import eu.stratosphere.api.java.tuple.Tuple3;
 /**
  * Tuple storing data extracted from documents.
  */
+@SuppressWarnings("serial")
 public class SectionTuple extends Tuple3<String,String,String> {
 	private String STR_SPLIT;
 	
@@ -23,6 +24,7 @@ public class SectionTuple extends Tuple3<String,String,String> {
 	 * @param plaintext string containing word tokens delimited by str_split
 	 * @param STR_SPLIT 
 	 */
+	@SuppressWarnings("hiding")
 	public SectionTuple(String id, String latex, String plaintext, String STR_SPLIT) {
 		this.f0 = id;
 		this.f1 = latex;

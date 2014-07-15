@@ -24,12 +24,14 @@ import eu.stratosphere.util.Collector;
  * Tuple2<LatexToken,1> for aggregation
  * later.
  */
+@SuppressWarnings("serial")
 public class LatexWikiMapper extends FlatMapFunction<String,Tuple2<String,Integer>>{
 	private String STR_SPLIT;
 	private HashSet<String> latex;
 	
 	Log LOG = LogFactory.getLog(LatexWikiMapper.class);
 	
+	@SuppressWarnings("hiding")
 	public LatexWikiMapper(String STR_SPLIT) {
 		this.STR_SPLIT = STR_SPLIT;
 	}

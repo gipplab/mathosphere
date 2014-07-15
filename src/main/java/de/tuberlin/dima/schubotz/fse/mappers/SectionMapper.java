@@ -17,6 +17,7 @@ import de.tuberlin.dima.schubotz.utils.XMLHelper;
 import eu.stratosphere.api.java.functions.FlatMapFunction;
 import eu.stratosphere.util.Collector;
 
+@SuppressWarnings("serial")
 public class SectionMapper extends FlatMapFunction<String, SectionTuple> {
 	/**
 	 * Pattern for extracting the filename from the ARXIV tag.
@@ -40,6 +41,7 @@ public class SectionMapper extends FlatMapFunction<String, SectionTuple> {
 	 * @param STR_SPLIT {@link de.tuberlin.dima.schubotz.fse.MainProgram#STR_SPLIT} sent as parameter to ensure serializability.
 	 * @param keywords set of keywords in queries. used to determine whether to include a keyword or not.
 	 */
+	@SuppressWarnings("hiding")
 	public SectionMapper (Pattern WORD_SPLIT, String STR_SPLIT, HashMultiset<String> keywords) {
 		this.WORD_SPLIT = WORD_SPLIT;		
 		this.STR_SPLIT = STR_SPLIT;

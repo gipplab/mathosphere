@@ -33,6 +33,7 @@ public class ProcessWikiTest {
 				{{"file:///home/jjl4/augmentedWikiDump.xml", "file:///home/jjl4/"}}); //DEBUG test parameters
 				//{{"", "file:///home/jjl4/"}});
 	}
+	@SuppressWarnings("hiding")
 	public ProcessWikiTest (String debugWikiInput, String debugOutput) {
 		this.debugWikiInput = debugWikiInput;
 		this.debugOutput = debugOutput;
@@ -71,7 +72,7 @@ public class ProcessWikiTest {
 		BufferedReader br = null; 
 		try {
 			br = new BufferedReader(new FileReader(new File(new URI(debugLatexOutput).getPath())));
-			assertEquals(br.readLine() != null, true);
+			assertEquals(Boolean.valueOf(br.readLine() != null), true);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 			fail("Files not outputted or given directory is incorrect.");
