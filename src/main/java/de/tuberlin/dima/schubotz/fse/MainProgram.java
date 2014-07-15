@@ -1,7 +1,5 @@
 package de.tuberlin.dima.schubotz.fse;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.regex.Pattern;
 
 import javax.xml.parsers.ParserConfigurationException;
