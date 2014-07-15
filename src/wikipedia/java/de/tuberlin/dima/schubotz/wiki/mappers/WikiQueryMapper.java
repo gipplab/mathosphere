@@ -6,9 +6,9 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import de.tuberlin.dima.schubotz.common.utils.LatexHelper;
+import de.tuberlin.dima.schubotz.common.utils.XMLHelper;
 import de.tuberlin.dima.schubotz.fse.MainProgram;
-import de.tuberlin.dima.schubotz.utils.LatexHelper;
-import de.tuberlin.dima.schubotz.utils.XMLHelper;
 import de.tuberlin.dima.schubotz.wiki.types.WikiQueryTuple;
 import eu.stratosphere.api.java.functions.FlatMapFunction;
 import eu.stratosphere.util.Collector;
@@ -30,13 +30,16 @@ public class WikiQueryMapper extends FlatMapFunction<String,WikiQueryTuple>{
 		this.STR_SPLIT = STR_SPLIT;
 	}
 	
+	/**
+	 * Takes in a query, parses query ID and latex
+	 */
 	@Override
 	public void flatMap(String in, Collector<WikiQueryTuple> out) {
 		Document doc;
 		Node main;
 		try {
 			doc = XMLHelper.String2Doc(in,false);
-			main = XMLHelper.getElementB(doc, "//num"); //Query ID tag is <num>
+			main = XMLHelper.getElementB(doc, "//num"); //Xpath expression for <num> tag
 		} catch (Exception e) {
 			if (LOG.isWarnEnabled()) {
 				LOG.warn("Unable to parse XML in query: " + in);

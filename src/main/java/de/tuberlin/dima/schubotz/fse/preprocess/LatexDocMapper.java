@@ -10,9 +10,9 @@ import org.apache.commons.logging.LogFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 
+import de.tuberlin.dima.schubotz.common.utils.LatexHelper;
+import de.tuberlin.dima.schubotz.common.utils.XMLHelper;
 import de.tuberlin.dima.schubotz.fse.types.QueryTuple;
-import de.tuberlin.dima.schubotz.utils.LatexHelper;
-import de.tuberlin.dima.schubotz.utils.XMLHelper;
 import eu.stratosphere.api.java.functions.FlatMapFunction;
 import eu.stratosphere.api.java.tuple.Tuple2;
 import eu.stratosphere.configuration.Configuration;

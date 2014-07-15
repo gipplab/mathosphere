@@ -8,11 +8,11 @@ import org.apache.commons.logging.LogFactory;
 
 import com.google.common.collect.HashMultiset;
 
+import de.tuberlin.dima.schubotz.common.utils.TFIDFHelper;
 import de.tuberlin.dima.schubotz.fse.MainProgram;
 import de.tuberlin.dima.schubotz.fse.types.QueryTuple;
 import de.tuberlin.dima.schubotz.fse.types.ResultTuple;
 import de.tuberlin.dima.schubotz.fse.types.SectionTuple;
-import de.tuberlin.dima.schubotz.utils.TFIDFHelper;
 import eu.stratosphere.api.java.functions.FlatMapFunction;
 import eu.stratosphere.configuration.Configuration;
 import eu.stratosphere.util.Collector;

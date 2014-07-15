@@ -8,24 +8,51 @@ import org.apache.commons.logging.LogFactory;
 
 import com.google.common.collect.HashMultiset;
 
+import de.tuberlin.dima.schubotz.common.utils.TFIDFHelper;
 import de.tuberlin.dima.schubotz.fse.types.ResultTuple;
-import de.tuberlin.dima.schubotz.utils.TFIDFHelper;
 import de.tuberlin.dima.schubotz.wiki.types.WikiQueryTuple;
 import de.tuberlin.dima.schubotz.wiki.types.WikiTuple;
 import eu.stratosphere.api.java.functions.FlatMapFunction;
 import eu.stratosphere.configuration.Configuration;
 import eu.stratosphere.util.Collector;
 
+/**
+ * Takes in {@link de.tuberlin.dima.schubotz.wiki.types.WikiTuple},
+ * broadcast variable "Queries", maps each wiki to each query
+ * and outputs a score. 
+ */
 @SuppressWarnings("serial")
 public class QueryWikiMatcher extends FlatMapFunction<WikiTuple, ResultTuple> {
+	/**
+	 * See {@link de.tuberlin.dima.schubotz.wiki.WikiProgram#STR_SPLIT}
+	 */
 	String STR_SPLIT;
+	/**
+	 * See {@link de.tuberlin.dima.schubotz.wiki.WikiProgram#latexWikiMultiset}
+	 */
 	final HashMultiset<String> latexWikiMultiset;
-	Collection<WikiQueryTuple> queries;
+	/**
+	 * See {@link de.tuberlin.dima.schubotz.wiki.WikiProgram#numWiki}
+	 */
 	int numWiki;
+	/**
+	 * See {@link de.tuberlin.dima.schubotz.wiki.WikiProgram#debug}
+	 */
 	boolean debug;
+	
+	/**
+	 * Query tuples from broadcast variable; assigned in {@link QueryWikiMatcher#open}
+	 */
+	Collection<WikiQueryTuple> queries;
 	
 	Log LOG = LogFactory.getLog(QueryWikiMatcher.class);
 	
+	/**
+	 * @param STR_SPLIT {@link de.tuberlin.dima.schubotz.wiki.WikiProgram#STR_SPLIT} passed in to ensure serializability
+	 * @param latexWikiMultiset {@link de.tuberlin.dima.schubotz.wiki.WikiProgram#latexWikiMultiset} passed in to ensure serializability
+	 * @param numWiki {@link de.tuberlin.dima.schubotz.wiki.WikiProgram#numWiki} passed in to ensure serializability
+	 * @param debug {@link de.tuberlin.dima.schubotz.wiki.WikiProgram#debug} passed in to ensure serializability
+	 */
 	@SuppressWarnings("hiding")
 	public QueryWikiMatcher(String STR_SPLIT, HashMultiset<String> latexWikiMultiset, int numWiki, boolean debug) {
 		this.STR_SPLIT = STR_SPLIT;
@@ -39,6 +66,11 @@ public class QueryWikiMatcher extends FlatMapFunction<WikiTuple, ResultTuple> {
 		queries = getRuntimeContext().getBroadcastVariable("Queries"); 
 	}
 	
+	/**
+	 * @param in
+	 * @param out
+	 * @throws Exception
+	 */
 	@Override
 	public void flatMap(WikiTuple in, Collector<ResultTuple> out) throws Exception {
 		HashMultiset<String> sectionLatex = HashMultiset.create(Arrays.asList(in.getLatex().split(STR_SPLIT)));
