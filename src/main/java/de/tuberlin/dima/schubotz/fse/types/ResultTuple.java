@@ -4,9 +4,11 @@ import eu.stratosphere.api.java.tuple.Tuple3;
 
 /**
  * Tuple that stores scores and justifications for each query and document combo. 
- * In format queryid,docid,score
  */
 public class ResultTuple extends Tuple3<String,String,Double> {
+	/**
+	 * Blank constructor required for Stratosphere execution.
+	 */
 	public ResultTuple() {
 		this.f0 = "";
 		this.f1 = "";

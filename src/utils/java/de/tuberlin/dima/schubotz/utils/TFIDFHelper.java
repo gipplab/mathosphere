@@ -5,6 +5,9 @@ import org.apache.commons.logging.LogFactory;
 
 import com.google.common.collect.HashMultiset;
 
+/**
+ * Helper class for calculating TFIDF scores
+ */
 public class TFIDFHelper {
 	private static Log LOG = LogFactory.getLog(TFIDFHelper.class);
 	

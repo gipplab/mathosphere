@@ -7,7 +7,16 @@ import java.io.IOException;
 
 import com.google.common.collect.HashMultiset;
 
+/**
+ * Helper for preprocessed generated CSV files
+ */
 public class CSVMultisetHelper {
+	/**
+	 * @param in path + name of file to read from
+	 * @return HashMultiset of csv field 0 : count csv field 1
+	 * @throws FileNotFoundException
+	 * @throws IOException
+	 */
 	public static HashMultiset<String> csvToMultiset(String in) throws FileNotFoundException, IOException {
 		HashMultiset<String> out = HashMultiset.create();
 		BufferedReader br = new BufferedReader(new FileReader(in));

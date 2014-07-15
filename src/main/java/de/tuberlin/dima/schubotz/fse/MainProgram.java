@@ -24,61 +24,77 @@ import de.tuberlin.dima.schubotz.utils.CSVMultisetHelper;
 import eu.stratosphere.api.common.operators.Order;
 import eu.stratosphere.api.java.DataSet;
 import eu.stratosphere.api.java.ExecutionEnvironment;
+import eu.stratosphere.api.java.functions.FlatMapFunction;
 import eu.stratosphere.api.java.io.TextInputFormat;
 import eu.stratosphere.api.java.operators.DataSource;
 import eu.stratosphere.api.java.typeutils.BasicTypeInfo;
 import eu.stratosphere.core.fs.FileSystem.WriteMode;
 import eu.stratosphere.core.fs.Path;
+import eu.stratosphere.util.Collector;
 
 /**
  * Performs the queries for the NTCIR-Math11-Workshop 2014 fully automated.
  */
 
+/**
+ * @author jjl4
+ *
+ */
 public class MainProgram {
+	/**
+	 * Main execution environment for Stratosphere.
+	 */
+	static ExecutionEnvironment env;
 	/**
 	 * The overall maximal results that can be returned per query.
 	 */
-	public final static int MaxResultsPerQuery = 3000;
+	public final static int MaxResultsPerQuery = 1000;
 	/**
-	 * The Constant RECORD_WORD.
-	 */
-	public static final int RECORD_WORD = 0;
-	/**
-	 * The Constant RECORD_VARIABLE.
-	 */
-	public static final int RECORD_VARIABLE = 1;
-	/**
-	 * The Constant RECORD_MATCH.
-	 */
-	public static final int RECORD_MATCH = 2;
-	public static final Map<String, String> QueryDesc = new HashMap<>();
-	public static final String DOCUMENT_SEPARATOR = "</ARXIVFILESPLIT>";
-	public static final String RECOD_TYPE = "RECORD_TYPE";
-	/**
-	 * The Constant LOG.
+	 * Log for this class. Leave all logging implementations up to
+	 * Stratosphere and its config files.
 	 */
 	private static final Log LOG = LogFactory.getLog( MainProgram.class );
-	private static boolean debug; 
 	/**
 	 * Delimiter used in between Tex and Keyword tokens
 	 */
 	public static final String STR_SPLIT = "<S>";
 	/**
-	 * Delimiter for words in document/queries
+	 * Pattern which will return word tokens
 	 */
-	public static final Pattern WORD_SPLIT = Pattern.compile("\\W+", Pattern.UNICODE_CHARACTER_CLASS); 
+	public static final Pattern WORD_SPLIT = Pattern.compile("\\W+", Pattern.UNICODE_CHARACTER_CLASS);
+	/**
+	 * HashMultiset of keywords : count of number of documents containing that keyword
+	 */
+	public static HashMultiset<String> keywordDocsMultiset;
+	/**
+	 * HashMultiset of latex tokens : count of number of documents containing that latex token
+	 */
+	public static HashMultiset<String> latexDocsMultiset;
+	
+	
+	
+	//SETTINGS 
+	/**
+	 * Tag on which to split documents.
+	 */
+	public static final String DOCUMENT_SEPARATOR = "</ARXIVFILESPLIT>";
+	/**
+	 * Tag on which to split queries.
+	 */
+	public static final String QUERY_SEPARATOR = "</topic>";
+	/**
+	 * Amount to deweight keywords by. Divide tfidf_keyword by this 
+	 * to get final keyword score.
+	 */
+	public static double keywordDivide = 6.36; 
 	/**
 	 * Runtag ID
 	 */
 	public static final String RUNTAG = "fse_LATEX";
-	/**
-	 * Limit of results per query
-	 */
-	public static final int QUERYLIMIT = 1000; 
 	
-	public static Map<String, String> TeXQueries = new HashMap<String, String>();
 	
-	static ExecutionEnvironment env;
+	
+	// ARGUMENTS
 	/**
 	 * The number of parallel tasks to be executed
 	 */
@@ -92,24 +108,25 @@ public class MainProgram {
 	 */
 	static String queryInput;
 	/**
-	 * The Output XML file with the calculated results
+	 * The Output file with the calculated results
 	 */
 	static String output;
 	/**
 	 * Input file of map of keywords to number of documents that contain that keyword
 	 */
 	static String keywordDocsMapInput;
-	static HashMultiset<String> keywordDocsMultiset;
 	/**
 	 * Input file of map of latex tokens to number of documents that contain that token 
 	 */
 	static String latexDocsMapInput;
-	static HashMultiset<String> latexDocsMultiset;
 	/**
 	 * Total number of documents
 	 */
-	static Integer numDocs = 0;
-	static double keywordDivide = 6.36; //TODO Amount to de-weight keywords by: tfidf_keyword / keywordDivide 
+	public static Integer numDocs = 0;
+	/**
+	 * Whether or not to do low level debugging (TODO clean this)
+	 */
+	public static boolean debug;
 
 	
 	protected static void parseArg (String[] args) throws Exception {
@@ -163,43 +180,56 @@ public class MainProgram {
 	 */
 	protected static void ConfigurePlan () throws XPathExpressionException, ParserConfigurationException, Exception {
 		env = ExecutionEnvironment.getExecutionEnvironment();
-
-		//Generate keywordDocsMap and latexDocsMap from preprocessed generated files
+		
+		//Set of keywords and latex contained in document and queries, mapped to counts of how many documents contain each token
 		keywordDocsMultiset = CSVMultisetHelper.csvToMultiset(keywordDocsMapInput);
 		latexDocsMultiset = CSVMultisetHelper.csvToMultiset(latexDocsMapInput);
 		
+		TextInputFormat format = new TextInputFormat(new Path(docsInput));
+		format.setDelimiter(DOCUMENT_SEPARATOR);
+		DataSet<String> rawArticleText = new DataSource<>(env, format, BasicTypeInfo.STRING_TYPE_INFO);
 		
-		//Set up articleDataSet
-		TextInputFormat format = new TextInputFormat( new Path( docsInput ) );
-		format.setDelimiter( DOCUMENT_SEPARATOR );
-		DataSet<String> rawArticleText = new DataSource<>( env, format, BasicTypeInfo.STRING_TYPE_INFO );
-		
-		
-		//Set up querydataset
-		TextInputFormat formatQueries = new TextInputFormat( new Path( queryInput ) );
-		formatQueries.setDelimiter( "</topic>" ); 
-		DataSet<String> rawQueryText = new DataSource<>( env, formatQueries, BasicTypeInfo.STRING_TYPE_INFO ); 
-		
+		TextInputFormat formatQueries = new TextInputFormat(new Path(queryInput));
+		formatQueries.setDelimiter(QUERY_SEPARATOR); 
+		DataSet<String> rawQueryText = new DataSource<>(env, formatQueries, BasicTypeInfo.STRING_TYPE_INFO);
+		//TODO No known better way of formatting the results of splitting with QUERY_SEPARATOR
+		DataSet<String> cleanQueryText = rawQueryText.flatMap(new FlatMapFunction<String, String>() {
+			@Override
+			public void flatMap(String in, Collector<String> out) throws Exception {
+				if (in.trim().length() == 0 || in.startsWith("\r\n</topics>")) {
+					if (LOG.isWarnEnabled()) {
+						LOG.warn("Corrupt query " + in); 
+					}
+					return; 
+				}
+				if (in.startsWith("<?xml")) {
+					in += "</topic></topics>";
+				}else if (!in.endsWith( "</topic>" )) {
+					in += "</topic>";
+				}
+				out.collect(in);
+			}
+		});
 		
 		// TODO IMPLEMENT ADDITIONAL SCORING METHODS 
 		
-		//PHASE A: extract LaTeX and keywords 
-		DataSet<QueryTuple> queryDataSet = rawQueryText.flatMap(new QueryMapper(WORD_SPLIT, STR_SPLIT));
+		//Extract LaTeX and keywords 
+		DataSet<QueryTuple> queryDataSet = cleanQueryText.flatMap(new QueryMapper(WORD_SPLIT, STR_SPLIT));
 		DataSet<SectionTuple> sectionDataSet = rawArticleText.flatMap(new SectionMapper(WORD_SPLIT, STR_SPLIT, keywordDocsMultiset));
 		
 		
-		//PHASE B: compare LaTeX and keywords, score
+		//Compare LaTeX and keywords, score
 		DataSet<ResultTuple> latexMatches = sectionDataSet.flatMap(new QuerySectionMatcher(STR_SPLIT, latexDocsMultiset, keywordDocsMultiset,
 																						   numDocs, keywordDivide, debug))
 														  .withBroadcastSet(queryDataSet, "Queries"); 
 		
 		
-		//PHASE C: output
+		//Output
 		DataSet<OutputSimpleTuple> outputTuples = latexMatches//Group by queryid
 														.groupBy(0)
 														//Sort by score <queryid, docid, score>
 														.sortGroup(2, Order.DESCENDING) 
-														.reduceGroup(new OutputSimple(QUERYLIMIT,RUNTAG));			 
+														.reduceGroup(new OutputSimple(MaxResultsPerQuery,RUNTAG));			 
 		outputTuples.writeAsCsv(output,"\n"," ",WriteMode.OVERWRITE);
 
 	}

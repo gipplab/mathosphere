@@ -15,21 +15,33 @@ import eu.stratosphere.api.java.functions.FlatMapFunction;
 import eu.stratosphere.util.Collector;
 
 public class QueryMapper extends FlatMapFunction<String, QueryTuple> {
+	/**
+	 * {@link de.tuberlin.dima.schubotz.fse.MainProgram#WORD_SPLIT}.
+	 */
 	Pattern WORD_SPLIT;
+	/**
+	 * {@link de.tuberlin.dima.schubotz.fse.MainProgram#STR_SPLIT}.
+	 */
 	String STR_SPLIT;
+	/**
+	 * Logger for QueryMapper.
+	 */
 	private static final Log LOG = LogFactory.getLog(QueryMapper.class);
 	
+	/**
+	 * @param WORD_SPLIT {@link de.tuberlin.dima.schubotz.fse.MainProgram#WORD_SPLIT} sent as parameter to ensure serializability. 
+	 * @param STR_SPLIT {@link de.tuberlin.dima.schubotz.fse.MainProgram#STR_SPLIT} sent as parameter to ensure serializability.
+	 */
 	public QueryMapper(Pattern WORD_SPLIT, String STR_SPLIT) {
 		this.WORD_SPLIT = WORD_SPLIT;
 		this.STR_SPLIT = STR_SPLIT;
 	}
 	
-	
 	/**
 	 * The core method of the MapFunction. Takes an element from the input data set and transforms
 	 * it into another element.
 	 *
-	 * @param value Query input
+	 * @param value query string
 	 * @return QueryTuple
 	 * @throws Exception This method may throw exceptions. Throwing an exception will cause the operation
 	 *                   to fail and may trigger recovery.
@@ -38,20 +50,6 @@ public class QueryMapper extends FlatMapFunction<String, QueryTuple> {
 	public void flatMap (String value, Collector<QueryTuple> out) throws Exception {
 		Node node; 
 		String[] tokens;
-		
-		//Deal with edge cases left by Stratosphere split on </topic>
-		if ( value.trim().length() == 0 || value.startsWith("\r\n</topics>")) {
-			if (LOG.isWarnEnabled()) {
-				LOG.warn("Corrupt query " + value);
-			}
-			return; 
-		}
-		if ( value.startsWith("<?xml")) {
-			value += "</topic></topics>";
-		}else if (!value.endsWith( "</topic>" )) {
-			value += "</topic>";
-		}
-		
 		Document doc;
 		Node main;
 		try {

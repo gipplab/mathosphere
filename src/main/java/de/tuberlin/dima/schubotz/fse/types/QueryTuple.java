@@ -3,34 +3,42 @@ package de.tuberlin.dima.schubotz.fse.types;
 import eu.stratosphere.api.java.tuple.Tuple3;
 
 /**
- * Tuple storing data extracted from queries.
- * In form of ID,Latex,Keywords. Latex and
- * keywords are strings, with their tokens
- * split by parameter STR_SPLIT.
+ * Tuple storing data extracted from queries from main task.
  */
 
 public class QueryTuple extends Tuple3<String,String,String> {
-	private String split;
+	private String str_split;
 	
 	/**
-	 * Constructor for this class. Default 
-	 * to "" for all fields.
-	 * @param id
-	 * @param latex
-	 * @param keywords
-	 * @param STR_SPLIT
+	 * Fields for QueryTuple
+	 */
+	public enum fields {
+		queryid,
+		latex,
+		keywords
+	}
+	
+	/**
+	 * Blank constructor required for Stratosphere execution.
+	 * Defaults to "<S>" for str_split. 
 	 */
 	public QueryTuple() {
 		this.f0 = "";
 		this.f1 = "";
 		this.f2 = "";
-		this.split = "<S>";
+		this.str_split = "<S>";
 	}
+	/**
+	 * @param id
+	 * @param latex string containing latex tokens delimited by str_split
+	 * @param keywords string containing keyword tokens delimited by str_split
+	 * @param STR_SPLIT 
+	 */
 	public QueryTuple(String id, String latex, String keywords, String STR_SPLIT) {
 		this.f0 = id;
 		this.f1 = latex;
 		this.f2 = keywords;
-		this.split = STR_SPLIT;
+		this.str_split = STR_SPLIT;
 	}
 	public void setNamedField (fields f, Object value) {
 		setField( value, f.ordinal() );
@@ -49,18 +57,14 @@ public class QueryTuple extends Tuple3<String,String,String> {
 	}
 	public void addKeyword (String keyword) {
 		if (!this.f2.equals("")) {
-			this.f2 = this.f2.concat(split.concat(keyword));
+			this.f2 = this.f2.concat(str_split.concat(keyword));
 		}else {
 			this.f2 = keyword;
 		}
 	}
 	@Override
 	public String toString() {
-		//Debug purposes
 		return this.f0 + "," + this.f1 + "," + this.f2;
-	}
-	public enum fields {
-		queryid,latex,keywords
 	}
 
 }

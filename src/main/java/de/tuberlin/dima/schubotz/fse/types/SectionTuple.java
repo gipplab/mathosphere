@@ -3,19 +3,13 @@ package de.tuberlin.dima.schubotz.fse.types;
 import eu.stratosphere.api.java.tuple.Tuple3;
 /**
  * Tuple storing data extracted from documents.
- * In form of ID,Latex,Plaintext. Latex and
- * plaintext are strings, with their tokens
- * split by parameter STR_SPLIT.
  */
 public class SectionTuple extends Tuple3<String,String,String> {
 	private String STR_SPLIT;
 	
 	/**
-	 * Constructor for this class. Default 
-	 * to "" for all fields.
-	 * @param id
-	 * @param latex
-	 * @param plaintext
+	 * Blank constructor required for Stratosphere execution.
+	 * Defaults to "<S>" for str_split. 
 	 */
 	public SectionTuple() {
 		this.f0 = "";
@@ -23,6 +17,12 @@ public class SectionTuple extends Tuple3<String,String,String> {
 		this.f2 = "";
 		this.STR_SPLIT = "<S>";
 	}
+	/**
+	 * @param id
+	 * @param latex string containing latex tokens delimited by str_split
+	 * @param plaintext string containing word tokens delimited by str_split
+	 * @param STR_SPLIT 
+	 */
 	public SectionTuple(String id, String latex, String plaintext, String STR_SPLIT) {
 		this.f0 = id;
 		this.f1 = latex;
@@ -53,7 +53,6 @@ public class SectionTuple extends Tuple3<String,String,String> {
 	}
 	@Override
 	public String toString() {
-		//Debug purposes
 		return this.f0 + "," + this.f1 + "," + this.f2;
 	}
 	public enum fields {

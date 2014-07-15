@@ -18,15 +18,28 @@ import eu.stratosphere.api.java.functions.FlatMapFunction;
 import eu.stratosphere.util.Collector;
 
 public class SectionMapper extends FlatMapFunction<String, SectionTuple> {
-	final static String FILENAME_INDICATOR = "Filename";
+	/**
+	 * Pattern for extracting the filename from the ARXIV tag.
+	 */
 	final static Pattern filnamePattern = Pattern
-	         .compile( "<ARXIVFILESPLIT\\\\n" + FILENAME_INDICATOR + "=\"\\./\\d+/(.*?)/\\1_(\\d+)_(\\d+)\\.xhtml\">" );
+	         .compile( "<ARXIVFILESPLIT\\\\nFilename=\"\\./\\d+/(.*?)/\\1_(\\d+)_(\\d+)\\.xhtml\">" );
 	private static final Log LOG = LogFactory.getLog(SectionMapper.class);
+	/**
+	 * {@link de.tuberlin.dima.schubotz.fse.MainProgram#WORD_SPLIT}
+	 */
 	Pattern WORD_SPLIT;
+	/**
+	 * {@link de.tuberlin.dima.schubotz.fse.MainProgram#STR_SPLIT}
+	 */
 	String STR_SPLIT;
 	
 	HashMultiset<String> keywords;
 
+	/**
+	 * @param WORD_SPLIT {@link de.tuberlin.dima.schubotz.fse.MainProgram#WORD_SPLIT} sent as parameter to ensure serializability. 
+	 * @param STR_SPLIT {@link de.tuberlin.dima.schubotz.fse.MainProgram#STR_SPLIT} sent as parameter to ensure serializability.
+	 * @param keywords set of keywords in queries. used to determine whether to include a keyword or not.
+	 */
 	public SectionMapper (Pattern WORD_SPLIT, String STR_SPLIT, HashMultiset<String> keywords) {
 		this.WORD_SPLIT = WORD_SPLIT;		
 		this.STR_SPLIT = STR_SPLIT;
@@ -46,14 +59,14 @@ public class SectionMapper extends FlatMapFunction<String, SectionTuple> {
 	@Override
 	public void flatMap (String value, Collector<SectionTuple> out) throws Exception {
 		//Split into lines 0: ARXIVFILENAME, 1: HTML
-		String[] lines = value.trim().split( "\\n", 2 );
+		String[] lines = value.trim().split("\\n", 2);
 		if ( lines.length < 2) {
 			if (LOG.isWarnEnabled()) {
 				LOG.warn("Null document: " + value);
 			}
 			return;
 		}
-		Matcher matcher = filnamePattern.matcher( lines[0] );
+		Matcher matcher = filnamePattern.matcher(lines[0]);
 		String docID = null;
 		if ( matcher.find() ) {
 			docID = matcher.group(1) + "_" + matcher.group(2) + "_" + matcher.group(3) + ".xhtml";
@@ -77,7 +90,7 @@ public class SectionMapper extends FlatMapFunction<String, SectionTuple> {
 			plainText = Jsoup.parse(value).text();
 		} catch (Exception e) {
 			if (LOG.isWarnEnabled()) {
-				LOG.warn("Jsoup could not parse the document", e);
+				LOG.warn("Jsoup could not parse the document: ", e);
 			}
 			return;
 		}
