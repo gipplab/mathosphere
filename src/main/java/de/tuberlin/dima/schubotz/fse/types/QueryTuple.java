@@ -5,7 +5,7 @@ import eu.stratosphere.api.java.tuple.Tuple3;
 /**
  * Tuple storing data extracted from queries from main task.
  */
-
+@SuppressWarnings("serial")
 public class QueryTuple extends Tuple3<String,String,String> {
 	private String str_split;
 	

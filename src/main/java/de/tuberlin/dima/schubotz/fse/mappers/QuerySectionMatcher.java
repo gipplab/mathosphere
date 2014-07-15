@@ -20,12 +20,13 @@ import eu.stratosphere.util.Collector;
 /**
  * Takes in each document, compares it to each query and maps a score in the form of a {@link de.tuberlin.dima.schubotz.fse.types.ResultTuple}
  */
+@SuppressWarnings("serial")
 public class QuerySectionMatcher extends FlatMapFunction<SectionTuple,ResultTuple> {
 	//ARGUMENTS 
 	final String STR_SPLIT;
 	final HashMultiset<String> latexDocsMultiset;
 	final HashMultiset<String> keywordDocsMultiset;
-	final Integer numDocs;
+	final int numDocs;
 	/**
 	 * 	{@link MainProgram#keywordDivide} 
 	 */
@@ -47,9 +48,10 @@ public class QuerySectionMatcher extends FlatMapFunction<SectionTuple,ResultTupl
 	 * @param weight {@link MainProgram#keywordDivide} sent as parameter to ensure serializability
 	 * @param debug {@link MainProgram#debug} sent as parameter to ensure serializability
 	 */
+	@SuppressWarnings("hiding")
 	public QuerySectionMatcher (String STR_SPLIT, HashMultiset<String> latexDocsMultiset,
-								HashMultiset<String> keywordDocsMultiset, Integer numDocs,
-								Double weight, boolean debug) {
+								HashMultiset<String> keywordDocsMultiset, int numDocs,
+								double weight, boolean debug) {
 		this.STR_SPLIT = STR_SPLIT;
 		this.latexDocsMultiset = latexDocsMultiset;
 		this.keywordDocsMultiset = keywordDocsMultiset;
@@ -115,7 +117,7 @@ public class QuerySectionMatcher extends FlatMapFunction<SectionTuple,ResultTupl
 				}
 				finalScore = 0;
 			}
-			out.collect( new ResultTuple( query.getID(), in.getID(), finalScore ) );
+			out.collect(new ResultTuple(query.getID(), in.getID(), Double.valueOf(finalScore)));
 		}
 	}
 }

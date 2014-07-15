@@ -2,9 +2,8 @@ package de.tuberlin.dima.schubotz.wiki.types;
 
 import eu.stratosphere.api.java.tuple.Tuple2;
 
+@SuppressWarnings("serial")
 public class WikiTuple extends Tuple2<String,String>{
-	private String split;
-	
 	public WikiTuple () {
 		this.f0 = "nulldoc";
 		this.f1 = "";

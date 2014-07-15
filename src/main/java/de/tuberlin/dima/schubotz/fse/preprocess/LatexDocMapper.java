@@ -18,11 +18,13 @@ import eu.stratosphere.api.java.tuple.Tuple2;
 import eu.stratosphere.configuration.Configuration;
 import eu.stratosphere.util.Collector;
 
+@SuppressWarnings("serial")
 public class LatexDocMapper extends FlatMapFunction<String, Tuple2<String,Integer>>{
 	HashSet<String> latex;
 	String STR_SPLIT;
 	private static final Log LOG = LogFactory.getLog(LatexDocMapper.class);
 	
+	@SuppressWarnings("hiding")
 	public LatexDocMapper(String STR_SPLIT) {
 		this.STR_SPLIT = STR_SPLIT;
 	}

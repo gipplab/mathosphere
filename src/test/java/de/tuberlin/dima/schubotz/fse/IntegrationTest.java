@@ -26,9 +26,10 @@ public class IntegrationTest {
 	@Parameterized.Parameters
 	public static Collection<Object[]> inputNumDocs() {
 		return Arrays.asList(new Object[][] {
-			{9999,"test10000.xml","/home/jjl4/", true} //DEBUG test parameters
+			{new Integer(9999),"test10000.xml","/home/jjl4/", Boolean.valueOf(true)} //DEBUG test parameters
 		});
 	}
+	@SuppressWarnings("hiding")
 	public IntegrationTest(Integer numDocs, String inputFile, String output, Boolean debug) {
 		this.numDocs = numDocs;
 		this.inputFile = inputFile;
@@ -59,7 +60,7 @@ public class IntegrationTest {
 	        								  queryFile, outputFilename,
 	        								  keywordDocsFilename, latexDocsFilename,
 	        								  numDocs.toString(),
-	        								  (debug ? "debug" : "")}); 
+	        								  (debug.booleanValue() ? "debug" : "")}); 
 	        MainProgram.ConfigurePlan();
         } catch (Exception e) {
         	fail("File IO/Configuration error. Check parameters, plan configuration.");

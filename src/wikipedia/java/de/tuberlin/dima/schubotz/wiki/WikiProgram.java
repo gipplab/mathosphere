@@ -20,12 +20,13 @@ import de.tuberlin.dima.schubotz.wiki.types.WikiTuple;
 import eu.stratosphere.api.common.operators.Order;
 import eu.stratosphere.api.java.DataSet;
 import eu.stratosphere.api.java.ExecutionEnvironment;
+import eu.stratosphere.api.java.functions.FlatMapFunction;
 import eu.stratosphere.api.java.io.TextInputFormat;
 import eu.stratosphere.api.java.operators.DataSource;
 import eu.stratosphere.api.java.typeutils.BasicTypeInfo;
 import eu.stratosphere.core.fs.FileSystem.WriteMode;
 import eu.stratosphere.core.fs.Path;
-
+import eu.stratosphere.util.Collector;
 
 /**
  * Returns search results for NTCIR-11 2014 Wikipedia Subtask
@@ -71,7 +72,7 @@ public class WikiProgram {
 		try {
 			numWiki = Integer.valueOf(args[5]);
 		} catch (Exception e) {
-			throw new Exception("numWiki not given as parameter");
+			throw new Exception("numWiki not given as parameter or is not a number");
 		}
 		debug = (args.length > 6 ? 
 				(args[5].equals("debug") ? true : false)
@@ -95,22 +96,47 @@ public class WikiProgram {
 	public static ExecutionEnvironment getExecutionEnvironment() {
 		return env;
 	}
+	@SuppressWarnings("serial")
 	public static void ConfigurePlan() throws IOException {
 		env = ExecutionEnvironment.getExecutionEnvironment();
 		TextInputFormat formatWiki = new TextInputFormat(new Path(wikiInput));
 
+		
 		//Generate latexWikiMap from preprocessed files
 		latexWikiMultiset = CSVMultisetHelper.csvToMultiset(latexWikiMapInput);
 		
-		//TODO make these splits nicer
+		
 		formatWiki.setDelimiter("</page>"); //this will leave a null doc at the end and a useless doc at the beginning. also, each will be missing a </page>
 		DataSet<String> rawWikiText = new DataSource<>( env, formatWiki, BasicTypeInfo.STRING_TYPE_INFO );
+		
 		
 		TextInputFormat formatQuery = new TextInputFormat(new Path(wikiQueryInput));
 		formatQuery.setDelimiter("</topic>"); //this will leave a System.getProperty("line.separator")</topics> at the end as well as header info at the begin 
 		DataSet<String> rawWikiQueryText = new DataSource<>(env, formatQuery, BasicTypeInfo.STRING_TYPE_INFO);
 		
-		DataSet<WikiQueryTuple> wikiQuerySet = rawWikiQueryText.flatMap(new WikiQueryMapper(STR_SPLIT));
+		
+		//Clean up and format queries TODO no known better way of dealing with results of splits
+		DataSet<String> cleanWikiQueryText = rawWikiQueryText.flatMap(new FlatMapFunction<String, String>() {
+			final String endQuery = System.getProperty("line.separator") + "</topics>"; //used to search for last query weirdness
+			@Override
+			public void flatMap(String in, Collector<String> out) throws Exception {
+				//Dealing with badly formatted html as a result of Stratosphere split
+				if (in.trim().length() == 0 || in.startsWith(endQuery)) { 
+					if (LOG.isWarnEnabled()) {
+						LOG.warn("Corrupt query: " + in);
+					}
+					return;
+				}
+				if (in.startsWith("<?xml ")) {
+					in += "</topic></topics>";
+				}else if (!in.endsWith("</topic>")) {
+					in += "</topic>";
+				}
+			}
+		});
+		
+		
+		DataSet<WikiQueryTuple> wikiQuerySet = cleanWikiQueryText.flatMap(new WikiQueryMapper(STR_SPLIT));
 		DataSet<WikiTuple> wikiSet = rawWikiText.flatMap(new WikiMapper(STR_SPLIT))
 												.withBroadcastSet(wikiQuerySet, "Queries");
 		

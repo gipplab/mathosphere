@@ -14,6 +14,7 @@ import de.tuberlin.dima.schubotz.utils.XMLHelper;
 import eu.stratosphere.api.java.functions.FlatMapFunction;
 import eu.stratosphere.util.Collector;
 
+@SuppressWarnings("serial")
 public class QueryMapper extends FlatMapFunction<String, QueryTuple> {
 	/**
 	 * {@link de.tuberlin.dima.schubotz.fse.MainProgram#WORD_SPLIT}.
@@ -32,6 +33,7 @@ public class QueryMapper extends FlatMapFunction<String, QueryTuple> {
 	 * @param WORD_SPLIT {@link de.tuberlin.dima.schubotz.fse.MainProgram#WORD_SPLIT} sent as parameter to ensure serializability. 
 	 * @param STR_SPLIT {@link de.tuberlin.dima.schubotz.fse.MainProgram#STR_SPLIT} sent as parameter to ensure serializability.
 	 */
+	@SuppressWarnings("hiding")
 	public QueryMapper(Pattern WORD_SPLIT, String STR_SPLIT) {
 		this.WORD_SPLIT = WORD_SPLIT;
 		this.STR_SPLIT = STR_SPLIT;

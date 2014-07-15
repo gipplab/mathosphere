@@ -11,19 +11,17 @@ import de.tuberlin.dima.schubotz.fse.MainProgram;
 import eu.stratosphere.core.fs.Path;
 
 public class TestUtils {
-    private final static String testQueryString = getFileContents("fQuery.xml");
-
-    public static String getTestQueryString() {
-        return testQueryString;
+    public static String getTestQueryString() throws IOException {
+        return getFileContents("fQuery.xml");
     }
 
-    public static String getTestFile10() {
+    public static String getTestFile10() throws IOException {
         return getFileContents("test10.xml");
     }
-	public static String getTestResultForTest11(){
+	public static String getTestResultForTest11() throws IOException {
 		return getFileContents( "expectedMatch.xml" );
 	}
-    public static String getTestFile1() {
+    public static String getTestFile1() throws IOException {
         String[] split = getTestFile10().split(MainProgram.DOCUMENT_SEPARATOR,2);
         return split[0];
     }
@@ -32,12 +30,13 @@ public class TestUtils {
     	return new Path("test10.xml");
     }
 
-    static String getFileContents(String fname) {
+    static String getFileContents(String fname) throws IOException {
         InputStream is = TestUtils.class.getClassLoader().getResourceAsStream(fname);
         Scanner s = new Scanner(is, "UTF-8");
         s.useDelimiter("\\A");
         String out = s.hasNext() ? s.next() : "";
         s.close();
+        is.close();
         return out;
     }
     

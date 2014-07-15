@@ -5,6 +5,7 @@ import eu.stratosphere.api.java.tuple.Tuple6;
 /**
  * Tuple that stores simple output for printing.
  */
+@SuppressWarnings("serial")
 public class OutputSimpleTuple extends Tuple6<String,Integer,String,Integer,Double,String> {
 	String runtag;
 	/**
@@ -25,6 +26,7 @@ public class OutputSimpleTuple extends Tuple6<String,Integer,String,Integer,Doub
 	 * @param score
 	 * @param runtag
 	 */
+	@SuppressWarnings("hiding")
 	public OutputSimpleTuple(String queryId,String docId,Integer rank,Double score,String runtag) {
 		this.f0 = queryId;
 		this.f1 = 1;

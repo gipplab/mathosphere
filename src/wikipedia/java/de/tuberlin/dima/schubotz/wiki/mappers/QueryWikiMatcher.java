@@ -16,6 +16,7 @@ import eu.stratosphere.api.java.functions.FlatMapFunction;
 import eu.stratosphere.configuration.Configuration;
 import eu.stratosphere.util.Collector;
 
+@SuppressWarnings("serial")
 public class QueryWikiMatcher extends FlatMapFunction<WikiTuple, ResultTuple> {
 	String STR_SPLIT;
 	final HashMultiset<String> latexWikiMultiset;
@@ -25,6 +26,7 @@ public class QueryWikiMatcher extends FlatMapFunction<WikiTuple, ResultTuple> {
 	
 	Log LOG = LogFactory.getLog(QueryWikiMatcher.class);
 	
+	@SuppressWarnings("hiding")
 	public QueryWikiMatcher(String STR_SPLIT, HashMultiset<String> latexWikiMultiset, int numWiki, boolean debug) {
 		this.STR_SPLIT = STR_SPLIT;
 		this.latexWikiMultiset = latexWikiMultiset;

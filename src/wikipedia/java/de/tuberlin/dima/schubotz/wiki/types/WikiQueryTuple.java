@@ -5,9 +5,8 @@ import eu.stratosphere.api.java.tuple.Tuple2;
 /**
  * Stores tuples of QueryID, Latex
  */
+@SuppressWarnings("serial")
 public class WikiQueryTuple extends Tuple2<String,String> {
-	private String split;
-	
 	public WikiQueryTuple () {
 		this.f0 = "nullquery";
 		this.f1 = "";
