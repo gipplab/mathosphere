@@ -1,4 +1,4 @@
-package de.tuberlin.dima.schubotz.utils;
+package de.tuberlin.dima.schubotz.common.utils;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

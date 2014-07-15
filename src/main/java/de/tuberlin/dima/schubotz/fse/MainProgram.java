@@ -10,15 +10,15 @@ import org.apache.commons.logging.LogFactory;
 
 import com.google.common.collect.HashMultiset;
 
-import de.tuberlin.dima.schubotz.fse.mappers.OutputSimple;
+import de.tuberlin.dima.schubotz.common.mappers.OutputSimple;
+import de.tuberlin.dima.schubotz.common.types.OutputSimpleTuple;
+import de.tuberlin.dima.schubotz.common.utils.CSVMultisetHelper;
 import de.tuberlin.dima.schubotz.fse.mappers.QueryMapper;
 import de.tuberlin.dima.schubotz.fse.mappers.QuerySectionMatcher;
 import de.tuberlin.dima.schubotz.fse.mappers.SectionMapper;
-import de.tuberlin.dima.schubotz.fse.types.OutputSimpleTuple;
 import de.tuberlin.dima.schubotz.fse.types.QueryTuple;
 import de.tuberlin.dima.schubotz.fse.types.ResultTuple;
 import de.tuberlin.dima.schubotz.fse.types.SectionTuple;
-import de.tuberlin.dima.schubotz.utils.CSVMultisetHelper;
 import eu.stratosphere.api.common.operators.Order;
 import eu.stratosphere.api.java.DataSet;
 import eu.stratosphere.api.java.ExecutionEnvironment;

@@ -9,10 +9,10 @@ import org.apache.commons.logging.LogFactory;
 
 import com.google.common.collect.HashMultiset;
 
-import de.tuberlin.dima.schubotz.fse.mappers.OutputSimple;
-import de.tuberlin.dima.schubotz.fse.types.OutputSimpleTuple;
+import de.tuberlin.dima.schubotz.common.mappers.OutputSimple;
+import de.tuberlin.dima.schubotz.common.types.OutputSimpleTuple;
+import de.tuberlin.dima.schubotz.common.utils.CSVMultisetHelper;
 import de.tuberlin.dima.schubotz.fse.types.ResultTuple;
-import de.tuberlin.dima.schubotz.utils.CSVMultisetHelper;
 import de.tuberlin.dima.schubotz.wiki.mappers.QueryWikiMatcher;
 import de.tuberlin.dima.schubotz.wiki.mappers.WikiMapper;
 import de.tuberlin.dima.schubotz.wiki.mappers.WikiQueryMapper;
@@ -93,7 +93,7 @@ public class WikiProgram {
 	/**
 	 * Total number of wikipedia files
 	 */
-	static int numWiki;
+	public static int numWiki;
 	/**
 	 * Enable or disable low level debugging TODO clean this up (make it based on logger level?)
 	 */

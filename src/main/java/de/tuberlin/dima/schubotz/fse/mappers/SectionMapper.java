@@ -11,9 +11,9 @@ import org.w3c.dom.NodeList;
 
 import com.google.common.collect.HashMultiset;
 
+import de.tuberlin.dima.schubotz.common.utils.LatexHelper;
+import de.tuberlin.dima.schubotz.common.utils.XMLHelper;
 import de.tuberlin.dima.schubotz.fse.types.SectionTuple;
-import de.tuberlin.dima.schubotz.utils.LatexHelper;
-import de.tuberlin.dima.schubotz.utils.XMLHelper;
 import eu.stratosphere.api.java.functions.FlatMapFunction;
 import eu.stratosphere.util.Collector;
 

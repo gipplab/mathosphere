@@ -1,8 +1,8 @@
-package de.tuberlin.dima.schubotz.fse.mappers;
+package de.tuberlin.dima.schubotz.common.mappers;
 
 import java.util.Iterator;
 
-import de.tuberlin.dima.schubotz.fse.types.OutputSimpleTuple;
+import de.tuberlin.dima.schubotz.common.types.OutputSimpleTuple;
 import de.tuberlin.dima.schubotz.fse.types.ResultTuple;
 import eu.stratosphere.api.java.functions.GroupReduceFunction;
 import eu.stratosphere.util.Collector;
@@ -15,8 +15,19 @@ import eu.stratosphere.util.Collector;
  */
 @SuppressWarnings("serial")
 public class OutputSimple extends GroupReduceFunction<ResultTuple, OutputSimpleTuple> {
+	/**
+	 * See {@link de.tuberlin.dima.schubotz.wiki.WikiProgram#MaxResultsPerQuery}
+	 */
 	int queryLimit;
+	/**
+	 * See {@link de.tuberlin.dima.schubotz.wiki.WikiProgram#RUNTAG} 
+	 */
 	String runtag;
+	
+	/**
+	 * @param queryLimit {@link de.tuberlin.dima.schubotz.wiki.WikiProgram#MaxResultsPerQuery} passed in for serializability
+	 * @param runtag {@link de.tuberlin.dima.schubotz.wiki.WikiProgram#RUNTAG} passed in for serializability
+	 */
 	@SuppressWarnings("hiding")
 	public OutputSimple(int queryLimit, String runtag) {
 		this.queryLimit = queryLimit;
