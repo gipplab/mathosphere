@@ -34,19 +34,11 @@ import eu.stratosphere.util.Collector;
  * Performs the queries for the NTCIR-Math11-Workshop 2014 fully automated.
  */
 
-/**
- * @author jjl4
- *
- */
 public class MainProgram {
 	/**
 	 * Main execution environment for Stratosphere.
 	 */
 	static ExecutionEnvironment env;
-	/**
-	 * The overall maximal results that can be returned per query.
-	 */
-	public final static int MaxResultsPerQuery = 1000;
 	/**
 	 * Log for this class. Leave all logging implementations up to
 	 * Stratosphere and its config files.
@@ -71,7 +63,11 @@ public class MainProgram {
 	
 	
 	
-	//SETTINGS 
+	//SETTINGS
+	/**
+	 * The overall maximal results that can be returned per query.
+	 */
+	public final static int MaxResultsPerQuery = 1000;
 	/**
 	 * Tag on which to split documents.
 	 */
@@ -122,7 +118,7 @@ public class MainProgram {
 	 */
 	public static int numDocs = 0;
 	/**
-	 * Whether or not to do low level debugging (TODO clean this)
+	 * Whether or not to do low level debugging (TODO make it based on logger level?)
 	 */
 	public static boolean debug;
 

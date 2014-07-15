@@ -3,6 +3,7 @@ package de.tuberlin.dima.schubotz.wiki;
 import java.io.IOException;
 import java.util.regex.Pattern;
 
+import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -33,29 +34,70 @@ import eu.stratosphere.util.Collector;
  *
  */
 public class WikiProgram {
-	private static final Log LOG = LogFactory.getLog(WikiProgram.class);
-	
-	static ExecutionEnvironment env;
-	
-	static int noSubTasks;
-	static String output;
-	static String wikiInput;
-	static String wikiQueryInput;
-	static String latexWikiMapInput;
-	static HashMultiset<String> latexWikiMultiset;
-	static int numWiki;
-	static boolean debug;
 	/**
-	 *  Limit of results per query
+	 * Main execution environment for Stratosphere
 	 */
-	public static final int QUERYLIMIT = 1000;
+	static ExecutionEnvironment env;
+	/**
+	 * Root logger class. Leave all logging implementation up to 
+	 * Stratosphere and its config files.
+	 */
+	private static final Log LOG = LogFactory.getLog(WikiProgram.class);
+	/**
+	 * Splitter for tokens
+	 */
+	public static final String STR_SPLIT = "<S>";
+	/**
+	 * Generates matches for words separated by whitespace
+	 */
+	public static final Pattern WORD_SPLIT = Pattern.compile("\\W+", Pattern.UNICODE_CHARACTER_CLASS);
+	/**
+	 * HashMultiset for storing preprocessed data of latex token : count 
+	 * of documents containing token
+	 */
+	public static HashMultiset<String> latexWikiMultiset;
+	
+	
+	//SETTINGS
+	/**
+	 * The overall maximal results that can be returned per query.
+	 */
+	public final static int MaxResultsPerQuery = 1000;
 	/**
 	 * Runtag in output
 	 */
 	public static final String RUNTAG = "wiki_latex";
 	
-	public static final String STR_SPLIT = "<S>";
-	public static final Pattern WORD_SPLIT = Pattern.compile("\\W+", Pattern.UNICODE_CHARACTER_CLASS); 
+	
+	//ARGUMENTS
+	/**
+	 * Stratosphere parallelism
+	 */
+	static int noSubTasks;
+	/**
+	 * Output path and filename
+	 */
+	static String output;
+	/**
+	 * Input path and filename for wikipedia files
+	 */
+	static String wikiInput;
+	/**
+	 * Input path and filename for wikiquery file
+	 */
+	static String wikiQueryInput;
+	/**
+	 * Input path and filename for preprocessed csv
+	 */
+	static String latexWikiMapInput;
+	/**
+	 * Total number of wikipedia files
+	 */
+	static int numWiki;
+	/**
+	 * Enable or disable low level debugging TODO clean this up (make it based on logger level?)
+	 */
+	static boolean debug;
 	
 	
 	protected static void parseArgs(String[] args) throws Exception {
@@ -77,7 +119,6 @@ public class WikiProgram {
 		debug = (args.length > 6 ? 
 				(args[5].equals("debug") ? true : false)
 				: false);
-			
 	}
 
 	public static void main(String[] args) {
@@ -109,11 +150,34 @@ public class WikiProgram {
 		formatWiki.setDelimiter("</page>"); //this will leave a null doc at the end and a useless doc at the beginning. also, each will be missing a </page>
 		DataSet<String> rawWikiText = new DataSource<>( env, formatWiki, BasicTypeInfo.STRING_TYPE_INFO );
 		
+		//Clean up and format wikitext TODO no known better way
+		DataSet<String> cleanWikiText = rawWikiText.flatMap(new FlatMapFunction<String, String>() {
+			final String endDoc = System.getProperty("line.separator") + "</mediawiki"; //used to search for last document weirdness
+			@Override
+			public void flatMap(String in, Collector<String> out) throws Exception {
+				//Check for edge cases created from stratosphere split
+				if (in.startsWith("<mediawiki")) {
+					if (LOG.isDebugEnabled()) {
+						LOG.debug("Hit mediawiki header document.");
+					}
+					return;
+				}else if (in.startsWith(endDoc)) {
+					if (LOG.isDebugEnabled()) {
+						LOG.debug("Hit mediawiki end doc.");
+					}
+					return;
+				}
+				if (!in.endsWith("</page>")) {
+					in += "</page>";
+				}
+				in = StringEscapeUtils.unescapeHtml(in); 
+				out.collect(in);
+			}
+		});
 		
 		TextInputFormat formatQuery = new TextInputFormat(new Path(wikiQueryInput));
 		formatQuery.setDelimiter("</topic>"); //this will leave a System.getProperty("line.separator")</topics> at the end as well as header info at the begin 
 		DataSet<String> rawWikiQueryText = new DataSource<>(env, formatQuery, BasicTypeInfo.STRING_TYPE_INFO);
-		
 		
 		//Clean up and format queries TODO no known better way of dealing with results of splits
 		DataSet<String> cleanWikiQueryText = rawWikiQueryText.flatMap(new FlatMapFunction<String, String>() {
@@ -137,7 +201,7 @@ public class WikiProgram {
 		
 		
 		DataSet<WikiQueryTuple> wikiQuerySet = cleanWikiQueryText.flatMap(new WikiQueryMapper(STR_SPLIT));
-		DataSet<WikiTuple> wikiSet = rawWikiText.flatMap(new WikiMapper(STR_SPLIT))
+		DataSet<WikiTuple> wikiSet = cleanWikiText.flatMap(new WikiMapper(STR_SPLIT))
 												.withBroadcastSet(wikiQuerySet, "Queries");
 		
 		DataSet<ResultTuple> matches = wikiSet.flatMap(new QueryWikiMatcher(STR_SPLIT, latexWikiMultiset, numWiki, debug))
@@ -147,7 +211,7 @@ public class WikiProgram {
 				.groupBy(0)
 				//Sort by score <queryid, docid, score>
 				.sortGroup(2, Order.DESCENDING) 
-				.reduceGroup(new OutputSimple(QUERYLIMIT,RUNTAG));	
+				.reduceGroup(new OutputSimple(MaxResultsPerQuery,RUNTAG));	
 		outputTuples.writeAsCsv(output,"\n"," ",WriteMode.OVERWRITE);
 	}
 
