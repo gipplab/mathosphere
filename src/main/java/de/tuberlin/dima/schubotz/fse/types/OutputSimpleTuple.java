@@ -4,16 +4,11 @@ import eu.stratosphere.api.java.tuple.Tuple6;
 
 /**
  * Tuple that stores simple output for printing.
- * In format: queryId,delim(1),docId,rank,score,runtag
  */
 public class OutputSimpleTuple extends Tuple6<String,Integer,String,Integer,Double,String> {
 	String runtag;
 	/**
-	 * @param queryId
-	 * @param docId
-	 * @param rank
-	 * @param score
-	 * @param runtag
+	 * Blank constructor required for Stratosphere execution
 	 */
 	public OutputSimpleTuple() {
 		this.f0 = "";
@@ -23,6 +18,13 @@ public class OutputSimpleTuple extends Tuple6<String,Integer,String,Integer,Doub
 		this.f4 = 0.0;
 		this.f5 = "DEFAULT_RUNTAG";
 	}
+	/**
+	 * @param queryId
+	 * @param docId
+	 * @param rank
+	 * @param score
+	 * @param runtag
+	 */
 	public OutputSimpleTuple(String queryId,String docId,Integer rank,Double score,String runtag) {
 		this.f0 = queryId;
 		this.f1 = 1;
