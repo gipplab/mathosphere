@@ -23,8 +23,6 @@ public class WikiMapper extends FlatMapFunction<String, WikiTuple> {
 	String STR_SPLIT;
 	Log LOG = LogFactory.getLog(WikiMapper.class);
 	
-	final String endDoc = System.getProperty("line.separator") + "</mediawiki"; //used to search for last document weirdness
-	
 	@SuppressWarnings("hiding")
 	public WikiMapper (String STR_SPLIT) {
 		this.STR_SPLIT = STR_SPLIT;
@@ -45,23 +43,6 @@ public class WikiMapper extends FlatMapFunction<String, WikiTuple> {
 	}
 	@Override
 	public void flatMap (String in, Collector<WikiTuple> out) throws Exception {
-		//Check for edge cases created from stratosphere split
-		if (in.startsWith("<mediawiki")) {
-			if (LOG.isDebugEnabled()) {
-				LOG.debug("Hit mediawiki header document.");
-			}
-			return;
-		}else if (in.startsWith(endDoc)) {
-			if (LOG.isDebugEnabled()) {
-				LOG.debug("Hit mediawiki end doc.");
-			}
-			return;
-		}
-		if (!in.endsWith("</page>")) {
-			in += "</page>";
-		}
-		
-		in = StringEscapeUtils.unescapeHtml(in); //WATCH cpu bottleneck?
 		Document doc;
 		Elements LatexElements;
 		try {

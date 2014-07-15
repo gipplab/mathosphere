@@ -17,7 +17,7 @@ public class CSVMultisetHelper {
 	public static Log LOG = LogFactory.getLog(CSVMultisetHelper.class);
 	/**
 	 * @param in path + name of file to read from
-	 * @return HashMultiset of csv field 0 : count csv field 1
+	 * @return HashMultiset, where index is first CSV field, count is second CSV field
 	 * @throws FileNotFoundException
 	 * @throws IOException
 	 */
