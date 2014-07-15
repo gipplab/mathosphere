@@ -62,12 +62,6 @@ public class SectionMapper extends FlatMapFunction<String, SectionTuple> {
 	public void flatMap (String value, Collector<SectionTuple> out) throws Exception {
 		//Split into lines 0: ARXIVFILENAME, 1: HTML
 		String[] lines = value.trim().split("\\n", 2);
-		if ( lines.length < 2) {
-			if (LOG.isWarnEnabled()) {
-				LOG.warn("Null document: " + value);
-			}
-			return;
-		}
 		Matcher matcher = filnamePattern.matcher(lines[0]);
 		String docID = null;
 		if ( matcher.find() ) {

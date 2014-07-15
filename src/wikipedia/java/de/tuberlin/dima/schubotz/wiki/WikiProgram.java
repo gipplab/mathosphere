@@ -14,7 +14,9 @@ import de.tuberlin.dima.schubotz.common.types.OutputSimpleTuple;
 import de.tuberlin.dima.schubotz.common.utils.CSVMultisetHelper;
 import de.tuberlin.dima.schubotz.fse.types.ResultTuple;
 import de.tuberlin.dima.schubotz.wiki.mappers.QueryWikiMatcher;
+import de.tuberlin.dima.schubotz.wiki.mappers.WikiCleaner;
 import de.tuberlin.dima.schubotz.wiki.mappers.WikiMapper;
+import de.tuberlin.dima.schubotz.wiki.mappers.WikiQueryCleaner;
 import de.tuberlin.dima.schubotz.wiki.mappers.WikiQueryMapper;
 import de.tuberlin.dima.schubotz.wiki.types.WikiQueryTuple;
 import de.tuberlin.dima.schubotz.wiki.types.WikiTuple;
@@ -51,6 +53,14 @@ public class WikiProgram {
 	 * Generates matches for words separated by whitespace
 	 */
 	public static final Pattern WORD_SPLIT = Pattern.compile("\\W+", Pattern.UNICODE_CHARACTER_CLASS);
+	/**
+	 * Used to split input into stratosphere for wikis
+	 */
+	public static final String WIKI_SEPARATOR = "</page>";
+	/**
+	 * Used to split input into stratosphere for queries
+	 */
+	public static final String QUERY_SEPARATOR = "</topic>";
 	/**
 	 * HashMultiset for storing preprocessed data of latex token : count 
 	 * of documents containing token
@@ -147,57 +157,18 @@ public class WikiProgram {
 		latexWikiMultiset = CSVMultisetHelper.csvToMultiset(latexWikiMapInput);
 		
 		
-		formatWiki.setDelimiter("</page>"); //this will leave a null doc at the end and a useless doc at the beginning. also, each will be missing a </page>
+		formatWiki.setDelimiter(WIKI_SEPARATOR); //this will leave a null doc at the end and a useless doc at the beginning. also, each will be missing a </page>
 		DataSet<String> rawWikiText = new DataSource<>( env, formatWiki, BasicTypeInfo.STRING_TYPE_INFO );
 		
-		//Clean up and format wikitext TODO no known better way
-		DataSet<String> cleanWikiText = rawWikiText.flatMap(new FlatMapFunction<String, String>() {
-			final String endDoc = System.getProperty("line.separator") + "</mediawiki"; //used to search for last document weirdness
-			@Override
-			public void flatMap(String in, Collector<String> out) throws Exception {
-				//Check for edge cases created from stratosphere split
-				if (in.startsWith("<mediawiki")) {
-					if (LOG.isDebugEnabled()) {
-						LOG.debug("Hit mediawiki header document.");
-					}
-					return;
-				}else if (in.startsWith(endDoc)) {
-					if (LOG.isDebugEnabled()) {
-						LOG.debug("Hit mediawiki end doc.");
-					}
-					return;
-				}
-				if (!in.endsWith("</page>")) {
-					in += "</page>";
-				}
-				in = StringEscapeUtils.unescapeHtml(in); 
-				out.collect(in);
-			}
-		});
+		//Clean up and format wikitext 
+		DataSet<String> cleanWikiText = rawWikiText.flatMap(new WikiCleaner());
 		
 		TextInputFormat formatQuery = new TextInputFormat(new Path(wikiQueryInput));
-		formatQuery.setDelimiter("</topic>"); //this will leave a System.getProperty("line.separator")</topics> at the end as well as header info at the begin 
+		formatQuery.setDelimiter(QUERY_SEPARATOR); //this will leave a System.getProperty("line.separator")</topics> at the end as well as header info at the begin 
 		DataSet<String> rawWikiQueryText = new DataSource<>(env, formatQuery, BasicTypeInfo.STRING_TYPE_INFO);
 		
-		//Clean up and format queries TODO no known better way of dealing with results of splits
-		DataSet<String> cleanWikiQueryText = rawWikiQueryText.flatMap(new FlatMapFunction<String, String>() {
-			final String endQuery = System.getProperty("line.separator") + "</topics>"; //used to search for last query weirdness
-			@Override
-			public void flatMap(String in, Collector<String> out) throws Exception {
-				//Dealing with badly formatted html as a result of Stratosphere split
-				if (in.trim().length() == 0 || in.startsWith(endQuery)) { 
-					if (LOG.isWarnEnabled()) {
-						LOG.warn("Corrupt query: " + in);
-					}
-					return;
-				}
-				if (in.startsWith("<?xml ")) {
-					in += "</topic></topics>";
-				}else if (!in.endsWith("</topic>")) {
-					in += "</topic>";
-				}
-			}
-		});
+		//Clean up and format queries 
+		DataSet<String> cleanWikiQueryText = rawWikiQueryText.flatMap(new WikiQueryCleaner());
 		
 		
 		DataSet<WikiQueryTuple> wikiQuerySet = cleanWikiQueryText.flatMap(new WikiQueryMapper(STR_SPLIT));

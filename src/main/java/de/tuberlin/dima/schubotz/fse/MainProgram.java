@@ -13,6 +13,8 @@ import com.google.common.collect.HashMultiset;
 import de.tuberlin.dima.schubotz.common.mappers.OutputSimple;
 import de.tuberlin.dima.schubotz.common.types.OutputSimpleTuple;
 import de.tuberlin.dima.schubotz.common.utils.CSVMultisetHelper;
+import de.tuberlin.dima.schubotz.fse.mappers.DocCleaner;
+import de.tuberlin.dima.schubotz.fse.mappers.QueryCleaner;
 import de.tuberlin.dima.schubotz.fse.mappers.QueryMapper;
 import de.tuberlin.dima.schubotz.fse.mappers.QuerySectionMatcher;
 import de.tuberlin.dima.schubotz.fse.mappers.SectionMapper;
@@ -183,36 +185,18 @@ public class MainProgram {
 		TextInputFormat format = new TextInputFormat(new Path(docsInput));
 		format.setDelimiter(DOCUMENT_SEPARATOR);
 		DataSet<String> rawArticleText = new DataSource<>(env, format, BasicTypeInfo.STRING_TYPE_INFO);
+		DataSet<String> cleanArticleText = rawArticleText.flatMap(new DocCleaner());
 		
 		TextInputFormat formatQueries = new TextInputFormat(new Path(queryInput));
 		formatQueries.setDelimiter(QUERY_SEPARATOR); 
 		DataSet<String> rawQueryText = new DataSource<>(env, formatQueries, BasicTypeInfo.STRING_TYPE_INFO);
-		
-		
-		//Clean up queries TODO No known better way of formatting the results of splitting with QUERY_SEPARATOR
-		DataSet<String> cleanQueryText = rawQueryText.flatMap(new FlatMapFunction<String, String>() {
-			@Override
-			public void flatMap(String in, Collector<String> out) throws Exception {
-				if (in.trim().length() == 0 || in.startsWith("\r\n</topics>")) {
-					if (LOG.isWarnEnabled()) {
-						LOG.warn("Corrupt query " + in); 
-					}
-					return; 
-				}
-				if (in.startsWith("<?xml")) {
-					in += "</topic></topics>";
-				}else if (!in.endsWith( "</topic>" )) {
-					in += "</topic>";
-				}
-				out.collect(in);
-			}
-		});
+		DataSet<String> cleanQueryText = rawQueryText.flatMap(new QueryCleaner());
 		
 		// TODO IMPLEMENT ADDITIONAL SCORING METHODS 
 		
 		//Extract LaTeX and keywords 
 		DataSet<QueryTuple> queryDataSet = cleanQueryText.flatMap(new QueryMapper(WORD_SPLIT, STR_SPLIT));
-		DataSet<SectionTuple> sectionDataSet = rawArticleText.flatMap(new SectionMapper(WORD_SPLIT, STR_SPLIT, keywordDocsMultiset));
+		DataSet<SectionTuple> sectionDataSet = cleanArticleText.flatMap(new SectionMapper(WORD_SPLIT, STR_SPLIT, keywordDocsMultiset));
 		
 		
 		//Compare LaTeX and keywords, score
