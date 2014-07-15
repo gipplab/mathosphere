@@ -1,7 +1,6 @@
 package de.tuberlin.dima.schubotz.wiki.preprocess;
 
 import java.io.IOException;
-import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.regex.Pattern;
 
@@ -11,7 +10,6 @@ import org.apache.commons.logging.LogFactory;
 import de.tuberlin.dima.schubotz.wiki.WikiProgram;
 import de.tuberlin.dima.schubotz.wiki.mappers.WikiQueryMapper;
 import de.tuberlin.dima.schubotz.wiki.types.WikiQueryTuple;
-import eu.stratosphere.api.common.io.FileOutputFormat;
 import eu.stratosphere.api.java.DataSet;
 import eu.stratosphere.api.java.ExecutionEnvironment;
 import eu.stratosphere.api.java.aggregation.Aggregations;
@@ -19,8 +17,6 @@ import eu.stratosphere.api.java.io.TextInputFormat;
 import eu.stratosphere.api.java.operators.DataSource;
 import eu.stratosphere.api.java.tuple.Tuple2;
 import eu.stratosphere.api.java.typeutils.BasicTypeInfo;
-import eu.stratosphere.configuration.Configuration;
-import eu.stratosphere.core.fs.FileInputSplit;
 import eu.stratosphere.core.fs.FileSystem.WriteMode;
 import eu.stratosphere.core.fs.Path;
 

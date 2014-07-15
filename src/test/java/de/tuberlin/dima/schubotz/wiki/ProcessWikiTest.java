@@ -1,6 +1,7 @@
 package de.tuberlin.dima.schubotz.wiki;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -15,7 +16,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
-import de.tuberlin.dima.schubotz.fse.preprocess.ProcessData;
 import de.tuberlin.dima.schubotz.wiki.preprocess.ProcessWiki;
 import eu.stratosphere.api.common.Plan;
 import eu.stratosphere.api.java.ExecutionEnvironment;

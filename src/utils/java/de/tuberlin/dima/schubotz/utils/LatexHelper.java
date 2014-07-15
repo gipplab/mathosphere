@@ -10,8 +10,6 @@ import org.jsoup.select.Elements;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import de.tuberlin.dima.schubotz.fse.MainProgram;
-
 public class LatexHelper {
 	public static StringTokenizer tokenize (String latex) {
 		latex = StringEscapeUtils.unescapeHtml(latex);

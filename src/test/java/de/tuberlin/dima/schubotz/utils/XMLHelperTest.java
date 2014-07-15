@@ -12,7 +12,6 @@ import org.w3c.dom.NodeList;
 
 import com.google.common.collect.Multiset;
 
-import de.tuberlin.dima.schubotz.utils.XMLHelper;
 import eu.stratosphere.api.java.tuple.Tuple2;
 
 public class XMLHelperTest extends TestCase {
