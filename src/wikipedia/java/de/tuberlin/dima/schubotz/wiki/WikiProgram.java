@@ -1,5 +1,7 @@
 package de.tuberlin.dima.schubotz.wiki;
 
+import static org.junit.Assert.assertEquals;
+
 import java.io.IOException;
 import java.util.regex.Pattern;
 
@@ -122,7 +124,7 @@ public class WikiProgram {
 		latexWikiMapInput = (args.length > 4 ? args[4]
 				: "file:///mnt/ntcir-math/queries/latexWikiMap.csv");
 		try {
-			numWiki = Integer.valueOf(args[5]);
+			numWiki = Integer.valueOf(args[5]); //TODO default to 30040?
 		} catch (Exception e) {
 			throw new Exception("numWiki not given as parameter or is not a number");
 		}

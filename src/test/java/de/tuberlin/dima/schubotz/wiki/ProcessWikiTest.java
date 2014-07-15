@@ -73,6 +73,8 @@ public class ProcessWikiTest {
 		try {
 			br = new BufferedReader(new FileReader(new File(new URI(debugLatexOutput).getPath())));
 			assertEquals(Boolean.valueOf(br.readLine() != null), true);
+			br = new BufferedReader(new FileReader(new File(new URI(debugNumWikiOutput).getPath())));
+			assertEquals(Boolean.valueOf(br.readLine() != null), true);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 			fail("Files not outputted or given directory is incorrect.");
