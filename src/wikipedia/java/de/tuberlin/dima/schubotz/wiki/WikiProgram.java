@@ -1,11 +1,8 @@
 package de.tuberlin.dima.schubotz.wiki;
 
-import static org.junit.Assert.assertEquals;
-
 import java.io.IOException;
 import java.util.regex.Pattern;
 
-import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -25,13 +22,11 @@ import de.tuberlin.dima.schubotz.wiki.types.WikiTuple;
 import eu.stratosphere.api.common.operators.Order;
 import eu.stratosphere.api.java.DataSet;
 import eu.stratosphere.api.java.ExecutionEnvironment;
-import eu.stratosphere.api.java.functions.FlatMapFunction;
 import eu.stratosphere.api.java.io.TextInputFormat;
 import eu.stratosphere.api.java.operators.DataSource;
 import eu.stratosphere.api.java.typeutils.BasicTypeInfo;
 import eu.stratosphere.core.fs.FileSystem.WriteMode;
 import eu.stratosphere.core.fs.Path;
-import eu.stratosphere.util.Collector;
 
 /**
  * Returns search results for NTCIR-11 2014 Wikipedia Subtask

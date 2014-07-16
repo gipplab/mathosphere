@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<topics>
+	<page>
+		<title>Presentation (original)</title> 
+		<math xmlns='http://www.w3.org/1998/Math/MathML'>
+			<mrow xml:id="m9.1.26.pmml" xref="m9.1.26">
+				<mrow xml:id="m9.1.26.1.pmml" xref="m9.1.26.1">
+					<mo xml:id="m9.1.1.pmml" xref="m9.1.1">∀</mo>
+					<mrow xml:id="m9.1.26.1.1.pmml" xref="m9.1.26.1.1">
+						<mpadded width="+1.7pt" xml:id="m9.1.2.pmml" xref="m9.1.2">
+							<mi xml:id="m9.1.2a.pmml" xref="m9.1.2">x</mi>
+						</mpadded>
+						<mo xml:id="m9.1.26.1.1.1.pmml" xref="m9.1.26.1.1.1">⁢</mo>
+						<mrow xml:id="m9.1.26.1.1.2.pmml" xref="m9.1.26.1.1.2">
+							<mo xml:id="m9.1.4.pmml" xref="m9.1.4">∀</mo>
+							<mrow xml:id="m9.1.26.1.1.2.1.pmml" xref="m9.1.26.1.1.2.1">
+								<mpadded width="+1.7pt" xml:id="m9.1.5.pmml" xref="m9.1.5">
+									<mi xml:id="m9.1.5a.pmml" xref="m9.1.5">y</mi>
+								</mpadded>
+								<mo xml:id="m9.1.26.1.1.2.1.1.pmml" xref="m9.1.26.1.1.2.1.1">⁢</mo>
+								<mi xml:id="m9.1.7.pmml" xref="m9.1.7">P</mi>
+								<mo xml:id="m9.1.26.1.1.2.1.1a.pmml" xref="m9.1.26.1.1.2.1.1">⁢</mo>
+								<mrow xml:id="m9.1.26.1.1.2.1.2.pmml" xref="m9.1.26.1.1.2.1.2">
+									<mo xml:id="m9.1.26.1.1.2.1.2a.pmml" xref="m9.1.26.1.1.2.1.2">(</mo>
+									<mrow xml:id="m9.1.26.1.1.2.1.2b.pmml" xref="m9.1.26.1.1.2.1.2">
+										<mi xml:id="m9.1.9.pmml" xref="m9.1.9">x</mi>
+										<mo xml:id="m9.1.26.1.1.2.1.2c.pmml" xref="m9.1.26.1.1.2.1.2">,</mo>
+										<mi xml:id="m9.1.11.pmml" xref="m9.1.11">y</mi>
+									</mrow>
+									<mo xml:id="m9.1.26.1.1.2.1.2d.pmml" xref="m9.1.26.1.1.2.1.2">)</mo>
+								</mrow>
+							</mrow>
+						</mrow>
+					</mrow>
+				</mrow>
+				<mo xml:id="m9.1.13.pmml" xref="m9.1.13">⇔</mo>
+				<mrow xml:id="m9.1.26.2.pmml" xref="m9.1.26.2">
+					<mo xml:id="m9.1.14.pmml" xref="m9.1.14">∀</mo>
+					<mrow xml:id="m9.1.26.2.1.pmml" xref="m9.1.26.2.1">
+						<mpadded width="+1.7pt" xml:id="m9.1.15.pmml" xref="m9.1.15">
+							<mi xml:id="m9.1.15a.pmml" xref="m9.1.15">y</mi>
+						</mpadded>
+						<mo xml:id="m9.1.26.2.1.1.pmml" xref="m9.1.26.2.1.1">⁢</mo>
+						<mrow xml:id="m9.1.26.2.1.2.pmml" xref="m9.1.26.2.1.2">
+							<mo xml:id="m9.1.17.pmml" xref="m9.1.17">∀</mo>
+							<mrow xml:id="m9.1.26.2.1.2.1.pmml" xref="m9.1.26.2.1.2.1">
+								<mpadded width="+1.7pt" xml:id="m9.1.18.pmml" xref="m9.1.18">
+									<mi xml:id="m9.1.18a.pmml" xref="m9.1.18">x</mi>
+								</mpadded>
+								<mo xml:id="m9.1.26.2.1.2.1.1.pmml" xref="m9.1.26.2.1.2.1.1">⁢</mo>
+								<mi xml:id="m9.1.20.pmml" xref="m9.1.20">P</mi>
+								<mo xml:id="m9.1.26.2.1.2.1.1a.pmml" xref="m9.1.26.2.1.2.1.1">⁢</mo>
+								<mrow xml:id="m9.1.26.2.1.2.1.2.pmml" xref="m9.1.26.2.1.2.1.2">
+									<mo xml:id="m9.1.26.2.1.2.1.2a.pmml" xref="m9.1.26.2.1.2.1.2">(</mo>
+									<mrow xml:id="m9.1.26.2.1.2.1.2b.pmml" xref="m9.1.26.2.1.2.1.2">
+										<mi xml:id="m9.1.22.pmml" xref="m9.1.22">x</mi>
+										<mo xml:id="m9.1.26.2.1.2.1.2c.pmml" xref="m9.1.26.2.1.2.1.2">,</mo>
+										<mi xml:id="m9.1.24.pmml" xref="m9.1.24">y</mi>
+									</mrow>
+									<mo xml:id="m9.1.26.2.1.2.1.2d.pmml" xref="m9.1.26.2.1.2.1.2">)</mo>
+								</mrow>
+							</mrow>
+						</mrow>
+					</mrow>
+				</mrow>
+			</mrow>
+		</math>
+	</page>
+
+	<page>
+		<title>Content (original)</title> 
+		<math xmlns='http://www.w3.org/1998/Math/MathML'>
+			<apply xml:id="m9.1.26">
+				<ci xml:id="m9.1.13">normal-⇔</ci>
+				<apply xml:id="m9.1.26.1">
+					<csymbol cd="latexml" xml:id="m9.1.1">for-all</csymbol>
+					<apply xml:id="m9.1.26.1.1">
+						<times xml:id="m9.1.26.1.1.1"/>
+						<ci xml:id="m9.1.2">x</ci>
+						<apply xml:id="m9.1.26.1.1.2">
+							<csymbol cd="latexml" xml:id="m9.1.4">for-all</csymbol>
+							<apply xml:id="m9.1.26.1.1.2.1">
+								<times xml:id="m9.1.26.1.1.2.1.1"/>
+								<ci xml:id="m9.1.5">y</ci>
+								<ci xml:id="m9.1.7">P</ci>
+								<apply xml:id="m9.1.26.1.1.2.1.2">
+									<interval closure="open" xml:id="m9.1.26.1.1.2.1.2.1"/>
+									<ci xml:id="m9.1.9">x</ci>
+									<ci xml:id="m9.1.11">y</ci>
+								</apply>
+							</apply>
+						</apply>
+					</apply>
+				</apply>
+				<apply xml:id="m9.1.26.2">
+					<csymbol cd="latexml" xml:id="m9.1.14">for-all</csymbol>
+					<apply xml:id="m9.1.26.2.1">
+						<times xml:id="m9.1.26.2.1.1"/>
+						<ci xml:id="m9.1.15">y</ci>
+						<apply xml:id="m9.1.26.2.1.2">
+							<csymbol cd="latexml" xml:id="m9.1.17">for-all</csymbol>
+							<apply xml:id="m9.1.26.2.1.2.1">
+								<times xml:id="m9.1.26.2.1.2.1.1"/>
+								<ci xml:id="m9.1.18">x</ci>
+								<ci xml:id="m9.1.20">P</ci>
+								<apply xml:id="m9.1.26.2.1.2.1.2">
+									<interval closure="open" xml:id="m9.1.26.2.1.2.1.2.1"/>
+									<ci xml:id="m9.1.22">x</ci>
+									<ci xml:id="m9.1.24">y</ci>
+								</apply>
+							</apply>
+						</apply>
+					</apply>
+				</apply>
+			</apply>
+		</math>
+	</page>
+</topics>

@@ -81,7 +81,6 @@ public class ProcessWiki {
 		formatWiki.setDelimiter(WIKI_SEPARATOR); //this will leave a null doc at the end and a useless doc at the beginning. also, each will be missing a </page>
 		DataSet<String> rawWikiText = new DataSource<>( env, formatWiki, BasicTypeInfo.STRING_TYPE_INFO );
 		DataSet<String> cleanWikiText = rawWikiText.flatMap(new WikiCleaner());		
-		
 		TextInputFormat formatQuery = new TextInputFormat(new Path(wikiQueryInput));
 		formatQuery.setDelimiter(QUERY_SEPARATOR); //this will leave a System.getProperty("line.separator")</topics> at the end as well as header info at the begin 
 		DataSet<String> rawWikiQueryText = new DataSource<>(env, formatQuery, BasicTypeInfo.STRING_TYPE_INFO);

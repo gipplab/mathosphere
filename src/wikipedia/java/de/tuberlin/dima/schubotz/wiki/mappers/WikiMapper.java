@@ -3,7 +3,6 @@ package de.tuberlin.dima.schubotz.wiki.mappers;
 import java.util.Collection;
 import java.util.HashSet;
 
-import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.jsoup.Jsoup;

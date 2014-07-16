@@ -27,6 +27,7 @@ public class WikiQueryCleaner extends FlatMapFunction<String, String> {
 		}else if (!in.endsWith("</topic>")) {
 			in += "</topic>";
 		}
+		out.collect(in);
 	}
 
 }

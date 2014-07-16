@@ -24,13 +24,11 @@ import de.tuberlin.dima.schubotz.fse.types.SectionTuple;
 import eu.stratosphere.api.common.operators.Order;
 import eu.stratosphere.api.java.DataSet;
 import eu.stratosphere.api.java.ExecutionEnvironment;
-import eu.stratosphere.api.java.functions.FlatMapFunction;
 import eu.stratosphere.api.java.io.TextInputFormat;
 import eu.stratosphere.api.java.operators.DataSource;
 import eu.stratosphere.api.java.typeutils.BasicTypeInfo;
 import eu.stratosphere.core.fs.FileSystem.WriteMode;
 import eu.stratosphere.core.fs.Path;
-import eu.stratosphere.util.Collector;
 
 /**
  * Performs the queries for the NTCIR-Math11-Workshop 2014 fully automated.
