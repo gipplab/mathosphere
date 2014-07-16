@@ -56,7 +56,6 @@ public class WikiQueryMapper extends FlatMapFunction<String,WikiQueryTuple>{
 			}
 		}
 		String latex = LatexHelper.extract(LatexElements, STR_SPLIT);
-		
 		out.collect(new WikiQueryTuple(queryID, latex));
 	}
 	
