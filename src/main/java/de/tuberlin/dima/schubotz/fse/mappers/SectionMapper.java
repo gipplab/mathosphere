@@ -11,7 +11,7 @@ import org.w3c.dom.NodeList;
 
 import com.google.common.collect.HashMultiset;
 
-import de.tuberlin.dima.schubotz.common.utils.LatexHelper;
+import de.tuberlin.dima.schubotz.common.utils.ExtractHelper;
 import de.tuberlin.dima.schubotz.common.utils.XMLHelper;
 import de.tuberlin.dima.schubotz.fse.types.SectionTuple;
 import eu.stratosphere.api.java.functions.FlatMapFunction;
@@ -78,7 +78,7 @@ public class SectionMapper extends FlatMapFunction<String, SectionTuple> {
 		NodeList LatexElements = XMLHelper.getElementsB(doc, "//annotation"); //get all annotation tags
 		
 		//Extract latex
-		String latex = LatexHelper.extract(LatexElements, STR_SPLIT);
+		String latex = ExtractHelper.extractLatexXMLHelper(LatexElements, STR_SPLIT);
 		
 		//Extract plaintext from article
 		String plainText;

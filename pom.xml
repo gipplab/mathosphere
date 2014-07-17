@@ -72,9 +72,8 @@
 						</goals>
 						<configuration>
 							<sources>
-								<source>src/wikipedia</source>
-								<source>src/utils</source>
-								<source>src/common</source>
+								<source>src/wikipedia/java</source>
+								<source>src/common/java</source>
 							</sources>
 						</configuration>
 					</execution>

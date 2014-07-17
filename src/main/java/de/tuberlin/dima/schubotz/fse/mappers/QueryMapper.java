@@ -8,7 +8,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import de.tuberlin.dima.schubotz.common.utils.LatexHelper;
+import de.tuberlin.dima.schubotz.common.utils.ExtractHelper;
 import de.tuberlin.dima.schubotz.common.utils.XMLHelper;
 import de.tuberlin.dima.schubotz.fse.types.QueryTuple;
 import eu.stratosphere.api.java.functions.FlatMapFunction;
@@ -76,7 +76,7 @@ public class QueryMapper extends FlatMapFunction<String, QueryTuple> {
 				LOG.warn("Unable to find annotation tags in query: " + value);
 			}
 		}
-		String latex = LatexHelper.extract(LatexElements, STR_SPLIT);
+		String latex = ExtractHelper.extractLatexXMLHelper(LatexElements, STR_SPLIT);
 		
 		
 		//Extract keywords from query
