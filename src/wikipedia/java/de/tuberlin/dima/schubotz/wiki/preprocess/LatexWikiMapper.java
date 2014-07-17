@@ -11,7 +11,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
-import de.tuberlin.dima.schubotz.common.utils.LatexHelper;
+import de.tuberlin.dima.schubotz.common.utils.ExtractHelper;
 import de.tuberlin.dima.schubotz.wiki.types.WikiQueryTuple;
 import eu.stratosphere.api.java.functions.FlatMapFunction;
 import eu.stratosphere.api.java.tuple.Tuple2;
@@ -60,7 +60,7 @@ public class LatexWikiMapper extends FlatMapFunction<String,Tuple2<String,Intege
 			}
 			return;
 		}
-		String sectionLatex = LatexHelper.extract(LatexElements, STR_SPLIT);
+		String sectionLatex = ExtractHelper.extractLatex(LatexElements, STR_SPLIT);
 		if (!sectionLatex.equals("")) {
 			String[] tokens = sectionLatex.split(STR_SPLIT); 
 			Set<String> tokenSet = new HashSet<String>(Arrays.asList(tokens)); //remove repeats (only want number of documents)
