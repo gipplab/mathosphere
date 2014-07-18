@@ -30,7 +30,7 @@ public class ProcessWikiTest {
 	@Parameterized.Parameters
 	public static Collection<Object[]> inputParam () {
 		return Arrays.asList(new Object[][] 
-				{{"file:///home/jjl4/augmentedWikiDump.xml", "file:///home/jjl4/"}}); //DEBUG test parameters
+				{{"file:///home/jjl4/augmentedWikiDump.xml", "file:///home/jjl4/"}}); 
 				//{{"", "file:///home/jjl4/"}});
 	}
 	@SuppressWarnings("hiding")

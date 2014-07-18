@@ -119,9 +119,12 @@ public class WikiProgram {
 		latexWikiMapInput = (args.length > 4 ? args[4]
 				: "file:///mnt/ntcir-math/queries/latexWikiMap.csv");
 		try {
-			numWiki = Integer.valueOf(args[5]); //TODO default to 30040?
+			numWiki = Integer.valueOf(args[5]); 
 		} catch (Exception e) {
-			throw new Exception("numWiki not given as parameter or is not a number");
+			if (LOG.isWarnEnabled()) {
+				LOG.warn("numWiki not given as parameter or is not a number, defaulting to 30040");
+			}
+			numWiki = 30040;
 		}
 		debug = (args.length > 6 ? 
 				(args[5].equals("debug") ? true : false)

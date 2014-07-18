@@ -29,7 +29,7 @@ public class ProcessDataTest {
 	@Parameterized.Parameters
 	public static Collection<Object[]> inputParam() {
 		return Arrays.asList(new Object[][] {
-			{9999,"test10000.xml","/home/jjl4/"} //DEBUG test parameters
+			{9999,"test10000.xml","/home/jjl4/"} 
 		});
 	}
 	@SuppressWarnings("hiding")

@@ -31,7 +31,7 @@ public class IntegrationWikiTest {
 	@Parameterized.Parameters
 	public static Collection<Object[]> inputNumDocs() {
 		return Arrays.asList(new Object[][] {
-				{new Integer(9999),"/home/jjl4/","/home/jjl4/", Boolean.valueOf(true)} //DEBUG test parameters
+				{new Integer(9999),"/home/jjl4/","/home/jjl4/", Boolean.valueOf(true)} 
 		});
 	}
 	@SuppressWarnings("hiding")
