@@ -26,7 +26,7 @@ public class IntegrationTest {
 	@Parameterized.Parameters
 	public static Collection<Object[]> inputNumDocs() {
 		return Arrays.asList(new Object[][] {
-			{new Integer(9999),"test10000.xml","/home/jjl4/", Boolean.valueOf(true)} //DEBUG test parameters
+			{new Integer(9999),"test10000.xml","/home/jjl4/", Boolean.valueOf(true)} 
 		});
 	}
 	@SuppressWarnings("hiding")
