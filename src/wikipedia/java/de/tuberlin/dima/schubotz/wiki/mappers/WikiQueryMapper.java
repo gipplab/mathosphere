@@ -55,31 +55,49 @@ public class WikiQueryMapper extends FlatMapFunction<String,WikiQueryTuple>{
 			}
 			queryID = "this_was_null";
 		}
-		
-		//only one math and one semantics per query, so extract semantics children directly
-		Elements MMLElements = doc.select("m:math.m:semantics").first().children(); 
+		Elements MMLElements = null;
+		//only one math and one semantics per query
+		//also always one root element per MathML type
+		//extract semantics children directly
+		try {
+		MMLElements = doc.select("m|math").first().child(0).children(); //math(0).semantics(0).children
+		} catch (Exception e) {
+			if (LOG.isWarnEnabled()) {
+				LOG.warn("Could not extract mml elements: " + in);
+			}
+			return;
+		}
 		Elements PmmlElements = new Elements();
 		Elements CmmlElements = new Elements();
 		Elements LatexElements = new Elements();
-		String encoding;
+		String encoding = "";
 		//All queries are well formed: 1) Content MML 2) annotation-PMML 3) annotation-TEX
 		//Any element not under annotation tag is Content MML
 		for (Element curElement : MMLElements) { 
-			if (curElement.tagName().equals("m:annotation-xml")) {
-				encoding = curElement.attr("encoding");
-				if (encoding.equals("MathML-Presentation")) { 
-					PmmlElements.add(curElement);
-				} else if (encoding.equals("application/x-tex")) {
-					LatexElements.add(curElement);
+			curElement.attr("xmlns:m", "http://www.w3.org/1998/Math/MathML"); //add namespace information
+			encoding = curElement.attr("encoding");
+			try {
+				if (curElement.tagName().equals("m:annotation-xml")) {
+					if (encoding.equals("MathML-Presentation")) {
+						PmmlElements.add(curElement);
+					}
+				} else if (curElement.tagName().equals("m:annotation")) {
+					if (encoding.equals("application/x-tex")) {
+						LatexElements.add(curElement);
+					}
+				} else {   
+					CmmlElements.add(curElement);
 				}
-			} else {   
-				CmmlElements.add(curElement);
+			} catch (Exception e) {
+				if (LOG.isWarnEnabled()) {
+					LOG.warn("Badly formatted xml: " + in);
+				}
+				return;
 			}
 		}
 		String latex = ExtractHelper.extractLatex(LatexElements, STR_SPLIT);
-		
-		Document cmml = ExtractHelper.extractCanonicalizedDoc(CmmlElements);
-		Document pmml = ExtractHelper.extractCanonicalizedDoc(PmmlElements);
+		String cmml = ExtractHelper.extractCanonicalizedDoc(CmmlElements).toString();
+		String pmml = ExtractHelper.extractCanonicalizedDoc(PmmlElements).toString();
 		
 		try {
 			out.collect(new WikiQueryTuple(queryID,latex,cmml,pmml));
