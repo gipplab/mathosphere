@@ -6,10 +6,10 @@ import eu.stratosphere.api.java.tuple.Tuple2;
 import eu.stratosphere.api.java.tuple.Tuple4;
 
 /**
- * Stores tuples of {@link WikiQueryTuple#WikiQueryTuple(String,String,Document,Document)}
+ * Stores tuples of {@link WikiQueryTuple#WikiQueryTuple(String,String,String,String)}
  */
 @SuppressWarnings("serial")
-public class WikiQueryTuple extends Tuple4<String,String,Document,Document> {
+public class WikiQueryTuple extends Tuple4<String,String,String,String> {
 	public WikiQueryTuple () {
 		this.f0 = "nullquery";
 		this.f1 = "";
@@ -23,7 +23,7 @@ public class WikiQueryTuple extends Tuple4<String,String,Document,Document> {
 	 * @param mml mathML (content)
 	 * @param pmml mathML (presentational)
 	 */
-	public WikiQueryTuple (String id, String latex, Document mml, Document pmml) {
+	public WikiQueryTuple (String id, String latex, String mml, String pmml) {
 		this.f0 = id;
 		this.f1 = latex;
 		this.f2 = mml;
@@ -38,11 +38,11 @@ public class WikiQueryTuple extends Tuple4<String,String,Document,Document> {
 		return this.f1;
 	}
 	
-	public Document getMML() {
+	public String getMML() {
 		return this.f2;
 	}
 	
-	public Document getPMML() {
+	public String getPMML() {
 		return this.f3;
 	}
 	

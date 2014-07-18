@@ -126,8 +126,4 @@ public class WikiMapper extends FlatMapFunction<String, WikiTuple> {
 		
 		out.collect(new WikiTuple(docID, wikiLatex, null, null));
 	}
-
-
-	
-
 }

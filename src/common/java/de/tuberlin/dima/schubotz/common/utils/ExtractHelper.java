@@ -152,11 +152,13 @@ public class ExtractHelper {
 		} catch (Exception e) {
 			Log LOG = LogFactory.getLog(ExtractHelper.class);
 			if (LOG.isWarnEnabled()) {
-				LOG.warn("Canonicalizer failed: " + input.toString());
+				LOG.warn("Canonicalizer failed: " + elements.toString());
 			}
 		}
 		try {
-			return Jsoup.parse(output.toString());
+			Document out = Jsoup.parse(output.toString());
+			out.child(0).remove(); //child 0 is <?xml..>
+			return out; 
 		} catch (Exception e) {
 			Log LOG = LogFactory.getLog(ExtractHelper.class);
 			if (LOG.isWarnEnabled()) {

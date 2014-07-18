@@ -1,6 +1,6 @@
 package de.tuberlin.dima.schubotz.wiki.mappers;
 
-import org.apache.commons.lang.StringEscapeUtils;
+import org.springframework.web.util.HtmlUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -38,7 +38,7 @@ public class WikiCleaner extends FlatMapFunction<String, String> {
 		if (!in.endsWith("</page>")) {
 			in += "</page>";
 		}
-		in = StringEscapeUtils.unescapeHtml(in); 
+		in = HtmlUtils.htmlEscape(in); 
 		out.collect(in);
 	}
 }
