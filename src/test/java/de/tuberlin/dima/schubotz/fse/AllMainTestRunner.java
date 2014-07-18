@@ -12,7 +12,7 @@ import de.tuberlin.dima.schubotz.wiki.AllWikiTestSuite;
 
 public class AllMainTestRunner {
 
-	@org.junit.Ignore("Ignored")@Test
+	//@org.junit.Ignore("Ignored")@Test
 	public void test() {
 		//TODO find a way to fix the dependency on file output between ProcessIT and MainIT, also remove hardcoded paths
 		Result result = JUnitCore.runClasses(AllMainTestSuite.class);
