@@ -22,7 +22,7 @@ import eu.stratosphere.client.LocalExecutor;
 
 
 @RunWith(Parameterized.class)
-public class IntegrationWikiTest {
+public class WikiMainIT {
 	private Integer numWiki;
 	private String inputDir;
 	private String outputDir;
@@ -35,7 +35,7 @@ public class IntegrationWikiTest {
 		});
 	}
 	@SuppressWarnings("hiding")
-	public IntegrationWikiTest(Integer numWiki, String inputDir, String outputDir, Boolean debug) {
+	public WikiMainIT(Integer numWiki, String inputDir, String outputDir, Boolean debug) {
 		this.numWiki = numWiki;
 		this.inputDir = inputDir;
 		this.outputDir = outputDir;
