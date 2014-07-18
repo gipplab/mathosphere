@@ -6,7 +6,7 @@ import eu.stratosphere.api.java.tuple.Tuple2;
 import eu.stratosphere.api.java.tuple.Tuple4;
 
 @SuppressWarnings("serial")
-public class WikiTuple extends Tuple4<String,String,Document,Document>{
+public class WikiTuple extends Tuple4<String,String,String,String>{
 	public WikiTuple () {
 		this.f0 = "nulldoc";
 		this.f1 = "";
@@ -16,7 +16,7 @@ public class WikiTuple extends Tuple4<String,String,Document,Document>{
 	 * @param docID
 	 * @param latex
 	 */
-	public WikiTuple (String docID, String latex, Document mml, Document pmml) {
+	public WikiTuple (String docID, String latex, String mml, String pmml) {
 		this.f0 = docID;
 		this.f1 = latex;
 		this.f2 = mml;
@@ -31,11 +31,11 @@ public class WikiTuple extends Tuple4<String,String,Document,Document>{
 		return this.f1;
 	}
 	
-	public Document getMML() {
+	public String getMML() {
 		return this.f2;
 	}
 	
-	public Document getPMML() {
+	public String getPMML() {
 		return this.f3;
 	}
 	
