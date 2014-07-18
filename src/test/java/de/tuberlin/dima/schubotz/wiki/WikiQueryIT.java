@@ -59,7 +59,6 @@ public class WikiQueryIT {
 		
 		BufferedReader reader = new BufferedReader(new FileReader(file));
 		String[] nextline = reader.readLine().split(",");
-		//TODO fix this monstrosity
 		assertEquals(nextline[2], 
 			"<m:apply xml:id=\"m91.1.12\" xref=\"m91.1.12.pmml\">" +
             "  <m:csymbol cd=\"latexml\" xml:id=\"m91.1.3\" xref=\"m91.1.3.pmml\">maps-to</m:csymbol>" +
