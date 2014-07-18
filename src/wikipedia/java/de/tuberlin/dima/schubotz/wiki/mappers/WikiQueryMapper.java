@@ -67,10 +67,10 @@ public class WikiQueryMapper extends FlatMapFunction<String,WikiQueryTuple>{
 		for (Element curElement : MMLElements) { 
 			if (curElement.tagName().equals("m:annotation-xml")) {
 				encoding = curElement.attr("encoding");
-				if (encoding.equals("MathML-Presentation")) {
-					PmmlElements.addAll(curElement.children());
+				if (encoding.equals("MathML-Presentation")) { 
+					PmmlElements.add(curElement);
 				} else if (encoding.equals("application/x-tex")) {
-					LatexElements.addAll(curElement.children());
+					LatexElements.add(curElement);
 				}
 			} else {   
 				CmmlElements.add(curElement);
