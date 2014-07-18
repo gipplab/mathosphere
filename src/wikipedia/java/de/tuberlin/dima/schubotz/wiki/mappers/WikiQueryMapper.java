@@ -81,9 +81,8 @@ public class WikiQueryMapper extends FlatMapFunction<String,WikiQueryTuple>{
 		Document cmml = ExtractHelper.extractCanonicalizedDoc(CmmlElements);
 		Document pmml = ExtractHelper.extractCanonicalizedDoc(PmmlElements);
 		
-		//String[] math = ExtractHelper.extractWikiMath(MathElements, STR_SPLIT);
 		try {
-			out.collect(new WikiQueryTuple(queryID,"", "",""));
+			out.collect(new WikiQueryTuple(queryID,latex,cmml,pmml));
 		} catch (Exception e) {
 			if (LOG.isWarnEnabled()) {
 				LOG.warn("Extract helper failed on query: " + in);
