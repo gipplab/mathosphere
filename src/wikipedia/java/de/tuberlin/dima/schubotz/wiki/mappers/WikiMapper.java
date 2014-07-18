@@ -124,7 +124,7 @@ public class WikiMapper extends FlatMapFunction<String, WikiTuple> {
 		Elements LatexElements = MathElements.select("annotation[encoding=application/x-tex]");
 		String wikiLatex = ExtractHelper.extractLatex(LatexElements, STR_SPLIT);
 		
-		out.collect(new WikiTuple(docID, wikiLatex, "", ""));
+		out.collect(new WikiTuple(docID, wikiLatex, null, null));
 	}
 
 

@@ -1,10 +1,12 @@
 package de.tuberlin.dima.schubotz.wiki.types;
 
+import org.jsoup.nodes.Document;
+
 import eu.stratosphere.api.java.tuple.Tuple2;
 import eu.stratosphere.api.java.tuple.Tuple4;
 
 @SuppressWarnings("serial")
-public class WikiTuple extends Tuple4<String,String,String,String>{
+public class WikiTuple extends Tuple4<String,String,Document,Document>{
 	public WikiTuple () {
 		this.f0 = "nulldoc";
 		this.f1 = "";
@@ -14,7 +16,7 @@ public class WikiTuple extends Tuple4<String,String,String,String>{
 	 * @param docID
 	 * @param latex
 	 */
-	public WikiTuple (String docID, String latex, String mml, String pmml) {
+	public WikiTuple (String docID, String latex, Document mml, Document pmml) {
 		this.f0 = docID;
 		this.f1 = latex;
 		this.f2 = mml;
@@ -29,11 +31,11 @@ public class WikiTuple extends Tuple4<String,String,String,String>{
 		return this.f1;
 	}
 	
-	public String getMML() {
+	public Document getMML() {
 		return this.f2;
 	}
 	
-	public String getPMML() {
+	public Document getPMML() {
 		return this.f3;
 	}
 	
