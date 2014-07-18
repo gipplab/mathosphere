@@ -22,7 +22,7 @@ import eu.stratosphere.api.java.ExecutionEnvironment;
 import eu.stratosphere.client.LocalExecutor;
 
 @RunWith(Parameterized.class)
-public class ProcessWikiTest {
+public class ProcessWikiIT {
 	private String debugWikiInput;
 	private String debugOutput;
 	
@@ -34,7 +34,7 @@ public class ProcessWikiTest {
 				//{{"", "file:///home/jjl4/"}});
 	}
 	@SuppressWarnings("hiding")
-	public ProcessWikiTest (String debugWikiInput, String debugOutput) {
+	public ProcessWikiIT (String debugWikiInput, String debugOutput) {
 		this.debugWikiInput = debugWikiInput;
 		this.debugOutput = debugOutput;
 	}

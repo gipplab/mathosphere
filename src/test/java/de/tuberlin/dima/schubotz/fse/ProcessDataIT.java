@@ -21,7 +21,7 @@ import eu.stratosphere.api.java.ExecutionEnvironment;
 import eu.stratosphere.client.LocalExecutor;
 
 @RunWith(Parameterized.class)
-public class ProcessDataTest {
+public class ProcessDataIT {
 	private Integer numDocs;
 	private String inputFile;
 	private String debugOutput;
@@ -33,7 +33,7 @@ public class ProcessDataTest {
 		});
 	}
 	@SuppressWarnings("hiding")
-	public ProcessDataTest(Integer numDocs, String inputFile, String debugOutput) {
+	public ProcessDataIT(Integer numDocs, String inputFile, String debugOutput) {
 		this.numDocs = numDocs;
 		this.inputFile = inputFile;
 		this.debugOutput = debugOutput;

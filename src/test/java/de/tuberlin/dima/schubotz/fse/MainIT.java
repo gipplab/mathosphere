@@ -17,7 +17,7 @@ import eu.stratosphere.api.java.ExecutionEnvironment;
 import eu.stratosphere.client.LocalExecutor;
 
 @RunWith(Parameterized.class)
-public class IntegrationTest {
+public class MainIT {
 	private Integer numDocs;
 	private String inputFile;
 	private String outputDir;
@@ -30,7 +30,7 @@ public class IntegrationTest {
 		});
 	}
 	@SuppressWarnings("hiding")
-	public IntegrationTest(Integer numDocs, String inputFile, String output, Boolean debug) {
+	public MainIT(Integer numDocs, String inputFile, String output, Boolean debug) {
 		this.numDocs = numDocs;
 		this.inputFile = inputFile;
 		this.outputDir = output;
