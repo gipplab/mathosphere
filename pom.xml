@@ -149,7 +149,7 @@
 				<configuration>
 					<includes>
 						<include>ProcessWikiQueryIT.java</include>
-						<!--	<include>AllMainTestRunner.java</include> -->
+						<include>AllMainTestRunner.java</include>
 						<include>AllWikiTestRunner.java</include>
 					</includes>
 				</configuration>
