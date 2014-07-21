@@ -16,13 +16,37 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.springframework.web.util.HtmlUtils;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import cz.muni.fi.mir.mathmlcanonicalization.ConfigException;
 import cz.muni.fi.mir.mathmlcanonicalization.MathMLCanonicalizer;
 
 
 public class ExtractHelper {
+	//XML configuration "file" for canonicalizer TODO better way of producing xml file?
+	//Properties can be found in each individual module's java file
+	static String configString = 
+			"<?xml version='1.0' encoding='UTF-8'?>" +
+			"<config>" + 
+				"<module name='OperatorNormalizer'/>" +
+				"<module name='ElementMinimizer'/>" +  //TODO this produces "must consist of well-formed character data"
+				"<module name='MfencedReplacer'/>" + 
+				"<module name='MrowNormalizer'/>" + 
+				"<module name='FunctionNormalizer'/>" + 
+				"<module name='ScriptNormalizer'/>" +  //TODO this produces invalid msub and ConcurrentModificationException
+			"</config>";
+	static InputStream configInputStream = new ByteArrayInputStream(configString.getBytes());
+	static MathMLCanonicalizer canonicalizer;
+
+	static {
+		try {
+			canonicalizer = new MathMLCanonicalizer(configInputStream);
+		} catch (ConfigException e) {
+			throw new RuntimeException("Unable to configure canonicalizer, exiting", e);
+		}
+	}
 	public static StringTokenizer tokenize (String latex) {
 		//tokenize latex
 		//from https://github.com/TU-Berlin/mathosphere/blob/TFIDF/math-tests/src/main/java/de/tuberlin/dima/schubotz/fse/MathFormula.java.normalizeTex
@@ -143,28 +167,12 @@ public class ExtractHelper {
 	 * @param elements Elements to canonicalize. Temporarily redirects System.out.
 	 * @return
 	 */
-	public static Document extractCanonicalizedDoc(Elements elements) {
-		InputStream input = new ByteArrayInputStream(elements.toString().getBytes(StandardCharsets.UTF_8));
-		OutputStream output = new ByteArrayOutputStream();
-		MathMLCanonicalizer engine = MathMLCanonicalizer.getDefaultCanonicalizer(); //init with default settings
-		try {
-			engine.canonicalize(input,output);
-		} catch (Exception e) {
-			Log LOG = LogFactory.getLog(ExtractHelper.class);
-			if (LOG.isWarnEnabled()) {
-				LOG.warn("Canonicalizer failed: " + elements.toString());
-			}
-		}
-		try {
-			Document out = Jsoup.parse(output.toString());
-			out.child(0).remove(); //child 0 is <?xml..>
-			return out; 
-		} catch (Exception e) {
-			Log LOG = LogFactory.getLog(ExtractHelper.class);
-			if (LOG.isWarnEnabled()) {
-				LOG.warn("Jsoup unable to parse or Canonicalizer failed: " + output.toString());
-			}
-			return null;
-		}
+	public static Document extractCanonicalizedDoc(Elements elements) throws Exception {
+		String doc = HtmlUtils.htmlUnescape(elements.toString()); //for some reason toString escapes characters
+		InputStream input = new ByteArrayInputStream(doc.getBytes(StandardCharsets.UTF_8));
+		ByteArrayOutputStream output = new ByteArrayOutputStream();
+		canonicalizer.canonicalize(input,output);
+		Document out = Jsoup.parse(output.toString(StandardCharsets.UTF_8.displayName()));
+		return out;
 	}
 }
