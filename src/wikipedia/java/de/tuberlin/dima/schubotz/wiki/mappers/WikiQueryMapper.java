@@ -47,8 +47,16 @@ public class WikiQueryMapper extends FlatMapFunction<String,WikiQueryTuple>{
 			}
 			return;
 		}
-		
-		String queryID = main.text();
+
+		String queryID;
+		if (main == null) {
+			if (LOG.isWarnEnabled()) {
+				LOG.warn("Could not find num tag, assigning this_was_null: " + in);
+			}
+			queryID = "this_was_null";
+		} else {
+			queryID = main.text();
+		}
 		if (queryID == null) {
 			if (LOG.isWarnEnabled()) {
 				LOG.warn("Null query id, assigning this_was_null: " + in);
