@@ -28,7 +28,7 @@ public class WikiQueryCleaner extends FlatMapFunction<String, String> {
 		}else if (!in.endsWith("</topic>")) {
 			in += "</topic>";
 		}
-		in = HtmlUtils.htmlEscape(in); 
+		in = HtmlUtils.htmlUnescape(in); 
 		out.collect(in);
 	}
 
