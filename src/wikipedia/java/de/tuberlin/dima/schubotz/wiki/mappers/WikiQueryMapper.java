@@ -36,6 +36,9 @@ public class WikiQueryMapper extends FlatMapFunction<String,WikiQueryTuple>{
 	 */
 	@Override
 	public void flatMap(String in, Collector<WikiQueryTuple> out) {
+		if (LOG.isInfoEnabled()) {
+			LOG.info(in);
+		}
 		Document doc;
 		Element main;
 		try {
@@ -103,16 +106,30 @@ public class WikiQueryMapper extends FlatMapFunction<String,WikiQueryTuple>{
 				return;
 			}
 		}
-		String latex = ExtractHelper.extractLatex(LatexElements, STR_SPLIT);
-		String cmml = ExtractHelper.extractCanonicalizedDoc(CmmlElements).toString();
-		String pmml = ExtractHelper.extractCanonicalizedDoc(PmmlElements).toString();
-		
+		String latex,cmml,pmml;
+		latex = cmml = pmml = null;
 		try {
-			out.collect(new WikiQueryTuple(queryID,latex,cmml,pmml));
+			latex = ExtractHelper.extractLatex(LatexElements, STR_SPLIT);
+			cmml = ExtractHelper.extractCanonicalizedDoc(CmmlElements).toString();
+			pmml = ExtractHelper.extractCanonicalizedDoc(PmmlElements).toString();
 		} catch (Exception e) {
+			if (LOG.isWarnEnabled()) {
+				LOG.warn("Canonicalizer failed. Outputting tuple with blank cmml and pmml.");
+			}
+		}
+		
+		if (LOG.isInfoEnabled()) {
+			LOG.info("Latex: " + latex);
+			LOG.info("CMML: " + cmml);
+			LOG.info("PMML: " + pmml);
+		}
+		
+		if (latex == null || cmml == null || pmml == null) {
 			if (LOG.isWarnEnabled()) {
 				LOG.warn("Extract helper failed on query: " + in);
 			}
+		} else {
+			out.collect(new WikiQueryTuple(queryID,latex,cmml,pmml));
 		}
 	}
 	
