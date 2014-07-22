@@ -96,9 +96,9 @@ public class WikiMapper extends FlatMapFunction<String, WikiTuple> {
 			}
 			Elements MMLElements = SemanticsElements.first().children();
 			
-			Elements PmmlElements = null; //how are we handling multiple math tags per wiki?
-			Elements CmmlElements = null;
-			Elements RenderedElements = null;
+			Elements PmmlElements = new Elements(); //how are we handling multiple math tags per wiki?
+			Elements CmmlElements = new Elements();
+			Elements RenderedElements = new Elements();
 			boolean hitAnnotation = false; //flag for seeing if hit annotation tags yet
 			for (Element curElement : MMLElements) { 
 				if (curElement.tagName().equals("m:annotation-xml")) {
