@@ -3,6 +3,7 @@ math-tests.iml
 target
 .classpath
 /bin
+/out
 .settings/
 .project
 src/test/resources/test100.xml
