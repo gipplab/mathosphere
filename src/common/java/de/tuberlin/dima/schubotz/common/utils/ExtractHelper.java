@@ -25,24 +25,14 @@ import cz.muni.fi.mir.mathmlcanonicalization.MathMLCanonicalizer;
 
 
 public class ExtractHelper {
-	//XML configuration "file" for canonicalizer TODO better way of producing xml file?
-	//Properties can be found in each individual module's java file
-	static String configString = 
-			"<?xml version='1.0' encoding='UTF-8'?>" +
-			"<config>" + 
-				"<module name='OperatorNormalizer'/>" +
-				"<module name='ElementMinimizer'/>" +  //TODO this produces "must consist of well-formed character data"
-				"<module name='MfencedReplacer'/>" + 
-				"<module name='MrowNormalizer'/>" + 
-				"<module name='FunctionNormalizer'/>" + 
-				"<module name='ScriptNormalizer'/>" +  //TODO this produces invalid msub and ConcurrentModificationException
-			"</config>";
-	static InputStream configInputStream = new ByteArrayInputStream(configString.getBytes());
+	//XML configuration file for canonicalizer
+    static InputStream configInputStream = ExtractHelper.class.getResourceAsStream("canonicalizer-config.xml");
 	static MathMLCanonicalizer canonicalizer;
 
 	static {
 		try {
 			canonicalizer = new MathMLCanonicalizer(configInputStream);
+            canonicalizer.setEnforcingXHTMLPlusMathMLDTD(true); //DTD will resolve all HTML entities
 		} catch (ConfigException e) {
 			throw new RuntimeException("Unable to configure canonicalizer, exiting", e);
 		}
@@ -164,15 +154,15 @@ public class ExtractHelper {
 	}
 	
 	/**
-	 * @param elements Elements to canonicalize. Temporarily redirects System.out.
+     * This method returns strings with escaped HTML entities.
+	 * @param elements Elements to canonicalize.
 	 * @return
 	 */
-	public static Document extractCanonicalizedDoc(Elements elements) throws Exception {
-		String doc = HtmlUtils.htmlUnescape(elements.toString()); //for some reason toString escapes characters
+	public static String extractCanonicalizedDoc(Elements elements) throws Exception {
+        String doc = elements.toString(); //toString escapes HTML entities
 		InputStream input = new ByteArrayInputStream(doc.getBytes(StandardCharsets.UTF_8));
 		ByteArrayOutputStream output = new ByteArrayOutputStream();
 		canonicalizer.canonicalize(input,output);
-		Document out = Jsoup.parse(output.toString(StandardCharsets.UTF_8.displayName()));
-		return out;
+        return output.toString(StandardCharsets.UTF_8.displayName());
 	}
 }
