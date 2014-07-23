@@ -3,20 +3,14 @@ package de.tuberlin.dima.schubotz.common.utils;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.PrintStream;
-import java.io.StringReader;
 import java.nio.charset.StandardCharsets;
 import java.util.StringTokenizer;
 
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.springframework.web.util.HtmlUtils;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
@@ -26,7 +20,7 @@ import cz.muni.fi.mir.mathmlcanonicalization.MathMLCanonicalizer;
 
 public class ExtractHelper {
 	//XML configuration file for canonicalizer
-    static InputStream configInputStream = ExtractHelper.class.getResourceAsStream("canonicalizer-config.xml");
+    static InputStream configInputStream = ExtractHelper.class.getResourceAsStream("/de/tuberlin/dima/schubotz/common/canonicalizer-config.xml");
 	static MathMLCanonicalizer canonicalizer;
 
 	static {
