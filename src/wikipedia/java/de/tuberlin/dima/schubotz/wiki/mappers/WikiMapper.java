@@ -8,6 +8,7 @@ import org.apache.commons.logging.LogFactory;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.parser.Parser;
 import org.jsoup.select.Elements;
 
 import de.tuberlin.dima.schubotz.common.utils.ExtractHelper;
@@ -58,7 +59,7 @@ public class WikiMapper extends FlatMapFunction<String, WikiTuple> {
 		Document doc;
 		
 		try {
-			doc = Jsoup.parse(in); //using jsoup b/c wiki html is invalid
+			doc = Jsoup.parse(in, "", Parser.xmlParser()); //using jsoup b/c wiki html is invalid, also handles entities
 		} catch (Exception e) {
 			if (LOG.isWarnEnabled()) {
 				LOG.warn("Jsoup was unable to parse: " + in);
@@ -83,18 +84,22 @@ public class WikiMapper extends FlatMapFunction<String, WikiTuple> {
 		}
 
 		for (Element MathElement : MathElements) {
-			Elements SemanticsElements = MathElement.select("semantics"); 
-			if (SemanticsElements.isEmpty()) {
-				if (LOG.isWarnEnabled()) {
+            //Assume only one root element and that it is semantic
+            Element SemanticElement = null;
+            try {
+                SemanticElement = MathElement.child(0);
+            } catch (NullPointerException e) {
+                if (LOG.isWarnEnabled()) {
 					LOG.warn("Unable to find semantics elements: " + in); //TODO check if this is common
 				}
-				return;
-			} else if (SemanticsElements.size() > 1) {
-				if (LOG.isWarnEnabled()) {
-					LOG.warn("Multiple semantics elements, ignoring the rest: " + in);
+                return;
+            }
+            if (MathElement.children().size() > 1) {
+                if (LOG.isWarnEnabled()) {
+					LOG.warn("Multiple elements under math: " + in); //TODO check if this is common
 				}
-			}
-			Elements MMLElements = SemanticsElements.first().children();
+            }
+			Elements MMLElements = SemanticElement.children();
 			
 			Elements PmmlElements = new Elements(); //how are we handling multiple math tags per wiki?
 			Elements CmmlElements = new Elements();

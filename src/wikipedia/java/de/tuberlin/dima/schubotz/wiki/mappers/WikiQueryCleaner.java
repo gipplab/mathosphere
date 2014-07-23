@@ -10,6 +10,7 @@ import eu.stratosphere.util.Collector;
 /**
  * Cleans wiki queries TODO find if stratosphere can do this better.
  * Required due to Stratosphere split on {@link de.tuberlin.dima.schubotz.wiki.WikiProgram#QUERY_SEPARATOR}
+ * Returns HTML/XML with unescaped entities in them.
  */
 public class WikiQueryCleaner extends FlatMapFunction<String, String> {
 	Log LOG = LogFactory.getLog(WikiQueryCleaner.class);
@@ -28,7 +29,6 @@ public class WikiQueryCleaner extends FlatMapFunction<String, String> {
 		}else if (!in.endsWith("</topic>")) {
 			in += "</topic>";
 		}
-		in = HtmlUtils.htmlUnescape(in); 
 		out.collect(in);
 	}
 
