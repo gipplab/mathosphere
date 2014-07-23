@@ -10,6 +10,7 @@ import eu.stratosphere.util.Collector;
 /**
  * Cleans up and formats wiki text TODO no known better way
  * Required due to Stratosphere split on {@link de.tuberlin.dima.schubotz.wiki.WikiProgram#WIKI_SEPARATOR}
+ * Returns HTML/XML with unescaped entities in them.
  */
 public class WikiCleaner extends FlatMapFunction<String, String> {
 	Log LOG = LogFactory.getLog(WikiCleaner.class);
@@ -38,7 +39,6 @@ public class WikiCleaner extends FlatMapFunction<String, String> {
 		if (!in.endsWith("</page>")) {
 			in += "</page>";
 		}
-		in = HtmlUtils.htmlEscape(in); 
 		out.collect(in);
 	}
 }

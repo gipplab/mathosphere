@@ -5,6 +5,7 @@ import org.apache.commons.logging.LogFactory;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.parser.Parser;
 import org.jsoup.select.Elements;
 
 import de.tuberlin.dima.schubotz.common.utils.ExtractHelper;
@@ -36,13 +37,10 @@ public class WikiQueryMapper extends FlatMapFunction<String,WikiQueryTuple>{
 	 */
 	@Override
 	public void flatMap(String in, Collector<WikiQueryTuple> out) {
-		if (LOG.isInfoEnabled()) {
-			LOG.info(in);
-		}
 		Document doc;
 		Element main;
 		try {
-			doc = Jsoup.parse(in);
+			doc = Jsoup.parse(in, "", Parser.xmlParser()); //using jsoup b/c wiki html is invalid, also handles entities
 			main = doc.getElementsByTag("num").first(); //title is in <num>
 		} catch (Exception e) {
 			if (LOG.isWarnEnabled()) {
@@ -85,23 +83,27 @@ public class WikiQueryMapper extends FlatMapFunction<String,WikiQueryTuple>{
 		//All queries are well formed: 1) Content MML 2) annotation-PMML 3) annotation-TEX
 		//Any element not under annotation tag is Content MML
 		for (Element curElement : MMLElements) { 
-			curElement.attr("xmlns:m", "http://www.w3.org/1998/Math/MathML"); //add namespace information
 			encoding = curElement.attr("encoding");
 			try {
 				if (curElement.tagName().equals("m:annotation-xml")) {
 					if (encoding.equals("MathML-Presentation")) {
-						PmmlElements.add(curElement);
+                        //add namespace information
+                        //Again, always assuming one root element per MathML type
+            			curElement.child(0).attr("xmlns:m", "http://www.w3.org/1998/Math/MathML"); //add namespace information
+						PmmlElements.add(curElement.child(0));
 					}
 				} else if (curElement.tagName().equals("m:annotation")) {
 					if (encoding.equals("application/x-tex")) {
+                        curElement.attr("xmlns:m", "http://www.w3.org/1998/Math/MathML"); //add namespace information
 						LatexElements.add(curElement);
 					}
-				} else {   
+				} else {
+                    curElement.attr("xmlns:m", "http://www.w3.org/1998/Math/MathML"); //add namespace information
 					CmmlElements.add(curElement);
 				}
 			} catch (Exception e) {
 				if (LOG.isWarnEnabled()) {
-					LOG.warn("Badly formatted xml: " + in);
+					LOG.warn("Badly formatted query xml: " + in);
 				}
 				return;
 			}
@@ -116,12 +118,6 @@ public class WikiQueryMapper extends FlatMapFunction<String,WikiQueryTuple>{
 			if (LOG.isWarnEnabled()) {
 				LOG.warn("Canonicalizer failed. Outputting tuple with blank cmml and pmml.");
 			}
-		}
-		
-		if (LOG.isInfoEnabled()) {
-			LOG.info("Latex: " + latex);
-			LOG.info("CMML: " + cmml);
-			LOG.info("PMML: " + pmml);
 		}
 		
 		if (latex == null || cmml == null || pmml == null) {
