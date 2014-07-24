@@ -6,7 +6,6 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.Reader;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -25,14 +24,14 @@ import eu.stratosphere.client.LocalExecutor;
 import eu.stratosphere.core.fs.Path;
 import eu.stratosphere.core.fs.FileSystem.WriteMode;
 
-public class WikiQueryIT {
+public class WikiQueryMapIT {
 	static ExecutionEnvironment env = ExecutionEnvironment.getExecutionEnvironment();
 
 	@Test
 	public void test() throws IOException {
 		String wikiQueryInput = getClass().getClassLoader().getResources("wikiQuery.xml").nextElement().getPath();
 		String STR_SPLIT = WikiProgram.STR_SPLIT;
-		Log LOG = LogFactory.getLog(WikiQueryIT.class);
+		Log LOG = LogFactory.getLog(WikiQueryMapIT.class);
 		
 		TextInputFormat formatQuery = new TextInputFormat(new Path(wikiQueryInput));
 		
@@ -54,7 +53,7 @@ public class WikiQueryIT {
 			LocalExecutor.execute(plan);
 		} catch (Exception e) {
 			e.printStackTrace();
-			fail("WikiQueryIT Execution failed.");
+			fail("WikiQueryMapIT Execution failed.");
 		}
 		
 		BufferedReader reader = new BufferedReader(new FileReader(file));
