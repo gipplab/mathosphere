@@ -44,11 +44,11 @@ public class WikiMainIT {
 
 	@Test
 	public void TestLocalExecution() throws Exception {
-		String wikiInput = inputDir + "augmentedWikiDump.xml";
+		String wikiInput = inputDir + "de.tuberlin.dima.schubotz.wiki/mappers/augmentedWikiDump.xml";
 		String wikiMapInput = inputDir + "latexWikiMap.csv";
 		String wikiOutput = outputDir + "wikiProgramOutput.csv";
 		try {
-			String wikiQueryInput = "" + getClass().getClassLoader().getResources("wikiQuery.xml").nextElement().getPath();
+			String wikiQueryInput = "" + getClass().getClassLoader().getResources("de/tuberlin/dima/schubotz/wiki/mappers/wikiQuery.xml").nextElement().getPath();
 			WikiProgram.parseArgs(new String[] {"16",
 											  wikiOutput,
 											  wikiInput,
