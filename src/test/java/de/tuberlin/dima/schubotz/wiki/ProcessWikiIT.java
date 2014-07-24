@@ -43,10 +43,10 @@ public class ProcessWikiIT {
 		String debugLatexOutput = debugOutput + "latexWikiMap.csv";
 		String debugNumWikiOutput = debugOutput + "numWiki.txt";
 		if (debugWikiInput.equals("")) {
-			debugWikiInput = "file://" + getClass().getClassLoader().getResources("sampleWikiDump.xml").nextElement().getPath();
+			debugWikiInput = "file://" + getClass().getClassLoader().getResources("de.tuberlin.dima.schubotz.wiki/mappers/sampleWikiDump.xml").nextElement().getPath();
 		}
 		try {
-			String wikiQueryInput = "file://" + getClass().getClassLoader().getResources("wikiQuery.xml").nextElement().getPath();
+			String wikiQueryInput = "file://" + getClass().getClassLoader().getResources("de/tuberlin/dima/schubotz/wiki/mappers/wikiQuery.xml").nextElement().getPath();
 			ProcessWiki.parseArgs(new String[]{"16",
 											   debugWikiInput,
 											   wikiQueryInput,
