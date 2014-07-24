@@ -83,7 +83,7 @@ public class WikiQueryMapper extends FlatMapFunction<String,WikiQueryTuple>{
 		//All queries are well formed: 1) Content MML 2) annotation-PMML 3) annotation-TEX
 		//Any element not under annotation tag is Content MML
 		for (Element curElement : MMLElements) { 
-			encoding = curElement.attr("encoding");
+			encoding = curElement.attr("encoding"); //TODO is this necessary? (assuming well formed)
 			try {
 				if (curElement.tagName().equals("m:annotation-xml")) {
 					if (encoding.equals("MathML-Presentation")) {
@@ -95,7 +95,7 @@ public class WikiQueryMapper extends FlatMapFunction<String,WikiQueryTuple>{
 				} else if (curElement.tagName().equals("m:annotation")) {
 					if (encoding.equals("application/x-tex")) {
                         curElement.attr("xmlns:m", "http://www.w3.org/1998/Math/MathML"); //add namespace information
-						LatexElements.add(curElement);
+						LatexElements.add(curElement); //keep annotation tags
 					}
 				} else {
                     curElement.attr("xmlns:m", "http://www.w3.org/1998/Math/MathML"); //add namespace information
@@ -112,8 +112,8 @@ public class WikiQueryMapper extends FlatMapFunction<String,WikiQueryTuple>{
 		latex = cmml = pmml = null;
 		try {
 			latex = ExtractHelper.extractLatex(LatexElements, STR_SPLIT);
-			cmml = ExtractHelper.extractCanonicalizedDoc(CmmlElements).toString();
-			pmml = ExtractHelper.extractCanonicalizedDoc(PmmlElements).toString();
+			cmml = ExtractHelper.extractCanonicalizedDoc(CmmlElements);
+			pmml = ExtractHelper.extractCanonicalizedDoc(PmmlElements);
 		} catch (Exception e) {
 			if (LOG.isWarnEnabled()) {
 				LOG.warn("Canonicalizer failed. Outputting tuple with blank cmml and pmml.");
