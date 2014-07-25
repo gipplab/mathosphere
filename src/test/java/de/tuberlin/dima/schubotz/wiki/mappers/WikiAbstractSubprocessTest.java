@@ -44,9 +44,10 @@ public abstract class WikiAbstractSubprocessTest {
     protected void testDataMap(DataSet<?> outputSet,
                                String expectedOutputFile) throws Exception {
 
-        //File outputFile = File.createTempFile(this.getClass().getSimpleName(), "csv");
-        //outputFile.deleteOnExit();
-        File outputFile = new File("/home/jjl4/", "csv");
+        File outputFile = File.createTempFile(this.getClass().getSimpleName(), "csv");
+        outputFile.deleteOnExit();
+        //File outputFile = new File("/home/jjl4/", "csv");
+
         outputSet.writeAsCsv(outputFile.getCanonicalPath(), CSV_LINE_SEPARATOR,
                 CSV_FIELD_SEPARATOR, FileSystem.WriteMode.OVERWRITE);
 
