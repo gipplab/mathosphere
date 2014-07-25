@@ -172,9 +172,8 @@ public class WikiProgram {
 		
 		
 		DataSet<WikiQueryTuple> wikiQuerySet = cleanWikiQueryText.flatMap(new WikiQueryMapper(STR_SPLIT));
-		DataSet<WikiTuple> wikiSet = cleanWikiText.flatMap(new WikiMapper(STR_SPLIT))
-												.withBroadcastSet(wikiQuerySet, "Queries");
-		
+		DataSet<WikiTuple> wikiSet = cleanWikiText.flatMap(new WikiMapper(STR_SPLIT));
+
 		DataSet<ResultTuple> matches = wikiSet.flatMap(new QueryWikiMatcher(STR_SPLIT, latexWikiMultiset, numWiki, debug))
 									  .withBroadcastSet(wikiQuerySet, "Queries");
 		
