@@ -17,10 +17,8 @@ public class WikiMapTest extends WikiAbstractSubprocessTest {
     @Test
     public void testQuickDataset() throws Exception {
         String inputFilename = "de/tuberlin/dima/schubotz/wiki/mappers/wikiQuickDump.xml";
-        String queryFilename = "de/tuberlin/dima/schubotz/wiki/mappers/wikiQuickQuery.expected.csv";
         String expectedOutputFilename = "de/tuberlin/dima/schubotz/wiki/mappers/wikiQuickDump.expected.csv";
         DataSet<String> data = (DataSet<String>) getCleanedData(inputFilename);
-        DataSet<WikiQueryTuple> queries = (DataSet<WikiQueryTuple>) getCleanedData(queryFilename);
         DataSet<WikiTuple> outputSet = data.flatMap(new WikiMapper(STR_SPLIT));
         testDataMap(outputSet, expectedOutputFilename);
 
