@@ -30,7 +30,7 @@ public class ProcessWikiIT {
 	@Parameterized.Parameters
 	public static Collection<Object[]> inputParam () {
 		return Arrays.asList(new Object[][] 
-				{{"file:///home/jjl4/augmentedWikiDump.xml", "file:///home/jjl4/"}}); 
+				{{"file:///home/jjl4/wikiAugmentedDump.xml", "file:///home/jjl4/"}});
 				//{{"", "file:///home/jjl4/"}});
 	}
 	@SuppressWarnings("hiding")
@@ -43,7 +43,7 @@ public class ProcessWikiIT {
 		String debugLatexOutput = debugOutput + "latexWikiMap.csv";
 		String debugNumWikiOutput = debugOutput + "numWiki.txt";
 		if (debugWikiInput.equals("")) {
-			debugWikiInput = "file://" + getClass().getClassLoader().getResources("de.tuberlin.dima.schubotz.wiki/mappers/sampleWikiDump.xml").nextElement().getPath();
+			debugWikiInput = "file://" + getClass().getClassLoader().getResources("de.tuberlin.dima.schubotz.wiki/mappers/wikiQuickDump.xml").nextElement().getPath();
 		}
 		try {
 			String wikiQueryInput = "file://" + getClass().getClassLoader().getResources("de/tuberlin/dima/schubotz/wiki/mappers/wikiQuery.xml").nextElement().getPath();

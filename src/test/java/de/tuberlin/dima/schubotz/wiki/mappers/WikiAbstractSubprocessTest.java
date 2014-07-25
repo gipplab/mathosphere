@@ -30,16 +30,18 @@ import static org.junit.Assert.assertTrue;
 @Ignore
 public abstract class WikiAbstractSubprocessTest {
     protected static String STR_SPLIT = WikiProgram.STR_SPLIT;
-    private static ExecutionEnvironment env = ExecutionEnvironment.getExecutionEnvironment();
     private static String QUERY_SEPARATOR = WikiProgram.QUERY_SEPARATOR;
     private static String WIKI_SEPARATOR = WikiProgram.WIKI_SEPARATOR;
     private static Log LOG = LogFactory.getLog(WikiAbstractSubprocessTest.class);
 
+    private ExecutionEnvironment env = ExecutionEnvironment.getExecutionEnvironment();
+
     protected void testDataMap(DataSet<?> outputSet,
                                String expectedOutputFile) throws Exception {
 
-        File outputFile = File.createTempFile("testProcessOutput", "csv");
-        outputFile.deleteOnExit();
+        //File outputFile = File.createTempFile("testProcessOutput", "csv");
+        //outputFile.deleteOnExit();
+        File outputFile = new File("/home/jjl4/", "csv");
         outputSet.writeAsCsv(outputFile.getCanonicalPath(), "\n", ",", FileSystem.WriteMode.OVERWRITE);
 
         Plan plan = env.createProgramPlan();
@@ -55,7 +57,7 @@ public abstract class WikiAbstractSubprocessTest {
         String dir = WikiAbstractSubprocessTest.class.getClassLoader().getResource(filename).getPath();
         TextInputFormat format = new TextInputFormat(new Path(dir));
         FlatMapFunction<String, String> cleaner;
-        if (dir.contains("wikiQuery")) {
+        if (dir.contains("Query")) {
             format.setDelimiter(QUERY_SEPARATOR);
             cleaner = new WikiQueryCleaner();
         } else { //WikiData
