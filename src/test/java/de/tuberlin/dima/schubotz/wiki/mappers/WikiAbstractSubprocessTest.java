@@ -59,8 +59,14 @@ public abstract class WikiAbstractSubprocessTest {
         assertTrue("Output does not match expected output!", FileUtils.contentEquals(outputFile, expectedFile));
     }
 
-    protected DataSet<?> getCleanedData(String filename) throws IOException {
-        String dir = WikiAbstractSubprocessTest.class.getClassLoader().getResource(filename).getPath();
+    protected DataSet<?> getCleanedData(String filename) throws Exception {
+        String dir = null;
+        try {
+            dir = WikiAbstractSubprocessTest.class.getClassLoader().getResource(filename).getPath();
+        } catch (NullPointerException e) {
+            //Try again with absolute path
+            dir = new File(filename).getPath();
+        }
         TextInputFormat format = new TextInputFormat(new Path(dir));
         if (dir.contains("expected")) { //Process as csv with tuples
             CsvReader reader = env.readCsvFile(dir);

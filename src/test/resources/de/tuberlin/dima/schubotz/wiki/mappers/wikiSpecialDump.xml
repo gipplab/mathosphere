@@ -1,0 +1,683 @@
+<mediawiki>
+<page>
+HEADER
+</page>
+<page>
+    <title>Beta decay</title>
+    <ns>0</ns>
+    <id>127</id>
+    <revision>
+      <id>128</id>
+      <timestamp>2013-12-26T10:31:00Z</timestamp>
+      <contributor>
+        <username>Edokter</username>
+        <id>0</id>
+      </contributor>
+      <minor/>
+      <comment>/* References */ fix</comment>
+      <text xml:space="preserve" bytes="28332">{{Refimprove |date=May 2011}}
+[[Image:Beta-minus Decay.svg|thumb|240px|{{SubatomicParticle|Beta-}}&amp;nbsp;decay in an [[atomic nucleus]] (the accompanying antineutrino is omitted). The inset shows beta decay of a free neutron. In both processes, the intermediate emission of a virtual {{SubatomicParticle|W boson-|link=yes}} boson (which then decays to electron and antineutrino) is not shown.]]
+{{Nuclear physics}} 
+In [[nuclear physics]], '''beta decay''' (β decay) is a type of [[radioactive decay]] in which a [[beta particle]] (an [[electron]] or a [[positron]]) is emitted from an atomic nucleus. Beta decay is a process which allows the atom to obtain the optimal [[proton–neutron ratio|ratio of protons and neutrons]].&lt;ref name=&quot;konya74&quot;&gt;
+{{cite book
+ |last1=Konya |first1=J.
+ |last2=Nagy |first2=N. M.
+ |year=2012
+ |title=Nuclear and Radiochemistry
+ |page=74-75
+ |publisher=[[Elsevier]]
+ |isbn=978-0-12-391487-3
+}}&lt;/ref&gt;
+
+Beta decay is mediated by the [[Weak interaction|weak force]]. There are two types: ''beta minus'' and ''beta plus''. In the case of beta decay that produces an electron emission, it is referred to as beta minus (β&lt;sup&gt;−&lt;/sup&gt;), while in the case of a [[positron emission]] as beta plus (β&lt;sup&gt;+&lt;/sup&gt;).
+
+An example of β&lt;sup&gt;−&lt;/sup&gt; decay is shown when [[carbon-14]] decays into [[nitrogen-14]]:
+
+:{{nuclide2|carbon|14}} → {{nuclide2|nitrogen|14}} + {{subatomic particle|electron}} + {{subatomic particle|electron antineutrino}}
+
+Notice how, in electron emission, an [[electron antineutrino]] is also emitted. In this form of decay, the original element has decayed into a new element with an unchanged [[mass number]] {{mvar|A}} but an [[atomic number]] {{mvar|Z}} that has increased by one.
+
+An example of positron (β&lt;sup&gt;+&lt;/sup&gt; decay) is shown with [[magnesium-23]] decaying into [[sodium-23]]:
+
+:{{nuclide2|Magnesium|23}} → {{nuclide2|Sodium|23}} + {{subatomic particle|positron}} + {{subatomic particle|electron neutrino}}
+
+In contrast to electron emission, positron emission is accompanied by the emission of an [[electron neutrino]]. Similar to electron emission,  positron decay results in [[nuclear transmutation]], changing an atom of a chemical element into an atom of an element with an unchanged mass number. However, in positron decay, the resulting element has an [[atomic number]] that has decreased by one.
+
+Emitted beta particles have a continuous [[kinetic energy]] spectrum, ranging from 0 to the maximal available energy ([[Q value (nuclear science)|{{mvar|Q}}]]), which depends on the parent and daughter nuclear states that participate in the decay. The continuous energy spectra of beta particle occurs because {{mvar|Q}} is shared between the beta particle and a neutrino.&lt;ref name=&quot;konya74&quot;/&gt; A typical {{mvar|Q}} is around 1&amp;nbsp;[[MeV]], but it can range from a few [[keV]] to a few tens of MeV. Since the [[Mass-energy equivalence|rest mass energy]] of the electron is 511&amp;nbsp;keV, the most energetic beta particles are [[Ultrarelativistic limit|ultrarelativistic]], with speeds very close to the [[speed of light]].
+
+Sometimes [[electron capture]] decay is included as a type of beta decay (and is referred to as &quot;inverse beta decay&quot;), because the basic process, mediated by the [[weak force]] is the same. However, no beta particle is emitted, but only an electron neutrino. Instead of beta-plus emission, an inner atomic electron is captured by a proton in the nucleus. An example of electron capture involves [[krypton-81]] becoming [[bromine-81]] and producing an electron neutrino:
+
+:{{nuclide2|Krypton|81}} + {{subatomic particle|electron}} → {{nuclide2|Bromine|81}} + {{subatomic particle|electron neutrino}}
+
+This type of decay is therefore analogous to positron emission (and also happens, as an alternative decay route, in all positron-emitters). However, the route of electron capture is the ''only'' type of decay that is allowed in proton-rich nuclides that ''do not'' have sufficient energy to emit a positron (and neutrino). These may still reach a lower energy state, by the equivalent process of electron capture and neutrino emission.
+
+== β&lt;sup&gt;−&lt;/sup&gt; decay ==
+[[Image:Beta Negative Decay.svg|thumb|The [[Feynman diagram]] for {{SubatomicParticle|Beta-}}&amp;nbsp;decay of a [[neutron]] into a [[proton]], [[electron]], and [[electron antineutrino]] via an intermediate [[W boson|{{SubatomicParticle|W boson-}} boson]].]]
+In {{SubatomicParticle|Beta-}}&amp;nbsp;decay, the [[weak interaction]] converts an [[atomic nucleus]] into a nucleus with one higher [[atomic number]] while emitting an electron ({{SubatomicParticle|Electron|link=yes}}) and an electron antineutrino ({{SubatomicParticle|Electron antineutrino}}):
+
+: {{Physics particle|TL={{mvar|A}}|BL={{mvar|Z}}|''N''}} → {{Physics particle|TL={{mvar|A}}|BL={{math|''Z''+1}}|''N’''}} + {{SubatomicParticle|Electron}} + {{SubatomicParticle|Electron Antineutrino}} &lt;ref name=&quot;konya74&quot;/&gt;
+where {{mvar|A}} and {{mvar|Z}} are the [[mass number]] and [[atomic number]]&lt;!-- &quot;charge&quot; is linked from another place. &quot;mass number&quot; is paired with &quot;atomic number&quot; --&gt;  of the decaying nucleus.
+
+Another example is when the [[free neutron]] ({{Nuclide2|neutronium|1}}) decays by {{SubatomicParticle|Beta-}}&amp;nbsp;decay into a proton ({{SubatomicParticle|Proton}}):
+: {{SubatomicParticle|Neutron}} → {{SubatomicParticle|Proton}} + {{SubatomicParticle|Electron}} + {{SubatomicParticle|Electron Antineutrino}}.
+&lt;!-- never use 
+
+where {{math|1=Δπ = 1}} or {{math|−1}} corresponds to no parity change or parity change, respectively. The special case of a 0&lt;sup&gt;+&lt;/sup&gt; → 0&lt;sup&gt;+&lt;/sup&gt; transition (which in gamma decay is absolutely forbidden) is referred to as &quot;superallowed&quot; for beta decay, and proceeds very quickly by this decay route. The following table lists the Δ{{mvar|J}} and Δπ values for the first few values of&amp;nbsp;{{mvar|L}}:
+
+{| class=&quot;wikitable&quot;
+|-
+! Forbiddenness !! Δ{{mvar|J}} !! Δπ
+|-
+| Superallowed || 0&lt;sup&gt;+&lt;/sup&gt; → 0&lt;sup&gt;+&lt;/sup&gt; || no
+|-
+| Allowed || 0, 1 || no
+|-
+| First forbidden || 0, 1, 2 || yes
+|-
+| Second forbidden || 1, 2, 3 || no
+|-
+| Third forbidden || 2, 3, 4 || yes
+|}
+
+==Beta emission spectrum==
+
+Beta decay can be considered as a [[Perturbation theory (quantum mechanics)|perturbation]] as described in quantum mechanics, and thus [[Fermi's Golden Rule]] can be applied. This leads to an expression for the kinetic energy spectrum {{math|''N''(''T'')}} of emitted betas as follows:&lt;ref&gt;
+{{cite web
+ |last=Nave |first=C. R.
+ |date=
+ |title=Energy and Momentum Spectra for Beta Decay
+ |url=http://hyperphysics.phy-astr.gsu.edu/hbase/nuclear/beta2.html
+ |work=[[HyperPhysics]]
+ |accessdate=2013-03-09
+}}&lt;/ref&gt;
+
+:&lt;math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot; id=&quot;p1.1.m1&quot; class=&quot;ltx_Math&quot; alttext=&quot;{\displaystyle N(T)=C_{L}(T)F(Z,T)pE(Q-T)^{2}}&quot; display=&quot;inline&quot; xml:id=&quot;p1.1.m1.1&quot; xref=&quot;p1.1.m1.1.cmml&quot;&gt;
+  &lt;semantics xml:id=&quot;p1.1.m1.1a&quot; xref=&quot;p1.1.m1.1.cmml&quot;&gt;
+    &lt;mrow xml:id=&quot;p1.1.m1.1.25&quot; xref=&quot;p1.1.m1.1.25.cmml&quot;&gt;
+      &lt;mrow xml:id=&quot;p1.1.m1.1.25.1&quot; xref=&quot;p1.1.m1.1.25.1.cmml&quot;&gt;
+        &lt;mi xml:id=&quot;p1.1.m1.1.1&quot; xref=&quot;p1.1.m1.1.1.cmml&quot;&gt;N&lt;/mi&gt;
+        &lt;mo xml:id=&quot;p1.1.m1.1.25.1.1&quot; xref=&quot;p1.1.m1.1.25.1.1.cmml&quot;&gt;⁢&lt;/mo&gt;
+        &lt;mrow xml:id=&quot;p1.1.m1.1.3&quot; xref=&quot;p1.1.m1.1.3.cmml&quot;&gt;
+          &lt;mo xml:id=&quot;p1.1.m1.1.3a&quot; xref=&quot;p1.1.m1.1.3.cmml&quot;&gt;(&lt;/mo&gt;
+          &lt;mi xml:id=&quot;p1.1.m1.1.3b&quot; xref=&quot;p1.1.m1.1.3.cmml&quot;&gt;T&lt;/mi&gt;
+          &lt;mo xml:id=&quot;p1.1.m1.1.3c&quot; xref=&quot;p1.1.m1.1.3.cmml&quot;&gt;)&lt;/mo&gt;
+        &lt;/mrow&gt;
+      &lt;/mrow&gt;
+      &lt;mo xml:id=&quot;p1.1.m1.1.5&quot; xref=&quot;p1.1.m1.1.5.cmml&quot;&gt;=&lt;/mo&gt;
+      &lt;mrow xml:id=&quot;p1.1.m1.1.25.2&quot; xref=&quot;p1.1.m1.1.25.2.cmml&quot;&gt;
+        &lt;msub xml:id=&quot;p1.1.m1.1.25.2.2&quot; xref=&quot;p1.1.m1.1.25.2.2.cmml&quot;&gt;
+          &lt;mi xml:id=&quot;p1.1.m1.1.6&quot; xref=&quot;p1.1.m1.1.6.cmml&quot;&gt;C&lt;/mi&gt;
+          &lt;mi xml:id=&quot;p1.1.m1.1.7.1&quot; xref=&quot;p1.1.m1.1.7.1.cmml&quot;&gt;L&lt;/mi&gt;
+        &lt;/msub&gt;
+        &lt;mo xml:id=&quot;p1.1.m1.1.25.2.1&quot; xref=&quot;p1.1.m1.1.25.2.1.cmml&quot;&gt;⁢&lt;/mo&gt;
+        &lt;mrow xml:id=&quot;p1.1.m1.1.9&quot; xref=&quot;p1.1.m1.1.9.cmml&quot;&gt;
+          &lt;mo xml:id=&quot;p1.1.m1.1.9a&quot; xref=&quot;p1.1.m1.1.9.cmml&quot;&gt;(&lt;/mo&gt;
+          &lt;mi xml:id=&quot;p1.1.m1.1.9b&quot; xref=&quot;p1.1.m1.1.9.cmml&quot;&gt;T&lt;/mi&gt;
+          &lt;mo xml:id=&quot;p1.1.m1.1.9c&quot; xref=&quot;p1.1.m1.1.9.cmml&quot;&gt;)&lt;/mo&gt;
+        &lt;/mrow&gt;
+        &lt;mo xml:id=&quot;p1.1.m1.1.25.2.1a&quot; xref=&quot;p1.1.m1.1.25.2.1.cmml&quot;&gt;⁢&lt;/mo&gt;
+        &lt;mi xml:id=&quot;p1.1.m1.1.11&quot; xref=&quot;p1.1.m1.1.11.cmml&quot;&gt;F&lt;/mi&gt;
+        &lt;mo xml:id=&quot;p1.1.m1.1.25.2.1b&quot; xref=&quot;p1.1.m1.1.25.2.1.cmml&quot;&gt;⁢&lt;/mo&gt;
+        &lt;mrow xml:id=&quot;p1.1.m1.1.25.2.3&quot; xref=&quot;p1.1.m1.1.25.2.3.cmml&quot;&gt;
+          &lt;mo xml:id=&quot;p1.1.m1.1.25.2.3a&quot; xref=&quot;p1.1.m1.1.25.2.3.cmml&quot;&gt;(&lt;/mo&gt;
+          &lt;mrow xml:id=&quot;p1.1.m1.1.25.2.3b&quot; xref=&quot;p1.1.m1.1.25.2.3.cmml&quot;&gt;
+            &lt;mi xml:id=&quot;p1.1.m1.1.13&quot; xref=&quot;p1.1.m1.1.13.cmml&quot;&gt;Z&lt;/mi&gt;
+            &lt;mo xml:id=&quot;p1.1.m1.1.25.2.3c&quot; xref=&quot;p1.1.m1.1.25.2.3.cmml&quot;&gt;,&lt;/mo&gt;
+            &lt;mi xml:id=&quot;p1.1.m1.1.15&quot; xref=&quot;p1.1.m1.1.15.cmml&quot;&gt;T&lt;/mi&gt;
+          &lt;/mrow&gt;
+          &lt;mo xml:id=&quot;p1.1.m1.1.25.2.3d&quot; xref=&quot;p1.1.m1.1.25.2.3.cmml&quot;&gt;)&lt;/mo&gt;
+        &lt;/mrow&gt;
+        &lt;mo xml:id=&quot;p1.1.m1.1.25.2.1c&quot; xref=&quot;p1.1.m1.1.25.2.1.cmml&quot;&gt;⁢&lt;/mo&gt;
+        &lt;mi xml:id=&quot;p1.1.m1.1.17&quot; xref=&quot;p1.1.m1.1.17.cmml&quot;&gt;p&lt;/mi&gt;
+        &lt;mo xml:id=&quot;p1.1.m1.1.25.2.1d&quot; xref=&quot;p1.1.m1.1.25.2.1.cmml&quot;&gt;⁢&lt;/mo&gt;
+        &lt;mi xml:id=&quot;p1.1.m1.1.18&quot; xref=&quot;p1.1.m1.1.18.cmml&quot;&gt;E&lt;/mi&gt;
+        &lt;mo xml:id=&quot;p1.1.m1.1.25.2.1e&quot; xref=&quot;p1.1.m1.1.25.2.1.cmml&quot;&gt;⁢&lt;/mo&gt;
+        &lt;msup xml:id=&quot;p1.1.m1.1.25.2.4&quot; xref=&quot;p1.1.m1.1.25.2.4.cmml&quot;&gt;
+          &lt;mrow xml:id=&quot;p1.1.m1.1.25.2.4.2&quot; xref=&quot;p1.1.m1.1.25.2.4.2.cmml&quot;&gt;
+            &lt;mo xml:id=&quot;p1.1.m1.1.25.2.4.2a&quot; xref=&quot;p1.1.m1.1.25.2.4.2.cmml&quot;&gt;(&lt;/mo&gt;
+            &lt;mrow xml:id=&quot;p1.1.m1.1.25.2.4.2b&quot; xref=&quot;p1.1.m1.1.25.2.4.2.cmml&quot;&gt;
+              &lt;mi xml:id=&quot;p1.1.m1.1.20&quot; xref=&quot;p1.1.m1.1.20.cmml&quot;&gt;Q&lt;/mi&gt;
+              &lt;mo xml:id=&quot;p1.1.m1.1.21&quot; xref=&quot;p1.1.m1.1.21.cmml&quot;&gt;-&lt;/mo&gt;
+              &lt;mi xml:id=&quot;p1.1.m1.1.22&quot; xref=&quot;p1.1.m1.1.22.cmml&quot;&gt;T&lt;/mi&gt;
+            &lt;/mrow&gt;
+            &lt;mo xml:id=&quot;p1.1.m1.1.25.2.4.2c&quot; xref=&quot;p1.1.m1.1.25.2.4.2.cmml&quot;&gt;)&lt;/mo&gt;
+          &lt;/mrow&gt;
+          &lt;mn xml:id=&quot;p1.1.m1.1.24.1&quot; xref=&quot;p1.1.m1.1.24.1.cmml&quot;&gt;2&lt;/mn&gt;
+        &lt;/msup&gt;
+      &lt;/mrow&gt;
+    &lt;/mrow&gt;
+    &lt;annotation-xml encoding=&quot;MathML-Content&quot; xml:id=&quot;p1.1.m1.1.cmml&quot; xref=&quot;p1.1.m1.1&quot;&gt;
+      &lt;apply xml:id=&quot;p1.1.m1.1.25.cmml&quot; xref=&quot;p1.1.m1.1.25&quot;&gt;
+        &lt;eq xml:id=&quot;p1.1.m1.1.5.cmml&quot; xref=&quot;p1.1.m1.1.5&quot;/&gt;
+        &lt;apply xml:id=&quot;p1.1.m1.1.25.1.cmml&quot; xref=&quot;p1.1.m1.1.25.1&quot;&gt;
+          &lt;times xml:id=&quot;p1.1.m1.1.25.1.1.cmml&quot; xref=&quot;p1.1.m1.1.25.1.1&quot;/&gt;
+          &lt;ci xml:id=&quot;p1.1.m1.1.1.cmml&quot; xref=&quot;p1.1.m1.1.1&quot;&gt;N&lt;/ci&gt;
+          &lt;ci xml:id=&quot;p1.1.m1.1.3.cmml&quot; xref=&quot;p1.1.m1.1.3&quot;&gt;T&lt;/ci&gt;
+        &lt;/apply&gt;
+        &lt;apply xml:id=&quot;p1.1.m1.1.25.2.cmml&quot; xref=&quot;p1.1.m1.1.25.2&quot;&gt;
+          &lt;times xml:id=&quot;p1.1.m1.1.25.2.1.cmml&quot; xref=&quot;p1.1.m1.1.25.2.1&quot;/&gt;
+          &lt;apply xml:id=&quot;p1.1.m1.1.25.2.2.cmml&quot; xref=&quot;p1.1.m1.1.25.2.2&quot;&gt;
+            &lt;csymbol cd=&quot;ambiguous&quot; xml:id=&quot;p1.1.m1.1.25.2.2.1.cmml&quot;&gt;subscript&lt;/csymbol&gt;
+            &lt;ci xml:id=&quot;p1.1.m1.1.6.cmml&quot; xref=&quot;p1.1.m1.1.6&quot;&gt;C&lt;/ci&gt;
+            &lt;ci xml:id=&quot;p1.1.m1.1.7.1.cmml&quot; xref=&quot;p1.1.m1.1.7.1&quot;&gt;L&lt;/ci&gt;
+          &lt;/apply&gt;
+          &lt;ci xml:id=&quot;p1.1.m1.1.9.cmml&quot; xref=&quot;p1.1.m1.1.9&quot;&gt;T&lt;/ci&gt;
+          &lt;ci xml:id=&quot;p1.1.m1.1.11.cmml&quot; xref=&quot;p1.1.m1.1.11&quot;&gt;F&lt;/ci&gt;
+          &lt;apply xml:id=&quot;p1.1.m1.1.25.2.3.cmml&quot; xref=&quot;p1.1.m1.1.25.2.3&quot;&gt;
+            &lt;interval closure=&quot;open&quot; xml:id=&quot;p1.1.m1.1.25.2.3.1.cmml&quot;/&gt;
+            &lt;ci xml:id=&quot;p1.1.m1.1.13.cmml&quot; xref=&quot;p1.1.m1.1.13&quot;&gt;Z&lt;/ci&gt;
+            &lt;ci xml:id=&quot;p1.1.m1.1.15.cmml&quot; xref=&quot;p1.1.m1.1.15&quot;&gt;T&lt;/ci&gt;
+          &lt;/apply&gt;
+          &lt;ci xml:id=&quot;p1.1.m1.1.17.cmml&quot; xref=&quot;p1.1.m1.1.17&quot;&gt;p&lt;/ci&gt;
+          &lt;ci xml:id=&quot;p1.1.m1.1.18.cmml&quot; xref=&quot;p1.1.m1.1.18&quot;&gt;E&lt;/ci&gt;
+          &lt;apply xml:id=&quot;p1.1.m1.1.25.2.4.cmml&quot; xref=&quot;p1.1.m1.1.25.2.4&quot;&gt;
+            &lt;csymbol cd=&quot;ambiguous&quot; xml:id=&quot;p1.1.m1.1.25.2.4.1.cmml&quot;&gt;superscript&lt;/csymbol&gt;
+            &lt;apply xml:id=&quot;p1.1.m1.1.25.2.4.2.cmml&quot; xref=&quot;p1.1.m1.1.25.2.4.2&quot;&gt;
+              &lt;minus xml:id=&quot;p1.1.m1.1.21.cmml&quot; xref=&quot;p1.1.m1.1.21&quot;/&gt;
+              &lt;ci xml:id=&quot;p1.1.m1.1.20.cmml&quot; xref=&quot;p1.1.m1.1.20&quot;&gt;Q&lt;/ci&gt;
+              &lt;ci xml:id=&quot;p1.1.m1.1.22.cmml&quot; xref=&quot;p1.1.m1.1.22&quot;&gt;T&lt;/ci&gt;
+            &lt;/apply&gt;
+            &lt;cn type=&quot;integer&quot; xml:id=&quot;p1.1.m1.1.24.1.cmml&quot; xref=&quot;p1.1.m1.1.24.1&quot;&gt;2&lt;/cn&gt;
+          &lt;/apply&gt;
+        &lt;/apply&gt;
+      &lt;/apply&gt;
+    &lt;/annotation-xml&gt;
+    &lt;annotation encoding=&quot;application/x-tex&quot; xml:id=&quot;p1.1.m1.1b&quot; xref=&quot;p1.1.m1.1.cmml&quot;&gt;{\displaystyle N(T)=C_{L}(T)F(Z,T)pE(Q-T)^{2}}&lt;/annotation&gt;
+  &lt;/semantics&gt;
+&lt;/math&gt;
+
+where {{mvar|T}} is the kinetic energy, {{mvar|C&lt;sub&gt;L&lt;/sub&gt;}} is a shape function that depends on the forbiddenness of the decay (it is constant for allowed decays), {{math|''F''(''Z'', ''T'')}} is the Fermi Function (see below) with ''Z'' the charge of the final-state nucleus, {{math|1=''E'' = ''T'' + ''mc''&lt;sup&gt;2&lt;/sup&gt;}} is the total energy, {{math|1=''p'' = }}{{sqrt|(''E''/''c'')&lt;sup&gt;2&lt;/sup&gt; − (''mc'')&lt;sup&gt;2&lt;/sup&gt;}} is the momentum, and {{mvar|Q}} is the [[Q value (nuclear science)|Q value]] of the decay. The kinetic energy of the emitted neutrino is given approximately by {{mvar|Q}} minus the kinetic energy of the beta.
+
+===Fermi function===
+
+The Fermi function that appears in the beta spectrum formula accounts for the Coulomb attraction / repulsion between the emitted beta and the final state nucleus. Approximating the associated wavefunctions to be spherically symmetric, the Fermi function can be analytically calculated to be:&lt;ref&gt;
+{{cite journal
+ |last1=Fermi |first1=E.
+ |year=1934
+ |title=Versuch einer Theorie der &amp;beta;-Strahlen. I
+ |journal=[[Zeitschrift für Physik]]
+ |volume=88 |issue=3–4 |pages=161–177
+ |bibcode=1934ZPhy...88..161F
+ |doi=10.1007/BF01351864
+}}&lt;/ref&gt;
+
+:&lt;math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot; id=&quot;p1.1.m1&quot; class=&quot;ltx_Math&quot; alttext=&quot;{\displaystyle F(Z,T)={\frac{2(1+S)}{\Gamma(1+2S)^{2}}}(2p\rho)^{{2S-2}}e^{{%&amp;#10;\pi\eta}}|\Gamma(S+i\eta)|^{2},}&quot; display=&quot;inline&quot; xml:id=&quot;p1.1.m1.1&quot; xref=&quot;p1.1.m1.1.cmml&quot;&gt;
+  &lt;semantics xml:id=&quot;p1.1.m1.1a&quot; xref=&quot;p1.1.m1.1.cmml&quot;&gt;
+    &lt;mrow xml:id=&quot;p1.1.m1.1.28&quot; xref=&quot;p1.1.m1.1.28.cmml&quot;&gt;
+      &lt;mrow xml:id=&quot;p1.1.m1.1.28a&quot; xref=&quot;p1.1.m1.1.28.cmml&quot;&gt;
+        &lt;mrow xml:id=&quot;p1.1.m1.1.28.1&quot; xref=&quot;p1.1.m1.1.28.1.cmml&quot;&gt;
+          &lt;mi xml:id=&quot;p1.1.m1.1.1&quot; xref=&quot;p1.1.m1.1.1.cmml&quot;&gt;F&lt;/mi&gt;
+          &lt;mo xml:id=&quot;p1.1.m1.1.28.1.1&quot; xref=&quot;p1.1.m1.1.28.1.1.cmml&quot;&gt;⁢&lt;/mo&gt;
+          &lt;mrow xml:id=&quot;p1.1.m1.1.28.1.2&quot; xref=&quot;p1.1.m1.1.28.1.2.cmml&quot;&gt;
+            &lt;mo xml:id=&quot;p1.1.m1.1.28.1.2a&quot; xref=&quot;p1.1.m1.1.28.1.2.cmml&quot;&gt;(&lt;/mo&gt;
+            &lt;mrow xml:id=&quot;p1.1.m1.1.28.1.2b&quot; xref=&quot;p1.1.m1.1.28.1.2.cmml&quot;&gt;
+              &lt;mi xml:id=&quot;p1.1.m1.1.3&quot; xref=&quot;p1.1.m1.1.3.cmml&quot;&gt;Z&lt;/mi&gt;
+              &lt;mo xml:id=&quot;p1.1.m1.1.28.1.2c&quot; xref=&quot;p1.1.m1.1.28.1.2.cmml&quot;&gt;,&lt;/mo&gt;
+              &lt;mi xml:id=&quot;p1.1.m1.1.5&quot; xref=&quot;p1.1.m1.1.5.cmml&quot;&gt;T&lt;/mi&gt;
+            &lt;/mrow&gt;
+            &lt;mo xml:id=&quot;p1.1.m1.1.28.1.2d&quot; xref=&quot;p1.1.m1.1.28.1.2.cmml&quot;&gt;)&lt;/mo&gt;
+          &lt;/mrow&gt;
+        &lt;/mrow&gt;
+        &lt;mo xml:id=&quot;p1.1.m1.1.7&quot; xref=&quot;p1.1.m1.1.7.cmml&quot;&gt;=&lt;/mo&gt;
+        &lt;mrow xml:id=&quot;p1.1.m1.1.28.2&quot; xref=&quot;p1.1.m1.1.28.2.cmml&quot;&gt;
+          &lt;mstyle displaystyle=&quot;true&quot; xml:id=&quot;p1.1.m1.1.8&quot; xref=&quot;p1.1.m1.1.8.cmml&quot;&gt;
+            &lt;mfrac xml:id=&quot;p1.1.m1.1.8a&quot; xref=&quot;p1.1.m1.1.8.cmml&quot;&gt;
+              &lt;mrow xml:id=&quot;p1.1.m1.1.8.2&quot; xref=&quot;p1.1.m1.1.8.2.cmml&quot;&gt;
+                &lt;mn xml:id=&quot;p1.1.m1.1.8.2.1&quot; xref=&quot;p1.1.m1.1.8.2.1.cmml&quot;&gt;2&lt;/mn&gt;
+                &lt;mo xml:id=&quot;p1.1.m1.1.8.2.7&quot; xref=&quot;p1.1.m1.1.8.2.7.cmml&quot;&gt;⁢&lt;/mo&gt;
+                &lt;mrow xml:id=&quot;p1.1.m1.1.8.2.8&quot; xref=&quot;p1.1.m1.1.8.2.8.cmml&quot;&gt;
+                  &lt;mo xml:id=&quot;p1.1.m1.1.8.2.8a&quot; xref=&quot;p1.1.m1.1.8.2.8.cmml&quot;&gt;(&lt;/mo&gt;
+                  &lt;mrow xml:id=&quot;p1.1.m1.1.8.2.8b&quot; xref=&quot;p1.1.m1.1.8.2.8.cmml&quot;&gt;
+                    &lt;mn xml:id=&quot;p1.1.m1.1.8.2.3&quot; xref=&quot;p1.1.m1.1.8.2.3.cmml&quot;&gt;1&lt;/mn&gt;
+                    &lt;mo xml:id=&quot;p1.1.m1.1.8.2.4&quot; xref=&quot;p1.1.m1.1.8.2.4.cmml&quot;&gt;+&lt;/mo&gt;
+                    &lt;mi xml:id=&quot;p1.1.m1.1.8.2.5&quot; xref=&quot;p1.1.m1.1.8.2.5.cmml&quot;&gt;S&lt;/mi&gt;
+                  &lt;/mrow&gt;
+                  &lt;mo xml:id=&quot;p1.1.m1.1.8.2.8c&quot; xref=&quot;p1.1.m1.1.8.2.8.cmml&quot;&gt;)&lt;/mo&gt;
+                &lt;/mrow&gt;
+              &lt;/mrow&gt;
+              &lt;mrow xml:id=&quot;p1.1.m1.1.8.3&quot; xref=&quot;p1.1.m1.1.8.3.cmml&quot;&gt;
+                &lt;mi mathvariant=&quot;normal&quot; xml:id=&quot;p1.1.m1.1.8.3.1&quot; xref=&quot;p1.1.m1.1.8.3.1.cmml&quot;&gt;Γ&lt;/mi&gt;
+                &lt;mo xml:id=&quot;p1.1.m1.1.8.3.9&quot; xref=&quot;p1.1.m1.1.8.3.9.cmml&quot;&gt;⁢&lt;/mo&gt;
+                &lt;msup xml:id=&quot;p1.1.m1.1.8.3.10&quot; xref=&quot;p1.1.m1.1.8.3.10.cmml&quot;&gt;
+                  &lt;mrow xml:id=&quot;p1.1.m1.1.8.3.10.2&quot; xref=&quot;p1.1.m1.1.8.3.10.2.cmml&quot;&gt;
+                    &lt;mo xml:id=&quot;p1.1.m1.1.8.3.10.2a&quot; xref=&quot;p1.1.m1.1.8.3.10.2.cmml&quot;&gt;(&lt;/mo&gt;
+                    &lt;mrow xml:id=&quot;p1.1.m1.1.8.3.10.2b&quot; xref=&quot;p1.1.m1.1.8.3.10.2.cmml&quot;&gt;
+                      &lt;mn xml:id=&quot;p1.1.m1.1.8.3.3&quot; xref=&quot;p1.1.m1.1.8.3.3.cmml&quot;&gt;1&lt;/mn&gt;
+                      &lt;mo xml:id=&quot;p1.1.m1.1.8.3.4&quot; xref=&quot;p1.1.m1.1.8.3.4.cmml&quot;&gt;+&lt;/mo&gt;
+                      &lt;mrow xml:id=&quot;p1.1.m1.1.8.3.10.2.1&quot; xref=&quot;p1.1.m1.1.8.3.10.2.1.cmml&quot;&gt;
+                        &lt;mn xml:id=&quot;p1.1.m1.1.8.3.5&quot; xref=&quot;p1.1.m1.1.8.3.5.cmml&quot;&gt;2&lt;/mn&gt;
+                        &lt;mo xml:id=&quot;p1.1.m1.1.8.3.10.2.1.1&quot; xref=&quot;p1.1.m1.1.8.3.10.2.1.1.cmml&quot;&gt;⁢&lt;/mo&gt;
+                        &lt;mi xml:id=&quot;p1.1.m1.1.8.3.6&quot; xref=&quot;p1.1.m1.1.8.3.6.cmml&quot;&gt;S&lt;/mi&gt;
+                      &lt;/mrow&gt;
+                    &lt;/mrow&gt;
+                    &lt;mo xml:id=&quot;p1.1.m1.1.8.3.10.2c&quot; xref=&quot;p1.1.m1.1.8.3.10.2.cmml&quot;&gt;)&lt;/mo&gt;
+                  &lt;/mrow&gt;
+                  &lt;mn xml:id=&quot;p1.1.m1.1.8.3.8.1&quot; xref=&quot;p1.1.m1.1.8.3.8.1.cmml&quot;&gt;2&lt;/mn&gt;
+                &lt;/msup&gt;
+              &lt;/mrow&gt;
+            &lt;/mfrac&gt;
+          &lt;/mstyle&gt;
+          &lt;mo xml:id=&quot;p1.1.m1.1.28.2.1&quot; xref=&quot;p1.1.m1.1.28.2.1.cmml&quot;&gt;⁢&lt;/mo&gt;
+          &lt;msup xml:id=&quot;p1.1.m1.1.28.2.2&quot; xref=&quot;p1.1.m1.1.28.2.2.cmml&quot;&gt;
+            &lt;mrow xml:id=&quot;p1.1.m1.1.28.2.2.2&quot; xref=&quot;p1.1.m1.1.28.2.2.2.cmml&quot;&gt;
+              &lt;mo xml:id=&quot;p1.1.m1.1.28.2.2.2a&quot; xref=&quot;p1.1.m1.1.28.2.2.2.cmml&quot;&gt;(&lt;/mo&gt;
+              &lt;mrow xml:id=&quot;p1.1.m1.1.28.2.2.2b&quot; xref=&quot;p1.1.m1.1.28.2.2.2.cmml&quot;&gt;
+                &lt;mn xml:id=&quot;p1.1.m1.1.10&quot; xref=&quot;p1.1.m1.1.10.cmml&quot;&gt;2&lt;/mn&gt;
+                &lt;mo xml:id=&quot;p1.1.m1.1.28.2.2.2.1&quot; xref=&quot;p1.1.m1.1.28.2.2.2.1.cmml&quot;&gt;⁢&lt;/mo&gt;
+                &lt;mi xml:id=&quot;p1.1.m1.1.11&quot; xref=&quot;p1.1.m1.1.11.cmml&quot;&gt;p&lt;/mi&gt;
+                &lt;mo xml:id=&quot;p1.1.m1.1.28.2.2.2.1a&quot; xref=&quot;p1.1.m1.1.28.2.2.2.1.cmml&quot;&gt;⁢&lt;/mo&gt;
+                &lt;mi xml:id=&quot;p1.1.m1.1.12&quot; xref=&quot;p1.1.m1.1.12.cmml&quot;&gt;ρ&lt;/mi&gt;
+              &lt;/mrow&gt;
+              &lt;mo xml:id=&quot;p1.1.m1.1.28.2.2.2c&quot; xref=&quot;p1.1.m1.1.28.2.2.2.cmml&quot;&gt;)&lt;/mo&gt;
+            &lt;/mrow&gt;
+            &lt;mrow xml:id=&quot;p1.1.m1.1.14.1&quot; xref=&quot;p1.1.m1.1.14.1.cmml&quot;&gt;
+              &lt;mrow xml:id=&quot;p1.1.m1.1.14.1.5&quot; xref=&quot;p1.1.m1.1.14.1.5.cmml&quot;&gt;
+                &lt;mn xml:id=&quot;p1.1.m1.1.14.1.1&quot; xref=&quot;p1.1.m1.1.14.1.1.cmml&quot;&gt;2&lt;/mn&gt;
+                &lt;mo xml:id=&quot;p1.1.m1.1.14.1.5.1&quot; xref=&quot;p1.1.m1.1.14.1.5.1.cmml&quot;&gt;⁢&lt;/mo&gt;
+                &lt;mi xml:id=&quot;p1.1.m1.1.14.1.2&quot; xref=&quot;p1.1.m1.1.14.1.2.cmml&quot;&gt;S&lt;/mi&gt;
+              &lt;/mrow&gt;
+              &lt;mo xml:id=&quot;p1.1.m1.1.14.1.3&quot; xref=&quot;p1.1.m1.1.14.1.3.cmml&quot;&gt;-&lt;/mo&gt;
+              &lt;mn xml:id=&quot;p1.1.m1.1.14.1.4&quot; xref=&quot;p1.1.m1.1.14.1.4.cmml&quot;&gt;2&lt;/mn&gt;
+            &lt;/mrow&gt;
+          &lt;/msup&gt;
+          &lt;mo xml:id=&quot;p1.1.m1.1.28.2.1a&quot; xref=&quot;p1.1.m1.1.28.2.1.cmml&quot;&gt;⁢&lt;/mo&gt;
+          &lt;msup xml:id=&quot;p1.1.m1.1.28.2.3&quot; xref=&quot;p1.1.m1.1.28.2.3.cmml&quot;&gt;
+            &lt;mi xml:id=&quot;p1.1.m1.1.15&quot; xref=&quot;p1.1.m1.1.15.cmml&quot;&gt;e&lt;/mi&gt;
+            &lt;mrow xml:id=&quot;p1.1.m1.1.16.1&quot; xref=&quot;p1.1.m1.1.16.1.cmml&quot;&gt;
+              &lt;mi xml:id=&quot;p1.1.m1.1.16.1.1&quot; xref=&quot;p1.1.m1.1.16.1.1.cmml&quot;&gt;π&lt;/mi&gt;
+              &lt;mo xml:id=&quot;p1.1.m1.1.16.1.3&quot; xref=&quot;p1.1.m1.1.16.1.3.cmml&quot;&gt;⁢&lt;/mo&gt;
+              &lt;mi xml:id=&quot;p1.1.m1.1.16.1.2&quot; xref=&quot;p1.1.m1.1.16.1.2.cmml&quot;&gt;η&lt;/mi&gt;
+            &lt;/mrow&gt;
+          &lt;/msup&gt;
+          &lt;mo xml:id=&quot;p1.1.m1.1.28.2.1b&quot; xref=&quot;p1.1.m1.1.28.2.1.cmml&quot;&gt;⁢&lt;/mo&gt;
+          &lt;msup xml:id=&quot;p1.1.m1.1.28.2.4&quot; xref=&quot;p1.1.m1.1.28.2.4.cmml&quot;&gt;
+            &lt;mrow xml:id=&quot;p1.1.m1.1.28.2.4.2&quot; xref=&quot;p1.1.m1.1.28.2.4.2.cmml&quot;&gt;
+              &lt;mo fence=&quot;true&quot; xml:id=&quot;p1.1.m1.1.28.2.4.2a&quot; xref=&quot;p1.1.m1.1.28.2.4.2.cmml&quot;&gt;|&lt;/mo&gt;
+              &lt;mrow xml:id=&quot;p1.1.m1.1.28.2.4.2.2&quot; xref=&quot;p1.1.m1.1.28.2.4.2.2.cmml&quot;&gt;
+                &lt;mi mathvariant=&quot;normal&quot; xml:id=&quot;p1.1.m1.1.18&quot; xref=&quot;p1.1.m1.1.18.cmml&quot;&gt;Γ&lt;/mi&gt;
+                &lt;mo xml:id=&quot;p1.1.m1.1.28.2.4.2.2.1&quot; xref=&quot;p1.1.m1.1.28.2.4.2.2.1.cmml&quot;&gt;⁢&lt;/mo&gt;
+                &lt;mrow xml:id=&quot;p1.1.m1.1.28.2.4.2.2.2&quot; xref=&quot;p1.1.m1.1.28.2.4.2.2.2.cmml&quot;&gt;
+                  &lt;mo xml:id=&quot;p1.1.m1.1.28.2.4.2.2.2a&quot; xref=&quot;p1.1.m1.1.28.2.4.2.2.2.cmml&quot;&gt;(&lt;/mo&gt;
+                  &lt;mrow xml:id=&quot;p1.1.m1.1.28.2.4.2.2.2b&quot; xref=&quot;p1.1.m1.1.28.2.4.2.2.2.cmml&quot;&gt;
+                    &lt;mi xml:id=&quot;p1.1.m1.1.20&quot; xref=&quot;p1.1.m1.1.20.cmml&quot;&gt;S&lt;/mi&gt;
+                    &lt;mo xml:id=&quot;p1.1.m1.1.21&quot; xref=&quot;p1.1.m1.1.21.cmml&quot;&gt;+&lt;/mo&gt;
+                    &lt;mrow xml:id=&quot;p1.1.m1.1.28.2.4.2.2.2.1&quot; xref=&quot;p1.1.m1.1.28.2.4.2.2.2.1.cmml&quot;&gt;
+                      &lt;mi xml:id=&quot;p1.1.m1.1.22&quot; xref=&quot;p1.1.m1.1.22.cmml&quot;&gt;i&lt;/mi&gt;
+                      &lt;mo xml:id=&quot;p1.1.m1.1.28.2.4.2.2.2.1.1&quot; xref=&quot;p1.1.m1.1.28.2.4.2.2.2.1.1.cmml&quot;&gt;⁢&lt;/mo&gt;
+                      &lt;mi xml:id=&quot;p1.1.m1.1.23&quot; xref=&quot;p1.1.m1.1.23.cmml&quot;&gt;η&lt;/mi&gt;
+                    &lt;/mrow&gt;
+                  &lt;/mrow&gt;
+                  &lt;mo xml:id=&quot;p1.1.m1.1.28.2.4.2.2.2c&quot; xref=&quot;p1.1.m1.1.28.2.4.2.2.2.cmml&quot;&gt;)&lt;/mo&gt;
+                &lt;/mrow&gt;
+              &lt;/mrow&gt;
+              &lt;mo fence=&quot;true&quot; xml:id=&quot;p1.1.m1.1.28.2.4.2b&quot; xref=&quot;p1.1.m1.1.28.2.4.2.cmml&quot;&gt;|&lt;/mo&gt;
+            &lt;/mrow&gt;
+            &lt;mn xml:id=&quot;p1.1.m1.1.26.1&quot; xref=&quot;p1.1.m1.1.26.1.cmml&quot;&gt;2&lt;/mn&gt;
+          &lt;/msup&gt;
+        &lt;/mrow&gt;
+      &lt;/mrow&gt;
+      &lt;mo xml:id=&quot;p1.1.m1.1.28b&quot; xref=&quot;p1.1.m1.1.28.cmml&quot;&gt;,&lt;/mo&gt;
+    &lt;/mrow&gt;
+    &lt;annotation-xml encoding=&quot;MathML-Content&quot; xml:id=&quot;p1.1.m1.1.cmml&quot; xref=&quot;p1.1.m1.1&quot;&gt;
+      &lt;apply xml:id=&quot;p1.1.m1.1.28.cmml&quot; xref=&quot;p1.1.m1.1.28&quot;&gt;
+        &lt;eq xml:id=&quot;p1.1.m1.1.7.cmml&quot; xref=&quot;p1.1.m1.1.7&quot;/&gt;
+        &lt;apply xml:id=&quot;p1.1.m1.1.28.1.cmml&quot; xref=&quot;p1.1.m1.1.28.1&quot;&gt;
+          &lt;times xml:id=&quot;p1.1.m1.1.28.1.1.cmml&quot; xref=&quot;p1.1.m1.1.28.1.1&quot;/&gt;
+          &lt;ci xml:id=&quot;p1.1.m1.1.1.cmml&quot; xref=&quot;p1.1.m1.1.1&quot;&gt;F&lt;/ci&gt;
+          &lt;apply xml:id=&quot;p1.1.m1.1.28.1.2.cmml&quot; xref=&quot;p1.1.m1.1.28.1.2&quot;&gt;
+            &lt;interval closure=&quot;open&quot; xml:id=&quot;p1.1.m1.1.28.1.2.1.cmml&quot;/&gt;
+            &lt;ci xml:id=&quot;p1.1.m1.1.3.cmml&quot; xref=&quot;p1.1.m1.1.3&quot;&gt;Z&lt;/ci&gt;
+            &lt;ci xml:id=&quot;p1.1.m1.1.5.cmml&quot; xref=&quot;p1.1.m1.1.5&quot;&gt;T&lt;/ci&gt;
+          &lt;/apply&gt;
+        &lt;/apply&gt;
+        &lt;apply xml:id=&quot;p1.1.m1.1.28.2.cmml&quot; xref=&quot;p1.1.m1.1.28.2&quot;&gt;
+          &lt;times xml:id=&quot;p1.1.m1.1.28.2.1.cmml&quot; xref=&quot;p1.1.m1.1.28.2.1&quot;/&gt;
+          &lt;apply xml:id=&quot;p1.1.m1.1.8.cmml&quot; xref=&quot;p1.1.m1.1.8&quot;&gt;
+            &lt;divide xml:id=&quot;p1.1.m1.1.8.1.cmml&quot;/&gt;
+            &lt;apply xml:id=&quot;p1.1.m1.1.8.2.cmml&quot; xref=&quot;p1.1.m1.1.8.2&quot;&gt;
+              &lt;times xml:id=&quot;p1.1.m1.1.8.2.7.cmml&quot; xref=&quot;p1.1.m1.1.8.2.7&quot;/&gt;
+              &lt;cn type=&quot;integer&quot; xml:id=&quot;p1.1.m1.1.8.2.1.cmml&quot; xref=&quot;p1.1.m1.1.8.2.1&quot;&gt;2&lt;/cn&gt;
+              &lt;apply xml:id=&quot;p1.1.m1.1.8.2.8.cmml&quot; xref=&quot;p1.1.m1.1.8.2.8&quot;&gt;
+                &lt;plus xml:id=&quot;p1.1.m1.1.8.2.4.cmml&quot; xref=&quot;p1.1.m1.1.8.2.4&quot;/&gt;
+                &lt;cn type=&quot;integer&quot; xml:id=&quot;p1.1.m1.1.8.2.3.cmml&quot; xref=&quot;p1.1.m1.1.8.2.3&quot;&gt;1&lt;/cn&gt;
+                &lt;ci xml:id=&quot;p1.1.m1.1.8.2.5.cmml&quot; xref=&quot;p1.1.m1.1.8.2.5&quot;&gt;S&lt;/ci&gt;
+              &lt;/apply&gt;
+            &lt;/apply&gt;
+            &lt;apply xml:id=&quot;p1.1.m1.1.8.3.cmml&quot; xref=&quot;p1.1.m1.1.8.3&quot;&gt;
+              &lt;times xml:id=&quot;p1.1.m1.1.8.3.9.cmml&quot; xref=&quot;p1.1.m1.1.8.3.9&quot;/&gt;
+              &lt;ci xml:id=&quot;p1.1.m1.1.8.3.1.cmml&quot; xref=&quot;p1.1.m1.1.8.3.1&quot;&gt;normal-Γ&lt;/ci&gt;
+              &lt;apply xml:id=&quot;p1.1.m1.1.8.3.10.cmml&quot; xref=&quot;p1.1.m1.1.8.3.10&quot;&gt;
+                &lt;csymbol cd=&quot;ambiguous&quot; xml:id=&quot;p1.1.m1.1.8.3.10.1.cmml&quot;&gt;superscript&lt;/csymbol&gt;
+                &lt;apply xml:id=&quot;p1.1.m1.1.8.3.10.2.cmml&quot; xref=&quot;p1.1.m1.1.8.3.10.2&quot;&gt;
+                  &lt;plus xml:id=&quot;p1.1.m1.1.8.3.4.cmml&quot; xref=&quot;p1.1.m1.1.8.3.4&quot;/&gt;
+                  &lt;cn type=&quot;integer&quot; xml:id=&quot;p1.1.m1.1.8.3.3.cmml&quot; xref=&quot;p1.1.m1.1.8.3.3&quot;&gt;1&lt;/cn&gt;
+                  &lt;apply xml:id=&quot;p1.1.m1.1.8.3.10.2.1.cmml&quot; xref=&quot;p1.1.m1.1.8.3.10.2.1&quot;&gt;
+                    &lt;times xml:id=&quot;p1.1.m1.1.8.3.10.2.1.1.cmml&quot; xref=&quot;p1.1.m1.1.8.3.10.2.1.1&quot;/&gt;
+                    &lt;cn type=&quot;integer&quot; xml:id=&quot;p1.1.m1.1.8.3.5.cmml&quot; xref=&quot;p1.1.m1.1.8.3.5&quot;&gt;2&lt;/cn&gt;
+                    &lt;ci xml:id=&quot;p1.1.m1.1.8.3.6.cmml&quot; xref=&quot;p1.1.m1.1.8.3.6&quot;&gt;S&lt;/ci&gt;
+                  &lt;/apply&gt;
+                &lt;/apply&gt;
+                &lt;cn type=&quot;integer&quot; xml:id=&quot;p1.1.m1.1.8.3.8.1.cmml&quot; xref=&quot;p1.1.m1.1.8.3.8.1&quot;&gt;2&lt;/cn&gt;
+              &lt;/apply&gt;
+            &lt;/apply&gt;
+          &lt;/apply&gt;
+          &lt;apply xml:id=&quot;p1.1.m1.1.28.2.2.cmml&quot; xref=&quot;p1.1.m1.1.28.2.2&quot;&gt;
+            &lt;csymbol cd=&quot;ambiguous&quot; xml:id=&quot;p1.1.m1.1.28.2.2.1.cmml&quot;&gt;superscript&lt;/csymbol&gt;
+            &lt;apply xml:id=&quot;p1.1.m1.1.28.2.2.2.cmml&quot; xref=&quot;p1.1.m1.1.28.2.2.2&quot;&gt;
+              &lt;times xml:id=&quot;p1.1.m1.1.28.2.2.2.1.cmml&quot; xref=&quot;p1.1.m1.1.28.2.2.2.1&quot;/&gt;
+              &lt;cn type=&quot;integer&quot; xml:id=&quot;p1.1.m1.1.10.cmml&quot; xref=&quot;p1.1.m1.1.10&quot;&gt;2&lt;/cn&gt;
+              &lt;ci xml:id=&quot;p1.1.m1.1.11.cmml&quot; xref=&quot;p1.1.m1.1.11&quot;&gt;p&lt;/ci&gt;
+              &lt;ci xml:id=&quot;p1.1.m1.1.12.cmml&quot; xref=&quot;p1.1.m1.1.12&quot;&gt;ρ&lt;/ci&gt;
+            &lt;/apply&gt;
+            &lt;apply xml:id=&quot;p1.1.m1.1.14.1.cmml&quot; xref=&quot;p1.1.m1.1.14.1&quot;&gt;
+              &lt;minus xml:id=&quot;p1.1.m1.1.14.1.3.cmml&quot; xref=&quot;p1.1.m1.1.14.1.3&quot;/&gt;
+              &lt;apply xml:id=&quot;p1.1.m1.1.14.1.5.cmml&quot; xref=&quot;p1.1.m1.1.14.1.5&quot;&gt;
+                &lt;times xml:id=&quot;p1.1.m1.1.14.1.5.1.cmml&quot; xref=&quot;p1.1.m1.1.14.1.5.1&quot;/&gt;
+                &lt;cn type=&quot;integer&quot; xml:id=&quot;p1.1.m1.1.14.1.1.cmml&quot; xref=&quot;p1.1.m1.1.14.1.1&quot;&gt;2&lt;/cn&gt;
+                &lt;ci xml:id=&quot;p1.1.m1.1.14.1.2.cmml&quot; xref=&quot;p1.1.m1.1.14.1.2&quot;&gt;S&lt;/ci&gt;
+              &lt;/apply&gt;
+              &lt;cn type=&quot;integer&quot; xml:id=&quot;p1.1.m1.1.14.1.4.cmml&quot; xref=&quot;p1.1.m1.1.14.1.4&quot;&gt;2&lt;/cn&gt;
+            &lt;/apply&gt;
+          &lt;/apply&gt;
+          &lt;apply xml:id=&quot;p1.1.m1.1.28.2.3.cmml&quot; xref=&quot;p1.1.m1.1.28.2.3&quot;&gt;
+            &lt;csymbol cd=&quot;ambiguous&quot; xml:id=&quot;p1.1.m1.1.28.2.3.1.cmml&quot;&gt;superscript&lt;/csymbol&gt;
+            &lt;ci xml:id=&quot;p1.1.m1.1.15.cmml&quot; xref=&quot;p1.1.m1.1.15&quot;&gt;e&lt;/ci&gt;
+            &lt;apply xml:id=&quot;p1.1.m1.1.16.1.cmml&quot; xref=&quot;p1.1.m1.1.16.1&quot;&gt;
+              &lt;times xml:id=&quot;p1.1.m1.1.16.1.3.cmml&quot; xref=&quot;p1.1.m1.1.16.1.3&quot;/&gt;
+              &lt;ci xml:id=&quot;p1.1.m1.1.16.1.1.cmml&quot; xref=&quot;p1.1.m1.1.16.1.1&quot;&gt;π&lt;/ci&gt;
+              &lt;ci xml:id=&quot;p1.1.m1.1.16.1.2.cmml&quot; xref=&quot;p1.1.m1.1.16.1.2&quot;&gt;η&lt;/ci&gt;
+            &lt;/apply&gt;
+          &lt;/apply&gt;
+          &lt;apply xml:id=&quot;p1.1.m1.1.28.2.4.cmml&quot; xref=&quot;p1.1.m1.1.28.2.4&quot;&gt;
+            &lt;csymbol cd=&quot;ambiguous&quot; xml:id=&quot;p1.1.m1.1.28.2.4.1.cmml&quot;&gt;superscript&lt;/csymbol&gt;
+            &lt;apply xml:id=&quot;p1.1.m1.1.28.2.4.2.cmml&quot; xref=&quot;p1.1.m1.1.28.2.4.2&quot;&gt;
+              &lt;abs xml:id=&quot;p1.1.m1.1.28.2.4.2.1.cmml&quot;/&gt;
+              &lt;apply xml:id=&quot;p1.1.m1.1.28.2.4.2.2.cmml&quot; xref=&quot;p1.1.m1.1.28.2.4.2.2&quot;&gt;
+                &lt;times xml:id=&quot;p1.1.m1.1.28.2.4.2.2.1.cmml&quot; xref=&quot;p1.1.m1.1.28.2.4.2.2.1&quot;/&gt;
+                &lt;ci xml:id=&quot;p1.1.m1.1.18.cmml&quot; xref=&quot;p1.1.m1.1.18&quot;&gt;normal-Γ&lt;/ci&gt;
+                &lt;apply xml:id=&quot;p1.1.m1.1.28.2.4.2.2.2.cmml&quot; xref=&quot;p1.1.m1.1.28.2.4.2.2.2&quot;&gt;
+                  &lt;plus xml:id=&quot;p1.1.m1.1.21.cmml&quot; xref=&quot;p1.1.m1.1.21&quot;/&gt;
+                  &lt;ci xml:id=&quot;p1.1.m1.1.20.cmml&quot; xref=&quot;p1.1.m1.1.20&quot;&gt;S&lt;/ci&gt;
+                  &lt;apply xml:id=&quot;p1.1.m1.1.28.2.4.2.2.2.1.cmml&quot; xref=&quot;p1.1.m1.1.28.2.4.2.2.2.1&quot;&gt;
+                    &lt;times xml:id=&quot;p1.1.m1.1.28.2.4.2.2.2.1.1.cmml&quot; xref=&quot;p1.1.m1.1.28.2.4.2.2.2.1.1&quot;/&gt;
+                    &lt;ci xml:id=&quot;p1.1.m1.1.22.cmml&quot; xref=&quot;p1.1.m1.1.22&quot;&gt;i&lt;/ci&gt;
+                    &lt;ci xml:id=&quot;p1.1.m1.1.23.cmml&quot; xref=&quot;p1.1.m1.1.23&quot;&gt;η&lt;/ci&gt;
+                  &lt;/apply&gt;
+                &lt;/apply&gt;
+              &lt;/apply&gt;
+            &lt;/apply&gt;
+            &lt;cn type=&quot;integer&quot; xml:id=&quot;p1.1.m1.1.26.1.cmml&quot; xref=&quot;p1.1.m1.1.26.1&quot;&gt;2&lt;/cn&gt;
+          &lt;/apply&gt;
+        &lt;/apply&gt;
+      &lt;/apply&gt;
+    &lt;/annotation-xml&gt;
+    &lt;annotation encoding=&quot;application/x-tex&quot; xml:id=&quot;p1.1.m1.1b&quot; xref=&quot;p1.1.m1.1.cmml&quot;&gt;{\displaystyle F(Z,T)={\frac{2(1+S)}{\Gamma(1+2S)^{2}}}(2p\rho)^{{2S-2}}e^{{%
+\pi\eta}}|\Gamma(S+i\eta)|^{2},}&lt;/annotation&gt;
+  &lt;/semantics&gt;
+&lt;/math&gt;
+
+where {{math|1=''S'' = }}{{sqrt|1 − α&lt;sup&gt;2&lt;/sup&gt; ''Z''&lt;sup&gt;2&lt;/sup&gt;}} (α is the [[fine-structure constant]]), {{math|1= ''η'' = ± α''ZE''/''pc''}} (+ for electrons, − for positrons), {{math|1=''ρ'' = ''r''&lt;sub&gt;''N''&lt;/sub&gt;/ℏ}} ({{mvar|r&lt;sub&gt;N&lt;/sub&gt;}} is the radius of the final state nucleus), and Γ is the [[Gamma function]].
+
+For non-relativistic betas ({{math|''Q'' ≪ ''m''&lt;sub&gt;e&lt;/sub&gt;''c''&lt;sup&gt;2&lt;/sup&gt;}}), this expression can be approximated by:&lt;ref&gt;
+{{cite book
+ |last1=Mott |first1=N. F.
+ |last2=Massey |first2=H. S. W.
+ |year=1933
+ |title=The Theory of Atomic Collisions
+ |publisher=[[Clarendon Press]]
+ |lccn=34001940
+}}&lt;/ref&gt;
+
+:&lt;math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot; id=&quot;p1.1.m1&quot; class=&quot;ltx_Math&quot; alttext=&quot;{\displaystyle F(Z,T)\approx{\frac{2\pi\eta}{1-e^{{-2\pi\eta}}}}.}&quot; display=&quot;inline&quot; xml:id=&quot;p1.1.m1.1&quot; xref=&quot;p1.1.m1.1.cmml&quot;&gt;
+  &lt;semantics xml:id=&quot;p1.1.m1.1a&quot; xref=&quot;p1.1.m1.1.cmml&quot;&gt;
+    &lt;mrow xml:id=&quot;p1.1.m1.1.10&quot; xref=&quot;p1.1.m1.1.10.cmml&quot;&gt;
+      &lt;mrow xml:id=&quot;p1.1.m1.1.10a&quot; xref=&quot;p1.1.m1.1.10.cmml&quot;&gt;
+        &lt;mrow xml:id=&quot;p1.1.m1.1.10.1&quot; xref=&quot;p1.1.m1.1.10.1.cmml&quot;&gt;
+          &lt;mi xml:id=&quot;p1.1.m1.1.1&quot; xref=&quot;p1.1.m1.1.1.cmml&quot;&gt;F&lt;/mi&gt;
+          &lt;mo xml:id=&quot;p1.1.m1.1.10.1.1&quot; xref=&quot;p1.1.m1.1.10.1.1.cmml&quot;&gt;⁢&lt;/mo&gt;
+          &lt;mrow xml:id=&quot;p1.1.m1.1.10.1.2&quot; xref=&quot;p1.1.m1.1.10.1.2.cmml&quot;&gt;
+            &lt;mo xml:id=&quot;p1.1.m1.1.10.1.2a&quot; xref=&quot;p1.1.m1.1.10.1.2.cmml&quot;&gt;(&lt;/mo&gt;
+            &lt;mrow xml:id=&quot;p1.1.m1.1.10.1.2b&quot; xref=&quot;p1.1.m1.1.10.1.2.cmml&quot;&gt;
+              &lt;mi xml:id=&quot;p1.1.m1.1.3&quot; xref=&quot;p1.1.m1.1.3.cmml&quot;&gt;Z&lt;/mi&gt;
+              &lt;mo xml:id=&quot;p1.1.m1.1.10.1.2c&quot; xref=&quot;p1.1.m1.1.10.1.2.cmml&quot;&gt;,&lt;/mo&gt;
+              &lt;mi xml:id=&quot;p1.1.m1.1.5&quot; xref=&quot;p1.1.m1.1.5.cmml&quot;&gt;T&lt;/mi&gt;
+            &lt;/mrow&gt;
+            &lt;mo xml:id=&quot;p1.1.m1.1.10.1.2d&quot; xref=&quot;p1.1.m1.1.10.1.2.cmml&quot;&gt;)&lt;/mo&gt;
+          &lt;/mrow&gt;
+        &lt;/mrow&gt;
+        &lt;mo xml:id=&quot;p1.1.m1.1.7&quot; xref=&quot;p1.1.m1.1.7.cmml&quot;&gt;≈&lt;/mo&gt;
+        &lt;mstyle displaystyle=&quot;true&quot; xml:id=&quot;p1.1.m1.1.8&quot; xref=&quot;p1.1.m1.1.8.cmml&quot;&gt;
+          &lt;mfrac xml:id=&quot;p1.1.m1.1.8a&quot; xref=&quot;p1.1.m1.1.8.cmml&quot;&gt;
+            &lt;mrow xml:id=&quot;p1.1.m1.1.8.2&quot; xref=&quot;p1.1.m1.1.8.2.cmml&quot;&gt;
+              &lt;mn xml:id=&quot;p1.1.m1.1.8.2.1&quot; xref=&quot;p1.1.m1.1.8.2.1.cmml&quot;&gt;2&lt;/mn&gt;
+              &lt;mo xml:id=&quot;p1.1.m1.1.8.2.4&quot; xref=&quot;p1.1.m1.1.8.2.4.cmml&quot;&gt;⁢&lt;/mo&gt;
+              &lt;mi xml:id=&quot;p1.1.m1.1.8.2.2&quot; xref=&quot;p1.1.m1.1.8.2.2.cmml&quot;&gt;π&lt;/mi&gt;
+              &lt;mo xml:id=&quot;p1.1.m1.1.8.2.4a&quot; xref=&quot;p1.1.m1.1.8.2.4.cmml&quot;&gt;⁢&lt;/mo&gt;
+              &lt;mi xml:id=&quot;p1.1.m1.1.8.2.3&quot; xref=&quot;p1.1.m1.1.8.2.3.cmml&quot;&gt;η&lt;/mi&gt;
+            &lt;/mrow&gt;
+            &lt;mrow xml:id=&quot;p1.1.m1.1.8.3&quot; xref=&quot;p1.1.m1.1.8.3.cmml&quot;&gt;
+              &lt;mn xml:id=&quot;p1.1.m1.1.8.3.1&quot; xref=&quot;p1.1.m1.1.8.3.1.cmml&quot;&gt;1&lt;/mn&gt;
+              &lt;mo xml:id=&quot;p1.1.m1.1.8.3.2&quot; xref=&quot;p1.1.m1.1.8.3.2.cmml&quot;&gt;-&lt;/mo&gt;
+              &lt;msup xml:id=&quot;p1.1.m1.1.8.3.5&quot; xref=&quot;p1.1.m1.1.8.3.5.cmml&quot;&gt;
+                &lt;mi xml:id=&quot;p1.1.m1.1.8.3.3&quot; xref=&quot;p1.1.m1.1.8.3.3.cmml&quot;&gt;e&lt;/mi&gt;
+                &lt;mrow xml:id=&quot;p1.1.m1.1.8.3.4.1&quot; xref=&quot;p1.1.m1.1.8.3.4.1.cmml&quot;&gt;
+                  &lt;mo xml:id=&quot;p1.1.m1.1.8.3.4.1.1&quot; xref=&quot;p1.1.m1.1.8.3.4.1.1.cmml&quot;&gt;-&lt;/mo&gt;
+                  &lt;mrow xml:id=&quot;p1.1.m1.1.8.3.4.1.5&quot; xref=&quot;p1.1.m1.1.8.3.4.1.5.cmml&quot;&gt;
+                    &lt;mn xml:id=&quot;p1.1.m1.1.8.3.4.1.2&quot; xref=&quot;p1.1.m1.1.8.3.4.1.2.cmml&quot;&gt;2&lt;/mn&gt;
+                    &lt;mo xml:id=&quot;p1.1.m1.1.8.3.4.1.5.1&quot; xref=&quot;p1.1.m1.1.8.3.4.1.5.1.cmml&quot;&gt;⁢&lt;/mo&gt;
+                    &lt;mi xml:id=&quot;p1.1.m1.1.8.3.4.1.3&quot; xref=&quot;p1.1.m1.1.8.3.4.1.3.cmml&quot;&gt;π&lt;/mi&gt;
+                    &lt;mo xml:id=&quot;p1.1.m1.1.8.3.4.1.5.1a&quot; xref=&quot;p1.1.m1.1.8.3.4.1.5.1.cmml&quot;&gt;⁢&lt;/mo&gt;
+                    &lt;mi xml:id=&quot;p1.1.m1.1.8.3.4.1.4&quot; xref=&quot;p1.1.m1.1.8.3.4.1.4.cmml&quot;&gt;η&lt;/mi&gt;
+                  &lt;/mrow&gt;
+                &lt;/mrow&gt;
+              &lt;/msup&gt;
+            &lt;/mrow&gt;
+          &lt;/mfrac&gt;
+        &lt;/mstyle&gt;
+      &lt;/mrow&gt;
+      &lt;mo xml:id=&quot;p1.1.m1.1.10b&quot; xref=&quot;p1.1.m1.1.10.cmml&quot;&gt;.&lt;/mo&gt;
+    &lt;/mrow&gt;
+    &lt;annotation-xml encoding=&quot;MathML-Content&quot; xml:id=&quot;p1.1.m1.1.cmml&quot; xref=&quot;p1.1.m1.1&quot;&gt;
+      &lt;apply xml:id=&quot;p1.1.m1.1.10.cmml&quot; xref=&quot;p1.1.m1.1.10&quot;&gt;
+        &lt;approx xml:id=&quot;p1.1.m1.1.7.cmml&quot; xref=&quot;p1.1.m1.1.7&quot;/&gt;
+        &lt;apply xml:id=&quot;p1.1.m1.1.10.1.cmml&quot; xref=&quot;p1.1.m1.1.10.1&quot;&gt;
+          &lt;times xml:id=&quot;p1.1.m1.1.10.1.1.cmml&quot; xref=&quot;p1.1.m1.1.10.1.1&quot;/&gt;
+          &lt;ci xml:id=&quot;p1.1.m1.1.1.cmml&quot; xref=&quot;p1.1.m1.1.1&quot;&gt;F&lt;/ci&gt;
+          &lt;apply xml:id=&quot;p1.1.m1.1.10.1.2.cmml&quot; xref=&quot;p1.1.m1.1.10.1.2&quot;&gt;
+            &lt;interval closure=&quot;open&quot; xml:id=&quot;p1.1.m1.1.10.1.2.1.cmml&quot;/&gt;
+            &lt;ci xml:id=&quot;p1.1.m1.1.3.cmml&quot; xref=&quot;p1.1.m1.1.3&quot;&gt;Z&lt;/ci&gt;
+            &lt;ci xml:id=&quot;p1.1.m1.1.5.cmml&quot; xref=&quot;p1.1.m1.1.5&quot;&gt;T&lt;/ci&gt;
+          &lt;/apply&gt;
+        &lt;/apply&gt;
+        &lt;apply xml:id=&quot;p1.1.m1.1.8.cmml&quot; xref=&quot;p1.1.m1.1.8&quot;&gt;
+          &lt;divide xml:id=&quot;p1.1.m1.1.8.1.cmml&quot;/&gt;
+          &lt;apply xml:id=&quot;p1.1.m1.1.8.2.cmml&quot; xref=&quot;p1.1.m1.1.8.2&quot;&gt;
+            &lt;times xml:id=&quot;p1.1.m1.1.8.2.4.cmml&quot; xref=&quot;p1.1.m1.1.8.2.4&quot;/&gt;
+            &lt;cn type=&quot;integer&quot; xml:id=&quot;p1.1.m1.1.8.2.1.cmml&quot; xref=&quot;p1.1.m1.1.8.2.1&quot;&gt;2&lt;/cn&gt;
+            &lt;ci xml:id=&quot;p1.1.m1.1.8.2.2.cmml&quot; xref=&quot;p1.1.m1.1.8.2.2&quot;&gt;π&lt;/ci&gt;
+            &lt;ci xml:id=&quot;p1.1.m1.1.8.2.3.cmml&quot; xref=&quot;p1.1.m1.1.8.2.3&quot;&gt;η&lt;/ci&gt;
+          &lt;/apply&gt;
+          &lt;apply xml:id=&quot;p1.1.m1.1.8.3.cmml&quot; xref=&quot;p1.1.m1.1.8.3&quot;&gt;
+            &lt;minus xml:id=&quot;p1.1.m1.1.8.3.2.cmml&quot; xref=&quot;p1.1.m1.1.8.3.2&quot;/&gt;
+            &lt;cn type=&quot;integer&quot; xml:id=&quot;p1.1.m1.1.8.3.1.cmml&quot; xref=&quot;p1.1.m1.1.8.3.1&quot;&gt;1&lt;/cn&gt;
+            &lt;apply xml:id=&quot;p1.1.m1.1.8.3.5.cmml&quot; xref=&quot;p1.1.m1.1.8.3.5&quot;&gt;
+              &lt;csymbol cd=&quot;ambiguous&quot; xml:id=&quot;p1.1.m1.1.8.3.5.1.cmml&quot;&gt;superscript&lt;/csymbol&gt;
+              &lt;ci xml:id=&quot;p1.1.m1.1.8.3.3.cmml&quot; xref=&quot;p1.1.m1.1.8.3.3&quot;&gt;e&lt;/ci&gt;
+              &lt;apply xml:id=&quot;p1.1.m1.1.8.3.4.1.cmml&quot; xref=&quot;p1.1.m1.1.8.3.4.1&quot;&gt;
+                &lt;minus xml:id=&quot;p1.1.m1.1.8.3.4.1.1.cmml&quot; xref=&quot;p1.1.m1.1.8.3.4.1.1&quot;/&gt;
+                &lt;apply xml:id=&quot;p1.1.m1.1.8.3.4.1.5.cmml&quot; xref=&quot;p1.1.m1.1.8.3.4.1.5&quot;&gt;
+                  &lt;times xml:id=&quot;p1.1.m1.1.8.3.4.1.5.1.cmml&quot; xref=&quot;p1.1.m1.1.8.3.4.1.5.1&quot;/&gt;
+                  &lt;cn type=&quot;integer&quot; xml:id=&quot;p1.1.m1.1.8.3.4.1.2.cmml&quot; xref=&quot;p1.1.m1.1.8.3.4.1.2&quot;&gt;2&lt;/cn&gt;
+                  &lt;ci xml:id=&quot;p1.1.m1.1.8.3.4.1.3.cmml&quot; xref=&quot;p1.1.m1.1.8.3.4.1.3&quot;&gt;π&lt;/ci&gt;
+                  &lt;ci xml:id=&quot;p1.1.m1.1.8.3.4.1.4.cmml&quot; xref=&quot;p1.1.m1.1.8.3.4.1.4&quot;&gt;η&lt;/ci&gt;
+                &lt;/apply&gt;
+              &lt;/apply&gt;
+            &lt;/apply&gt;
+          &lt;/apply&gt;
+        &lt;/apply&gt;
+      &lt;/apply&gt;
+    &lt;/annotation-xml&gt;
+    &lt;annotation encoding=&quot;application/x-tex&quot; xml:id=&quot;p1.1.m1.1b&quot; xref=&quot;p1.1.m1.1.cmml&quot;&gt;{\displaystyle F(Z,T)\approx{\frac{2\pi\eta}{1-e^{{-2\pi\eta}}}}.}&lt;/annotation&gt;
+  &lt;/semantics&gt;
+&lt;/math&gt;
+
+Other approximations can be found in the literature.&lt;ref&gt;
+{{cite journal
+ |last1=Venkataramaiah |first1=P.
+ |last2=Gopala |first2=K.
+ |last3=Basavaraju |first3=A.
+ |last4=Suryanarayana |first4=S. S.
+ |last5=Sanjeeviah |first5=H.
+ |year=1985
+ |title=A simple relation for the Fermi function
+ |journal=[[Journal of Physics G]]
+ |volume=11 |issue=3 |pages=359–364
+ |bibcode=1985JPhG...11..359V
+ |doi=10.1088/0305-4616/11/3/014
+}}&lt;/ref&gt;&lt;ref&gt;
+{{cite journal
+ |last1=Schenter |first1=G. K.
+ |last2=Vogel |first2=P.
+ |year=1983
+ |title=A simple approximation of the fermi function in nuclear beta decay
+ |journal=[[Nuclear Science and Engineering]]
+ |volume=83 |issue=3 |pages=393–396
+ |arxiv=
+ |bibcode=
+ |doi=
+ |osti=5307377
+}}&lt;/ref&gt;
+
+===Kurie plot=== &lt;!-- Note: Kurie is correct (see References below); no relation to the Curies --&gt;
+
+A '''Kurie plot''' (also known as a '''Fermi–Kurie plot''') is a graph used in studying beta decay developed by [[Franz N. D. Kurie]], in which the square root of the number of beta particles whose momenta (or energy) lie within a certain narrow range, divided by the Fermi function, is plotted against beta-particle energy. It is a straight line for allowed transitions and some forbidden transitions, in accord with the Fermi beta-decay theory. The energy-axis (x-axis) intercept of a Kurie plot corresponds to the maximum energy imparted to the electron/positron (the decay's {{mvar|Q}}-value).
+
+==History==
+
+===Discovery and characterization of β&lt;sup&gt;−&lt;/sup&gt; decay===
+Radioactivity was discovered in 1896 by [[Henri Becquerel]] in uranium, and subsequently observed by [[Marie Curie|Marie]] and [[Pierre Curie]] in thorium and in the new elements polonium and radium.
+In 1899 [[Ernest Rutherford]] separated radioactive emissions into two types: alpha and beta (now beta minus), based on penetration of objects and ability to cause ionization. Alpha rays could be stopped by thin sheets of paper or aluminium, whereas beta rays could penetrate several millimetres of aluminium. (In 1900 [[Paul Villard]] identified a still more penetrating type of radiation, which Rutherford identified as a fundamentally new type in 1903, and termed [[gamma ray]]s).
+
+In 1900 Becquerel measured the [[mass-to-charge ratio]] ({{math|''m''/''e''}}) for beta particles by the method of [[J.J.&amp;nbsp;Thomson]] used to study cathode rays and identify the electron. He found that {{math|''m''/''e''}} for a beta particle is the same as for Thomson’s electron, and therefore suggested that the beta particle is in fact an electron.
+
+In 1901 Rutherford and [[Frederick Soddy]] showed that alpha and beta radioactivity involves the [[Nuclear transmutation|transmutation]] of atoms into atoms of other chemical elements. In 1913, after the products of more radioactive decays were known, Soddy and [[Kazimierz Fajans]] independently proposed their [[Radioactive displacement law of Fajans and Soddy|radioactive displacement law]], which states that beta (i.e. {{SubatomicParticle|Beta-}})&amp;nbsp;emission from one element produces another element one place to the right in the [[periodic table]], while alpha emission produces an element two places to the left.
+
+===Neutrinos in beta decay===
+
+Historically, the study of beta decay provided the first physical evidence of the [[neutrino]]. In 1911 [[Lise Meitner]] and [[Otto Hahn]] performed an experiment that showed that the energies of electrons emitted by beta decay had a continuous rather than discrete spectrum.  This was in apparent contradiction to the [[law of conservation of energy]], as it appeared that energy was lost in the beta decay process.  A second problem was that the [[spin (physics)|spin]] of the [[nitrogen-14]] atom was 1, in contradiction to the Rutherford prediction of ½.
+
+In 1920–1927, [[Charles Drummond Ellis]] (along with [[James Chadwick]] and colleagues) established clearly that the beta decay spectrum is really continuous, ending all controversies. It also had an effective upper bound in energy, which was a severe blow to Bohr's suggestion that conservation of energy might be true only in a statistical sense, and might be violated in any given decay. Now the problem of how to account for the variability of energy in known beta decay products, as well as for conservation of momentum and angular momentum in the process, became acute.
+
+In a [[Electron neutrino#Pauli's letter|famous letter]] written in 1930 [[Wolfgang Pauli]] suggested that in addition to electrons and protons atoms also contained an extremely light neutral particle which he called the neutron. He suggested that this &quot;neutron&quot; was also emitted during beta decay (thus accounting for the known missing energy, momentum, and angular momentum) and had simply not yet been observed. In 1931 [[Enrico Fermi]] renamed Pauli's &quot;neutron&quot; to neutrino, and in 1934 Fermi published a very successful [[Fermi's interaction|model of beta decay]] in which neutrinos were produced. The neutrino interaction with matter was so weak that detecting it proved a severe experimental challenge, and was not accomplished until 1956. However, the properties of neutrinos were (with a few minor modifications) as predicted by Pauli and Fermi.
+
+===Discovery of other types of beta decay===
+In 1934 [[Frédéric Joliot-Curie|Frédéric]] and [[Irène Joliot-Curie]] bombarded aluminium with alpha particles to effect the nuclear reaction {{Nuclide2|Helium|4}}&amp;nbsp;+&amp;nbsp;{{Nuclide2|Aluminium|27}}&amp;nbsp;→ {{Nuclide2|Phosphorus|30}}&amp;nbsp;+&amp;nbsp;{{Nuclide2|neutronium|1}}, and observed that the product isotope {{Nuclide2|Phosphorus|30}} emits a positron identical to those found in cosmic rays by [[Carl David Anderson]] in 1932. This was the first example of {{SubatomicParticle|Beta+}}&amp;nbsp;decay ([[positron emission]]), which they termed artificial radioactivity since {{Nuclide2|Phosphorus|30}} is a short-lived nuclide which does not exist in nature.
+
+The theory of [[electron capture]] was first discussed by [[Gian-Carlo Wick]] in a 1934 paper, and then developed by [[Hideki Yukawa]] and others. K-electron capture was first observed in 1937 by [[Luis Walter Alvarez|Luis Alvarez]], in the nuclide &lt;sup&gt;48&lt;/sup&gt;V.&lt;ref name=k&gt;
+{{cite book
+ |last=Segré |first=E.
+ |year=1987
+ |chapter=K-Electron Capture by Nuclei
+ |editor1-last=Trower |editor1-first=P. W.
+ |title=Discovering Alvarez: Selected Works of Luis W. Alvarez
+ |pages=11–12
+ |publisher=[[University of Chicago Press]]
+ |isbn=978-0-226-81304-2
+}}&lt;/ref&gt;&lt;ref&gt;
+{{cite web
+ |title=The Nobel Prize in Physics 1968: Luis Alvarez
+ |url=http://nobelprize.org/nobel_prizes/physics/laureates/1968/alvarez-bio.html
+ |publisher=[[The Nobel Foundation]]
+ |accessdate=2009-10-07
+}}&lt;/ref&gt;&lt;ref&gt;
+{{cite journal
+ |last1=Alvarez |first1=L. W.
+ |year=1937
+ |title=Nuclear K Electron Capture
+ |journal=[[Physical Review]]
+ |volume=52 |issue=2 |pages=134–135
+ |bibcode=1937PhRv...52..134A
+ |doi=10.1103/PhysRev.52.134
+}}&lt;/ref&gt; Alvarez went on to study electron capture in &lt;sup&gt;67&lt;/sup&gt;Ga and other nuclides.&lt;ref name=k /&gt;&lt;ref&gt;
+{{cite journal
+ |last1=Alvarez |first1=L. W.
+ |year=1938
+ |title=Electron Capture and Internal Conversion in Gallium 67
+ |journal=[[Physical Review]]
+ |volume=53 |issue=7 |pages=606
+ |bibcode=1938PhRv...53..606A
+ |doi=10.1103/PhysRev.53.606
+}}&lt;/ref&gt;&lt;ref&gt;
+{{cite journal
+ |last1=Alvarez|first1=L. W.
+ |year=1938
+ |title=The Capture of Orbital Electrons by Nuclei
+ |journal=[[Physical Review]]
+ |volume=54 |issue=7 |pages=486–497
+ |arxiv=
+ |bibcode=1938PhRv...54..486A
+ |doi=10.1103/PhysRev.54.486
+}}&lt;/ref&gt;
+
+==See also==
+
+*[[Double beta decay]]
+*[[Electron capture]]
+*[[Neutrino]]
+*[[Alpha decay]]
+*[[Betavoltaics]]
+*[[Particle radiation]]
+*[[Radionuclide]]
+*[[Tritium illumination]], a form of [[fluorescent lighting]] powered by beta decay
+
+==References==
+{{ref begin}}
+* {{cite journal
+ |last1=Kurie |first1=F. N. D. |authorlink=Franz N. D. Kurie
+ |last2=Richardson |first2=J. R.
+ |last3=Paxton |first3=H. C.
+ |year=1936
+ |title=The Radiations Emitted from Artificially Produced Radioactive Substances. I. The Upper Limits and Shapes of the β-Ray Spectra from Several Elements
+ |journal=[[Physical Review]]
+ |volume=49 |issue=5 |pages=368–381
+ |bibcode=1936PhRv...49..368K
+ |doi=10.1103/PhysRev.49.368
+}}
+*{{cite journal
+ |last1=Kurie |first1=F. N. D. |authorlink=Franz N. D. Kurie
+ |year=1948
+ |title=On the Use of the Kurie Plot
+ |journal=[[Physical Review]]
+ |volume=73 |issue=10 |page=1207
+ |bibcode=1948PhRv...73.1207K
+ |doi=10.1103/PhysRev.73.1207
+}} 
+*{{cite book
+ |last=Tuli |first=J. K.
+ |title=Nuclear Wallet Cards
+ |url=http://www.nndc.bnl.gov/wallet/wall35.pdf
+ |edition=8th
+ |year=2011
+ |publisher=[[Brookhaven National Laboratory]]
+}}
+{{ref end}}
+{{reflist}}
+
+== External links ==
+* [[Image:Ndslivechart.png]] '''[http://www-nds.iaea.org/livechart The Live Chart of Nuclides - IAEA ]''' with filter on decay type
+* [http://thesciencedictionary.org/beta-disintegration-energy/ Definition of Beta Disintegration (Decay)] at [http://thesciencedictionary.org Science Dictionary]
+
+{{Nuclear processes}}
+
+{{DEFAULTSORT:Beta Decay}}
+[[Category:Nuclear physics]]
+[[Category:Radioactivity]]
+
+[[de:Betazerfall]]</text>
+      <sha1>d0536b2igt7yxxi2rxc7a985ecagpzv</sha1>
+      <model>wikitext</model>
+      <format>text/x-wiki</format>
+    </revision>
+  </page>
+</mediawiki>
+
