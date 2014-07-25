@@ -2,25 +2,42 @@ package de.tuberlin.dima.schubotz.wiki.mappers;
 
 import de.tuberlin.dima.schubotz.wiki.types.WikiQueryTuple;
 import eu.stratosphere.api.java.DataSet;
+import org.junit.Ignore;
 import org.junit.Test;
 
 
 /**
- * Used to test WikiQueryMapper
+ * Used to test WikiQueryMapper on the query sets.
+ * If running tests on full query set, the others should be @Ignore annotated.
+ * TODO parameterize this test
  */
 public class WikiQueryMapTest extends WikiAbstractSubprocessTest {
-    /*@Test
+    @Ignore
     public void testFullQuery() throws Exception {
         String inputFilename = "de/tuberlin/dima/schubotz/wiki/mappers/wikiQuery.xml";
         String expectedOutputFilename = "de/tuberlin/dima/schubotz/wiki/mappers/wikiQuery.expected.xml";
         DataSet<String> data = getCleanedData(inputFilename);
         DataSet<WikiQueryTuple> outputSet = data.flatMap(new WikiQueryMapper(STR_SPLIT));
         testDataMap(outputSet, expectedOutputFilename);
-    }*/
+    }
     @Test
+    /**
+     * Tests on queries with known problems with MathMLCan.
+     */
     public void testSpecialQuery() throws Exception {
-        String inputFilename = "de/tuberlin/dima/schubotz/wiki/mappers/wikiQuerySpecial.xml";
-        String expectedOutputFilename = "de/tuberlin/dima/schubotz/wiki/mappers/wikiQuerySpecial.expected.xml";
+        String inputFilename = "de/tuberlin/dima/schubotz/wiki/mappers/wikiSpecialQuery.xml";
+        String expectedOutputFilename = "de/tuberlin/dima/schubotz/wiki/mappers/wikiSpecialQuery.expected.xml";
+        DataSet<String> data = getCleanedData(inputFilename);
+        DataSet<WikiQueryTuple> outputSet = data.flatMap(new WikiQueryMapper(STR_SPLIT));
+        testDataMap(outputSet, expectedOutputFilename);
+    }
+    @Ignore
+    /**
+     * Tests on first two queries.
+     */
+    public void testQuickQuery() throws Exception {
+        String inputFilename = "de/tuberlin/dima/schubotz/wiki/mappers/wikiQuickQuery.xml";
+        String expectedOutputFilename = "de/tuberlin/dima/schubotz/wiki/mappers/wikiQuickQuery.expected.xml";
         DataSet<String> data = getCleanedData(inputFilename);
         DataSet<WikiQueryTuple> outputSet = data.flatMap(new WikiQueryMapper(STR_SPLIT));
         testDataMap(outputSet, expectedOutputFilename);
