@@ -66,15 +66,15 @@ public class WikiMapper extends FlatMapFunction<String, WikiTuple> {
 		}
 		
 		Elements MathElements = doc.select("math");
-		if (MathElements == null) {
+		if (MathElements.isEmpty()) {
 			if (LOG.isWarnEnabled()) {
 				LOG.warn("Unable to find math tags: " + in);
 			}
 			return;
 		}
 
-        StringBuilder latex,cmml,pmml;
-        latex = cmml = pmml = new StringBuilder();
+        StringBuilder outputLatex,cmml,pmml;
+        outputLatex = cmml = pmml = new StringBuilder();
 		for (Element MathElement : MathElements) {
             //Assume only one root element and that it is <semantic>
             Element SemanticElement = null;
@@ -127,7 +127,6 @@ public class WikiMapper extends FlatMapFunction<String, WikiTuple> {
                 }
 			}
             String curLatex,curCmml,curPmml;
-            curLatex = curCmml = curPmml = null;
             try {
                 curLatex = ExtractHelper.extractLatex(LatexElements, STR_SPLIT);
 			    curCmml = ExtractHelper.extractCanonicalizedDoc(CmmlElements);
@@ -145,12 +144,12 @@ public class WikiMapper extends FlatMapFunction<String, WikiTuple> {
                 }
                 return;
             } else{
-                latex.append(curLatex);
-                cmml.append(curCmml);
-                pmml.append(curPmml);
+                outputLatex = outputLatex.append(curLatex);
+                cmml = cmml.append(curCmml);
+                pmml = pmml.append(curPmml);
             }
 		} //End loop of MathElement : MathElements
 
-		out.collect(new WikiTuple(docID, latex.toString(), cmml.toString(), pmml.toString()));
+		out.collect(new WikiTuple(docID, outputLatex.toString(), cmml.toString(), pmml.toString()));
 	}
 }
