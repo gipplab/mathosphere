@@ -62,6 +62,10 @@ public class WikiProgram {
      * Used for line splitting so that CsvReader is not looking for "\n" in XML
      */
     public static final String CSV_LINE_SEPARATOR = "<E>";
+    /**
+     * Used for field splitting so that CsvReader doesn't get messed up on comma latex tokens
+     */
+    public static final String CSV_FIELD_SEPARATOR = " , ";
 	/**
 	 * HashMultiset for storing preprocessed data of latex token : count 
 	 * of documents containing token

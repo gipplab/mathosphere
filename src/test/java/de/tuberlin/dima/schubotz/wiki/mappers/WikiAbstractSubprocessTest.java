@@ -36,6 +36,7 @@ public abstract class WikiAbstractSubprocessTest {
     private static String QUERY_SEPARATOR = WikiProgram.QUERY_SEPARATOR;
     private static String WIKI_SEPARATOR = WikiProgram.WIKI_SEPARATOR;
     private static String CSV_LINE_SEPARATOR = WikiProgram.CSV_LINE_SEPARATOR;
+    private static String CSV_FIELD_SEPARATOR = WikiProgram.CSV_FIELD_SEPARATOR;
     private static Log LOG = LogFactory.getLog(WikiAbstractSubprocessTest.class);
 
     private ExecutionEnvironment env = ExecutionEnvironment.getExecutionEnvironment();
@@ -43,10 +44,11 @@ public abstract class WikiAbstractSubprocessTest {
     protected void testDataMap(DataSet<?> outputSet,
                                String expectedOutputFile) throws Exception {
 
-        //File outputFile = File.createTempFile("testProcessOutput", "csv");
+        //File outputFile = File.createTempFile(this.getClass().getSimpleName(), "csv");
         //outputFile.deleteOnExit();
         File outputFile = new File("/home/jjl4/", "csv");
-        outputSet.writeAsCsv(outputFile.getCanonicalPath(), CSV_LINE_SEPARATOR, ",", FileSystem.WriteMode.OVERWRITE);
+        outputSet.writeAsCsv(outputFile.getCanonicalPath(), CSV_LINE_SEPARATOR,
+                CSV_FIELD_SEPARATOR, FileSystem.WriteMode.OVERWRITE);
 
         Plan plan = env.createProgramPlan();
         LocalExecutor.execute(plan);
