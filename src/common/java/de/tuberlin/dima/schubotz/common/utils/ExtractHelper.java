@@ -2,6 +2,7 @@ package de.tuberlin.dima.schubotz.common.utils;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.StringTokenizer;
@@ -20,7 +21,8 @@ import cz.muni.fi.mir.mathmlcanonicalization.MathMLCanonicalizer;
 
 public class ExtractHelper {
 	//XML configuration file for canonicalizer
-    static InputStream configInputStream = ExtractHelper.class.getResourceAsStream("/de/tuberlin/dima/schubotz/common/canonicalizer-config.xml");
+    static InputStream configInputStream = ExtractHelper.class.getClassLoader()
+            .getResourceAsStream("de/tuberlin/dima/schubotz/common/utils/canonicalizer-config.xml");
 	static MathMLCanonicalizer canonicalizer;
 
 	static {
