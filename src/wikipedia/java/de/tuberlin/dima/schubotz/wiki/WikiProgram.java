@@ -58,6 +58,10 @@ public class WikiProgram {
 	 * Used to split input into stratosphere for queries
 	 */
 	public static final String QUERY_SEPARATOR = "</topic>";
+    /**
+     * Used for line splitting so that CsvReader is not looking for "\n" in XML
+     */
+    public static final String CSV_LINE_SEPARATOR = "<E>";
 	/**
 	 * HashMultiset for storing preprocessed data of latex token : count 
 	 * of documents containing token

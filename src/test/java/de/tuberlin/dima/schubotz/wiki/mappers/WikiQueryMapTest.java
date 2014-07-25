@@ -15,8 +15,8 @@ public class WikiQueryMapTest extends WikiAbstractSubprocessTest {
     @Ignore
     public void testFullQuery() throws Exception {
         String inputFilename = "de/tuberlin/dima/schubotz/wiki/mappers/wikiQuery.xml";
-        String expectedOutputFilename = "de/tuberlin/dima/schubotz/wiki/mappers/wikiQuery.expected.xml";
-        DataSet<String> data = getCleanedData(inputFilename);
+        String expectedOutputFilename = "de/tuberlin/dima/schubotz/wiki/mappers/wikiQuery.expected.csv";
+        DataSet<String> data = (DataSet<String>) getCleanedData(inputFilename);
         DataSet<WikiQueryTuple> outputSet = data.flatMap(new WikiQueryMapper(STR_SPLIT));
         testDataMap(outputSet, expectedOutputFilename);
     }
@@ -26,8 +26,8 @@ public class WikiQueryMapTest extends WikiAbstractSubprocessTest {
      */
     public void testSpecialQuery() throws Exception {
         String inputFilename = "de/tuberlin/dima/schubotz/wiki/mappers/wikiSpecialQuery.xml";
-        String expectedOutputFilename = "de/tuberlin/dima/schubotz/wiki/mappers/wikiSpecialQuery.expected.xml";
-        DataSet<String> data = getCleanedData(inputFilename);
+        String expectedOutputFilename = "de/tuberlin/dima/schubotz/wiki/mappers/wikiSpecialQuery.expected.csv";
+        DataSet<String> data = (DataSet<String>) getCleanedData(inputFilename);
         DataSet<WikiQueryTuple> outputSet = data.flatMap(new WikiQueryMapper(STR_SPLIT));
         testDataMap(outputSet, expectedOutputFilename);
     }
@@ -37,8 +37,8 @@ public class WikiQueryMapTest extends WikiAbstractSubprocessTest {
      */
     public void testQuickQuery() throws Exception {
         String inputFilename = "de/tuberlin/dima/schubotz/wiki/mappers/wikiQuickQuery.xml";
-        String expectedOutputFilename = "de/tuberlin/dima/schubotz/wiki/mappers/wikiQuickQuery.expected.xml";
-        DataSet<String> data = getCleanedData(inputFilename);
+        String expectedOutputFilename = "de/tuberlin/dima/schubotz/wiki/mappers/wikiQuickQuery.expected.csv";
+        DataSet<String> data = (DataSet<String>) getCleanedData(inputFilename);
         DataSet<WikiQueryTuple> outputSet = data.flatMap(new WikiQueryMapper(STR_SPLIT));
         testDataMap(outputSet, expectedOutputFilename);
     }
