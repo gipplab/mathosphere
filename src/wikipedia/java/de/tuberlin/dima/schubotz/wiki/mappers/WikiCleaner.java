@@ -39,6 +39,8 @@ public class WikiCleaner extends FlatMapFunction<String, String> {
 		if (!in.endsWith("</page>")) {
 			in += "</page>";
 		}
+        //Articles come with all math in escaped form (e.g. &lt;math&gt;)
+        in = HtmlUtils.htmlUnescape(in);
 		out.collect(in);
 	}
 }
