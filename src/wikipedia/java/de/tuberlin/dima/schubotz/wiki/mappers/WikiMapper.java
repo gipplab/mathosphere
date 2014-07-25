@@ -80,11 +80,11 @@ public class WikiMapper extends FlatMapFunction<String, WikiTuple> {
             Element SemanticElement = null;
             try {
                 SemanticElement = MathElement.child(0);
-            } catch (NullPointerException e) {
+            } catch (Exception e) {
                 if (LOG.isWarnEnabled()) {
-					LOG.warn("Unable to find semantics elements: " + in); //TODO check if this is common
+					LOG.warn("Unable to find semantics elements: " + docID + ": " + MathElement.text()); //TODO check if this is common
 				}
-                return;
+                continue;
             }
             if (MathElement.children().size() > 1) {
                 if (LOG.isWarnEnabled()) {
@@ -151,5 +151,8 @@ public class WikiMapper extends FlatMapFunction<String, WikiTuple> {
 		} //End loop of MathElement : MathElements
 
 		out.collect(new WikiTuple(docID, outputLatex.toString(), cmml.toString(), pmml.toString()));
+        if (LOG.isInfoEnabled()) {
+            LOG.info(docID + " complete!");
+        }
 	}
 }
