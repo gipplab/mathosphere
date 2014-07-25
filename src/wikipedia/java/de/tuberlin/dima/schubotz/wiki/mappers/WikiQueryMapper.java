@@ -117,6 +117,7 @@ public class WikiQueryMapper extends FlatMapFunction<String,WikiQueryTuple>{
 		} catch (Exception e) {
 			if (LOG.isWarnEnabled()) {
 				LOG.warn("Canonicalizer failed. Outputting tuple with blank cmml and pmml.");
+                e.printStackTrace();
 			}
 		}
 		
