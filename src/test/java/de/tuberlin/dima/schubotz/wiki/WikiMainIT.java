@@ -44,7 +44,7 @@ public class WikiMainIT {
 
 	@Test
 	public void TestLocalExecution() throws Exception {
-		String wikiInput = inputDir + "de.tuberlin.dima.schubotz.wiki/mappers/augmentedWikiDump.xml";
+		String wikiInput = inputDir + "de.tuberlin.dima.schubotz.wiki/mappers/wikiAugmentedDump.xml";
 		String wikiMapInput = inputDir + "latexWikiMap.csv";
 		String wikiOutput = outputDir + "wikiProgramOutput.csv";
 		try {
