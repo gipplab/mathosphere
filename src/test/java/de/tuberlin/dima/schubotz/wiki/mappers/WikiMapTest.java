@@ -3,6 +3,7 @@ package de.tuberlin.dima.schubotz.wiki.mappers;
 import de.tuberlin.dima.schubotz.wiki.types.WikiQueryTuple;
 import de.tuberlin.dima.schubotz.wiki.types.WikiTuple;
 import eu.stratosphere.api.java.DataSet;
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -14,7 +15,7 @@ public class WikiMapTest extends WikiAbstractSubprocessTest {
     /**
      * Test on first two wikis.
      */
-    @Test
+    @Ignore
     public void testQuickDataset() throws Exception {
         String inputFilename = "de/tuberlin/dima/schubotz/wiki/mappers/wikiQuickDump.xml";
         String expectedOutputFilename = "de/tuberlin/dima/schubotz/wiki/mappers/wikiQuickDump.expected.csv";
@@ -22,5 +23,27 @@ public class WikiMapTest extends WikiAbstractSubprocessTest {
         DataSet<WikiTuple> outputSet = data.flatMap(new WikiMapper(STR_SPLIT));
         testDataMap(outputSet, expectedOutputFilename);
 
+    }
+    /**
+     * Test on full wiki set. Make sure to change inputFilename to wherever dataset is located.
+     */
+    @Ignore
+    public void testFullDataset() throws Exception {
+        String inputFilename = "/home/jjl4/wikiAugmentedDump.xml";
+        String expectedOutputFilename = "de/tuberlin/dima/schubotz/wiki/mappers/wikiAugmentedDump.expected.csv";
+        DataSet<String> data = (DataSet<String>) getCleanedData(inputFilename);
+        DataSet<WikiTuple> outputSet = data.flatMap(new WikiMapper(STR_SPLIT));
+        testDataMap(outputSet, expectedOutputFilename);
+    }
+    /**
+     * Test on known problem wikis.
+     */
+    @Test
+    public void testSpecialDataset() throws Exception {
+        String inputFilename = "de/tuberlin/dima/schubotz/wiki/mappers/wikiSpecialDump.xml";
+        String expectedOutputFilename = "de/tuberlin/dima/schubotz/wiki/mappers/wikiSpecialDump.expected.csv";
+        DataSet<String> data = (DataSet<String>) getCleanedData(inputFilename);
+        DataSet<WikiTuple> outputSet = data.flatMap(new WikiMapper(STR_SPLIT));
+        testDataMap(outputSet, expectedOutputFilename);
     }
 }
