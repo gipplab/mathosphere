@@ -21,10 +21,6 @@ import eu.stratosphere.util.Collector;
 @SuppressWarnings("serial")
 public class WikiMapper extends FlatMapFunction<String, WikiTuple> {
 	/**
-	 * Hashset of all query latex, taken from broadcast variable
-	 */
-	HashSet<String> latex;
-	/**
 	 * See {@link de.tuberlin.dima.schubotz.wiki.WikiProgram#STR_SPLIT}
 	 */
 	String STR_SPLIT;
@@ -38,19 +34,6 @@ public class WikiMapper extends FlatMapFunction<String, WikiTuple> {
 		this.STR_SPLIT = STR_SPLIT;
 	}
 
-	@Override
-	public void open(Configuration parameters) {
-		latex = new HashSet<String>();
-		Collection<WikiQueryTuple> queries = getRuntimeContext().getBroadcastVariable( "Queries" );
-		for (WikiQueryTuple query : queries) {
-			String[] tokens = query.getLatex().split(STR_SPLIT); //get list of latex
-			for ( String token : tokens ) {
-				if (!token.equals("")) {
-					latex.add(token);
-				}
-			}
-		}
-	}
 	/**
 	 * Takes in wiki string, parses wikiID and latex
 	 */
