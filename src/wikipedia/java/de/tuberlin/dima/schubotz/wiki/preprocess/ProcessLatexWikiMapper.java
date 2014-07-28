@@ -24,14 +24,14 @@ import eu.stratosphere.util.Collector;
  * later.
  */
 @SuppressWarnings("serial")
-public class LatexWikiMapper extends FlatMapFunction<String,Tuple2<String,Integer>>{
+public class ProcessLatexWikiMapper extends FlatMapFunction<String,Tuple2<String,Integer>>{
 	private String STR_SPLIT;
 	private HashSet<String> latex;
 	
-	Log LOG = LogFactory.getLog(LatexWikiMapper.class);
+	Log LOG = LogFactory.getLog(ProcessLatexWikiMapper.class);
 	
 	@SuppressWarnings("hiding")
-	public LatexWikiMapper(String STR_SPLIT) {
+	public ProcessLatexWikiMapper(String STR_SPLIT) {
 		this.STR_SPLIT = STR_SPLIT;
 	}
 	@Override
