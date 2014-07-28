@@ -3,6 +3,7 @@ package de.tuberlin.dima.schubotz.wiki;
 import java.io.IOException;
 import java.util.regex.Pattern;
 
+import de.tuberlin.dima.schubotz.common.utils.CSVHelper;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -10,11 +11,9 @@ import com.google.common.collect.HashMultiset;
 
 import de.tuberlin.dima.schubotz.common.mappers.OutputSimple;
 import de.tuberlin.dima.schubotz.common.types.OutputSimpleTuple;
-import de.tuberlin.dima.schubotz.common.utils.CSVMultisetHelper;
 import de.tuberlin.dima.schubotz.fse.types.ResultTuple;
 import de.tuberlin.dima.schubotz.wiki.mappers.QueryWikiMatcher;
 import de.tuberlin.dima.schubotz.wiki.mappers.WikiCleaner;
-import de.tuberlin.dima.schubotz.wiki.mappers.WikiMapper;
 import de.tuberlin.dima.schubotz.wiki.mappers.WikiQueryCleaner;
 import de.tuberlin.dima.schubotz.wiki.mappers.WikiQueryMapper;
 import de.tuberlin.dima.schubotz.wiki.types.WikiQueryTuple;
@@ -105,6 +104,10 @@ public class WikiProgram {
 	 * Input path and filename for preprocessed csv
 	 */
 	static String latexWikiMapInput;
+    /**
+     * Input path and filename for preprocessed tuples
+     */
+    static String tupleWikiInput;
 	/**
 	 * Total number of wikipedia files
 	 */
@@ -126,16 +129,18 @@ public class WikiProgram {
 				: "file:///mnt/ntcir-math/queries/wikiQuery.xml");
 		latexWikiMapInput = (args.length > 4 ? args[4]
 				: "file:///mnt/ntcir-math/queries/latexWikiMap.csv");
+        tupleWikiInput = (args.length > 5 ? args[5]
+                : "file:///mnt/ntcir-math/queries/tupleWikiMap.csv");
 		try {
-			numWiki = Integer.valueOf(args[5]); 
+			numWiki = Integer.valueOf(args[6]);
 		} catch (Exception e) {
 			if (LOG.isWarnEnabled()) {
 				LOG.warn("numWiki not given as parameter or is not a number, defaulting to 30040");
 			}
 			numWiki = 30040;
 		}
-		debug = (args.length > 6 ? 
-				(args[5].equals("debug") ? true : false)
+		debug = (args.length > 7 ?
+				(args[7].equals("debug") ? true : false)
 				: false);
 	}
 
@@ -162,14 +167,9 @@ public class WikiProgram {
 
 		
 		//Generate latexWikiMap from preprocessed files
-		latexWikiMultiset = CSVMultisetHelper.csvToMultiset(latexWikiMapInput);
-		
-		
-		formatWiki.setDelimiter(WIKI_SEPARATOR); //this will leave a null doc at the end and a useless doc at the beginning. also, each will be missing a </page>
-		DataSet<String> rawWikiText = new DataSource<>( env, formatWiki, BasicTypeInfo.STRING_TYPE_INFO );
-		
-		//Clean up and format wikitext 
-		DataSet<String> cleanWikiText = rawWikiText.flatMap(new WikiCleaner());
+		latexWikiMultiset = CSVHelper.csvToMultiset(latexWikiMapInput);
+		//TODO generate wikituple from preprocessed files
+        DataSet<WikiTuple> wikiSet = CSVHelper.csvToWikiTuple(tupleWikiInput);
 		
 		TextInputFormat formatQuery = new TextInputFormat(new Path(wikiQueryInput));
 		formatQuery.setDelimiter(QUERY_SEPARATOR); //this will leave a System.getProperty("line.separator")</topics> at the end as well as header info at the begin 
@@ -177,10 +177,7 @@ public class WikiProgram {
 		
 		//Clean up and format queries 
 		DataSet<String> cleanWikiQueryText = rawWikiQueryText.flatMap(new WikiQueryCleaner());
-		
-		
 		DataSet<WikiQueryTuple> wikiQuerySet = cleanWikiQueryText.flatMap(new WikiQueryMapper(STR_SPLIT));
-		DataSet<WikiTuple> wikiSet = cleanWikiText.flatMap(new WikiMapper(STR_SPLIT));
 
 		DataSet<ResultTuple> matches = wikiSet.flatMap(new QueryWikiMatcher(STR_SPLIT, latexWikiMultiset, numWiki, debug))
 									  .withBroadcastSet(wikiQuerySet, "Queries");
