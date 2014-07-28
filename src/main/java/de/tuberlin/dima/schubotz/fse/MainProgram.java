@@ -5,6 +5,7 @@ import java.util.regex.Pattern;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPathExpressionException;
 
+import de.tuberlin.dima.schubotz.common.utils.CSVHelper;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -12,7 +13,6 @@ import com.google.common.collect.HashMultiset;
 
 import de.tuberlin.dima.schubotz.common.mappers.OutputSimple;
 import de.tuberlin.dima.schubotz.common.types.OutputSimpleTuple;
-import de.tuberlin.dima.schubotz.common.utils.CSVMultisetHelper;
 import de.tuberlin.dima.schubotz.fse.mappers.DocCleaner;
 import de.tuberlin.dima.schubotz.fse.mappers.QueryCleaner;
 import de.tuberlin.dima.schubotz.fse.mappers.QueryMapper;
@@ -177,8 +177,8 @@ public class MainProgram {
 		env = ExecutionEnvironment.getExecutionEnvironment();
 		
 		//Set of keywords and latex contained in document and queries, mapped to counts of how many documents contain each token
-		keywordDocsMultiset = CSVMultisetHelper.csvToMultiset(keywordDocsMapInput);
-		latexDocsMultiset = CSVMultisetHelper.csvToMultiset(latexDocsMapInput);
+		keywordDocsMultiset = CSVHelper.csvToMultiset(keywordDocsMapInput);
+		latexDocsMultiset = CSVHelper.csvToMultiset(latexDocsMapInput);
 		
 		TextInputFormat format = new TextInputFormat(new Path(docsInput));
 		format.setDelimiter(DOCUMENT_SEPARATOR);
