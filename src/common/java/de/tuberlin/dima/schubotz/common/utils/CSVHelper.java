@@ -5,6 +5,8 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
+import de.tuberlin.dima.schubotz.wiki.types.WikiTuple;
+import eu.stratosphere.api.java.DataSet;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -13,8 +15,8 @@ import com.google.common.collect.HashMultiset;
 /**
  * Helper for preprocessed generated CSV files
  */
-public class CSVMultisetHelper {
-	public static Log LOG = LogFactory.getLog(CSVMultisetHelper.class);
+public class CSVHelper {
+	public static Log LOG = LogFactory.getLog(CSVHelper.class);
 	/**
 	 * @param in path + name of file to read from
 	 * @return HashMultiset, where index is first CSV field, count is second CSV field
@@ -39,4 +41,8 @@ public class CSVMultisetHelper {
         br.close();
         return out;
 	}
+
+    public static DataSet<WikiTuple> csvToWikiTuple(String in) throws FileNotFoundException, IOException {
+
+    }
 }
