@@ -121,7 +121,7 @@ public class WikiMapTestProgram {
 		noSubTasks = (args.length > 0 ? Integer.parseInt( args[0] )
 				: 16);
 		output = (args.length > 1 ? args[1]
-				: "file://mnt/ntcir-math/test-output/WikiMapTestProgramOUT-" + System.currentTimeMillis() + ".csv");
+				: "file:///mnt/ntcir-math/test-output/WikiMapTestProgramOUT-" + System.currentTimeMillis() + ".csv");
 		wikiInput = (args.length > 2 ? args[2]
 				: "file:///mnt/ntcir-math/testdata/augmentedWikiDump.xml");
 		wikiQueryInput = (args.length > 3 ? args[3]
