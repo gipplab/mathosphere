@@ -1,9 +1,6 @@
 package de.tuberlin.dima.schubotz.common.utils;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.InputStream;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.StringTokenizer;
 
@@ -156,9 +153,11 @@ public class ExtractHelper {
 	 */
 	public static String extractCanonicalizedDoc(Elements elements) throws Exception {
         String doc = elements.toString(); //toString escapes HTML entities
-		InputStream input = new ByteArrayInputStream(doc.getBytes(StandardCharsets.UTF_8));
+        int length = doc.length();
+		InputStream input = new BufferedInputStream(
+                new ByteArrayInputStream(doc.getBytes(StandardCharsets.UTF_8)),doc.length());
 		ByteArrayOutputStream output = new ByteArrayOutputStream();
 		canonicalizer.canonicalize(input,output);
-        return output.toString(StandardCharsets.UTF_8.displayName());
+        return output.toString(StandardCharsets.UTF_8.toString());
 	}
 }
