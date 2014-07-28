@@ -12,11 +12,11 @@ import java.net.URI;
 import java.util.Arrays;
 import java.util.Collection;
 
+import de.tuberlin.dima.schubotz.wiki.preprocess.ProcessWikiProgram;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
-import de.tuberlin.dima.schubotz.wiki.preprocess.ProcessWiki;
 import eu.stratosphere.api.common.Plan;
 import eu.stratosphere.api.java.ExecutionEnvironment;
 import eu.stratosphere.client.LocalExecutor;
@@ -47,20 +47,20 @@ public class ProcessWikiIT {
 		}
 		try {
 			String wikiQueryInput = "file://" + getClass().getClassLoader().getResources("de/tuberlin/dima/schubotz/wiki/mappers/wikiQuery.xml").nextElement().getPath();
-			ProcessWiki.parseArgs(new String[]{"16",
-											   debugWikiInput,
-											   wikiQueryInput,
-											   debugLatexOutput,
-											   debugNumWikiOutput,
-											   "debug"});
+			ProcessWikiProgram.parseArgs(new String[]{"16",
+                    debugWikiInput,
+                    wikiQueryInput,
+                    debugLatexOutput,
+                    debugNumWikiOutput,
+                    "debug"});
 		} catch (IOException e) {
 			e.printStackTrace();
 			fail("Missing input files IO Exception");
 			return;
 		}
 		try {
-			ProcessWiki.ConfigurePlan();
-	        ExecutionEnvironment env = ProcessWiki.getExecutionEnvironment();
+			ProcessWikiProgram.ConfigurePlan();
+	        ExecutionEnvironment env = ProcessWikiProgram.getExecutionEnvironment();
 	        Plan plan = env.createProgramPlan();
 	        LocalExecutor.execute(plan);
 		} catch (Exception e) {
