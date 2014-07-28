@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.regex.Pattern;
 
+import de.tuberlin.dima.schubotz.wiki.types.WikiTuple;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -31,6 +32,7 @@ public class ProcessWikiProgram {
 	static String wikiQueryInput;
 	static String latexWikiMapOutput;
 	static String numWikiOutput;
+    static String tupleWikiMapOutput;
 	static boolean debug;
 	
 	static ExecutionEnvironment env;
@@ -40,6 +42,14 @@ public class ProcessWikiProgram {
 	
 	public static final String WIKI_SEPARATOR = WikiProgram.WIKI_SEPARATOR;
 	public static final String QUERY_SEPARATOR = WikiProgram.QUERY_SEPARATOR;
+     /**
+     * Used for line splitting so that CsvReader is not looking for "\n" in XML
+     */
+    public static final String CSV_LINE_SEPARATOR = WikiProgram.CSV_LINE_SEPARATOR;
+    /**
+     * Used for field splitting so that CsvReader doesn't get messed up on comma latex tokens
+     */
+    public static final String CSV_FIELD_SEPARATOR = WikiProgram.CSV_FIELD_SEPARATOR;
 	
 	
 	public static void parseArgs(String[] args) {
@@ -53,8 +63,10 @@ public class ProcessWikiProgram {
 			: "file:///mnt/ntcir-math/queries/latexWikiMap.csv");
 		numWikiOutput = (args.length > 4 ? args[4]
 			: "file:///mnt/ntcir-math/queries/numWiki.txt");
-		debug = (args.length > 5 ? 
-					(args[5].equals("debug") ? true : false)
+        tupleWikiMapOutput = (args.length > 5 ? args[5]
+            : "file:///mnt/ntcir-math/queries/tupleWikiMap.csv");
+		debug = (args.length > 6 ?
+					(args[6].equals("debug") ? true : false)
 				: false);
 		
 	}
@@ -80,19 +92,22 @@ public class ProcessWikiProgram {
 		TextInputFormat formatWiki = new TextInputFormat(new Path(wikiInput));
 		formatWiki.setDelimiter(WIKI_SEPARATOR); //this will leave a null doc at the end and a useless doc at the beginning. also, each will be missing a </page>
 		DataSet<String> rawWikiText = new DataSource<>( env, formatWiki, BasicTypeInfo.STRING_TYPE_INFO );
-		DataSet<String> cleanWikiText = rawWikiText.flatMap(new WikiCleaner());		
+		DataSet<String> cleanWikiText = rawWikiText.flatMap(new WikiCleaner());
+
+
 		TextInputFormat formatQuery = new TextInputFormat(new Path(wikiQueryInput));
 		formatQuery.setDelimiter(QUERY_SEPARATOR); //this will leave a System.getProperty("line.separator")</topics> at the end as well as header info at the begin 
 		DataSet<String> rawWikiQueryText = new DataSource<>(env, formatQuery, BasicTypeInfo.STRING_TYPE_INFO);
 		DataSet<String> cleanWikiQueryText = rawWikiQueryText.flatMap(new WikiQueryCleaner());
-		
 		DataSet<WikiQueryTuple> wikiQuerySet = cleanWikiQueryText.flatMap(new WikiQueryMapper(STR_SPLIT));
 		
 		DataSet<Tuple2<String,Integer>> latexWikiResults = cleanWikiText.flatMap(new ProcessLatexWikiMapper(STR_SPLIT))
 																		.withBroadcastSet(wikiQuerySet, "Queries")
 																		.groupBy(0) //group by latex
 																		.aggregate(Aggregations.SUM,1); //sum counts
-		
+
+        DataSet<WikiTuple> wikiSet = cleanWikiText.flatMap(new ProcessWikiMapper(STR_SPLIT));
+
 		//Count total number of documents and output
 		cleanWikiText.map(new MapFunction<String,Integer>() {
 			@Override
@@ -106,6 +121,7 @@ public class ProcessWikiProgram {
 			}
 		}).writeAsText(numWikiOutput,WriteMode.OVERWRITE);
 		
-		latexWikiResults.writeAsCsv(latexWikiMapOutput, "\n", " ", WriteMode.OVERWRITE); 
+		latexWikiResults.writeAsCsv(latexWikiMapOutput, CSV_LINE_SEPARATOR, CSV_FIELD_SEPARATOR, WriteMode.OVERWRITE);
+        wikiSet.writeAsCsv(tupleWikiMapOutput, CSV_LINE_SEPARATOR, CSV_FIELD_SEPARATOR, WriteMode.OVERWRITE);
 	}
 }
