@@ -1,8 +1,9 @@
-package de.tuberlin.dima.schubotz.wiki.mappers;
+package de.tuberlin.dima.schubotz.wiki.preprocess;
 
-import java.util.Collection;
-import java.util.HashSet;
-
+import de.tuberlin.dima.schubotz.common.utils.ExtractHelper;
+import de.tuberlin.dima.schubotz.wiki.types.WikiTuple;
+import eu.stratosphere.api.java.functions.FlatMapFunction;
+import eu.stratosphere.util.Collector;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.jsoup.Jsoup;
@@ -11,26 +12,19 @@ import org.jsoup.nodes.Element;
 import org.jsoup.parser.Parser;
 import org.jsoup.select.Elements;
 
-import de.tuberlin.dima.schubotz.common.utils.ExtractHelper;
-import de.tuberlin.dima.schubotz.wiki.types.WikiQueryTuple;
-import de.tuberlin.dima.schubotz.wiki.types.WikiTuple;
-import eu.stratosphere.api.java.functions.FlatMapFunction;
-import eu.stratosphere.configuration.Configuration;
-import eu.stratosphere.util.Collector;
-
 @SuppressWarnings("serial")
-public class WikiMapper extends FlatMapFunction<String, WikiTuple> {
+public class ProcessWikiMapper extends FlatMapFunction<String, WikiTuple> {
 	/**
 	 * See {@link de.tuberlin.dima.schubotz.wiki.WikiProgram#STR_SPLIT}
 	 */
 	String STR_SPLIT;
-	Log LOG = LogFactory.getLog(WikiMapper.class);
+	Log LOG = LogFactory.getLog(ProcessWikiMapper.class);
 	
 	/**
 	 * @param {@link de.tuberlin.dima.schubotz.wiki.WikiProgram#STR_SPLIT} passed in to ensure serializability
 	 */
 	@SuppressWarnings("hiding")
-	public WikiMapper (String STR_SPLIT) {
+	public ProcessWikiMapper(String STR_SPLIT) {
 		this.STR_SPLIT = STR_SPLIT;
 	}
 
