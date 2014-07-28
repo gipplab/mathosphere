@@ -114,9 +114,19 @@
 						<goals>
 							<goal>shade</goal>
 						</goals>
+                        <!-- Minimize jar seems to break things
 						<configuration>
 							<minimizeJar>true</minimizeJar>
+                            <filters>
+                                <filter>
+                                    <artifact>cz.muni.fi.mir:mathml-canonicalizer</artifact>
+                                    <includes>
+                                        <include>**</include>
+                                    </includes>
+                                </filter>
+                            </filters>
 						</configuration>
+						-->
 					</execution>
 				</executions>
 			</plugin>
