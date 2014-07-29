@@ -13,12 +13,17 @@ import org.jsoup.parser.Parser;
 import org.jsoup.select.Elements;
 
 @SuppressWarnings("serial")
+/**
+ * Map wiki text to {@link de.tuberlin.dima.schubotz.wiki.types.WikiTuple}
+ */
 public class ProcessWikiMapper extends FlatMapFunction<String, WikiTuple> {
 	/**
 	 * See {@link de.tuberlin.dima.schubotz.wiki.WikiProgram#STR_SPLIT}
 	 */
-	String STR_SPLIT;
-	Log LOG = LogFactory.getLog(ProcessWikiMapper.class);
+	private final String STR_SPLIT;
+    private final String namespace = "http://www.w3.org/1998/Math/MathML";
+    private final String namespace_tag = "xmlns:m";
+	private final Log LOG = LogFactory.getLog(ProcessWikiMapper.class);
 	
 	/**
 	 * @param {@link de.tuberlin.dima.schubotz.wiki.WikiProgram#STR_SPLIT} passed in to ensure serializability
@@ -32,15 +37,16 @@ public class ProcessWikiMapper extends FlatMapFunction<String, WikiTuple> {
 	 * Takes in wiki string, parses wikiID and latex
 	 */
 	@Override
-	public void flatMap (String in, Collector<WikiTuple> out) throws Exception {
-		Document doc;
+	public void flatMap (String in, Collector<WikiTuple> out) {
+		final Document doc;
 		
 		try {
 			doc = Jsoup.parse(in, "", Parser.xmlParser()); //using jsoup b/c wiki html is invalid, also handles entities
-		} catch (Exception e) {
+		} catch (final RuntimeException e) {
 			if (LOG.isWarnEnabled()) {
 				LOG.warn("Unable to parse XML in wiki: " + in);
 			}
+            e.printStackTrace();
 			return;
 		}
 	    String docID;
@@ -51,15 +57,15 @@ public class ProcessWikiMapper extends FlatMapFunction<String, WikiTuple> {
             docID = "this_was_null";
         } else {
             docID = doc.select("title").first().text();
+            if (docID == null) {
+                if (LOG.isWarnEnabled()) {
+                    LOG.warn("docID was null, assigning this_was_null: " + in);
+                }
+                docID = "this_was_null";
+            }
         }
-		if (docID == null) {
-			if (LOG.isWarnEnabled()) {
-				LOG.warn("docID was null, assigning this_was_null: " + in);
-			}
-			docID = "this_was_null";
-		}
-		
-		Elements MathElements = doc.select("math");
+
+		final Elements MathElements = doc.select("math");
 		if (MathElements.isEmpty()) {
 			if (LOG.isWarnEnabled()) {
 				LOG.warn("Unable to find math tags: " + in);
@@ -67,68 +73,67 @@ public class ProcessWikiMapper extends FlatMapFunction<String, WikiTuple> {
 			return;
 		}
 
-        StringBuilder outputLatex,cmml,pmml;
-        outputLatex = cmml = pmml = new StringBuilder();
-		for (Element MathElement : MathElements) {
+        StringBuilder outputLatex = new StringBuilder();
+        StringBuilder cmml = new StringBuilder();
+        StringBuilder pmml = new StringBuilder();
+		for (final Element MathElement : MathElements) {
             //Assume only one root element and that it is <semantic>
-            Element SemanticElement = null;
+            Element SemanticElement;
             try {
                 SemanticElement = MathElement.child(0);
-            } catch (Exception e) {
+            } catch (final RuntimeException e) {
                 if (LOG.isWarnEnabled()) {
-					LOG.warn("Unable to find semantics elements: " + docID + ": " + MathElement.text()); //TODO check if this is common
+					LOG.warn("Unable to find semantics elements: " + docID + ": " + MathElement.text());
 				}
+                e.printStackTrace();
                 continue;
             }
             if (MathElement.children().size() > 1) {
                 if (LOG.isWarnEnabled()) {
-					LOG.warn("Multiple elements under math: " + in); //TODO check if this is common
+					LOG.warn("Multiple elements under math: " + in);
 				}
             }
-			Elements MMLElements = SemanticElement.children();
+			final Elements MMLElements = SemanticElement.children();
 			
-			Elements PmmlElements = new Elements(); //how are we handling multiple math tags per wiki?
-			Elements CmmlElements = new Elements();
-            Elements LatexElements = new Elements();
-            String encoding = "";
+			final Elements PmmlElements = new Elements(); //how are we handling multiple math tags per wiki?
+			final Elements CmmlElements = new Elements();
+            final Elements LatexElements = new Elements();
 			//All data is well formed: 1) Presentation MML 2) annotation-CMML 3) annotation-TEX
 		    //Any element not under annotation tag is Presentation MML
-		    for (Element curElement : MMLElements) {
-                encoding = curElement.attr("encoding"); //TODO is this necessary?
+		    for (final Element curElement : MMLElements) {
                 try {
-                    if (curElement.tagName().equals("annotation-xml")) {
-                        if (encoding.equals("MathML-Content")) {
-                            //add namespace information
-                            //Again, always assuming one root element per MathML type
-                            //E.g. there will never be two <mrow> elements under <annotation-xml>
-                            curElement.child(0).attr("xmlns:m", "http://www.w3.org/1998/Math/MathML"); //add namespace information
-                            CmmlElements.add(curElement.child(0));
-                        }
-                    } else if (curElement.tagName().equals("annotation")) {
-                        if (encoding.equals("application/x-tex")) {
-                            curElement.attr("xmlns:m", "http://www.w3.org/1998/Math/MathML"); //add namespace information
-                            LatexElements.add(curElement); //keep annotation tags
-                        }
+                    if ("annotation-xml".equals(curElement.tagName())) {
+                        //MathML-Content
+                        //Again, always assuming one root element per MathML type
+                        //E.g. there will never be two <mrow> elements under <annotation-xml>
+                        //Add namespace information so canonicalizer can parse it
+                        curElement.child(0).attr(namespace_tag, namespace);
+                        CmmlElements.add(curElement.child(0));
+                    } else if ("annotation".equals(curElement.tagName())) {
+                        curElement.attr(namespace_tag, namespace);
+                        LatexElements.add(curElement); //keep annotation tags b/c parsed by ExtractLatex
                     } else {
-                        curElement.attr("xmlns:m", "http://www.w3.org/1998/Math/MathML");
+                        curElement.attr(namespace_tag, namespace);
                         PmmlElements.add(curElement);
                     }
-                } catch (Exception e) {
+                } catch (final RuntimeException e) {
                     if (LOG.isWarnEnabled()) {
                         LOG.warn("Badly formatted wiki xml: " + in);
                     }
+                    e.printStackTrace();
                     return;
                 }
 			}
-            String curLatex,curCmml,curPmml;
+            final String curLatex,curCmml,curPmml;
             try {
                 curLatex = ExtractHelper.extractLatex(LatexElements, STR_SPLIT);
 			    curCmml = ExtractHelper.extractCanonicalizedDoc(CmmlElements);
 			    curPmml = ExtractHelper.extractCanonicalizedDoc(PmmlElements);
-            } catch (Exception e) {
+            } catch (final Exception e) {
                 if (LOG.isWarnEnabled()) {
                     LOG.warn("Extraction/canonicalization failed. Exiting: " + in);
                 }
+                e.printStackTrace();
                 return;
             }
 
