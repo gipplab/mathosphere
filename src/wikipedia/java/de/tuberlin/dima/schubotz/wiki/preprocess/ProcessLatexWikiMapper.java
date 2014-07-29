@@ -70,5 +70,6 @@ public class ProcessLatexWikiMapper extends FlatMapFunction<String,Tuple2<String
 				}
 			}
 		}
+        LOG.info("One latex done.");
 	}
 }
