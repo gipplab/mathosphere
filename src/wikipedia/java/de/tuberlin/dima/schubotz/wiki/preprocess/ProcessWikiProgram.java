@@ -71,14 +71,15 @@ public class ProcessWikiProgram {
 		
 	}
 	public static void main(String[] args) throws Exception {
+        LOG.info("Starting!");
+         //Get the jvm heap size.
+        long heapSize = Runtime.getRuntime().maxMemory();
+        //Print the jvm heap size.
+        System.out.println("Heap Size = " + heapSize/1000./1000.);
+
+        Log LOG = LogFactory.getLog(ProcessWikiProgram.class);
 		parseArgs(args);
-		try {
-			ConfigurePlan();
-		} catch (IOException e) {
-			LOG.fatal("IO exception", e);
-		} finally {
-			System.exit(1);
-		}
+		ConfigurePlan();
 		env.setDegreeOfParallelism(noSubTasks);
 		env.execute("MathosphereWiki Process Data");
 		System.exit(1);
