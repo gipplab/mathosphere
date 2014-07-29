@@ -8,8 +8,8 @@ import com.google.common.collect.HashMultiset;
 /**
  * Helper class for calculating TFIDF scores
  */
-public class TFIDFHelper {
-	private static Log LOG = LogFactory.getLog(TFIDFHelper.class);
+public class ComparisonHelper {
+	private static Log LOG = LogFactory.getLog(ComparisonHelper.class);
 	
 	/**
 	 * @param queryTokens
