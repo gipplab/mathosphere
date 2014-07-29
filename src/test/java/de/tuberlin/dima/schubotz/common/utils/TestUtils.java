@@ -31,13 +31,15 @@ public class TestUtils {
     }
 
     static String getFileContents(String fname) throws IOException {
-        InputStream is = TestUtils.class.getClassLoader().getResourceAsStream(fname);
-        Scanner s = new Scanner(is, "UTF-8");
-        s.useDelimiter("\\A");
-        String out = s.hasNext() ? s.next() : "";
-        s.close();
-        is.close();
-        return out;
+        final InputStream is = TestUtils.class.getClassLoader().getResourceAsStream(fname);
+        try {
+            final Scanner s = new Scanner(is, "UTF-8");
+            //Stupid scanner tricks to read the entire file as one token
+            s.useDelimiter("\\A");
+            return s.hasNext() ? s.next() : "";
+        }finally{
+            is.close();
+        }
     }
     
     public static int countLines(String filename) throws IOException {
