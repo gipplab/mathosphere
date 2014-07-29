@@ -60,4 +60,12 @@ public class ComparisonHelper {
 		
 	}
 
+    public static double calculateMMLScore(String wikiMML, String queryMML) {
+        return 0.;
+    }
+    public static double calculatePMMLScore(String wikiPMML, String queryPMML) {
+
+        return 0.;
+    }
+
 }
