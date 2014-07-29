@@ -110,9 +110,11 @@ public class ProcessWikiMapper extends FlatMapFunction<String, WikiTuple> {
                         curElement.child(0).attr(namespace_tag, namespace);
                         CmmlElements.add(curElement.child(0));
                     } else if ("annotation".equals(curElement.tagName())) {
+                        //Latex
                         curElement.attr(namespace_tag, namespace);
                         LatexElements.add(curElement); //keep annotation tags b/c parsed by ExtractLatex
                     } else {
+                        //PMML (not wrapped in annotation)
                         curElement.attr(namespace_tag, namespace);
                         PmmlElements.add(curElement);
                     }
