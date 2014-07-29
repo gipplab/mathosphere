@@ -3,12 +3,12 @@ package de.tuberlin.dima.schubotz.fse.mappers;
 import java.util.Arrays;
 import java.util.Collection;
 
+import de.tuberlin.dima.schubotz.common.utils.ComparisonHelper;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.google.common.collect.HashMultiset;
 
-import de.tuberlin.dima.schubotz.common.utils.TFIDFHelper;
 import de.tuberlin.dima.schubotz.fse.MainProgram;
 import de.tuberlin.dima.schubotz.fse.types.QueryTuple;
 import de.tuberlin.dima.schubotz.fse.types.ResultTuple;
@@ -98,14 +98,14 @@ public class QuerySectionMatcher extends FlatMapFunction<SectionTuple,ResultTupl
 			}
 			if (!sectionLatex.isEmpty()) {
 				queryLatex = HashMultiset.create(Arrays.asList(query.getLatex().split(STR_SPLIT)));
-				latexScore = TFIDFHelper.calculateTFIDFScore(queryLatex, sectionLatex, latexDocsMultiset, numDocs, debug);
+				latexScore = ComparisonHelper.calculateTFIDFScore(queryLatex, sectionLatex, latexDocsMultiset, numDocs, debug);
 			} else {
 				latexScore = 0.;
 			}
 			
 			if (!sectionKeywords.isEmpty()) {
 				queryKeywords = HashMultiset.create(Arrays.asList(query.getKeywords().split(STR_SPLIT)));
-				keywordScore = TFIDFHelper.calculateTFIDFScore(queryKeywords, sectionKeywords, keywordDocsMultiset, numDocs, debug);
+				keywordScore = ComparisonHelper.calculateTFIDFScore(queryKeywords, sectionKeywords, keywordDocsMultiset, numDocs, debug);
 			} else {
 				keywordScore = 0.;
 			}

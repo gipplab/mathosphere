@@ -1,10 +1,11 @@
-package de.tuberlin.dima.schubotz.utils;
+package de.tuberlin.dima.schubotz.common.utils;
 
 import static de.tuberlin.dima.schubotz.common.utils.XMLHelper.getIdentifiersFromCmml;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import de.tuberlin.dima.schubotz.common.utils.TestUtils;
 import junit.framework.TestCase;
 
 import org.w3c.dom.Node;
