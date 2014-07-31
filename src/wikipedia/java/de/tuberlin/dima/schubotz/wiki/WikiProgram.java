@@ -60,12 +60,12 @@ public class WikiProgram {
     /**
      * Used for line splitting so that CsvReader is not looking for "\n" in XML
      */
-    public static final String CSV_LINE_SEPARATOR = "<E>";
+    public static final String CSV_LINE_SEPARATOR = "\u001E";
     /**
      * Used for field splitting so that CsvReader doesn't get messed up on comma latex tokens
-     * Hopefully no wikipedian will use the latin small letter a with diaresis and macron
      */
-    public static final String CSV_FIELD_SEPARATOR = "\u01DF";
+    public static final String CSV_FIELD_SEPARATOR = "\u001F";
+    //public static final String CSV_FIELD_SEPARATOR = "\u01DF";
 	/**
 	 * HashMultiset for storing preprocessed data of latex token : count 
 	 * of documents containing token
