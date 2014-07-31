@@ -1,9 +1,21 @@
 package de.tuberlin.dima.schubotz.common.utils;
 
+import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.google.common.collect.HashMultiset;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.nodes.Node;
+import org.jsoup.nodes.TextNode;
+import org.jsoup.parser.Parser;
+import org.jsoup.select.NodeVisitor;
+
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Helper class for calculating TFIDF scores
@@ -60,14 +72,60 @@ public class ComparisonHelper {
 		
 	}
 
-    public static double calculateMMLScore(String wikiMML, String queryMML) {
-        return 0.;
+    /**
+     * Basic implementation of leaf node matching.
+     * //TODO implement multiple scoring functions, make them modular and swappable
+     * @param wikiMML stringified mathml of wiki
+     * @param queryMML stringified mathml of query
+     * @return numMatch number of leaf nodes in wiki that also occur in query. does not take into account repeats
+     */
+    public static int calculateMMLScore(String wikiMML, String queryMML) {
+        //HashSet containing leaf node text for comparison
+        final Collection<String> leafNodes = new HashSet<>();
+        final Document wikiDoc = Jsoup.parse(wikiMML, "", Parser.xmlParser());
+        final Document queryDoc = Jsoup.parse(queryMML, "", Parser.xmlParser());
+
+        //Drill down to leaf nodes in query, add to hashset
+        queryDoc.traverse(new NodeVisitor() {
+            @Override
+            public void head(Node node, int depth) {
+                if (node.childNodes().isEmpty()) {
+                    //Hit leaf element
+                    //TODO implement own version of jsoup to fix this nasty workaround?
+                    final String text = Jsoup.parseBodyFragment(node.outerHtml()).text().trim();
+                    if (!(text.equals(null) || text.equals(""))) {
+                        leafNodes.add(text);
+                    }
+                }
+            }
+            @Override
+            public void tail(Node node, int depth) {
+                //Do nothing, already added
+            }
+        });
+
+        //Java closure workaround
+        final int[] score = {0};
+        //Drill down to leaf nodes in wiki, if in query hashset add to score
+        wikiDoc.traverse(new NodeVisitor() {
+            @Override
+            public void head(Node node, int depth) {
+                if (node.childNodes().isEmpty()) {
+                    //Hit leaf element
+                    if (leafNodes.contains(Jsoup.parseBodyFragment(node.outerHtml()).text())) {
+                        score[0] = score[0] + 1;
+                    }
+                }
+            }
+            @Override
+            public void tail(Node node, int depth) {
+            }
+        });
+
+        return score[0];
     }
 
     public static double calculatePMMLScore(String wikiPMML, String queryPMML) {
         return 0.;
     }
-
-
-
 }
