@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/math-tests.iml" filepath="$PROJECT_DIR$/math-tests.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../MathMLCan/mathml-canonicalizer.iml" filepath="$PROJECT_DIR$/../MathMLCan/mathml-canonicalizer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../testing/src/testing.iml" filepath="$PROJECT_DIR$/../testing/src/testing.iml" />
+    </modules>
+  </component>
+</project>
+
