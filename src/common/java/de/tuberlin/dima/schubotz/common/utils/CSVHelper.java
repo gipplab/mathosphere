@@ -1,9 +1,7 @@
 package de.tuberlin.dima.schubotz.common.utils;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
+import java.util.Scanner;
 
 import de.tuberlin.dima.schubotz.wiki.WikiProgram;
 import de.tuberlin.dima.schubotz.wiki.types.WikiTuple;
@@ -32,20 +30,27 @@ public class CSVHelper {
 	 */
 	public static HashMultiset<String> csvToMultiset(String in) throws FileNotFoundException, IOException {
 		HashMultiset<String> out = HashMultiset.create();
-		BufferedReader br = new BufferedReader(new FileReader(in));
-        String line = "";
-        while ((line = br.readLine()) != null) {
-        	String[] parts = line.split(String.valueOf(CSV_FIELD_SEPARATOR));
-        	try {
-        		out.add(parts[0], Integer.valueOf(parts[1]).intValue());
-        	} catch (NullPointerException e) {
-        		if (LOG.isWarnEnabled()) {
-        			LOG.warn("Non integer in CSV!");
-        		}
-        		continue;
-        	}
+        final InputStream is = new FileInputStream(in);
+        try {
+            final Scanner s = new Scanner(is, "UTF-8");
+            s.useDelimiter("\\A");
+            //TODO more hacks, make this more efficient?
+            String[] lines = s.next().split(CSV_LINE_SEPARATOR);
+            for (String line : lines) {
+                String[] parts = line.split(String.valueOf(CSV_FIELD_SEPARATOR));
+                try {
+                    out.add(parts[0], Integer.valueOf(parts[1]).intValue());
+                } catch (ArrayIndexOutOfBoundsException e) {
+                    if (LOG.isWarnEnabled()) {
+                        LOG.warn("Bad format in CSV!");
+                        LOG.warn("Line: " + line);
+                    }
+                    continue;
+                }
+            }
+        } finally {
+            is.close();
         }
-        br.close();
         return out;
 	}
 
