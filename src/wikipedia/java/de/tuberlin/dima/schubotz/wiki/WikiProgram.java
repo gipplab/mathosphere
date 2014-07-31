@@ -63,8 +63,9 @@ public class WikiProgram {
     public static final String CSV_LINE_SEPARATOR = "<E>";
     /**
      * Used for field splitting so that CsvReader doesn't get messed up on comma latex tokens
+     * Hopefully no wikipedian will use the latin small letter a with diaresis and macron
      */
-    public static final String CSV_FIELD_SEPARATOR = " , ";
+    public static final String CSV_FIELD_SEPARATOR = "\u01DF";
 	/**
 	 * HashMultiset for storing preprocessed data of latex token : count 
 	 * of documents containing token
@@ -168,8 +169,7 @@ public class WikiProgram {
 		
 		//Generate latexWikiMap from preprocessed files
 		latexWikiMultiset = CSVHelper.csvToMultiset(latexWikiMapInput);
-		//TODO generate wikituple from preprocessed files
-        DataSet<WikiTuple> wikiSet = CSVHelper.csvToWikiTuple(tupleWikiInput);
+        DataSet<WikiTuple> wikiSet = CSVHelper.csvToWikiTuple(env, tupleWikiInput);
 		
 		TextInputFormat formatQuery = new TextInputFormat(new Path(wikiQueryInput));
 		formatQuery.setDelimiter(QUERY_SEPARATOR); //this will leave a System.getProperty("line.separator")</topics> at the end as well as header info at the begin 
