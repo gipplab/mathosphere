@@ -1,4 +1,6 @@
 target
+.idea/workspace.xml
+.idea/tasks.xml
 src/test/resources/test100.xml
 src/test/resources/test1000.xml
 src/test/resources/test10000.xml
