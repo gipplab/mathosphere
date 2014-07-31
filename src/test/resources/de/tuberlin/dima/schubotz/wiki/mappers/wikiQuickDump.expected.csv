@@ -1,4 +1,4 @@
-Albedo , \<S>bar<S>\<S>alpha<S>(<S>\<S>theta<S>_<S>i<S>)\<S>bar<S>\<S>bar<S>\<S>alphaD\<S>alpha\<S>alpha<S>=<S>(<S>1<S>-<S>D<S>)<S>\<S>bar<S>\<S>alpha<S>(<S>\<S>theta<S>_<S>i<S>)<S>+<S>D<S>\<S>bar<S>\<S>bar<S>\<S>alpha<S>.A<S>=<S>\<S>left<S>(<S>\<S>frac<S>1<S>3<S>2<S>9<S>\<S>times<S>1<S>0<S>^<S>-<S>H<S>/<S>5<S>D<S>\<S>right<S>)<S>^<S>2ADH , <apply xmlns:m="http://www.w3.org/1998/Math/MathML" xref="p1.1.m1.1.6" xml:id="p1.1.m1.1.6.cmml"> 
+Albedoǟ\<S>bar<S>\<S>alpha<S>(<S>\<S>theta<S>_<S>i<S>)\<S>bar<S>\<S>bar<S>\<S>alphaD\<S>alpha\<S>alpha<S>=<S>(<S>1<S>-<S>D<S>)<S>\<S>bar<S>\<S>alpha<S>(<S>\<S>theta<S>_<S>i<S>)<S>+<S>D<S>\<S>bar<S>\<S>bar<S>\<S>alpha<S>.A<S>=<S>\<S>left<S>(<S>\<S>frac<S>1<S>3<S>2<S>9<S>\<S>times<S>1<S>0<S>^<S>-<S>H<S>/<S>5<S>D<S>\<S>right<S>)<S>^<S>2ADHǟ<apply xmlns:m="http://www.w3.org/1998/Math/MathML" xref="p1.1.m1.1.6" xml:id="p1.1.m1.1.6.cmml"> 
  <times definitionURL="" encoding="" xref="p1.1.m1.1.6.1" xml:id="p1.1.m1.1.6.1.cmml" /> 
  <apply xref="p1.1.m1.1.1" xml:id="p1.1.m1.1.1.cmml"> 
   <ci definitionURL="" encoding="" xref="p1.1.m1.1.1.1" xml:id="p1.1.m1.1.1.1.cmml">
@@ -153,7 +153,7 @@ Albedo , \<S>bar<S>\<S>alpha<S>(<S>\<S>theta<S>_<S>i<S>)\<S>bar<S>\<S>bar<S>\<S>
 <ci xmlns:m="http://www.w3.org/1998/Math/MathML" definitionURL="" encoding="" xref="p1.1.m1.1.1" xml:id="p1.1.m1.1.1.cmml">
  H
 </ci>
- , <mrow xmlns:m="http://www.w3.org/1998/Math/MathML" xref="p1.1.m1.1.6.cmml" xml:id="p1.1.m1.1.6"> 
+ǟ<mrow xmlns:m="http://www.w3.org/1998/Math/MathML" xref="p1.1.m1.1.6.cmml" xml:id="p1.1.m1.1.6"> 
  <msup xref="p1.1.m1.1.1.cmml" accent="true" xml:id="p1.1.m1.1.1"> 
   <mi xref="p1.1.m1.1.1.2.cmml" xml:id="p1.1.m1.1.1.2">
    α
@@ -349,7 +349,7 @@ Albedo , \<S>bar<S>\<S>alpha<S>(<S>\<S>theta<S>_<S>i<S>)\<S>bar<S>\<S>bar<S>\<S>
 <mi xmlns:m="http://www.w3.org/1998/Math/MathML" xref="p1.1.m1.1.1.cmml" xml:id="p1.1.m1.1.1">
  H
 </mi>
-<E>Arithmetic mean , a<S>_<S>1<S>,<S>\<S>ldots<S>,<S>a<S>_<S>n<S>.AA<S>=<S>\<S>frac<S>1<S>n<S>\<S>sum<S>_<S>i<S>=<S>1<S>^<S>n<S>a<S>_<S>i\<S>bar<S>xnx<S>_<S>1<S>,<S>x<S>_<S>2<S>,<S>\<S>ldots<S>,<S>x<S>_<S>nx<S>_<S>1<S>,<S>\<S>ldots<S>,<S>x<S>_<S>n\<S>bar<S>x(<S>x<S>_<S>1<S>-<S>\<S>bar<S>x<S>)<S>+<S>\<S>cdots<S>+<S>(<S>x<S>_<S>n<S>-<S>\<S>bar<S>x<S>)<S>=<S>0x<S>_<S>i<S>-<S>\<S>bar<S>xx<S>_<S>1<S>,<S>\<S>ldots<S>,<S>x<S>_<S>n(<S>x<S>_<S>i<S>-<S>\<S>bar<S>x<S>)<S>^<S>21<S>,<S>2<S>,<S>3<S>,<S>42<S>.<S>51<S>,<S>2<S>,<S>4<S>,<S>8<S>,<S>1<S>635\<S>frac<S>(<S>3<S>+<S>5<S>)<S>2<S>=<S>4\<S>left<S>(<S>\<S>frac<S>1<S>2<S>\<S>cdot<S>3<S>\<S>right<S>)<S>+<S>\<S>left<S>(<S>\<S>frac<S>1<S>2<S>\<S>cdot<S>5<S>%<S>\<S>right<S>)<S>=<S>4\<S>left<S>(<S>\<S>frac<S>2<S>3<S>\<S>cdot<S>3<S>\<S>right<S>)<S>+<S>\<S>left<S>(<S>\<S>frac<S>1<S>3<S>\<S>cdot<S>5<S>%<S>\<S>right<S>)<S>=<S>\<S>frac<S>1<S>1<S>3(<S>2<S>/<S>3<S>)(<S>1<S>/<S>3<S>)\<S>frac<S>1<S>2\<S>frac<S>1<S>nn , <apply xmlns:m="http://www.w3.org/1998/Math/MathML" xref="p1.1.m1.1.9" xml:id="p1.1.m1.1.9.cmml"> 
+<E>Arithmetic meanǟa<S>_<S>1<S>,<S>\<S>ldots<S>,<S>a<S>_<S>n<S>.AA<S>=<S>\<S>frac<S>1<S>n<S>\<S>sum<S>_<S>i<S>=<S>1<S>^<S>n<S>a<S>_<S>i\<S>bar<S>xnx<S>_<S>1<S>,<S>x<S>_<S>2<S>,<S>\<S>ldots<S>,<S>x<S>_<S>nx<S>_<S>1<S>,<S>\<S>ldots<S>,<S>x<S>_<S>n\<S>bar<S>x(<S>x<S>_<S>1<S>-<S>\<S>bar<S>x<S>)<S>+<S>\<S>cdots<S>+<S>(<S>x<S>_<S>n<S>-<S>\<S>bar<S>x<S>)<S>=<S>0x<S>_<S>i<S>-<S>\<S>bar<S>xx<S>_<S>1<S>,<S>\<S>ldots<S>,<S>x<S>_<S>n(<S>x<S>_<S>i<S>-<S>\<S>bar<S>x<S>)<S>^<S>21<S>,<S>2<S>,<S>3<S>,<S>42<S>.<S>51<S>,<S>2<S>,<S>4<S>,<S>8<S>,<S>1<S>635\<S>frac<S>(<S>3<S>+<S>5<S>)<S>2<S>=<S>4\<S>left<S>(<S>\<S>frac<S>1<S>2<S>\<S>cdot<S>3<S>\<S>right<S>)<S>+<S>\<S>left<S>(<S>\<S>frac<S>1<S>2<S>\<S>cdot<S>5<S>%<S>\<S>right<S>)<S>=<S>4\<S>left<S>(<S>\<S>frac<S>2<S>3<S>\<S>cdot<S>3<S>\<S>right<S>)<S>+<S>\<S>left<S>(<S>\<S>frac<S>1<S>3<S>\<S>cdot<S>5<S>%<S>\<S>right<S>)<S>=<S>\<S>frac<S>1<S>1<S>3(<S>2<S>/<S>3<S>)(<S>1<S>/<S>3<S>)\<S>frac<S>1<S>2\<S>frac<S>1<S>nnǟ<apply xmlns:m="http://www.w3.org/1998/Math/MathML" xref="p1.1.m1.1.9" xml:id="p1.1.m1.1.9.cmml"> 
  <list order="numeric" xml:id="p1.1.m1.1.9.1.cmml" /> 
  <apply xref="p1.1.m1.1.9.2" xml:id="p1.1.m1.1.9.2.cmml"> 
   <csymbol definitionURL="" encoding="" xml:id="p1.1.m1.1.9.2.1.cmml" cd="ambiguous">
@@ -850,7 +850,7 @@ Albedo , \<S>bar<S>\<S>alpha<S>(<S>\<S>theta<S>_<S>i<S>)\<S>bar<S>\<S>bar<S>\<S>
 <ci xmlns:m="http://www.w3.org/1998/Math/MathML" definitionURL="" encoding="" xref="p1.1.m1.1.1" xml:id="p1.1.m1.1.1.cmml">
  n
 </ci>
- , <mrow xmlns:m="http://www.w3.org/1998/Math/MathML" xref="p1.1.m1.1.9.cmml" xml:id="p1.1.m1.1.9"> 
+ǟ<mrow xmlns:m="http://www.w3.org/1998/Math/MathML" xref="p1.1.m1.1.9.cmml" xml:id="p1.1.m1.1.9"> 
  <mrow xref="p1.1.m1.1.9.cmml" xml:id="p1.1.m1.1.9a"> 
   <msub xref="p1.1.m1.1.9.2.cmml" xml:id="p1.1.m1.1.9.2"> 
    <mi xref="p1.1.m1.1.1.cmml" xml:id="p1.1.m1.1.1">
