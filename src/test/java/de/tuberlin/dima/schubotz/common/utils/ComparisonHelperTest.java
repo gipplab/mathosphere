@@ -26,14 +26,14 @@ public class ComparisonHelperTest {
     private double expectedScore;
 
     /**
-     * Params in form of prefix, expected score.
+     * Params in form of prefix, expected result.
      * Prefixes are the common prefix of the test resource
      * @return array of parameters
      */
     @Parameterized.Parameters
 	public static Collection<Object[]> inputNumDocs() {
 		return Arrays.asList(new Object[][]{
-                {"qvar.MML.Identical", 1.0}
+                {"de/tuberlin/dima/schubotz/common/utils/qvar.MML.Identical", 24.0}
         });
 	}
 
@@ -42,8 +42,8 @@ public class ComparisonHelperTest {
         this.expectedScore = score;
     }
 
-    //TODO merge this with TestUtils' method
-    private String getFileAsString(String filename) throws IOException {
+    //TODO merge this with TestUtils' method and WikiAbstractSubprocess' method
+    private static String getFileAsString(String filename) throws IOException {
         InputStream resource = ComparisonHelperTest.class.getClassLoader().getResourceAsStream(filename);
         if (resource == null) {
             //Try again with absolute path
@@ -61,9 +61,10 @@ public class ComparisonHelperTest {
 
     @Test
     public void testComparison() throws IOException {
-        String in = getFileAsString(prefix + ".xml");
-        String compare = getFileAsString(prefix + ".compare.xml");
-        double score = ComparisonHelper.calculateMMLScore(in, compare);
-        assertEquals(score, expectedScore);
+        final String in = getFileAsString(prefix + ".xml");
+        final String compare = getFileAsString(prefix + ".compare.xml");
+        //hack while coding better comparison
+        final int numMatches = ComparisonHelper.calculateMMLScore(in, compare);
+        assertEquals("Number of matches does not match expected", expectedScore, (double) numMatches);
     }
 }
