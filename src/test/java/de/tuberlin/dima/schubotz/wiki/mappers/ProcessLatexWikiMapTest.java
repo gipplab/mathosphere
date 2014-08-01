@@ -2,7 +2,6 @@ package de.tuberlin.dima.schubotz.wiki.mappers;
 
 import de.tuberlin.dima.schubotz.wiki.preprocess.ProcessLatexWikiMapper;
 import de.tuberlin.dima.schubotz.wiki.types.WikiQueryTuple;
-import de.tuberlin.dima.schubotz.wiki.types.WikiTuple;
 import eu.stratosphere.api.java.DataSet;
 import eu.stratosphere.api.java.tuple.Tuple2;
 import org.junit.Test;
