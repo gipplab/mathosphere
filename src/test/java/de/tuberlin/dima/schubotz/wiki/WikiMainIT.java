@@ -19,36 +19,51 @@ import static org.junit.Assert.fail;
 @RunWith(Parameterized.class)
 public class WikiMainIT {
 	private Integer numWiki;
-	private String inputDir;
+	private String inputQuery;
+    private String inputLatexWikiMap;
+    private String inputTupleWikiMap;
 	private String outputDir;
 	private Boolean debug;
 
 	@Parameterized.Parameters
 	public static Collection<Object[]> inputNumDocs() {
 		return Arrays.asList(new Object[][] {
-				{new Integer(9999),"/home/jjl4/","/home/jjl4/", Boolean.valueOf(true)} 
+				{new Integer(30040),
+                 "/home/jjl4/",
+                 "de/tuberlin/dima/schubotz/wiki/wikiTrainingQuery.xml",
+                 "de/tuberlin/dima/schubotz/wiki/mappers/wikiTrainingDump.expectedLatex.csv",
+                 "de/tuberlin/dima/schubotz/wiki/mappers/wikiTrainingDump.expected.csv",
+                 Boolean.valueOf(true)}
 		});
 	}
 	@SuppressWarnings("hiding")
-	public WikiMainIT(Integer numWiki, String inputDir, String outputDir, Boolean debug) {
+	public WikiMainIT(Integer numWiki,
+                      String outputDir,
+                      String inputQuery,
+                      String inputLatexWikiMap,
+                      String inputTupleWikiMap,
+                      Boolean debug) {
+
 		this.numWiki = numWiki;
-		this.inputDir = inputDir;
-		this.outputDir = outputDir;
+        this.outputDir = outputDir;
+		this.inputQuery = inputQuery;
+        this.inputLatexWikiMap = inputLatexWikiMap;
+        this.inputTupleWikiMap = inputTupleWikiMap;
 		this.debug = debug;
 	}
 
 	@Test
 	public void TestLocalExecution() throws Exception {
-		String wikiInput = inputDir + "de.tuberlin.dima.schubotz.wiki/mappers/wikiAugmentedDump.xml";
-		String wikiMapInput = inputDir + "latexWikiMap.csv";
 		String wikiOutput = outputDir + "wikiProgramOutput.csv";
 		try {
-			String wikiQueryInput = "" + getClass().getClassLoader().getResources("de/tuberlin/dima/schubotz/wiki/mappers/wikiQuery.xml").nextElement().getPath();
-			WikiProgram.parseArgs(new String[] {"16",
+			String wikiQueryInput = getClass().getClassLoader().getResource(inputQuery).getPath();
+            String wikiLatexMapInput = getClass().getClassLoader().getResource(inputLatexWikiMap).getPath();
+            String wikiTupleMapInput = getClass().getClassLoader().getResource(inputTupleWikiMap).getPath();
+			WikiProgram.parseArgs(new String[] {"1",
 											  wikiOutput,
-											  wikiInput,
 											  wikiQueryInput,
-											  wikiMapInput,
+											  wikiLatexMapInput,
+                                              wikiTupleMapInput,
 											  String.valueOf(numWiki),
 											  debug.toString()
 			});
