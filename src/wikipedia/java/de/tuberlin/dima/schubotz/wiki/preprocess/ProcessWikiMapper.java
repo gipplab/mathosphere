@@ -22,7 +22,7 @@ public class ProcessWikiMapper extends FlatMapFunction<String, WikiTuple> {
      */
     private final String STR_SPLIT;
     private final String namespace = "http://www.w3.org/1998/Math/MathML";
-    private final String namespace_tag = "xmlns:m";
+    private final String namespaceTag = "xmlns:m";
     private final Log LOG = LogFactory.getLog(ProcessWikiMapper.class);
 
     /**
@@ -140,15 +140,15 @@ public class ProcessWikiMapper extends FlatMapFunction<String, WikiTuple> {
                     //Again, always assuming one root element per MathML type
                     //E.g. there will never be two <mrow> elements under <annotation-xml>
                     //Add namespace information so canonicalizer can parse it
-                    curElement.child(0).attr(namespace_tag, namespace);
+                    curElement.child(0).attr(namespaceTag, namespace);
                     CmmlElements.add(curElement.child(0));
                 } else if ("annotation".equals(curElement.tagName())) {
                     //Latex
-                    curElement.attr(namespace_tag, namespace);
+                    curElement.attr(namespaceTag, namespace);
                     LatexElements.add(curElement); //keep annotation tags b/c parsed by ExtractLatex
                 } else {
                     //PMML (not wrapped in annotation)
-                    curElement.attr(namespace_tag, namespace);
+                    curElement.attr(namespaceTag, namespace);
                     PmmlElements.add(curElement);
                 }
             } catch (final RuntimeException e) {
