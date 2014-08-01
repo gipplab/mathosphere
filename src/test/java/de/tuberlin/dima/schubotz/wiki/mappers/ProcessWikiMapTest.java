@@ -16,7 +16,7 @@ public class ProcessWikiMapTest extends WikiAbstractSubprocessTest {
     /**
      * Test on first two wikis.
      */
-    @Test
+    @Ignore
     public void testQuickDataset() throws Exception {
         String inputFilename = "de/tuberlin/dima/schubotz/wiki/mappers/wikiQuickDump.xml";
         String expectedOutputFilename = "de/tuberlin/dima/schubotz/wiki/mappers/wikiQuickDump.expected.csv";
@@ -39,7 +39,7 @@ public class ProcessWikiMapTest extends WikiAbstractSubprocessTest {
     /**
      * Test on known problem wikis.
      */
-    @Ignore
+    @Test
     public void testSpecialDataset() throws Exception {
         String inputFilename = "de/tuberlin/dima/schubotz/wiki/mappers/wikiSpecialDump.xml";
         String expectedOutputFilename = "de/tuberlin/dima/schubotz/wiki/mappers/wikiSpecialDump.expected.csv";

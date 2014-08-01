@@ -1,0 +1,4424 @@
+Euclidean algorithm\<S>begin<S>aligned<S>&<S>amp<S>;<S>\<S>gcd<S>(<S>3<S>,<S>4<S>)<S>&<S>amp<S>;<S>%<S>\<S>leftarrow<S>\<S>\<S>=<S>&<S>amp<S>;<S>\<S>gcd<S>(<S>3<S>,<S>1<S>)<S>&<S>amp<S>;<S>\<S>rightarrow<S>\<S>\<S>=<S>&<S>amp<S>;<S>\<S>gcd<S>(<S>2<S>,<S>1<S>)<S>&<S>amp<S>;<S>\<S>rightarrow<S>\<S>\<S>=<S>&<S>amp<S>;<S>\<S>gcd<S>(<S>1<S>,<S>1<S>)<S>\<S>end<S>aligned\<S>begin<S>aligned<S>\<S>frac<S>a<S>b<S>&<S>amp<S>;<S>=<S>q<S>_<S>0<S>%<S>+<S>\<S>frac<S>r<S>_<S>0<S>b<S>\<S>\<S>\<S>frac<S>b<S>r<S>_<S>0<S>&<S>amp<S>;<S>=<S>q<S>_<S>1<S>+<S>\<S>frac<S>r<S>_<S>1<S>r<S>_<S>0<S>\<S>\<S>\<S>frac<S>r<S>_<S>0<S>r<S>_<S>1<S>&<S>amp<S>;<S>=<S>q<S>_<S>2<S>+<S>\<S>frac<S>r<S>_<S>2<S>r<S>_<S>1<S>%<S>\<S>\<S>&<S>amp<S>;<S>\<S>\<S>vdots<S>\<S>\<S>\<S>frac<S>r<S>_<S>k<S>-<S>2<S>r<S>_<S>k<S>-<S>1<S>&<S>amp<S>;<S>=<S>q<S>_<S>k<S>+<S>\<S>frac<S>r<S>_<S>k<S>r<S>_<S>%<S>k<S>-<S>1<S>\<S>\<S>&<S>amp<S>;<S>\<S>\<S>vdots<S>\<S>\<S>\<S>frac<S>r<S>_<S>N<S>-<S>2<S>r<S>_<S>N<S>-<S>1<S>&<S>amp<S>;<S>=<S>q<S>_<S>N<S>\<S>end<S>aligned\<S>frac<S>a<S>b<S>=<S>q<S>_<S>0<S>+<S>\<S>cfrac<S>1<S>q<S>_<S>1<S>+<S>\<S>cfrac<S>r<S>_<S>1<S>r<S>_<S>0\<S>frac<S>a<S>b<S>=<S>q<S>_<S>0<S>+<S>\<S>cfrac<S>1<S>q<S>_<S>1<S>+<S>\<S>cfrac<S>1<S>q<S>_<S>2<S>+<S>\<S>cfrac<S>r<S>_<S>%<S>2<S>r<S>_<S>1\<S>frac<S>a<S>b<S>=<S>q<S>_<S>0<S>+<S>\<S>cfrac<S>1<S>q<S>_<S>1<S>+<S>\<S>cfrac<S>1<S>q<S>_<S>2<S>+<S>\<S>cfrac<S>1<S>%<S>\<S>ddots<S>+<S>\<S>cfrac<S>1<S>q<S>_<S>N<S>=<S>[<S>q<S>_<S>0<S>;<S>q<S>_<S>1<S>,<S>q<S>_<S>2<S>,<S>\<S>ldots<S>,<S>q<S>_<S>N<S>]\<S>frac<S>1<S>0<S>7<S>1<S>4<S>6<S>2<S>=<S>2<S>+<S>\<S>cfrac<S>1<S>3<S>+<S>\<S>cfrac<S>1<S>7<S>=<S>[<S>2<S>;<S>3<S>,<S>7<S>]\<S>tau<S>(<S>a<S>)<S>=<S>\<S>frac<S>1<S>2<S>\<S>pi<S>^<S>2<S>\<S>ln<S>2<S>\<S>ln<S>a<S>+<S>C<S>+<S>O<S>(<S>a<S>^<S>-<S>1<S>/<S>6<S>-<S>\<S>epsilon<S>)C<S>=<S>-<S>\<S>frac<S>1<S>2<S>+<S>\<S>frac<S>6<S>\<S>ln<S>2<S>\<S>pi<S>^<S>2<S>(<S>4<S>\<S>gamma<S>-<S>2<S>4<S>\<S>pi<S>^<S>2<S>%<S>\<S>zeta<S>^<S>\<S>prime<S>(<S>2<S>)<S>+<S>3<S>\<S>ln<S>2<S>-<S>2<S>)<S>\<S>approx<S>1<S>.<S>4<S>6<S>7T<S>(<S>a<S>)<S>\<S>approx<S>C<S>+<S>\<S>frac<S>1<S>2<S>\<S>pi<S>^<S>2<S>\<S>ln<S>2<S>\<S>left<S>(<S>\<S>ln<S>a<S>-<S>\<S>sum<S>_<S>d<S>|<S>a%<S>\<S>frac<S>\<S>Lambda<S>(<S>d<S>)<S>d<S>\<S>right<S>)Y<S>(<S>n<S>)<S>\<S>approx<S>\<S>frac<S>1<S>2<S>\<S>pi<S>^<S>2<S>\<S>ln<S>2<S>\<S>ln<S>n<S>+<S>0<S>.<S>0<S>6<S>.<mtext xmlns:m="http://www.w3.org/1998/Math/MathML" xref="p1.1.m1.1.1" xml:id="p1.1.m1.1.1.cmml">
+ ⁢ampgcd34amp;←=⁢ampgcd31amp;→=⁢ampgcd21amp;→=⁢ampgcd11
+</mtext>
+<mtext xmlns:m="http://www.w3.org/1998/Math/MathML" xref="p1.1.m1.1.1" xml:id="p1.1.m1.1.1.cmml">
+ abamp;=q0+r0bbr0amp;=q1+r1r0r0r1amp;=q2+r2r1⁢amp⋮r-k2r-k1amp;=qk+rkr-k1⁢amp⋮r-N2r-N1amp;=qN
+</mtext>
+<apply xmlns:m="http://www.w3.org/1998/Math/MathML" xref="p1.1.m1.1.7" xml:id="p1.1.m1.1.7.cmml"> 
+ <eq definitionURL="" encoding="" xref="p1.1.m1.1.2" xml:id="p1.1.m1.1.2.cmml" /> 
+ <apply xref="p1.1.m1.1.1" xml:id="p1.1.m1.1.1.cmml"> 
+  <divide definitionURL="" encoding="" xml:id="p1.1.m1.1.1.1.cmml" /> 
+  <ci definitionURL="" encoding="" xref="p1.1.m1.1.1.2" xml:id="p1.1.m1.1.1.2.cmml">
+   a
+  </ci> 
+  <ci definitionURL="" encoding="" xref="p1.1.m1.1.1.3" xml:id="p1.1.m1.1.1.3.cmml">
+   b
+  </ci> 
+ </apply> 
+ <apply xref="p1.1.m1.1.7.1" xml:id="p1.1.m1.1.7.1.cmml"> 
+  <plus definitionURL="" encoding="" xref="p1.1.m1.1.5" xml:id="p1.1.m1.1.5.cmml" /> 
+  <apply xref="p1.1.m1.1.7.1.1" xml:id="p1.1.m1.1.7.1.1.cmml"> 
+   <csymbol definitionURL="" encoding="" xml:id="p1.1.m1.1.7.1.1.1.cmml" cd="ambiguous">
+    subscript
+   </csymbol> 
+   <ci definitionURL="" encoding="" xref="p1.1.m1.1.3" xml:id="p1.1.m1.1.3.cmml">
+    q
+   </ci> 
+   <cn definitionURL="" encoding="" base="10" xref="p1.1.m1.1.4.1" type="integer" xml:id="p1.1.m1.1.4.1.cmml">
+    0
+   </cn> 
+  </apply> 
+  <apply xref="p1.1.m1.1.6" xml:id="p1.1.m1.1.6.cmml"> 
+   <csymbol definitionURL="" encoding="" xml:id="p1.1.m1.1.6.1.cmml" cd="latexml">
+    continued-fraction
+   </csymbol> 
+   <cn definitionURL="" encoding="" base="10" xref="p1.1.m1.1.6.2" type="integer" xml:id="p1.1.m1.1.6.2.cmml">
+    1
+   </cn> 
+   <apply xref="p1.1.m1.1.6.3" xml:id="p1.1.m1.1.6.3.cmml"> 
+    <plus definitionURL="" encoding="" xref="p1.1.m1.1.6.3.3" xml:id="p1.1.m1.1.6.3.3.cmml" /> 
+    <apply xref="p1.1.m1.1.6.3.5" xml:id="p1.1.m1.1.6.3.5.cmml"> 
+     <csymbol definitionURL="" encoding="" xml:id="p1.1.m1.1.6.3.5.1.cmml" cd="ambiguous">
+      subscript
+     </csymbol> 
+     <ci definitionURL="" encoding="" xref="p1.1.m1.1.6.3.1" xml:id="p1.1.m1.1.6.3.1.cmml">
+      q
+     </ci> 
+     <cn definitionURL="" encoding="" base="10" xref="p1.1.m1.1.6.3.2.1" type="integer" xml:id="p1.1.m1.1.6.3.2.1.cmml">
+      1
+     </cn> 
+    </apply> 
+    <apply xref="p1.1.m1.1.6.3.4" xml:id="p1.1.m1.1.6.3.4.cmml"> 
+     <csymbol definitionURL="" encoding="" xml:id="p1.1.m1.1.6.3.4.1.cmml" cd="latexml">
+      continued-fraction
+     </csymbol> 
+     <apply xref="p1.1.m1.1.6.3.4.2" xml:id="p1.1.m1.1.6.3.4.2.cmml"> 
+      <csymbol definitionURL="" encoding="" xml:id="p1.1.m1.1.6.3.4.2.3.cmml" cd="ambiguous">
+       subscript
+      </csymbol> 
+      <ci definitionURL="" encoding="" xref="p1.1.m1.1.6.3.4.2.1" xml:id="p1.1.m1.1.6.3.4.2.1.cmml">
+       r
+      </ci> 
+      <cn definitionURL="" encoding="" base="10" xref="p1.1.m1.1.6.3.4.2.2.1" type="integer" xml:id="p1.1.m1.1.6.3.4.2.2.1.cmml">
+       1
+      </cn> 
+     </apply> 
+     <apply xref="p1.1.m1.1.6.3.4.3" xml:id="p1.1.m1.1.6.3.4.3.cmml"> 
+      <csymbol definitionURL="" encoding="" xml:id="p1.1.m1.1.6.3.4.3.3.cmml" cd="ambiguous">
+       subscript
+      </csymbol> 
+      <ci definitionURL="" encoding="" xref="p1.1.m1.1.6.3.4.3.1" xml:id="p1.1.m1.1.6.3.4.3.1.cmml">
+       r
+      </ci> 
+      <cn definitionURL="" encoding="" base="10" xref="p1.1.m1.1.6.3.4.3.2.1" type="integer" xml:id="p1.1.m1.1.6.3.4.3.2.1.cmml">
+       0
+      </cn> 
+     </apply> 
+    </apply> 
+   </apply> 
+  </apply> 
+ </apply> 
+</apply>
+<apply xmlns:m="http://www.w3.org/1998/Math/MathML" xref="p1.1.m1.1.7" xml:id="p1.1.m1.1.7.cmml"> 
+ <eq definitionURL="" encoding="" xref="p1.1.m1.1.2" xml:id="p1.1.m1.1.2.cmml" /> 
+ <apply xref="p1.1.m1.1.1" xml:id="p1.1.m1.1.1.cmml"> 
+  <divide definitionURL="" encoding="" xml:id="p1.1.m1.1.1.1.cmml" /> 
+  <ci definitionURL="" encoding="" xref="p1.1.m1.1.1.2" xml:id="p1.1.m1.1.1.2.cmml">
+   a
+  </ci> 
+  <ci definitionURL="" encoding="" xref="p1.1.m1.1.1.3" xml:id="p1.1.m1.1.1.3.cmml">
+   b
+  </ci> 
+ </apply> 
+ <apply xref="p1.1.m1.1.7.1" xml:id="p1.1.m1.1.7.1.cmml"> 
+  <plus definitionURL="" encoding="" xref="p1.1.m1.1.5" xml:id="p1.1.m1.1.5.cmml" /> 
+  <apply xref="p1.1.m1.1.7.1.1" xml:id="p1.1.m1.1.7.1.1.cmml"> 
+   <csymbol definitionURL="" encoding="" xml:id="p1.1.m1.1.7.1.1.1.cmml" cd="ambiguous">
+    subscript
+   </csymbol> 
+   <ci definitionURL="" encoding="" xref="p1.1.m1.1.3" xml:id="p1.1.m1.1.3.cmml">
+    q
+   </ci> 
+   <cn definitionURL="" encoding="" base="10" xref="p1.1.m1.1.4.1" type="integer" xml:id="p1.1.m1.1.4.1.cmml">
+    0
+   </cn> 
+  </apply> 
+  <apply xref="p1.1.m1.1.6" xml:id="p1.1.m1.1.6.cmml"> 
+   <csymbol definitionURL="" encoding="" xml:id="p1.1.m1.1.6.1.cmml" cd="latexml">
+    continued-fraction
+   </csymbol> 
+   <cn definitionURL="" encoding="" base="10" xref="p1.1.m1.1.6.2" type="integer" xml:id="p1.1.m1.1.6.2.cmml">
+    1
+   </cn> 
+   <apply xref="p1.1.m1.1.6.3" xml:id="p1.1.m1.1.6.3.cmml"> 
+    <plus definitionURL="" encoding="" xref="p1.1.m1.1.6.3.3" xml:id="p1.1.m1.1.6.3.3.cmml" /> 
+    <apply xref="p1.1.m1.1.6.3.5" xml:id="p1.1.m1.1.6.3.5.cmml"> 
+     <csymbol definitionURL="" encoding="" xml:id="p1.1.m1.1.6.3.5.1.cmml" cd="ambiguous">
+      subscript
+     </csymbol> 
+     <ci definitionURL="" encoding="" xref="p1.1.m1.1.6.3.1" xml:id="p1.1.m1.1.6.3.1.cmml">
+      q
+     </ci> 
+     <cn definitionURL="" encoding="" base="10" xref="p1.1.m1.1.6.3.2.1" type="integer" xml:id="p1.1.m1.1.6.3.2.1.cmml">
+      1
+     </cn> 
+    </apply> 
+    <apply xref="p1.1.m1.1.6.3.4" xml:id="p1.1.m1.1.6.3.4.cmml"> 
+     <csymbol definitionURL="" encoding="" xml:id="p1.1.m1.1.6.3.4.1.cmml" cd="latexml">
+      continued-fraction
+     </csymbol> 
+     <cn definitionURL="" encoding="" base="10" xref="p1.1.m1.1.6.3.4.2" type="integer" xml:id="p1.1.m1.1.6.3.4.2.cmml">
+      1
+     </cn> 
+     <apply xref="p1.1.m1.1.6.3.4.3" xml:id="p1.1.m1.1.6.3.4.3.cmml"> 
+      <plus definitionURL="" encoding="" xref="p1.1.m1.1.6.3.4.3.3" xml:id="p1.1.m1.1.6.3.4.3.3.cmml" /> 
+      <apply xref="p1.1.m1.1.6.3.4.3.5" xml:id="p1.1.m1.1.6.3.4.3.5.cmml"> 
+       <csymbol definitionURL="" encoding="" xml:id="p1.1.m1.1.6.3.4.3.5.1.cmml" cd="ambiguous">
+        subscript
+       </csymbol> 
+       <ci definitionURL="" encoding="" xref="p1.1.m1.1.6.3.4.3.1" xml:id="p1.1.m1.1.6.3.4.3.1.cmml">
+        q
+       </ci> 
+       <cn definitionURL="" encoding="" base="10" xref="p1.1.m1.1.6.3.4.3.2.1" type="integer" xml:id="p1.1.m1.1.6.3.4.3.2.1.cmml">
+        2
+       </cn> 
+      </apply> 
+      <apply xref="p1.1.m1.1.6.3.4.3.4" xml:id="p1.1.m1.1.6.3.4.3.4.cmml"> 
+       <csymbol definitionURL="" encoding="" xml:id="p1.1.m1.1.6.3.4.3.4.1.cmml" cd="latexml">
+        continued-fraction
+       </csymbol> 
+       <apply xref="p1.1.m1.1.6.3.4.3.4.2" xml:id="p1.1.m1.1.6.3.4.3.4.2.cmml"> 
+        <csymbol definitionURL="" encoding="" xml:id="p1.1.m1.1.6.3.4.3.4.2.3.cmml" cd="ambiguous">
+         subscript
+        </csymbol> 
+        <ci definitionURL="" encoding="" xref="p1.1.m1.1.6.3.4.3.4.2.1" xml:id="p1.1.m1.1.6.3.4.3.4.2.1.cmml">
+         r
+        </ci> 
+        <cn definitionURL="" encoding="" base="10" xref="p1.1.m1.1.6.3.4.3.4.2.2.1" type="integer" xml:id="p1.1.m1.1.6.3.4.3.4.2.2.1.cmml">
+         2
+        </cn> 
+       </apply> 
+       <apply xref="p1.1.m1.1.6.3.4.3.4.3" xml:id="p1.1.m1.1.6.3.4.3.4.3.cmml"> 
+        <csymbol definitionURL="" encoding="" xml:id="p1.1.m1.1.6.3.4.3.4.3.3.cmml" cd="ambiguous">
+         subscript
+        </csymbol> 
+        <ci definitionURL="" encoding="" xref="p1.1.m1.1.6.3.4.3.4.3.1" xml:id="p1.1.m1.1.6.3.4.3.4.3.1.cmml">
+         r
+        </ci> 
+        <cn definitionURL="" encoding="" base="10" xref="p1.1.m1.1.6.3.4.3.4.3.2.1" type="integer" xml:id="p1.1.m1.1.6.3.4.3.4.3.2.1.cmml">
+         1
+        </cn> 
+       </apply> 
+      </apply> 
+     </apply> 
+    </apply> 
+   </apply> 
+  </apply> 
+ </apply> 
+</apply>
+<apply xmlns:m="http://www.w3.org/1998/Math/MathML" xref="p1.1.m1.1.23" xml:id="p1.1.m1.1.23.cmml"> 
+ <and definitionURL="" encoding="" xref="p1.1.m1.1.23" xml:id="p1.1.m1.1.23a.cmml" /> 
+ <apply xref="p1.1.m1.1.23" xml:id="p1.1.m1.1.23b.cmml"> 
+  <eq definitionURL="" encoding="" xref="p1.1.m1.1.2" xml:id="p1.1.m1.1.2.cmml" /> 
+  <apply xref="p1.1.m1.1.1" xml:id="p1.1.m1.1.1.cmml"> 
+   <divide definitionURL="" encoding="" xml:id="p1.1.m1.1.1.1.cmml" /> 
+   <ci definitionURL="" encoding="" xref="p1.1.m1.1.1.2" xml:id="p1.1.m1.1.1.2.cmml">
+    a
+   </ci> 
+   <ci definitionURL="" encoding="" xref="p1.1.m1.1.1.3" xml:id="p1.1.m1.1.1.3.cmml">
+    b
+   </ci> 
+  </apply> 
+  <apply xref="p1.1.m1.1.23.2" xml:id="p1.1.m1.1.23.2.cmml"> 
+   <plus definitionURL="" encoding="" xref="p1.1.m1.1.5" xml:id="p1.1.m1.1.5.cmml" /> 
+   <apply xref="p1.1.m1.1.23.2.1" xml:id="p1.1.m1.1.23.2.1.cmml"> 
+    <csymbol definitionURL="" encoding="" xml:id="p1.1.m1.1.23.2.1.1.cmml" cd="ambiguous">
+     subscript
+    </csymbol> 
+    <ci definitionURL="" encoding="" xref="p1.1.m1.1.3" xml:id="p1.1.m1.1.3.cmml">
+     q
+    </ci> 
+    <cn definitionURL="" encoding="" base="10" xref="p1.1.m1.1.4.1" type="integer" xml:id="p1.1.m1.1.4.1.cmml">
+     0
+    </cn> 
+   </apply> 
+   <apply xref="p1.1.m1.1.6" xml:id="p1.1.m1.1.6.cmml"> 
+    <csymbol definitionURL="" encoding="" xml:id="p1.1.m1.1.6.1.cmml" cd="latexml">
+     continued-fraction
+    </csymbol> 
+    <cn definitionURL="" encoding="" base="10" xref="p1.1.m1.1.6.2" type="integer" xml:id="p1.1.m1.1.6.2.cmml">
+     1
+    </cn> 
+    <apply xref="p1.1.m1.1.6.3" xml:id="p1.1.m1.1.6.3.cmml"> 
+     <plus definitionURL="" encoding="" xref="p1.1.m1.1.6.3.3" xml:id="p1.1.m1.1.6.3.3.cmml" /> 
+     <apply xref="p1.1.m1.1.6.3.5" xml:id="p1.1.m1.1.6.3.5.cmml"> 
+      <csymbol definitionURL="" encoding="" xml:id="p1.1.m1.1.6.3.5.1.cmml" cd="ambiguous">
+       subscript
+      </csymbol> 
+      <ci definitionURL="" encoding="" xref="p1.1.m1.1.6.3.1" xml:id="p1.1.m1.1.6.3.1.cmml">
+       q
+      </ci> 
+      <cn definitionURL="" encoding="" base="10" xref="p1.1.m1.1.6.3.2.1" type="integer" xml:id="p1.1.m1.1.6.3.2.1.cmml">
+       1
+      </cn> 
+     </apply> 
+     <apply xref="p1.1.m1.1.6.3.4" xml:id="p1.1.m1.1.6.3.4.cmml"> 
+      <csymbol definitionURL="" encoding="" xml:id="p1.1.m1.1.6.3.4.1.cmml" cd="latexml">
+       continued-fraction
+      </csymbol> 
+      <cn definitionURL="" encoding="" base="10" xref="p1.1.m1.1.6.3.4.2" type="integer" xml:id="p1.1.m1.1.6.3.4.2.cmml">
+       1
+      </cn> 
+      <apply xref="p1.1.m1.1.6.3.4.3" xml:id="p1.1.m1.1.6.3.4.3.cmml"> 
+       <plus definitionURL="" encoding="" xref="p1.1.m1.1.6.3.4.3.3" xml:id="p1.1.m1.1.6.3.4.3.3.cmml" /> 
+       <apply xref="p1.1.m1.1.6.3.4.3.5" xml:id="p1.1.m1.1.6.3.4.3.5.cmml"> 
+        <csymbol definitionURL="" encoding="" xml:id="p1.1.m1.1.6.3.4.3.5.1.cmml" cd="ambiguous">
+         subscript
+        </csymbol> 
+        <ci definitionURL="" encoding="" xref="p1.1.m1.1.6.3.4.3.1" xml:id="p1.1.m1.1.6.3.4.3.1.cmml">
+         q
+        </ci> 
+        <cn definitionURL="" encoding="" base="10" xref="p1.1.m1.1.6.3.4.3.2.1" type="integer" xml:id="p1.1.m1.1.6.3.4.3.2.1.cmml">
+         2
+        </cn> 
+       </apply> 
+       <apply xref="p1.1.m1.1.6.3.4.3.4" xml:id="p1.1.m1.1.6.3.4.3.4.cmml"> 
+        <csymbol definitionURL="" encoding="" xml:id="p1.1.m1.1.6.3.4.3.4.1.cmml" cd="latexml">
+         continued-fraction
+        </csymbol> 
+        <cn definitionURL="" encoding="" base="10" xref="p1.1.m1.1.6.3.4.3.4.2" type="integer" xml:id="p1.1.m1.1.6.3.4.3.4.2.cmml">
+         1
+        </cn> 
+        <apply xref="p1.1.m1.1.6.3.4.3.4.3" xml:id="p1.1.m1.1.6.3.4.3.4.3.cmml"> 
+         <plus definitionURL="" encoding="" xref="p1.1.m1.1.6.3.4.3.4.3.2" xml:id="p1.1.m1.1.6.3.4.3.4.3.2.cmml" /> 
+         <ci definitionURL="" encoding="" xref="p1.1.m1.1.6.3.4.3.4.3.1" xml:id="p1.1.m1.1.6.3.4.3.4.3.1.cmml">
+          normal-⋱
+         </ci> 
+         <apply xref="p1.1.m1.1.6.3.4.3.4.3.3" xml:id="p1.1.m1.1.6.3.4.3.4.3.3.cmml"> 
+          <csymbol definitionURL="" encoding="" xml:id="p1.1.m1.1.6.3.4.3.4.3.3.1.cmml" cd="latexml">
+           continued-fraction
+          </csymbol> 
+          <cn definitionURL="" encoding="" base="10" xref="p1.1.m1.1.6.3.4.3.4.3.3.2" type="integer" xml:id="p1.1.m1.1.6.3.4.3.4.3.3.2.cmml">
+           1
+          </cn> 
+          <apply xref="p1.1.m1.1.6.3.4.3.4.3.3.3" xml:id="p1.1.m1.1.6.3.4.3.4.3.3.3.cmml"> 
+           <csymbol definitionURL="" encoding="" xml:id="p1.1.m1.1.6.3.4.3.4.3.3.3.3.cmml" cd="ambiguous">
+            subscript
+           </csymbol> 
+           <ci definitionURL="" encoding="" xref="p1.1.m1.1.6.3.4.3.4.3.3.3.1" xml:id="p1.1.m1.1.6.3.4.3.4.3.3.3.1.cmml">
+            q
+           </ci> 
+           <ci definitionURL="" encoding="" xref="p1.1.m1.1.6.3.4.3.4.3.3.3.2.1" xml:id="p1.1.m1.1.6.3.4.3.4.3.3.3.2.1.cmml">
+            N
+           </ci> 
+          </apply> 
+         </apply> 
+        </apply> 
+       </apply> 
+      </apply> 
+     </apply> 
+    </apply> 
+   </apply> 
+  </apply> 
+ </apply> 
+ <apply xref="p1.1.m1.1.23" xml:id="p1.1.m1.1.23c.cmml"> 
+  <eq definitionURL="" encoding="" xref="p1.1.m1.1.7" xml:id="p1.1.m1.1.7.cmml" /> 
+  <share xref="p1.1.m1.1.23" href="#p1.1.m1.1.23.2.cmml" xml:id="p1.1.m1.1.23d.cmml" /> 
+  <apply xref="p1.1.m1.1.23.3" xml:id="p1.1.m1.1.23.3.cmml"> 
+   <list order="numeric" xml:id="p1.1.m1.1.23.3.1.cmml" /> 
+   <apply xref="p1.1.m1.1.23.3.2" xml:id="p1.1.m1.1.23.3.2.cmml"> 
+    <csymbol definitionURL="" encoding="" xml:id="p1.1.m1.1.23.3.2.1.cmml" cd="ambiguous">
+     subscript
+    </csymbol> 
+    <ci definitionURL="" encoding="" xref="p1.1.m1.1.9" xml:id="p1.1.m1.1.9.cmml">
+     q
+    </ci> 
+    <cn definitionURL="" encoding="" base="10" xref="p1.1.m1.1.10.1" type="integer" xml:id="p1.1.m1.1.10.1.cmml">
+     0
+    </cn> 
+   </apply> 
+   <apply xref="p1.1.m1.1.23.3.3" xml:id="p1.1.m1.1.23.3.3.cmml"> 
+    <csymbol definitionURL="" encoding="" xml:id="p1.1.m1.1.23.3.3.1.cmml" cd="ambiguous">
+     subscript
+    </csymbol> 
+    <ci definitionURL="" encoding="" xref="p1.1.m1.1.12" xml:id="p1.1.m1.1.12.cmml">
+     q
+    </ci> 
+    <cn definitionURL="" encoding="" base="10" xref="p1.1.m1.1.13.1" type="integer" xml:id="p1.1.m1.1.13.1.cmml">
+     1
+    </cn> 
+   </apply> 
+   <apply xref="p1.1.m1.1.23.3.4" xml:id="p1.1.m1.1.23.3.4.cmml"> 
+    <csymbol definitionURL="" encoding="" xml:id="p1.1.m1.1.23.3.4.1.cmml" cd="ambiguous">
+     subscript
+    </csymbol> 
+    <ci definitionURL="" encoding="" xref="p1.1.m1.1.15" xml:id="p1.1.m1.1.15.cmml">
+     q
+    </ci> 
+    <cn definitionURL="" encoding="" base="10" xref="p1.1.m1.1.16.1" type="integer" xml:id="p1.1.m1.1.16.1.cmml">
+     2
+    </cn> 
+   </apply> 
+   <ci definitionURL="" encoding="" xref="p1.1.m1.1.18" xml:id="p1.1.m1.1.18.cmml">
+    normal-...
+   </ci> 
+   <apply xref="p1.1.m1.1.23.3.5" xml:id="p1.1.m1.1.23.3.5.cmml"> 
+    <csymbol definitionURL="" encoding="" xml:id="p1.1.m1.1.23.3.5.1.cmml" cd="ambiguous">
+     subscript
+    </csymbol> 
+    <ci definitionURL="" encoding="" xref="p1.1.m1.1.20" xml:id="p1.1.m1.1.20.cmml">
+     q
+    </ci> 
+    <ci definitionURL="" encoding="" xref="p1.1.m1.1.21.1" xml:id="p1.1.m1.1.21.1.cmml">
+     N
+    </ci> 
+   </apply> 
+  </apply> 
+ </apply> 
+</apply>
+<apply xmlns:m="http://www.w3.org/1998/Math/MathML" xref="p1.1.m1.1.14" xml:id="p1.1.m1.1.14.cmml"> 
+ <and definitionURL="" encoding="" xref="p1.1.m1.1.14" xml:id="p1.1.m1.1.14a.cmml" /> 
+ <apply xref="p1.1.m1.1.14" xml:id="p1.1.m1.1.14b.cmml"> 
+  <eq definitionURL="" encoding="" xref="p1.1.m1.1.2" xml:id="p1.1.m1.1.2.cmml" /> 
+  <apply xref="p1.1.m1.1.1" xml:id="p1.1.m1.1.1.cmml"> 
+   <divide definitionURL="" encoding="" xml:id="p1.1.m1.1.1.1.cmml" /> 
+   <cn definitionURL="" encoding="" base="10" xref="p1.1.m1.1.1.2" type="integer" xml:id="p1.1.m1.1.1.2.cmml">
+    1071
+   </cn> 
+   <cn definitionURL="" encoding="" base="10" xref="p1.1.m1.1.1.3" type="integer" xml:id="p1.1.m1.1.1.3.cmml">
+    462
+   </cn> 
+  </apply> 
+  <apply xref="p1.1.m1.1.14.2" xml:id="p1.1.m1.1.14.2.cmml"> 
+   <plus definitionURL="" encoding="" xref="p1.1.m1.1.4" xml:id="p1.1.m1.1.4.cmml" /> 
+   <cn definitionURL="" encoding="" base="10" xref="p1.1.m1.1.3" type="integer" xml:id="p1.1.m1.1.3.cmml">
+    2
+   </cn> 
+   <apply xref="p1.1.m1.1.5" xml:id="p1.1.m1.1.5.cmml"> 
+    <csymbol definitionURL="" encoding="" xml:id="p1.1.m1.1.5.1.cmml" cd="latexml">
+     continued-fraction
+    </csymbol> 
+    <cn definitionURL="" encoding="" base="10" xref="p1.1.m1.1.5.2" type="integer" xml:id="p1.1.m1.1.5.2.cmml">
+     1
+    </cn> 
+    <apply xref="p1.1.m1.1.5.3" xml:id="p1.1.m1.1.5.3.cmml"> 
+     <plus definitionURL="" encoding="" xref="p1.1.m1.1.5.3.2" xml:id="p1.1.m1.1.5.3.2.cmml" /> 
+     <cn definitionURL="" encoding="" base="10" xref="p1.1.m1.1.5.3.1" type="integer" xml:id="p1.1.m1.1.5.3.1.cmml">
+      3
+     </cn> 
+     <apply xref="p1.1.m1.1.5.3.3" xml:id="p1.1.m1.1.5.3.3.cmml"> 
+      <csymbol definitionURL="" encoding="" xml:id="p1.1.m1.1.5.3.3.1.cmml" cd="latexml">
+       continued-fraction
+      </csymbol> 
+      <cn definitionURL="" encoding="" base="10" xref="p1.1.m1.1.5.3.3.2" type="integer" xml:id="p1.1.m1.1.5.3.3.2.cmml">
+       1
+      </cn> 
+      <cn definitionURL="" encoding="" base="10" xref="p1.1.m1.1.5.3.3.3" type="integer" xml:id="p1.1.m1.1.5.3.3.3.cmml">
+       7
+      </cn> 
+     </apply> 
+    </apply> 
+   </apply> 
+  </apply> 
+ </apply> 
+ <apply xref="p1.1.m1.1.14" xml:id="p1.1.m1.1.14c.cmml"> 
+  <eq definitionURL="" encoding="" xref="p1.1.m1.1.6" xml:id="p1.1.m1.1.6.cmml" /> 
+  <share xref="p1.1.m1.1.14" href="#p1.1.m1.1.14.2.cmml" xml:id="p1.1.m1.1.14d.cmml" /> 
+  <apply xref="p1.1.m1.1.14.3" xml:id="p1.1.m1.1.14.3.cmml"> 
+   <list order="numeric" xml:id="p1.1.m1.1.14.3.1.cmml" /> 
+   <cn definitionURL="" encoding="" base="10" xref="p1.1.m1.1.8" type="integer" xml:id="p1.1.m1.1.8.cmml">
+    2
+   </cn> 
+   <cn definitionURL="" encoding="" base="10" xref="p1.1.m1.1.10" type="integer" xml:id="p1.1.m1.1.10.cmml">
+    3
+   </cn> 
+   <cn definitionURL="" encoding="" base="10" xref="p1.1.m1.1.12" type="integer" xml:id="p1.1.m1.1.12.cmml">
+    7
+   </cn> 
+  </apply> 
+ </apply> 
+</apply>
+<apply xmlns:m="http://www.w3.org/1998/Math/MathML" xref="p1.1.m1.1.19" xml:id="p1.1.m1.1.19.cmml"> 
+ <eq definitionURL="" encoding="" xref="p1.1.m1.1.5" xml:id="p1.1.m1.1.5.cmml" /> 
+ <apply xref="p1.1.m1.1.19.1" xml:id="p1.1.m1.1.19.1.cmml"> 
+  <times definitionURL="" encoding="" xref="p1.1.m1.1.19.1.1" xml:id="p1.1.m1.1.19.1.1.cmml" /> 
+  <ci definitionURL="" encoding="" xref="p1.1.m1.1.1" xml:id="p1.1.m1.1.1.cmml">
+   τ
+  </ci> 
+  <ci definitionURL="" encoding="" xref="p1.1.m1.1.3" xml:id="p1.1.m1.1.3.cmml">
+   a
+  </ci> 
+ </apply> 
+ <apply xref="p1.1.m1.1.19.2" xml:id="p1.1.m1.1.19.2.cmml"> 
+  <plus definitionURL="" encoding="" xref="p1.1.m1.1.11" xml:id="p1.1.m1.1.11.cmml" /> 
+  <apply xref="p1.1.m1.1.19.2.1" xml:id="p1.1.m1.1.19.2.1.cmml"> 
+   <times definitionURL="" encoding="" xref="p1.1.m1.1.19.2.1.1" xml:id="p1.1.m1.1.19.2.1.1.cmml" /> 
+   <apply xref="p1.1.m1.1.6" xml:id="p1.1.m1.1.6.cmml"> 
+    <divide definitionURL="" encoding="" xml:id="p1.1.m1.1.6.1.cmml" /> 
+    <cn definitionURL="" encoding="" base="10" xref="p1.1.m1.1.6.2" type="integer" xml:id="p1.1.m1.1.6.2.cmml">
+     12
+    </cn> 
+    <apply xref="p1.1.m1.1.6.3" xml:id="p1.1.m1.1.6.3.cmml"> 
+     <csymbol definitionURL="" encoding="" xml:id="p1.1.m1.1.6.3.3.cmml" cd="ambiguous">
+      superscript
+     </csymbol> 
+     <ci definitionURL="" encoding="" xref="p1.1.m1.1.6.3.1" xml:id="p1.1.m1.1.6.3.1.cmml">
+      π
+     </ci> 
+     <cn definitionURL="" encoding="" base="10" xref="p1.1.m1.1.6.3.2.1" type="integer" xml:id="p1.1.m1.1.6.3.2.1.cmml">
+      2
+     </cn> 
+    </apply> 
+   </apply> 
+   <apply xref="p1.1.m1.1.19.2.1.2" xml:id="p1.1.m1.1.19.2.1.2.cmml"> 
+    <ln definitionURL="" encoding="" xref="p1.1.m1.1.7" xml:id="p1.1.m1.1.7.cmml" /> 
+    <apply xref="p1.1.m1.1.19.2.1.2.1" xml:id="p1.1.m1.1.19.2.1.2.1.cmml"> 
+     <times definitionURL="" encoding="" xref="p1.1.m1.1.19.2.1.2.1.1" xml:id="p1.1.m1.1.19.2.1.2.1.1.cmml" /> 
+     <cn definitionURL="" encoding="" base="10" xref="p1.1.m1.1.8" type="integer" xml:id="p1.1.m1.1.8.cmml">
+      2
+     </cn> 
+     <apply xref="p1.1.m1.1.19.2.1.2.1.2" xml:id="p1.1.m1.1.19.2.1.2.1.2.cmml"> 
+      <ln definitionURL="" encoding="" xref="p1.1.m1.1.9" xml:id="p1.1.m1.1.9.cmml" /> 
+      <ci definitionURL="" encoding="" xref="p1.1.m1.1.10" xml:id="p1.1.m1.1.10.cmml">
+       a
+      </ci> 
+     </apply> 
+    </apply> 
+   </apply> 
+  </apply> 
+  <ci definitionURL="" encoding="" xref="p1.1.m1.1.12" xml:id="p1.1.m1.1.12.cmml">
+   C
+  </ci> 
+  <apply xref="p1.1.m1.1.19.2.2" xml:id="p1.1.m1.1.19.2.2.cmml"> 
+   <times definitionURL="" encoding="" xref="p1.1.m1.1.19.2.2.1" xml:id="p1.1.m1.1.19.2.2.1.cmml" /> 
+   <ci definitionURL="" encoding="" xref="p1.1.m1.1.14" xml:id="p1.1.m1.1.14.cmml">
+    O
+   </ci> 
+   <apply xref="p1.1.m1.1.19.2.2.2" xml:id="p1.1.m1.1.19.2.2.2.cmml"> 
+    <csymbol definitionURL="" encoding="" xml:id="p1.1.m1.1.19.2.2.2.1.cmml" cd="ambiguous">
+     superscript
+    </csymbol> 
+    <ci definitionURL="" encoding="" xref="p1.1.m1.1.16" xml:id="p1.1.m1.1.16.cmml">
+     a
+    </ci> 
+    <apply xref="p1.1.m1.1.17.1" xml:id="p1.1.m1.1.17.1.cmml"> 
+     <minus definitionURL="" encoding="" xref="p1.1.m1.1.17.1.5" xml:id="p1.1.m1.1.17.1.5.cmml" /> 
+     <apply xref="p1.1.m1.1.17.1.7" xml:id="p1.1.m1.1.17.1.7.cmml"> 
+      <minus definitionURL="" encoding="" xref="p1.1.m1.1.17.1.1" xml:id="p1.1.m1.1.17.1.1.cmml" /> 
+      <apply xref="p1.1.m1.1.17.1.7.1" xml:id="p1.1.m1.1.17.1.7.1.cmml"> 
+       <divide definitionURL="" encoding="" xref="p1.1.m1.1.17.1.3" xml:id="p1.1.m1.1.17.1.3.cmml" /> 
+       <cn definitionURL="" encoding="" base="10" xref="p1.1.m1.1.17.1.2" type="integer" xml:id="p1.1.m1.1.17.1.2.cmml">
+        1
+       </cn> 
+       <cn definitionURL="" encoding="" base="10" xref="p1.1.m1.1.17.1.4" type="integer" xml:id="p1.1.m1.1.17.1.4.cmml">
+        6
+       </cn> 
+      </apply> 
+     </apply> 
+     <ci definitionURL="" encoding="" xref="p1.1.m1.1.17.1.6" xml:id="p1.1.m1.1.17.1.6.cmml">
+      ε
+     </ci> 
+    </apply> 
+   </apply> 
+  </apply> 
+ </apply> 
+</apply>
+<apply xmlns:m="http://www.w3.org/1998/Math/MathML" xref="p1.1.m1.1.33" xml:id="p1.1.m1.1.33.cmml"> 
+ <and definitionURL="" encoding="" xref="p1.1.m1.1.33" xml:id="p1.1.m1.1.33a.cmml" /> 
+ <apply xref="p1.1.m1.1.33" xml:id="p1.1.m1.1.33b.cmml"> 
+  <eq definitionURL="" encoding="" xref="p1.1.m1.1.2" xml:id="p1.1.m1.1.2.cmml" /> 
+  <ci definitionURL="" encoding="" xref="p1.1.m1.1.1" xml:id="p1.1.m1.1.1.cmml">
+   C
+  </ci> 
+  <apply xref="p1.1.m1.1.33.2" xml:id="p1.1.m1.1.33.2.cmml"> 
+   <plus definitionURL="" encoding="" xref="p1.1.m1.1.5" xml:id="p1.1.m1.1.5.cmml" /> 
+   <apply xref="p1.1.m1.1.33.2.1" xml:id="p1.1.m1.1.33.2.1.cmml"> 
+    <minus definitionURL="" encoding="" xref="p1.1.m1.1.3" xml:id="p1.1.m1.1.3.cmml" /> 
+    <apply xref="p1.1.m1.1.4" xml:id="p1.1.m1.1.4.cmml"> 
+     <divide definitionURL="" encoding="" xml:id="p1.1.m1.1.4.1.cmml" /> 
+     <cn definitionURL="" encoding="" base="10" xref="p1.1.m1.1.4.2" type="integer" xml:id="p1.1.m1.1.4.2.cmml">
+      1
+     </cn> 
+     <cn definitionURL="" encoding="" base="10" xref="p1.1.m1.1.4.3" type="integer" xml:id="p1.1.m1.1.4.3.cmml">
+      2
+     </cn> 
+    </apply> 
+   </apply> 
+   <apply xref="p1.1.m1.1.33.2.2" xml:id="p1.1.m1.1.33.2.2.cmml"> 
+    <times definitionURL="" encoding="" xref="p1.1.m1.1.33.2.2.1" xml:id="p1.1.m1.1.33.2.2.1.cmml" /> 
+    <apply xref="p1.1.m1.1.6" xml:id="p1.1.m1.1.6.cmml"> 
+     <divide definitionURL="" encoding="" xml:id="p1.1.m1.1.6.1.cmml" /> 
+     <apply xref="p1.1.m1.1.6.2" xml:id="p1.1.m1.1.6.2.cmml"> 
+      <times definitionURL="" encoding="" xref="p1.1.m1.1.6.2.4" xml:id="p1.1.m1.1.6.2.4.cmml" /> 
+      <cn definitionURL="" encoding="" base="10" xref="p1.1.m1.1.6.2.1" type="integer" xml:id="p1.1.m1.1.6.2.1.cmml">
+       6
+      </cn> 
+      <apply xref="p1.1.m1.1.6.2.5" xml:id="p1.1.m1.1.6.2.5.cmml"> 
+       <ln definitionURL="" encoding="" xref="p1.1.m1.1.6.2.2" xml:id="p1.1.m1.1.6.2.2.cmml" /> 
+       <cn definitionURL="" encoding="" base="10" xref="p1.1.m1.1.6.2.3" type="integer" xml:id="p1.1.m1.1.6.2.3.cmml">
+        2
+       </cn> 
+      </apply> 
+     </apply> 
+     <apply xref="p1.1.m1.1.6.3" xml:id="p1.1.m1.1.6.3.cmml"> 
+      <csymbol definitionURL="" encoding="" xml:id="p1.1.m1.1.6.3.3.cmml" cd="ambiguous">
+       superscript
+      </csymbol> 
+      <ci definitionURL="" encoding="" xref="p1.1.m1.1.6.3.1" xml:id="p1.1.m1.1.6.3.1.cmml">
+       π
+      </ci> 
+      <cn definitionURL="" encoding="" base="10" xref="p1.1.m1.1.6.3.2.1" type="integer" xml:id="p1.1.m1.1.6.3.2.1.cmml">
+       2
+      </cn> 
+     </apply> 
+    </apply> 
+    <apply xref="p1.1.m1.1.33.2.2.2" xml:id="p1.1.m1.1.33.2.2.2.cmml"> 
+     <minus definitionURL="" encoding="" xref="p1.1.m1.1.24" xml:id="p1.1.m1.1.24.cmml" /> 
+     <apply xref="p1.1.m1.1.33.2.2.2.1" xml:id="p1.1.m1.1.33.2.2.2.1.cmml"> 
+      <plus definitionURL="" encoding="" xref="p1.1.m1.1.20" xml:id="p1.1.m1.1.20.cmml" /> 
+      <apply xref="p1.1.m1.1.33.2.2.2.1.1" xml:id="p1.1.m1.1.33.2.2.2.1.1.cmml"> 
+       <minus definitionURL="" encoding="" xref="p1.1.m1.1.10" xml:id="p1.1.m1.1.10.cmml" /> 
+       <apply xref="p1.1.m1.1.33.2.2.2.1.1.1" xml:id="p1.1.m1.1.33.2.2.2.1.1.1.cmml"> 
+        <times definitionURL="" encoding="" xref="p1.1.m1.1.33.2.2.2.1.1.1.1" xml:id="p1.1.m1.1.33.2.2.2.1.1.1.1.cmml" /> 
+        <cn definitionURL="" encoding="" base="10" xref="p1.1.m1.1.8" type="integer" xml:id="p1.1.m1.1.8.cmml">
+         4
+        </cn> 
+        <ci definitionURL="" encoding="" xref="p1.1.m1.1.9" xml:id="p1.1.m1.1.9.cmml">
+         γ
+        </ci> 
+       </apply> 
+       <apply xref="p1.1.m1.1.33.2.2.2.1.1.2" xml:id="p1.1.m1.1.33.2.2.2.1.1.2.cmml"> 
+        <times definitionURL="" encoding="" xref="p1.1.m1.1.33.2.2.2.1.1.2.1" xml:id="p1.1.m1.1.33.2.2.2.1.1.2.1.cmml" /> 
+        <cn definitionURL="" encoding="" base="10" xref="p1.1.m1.1.12" type="integer" xml:id="p1.1.m1.1.12.cmml">
+         24
+        </cn> 
+        <apply xref="p1.1.m1.1.33.2.2.2.1.1.2.2" xml:id="p1.1.m1.1.33.2.2.2.1.1.2.2.cmml"> 
+         <csymbol definitionURL="" encoding="" xml:id="p1.1.m1.1.33.2.2.2.1.1.2.2.1.cmml" cd="ambiguous">
+          superscript
+         </csymbol> 
+         <ci definitionURL="" encoding="" xref="p1.1.m1.1.13" xml:id="p1.1.m1.1.13.cmml">
+          π
+         </ci> 
+         <cn definitionURL="" encoding="" base="10" xref="p1.1.m1.1.14.1" type="integer" xml:id="p1.1.m1.1.14.1.cmml">
+          2
+         </cn> 
+        </apply> 
+        <apply xref="p1.1.m1.1.33.2.2.2.1.1.2.3" xml:id="p1.1.m1.1.33.2.2.2.1.1.2.3.cmml"> 
+         <csymbol definitionURL="" encoding="" xml:id="p1.1.m1.1.33.2.2.2.1.1.2.3.1.cmml" cd="ambiguous">
+          superscript
+         </csymbol> 
+         <ci definitionURL="" encoding="" xref="p1.1.m1.1.15" xml:id="p1.1.m1.1.15.cmml">
+          ζ
+         </ci> 
+         <ci definitionURL="" encoding="" xref="p1.1.m1.1.16.1" xml:id="p1.1.m1.1.16.1.cmml">
+          normal-′
+         </ci> 
+        </apply> 
+        <cn definitionURL="" encoding="" base="10" xref="p1.1.m1.1.18" type="integer" xml:id="p1.1.m1.1.18.cmml">
+         2
+        </cn> 
+       </apply> 
+      </apply> 
+      <apply xref="p1.1.m1.1.33.2.2.2.1.2" xml:id="p1.1.m1.1.33.2.2.2.1.2.cmml"> 
+       <times definitionURL="" encoding="" xref="p1.1.m1.1.33.2.2.2.1.2.1" xml:id="p1.1.m1.1.33.2.2.2.1.2.1.cmml" /> 
+       <cn definitionURL="" encoding="" base="10" xref="p1.1.m1.1.21" type="integer" xml:id="p1.1.m1.1.21.cmml">
+        3
+       </cn> 
+       <apply xref="p1.1.m1.1.33.2.2.2.1.2.2" xml:id="p1.1.m1.1.33.2.2.2.1.2.2.cmml"> 
+        <ln definitionURL="" encoding="" xref="p1.1.m1.1.22" xml:id="p1.1.m1.1.22.cmml" /> 
+        <cn definitionURL="" encoding="" base="10" xref="p1.1.m1.1.23" type="integer" xml:id="p1.1.m1.1.23.cmml">
+         2
+        </cn> 
+       </apply> 
+      </apply> 
+     </apply> 
+     <cn definitionURL="" encoding="" base="10" xref="p1.1.m1.1.25" type="integer" xml:id="p1.1.m1.1.25.cmml">
+      2
+     </cn> 
+    </apply> 
+   </apply> 
+  </apply> 
+ </apply> 
+ <apply xref="p1.1.m1.1.33" xml:id="p1.1.m1.1.33c.cmml"> 
+  <approx definitionURL="" encoding="" xref="p1.1.m1.1.27" xml:id="p1.1.m1.1.27.cmml" /> 
+  <share xref="p1.1.m1.1.33" href="#p1.1.m1.1.33.2.cmml" xml:id="p1.1.m1.1.33d.cmml" /> 
+  <cn definitionURL="" encoding="" base="10" xref="p1.1.m1.1.32" type="float" xml:id="p1.1.m1.1.32.cmml">
+   1.467
+  </cn> 
+ </apply> 
+</apply>
+<apply xmlns:m="http://www.w3.org/1998/Math/MathML" xref="p1.1.m1.1.19" xml:id="p1.1.m1.1.19.cmml"> 
+ <approx definitionURL="" encoding="" xref="p1.1.m1.1.5" xml:id="p1.1.m1.1.5.cmml" /> 
+ <apply xref="p1.1.m1.1.19.1" xml:id="p1.1.m1.1.19.1.cmml"> 
+  <times definitionURL="" encoding="" xref="p1.1.m1.1.19.1.1" xml:id="p1.1.m1.1.19.1.1.cmml" /> 
+  <ci definitionURL="" encoding="" xref="p1.1.m1.1.1" xml:id="p1.1.m1.1.1.cmml">
+   T
+  </ci> 
+  <ci definitionURL="" encoding="" xref="p1.1.m1.1.3" xml:id="p1.1.m1.1.3.cmml">
+   a
+  </ci> 
+ </apply> 
+ <apply xref="p1.1.m1.1.19.2" xml:id="p1.1.m1.1.19.2.cmml"> 
+  <plus definitionURL="" encoding="" xref="p1.1.m1.1.7" xml:id="p1.1.m1.1.7.cmml" /> 
+  <ci definitionURL="" encoding="" xref="p1.1.m1.1.6" xml:id="p1.1.m1.1.6.cmml">
+   C
+  </ci> 
+  <apply xref="p1.1.m1.1.19.2.1" xml:id="p1.1.m1.1.19.2.1.cmml"> 
+   <times definitionURL="" encoding="" xref="p1.1.m1.1.19.2.1.1" xml:id="p1.1.m1.1.19.2.1.1.cmml" /> 
+   <apply xref="p1.1.m1.1.8" xml:id="p1.1.m1.1.8.cmml"> 
+    <divide definitionURL="" encoding="" xml:id="p1.1.m1.1.8.1.cmml" /> 
+    <cn definitionURL="" encoding="" base="10" xref="p1.1.m1.1.8.2" type="integer" xml:id="p1.1.m1.1.8.2.cmml">
+     12
+    </cn> 
+    <apply xref="p1.1.m1.1.8.3" xml:id="p1.1.m1.1.8.3.cmml"> 
+     <csymbol definitionURL="" encoding="" xml:id="p1.1.m1.1.8.3.3.cmml" cd="ambiguous">
+      superscript
+     </csymbol> 
+     <ci definitionURL="" encoding="" xref="p1.1.m1.1.8.3.1" xml:id="p1.1.m1.1.8.3.1.cmml">
+      π
+     </ci> 
+     <cn definitionURL="" encoding="" base="10" xref="p1.1.m1.1.8.3.2.1" type="integer" xml:id="p1.1.m1.1.8.3.2.1.cmml">
+      2
+     </cn> 
+    </apply> 
+   </apply> 
+   <apply xref="p1.1.m1.1.19.2.1.2" xml:id="p1.1.m1.1.19.2.1.2.cmml"> 
+    <ln definitionURL="" encoding="" xref="p1.1.m1.1.9" xml:id="p1.1.m1.1.9.cmml" /> 
+    <cn definitionURL="" encoding="" base="10" xref="p1.1.m1.1.10" type="integer" xml:id="p1.1.m1.1.10.cmml">
+     2
+    </cn> 
+   </apply> 
+   <apply xref="p1.1.m1.1.19.2.1.3" xml:id="p1.1.m1.1.19.2.1.3.cmml"> 
+    <minus definitionURL="" encoding="" xref="p1.1.m1.1.14" xml:id="p1.1.m1.1.14.cmml" /> 
+    <apply xref="p1.1.m1.1.19.2.1.3.1" xml:id="p1.1.m1.1.19.2.1.3.1.cmml"> 
+     <ln definitionURL="" encoding="" xref="p1.1.m1.1.12" xml:id="p1.1.m1.1.12.cmml" /> 
+     <ci definitionURL="" encoding="" xref="p1.1.m1.1.13" xml:id="p1.1.m1.1.13.cmml">
+      a
+     </ci> 
+    </apply> 
+    <apply xref="p1.1.m1.1.19.2.1.3.2" xml:id="p1.1.m1.1.19.2.1.3.2.cmml"> 
+     <apply xref="p1.1.m1.1.19.2.1.3.2.1" xml:id="p1.1.m1.1.19.2.1.3.2.1.cmml"> 
+      <csymbol definitionURL="" encoding="" xml:id="p1.1.m1.1.19.2.1.3.2.1.1.cmml" cd="ambiguous">
+       subscript
+      </csymbol> 
+      <sum definitionURL="" encoding="" xref="p1.1.m1.1.15" xml:id="p1.1.m1.1.15.cmml" /> 
+      <cerror xref="p1.1.m1.1.16.1" xml:id="p1.1.m1.1.16.1.cmml"> 
+       <csymbol definitionURL="" encoding="" xref="p1.1.m1.1.16.1" xml:id="p1.1.m1.1.16.1a.cmml" cd="ambiguous">
+        fragments
+       </csymbol> 
+       <csymbol definitionURL="" encoding="" xref="p1.1.m1.1.16.1" xml:id="p1.1.m1.1.16.1b.cmml" cd="unknown">
+        d
+       </csymbol> 
+       <ci definitionURL="" encoding="" xref="p1.1.m1.1.16.1.2" xml:id="p1.1.m1.1.16.1.2.cmml">
+        normal-|
+       </ci> 
+       <csymbol definitionURL="" encoding="" xref="p1.1.m1.1.16.1" xml:id="p1.1.m1.1.16.1c.cmml" cd="unknown">
+        a
+       </csymbol> 
+      </cerror> 
+     </apply> 
+     <apply xref="p1.1.m1.1.17" xml:id="p1.1.m1.1.17.cmml"> 
+      <divide definitionURL="" encoding="" xml:id="p1.1.m1.1.17.1.cmml" /> 
+      <apply xref="p1.1.m1.1.17.2" xml:id="p1.1.m1.1.17.2.cmml"> 
+       <times definitionURL="" encoding="" xref="p1.1.m1.1.17.2.5" xml:id="p1.1.m1.1.17.2.5.cmml" /> 
+       <ci definitionURL="" encoding="" xref="p1.1.m1.1.17.2.1" xml:id="p1.1.m1.1.17.2.1.cmml">
+        normal-Λ
+       </ci> 
+       <ci definitionURL="" encoding="" xref="p1.1.m1.1.17.2.3" xml:id="p1.1.m1.1.17.2.3.cmml">
+        d
+       </ci> 
+      </apply> 
+      <ci definitionURL="" encoding="" xref="p1.1.m1.1.17.3" xml:id="p1.1.m1.1.17.3.cmml">
+       d
+      </ci> 
+     </apply> 
+    </apply> 
+   </apply> 
+  </apply> 
+ </apply> 
+</apply>
+<apply xmlns:m="http://www.w3.org/1998/Math/MathML" xref="p1.1.m1.1.17" xml:id="p1.1.m1.1.17.cmml"> 
+ <approx definitionURL="" encoding="" xref="p1.1.m1.1.5" xml:id="p1.1.m1.1.5.cmml" /> 
+ <apply xref="p1.1.m1.1.17.1" xml:id="p1.1.m1.1.17.1.cmml"> 
+  <times definitionURL="" encoding="" xref="p1.1.m1.1.17.1.1" xml:id="p1.1.m1.1.17.1.1.cmml" /> 
+  <ci definitionURL="" encoding="" xref="p1.1.m1.1.1" xml:id="p1.1.m1.1.1.cmml">
+   Y
+  </ci> 
+  <ci definitionURL="" encoding="" xref="p1.1.m1.1.3" xml:id="p1.1.m1.1.3.cmml">
+   n
+  </ci> 
+ </apply> 
+ <apply xref="p1.1.m1.1.17.2" xml:id="p1.1.m1.1.17.2.cmml"> 
+  <plus definitionURL="" encoding="" xref="p1.1.m1.1.11" xml:id="p1.1.m1.1.11.cmml" /> 
+  <apply xref="p1.1.m1.1.17.2.1" xml:id="p1.1.m1.1.17.2.1.cmml"> 
+   <times definitionURL="" encoding="" xref="p1.1.m1.1.17.2.1.1" xml:id="p1.1.m1.1.17.2.1.1.cmml" /> 
+   <apply xref="p1.1.m1.1.6" xml:id="p1.1.m1.1.6.cmml"> 
+    <divide definitionURL="" encoding="" xml:id="p1.1.m1.1.6.1.cmml" /> 
+    <cn definitionURL="" encoding="" base="10" xref="p1.1.m1.1.6.2" type="integer" xml:id="p1.1.m1.1.6.2.cmml">
+     12
+    </cn> 
+    <apply xref="p1.1.m1.1.6.3" xml:id="p1.1.m1.1.6.3.cmml"> 
+     <csymbol definitionURL="" encoding="" xml:id="p1.1.m1.1.6.3.3.cmml" cd="ambiguous">
+      superscript
+     </csymbol> 
+     <ci definitionURL="" encoding="" xref="p1.1.m1.1.6.3.1" xml:id="p1.1.m1.1.6.3.1.cmml">
+      π
+     </ci> 
+     <cn definitionURL="" encoding="" base="10" xref="p1.1.m1.1.6.3.2.1" type="integer" xml:id="p1.1.m1.1.6.3.2.1.cmml">
+      2
+     </cn> 
+    </apply> 
+   </apply> 
+   <apply xref="p1.1.m1.1.17.2.1.2" xml:id="p1.1.m1.1.17.2.1.2.cmml"> 
+    <ln definitionURL="" encoding="" xref="p1.1.m1.1.7" xml:id="p1.1.m1.1.7.cmml" /> 
+    <apply xref="p1.1.m1.1.17.2.1.2.1" xml:id="p1.1.m1.1.17.2.1.2.1.cmml"> 
+     <times definitionURL="" encoding="" xref="p1.1.m1.1.17.2.1.2.1.1" xml:id="p1.1.m1.1.17.2.1.2.1.1.cmml" /> 
+     <cn definitionURL="" encoding="" base="10" xref="p1.1.m1.1.8" type="integer" xml:id="p1.1.m1.1.8.cmml">
+      2
+     </cn> 
+     <apply xref="p1.1.m1.1.17.2.1.2.1.2" xml:id="p1.1.m1.1.17.2.1.2.1.2.cmml"> 
+      <ln definitionURL="" encoding="" xref="p1.1.m1.1.9" xml:id="p1.1.m1.1.9.cmml" /> 
+      <ci definitionURL="" encoding="" xref="p1.1.m1.1.10" xml:id="p1.1.m1.1.10.cmml">
+       n
+      </ci> 
+     </apply> 
+    </apply> 
+   </apply> 
+  </apply> 
+  <cn definitionURL="" encoding="" base="10" xref="p1.1.m1.1.16" type="float" xml:id="p1.1.m1.1.16.cmml">
+   0.06.
+  </cn> 
+ </apply> 
+</apply>
+<mtable xmlns:m="http://www.w3.org/1998/Math/MathML" xref="p1.1.m1.1.1.cmml" rowspacing="0.2ex" columnspacing="0.4em" xml:id="p1.1.m1.1.1"> 
+ <mtr xref="p1.1.m1.1.1.cmml" xml:id="p1.1.m1.1.1a"> 
+  <mtd xref="p1.1.m1.1.1.cmml" xml:id="p1.1.m1.1.1b" /> 
+  <mtd columnalign="left" xref="p1.1.m1.1.1.cmml" xml:id="p1.1.m1.1.1c"> 
+    
+    <mrow xml:id="p1.1.m1.1.1.1.2.1.12"> 
+     <mi xml:id="p1.1.m1.1.1.1.2.1.1">
+      a
+     </mi> 
+      
+     <mi xml:id="p1.1.m1.1.1.1.2.1.2">
+      m
+     </mi> 
+      
+     <mi xml:id="p1.1.m1.1.1.1.2.1.3">
+      p
+     </mi> 
+    </mrow> 
+    <mo xml:id="p1.1.m1.1.1.1.2.1a">
+     ;
+    </mo> 
+    <mrow xml:id="p1.1.m1.1.1.1.2.1.13"> 
+     <mi xml:id="p1.1.m1.1.1.1.2.1.5">
+      gcd
+     </mi> 
+      
+     <mrow xml:id="p1.1.m1.1.1.1.2.1.13b"> 
+      <mo xml:id="p1.1.m1.1.1.1.2.1.13c">
+       (
+      </mo><mrow xml:id="p1.1.m1.1.1.1.2.1.13d"> 
+       <mn xml:id="p1.1.m1.1.1.1.2.1.7">
+        3
+       </mn> 
+       <mo xml:id="p1.1.m1.1.1.1.2.1.13e">
+        ,
+       </mo> 
+       <mn xml:id="p1.1.m1.1.1.1.2.1.9">
+        4
+       </mn> 
+      </mrow> 
+       
+      <mo xml:id="p1.1.m1.1.1.1.2.1.13f">
+       )
+      </mo> 
+     </mrow> 
+    </mrow> 
+    
+  </mtd> 
+  <mtd columnalign="right" xref="p1.1.m1.1.1.cmml" xml:id="p1.1.m1.1.1d"> 
+    
+    <mi xml:id="p1.1.m1.1.1.1.3.1.1">
+     a
+    </mi> 
+    <mi xml:id="p1.1.m1.1.1.1.3.1.2">
+     m
+    </mi> 
+    <mi xml:id="p1.1.m1.1.1.1.3.1.3">
+     p
+    </mi> 
+    <mo xml:id="p1.1.m1.1.1.1.3.1.4">
+     ;
+    </mo> 
+    <mo xml:id="p1.1.m1.1.1.1.3.1.5">
+     ←
+    </mo> 
+    
+  </mtd> 
+ </mtr> 
+ <mtr xref="p1.1.m1.1.1.cmml" xml:id="p1.1.m1.1.1e"> 
+  <mtd columnalign="right" xref="p1.1.m1.1.1.cmml" xml:id="p1.1.m1.1.1f"> 
+   <mo xml:id="p1.1.m1.1.1.2.1.1">
+    =
+   </mo> 
+  </mtd> 
+  <mtd columnalign="left" xref="p1.1.m1.1.1.cmml" xml:id="p1.1.m1.1.1g"> 
+    
+    <mrow xml:id="p1.1.m1.1.1.2.2.1.12"> 
+     <mi xml:id="p1.1.m1.1.1.2.2.1.1">
+      a
+     </mi> 
+      
+     <mi xml:id="p1.1.m1.1.1.2.2.1.2">
+      m
+     </mi> 
+      
+     <mi xml:id="p1.1.m1.1.1.2.2.1.3">
+      p
+     </mi> 
+    </mrow> 
+    <mo xml:id="p1.1.m1.1.1.2.2.1a">
+     ;
+    </mo> 
+    <mrow xml:id="p1.1.m1.1.1.2.2.1.13"> 
+     <mi xml:id="p1.1.m1.1.1.2.2.1.5">
+      gcd
+     </mi> 
+      
+     <mrow xml:id="p1.1.m1.1.1.2.2.1.13b"> 
+      <mo xml:id="p1.1.m1.1.1.2.2.1.13c">
+       (
+      </mo><mrow xml:id="p1.1.m1.1.1.2.2.1.13d"> 
+       <mn xml:id="p1.1.m1.1.1.2.2.1.7">
+        3
+       </mn> 
+       <mo xml:id="p1.1.m1.1.1.2.2.1.13e">
+        ,
+       </mo> 
+       <mn xml:id="p1.1.m1.1.1.2.2.1.9">
+        1
+       </mn> 
+      </mrow> 
+       
+      <mo xml:id="p1.1.m1.1.1.2.2.1.13f">
+       )
+      </mo> 
+     </mrow> 
+    </mrow> 
+    
+  </mtd> 
+  <mtd columnalign="right" xref="p1.1.m1.1.1.cmml" xml:id="p1.1.m1.1.1h"> 
+    
+    <mi xml:id="p1.1.m1.1.1.2.3.1.1">
+     a
+    </mi> 
+    <mi xml:id="p1.1.m1.1.1.2.3.1.2">
+     m
+    </mi> 
+    <mi xml:id="p1.1.m1.1.1.2.3.1.3">
+     p
+    </mi> 
+    <mo xml:id="p1.1.m1.1.1.2.3.1.4">
+     ;
+    </mo> 
+    <mo xml:id="p1.1.m1.1.1.2.3.1.5">
+     →
+    </mo> 
+    
+  </mtd> 
+ </mtr> 
+ <mtr xref="p1.1.m1.1.1.cmml" xml:id="p1.1.m1.1.1i"> 
+  <mtd columnalign="right" xref="p1.1.m1.1.1.cmml" xml:id="p1.1.m1.1.1j"> 
+   <mo xml:id="p1.1.m1.1.1.3.1.1">
+    =
+   </mo> 
+  </mtd> 
+  <mtd columnalign="left" xref="p1.1.m1.1.1.cmml" xml:id="p1.1.m1.1.1k"> 
+    
+    <mrow xml:id="p1.1.m1.1.1.3.2.1.12"> 
+     <mi xml:id="p1.1.m1.1.1.3.2.1.1">
+      a
+     </mi> 
+      
+     <mi xml:id="p1.1.m1.1.1.3.2.1.2">
+      m
+     </mi> 
+      
+     <mi xml:id="p1.1.m1.1.1.3.2.1.3">
+      p
+     </mi> 
+    </mrow> 
+    <mo xml:id="p1.1.m1.1.1.3.2.1a">
+     ;
+    </mo> 
+    <mrow xml:id="p1.1.m1.1.1.3.2.1.13"> 
+     <mi xml:id="p1.1.m1.1.1.3.2.1.5">
+      gcd
+     </mi> 
+      
+     <mrow xml:id="p1.1.m1.1.1.3.2.1.13b"> 
+      <mo xml:id="p1.1.m1.1.1.3.2.1.13c">
+       (
+      </mo><mrow xml:id="p1.1.m1.1.1.3.2.1.13d"> 
+       <mn xml:id="p1.1.m1.1.1.3.2.1.7">
+        2
+       </mn> 
+       <mo xml:id="p1.1.m1.1.1.3.2.1.13e">
+        ,
+       </mo> 
+       <mn xml:id="p1.1.m1.1.1.3.2.1.9">
+        1
+       </mn> 
+      </mrow> 
+       
+      <mo xml:id="p1.1.m1.1.1.3.2.1.13f">
+       )
+      </mo> 
+     </mrow> 
+    </mrow> 
+    
+  </mtd> 
+  <mtd columnalign="right" xref="p1.1.m1.1.1.cmml" xml:id="p1.1.m1.1.1l"> 
+    
+    <mi xml:id="p1.1.m1.1.1.3.3.1.1">
+     a
+    </mi> 
+    <mi xml:id="p1.1.m1.1.1.3.3.1.2">
+     m
+    </mi> 
+    <mi xml:id="p1.1.m1.1.1.3.3.1.3">
+     p
+    </mi> 
+    <mo xml:id="p1.1.m1.1.1.3.3.1.4">
+     ;
+    </mo> 
+    <mo xml:id="p1.1.m1.1.1.3.3.1.5">
+     →
+    </mo> 
+    
+  </mtd> 
+ </mtr> 
+ <mtr xref="p1.1.m1.1.1.cmml" xml:id="p1.1.m1.1.1m"> 
+  <mtd columnalign="right" xref="p1.1.m1.1.1.cmml" xml:id="p1.1.m1.1.1n"> 
+   <mo xml:id="p1.1.m1.1.1.4.1.1">
+    =
+   </mo> 
+  </mtd> 
+  <mtd columnalign="left" xref="p1.1.m1.1.1.cmml" xml:id="p1.1.m1.1.1o"> 
+    
+    <mrow xml:id="p1.1.m1.1.1.4.2.1.12"> 
+     <mi xml:id="p1.1.m1.1.1.4.2.1.1">
+      a
+     </mi> 
+      
+     <mi xml:id="p1.1.m1.1.1.4.2.1.2">
+      m
+     </mi> 
+      
+     <mi xml:id="p1.1.m1.1.1.4.2.1.3">
+      p
+     </mi> 
+    </mrow> 
+    <mo xml:id="p1.1.m1.1.1.4.2.1a">
+     ;
+    </mo> 
+    <mrow xml:id="p1.1.m1.1.1.4.2.1.13"> 
+     <mi xml:id="p1.1.m1.1.1.4.2.1.5">
+      gcd
+     </mi> 
+      
+     <mrow xml:id="p1.1.m1.1.1.4.2.1.13b"> 
+      <mo xml:id="p1.1.m1.1.1.4.2.1.13c">
+       (
+      </mo><mrow xml:id="p1.1.m1.1.1.4.2.1.13d"> 
+       <mn xml:id="p1.1.m1.1.1.4.2.1.7">
+        1
+       </mn> 
+       <mo xml:id="p1.1.m1.1.1.4.2.1.13e">
+        ,
+       </mo> 
+       <mn xml:id="p1.1.m1.1.1.4.2.1.9">
+        1
+       </mn> 
+      </mrow> 
+       
+      <mo xml:id="p1.1.m1.1.1.4.2.1.13f">
+       )
+      </mo> 
+     </mrow> 
+    </mrow> 
+    
+  </mtd> 
+ </mtr> 
+</mtable>
+<mtable xmlns:m="http://www.w3.org/1998/Math/MathML" xref="p1.1.m1.1.1.cmml" rowspacing="0.2ex" columnspacing="0.4em" xml:id="p1.1.m1.1.1"> 
+ <mtr xref="p1.1.m1.1.1.cmml" xml:id="p1.1.m1.1.1a"> 
+  <mtd columnalign="right" xref="p1.1.m1.1.1.cmml" xml:id="p1.1.m1.1.1b"> 
+   <mstyle displaystyle="true" xml:id="p1.1.m1.1.1.1.1.1"> 
+    <mfrac xml:id="p1.1.m1.1.1.1.1.1a"> 
+     <mi xml:id="p1.1.m1.1.1.1.1.1.1.2">
+      a
+     </mi> 
+     <mi xml:id="p1.1.m1.1.1.1.1.1.1.3">
+      b
+     </mi> 
+    </mfrac> 
+   </mstyle> 
+  </mtd> 
+  <mtd columnalign="left" xref="p1.1.m1.1.1.cmml" xml:id="p1.1.m1.1.1c"> 
+    
+    <mi xml:id="p1.1.m1.1.1.1.2.1.1">
+     a
+    </mi> 
+    <mi xml:id="p1.1.m1.1.1.1.2.1.2">
+     m
+    </mi> 
+    <mi xml:id="p1.1.m1.1.1.1.2.1.3">
+     p
+    </mi> 
+    <mo xml:id="p1.1.m1.1.1.1.2.1.4">
+     ;
+    </mo> 
+    <mo xml:id="p1.1.m1.1.1.1.2.1.5">
+     =
+    </mo> 
+    <msub xml:id="p1.1.m1.1.1.1.2.1.10"> 
+     <mi xml:id="p1.1.m1.1.1.1.2.1.6">
+      q
+     </mi> 
+     <mn xml:id="p1.1.m1.1.1.1.2.1.7.1">
+      0
+     </mn> 
+    </msub> 
+    <mo xml:id="p1.1.m1.1.1.1.2.1.8">
+     +
+    </mo> 
+    <mstyle displaystyle="true" xml:id="p1.1.m1.1.1.1.2.1.9"> 
+     <mfrac xml:id="p1.1.m1.1.1.1.2.1.9a"> 
+      <msub xml:id="p1.1.m1.1.1.1.2.1.9.2"> 
+       <mi xml:id="p1.1.m1.1.1.1.2.1.9.2.1">
+        r
+       </mi> 
+       <mn xml:id="p1.1.m1.1.1.1.2.1.9.2.2.1">
+        0
+       </mn> 
+      </msub> 
+      <mi xml:id="p1.1.m1.1.1.1.2.1.9.3">
+       b
+      </mi> 
+     </mfrac> 
+    </mstyle> 
+    
+  </mtd> 
+ </mtr> 
+ <mtr xref="p1.1.m1.1.1.cmml" xml:id="p1.1.m1.1.1d"> 
+  <mtd columnalign="right" xref="p1.1.m1.1.1.cmml" xml:id="p1.1.m1.1.1e"> 
+   <mstyle displaystyle="true" xml:id="p1.1.m1.1.1.2.1.1"> 
+    <mfrac xml:id="p1.1.m1.1.1.2.1.1a"> 
+     <mi xml:id="p1.1.m1.1.1.2.1.1.1.2">
+      b
+     </mi> 
+     <msub xml:id="p1.1.m1.1.1.2.1.1.1.3"> 
+      <mi xml:id="p1.1.m1.1.1.2.1.1.1.3.1">
+       r
+      </mi> 
+      <mn xml:id="p1.1.m1.1.1.2.1.1.1.3.2.1">
+       0
+      </mn> 
+     </msub> 
+    </mfrac> 
+   </mstyle> 
+  </mtd> 
+  <mtd columnalign="left" xref="p1.1.m1.1.1.cmml" xml:id="p1.1.m1.1.1f"> 
+    
+    <mi xml:id="p1.1.m1.1.1.2.2.1.1">
+     a
+    </mi> 
+    <mi xml:id="p1.1.m1.1.1.2.2.1.2">
+     m
+    </mi> 
+    <mi xml:id="p1.1.m1.1.1.2.2.1.3">
+     p
+    </mi> 
+    <mo xml:id="p1.1.m1.1.1.2.2.1.4">
+     ;
+    </mo> 
+    <mo xml:id="p1.1.m1.1.1.2.2.1.5">
+     =
+    </mo> 
+    <msub xml:id="p1.1.m1.1.1.2.2.1.10"> 
+     <mi xml:id="p1.1.m1.1.1.2.2.1.6">
+      q
+     </mi> 
+     <mn xml:id="p1.1.m1.1.1.2.2.1.7.1">
+      1
+     </mn> 
+    </msub> 
+    <mo xml:id="p1.1.m1.1.1.2.2.1.8">
+     +
+    </mo> 
+    <mstyle displaystyle="true" xml:id="p1.1.m1.1.1.2.2.1.9"> 
+     <mfrac xml:id="p1.1.m1.1.1.2.2.1.9a"> 
+      <msub xml:id="p1.1.m1.1.1.2.2.1.9.2"> 
+       <mi xml:id="p1.1.m1.1.1.2.2.1.9.2.1">
+        r
+       </mi> 
+       <mn xml:id="p1.1.m1.1.1.2.2.1.9.2.2.1">
+        1
+       </mn> 
+      </msub> 
+      <msub xml:id="p1.1.m1.1.1.2.2.1.9.3"> 
+       <mi xml:id="p1.1.m1.1.1.2.2.1.9.3.1">
+        r
+       </mi> 
+       <mn xml:id="p1.1.m1.1.1.2.2.1.9.3.2.1">
+        0
+       </mn> 
+      </msub> 
+     </mfrac> 
+    </mstyle> 
+    
+  </mtd> 
+ </mtr> 
+ <mtr xref="p1.1.m1.1.1.cmml" xml:id="p1.1.m1.1.1g"> 
+  <mtd columnalign="right" xref="p1.1.m1.1.1.cmml" xml:id="p1.1.m1.1.1h"> 
+   <mstyle displaystyle="true" xml:id="p1.1.m1.1.1.3.1.1"> 
+    <mfrac xml:id="p1.1.m1.1.1.3.1.1a"> 
+     <msub xml:id="p1.1.m1.1.1.3.1.1.1.2"> 
+      <mi xml:id="p1.1.m1.1.1.3.1.1.1.2.1">
+       r
+      </mi> 
+      <mn xml:id="p1.1.m1.1.1.3.1.1.1.2.2.1">
+       0
+      </mn> 
+     </msub> 
+     <msub xml:id="p1.1.m1.1.1.3.1.1.1.3"> 
+      <mi xml:id="p1.1.m1.1.1.3.1.1.1.3.1">
+       r
+      </mi> 
+      <mn xml:id="p1.1.m1.1.1.3.1.1.1.3.2.1">
+       1
+      </mn> 
+     </msub> 
+    </mfrac> 
+   </mstyle> 
+  </mtd> 
+  <mtd columnalign="left" xref="p1.1.m1.1.1.cmml" xml:id="p1.1.m1.1.1i"> 
+    
+    <mi xml:id="p1.1.m1.1.1.3.2.1.1">
+     a
+    </mi> 
+    <mi xml:id="p1.1.m1.1.1.3.2.1.2">
+     m
+    </mi> 
+    <mi xml:id="p1.1.m1.1.1.3.2.1.3">
+     p
+    </mi> 
+    <mo xml:id="p1.1.m1.1.1.3.2.1.4">
+     ;
+    </mo> 
+    <mo xml:id="p1.1.m1.1.1.3.2.1.5">
+     =
+    </mo> 
+    <msub xml:id="p1.1.m1.1.1.3.2.1.10"> 
+     <mi xml:id="p1.1.m1.1.1.3.2.1.6">
+      q
+     </mi> 
+     <mn xml:id="p1.1.m1.1.1.3.2.1.7.1">
+      2
+     </mn> 
+    </msub> 
+    <mo xml:id="p1.1.m1.1.1.3.2.1.8">
+     +
+    </mo> 
+    <mstyle displaystyle="true" xml:id="p1.1.m1.1.1.3.2.1.9"> 
+     <mfrac xml:id="p1.1.m1.1.1.3.2.1.9a"> 
+      <msub xml:id="p1.1.m1.1.1.3.2.1.9.2"> 
+       <mi xml:id="p1.1.m1.1.1.3.2.1.9.2.1">
+        r
+       </mi> 
+       <mn xml:id="p1.1.m1.1.1.3.2.1.9.2.2.1">
+        2
+       </mn> 
+      </msub> 
+      <msub xml:id="p1.1.m1.1.1.3.2.1.9.3"> 
+       <mi xml:id="p1.1.m1.1.1.3.2.1.9.3.1">
+        r
+       </mi> 
+       <mn xml:id="p1.1.m1.1.1.3.2.1.9.3.2.1">
+        1
+       </mn> 
+      </msub> 
+     </mfrac> 
+    </mstyle> 
+    
+  </mtd> 
+ </mtr> 
+ <mtr xref="p1.1.m1.1.1.cmml" xml:id="p1.1.m1.1.1j"> 
+  <mtd xref="p1.1.m1.1.1.cmml" xml:id="p1.1.m1.1.1k" /> 
+  <mtd columnalign="left" xref="p1.1.m1.1.1.cmml" xml:id="p1.1.m1.1.1l"> 
+    
+    <mrow xml:id="p1.1.m1.1.1.4.2.1.8"> 
+     <mi xml:id="p1.1.m1.1.1.4.2.1.1">
+      a
+     </mi> 
+      
+     <mi xml:id="p1.1.m1.1.1.4.2.1.2">
+      m
+     </mi> 
+      
+     <mi xml:id="p1.1.m1.1.1.4.2.1.3">
+      p
+     </mi> 
+    </mrow> 
+    <mo separator="true" xml:id="p1.1.m1.1.1.4.2.1a">
+     ;  
+    </mo> 
+    <mi mathvariant="normal" xml:id="p1.1.m1.1.1.4.2.1.6">
+     ⋮
+    </mi> 
+    
+  </mtd> 
+ </mtr> 
+ <mtr xref="p1.1.m1.1.1.cmml" xml:id="p1.1.m1.1.1m"> 
+  <mtd columnalign="right" xref="p1.1.m1.1.1.cmml" xml:id="p1.1.m1.1.1n"> 
+   <mstyle displaystyle="true" xml:id="p1.1.m1.1.1.5.1.1"> 
+    <mfrac xml:id="p1.1.m1.1.1.5.1.1a"> 
+     <msub xml:id="p1.1.m1.1.1.5.1.1.1.2"> 
+      <mi xml:id="p1.1.m1.1.1.5.1.1.1.2.1">
+       r
+      </mi> 
+      <mrow xml:id="p1.1.m1.1.1.5.1.1.1.2.2.1"> 
+       <mi xml:id="p1.1.m1.1.1.5.1.1.1.2.2.1.1">
+        k
+       </mi> 
+       <mo xml:id="p1.1.m1.1.1.5.1.1.1.2.2.1.2">
+        -
+       </mo> 
+       <mn xml:id="p1.1.m1.1.1.5.1.1.1.2.2.1.3">
+        2
+       </mn> 
+      </mrow> 
+     </msub> 
+     <msub xml:id="p1.1.m1.1.1.5.1.1.1.3"> 
+      <mi xml:id="p1.1.m1.1.1.5.1.1.1.3.1">
+       r
+      </mi> 
+      <mrow xml:id="p1.1.m1.1.1.5.1.1.1.3.2.1"> 
+       <mi xml:id="p1.1.m1.1.1.5.1.1.1.3.2.1.1">
+        k
+       </mi> 
+       <mo xml:id="p1.1.m1.1.1.5.1.1.1.3.2.1.2">
+        -
+       </mo> 
+       <mn xml:id="p1.1.m1.1.1.5.1.1.1.3.2.1.3">
+        1
+       </mn> 
+      </mrow> 
+     </msub> 
+    </mfrac> 
+   </mstyle> 
+  </mtd> 
+  <mtd columnalign="left" xref="p1.1.m1.1.1.cmml" xml:id="p1.1.m1.1.1o"> 
+    
+    <mi xml:id="p1.1.m1.1.1.5.2.1.1">
+     a
+    </mi> 
+    <mi xml:id="p1.1.m1.1.1.5.2.1.2">
+     m
+    </mi> 
+    <mi xml:id="p1.1.m1.1.1.5.2.1.3">
+     p
+    </mi> 
+    <mo xml:id="p1.1.m1.1.1.5.2.1.4">
+     ;
+    </mo> 
+    <mo xml:id="p1.1.m1.1.1.5.2.1.5">
+     =
+    </mo> 
+    <msub xml:id="p1.1.m1.1.1.5.2.1.10"> 
+     <mi xml:id="p1.1.m1.1.1.5.2.1.6">
+      q
+     </mi> 
+     <mi xml:id="p1.1.m1.1.1.5.2.1.7.1">
+      k
+     </mi> 
+    </msub> 
+    <mo xml:id="p1.1.m1.1.1.5.2.1.8">
+     +
+    </mo> 
+    <mstyle displaystyle="true" xml:id="p1.1.m1.1.1.5.2.1.9"> 
+     <mfrac xml:id="p1.1.m1.1.1.5.2.1.9a"> 
+      <msub xml:id="p1.1.m1.1.1.5.2.1.9.2"> 
+       <mi xml:id="p1.1.m1.1.1.5.2.1.9.2.1">
+        r
+       </mi> 
+       <mi xml:id="p1.1.m1.1.1.5.2.1.9.2.2.1">
+        k
+       </mi> 
+      </msub> 
+      <msub xml:id="p1.1.m1.1.1.5.2.1.9.3"> 
+       <mi xml:id="p1.1.m1.1.1.5.2.1.9.3.1">
+        r
+       </mi> 
+       <mrow xml:id="p1.1.m1.1.1.5.2.1.9.3.2.1"> 
+        <mi xml:id="p1.1.m1.1.1.5.2.1.9.3.2.1.1">
+         k
+        </mi> 
+        <mo xml:id="p1.1.m1.1.1.5.2.1.9.3.2.1.2">
+         -
+        </mo> 
+        <mn xml:id="p1.1.m1.1.1.5.2.1.9.3.2.1.3">
+         1
+        </mn> 
+       </mrow> 
+      </msub> 
+     </mfrac> 
+    </mstyle> 
+    
+  </mtd> 
+ </mtr> 
+ <mtr xref="p1.1.m1.1.1.cmml" xml:id="p1.1.m1.1.1p"> 
+  <mtd xref="p1.1.m1.1.1.cmml" xml:id="p1.1.m1.1.1q" /> 
+  <mtd columnalign="left" xref="p1.1.m1.1.1.cmml" xml:id="p1.1.m1.1.1r"> 
+    
+    <mrow xml:id="p1.1.m1.1.1.6.2.1.8"> 
+     <mi xml:id="p1.1.m1.1.1.6.2.1.1">
+      a
+     </mi> 
+      
+     <mi xml:id="p1.1.m1.1.1.6.2.1.2">
+      m
+     </mi> 
+      
+     <mi xml:id="p1.1.m1.1.1.6.2.1.3">
+      p
+     </mi> 
+    </mrow> 
+    <mo separator="true" xml:id="p1.1.m1.1.1.6.2.1a">
+     ;  
+    </mo> 
+    <mi mathvariant="normal" xml:id="p1.1.m1.1.1.6.2.1.6">
+     ⋮
+    </mi> 
+    
+  </mtd> 
+ </mtr> 
+ <mtr xref="p1.1.m1.1.1.cmml" xml:id="p1.1.m1.1.1s"> 
+  <mtd columnalign="right" xref="p1.1.m1.1.1.cmml" xml:id="p1.1.m1.1.1t"> 
+   <mstyle displaystyle="true" xml:id="p1.1.m1.1.1.7.1.1"> 
+    <mfrac xml:id="p1.1.m1.1.1.7.1.1a"> 
+     <msub xml:id="p1.1.m1.1.1.7.1.1.1.2"> 
+      <mi xml:id="p1.1.m1.1.1.7.1.1.1.2.1">
+       r
+      </mi> 
+      <mrow xml:id="p1.1.m1.1.1.7.1.1.1.2.2.1"> 
+       <mi xml:id="p1.1.m1.1.1.7.1.1.1.2.2.1.1">
+        N
+       </mi> 
+       <mo xml:id="p1.1.m1.1.1.7.1.1.1.2.2.1.2">
+        -
+       </mo> 
+       <mn xml:id="p1.1.m1.1.1.7.1.1.1.2.2.1.3">
+        2
+       </mn> 
+      </mrow> 
+     </msub> 
+     <msub xml:id="p1.1.m1.1.1.7.1.1.1.3"> 
+      <mi xml:id="p1.1.m1.1.1.7.1.1.1.3.1">
+       r
+      </mi> 
+      <mrow xml:id="p1.1.m1.1.1.7.1.1.1.3.2.1"> 
+       <mi xml:id="p1.1.m1.1.1.7.1.1.1.3.2.1.1">
+        N
+       </mi> 
+       <mo xml:id="p1.1.m1.1.1.7.1.1.1.3.2.1.2">
+        -
+       </mo> 
+       <mn xml:id="p1.1.m1.1.1.7.1.1.1.3.2.1.3">
+        1
+       </mn> 
+      </mrow> 
+     </msub> 
+    </mfrac> 
+   </mstyle> 
+  </mtd> 
+  <mtd columnalign="left" xref="p1.1.m1.1.1.cmml" xml:id="p1.1.m1.1.1u"> 
+    
+    <mi xml:id="p1.1.m1.1.1.7.2.1.1">
+     a
+    </mi> 
+    <mi xml:id="p1.1.m1.1.1.7.2.1.2">
+     m
+    </mi> 
+    <mi xml:id="p1.1.m1.1.1.7.2.1.3">
+     p
+    </mi> 
+    <mo xml:id="p1.1.m1.1.1.7.2.1.4">
+     ;
+    </mo> 
+    <mo xml:id="p1.1.m1.1.1.7.2.1.5">
+     =
+    </mo> 
+    <msub xml:id="p1.1.m1.1.1.7.2.1.8"> 
+     <mi xml:id="p1.1.m1.1.1.7.2.1.6">
+      q
+     </mi> 
+     <mi xml:id="p1.1.m1.1.1.7.2.1.7.1">
+      N
+     </mi> 
+    </msub> 
+    
+  </mtd> 
+ </mtr> 
+</mtable>
+<mrow xmlns:m="http://www.w3.org/1998/Math/MathML" xref="p1.1.m1.1.7.cmml" xml:id="p1.1.m1.1.7"> 
+ <mstyle displaystyle="true" xref="p1.1.m1.1.1.cmml" xml:id="p1.1.m1.1.1"> 
+  <mfrac xref="p1.1.m1.1.1.cmml" xml:id="p1.1.m1.1.1a"> 
+   <mi xref="p1.1.m1.1.1.2.cmml" xml:id="p1.1.m1.1.1.2">
+    a
+   </mi> 
+   <mi xref="p1.1.m1.1.1.3.cmml" xml:id="p1.1.m1.1.1.3">
+    b
+   </mi> 
+  </mfrac> 
+ </mstyle> 
+ <mo xref="p1.1.m1.1.2.cmml" xml:id="p1.1.m1.1.2">
+  =
+ </mo> 
+ <mrow xref="p1.1.m1.1.7.1.cmml" xml:id="p1.1.m1.1.7.1"> 
+  <msub xref="p1.1.m1.1.7.1.1.cmml" xml:id="p1.1.m1.1.7.1.1"> 
+   <mi xref="p1.1.m1.1.3.cmml" xml:id="p1.1.m1.1.3">
+    q
+   </mi> 
+   <mn xref="p1.1.m1.1.4.1.cmml" xml:id="p1.1.m1.1.4.1">
+    0
+   </mn> 
+  </msub> 
+  <mo xref="p1.1.m1.1.5.cmml" xml:id="p1.1.m1.1.5">
+   +
+  </mo> 
+  <mstyle displaystyle="true" xref="p1.1.m1.1.6.cmml" xml:id="p1.1.m1.1.6"> 
+   <mfrac xref="p1.1.m1.1.6.cmml" xml:id="p1.1.m1.1.6a"> 
+    <mn xref="p1.1.m1.1.6.2.cmml" xml:id="p1.1.m1.1.6.2">
+     1
+    </mn> 
+    <mrow xref="p1.1.m1.1.6.3.cmml" xml:id="p1.1.m1.1.6.3"> 
+     <msub xref="p1.1.m1.1.6.3.5.cmml" xml:id="p1.1.m1.1.6.3.5"> 
+      <mi xref="p1.1.m1.1.6.3.1.cmml" xml:id="p1.1.m1.1.6.3.1">
+       q
+      </mi> 
+      <mn xref="p1.1.m1.1.6.3.2.1.cmml" xml:id="p1.1.m1.1.6.3.2.1">
+       1
+      </mn> 
+     </msub> 
+     <mo xref="p1.1.m1.1.6.3.3.cmml" xml:id="p1.1.m1.1.6.3.3">
+      +
+     </mo> 
+     <mstyle displaystyle="true" xref="p1.1.m1.1.6.3.4.cmml" xml:id="p1.1.m1.1.6.3.4"> 
+      <mfrac xref="p1.1.m1.1.6.3.4.cmml" xml:id="p1.1.m1.1.6.3.4a"> 
+       <msub xref="p1.1.m1.1.6.3.4.2.cmml" xml:id="p1.1.m1.1.6.3.4.2"> 
+        <mi xref="p1.1.m1.1.6.3.4.2.1.cmml" xml:id="p1.1.m1.1.6.3.4.2.1">
+         r
+        </mi> 
+        <mn xref="p1.1.m1.1.6.3.4.2.2.1.cmml" xml:id="p1.1.m1.1.6.3.4.2.2.1">
+         1
+        </mn> 
+       </msub> 
+       <msub xref="p1.1.m1.1.6.3.4.3.cmml" xml:id="p1.1.m1.1.6.3.4.3"> 
+        <mi xref="p1.1.m1.1.6.3.4.3.1.cmml" xml:id="p1.1.m1.1.6.3.4.3.1">
+         r
+        </mi> 
+        <mn xref="p1.1.m1.1.6.3.4.3.2.1.cmml" xml:id="p1.1.m1.1.6.3.4.3.2.1">
+         0
+        </mn> 
+       </msub> 
+      </mfrac> 
+     </mstyle> 
+    </mrow> 
+   </mfrac> 
+  </mstyle> 
+ </mrow> 
+</mrow>
+<mrow xmlns:m="http://www.w3.org/1998/Math/MathML" xref="p1.1.m1.1.7.cmml" xml:id="p1.1.m1.1.7"> 
+ <mstyle displaystyle="true" xref="p1.1.m1.1.1.cmml" xml:id="p1.1.m1.1.1"> 
+  <mfrac xref="p1.1.m1.1.1.cmml" xml:id="p1.1.m1.1.1a"> 
+   <mi xref="p1.1.m1.1.1.2.cmml" xml:id="p1.1.m1.1.1.2">
+    a
+   </mi> 
+   <mi xref="p1.1.m1.1.1.3.cmml" xml:id="p1.1.m1.1.1.3">
+    b
+   </mi> 
+  </mfrac> 
+ </mstyle> 
+ <mo xref="p1.1.m1.1.2.cmml" xml:id="p1.1.m1.1.2">
+  =
+ </mo> 
+ <mrow xref="p1.1.m1.1.7.1.cmml" xml:id="p1.1.m1.1.7.1"> 
+  <msub xref="p1.1.m1.1.7.1.1.cmml" xml:id="p1.1.m1.1.7.1.1"> 
+   <mi xref="p1.1.m1.1.3.cmml" xml:id="p1.1.m1.1.3">
+    q
+   </mi> 
+   <mn xref="p1.1.m1.1.4.1.cmml" xml:id="p1.1.m1.1.4.1">
+    0
+   </mn> 
+  </msub> 
+  <mo xref="p1.1.m1.1.5.cmml" xml:id="p1.1.m1.1.5">
+   +
+  </mo> 
+  <mstyle displaystyle="true" xref="p1.1.m1.1.6.cmml" xml:id="p1.1.m1.1.6"> 
+   <mfrac xref="p1.1.m1.1.6.cmml" xml:id="p1.1.m1.1.6a"> 
+    <mn xref="p1.1.m1.1.6.2.cmml" xml:id="p1.1.m1.1.6.2">
+     1
+    </mn> 
+    <mrow xref="p1.1.m1.1.6.3.cmml" xml:id="p1.1.m1.1.6.3"> 
+     <msub xref="p1.1.m1.1.6.3.5.cmml" xml:id="p1.1.m1.1.6.3.5"> 
+      <mi xref="p1.1.m1.1.6.3.1.cmml" xml:id="p1.1.m1.1.6.3.1">
+       q
+      </mi> 
+      <mn xref="p1.1.m1.1.6.3.2.1.cmml" xml:id="p1.1.m1.1.6.3.2.1">
+       1
+      </mn> 
+     </msub> 
+     <mo xref="p1.1.m1.1.6.3.3.cmml" xml:id="p1.1.m1.1.6.3.3">
+      +
+     </mo> 
+     <mstyle displaystyle="true" xref="p1.1.m1.1.6.3.4.cmml" xml:id="p1.1.m1.1.6.3.4"> 
+      <mfrac xref="p1.1.m1.1.6.3.4.cmml" xml:id="p1.1.m1.1.6.3.4a"> 
+       <mn xref="p1.1.m1.1.6.3.4.2.cmml" xml:id="p1.1.m1.1.6.3.4.2">
+        1
+       </mn> 
+       <mrow xref="p1.1.m1.1.6.3.4.3.cmml" xml:id="p1.1.m1.1.6.3.4.3"> 
+        <msub xref="p1.1.m1.1.6.3.4.3.5.cmml" xml:id="p1.1.m1.1.6.3.4.3.5"> 
+         <mi xref="p1.1.m1.1.6.3.4.3.1.cmml" xml:id="p1.1.m1.1.6.3.4.3.1">
+          q
+         </mi> 
+         <mn xref="p1.1.m1.1.6.3.4.3.2.1.cmml" xml:id="p1.1.m1.1.6.3.4.3.2.1">
+          2
+         </mn> 
+        </msub> 
+        <mo xref="p1.1.m1.1.6.3.4.3.3.cmml" xml:id="p1.1.m1.1.6.3.4.3.3">
+         +
+        </mo> 
+        <mstyle displaystyle="true" xref="p1.1.m1.1.6.3.4.3.4.cmml" xml:id="p1.1.m1.1.6.3.4.3.4"> 
+         <mfrac xref="p1.1.m1.1.6.3.4.3.4.cmml" xml:id="p1.1.m1.1.6.3.4.3.4a"> 
+          <msub xref="p1.1.m1.1.6.3.4.3.4.2.cmml" xml:id="p1.1.m1.1.6.3.4.3.4.2"> 
+           <mi xref="p1.1.m1.1.6.3.4.3.4.2.1.cmml" xml:id="p1.1.m1.1.6.3.4.3.4.2.1">
+            r
+           </mi> 
+           <mn xref="p1.1.m1.1.6.3.4.3.4.2.2.1.cmml" xml:id="p1.1.m1.1.6.3.4.3.4.2.2.1">
+            2
+           </mn> 
+          </msub> 
+          <msub xref="p1.1.m1.1.6.3.4.3.4.3.cmml" xml:id="p1.1.m1.1.6.3.4.3.4.3"> 
+           <mi xref="p1.1.m1.1.6.3.4.3.4.3.1.cmml" xml:id="p1.1.m1.1.6.3.4.3.4.3.1">
+            r
+           </mi> 
+           <mn xref="p1.1.m1.1.6.3.4.3.4.3.2.1.cmml" xml:id="p1.1.m1.1.6.3.4.3.4.3.2.1">
+            1
+           </mn> 
+          </msub> 
+         </mfrac> 
+        </mstyle> 
+       </mrow> 
+      </mfrac> 
+     </mstyle> 
+    </mrow> 
+   </mfrac> 
+  </mstyle> 
+ </mrow> 
+</mrow>
+<mrow xmlns:m="http://www.w3.org/1998/Math/MathML" xref="p1.1.m1.1.23.cmml" xml:id="p1.1.m1.1.23"> 
+ <mstyle displaystyle="true" xref="p1.1.m1.1.1.cmml" xml:id="p1.1.m1.1.1"> 
+  <mfrac xref="p1.1.m1.1.1.cmml" xml:id="p1.1.m1.1.1a"> 
+   <mi xref="p1.1.m1.1.1.2.cmml" xml:id="p1.1.m1.1.1.2">
+    a
+   </mi> 
+   <mi xref="p1.1.m1.1.1.3.cmml" xml:id="p1.1.m1.1.1.3">
+    b
+   </mi> 
+  </mfrac> 
+ </mstyle> 
+ <mo xref="p1.1.m1.1.2.cmml" xml:id="p1.1.m1.1.2">
+  =
+ </mo> 
+ <mrow xref="p1.1.m1.1.23.2.cmml" xml:id="p1.1.m1.1.23.2"> 
+  <msub xref="p1.1.m1.1.23.2.1.cmml" xml:id="p1.1.m1.1.23.2.1"> 
+   <mi xref="p1.1.m1.1.3.cmml" xml:id="p1.1.m1.1.3">
+    q
+   </mi> 
+   <mn xref="p1.1.m1.1.4.1.cmml" xml:id="p1.1.m1.1.4.1">
+    0
+   </mn> 
+  </msub> 
+  <mo xref="p1.1.m1.1.5.cmml" xml:id="p1.1.m1.1.5">
+   +
+  </mo> 
+  <mstyle displaystyle="true" xref="p1.1.m1.1.6.cmml" xml:id="p1.1.m1.1.6"> 
+   <mfrac xref="p1.1.m1.1.6.cmml" xml:id="p1.1.m1.1.6a"> 
+    <mn xref="p1.1.m1.1.6.2.cmml" xml:id="p1.1.m1.1.6.2">
+     1
+    </mn> 
+    <mrow xref="p1.1.m1.1.6.3.cmml" xml:id="p1.1.m1.1.6.3"> 
+     <msub xref="p1.1.m1.1.6.3.5.cmml" xml:id="p1.1.m1.1.6.3.5"> 
+      <mi xref="p1.1.m1.1.6.3.1.cmml" xml:id="p1.1.m1.1.6.3.1">
+       q
+      </mi> 
+      <mn xref="p1.1.m1.1.6.3.2.1.cmml" xml:id="p1.1.m1.1.6.3.2.1">
+       1
+      </mn> 
+     </msub> 
+     <mo xref="p1.1.m1.1.6.3.3.cmml" xml:id="p1.1.m1.1.6.3.3">
+      +
+     </mo> 
+     <mstyle displaystyle="true" xref="p1.1.m1.1.6.3.4.cmml" xml:id="p1.1.m1.1.6.3.4"> 
+      <mfrac xref="p1.1.m1.1.6.3.4.cmml" xml:id="p1.1.m1.1.6.3.4a"> 
+       <mn xref="p1.1.m1.1.6.3.4.2.cmml" xml:id="p1.1.m1.1.6.3.4.2">
+        1
+       </mn> 
+       <mrow xref="p1.1.m1.1.6.3.4.3.cmml" xml:id="p1.1.m1.1.6.3.4.3"> 
+        <msub xref="p1.1.m1.1.6.3.4.3.5.cmml" xml:id="p1.1.m1.1.6.3.4.3.5"> 
+         <mi xref="p1.1.m1.1.6.3.4.3.1.cmml" xml:id="p1.1.m1.1.6.3.4.3.1">
+          q
+         </mi> 
+         <mn xref="p1.1.m1.1.6.3.4.3.2.1.cmml" xml:id="p1.1.m1.1.6.3.4.3.2.1">
+          2
+         </mn> 
+        </msub> 
+        <mo xref="p1.1.m1.1.6.3.4.3.3.cmml" xml:id="p1.1.m1.1.6.3.4.3.3">
+         +
+        </mo> 
+        <mstyle displaystyle="true" xref="p1.1.m1.1.6.3.4.3.4.cmml" xml:id="p1.1.m1.1.6.3.4.3.4"> 
+         <mfrac xref="p1.1.m1.1.6.3.4.3.4.cmml" xml:id="p1.1.m1.1.6.3.4.3.4a"> 
+          <mn xref="p1.1.m1.1.6.3.4.3.4.2.cmml" xml:id="p1.1.m1.1.6.3.4.3.4.2">
+           1
+          </mn> 
+          <mrow xref="p1.1.m1.1.6.3.4.3.4.3.cmml" xml:id="p1.1.m1.1.6.3.4.3.4.3"> 
+           <mi mathvariant="normal" xref="p1.1.m1.1.6.3.4.3.4.3.1.cmml" xml:id="p1.1.m1.1.6.3.4.3.4.3.1">
+            ⋱
+           </mi> 
+           <mo xref="p1.1.m1.1.6.3.4.3.4.3.2.cmml" xml:id="p1.1.m1.1.6.3.4.3.4.3.2">
+            +
+           </mo> 
+           <mstyle displaystyle="true" xref="p1.1.m1.1.6.3.4.3.4.3.3.cmml" xml:id="p1.1.m1.1.6.3.4.3.4.3.3"> 
+            <mfrac xref="p1.1.m1.1.6.3.4.3.4.3.3.cmml" xml:id="p1.1.m1.1.6.3.4.3.4.3.3a"> 
+             <mn xref="p1.1.m1.1.6.3.4.3.4.3.3.2.cmml" xml:id="p1.1.m1.1.6.3.4.3.4.3.3.2">
+              1
+             </mn> 
+             <msub xref="p1.1.m1.1.6.3.4.3.4.3.3.3.cmml" xml:id="p1.1.m1.1.6.3.4.3.4.3.3.3"> 
+              <mi xref="p1.1.m1.1.6.3.4.3.4.3.3.3.1.cmml" xml:id="p1.1.m1.1.6.3.4.3.4.3.3.3.1">
+               q
+              </mi> 
+              <mi xref="p1.1.m1.1.6.3.4.3.4.3.3.3.2.1.cmml" xml:id="p1.1.m1.1.6.3.4.3.4.3.3.3.2.1">
+               N
+              </mi> 
+             </msub> 
+            </mfrac> 
+           </mstyle> 
+          </mrow> 
+         </mfrac> 
+        </mstyle> 
+       </mrow> 
+      </mfrac> 
+     </mstyle> 
+    </mrow> 
+   </mfrac> 
+  </mstyle> 
+ </mrow> 
+ <mo xref="p1.1.m1.1.7.cmml" xml:id="p1.1.m1.1.7">
+  =
+ </mo> 
+ <mrow xref="p1.1.m1.1.23.3.cmml" xml:id="p1.1.m1.1.23.3"> 
+  <mo xref="p1.1.m1.1.23.3.cmml" xml:id="p1.1.m1.1.23.3a">
+   [
+  </mo><mrow xref="p1.1.m1.1.23.3.cmml" xml:id="p1.1.m1.1.23.3b"> 
+   <msub xref="p1.1.m1.1.23.3.2.cmml" xml:id="p1.1.m1.1.23.3.2"> 
+    <mi xref="p1.1.m1.1.9.cmml" xml:id="p1.1.m1.1.9">
+     q
+    </mi> 
+    <mn xref="p1.1.m1.1.10.1.cmml" xml:id="p1.1.m1.1.10.1">
+     0
+    </mn> 
+   </msub> 
+   <mo xref="p1.1.m1.1.23.3.cmml" xml:id="p1.1.m1.1.23.3c">
+    ;
+   </mo> 
+   <msub xref="p1.1.m1.1.23.3.3.cmml" xml:id="p1.1.m1.1.23.3.3"> 
+    <mi xref="p1.1.m1.1.12.cmml" xml:id="p1.1.m1.1.12">
+     q
+    </mi> 
+    <mn xref="p1.1.m1.1.13.1.cmml" xml:id="p1.1.m1.1.13.1">
+     1
+    </mn> 
+   </msub> 
+   <mo xref="p1.1.m1.1.23.3.cmml" xml:id="p1.1.m1.1.23.3d">
+    ,
+   </mo> 
+   <msub xref="p1.1.m1.1.23.3.4.cmml" xml:id="p1.1.m1.1.23.3.4"> 
+    <mi xref="p1.1.m1.1.15.cmml" xml:id="p1.1.m1.1.15">
+     q
+    </mi> 
+    <mn xref="p1.1.m1.1.16.1.cmml" xml:id="p1.1.m1.1.16.1">
+     2
+    </mn> 
+   </msub> 
+   <mo xref="p1.1.m1.1.23.3.cmml" xml:id="p1.1.m1.1.23.3e">
+    ,
+   </mo> 
+   <mi mathvariant="normal" xref="p1.1.m1.1.18.cmml" xml:id="p1.1.m1.1.18">
+    ...
+   </mi> 
+   <mo xref="p1.1.m1.1.23.3.cmml" xml:id="p1.1.m1.1.23.3f">
+    ,
+   </mo> 
+   <msub xref="p1.1.m1.1.23.3.5.cmml" xml:id="p1.1.m1.1.23.3.5"> 
+    <mi xref="p1.1.m1.1.20.cmml" xml:id="p1.1.m1.1.20">
+     q
+    </mi> 
+    <mi xref="p1.1.m1.1.21.1.cmml" xml:id="p1.1.m1.1.21.1">
+     N
+    </mi> 
+   </msub> 
+  </mrow> 
+   
+  <mo xref="p1.1.m1.1.23.3.cmml" xml:id="p1.1.m1.1.23.3g">
+   ]
+  </mo> 
+ </mrow> 
+</mrow>
+<mrow xmlns:m="http://www.w3.org/1998/Math/MathML" xref="p1.1.m1.1.14.cmml" xml:id="p1.1.m1.1.14"> 
+ <mstyle displaystyle="true" xref="p1.1.m1.1.1.cmml" xml:id="p1.1.m1.1.1"> 
+  <mfrac xref="p1.1.m1.1.1.cmml" xml:id="p1.1.m1.1.1a"> 
+   <mn xref="p1.1.m1.1.1.2.cmml" xml:id="p1.1.m1.1.1.2">
+    1071
+   </mn> 
+   <mn xref="p1.1.m1.1.1.3.cmml" xml:id="p1.1.m1.1.1.3">
+    462
+   </mn> 
+  </mfrac> 
+ </mstyle> 
+ <mo xref="p1.1.m1.1.2.cmml" xml:id="p1.1.m1.1.2">
+  =
+ </mo> 
+ <mrow xref="p1.1.m1.1.14.2.cmml" xml:id="p1.1.m1.1.14.2"> 
+  <mn xref="p1.1.m1.1.3.cmml" xml:id="p1.1.m1.1.3">
+   2
+  </mn> 
+  <mo xref="p1.1.m1.1.4.cmml" xml:id="p1.1.m1.1.4">
+   +
+  </mo> 
+  <mstyle displaystyle="true" xref="p1.1.m1.1.5.cmml" xml:id="p1.1.m1.1.5"> 
+   <mfrac xref="p1.1.m1.1.5.cmml" xml:id="p1.1.m1.1.5a"> 
+    <mn xref="p1.1.m1.1.5.2.cmml" xml:id="p1.1.m1.1.5.2">
+     1
+    </mn> 
+    <mrow xref="p1.1.m1.1.5.3.cmml" xml:id="p1.1.m1.1.5.3"> 
+     <mn xref="p1.1.m1.1.5.3.1.cmml" xml:id="p1.1.m1.1.5.3.1">
+      3
+     </mn> 
+     <mo xref="p1.1.m1.1.5.3.2.cmml" xml:id="p1.1.m1.1.5.3.2">
+      +
+     </mo> 
+     <mstyle displaystyle="true" xref="p1.1.m1.1.5.3.3.cmml" xml:id="p1.1.m1.1.5.3.3"> 
+      <mfrac xref="p1.1.m1.1.5.3.3.cmml" xml:id="p1.1.m1.1.5.3.3a"> 
+       <mn xref="p1.1.m1.1.5.3.3.2.cmml" xml:id="p1.1.m1.1.5.3.3.2">
+        1
+       </mn> 
+       <mn xref="p1.1.m1.1.5.3.3.3.cmml" xml:id="p1.1.m1.1.5.3.3.3">
+        7
+       </mn> 
+      </mfrac> 
+     </mstyle> 
+    </mrow> 
+   </mfrac> 
+  </mstyle> 
+ </mrow> 
+ <mo xref="p1.1.m1.1.6.cmml" xml:id="p1.1.m1.1.6">
+  =
+ </mo> 
+ <mrow xref="p1.1.m1.1.14.3.cmml" xml:id="p1.1.m1.1.14.3"> 
+  <mo xref="p1.1.m1.1.14.3.cmml" xml:id="p1.1.m1.1.14.3a">
+   [
+  </mo><mrow xref="p1.1.m1.1.14.3.cmml" xml:id="p1.1.m1.1.14.3b"> 
+   <mn xref="p1.1.m1.1.8.cmml" xml:id="p1.1.m1.1.8">
+    2
+   </mn> 
+   <mo xref="p1.1.m1.1.14.3.cmml" xml:id="p1.1.m1.1.14.3c">
+    ;
+   </mo> 
+   <mn xref="p1.1.m1.1.10.cmml" xml:id="p1.1.m1.1.10">
+    3
+   </mn> 
+   <mo xref="p1.1.m1.1.14.3.cmml" xml:id="p1.1.m1.1.14.3d">
+    ,
+   </mo> 
+   <mn xref="p1.1.m1.1.12.cmml" xml:id="p1.1.m1.1.12">
+    7
+   </mn> 
+  </mrow> 
+   
+  <mo xref="p1.1.m1.1.14.3.cmml" xml:id="p1.1.m1.1.14.3e">
+   ]
+  </mo> 
+ </mrow> 
+</mrow>
+<mrow xmlns:m="http://www.w3.org/1998/Math/MathML" xref="p1.1.m1.1.19.cmml" xml:id="p1.1.m1.1.19"> 
+ <mrow xref="p1.1.m1.1.19.1.cmml" xml:id="p1.1.m1.1.19.1"> 
+  <mi xref="p1.1.m1.1.1.cmml" xml:id="p1.1.m1.1.1">
+   τ
+  </mi> 
+   
+  <mrow xref="p1.1.m1.1.3.cmml" xml:id="p1.1.m1.1.3"> 
+   <mo xref="p1.1.m1.1.3.cmml" xml:id="p1.1.m1.1.3a">
+    (
+   </mo><mi xref="p1.1.m1.1.3.cmml" xml:id="p1.1.m1.1.3b">
+    a
+   </mi> 
+    
+   <mo xref="p1.1.m1.1.3.cmml" xml:id="p1.1.m1.1.3c">
+    )
+   </mo> 
+  </mrow> 
+ </mrow> 
+ <mo xref="p1.1.m1.1.5.cmml" xml:id="p1.1.m1.1.5">
+  =
+ </mo> 
+ <mrow xref="p1.1.m1.1.19.2.cmml" xml:id="p1.1.m1.1.19.2"> 
+  <mrow xref="p1.1.m1.1.19.2.1.cmml" xml:id="p1.1.m1.1.19.2.1"> 
+   <mstyle displaystyle="true" xref="p1.1.m1.1.6.cmml" xml:id="p1.1.m1.1.6"> 
+    <mfrac xref="p1.1.m1.1.6.cmml" xml:id="p1.1.m1.1.6a"> 
+     <mn xref="p1.1.m1.1.6.2.cmml" xml:id="p1.1.m1.1.6.2">
+      12
+     </mn> 
+     <msup xref="p1.1.m1.1.6.3.cmml" xml:id="p1.1.m1.1.6.3"> 
+      <mi xref="p1.1.m1.1.6.3.1.cmml" xml:id="p1.1.m1.1.6.3.1">
+       π
+      </mi> 
+      <mn xref="p1.1.m1.1.6.3.2.1.cmml" xml:id="p1.1.m1.1.6.3.2.1">
+       2
+      </mn> 
+     </msup> 
+    </mfrac> 
+   </mstyle> 
+    
+   <mrow xref="p1.1.m1.1.19.2.1.2.cmml" xml:id="p1.1.m1.1.19.2.1.2"> 
+    <mi xref="p1.1.m1.1.7.cmml" xml:id="p1.1.m1.1.7">
+     ln
+    </mi> 
+     
+    <mrow xref="p1.1.m1.1.19.2.1.2.1.cmml" xml:id="p1.1.m1.1.19.2.1.2.1"> 
+     <mo xmlns="http://www.w3.org/1998/Math/MathML">(</mo><mrow xmlns="http://www.w3.org/1998/Math/MathML"><mn xmlns="" xref="p1.1.m1.1.8.cmml" xml:id="p1.1.m1.1.8">
+      2
+     </mn><mrow xmlns="" xref="p1.1.m1.1.19.2.1.2.1.2.cmml" xml:id="p1.1.m1.1.19.2.1.2.1.2"> 
+      <mi xref="p1.1.m1.1.9.cmml" xml:id="p1.1.m1.1.9">
+       ln
+      </mi> 
+      <mrow xmlns="http://www.w3.org/1998/Math/MathML"><mo>(</mo><mi xmlns="" xref="p1.1.m1.1.10.cmml" xml:id="p1.1.m1.1.10">
+       a
+      </mi><mo>)</mo></mrow> 
+       
+     </mrow></mrow> 
+      
+      
+    <mo xmlns="http://www.w3.org/1998/Math/MathML">)</mo></mrow> 
+   </mrow> 
+  </mrow> 
+  <mo xref="p1.1.m1.1.11.cmml" xml:id="p1.1.m1.1.11">
+   +
+  </mo> 
+  <mi xref="p1.1.m1.1.12.cmml" xml:id="p1.1.m1.1.12">
+   C
+  </mi> 
+  <mo xref="p1.1.m1.1.11.cmml" xml:id="p1.1.m1.1.11a">
+   +
+  </mo> 
+  <mrow xref="p1.1.m1.1.19.2.2.cmml" xml:id="p1.1.m1.1.19.2.2"> 
+   <mi xref="p1.1.m1.1.14.cmml" xml:id="p1.1.m1.1.14">
+    O
+   </mi> 
+    
+   <mrow xref="p1.1.m1.1.19.2.2.2.cmml" xml:id="p1.1.m1.1.19.2.2.2"> 
+    <mo xref="p1.1.m1.1.19.2.2.2.cmml" xml:id="p1.1.m1.1.19.2.2.2a">
+     (
+    </mo><msup xref="p1.1.m1.1.19.2.2.2.cmml" xml:id="p1.1.m1.1.19.2.2.2b"> 
+     <mi xref="p1.1.m1.1.16.cmml" xml:id="p1.1.m1.1.16">
+      a
+     </mi> 
+     <mrow xref="p1.1.m1.1.17.1.cmml" xml:id="p1.1.m1.1.17.1"> 
+      <mrow xref="p1.1.m1.1.17.1.7.cmml" xml:id="p1.1.m1.1.17.1.7"> 
+       <mo xref="p1.1.m1.1.17.1.1.cmml" xml:id="p1.1.m1.1.17.1.1">
+        -
+       </mo> 
+       <mrow xref="p1.1.m1.1.17.1.7.1.cmml" xml:id="p1.1.m1.1.17.1.7.1"> 
+        <mn xref="p1.1.m1.1.17.1.2.cmml" xml:id="p1.1.m1.1.17.1.2">
+         1
+        </mn> 
+        <mo xref="p1.1.m1.1.17.1.3.cmml" xml:id="p1.1.m1.1.17.1.3">
+         /
+        </mo> 
+        <mn xref="p1.1.m1.1.17.1.4.cmml" xml:id="p1.1.m1.1.17.1.4">
+         6
+        </mn> 
+       </mrow> 
+      </mrow> 
+      <mo xref="p1.1.m1.1.17.1.5.cmml" xml:id="p1.1.m1.1.17.1.5">
+       -
+      </mo> 
+      <mi xref="p1.1.m1.1.17.1.6.cmml" xml:id="p1.1.m1.1.17.1.6">
+       ε
+      </mi> 
+     </mrow> 
+    </msup> 
+     
+    <mo xref="p1.1.m1.1.19.2.2.2.cmml" xml:id="p1.1.m1.1.19.2.2.2c">
+     )
+    </mo> 
+   </mrow> 
+  </mrow> 
+ </mrow> 
+</mrow>
+<mrow xmlns:m="http://www.w3.org/1998/Math/MathML" xref="p1.1.m1.1.33.cmml" xml:id="p1.1.m1.1.33"> 
+ <mi xref="p1.1.m1.1.1.cmml" xml:id="p1.1.m1.1.1">
+  C
+ </mi> 
+ <mo xref="p1.1.m1.1.2.cmml" xml:id="p1.1.m1.1.2">
+  =
+ </mo> 
+ <mrow xref="p1.1.m1.1.33.2.cmml" xml:id="p1.1.m1.1.33.2"> 
+  <mrow xref="p1.1.m1.1.33.2.1.cmml" xml:id="p1.1.m1.1.33.2.1"> 
+   <mo xref="p1.1.m1.1.3.cmml" xml:id="p1.1.m1.1.3">
+    -
+   </mo> 
+   <mstyle displaystyle="true" xref="p1.1.m1.1.4.cmml" xml:id="p1.1.m1.1.4"> 
+    <mfrac xref="p1.1.m1.1.4.cmml" xml:id="p1.1.m1.1.4a"> 
+     <mn xref="p1.1.m1.1.4.2.cmml" xml:id="p1.1.m1.1.4.2">
+      1
+     </mn> 
+     <mn xref="p1.1.m1.1.4.3.cmml" xml:id="p1.1.m1.1.4.3">
+      2
+     </mn> 
+    </mfrac> 
+   </mstyle> 
+  </mrow> 
+  <mo xref="p1.1.m1.1.5.cmml" xml:id="p1.1.m1.1.5">
+   +
+  </mo> 
+  <mrow xref="p1.1.m1.1.33.2.2.cmml" xml:id="p1.1.m1.1.33.2.2"> 
+   <mstyle displaystyle="true" xref="p1.1.m1.1.6.cmml" xml:id="p1.1.m1.1.6"> 
+    <mfrac xref="p1.1.m1.1.6.cmml" xml:id="p1.1.m1.1.6a"> 
+     <mrow xref="p1.1.m1.1.6.2.cmml" xml:id="p1.1.m1.1.6.2"> 
+      <mn xref="p1.1.m1.1.6.2.1.cmml" xml:id="p1.1.m1.1.6.2.1">
+       6
+      </mn> 
+       
+      <mrow xref="p1.1.m1.1.6.2.5.cmml" xml:id="p1.1.m1.1.6.2.5"> 
+       <mi xref="p1.1.m1.1.6.2.2.cmml" xml:id="p1.1.m1.1.6.2.2">
+        ln
+       </mi> 
+       <mrow xmlns="http://www.w3.org/1998/Math/MathML"><mo>(</mo><mn xmlns="" xref="p1.1.m1.1.6.2.3.cmml" xml:id="p1.1.m1.1.6.2.3">
+        2
+       </mn><mo>)</mo></mrow> 
+        
+      </mrow> 
+     </mrow> 
+     <msup xref="p1.1.m1.1.6.3.cmml" xml:id="p1.1.m1.1.6.3"> 
+      <mi xref="p1.1.m1.1.6.3.1.cmml" xml:id="p1.1.m1.1.6.3.1">
+       π
+      </mi> 
+      <mn xref="p1.1.m1.1.6.3.2.1.cmml" xml:id="p1.1.m1.1.6.3.2.1">
+       2
+      </mn> 
+     </msup> 
+    </mfrac> 
+   </mstyle> 
+    
+   <mrow xref="p1.1.m1.1.33.2.2.2.cmml" xml:id="p1.1.m1.1.33.2.2.2"> 
+    <mo xref="p1.1.m1.1.33.2.2.2.cmml" xml:id="p1.1.m1.1.33.2.2.2a">
+     (
+    </mo><mrow xref="p1.1.m1.1.33.2.2.2.cmml" xml:id="p1.1.m1.1.33.2.2.2b"> 
+     <mrow xref="p1.1.m1.1.33.2.2.2.1.cmml" xml:id="p1.1.m1.1.33.2.2.2.1"> 
+      <mrow xref="p1.1.m1.1.33.2.2.2.1.1.cmml" xml:id="p1.1.m1.1.33.2.2.2.1.1"> 
+       <mrow xref="p1.1.m1.1.33.2.2.2.1.1.1.cmml" xml:id="p1.1.m1.1.33.2.2.2.1.1.1"> 
+        <mn xref="p1.1.m1.1.8.cmml" xml:id="p1.1.m1.1.8">
+         4
+        </mn> 
+         
+        <mi xref="p1.1.m1.1.9.cmml" xml:id="p1.1.m1.1.9">
+         γ
+        </mi> 
+       </mrow> 
+       <mo xref="p1.1.m1.1.10.cmml" xml:id="p1.1.m1.1.10">
+        -
+       </mo> 
+       <mrow xref="p1.1.m1.1.33.2.2.2.1.1.2.cmml" xml:id="p1.1.m1.1.33.2.2.2.1.1.2"> 
+        <mn xref="p1.1.m1.1.12.cmml" xml:id="p1.1.m1.1.12">
+         24
+        </mn> 
+         
+        <msup xref="p1.1.m1.1.33.2.2.2.1.1.2.2.cmml" xml:id="p1.1.m1.1.33.2.2.2.1.1.2.2"> 
+         <mi xref="p1.1.m1.1.13.cmml" xml:id="p1.1.m1.1.13">
+          π
+         </mi> 
+         <mn xref="p1.1.m1.1.14.1.cmml" xml:id="p1.1.m1.1.14.1">
+          2
+         </mn> 
+        </msup> 
+         
+        <msup xref="p1.1.m1.1.33.2.2.2.1.1.2.3.cmml" xml:id="p1.1.m1.1.33.2.2.2.1.1.2.3"> 
+         <mi xref="p1.1.m1.1.15.cmml" xml:id="p1.1.m1.1.15">
+          ζ
+         </mi> 
+         <mo xref="p1.1.m1.1.16.1.cmml" xml:id="p1.1.m1.1.16.1">
+          ′
+         </mo> 
+        </msup> 
+         
+        <mrow xref="p1.1.m1.1.18.cmml" xml:id="p1.1.m1.1.18"> 
+         <mo xref="p1.1.m1.1.18.cmml" xml:id="p1.1.m1.1.18a">
+          (
+         </mo><mn xref="p1.1.m1.1.18.cmml" xml:id="p1.1.m1.1.18b">
+          2
+         </mn> 
+          
+         <mo xref="p1.1.m1.1.18.cmml" xml:id="p1.1.m1.1.18c">
+          )
+         </mo> 
+        </mrow> 
+       </mrow> 
+      </mrow> 
+      <mo xref="p1.1.m1.1.20.cmml" xml:id="p1.1.m1.1.20">
+       +
+      </mo> 
+      <mrow xref="p1.1.m1.1.33.2.2.2.1.2.cmml" xml:id="p1.1.m1.1.33.2.2.2.1.2"> 
+       <mn xref="p1.1.m1.1.21.cmml" xml:id="p1.1.m1.1.21">
+        3
+       </mn> 
+        
+       <mrow xref="p1.1.m1.1.33.2.2.2.1.2.2.cmml" xml:id="p1.1.m1.1.33.2.2.2.1.2.2"> 
+        <mi xref="p1.1.m1.1.22.cmml" xml:id="p1.1.m1.1.22">
+         ln
+        </mi> 
+        <mrow xmlns="http://www.w3.org/1998/Math/MathML"><mo>(</mo><mn xmlns="" xref="p1.1.m1.1.23.cmml" xml:id="p1.1.m1.1.23">
+         2
+        </mn><mo>)</mo></mrow> 
+         
+       </mrow> 
+      </mrow> 
+     </mrow> 
+     <mo xref="p1.1.m1.1.24.cmml" xml:id="p1.1.m1.1.24">
+      -
+     </mo> 
+     <mn xref="p1.1.m1.1.25.cmml" xml:id="p1.1.m1.1.25">
+      2
+     </mn> 
+    </mrow> 
+     
+    <mo xref="p1.1.m1.1.33.2.2.2.cmml" xml:id="p1.1.m1.1.33.2.2.2c">
+     )
+    </mo> 
+   </mrow> 
+  </mrow> 
+ </mrow> 
+ <mo xref="p1.1.m1.1.27.cmml" xml:id="p1.1.m1.1.27">
+  ≈
+ </mo> 
+ <mn xref="p1.1.m1.1.32.cmml" xml:id="p1.1.m1.1.32">
+  1.467
+ </mn> 
+</mrow>
+<mrow xmlns:m="http://www.w3.org/1998/Math/MathML" xref="p1.1.m1.1.19.cmml" xml:id="p1.1.m1.1.19"> 
+ <mrow xref="p1.1.m1.1.19.1.cmml" xml:id="p1.1.m1.1.19.1"> 
+  <mi xref="p1.1.m1.1.1.cmml" xml:id="p1.1.m1.1.1">
+   T
+  </mi> 
+   
+  <mrow xref="p1.1.m1.1.3.cmml" xml:id="p1.1.m1.1.3"> 
+   <mo xref="p1.1.m1.1.3.cmml" xml:id="p1.1.m1.1.3a">
+    (
+   </mo><mi xref="p1.1.m1.1.3.cmml" xml:id="p1.1.m1.1.3b">
+    a
+   </mi> 
+    
+   <mo xref="p1.1.m1.1.3.cmml" xml:id="p1.1.m1.1.3c">
+    )
+   </mo> 
+  </mrow> 
+ </mrow> 
+ <mo xref="p1.1.m1.1.5.cmml" xml:id="p1.1.m1.1.5">
+  ≈
+ </mo> 
+ <mrow xref="p1.1.m1.1.19.2.cmml" xml:id="p1.1.m1.1.19.2"> 
+  <mi xref="p1.1.m1.1.6.cmml" xml:id="p1.1.m1.1.6">
+   C
+  </mi> 
+  <mo xref="p1.1.m1.1.7.cmml" xml:id="p1.1.m1.1.7">
+   +
+  </mo> 
+  <mrow xref="p1.1.m1.1.19.2.1.cmml" xml:id="p1.1.m1.1.19.2.1"> 
+   <mstyle displaystyle="true" xref="p1.1.m1.1.8.cmml" xml:id="p1.1.m1.1.8"> 
+    <mfrac xref="p1.1.m1.1.8.cmml" xml:id="p1.1.m1.1.8a"> 
+     <mn xref="p1.1.m1.1.8.2.cmml" xml:id="p1.1.m1.1.8.2">
+      12
+     </mn> 
+     <msup xref="p1.1.m1.1.8.3.cmml" xml:id="p1.1.m1.1.8.3"> 
+      <mi xref="p1.1.m1.1.8.3.1.cmml" xml:id="p1.1.m1.1.8.3.1">
+       π
+      </mi> 
+      <mn xref="p1.1.m1.1.8.3.2.1.cmml" xml:id="p1.1.m1.1.8.3.2.1">
+       2
+      </mn> 
+     </msup> 
+    </mfrac> 
+   </mstyle> 
+    
+   <mrow xref="p1.1.m1.1.19.2.1.2.cmml" xml:id="p1.1.m1.1.19.2.1.2"> 
+    <mi xref="p1.1.m1.1.9.cmml" xml:id="p1.1.m1.1.9">
+     ln
+    </mi> 
+    <mrow xmlns="http://www.w3.org/1998/Math/MathML"><mo>(</mo><mn xmlns="" xref="p1.1.m1.1.10.cmml" xml:id="p1.1.m1.1.10">
+     2
+    </mn><mo>)</mo></mrow> 
+     
+   </mrow> 
+    
+   <mrow xref="p1.1.m1.1.19.2.1.3.cmml" xml:id="p1.1.m1.1.19.2.1.3"> 
+    <mo xref="p1.1.m1.1.19.2.1.3.cmml" xml:id="p1.1.m1.1.19.2.1.3a">
+     (
+    </mo><mrow xref="p1.1.m1.1.19.2.1.3.cmml" xml:id="p1.1.m1.1.19.2.1.3b"> 
+     <mrow xref="p1.1.m1.1.19.2.1.3.1.cmml" xml:id="p1.1.m1.1.19.2.1.3.1"> 
+      <mi xref="p1.1.m1.1.12.cmml" xml:id="p1.1.m1.1.12">
+       ln
+      </mi> 
+      <mrow xmlns="http://www.w3.org/1998/Math/MathML"><mo>(</mo><mi xmlns="" xref="p1.1.m1.1.13.cmml" xml:id="p1.1.m1.1.13">
+       a
+      </mi><mo>)</mo></mrow> 
+       
+     </mrow> 
+     <mo xref="p1.1.m1.1.14.cmml" xml:id="p1.1.m1.1.14">
+      -
+     </mo> 
+     <mrow xref="p1.1.m1.1.19.2.1.3.2.cmml" xml:id="p1.1.m1.1.19.2.1.3.2"> 
+      <mstyle displaystyle="true" xref="p1.1.m1.1.19.2.1.3.2.1.cmml" xml:id="p1.1.m1.1.19.2.1.3.2.1"> 
+       <msub xref="p1.1.m1.1.19.2.1.3.2.1.cmml" xml:id="p1.1.m1.1.19.2.1.3.2.1a"> 
+        <mo largeop="true" xref="p1.1.m1.1.15.cmml" symmetric="true" xml:id="p1.1.m1.1.15" movablelimits="false">
+         ∑
+        </mo> 
+        <mrow xref="p1.1.m1.1.16.1.cmml" xml:id="p1.1.m1.1.16.1"> 
+         <mi xml:id="p1.1.m1.1.16.1.1">
+          d
+         </mi> 
+         <mo xref="p1.1.m1.1.16.1.2.cmml" xml:id="p1.1.m1.1.16.1.2">
+          |
+         </mo> 
+         <mi xml:id="p1.1.m1.1.16.1.3">
+          a
+         </mi> 
+        </mrow> 
+       </msub> 
+      </mstyle> 
+      <mstyle displaystyle="true" xref="p1.1.m1.1.17.cmml" xml:id="p1.1.m1.1.17"> 
+       <mfrac xref="p1.1.m1.1.17.cmml" xml:id="p1.1.m1.1.17a"> 
+        <mrow xref="p1.1.m1.1.17.2.cmml" xml:id="p1.1.m1.1.17.2"> 
+         <mi mathvariant="normal" xref="p1.1.m1.1.17.2.1.cmml" xml:id="p1.1.m1.1.17.2.1">
+          Λ
+         </mi> 
+          
+         <mrow xref="p1.1.m1.1.17.2.3.cmml" xml:id="p1.1.m1.1.17.2.3"> 
+          <mo xref="p1.1.m1.1.17.2.3.cmml" xml:id="p1.1.m1.1.17.2.3a">
+           (
+          </mo><mi xref="p1.1.m1.1.17.2.3.cmml" xml:id="p1.1.m1.1.17.2.3b">
+           d
+          </mi> 
+           
+          <mo xref="p1.1.m1.1.17.2.3.cmml" xml:id="p1.1.m1.1.17.2.3c">
+           )
+          </mo> 
+         </mrow> 
+        </mrow> 
+        <mi xref="p1.1.m1.1.17.3.cmml" xml:id="p1.1.m1.1.17.3">
+         d
+        </mi> 
+       </mfrac> 
+      </mstyle> 
+     </mrow> 
+    </mrow> 
+     
+    <mo xref="p1.1.m1.1.19.2.1.3.cmml" xml:id="p1.1.m1.1.19.2.1.3c">
+     )
+    </mo> 
+   </mrow> 
+  </mrow> 
+ </mrow> 
+</mrow>
+<mrow xmlns:m="http://www.w3.org/1998/Math/MathML" xref="p1.1.m1.1.17.cmml" xml:id="p1.1.m1.1.17"> 
+ <mrow xref="p1.1.m1.1.17.1.cmml" xml:id="p1.1.m1.1.17.1"> 
+  <mi xref="p1.1.m1.1.1.cmml" xml:id="p1.1.m1.1.1">
+   Y
+  </mi> 
+   
+  <mrow xref="p1.1.m1.1.3.cmml" xml:id="p1.1.m1.1.3"> 
+   <mo xref="p1.1.m1.1.3.cmml" xml:id="p1.1.m1.1.3a">
+    (
+   </mo><mi xref="p1.1.m1.1.3.cmml" xml:id="p1.1.m1.1.3b">
+    n
+   </mi> 
+    
+   <mo xref="p1.1.m1.1.3.cmml" xml:id="p1.1.m1.1.3c">
+    )
+   </mo> 
+  </mrow> 
+ </mrow> 
+ <mo xref="p1.1.m1.1.5.cmml" xml:id="p1.1.m1.1.5">
+  ≈
+ </mo> 
+ <mrow xref="p1.1.m1.1.17.2.cmml" xml:id="p1.1.m1.1.17.2"> 
+  <mrow xref="p1.1.m1.1.17.2.1.cmml" xml:id="p1.1.m1.1.17.2.1"> 
+   <mstyle displaystyle="true" xref="p1.1.m1.1.6.cmml" xml:id="p1.1.m1.1.6"> 
+    <mfrac xref="p1.1.m1.1.6.cmml" xml:id="p1.1.m1.1.6a"> 
+     <mn xref="p1.1.m1.1.6.2.cmml" xml:id="p1.1.m1.1.6.2">
+      12
+     </mn> 
+     <msup xref="p1.1.m1.1.6.3.cmml" xml:id="p1.1.m1.1.6.3"> 
+      <mi xref="p1.1.m1.1.6.3.1.cmml" xml:id="p1.1.m1.1.6.3.1">
+       π
+      </mi> 
+      <mn xref="p1.1.m1.1.6.3.2.1.cmml" xml:id="p1.1.m1.1.6.3.2.1">
+       2
+      </mn> 
+     </msup> 
+    </mfrac> 
+   </mstyle> 
+    
+   <mrow xref="p1.1.m1.1.17.2.1.2.cmml" xml:id="p1.1.m1.1.17.2.1.2"> 
+    <mi xref="p1.1.m1.1.7.cmml" xml:id="p1.1.m1.1.7">
+     ln
+    </mi> 
+     
+    <mrow xref="p1.1.m1.1.17.2.1.2.1.cmml" xml:id="p1.1.m1.1.17.2.1.2.1"> 
+     <mo xmlns="http://www.w3.org/1998/Math/MathML">(</mo><mrow xmlns="http://www.w3.org/1998/Math/MathML"><mn xmlns="" xref="p1.1.m1.1.8.cmml" xml:id="p1.1.m1.1.8">
+      2
+     </mn><mrow xmlns="" xref="p1.1.m1.1.17.2.1.2.1.2.cmml" xml:id="p1.1.m1.1.17.2.1.2.1.2"> 
+      <mi xref="p1.1.m1.1.9.cmml" xml:id="p1.1.m1.1.9">
+       ln
+      </mi> 
+      <mrow xmlns="http://www.w3.org/1998/Math/MathML"><mo>(</mo><mi xmlns="" xref="p1.1.m1.1.10.cmml" xml:id="p1.1.m1.1.10">
+       n
+      </mi><mo>)</mo></mrow> 
+       
+     </mrow></mrow> 
+      
+      
+    <mo xmlns="http://www.w3.org/1998/Math/MathML">)</mo></mrow> 
+   </mrow> 
+  </mrow> 
+  <mo xref="p1.1.m1.1.11.cmml" xml:id="p1.1.m1.1.11">
+   +
+  </mo> 
+  <mn xref="p1.1.m1.1.16.cmml" xml:id="p1.1.m1.1.16">
+   0.06.
+  </mn> 
+ </mrow> 
+</mrow>
+MathMLax<S>^<S>2<S>+<S>bx<S>+<S>c\<S>sin<S>(<S>x<S>)x<S>+<S>5ax<S>^<S>2<S>+<S>bx<S>+<S>c<<S>apply<S>><S><<S>plus<S>/<S>><S><<S>apply<S>><S><<S>times<S>/<S>><S><<S>ci<S>><S>a%<S><<S>/<S>ci<S>><S><<S>apply<S>><S><<S>power<S>/<S>><S><<S>ci<S>><S>x<S><<S>/<S>ci<S>><S><<S>cn<S>><S>2<S><<S>/<S>cn%<S>><S><<S>/<S>apply<S>><S><<S>/<S>apply<S>><S><<S>apply<S>><S><<S>times<S>/<S>><S><<S>ci<S>><S>b<S><<S>/<S>ci<S>&<S>%<S>gt<S>;<S><<S>ci<S>><S>x<S><<S>/<S>ci<S>><S><<S>/<S>apply<S>><S><<S>ci<S>><S>c<S><<S>/<S>ci<S>><S><<S>/<S>apply<S>>x<S>=<S>\<S>frac<S>-<S>b<S>\<S>pm<S>\<S>sqrt<S>b<S>^<S>2<S>-<S>4<S>ac<S>2<S>a<apply xmlns:m="http://www.w3.org/1998/Math/MathML" xref="p1.1.m1.1.9" xml:id="p1.1.m1.1.9.cmml"> 
+ <plus definitionURL="" encoding="" xref="p1.1.m1.1.4" xml:id="p1.1.m1.1.4.cmml" /> 
+ <apply xref="p1.1.m1.1.9.1" xml:id="p1.1.m1.1.9.1.cmml"> 
+  <times definitionURL="" encoding="" xref="p1.1.m1.1.9.1.1" xml:id="p1.1.m1.1.9.1.1.cmml" /> 
+  <ci definitionURL="" encoding="" xref="p1.1.m1.1.1" xml:id="p1.1.m1.1.1.cmml">
+   a
+  </ci> 
+  <apply xref="p1.1.m1.1.9.1.2" xml:id="p1.1.m1.1.9.1.2.cmml"> 
+   <csymbol definitionURL="" encoding="" xml:id="p1.1.m1.1.9.1.2.1.cmml" cd="ambiguous">
+    superscript
+   </csymbol> 
+   <ci definitionURL="" encoding="" xref="p1.1.m1.1.2" xml:id="p1.1.m1.1.2.cmml">
+    x
+   </ci> 
+   <cn definitionURL="" encoding="" base="10" xref="p1.1.m1.1.3.1" type="integer" xml:id="p1.1.m1.1.3.1.cmml">
+    2
+   </cn> 
+  </apply> 
+ </apply> 
+ <apply xref="p1.1.m1.1.9.2" xml:id="p1.1.m1.1.9.2.cmml"> 
+  <times definitionURL="" encoding="" xref="p1.1.m1.1.9.2.1" xml:id="p1.1.m1.1.9.2.1.cmml" /> 
+  <ci definitionURL="" encoding="" xref="p1.1.m1.1.5" xml:id="p1.1.m1.1.5.cmml">
+   b
+  </ci> 
+  <ci definitionURL="" encoding="" xref="p1.1.m1.1.6" xml:id="p1.1.m1.1.6.cmml">
+   x
+  </ci> 
+ </apply> 
+ <ci definitionURL="" encoding="" xref="p1.1.m1.1.8" xml:id="p1.1.m1.1.8.cmml">
+  c
+ </ci> 
+</apply>
+<apply xmlns:m="http://www.w3.org/1998/Math/MathML" xref="p1.1.m1.1.5" xml:id="p1.1.m1.1.5.cmml"> 
+ <sin definitionURL="" encoding="" xref="p1.1.m1.1.1" xml:id="p1.1.m1.1.1.cmml" /> 
+ <ci definitionURL="" encoding="" xref="p1.1.m1.1.3" xml:id="p1.1.m1.1.3.cmml">
+  x
+ </ci> 
+</apply>
+<apply xmlns:m="http://www.w3.org/1998/Math/MathML" xref="p1.1.m1.1.4" xml:id="p1.1.m1.1.4.cmml"> 
+ <plus definitionURL="" encoding="" xref="p1.1.m1.1.2" xml:id="p1.1.m1.1.2.cmml" /> 
+ <ci definitionURL="" encoding="" xref="p1.1.m1.1.1" xml:id="p1.1.m1.1.1.cmml">
+  x
+ </ci> 
+ <cn definitionURL="" encoding="" base="10" xref="p1.1.m1.1.3" type="integer" xml:id="p1.1.m1.1.3.cmml">
+  5
+ </cn> 
+</apply>
+<apply xmlns:m="http://www.w3.org/1998/Math/MathML" xref="p1.1.m1.1.9" xml:id="p1.1.m1.1.9.cmml"> 
+ <plus definitionURL="" encoding="" xref="p1.1.m1.1.4" xml:id="p1.1.m1.1.4.cmml" /> 
+ <apply xref="p1.1.m1.1.9.1" xml:id="p1.1.m1.1.9.1.cmml"> 
+  <times definitionURL="" encoding="" xref="p1.1.m1.1.9.1.1" xml:id="p1.1.m1.1.9.1.1.cmml" /> 
+  <ci definitionURL="" encoding="" xref="p1.1.m1.1.1" xml:id="p1.1.m1.1.1.cmml">
+   a
+  </ci> 
+  <apply xref="p1.1.m1.1.9.1.2" xml:id="p1.1.m1.1.9.1.2.cmml"> 
+   <csymbol definitionURL="" encoding="" xml:id="p1.1.m1.1.9.1.2.1.cmml" cd="ambiguous">
+    superscript
+   </csymbol> 
+   <ci definitionURL="" encoding="" xref="p1.1.m1.1.2" xml:id="p1.1.m1.1.2.cmml">
+    x
+   </ci> 
+   <cn definitionURL="" encoding="" base="10" xref="p1.1.m1.1.3.1" type="integer" xml:id="p1.1.m1.1.3.1.cmml">
+    2
+   </cn> 
+  </apply> 
+ </apply> 
+ <apply xref="p1.1.m1.1.9.2" xml:id="p1.1.m1.1.9.2.cmml"> 
+  <times definitionURL="" encoding="" xref="p1.1.m1.1.9.2.1" xml:id="p1.1.m1.1.9.2.1.cmml" /> 
+  <ci definitionURL="" encoding="" xref="p1.1.m1.1.5" xml:id="p1.1.m1.1.5.cmml">
+   b
+  </ci> 
+  <ci definitionURL="" encoding="" xref="p1.1.m1.1.6" xml:id="p1.1.m1.1.6.cmml">
+   x
+  </ci> 
+ </apply> 
+ <ci definitionURL="" encoding="" xref="p1.1.m1.1.8" xml:id="p1.1.m1.1.8.cmml">
+  c
+ </ci> 
+</apply>
+<cerror xmlns:m="http://www.w3.org/1998/Math/MathML" xref="p1.1.m1.1" xml:id="p1.1.m1.1a.cmml"> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1b.cmml" cd="ambiguous">
+  fragments
+ </csymbol> 
+ <mtext xref="p1.1.m1.1" xml:id="p1.1.m1.1c.cmml">
+  Align
+ </mtext> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1d.cmml" cd="unknown">
+  l
+ </csymbol> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1e.cmml" cd="unknown">
+  t
+ </csymbol> 
+ <ci definitionURL="" encoding="" xref="p1.1.m1.1.3" xml:id="p1.1.m1.1.3.cmml">
+  normal-;
+ </ci> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1f.cmml" cd="unknown">
+  a
+ </csymbol> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1g.cmml" cd="unknown">
+  p
+ </csymbol> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1h.cmml" cd="unknown">
+  p
+ </csymbol> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1i.cmml" cd="unknown">
+  l
+ </csymbol> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1j.cmml" cd="unknown">
+  y
+ </csymbol> 
+ <mtext xref="p1.1.m1.1" xml:id="p1.1.m1.1k.cmml">
+  Align
+ </mtext> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1l.cmml" cd="unknown">
+  g
+ </csymbol> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1m.cmml" cd="unknown">
+  t
+ </csymbol> 
+ <ci definitionURL="" encoding="" xref="p1.1.m1.1.11" xml:id="p1.1.m1.1.11.cmml">
+  normal-;
+ </ci> 
+ <mtext xref="p1.1.m1.1" xml:id="p1.1.m1.1n.cmml">
+  Align
+ </mtext> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1o.cmml" cd="unknown">
+  l
+ </csymbol> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1p.cmml" cd="unknown">
+  t
+ </csymbol> 
+ <ci definitionURL="" encoding="" xref="p1.1.m1.1.14" xml:id="p1.1.m1.1.14.cmml">
+  normal-;
+ </ci> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1q.cmml" cd="unknown">
+  p
+ </csymbol> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1r.cmml" cd="unknown">
+  l
+ </csymbol> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1s.cmml" cd="unknown">
+  u
+ </csymbol> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1t.cmml" cd="unknown">
+  s
+ </csymbol> 
+ <divide definitionURL="" encoding="" xref="p1.1.m1.1.19" xml:id="p1.1.m1.1.19.cmml" /> 
+ <mtext xref="p1.1.m1.1" xml:id="p1.1.m1.1u.cmml">
+  Align
+ </mtext> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1v.cmml" cd="unknown">
+  g
+ </csymbol> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1w.cmml" cd="unknown">
+  t
+ </csymbol> 
+ <ci definitionURL="" encoding="" xref="p1.1.m1.1.22" xml:id="p1.1.m1.1.22.cmml">
+  normal-;
+ </ci> 
+ <mtext xref="p1.1.m1.1" xml:id="p1.1.m1.1x.cmml">
+  Align
+ </mtext> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1y.cmml" cd="unknown">
+  l
+ </csymbol> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1z.cmml" cd="unknown">
+  t
+ </csymbol> 
+ <ci definitionURL="" encoding="" xref="p1.1.m1.1.25" xml:id="p1.1.m1.1.25.cmml">
+  normal-;
+ </ci> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1aa.cmml" cd="unknown">
+  a
+ </csymbol> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1ab.cmml" cd="unknown">
+  p
+ </csymbol> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1ac.cmml" cd="unknown">
+  p
+ </csymbol> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1ad.cmml" cd="unknown">
+  l
+ </csymbol> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1ae.cmml" cd="unknown">
+  y
+ </csymbol> 
+ <mtext xref="p1.1.m1.1" xml:id="p1.1.m1.1af.cmml">
+  Align
+ </mtext> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1ag.cmml" cd="unknown">
+  g
+ </csymbol> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1ah.cmml" cd="unknown">
+  t
+ </csymbol> 
+ <ci definitionURL="" encoding="" xref="p1.1.m1.1.33" xml:id="p1.1.m1.1.33.cmml">
+  normal-;
+ </ci> 
+ <mtext xref="p1.1.m1.1" xml:id="p1.1.m1.1ai.cmml">
+  Align
+ </mtext> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1aj.cmml" cd="unknown">
+  l
+ </csymbol> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1ak.cmml" cd="unknown">
+  t
+ </csymbol> 
+ <ci definitionURL="" encoding="" xref="p1.1.m1.1.36" xml:id="p1.1.m1.1.36.cmml">
+  normal-;
+ </ci> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1al.cmml" cd="unknown">
+  t
+ </csymbol> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1am.cmml" cd="unknown">
+  i
+ </csymbol> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1an.cmml" cd="unknown">
+  m
+ </csymbol> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1ao.cmml" cd="unknown">
+  e
+ </csymbol> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1ap.cmml" cd="unknown">
+  s
+ </csymbol> 
+ <divide definitionURL="" encoding="" xref="p1.1.m1.1.42" xml:id="p1.1.m1.1.42.cmml" /> 
+ <mtext xref="p1.1.m1.1" xml:id="p1.1.m1.1aq.cmml">
+  Align
+ </mtext> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1ar.cmml" cd="unknown">
+  g
+ </csymbol> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1as.cmml" cd="unknown">
+  t
+ </csymbol> 
+ <ci definitionURL="" encoding="" xref="p1.1.m1.1.45" xml:id="p1.1.m1.1.45.cmml">
+  normal-;
+ </ci> 
+ <mtext xref="p1.1.m1.1" xml:id="p1.1.m1.1at.cmml">
+  Align
+ </mtext> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1au.cmml" cd="unknown">
+  l
+ </csymbol> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1av.cmml" cd="unknown">
+  t
+ </csymbol> 
+ <ci definitionURL="" encoding="" xref="p1.1.m1.1.48" xml:id="p1.1.m1.1.48.cmml">
+  normal-;
+ </ci> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1aw.cmml" cd="unknown">
+  c
+ </csymbol> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1ax.cmml" cd="unknown">
+  i
+ </csymbol> 
+ <mtext xref="p1.1.m1.1" xml:id="p1.1.m1.1ay.cmml">
+  Align
+ </mtext> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1az.cmml" cd="unknown">
+  g
+ </csymbol> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1ba.cmml" cd="unknown">
+  t
+ </csymbol> 
+ <ci definitionURL="" encoding="" xref="p1.1.m1.1.53" xml:id="p1.1.m1.1.53.cmml">
+  normal-;
+ </ci> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1bb.cmml" cd="unknown">
+  a
+ </csymbol> 
+ <mtext xref="p1.1.m1.1" xml:id="p1.1.m1.1bc.cmml">
+  Align
+ </mtext> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1bd.cmml" cd="unknown">
+  l
+ </csymbol> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1be.cmml" cd="unknown">
+  t
+ </csymbol> 
+ <ci definitionURL="" encoding="" xref="p1.1.m1.1.57" xml:id="p1.1.m1.1.57.cmml">
+  normal-;
+ </ci> 
+ <divide definitionURL="" encoding="" xref="p1.1.m1.1.58" xml:id="p1.1.m1.1.58.cmml" /> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1bf.cmml" cd="unknown">
+  c
+ </csymbol> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1bg.cmml" cd="unknown">
+  i
+ </csymbol> 
+ <mtext xref="p1.1.m1.1" xml:id="p1.1.m1.1bh.cmml">
+  Align
+ </mtext> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1bi.cmml" cd="unknown">
+  g
+ </csymbol> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1bj.cmml" cd="unknown">
+  t
+ </csymbol> 
+ <ci definitionURL="" encoding="" xref="p1.1.m1.1.63" xml:id="p1.1.m1.1.63.cmml">
+  normal-;
+ </ci> 
+ <mtext xref="p1.1.m1.1" xml:id="p1.1.m1.1bk.cmml">
+  Align
+ </mtext> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1bl.cmml" cd="unknown">
+  l
+ </csymbol> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1bm.cmml" cd="unknown">
+  t
+ </csymbol> 
+ <ci definitionURL="" encoding="" xref="p1.1.m1.1.66" xml:id="p1.1.m1.1.66.cmml">
+  normal-;
+ </ci> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1bn.cmml" cd="unknown">
+  a
+ </csymbol> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1bo.cmml" cd="unknown">
+  p
+ </csymbol> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1bp.cmml" cd="unknown">
+  p
+ </csymbol> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1bq.cmml" cd="unknown">
+  l
+ </csymbol> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1br.cmml" cd="unknown">
+  y
+ </csymbol> 
+ <mtext xref="p1.1.m1.1" xml:id="p1.1.m1.1bs.cmml">
+  Align
+ </mtext> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1bt.cmml" cd="unknown">
+  g
+ </csymbol> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1bu.cmml" cd="unknown">
+  t
+ </csymbol> 
+ <ci definitionURL="" encoding="" xref="p1.1.m1.1.74" xml:id="p1.1.m1.1.74.cmml">
+  normal-;
+ </ci> 
+ <mtext xref="p1.1.m1.1" xml:id="p1.1.m1.1bv.cmml">
+  Align
+ </mtext> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1bw.cmml" cd="unknown">
+  l
+ </csymbol> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1bx.cmml" cd="unknown">
+  t
+ </csymbol> 
+ <ci definitionURL="" encoding="" xref="p1.1.m1.1.77" xml:id="p1.1.m1.1.77.cmml">
+  normal-;
+ </ci> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1by.cmml" cd="unknown">
+  p
+ </csymbol> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1bz.cmml" cd="unknown">
+  o
+ </csymbol> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1ca.cmml" cd="unknown">
+  w
+ </csymbol> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1cb.cmml" cd="unknown">
+  e
+ </csymbol> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1cc.cmml" cd="unknown">
+  r
+ </csymbol> 
+ <divide definitionURL="" encoding="" xref="p1.1.m1.1.83" xml:id="p1.1.m1.1.83.cmml" /> 
+ <mtext xref="p1.1.m1.1" xml:id="p1.1.m1.1cd.cmml">
+  Align
+ </mtext> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1ce.cmml" cd="unknown">
+  g
+ </csymbol> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1cf.cmml" cd="unknown">
+  t
+ </csymbol> 
+ <ci definitionURL="" encoding="" xref="p1.1.m1.1.86" xml:id="p1.1.m1.1.86.cmml">
+  normal-;
+ </ci> 
+ <mtext xref="p1.1.m1.1" xml:id="p1.1.m1.1cg.cmml">
+  Align
+ </mtext> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1ch.cmml" cd="unknown">
+  l
+ </csymbol> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1ci.cmml" cd="unknown">
+  t
+ </csymbol> 
+ <ci definitionURL="" encoding="" xref="p1.1.m1.1.89" xml:id="p1.1.m1.1.89.cmml">
+  normal-;
+ </ci> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1cj.cmml" cd="unknown">
+  c
+ </csymbol> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1ck.cmml" cd="unknown">
+  i
+ </csymbol> 
+ <mtext xref="p1.1.m1.1" xml:id="p1.1.m1.1cl.cmml">
+  Align
+ </mtext> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1cm.cmml" cd="unknown">
+  g
+ </csymbol> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1cn.cmml" cd="unknown">
+  t
+ </csymbol> 
+ <ci definitionURL="" encoding="" xref="p1.1.m1.1.94" xml:id="p1.1.m1.1.94.cmml">
+  normal-;
+ </ci> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1co.cmml" cd="unknown">
+  x
+ </csymbol> 
+ <mtext xref="p1.1.m1.1" xml:id="p1.1.m1.1cp.cmml">
+  Align
+ </mtext> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1cq.cmml" cd="unknown">
+  l
+ </csymbol> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1cr.cmml" cd="unknown">
+  t
+ </csymbol> 
+ <ci definitionURL="" encoding="" xref="p1.1.m1.1.98" xml:id="p1.1.m1.1.98.cmml">
+  normal-;
+ </ci> 
+ <divide definitionURL="" encoding="" xref="p1.1.m1.1.99" xml:id="p1.1.m1.1.99.cmml" /> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1cs.cmml" cd="unknown">
+  c
+ </csymbol> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1ct.cmml" cd="unknown">
+  i
+ </csymbol> 
+ <mtext xref="p1.1.m1.1" xml:id="p1.1.m1.1cu.cmml">
+  Align
+ </mtext> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1cv.cmml" cd="unknown">
+  g
+ </csymbol> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1cw.cmml" cd="unknown">
+  t
+ </csymbol> 
+ <ci definitionURL="" encoding="" xref="p1.1.m1.1.104" xml:id="p1.1.m1.1.104.cmml">
+  normal-;
+ </ci> 
+ <mtext xref="p1.1.m1.1" xml:id="p1.1.m1.1cx.cmml">
+  Align
+ </mtext> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1cy.cmml" cd="unknown">
+  l
+ </csymbol> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1cz.cmml" cd="unknown">
+  t
+ </csymbol> 
+ <ci definitionURL="" encoding="" xref="p1.1.m1.1.107" xml:id="p1.1.m1.1.107.cmml">
+  normal-;
+ </ci> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1da.cmml" cd="unknown">
+  c
+ </csymbol> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1db.cmml" cd="unknown">
+  n
+ </csymbol> 
+ <mtext xref="p1.1.m1.1" xml:id="p1.1.m1.1dc.cmml">
+  Align
+ </mtext> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1dd.cmml" cd="unknown">
+  g
+ </csymbol> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1de.cmml" cd="unknown">
+  t
+ </csymbol> 
+ <ci definitionURL="" encoding="" xref="p1.1.m1.1.112" xml:id="p1.1.m1.1.112.cmml">
+  normal-;
+ </ci> 
+ <cn definitionURL="" encoding="" base="10" xref="p1.1.m1.1.113" type="integer" xml:id="p1.1.m1.1.113.cmml">
+  2
+ </cn> 
+ <mtext xref="p1.1.m1.1" xml:id="p1.1.m1.1df.cmml">
+  Align
+ </mtext> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1dg.cmml" cd="unknown">
+  l
+ </csymbol> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1dh.cmml" cd="unknown">
+  t
+ </csymbol> 
+ <ci definitionURL="" encoding="" xref="p1.1.m1.1.116" xml:id="p1.1.m1.1.116.cmml">
+  normal-;
+ </ci> 
+ <divide definitionURL="" encoding="" xref="p1.1.m1.1.117" xml:id="p1.1.m1.1.117.cmml" /> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1di.cmml" cd="unknown">
+  c
+ </csymbol> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1dj.cmml" cd="unknown">
+  n
+ </csymbol> 
+ <mtext xref="p1.1.m1.1" xml:id="p1.1.m1.1dk.cmml">
+  Align
+ </mtext> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1dl.cmml" cd="unknown">
+  g
+ </csymbol> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1dm.cmml" cd="unknown">
+  t
+ </csymbol> 
+ <ci definitionURL="" encoding="" xref="p1.1.m1.1.122" xml:id="p1.1.m1.1.122.cmml">
+  normal-;
+ </ci> 
+ <mtext xref="p1.1.m1.1" xml:id="p1.1.m1.1dn.cmml">
+  Align
+ </mtext> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1do.cmml" cd="unknown">
+  l
+ </csymbol> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1dp.cmml" cd="unknown">
+  t
+ </csymbol> 
+ <ci definitionURL="" encoding="" xref="p1.1.m1.1.125" xml:id="p1.1.m1.1.125.cmml">
+  normal-;
+ </ci> 
+ <divide definitionURL="" encoding="" xref="p1.1.m1.1.126" xml:id="p1.1.m1.1.126.cmml" /> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1dq.cmml" cd="unknown">
+  a
+ </csymbol> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1dr.cmml" cd="unknown">
+  p
+ </csymbol> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1ds.cmml" cd="unknown">
+  p
+ </csymbol> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1dt.cmml" cd="unknown">
+  l
+ </csymbol> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1du.cmml" cd="unknown">
+  y
+ </csymbol> 
+ <mtext xref="p1.1.m1.1" xml:id="p1.1.m1.1dv.cmml">
+  Align
+ </mtext> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1dw.cmml" cd="unknown">
+  g
+ </csymbol> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1dx.cmml" cd="unknown">
+  t
+ </csymbol> 
+ <ci definitionURL="" encoding="" xref="p1.1.m1.1.134" xml:id="p1.1.m1.1.134.cmml">
+  normal-;
+ </ci> 
+ <mtext xref="p1.1.m1.1" xml:id="p1.1.m1.1dy.cmml">
+  Align
+ </mtext> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1dz.cmml" cd="unknown">
+  l
+ </csymbol> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1ea.cmml" cd="unknown">
+  t
+ </csymbol> 
+ <ci definitionURL="" encoding="" xref="p1.1.m1.1.137" xml:id="p1.1.m1.1.137.cmml">
+  normal-;
+ </ci> 
+ <divide definitionURL="" encoding="" xref="p1.1.m1.1.138" xml:id="p1.1.m1.1.138.cmml" /> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1eb.cmml" cd="unknown">
+  a
+ </csymbol> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1ec.cmml" cd="unknown">
+  p
+ </csymbol> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1ed.cmml" cd="unknown">
+  p
+ </csymbol> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1ee.cmml" cd="unknown">
+  l
+ </csymbol> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1ef.cmml" cd="unknown">
+  y
+ </csymbol> 
+ <mtext xref="p1.1.m1.1" xml:id="p1.1.m1.1eg.cmml">
+  Align
+ </mtext> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1eh.cmml" cd="unknown">
+  g
+ </csymbol> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1ei.cmml" cd="unknown">
+  t
+ </csymbol> 
+ <ci definitionURL="" encoding="" xref="p1.1.m1.1.146" xml:id="p1.1.m1.1.146.cmml">
+  normal-;
+ </ci> 
+ <mtext xref="p1.1.m1.1" xml:id="p1.1.m1.1ej.cmml">
+  Align
+ </mtext> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1ek.cmml" cd="unknown">
+  l
+ </csymbol> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1el.cmml" cd="unknown">
+  t
+ </csymbol> 
+ <ci definitionURL="" encoding="" xref="p1.1.m1.1.149" xml:id="p1.1.m1.1.149.cmml">
+  normal-;
+ </ci> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1em.cmml" cd="unknown">
+  a
+ </csymbol> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1en.cmml" cd="unknown">
+  p
+ </csymbol> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1eo.cmml" cd="unknown">
+  p
+ </csymbol> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1ep.cmml" cd="unknown">
+  l
+ </csymbol> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1eq.cmml" cd="unknown">
+  y
+ </csymbol> 
+ <mtext xref="p1.1.m1.1" xml:id="p1.1.m1.1er.cmml">
+  Align
+ </mtext> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1es.cmml" cd="unknown">
+  g
+ </csymbol> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1et.cmml" cd="unknown">
+  t
+ </csymbol> 
+ <ci definitionURL="" encoding="" xref="p1.1.m1.1.157" xml:id="p1.1.m1.1.157.cmml">
+  normal-;
+ </ci> 
+ <mtext xref="p1.1.m1.1" xml:id="p1.1.m1.1eu.cmml">
+  Align
+ </mtext> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1ev.cmml" cd="unknown">
+  l
+ </csymbol> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1ew.cmml" cd="unknown">
+  t
+ </csymbol> 
+ <ci definitionURL="" encoding="" xref="p1.1.m1.1.160" xml:id="p1.1.m1.1.160.cmml">
+  normal-;
+ </ci> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1ex.cmml" cd="unknown">
+  t
+ </csymbol> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1ey.cmml" cd="unknown">
+  i
+ </csymbol> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1ez.cmml" cd="unknown">
+  m
+ </csymbol> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1fa.cmml" cd="unknown">
+  e
+ </csymbol> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1fb.cmml" cd="unknown">
+  s
+ </csymbol> 
+ <divide definitionURL="" encoding="" xref="p1.1.m1.1.166" xml:id="p1.1.m1.1.166.cmml" /> 
+ <mtext xref="p1.1.m1.1" xml:id="p1.1.m1.1fc.cmml">
+  Align
+ </mtext> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1fd.cmml" cd="unknown">
+  g
+ </csymbol> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1fe.cmml" cd="unknown">
+  t
+ </csymbol> 
+ <ci definitionURL="" encoding="" xref="p1.1.m1.1.169" xml:id="p1.1.m1.1.169.cmml">
+  normal-;
+ </ci> 
+ <mtext xref="p1.1.m1.1" xml:id="p1.1.m1.1ff.cmml">
+  Align
+ </mtext> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1fg.cmml" cd="unknown">
+  l
+ </csymbol> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1fh.cmml" cd="unknown">
+  t
+ </csymbol> 
+ <ci definitionURL="" encoding="" xref="p1.1.m1.1.172" xml:id="p1.1.m1.1.172.cmml">
+  normal-;
+ </ci> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1fi.cmml" cd="unknown">
+  c
+ </csymbol> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1fj.cmml" cd="unknown">
+  i
+ </csymbol> 
+ <mtext xref="p1.1.m1.1" xml:id="p1.1.m1.1fk.cmml">
+  Align
+ </mtext> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1fl.cmml" cd="unknown">
+  g
+ </csymbol> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1fm.cmml" cd="unknown">
+  t
+ </csymbol> 
+ <ci definitionURL="" encoding="" xref="p1.1.m1.1.177" xml:id="p1.1.m1.1.177.cmml">
+  normal-;
+ </ci> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1fn.cmml" cd="unknown">
+  b
+ </csymbol> 
+ <mtext xref="p1.1.m1.1" xml:id="p1.1.m1.1fo.cmml">
+  Align
+ </mtext> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1fp.cmml" cd="unknown">
+  l
+ </csymbol> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1fq.cmml" cd="unknown">
+  t
+ </csymbol> 
+ <ci definitionURL="" encoding="" xref="p1.1.m1.1.181" xml:id="p1.1.m1.1.181.cmml">
+  normal-;
+ </ci> 
+ <divide definitionURL="" encoding="" xref="p1.1.m1.1.182" xml:id="p1.1.m1.1.182.cmml" /> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1fr.cmml" cd="unknown">
+  c
+ </csymbol> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1fs.cmml" cd="unknown">
+  i
+ </csymbol> 
+ <mtext xref="p1.1.m1.1" xml:id="p1.1.m1.1ft.cmml">
+  Align
+ </mtext> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1fu.cmml" cd="unknown">
+  g
+ </csymbol> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1fv.cmml" cd="unknown">
+  t
+ </csymbol> 
+ <ci definitionURL="" encoding="" xref="p1.1.m1.1.187" xml:id="p1.1.m1.1.187.cmml">
+  normal-;
+ </ci> 
+ <mtext xref="p1.1.m1.1" xml:id="p1.1.m1.1fw.cmml">
+  Align
+ </mtext> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1fx.cmml" cd="unknown">
+  l
+ </csymbol> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1fy.cmml" cd="unknown">
+  t
+ </csymbol> 
+ <ci definitionURL="" encoding="" xref="p1.1.m1.1.190" xml:id="p1.1.m1.1.190.cmml">
+  normal-;
+ </ci> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1fz.cmml" cd="unknown">
+  c
+ </csymbol> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1ga.cmml" cd="unknown">
+  i
+ </csymbol> 
+ <mtext xref="p1.1.m1.1" xml:id="p1.1.m1.1gb.cmml">
+  Align
+ </mtext> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1gc.cmml" cd="unknown">
+  g
+ </csymbol> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1gd.cmml" cd="unknown">
+  t
+ </csymbol> 
+ <ci definitionURL="" encoding="" xref="p1.1.m1.1.195" xml:id="p1.1.m1.1.195.cmml">
+  normal-;
+ </ci> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1ge.cmml" cd="unknown">
+  x
+ </csymbol> 
+ <mtext xref="p1.1.m1.1" xml:id="p1.1.m1.1gf.cmml">
+  Align
+ </mtext> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1gg.cmml" cd="unknown">
+  l
+ </csymbol> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1gh.cmml" cd="unknown">
+  t
+ </csymbol> 
+ <ci definitionURL="" encoding="" xref="p1.1.m1.1.199" xml:id="p1.1.m1.1.199.cmml">
+  normal-;
+ </ci> 
+ <divide definitionURL="" encoding="" xref="p1.1.m1.1.200" xml:id="p1.1.m1.1.200.cmml" /> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1gi.cmml" cd="unknown">
+  c
+ </csymbol> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1gj.cmml" cd="unknown">
+  i
+ </csymbol> 
+ <mtext xref="p1.1.m1.1" xml:id="p1.1.m1.1gk.cmml">
+  Align
+ </mtext> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1gl.cmml" cd="unknown">
+  g
+ </csymbol> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1gm.cmml" cd="unknown">
+  t
+ </csymbol> 
+ <ci definitionURL="" encoding="" xref="p1.1.m1.1.205" xml:id="p1.1.m1.1.205.cmml">
+  normal-;
+ </ci> 
+ <mtext xref="p1.1.m1.1" xml:id="p1.1.m1.1gn.cmml">
+  Align
+ </mtext> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1go.cmml" cd="unknown">
+  l
+ </csymbol> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1gp.cmml" cd="unknown">
+  t
+ </csymbol> 
+ <ci definitionURL="" encoding="" xref="p1.1.m1.1.208" xml:id="p1.1.m1.1.208.cmml">
+  normal-;
+ </ci> 
+ <divide definitionURL="" encoding="" xref="p1.1.m1.1.209" xml:id="p1.1.m1.1.209.cmml" /> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1gq.cmml" cd="unknown">
+  a
+ </csymbol> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1gr.cmml" cd="unknown">
+  p
+ </csymbol> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1gs.cmml" cd="unknown">
+  p
+ </csymbol> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1gt.cmml" cd="unknown">
+  l
+ </csymbol> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1gu.cmml" cd="unknown">
+  y
+ </csymbol> 
+ <mtext xref="p1.1.m1.1" xml:id="p1.1.m1.1gv.cmml">
+  Align
+ </mtext> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1gw.cmml" cd="unknown">
+  g
+ </csymbol> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1gx.cmml" cd="unknown">
+  t
+ </csymbol> 
+ <ci definitionURL="" encoding="" xref="p1.1.m1.1.217" xml:id="p1.1.m1.1.217.cmml">
+  normal-;
+ </ci> 
+ <mtext xref="p1.1.m1.1" xml:id="p1.1.m1.1gy.cmml">
+  Align
+ </mtext> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1gz.cmml" cd="unknown">
+  l
+ </csymbol> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1ha.cmml" cd="unknown">
+  t
+ </csymbol> 
+ <ci definitionURL="" encoding="" xref="p1.1.m1.1.220" xml:id="p1.1.m1.1.220.cmml">
+  normal-;
+ </ci> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1hb.cmml" cd="unknown">
+  c
+ </csymbol> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1hc.cmml" cd="unknown">
+  i
+ </csymbol> 
+ <mtext xref="p1.1.m1.1" xml:id="p1.1.m1.1hd.cmml">
+  Align
+ </mtext> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1he.cmml" cd="unknown">
+  g
+ </csymbol> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1hf.cmml" cd="unknown">
+  t
+ </csymbol> 
+ <ci definitionURL="" encoding="" xref="p1.1.m1.1.225" xml:id="p1.1.m1.1.225.cmml">
+  normal-;
+ </ci> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1hg.cmml" cd="unknown">
+  c
+ </csymbol> 
+ <mtext xref="p1.1.m1.1" xml:id="p1.1.m1.1hh.cmml">
+  Align
+ </mtext> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1hi.cmml" cd="unknown">
+  l
+ </csymbol> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1hj.cmml" cd="unknown">
+  t
+ </csymbol> 
+ <ci definitionURL="" encoding="" xref="p1.1.m1.1.229" xml:id="p1.1.m1.1.229.cmml">
+  normal-;
+ </ci> 
+ <divide definitionURL="" encoding="" xref="p1.1.m1.1.230" xml:id="p1.1.m1.1.230.cmml" /> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1hk.cmml" cd="unknown">
+  c
+ </csymbol> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1hl.cmml" cd="unknown">
+  i
+ </csymbol> 
+ <mtext xref="p1.1.m1.1" xml:id="p1.1.m1.1hm.cmml">
+  Align
+ </mtext> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1hn.cmml" cd="unknown">
+  g
+ </csymbol> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1ho.cmml" cd="unknown">
+  t
+ </csymbol> 
+ <ci definitionURL="" encoding="" xref="p1.1.m1.1.235" xml:id="p1.1.m1.1.235.cmml">
+  normal-;
+ </ci> 
+ <mtext xref="p1.1.m1.1" xml:id="p1.1.m1.1hp.cmml">
+  Align
+ </mtext> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1hq.cmml" cd="unknown">
+  l
+ </csymbol> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1hr.cmml" cd="unknown">
+  t
+ </csymbol> 
+ <ci definitionURL="" encoding="" xref="p1.1.m1.1.238" xml:id="p1.1.m1.1.238.cmml">
+  normal-;
+ </ci> 
+ <divide definitionURL="" encoding="" xref="p1.1.m1.1.239" xml:id="p1.1.m1.1.239.cmml" /> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1hs.cmml" cd="unknown">
+  a
+ </csymbol> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1ht.cmml" cd="unknown">
+  p
+ </csymbol> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1hu.cmml" cd="unknown">
+  p
+ </csymbol> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1hv.cmml" cd="unknown">
+  l
+ </csymbol> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1hw.cmml" cd="unknown">
+  y
+ </csymbol> 
+ <mtext xref="p1.1.m1.1" xml:id="p1.1.m1.1hx.cmml">
+  Align
+ </mtext> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1hy.cmml" cd="unknown">
+  g
+ </csymbol> 
+ <csymbol definitionURL="" encoding="" xref="p1.1.m1.1" xml:id="p1.1.m1.1hz.cmml" cd="unknown">
+  t
+ </csymbol> 
+ <ci definitionURL="" encoding="" xref="p1.1.m1.1.247" xml:id="p1.1.m1.1.247.cmml">
+  normal-;
+ </ci> 
+</cerror>
+<apply xmlns:m="http://www.w3.org/1998/Math/MathML" xref="p1.1.m1.1.4" xml:id="p1.1.m1.1.4.cmml"> 
+ <eq definitionURL="" encoding="" xref="p1.1.m1.1.2" xml:id="p1.1.m1.1.2.cmml" /> 
+ <ci definitionURL="" encoding="" xref="p1.1.m1.1.1" xml:id="p1.1.m1.1.1.cmml">
+  x
+ </ci> 
+ <apply xref="p1.1.m1.1.3" xml:id="p1.1.m1.1.3.cmml"> 
+  <divide definitionURL="" encoding="" xml:id="p1.1.m1.1.3.1.cmml" /> 
+  <apply xref="p1.1.m1.1.3.2" xml:id="p1.1.m1.1.3.2.cmml"> 
+   <csymbol definitionURL="" encoding="" xref="p1.1.m1.1.3.2.3" xml:id="p1.1.m1.1.3.2.3.cmml" cd="latexml">
+    plus-or-minus
+   </csymbol> 
+   <apply xref="p1.1.m1.1.3.2.5" xml:id="p1.1.m1.1.3.2.5.cmml"> 
+    <minus definitionURL="" encoding="" xref="p1.1.m1.1.3.2.1" xml:id="p1.1.m1.1.3.2.1.cmml" /> 
+    <ci definitionURL="" encoding="" xref="p1.1.m1.1.3.2.2" xml:id="p1.1.m1.1.3.2.2.cmml">
+     b
+    </ci> 
+   </apply> 
+   <apply xref="p1.1.m1.1.3.2.4" xml:id="p1.1.m1.1.3.2.4.cmml"> 
+    <root definitionURL="" encoding="" xref="p1.1.m1.1.3.2.4" xml:id="p1.1.m1.1.3.2.4a.cmml" /> 
+    <apply xref="p1.1.m1.1.3.2.4.2" xml:id="p1.1.m1.1.3.2.4.2.cmml"> 
+     <minus definitionURL="" encoding="" xref="p1.1.m1.1.3.2.4.2.3" xml:id="p1.1.m1.1.3.2.4.2.3.cmml" /> 
+     <apply xref="p1.1.m1.1.3.2.4.2.7" xml:id="p1.1.m1.1.3.2.4.2.7.cmml"> 
+      <csymbol definitionURL="" encoding="" xml:id="p1.1.m1.1.3.2.4.2.7.1.cmml" cd="ambiguous">
+       superscript
+      </csymbol> 
+      <ci definitionURL="" encoding="" xref="p1.1.m1.1.3.2.4.2.1" xml:id="p1.1.m1.1.3.2.4.2.1.cmml">
+       b
+      </ci> 
+      <cn definitionURL="" encoding="" base="10" xref="p1.1.m1.1.3.2.4.2.2.1" type="integer" xml:id="p1.1.m1.1.3.2.4.2.2.1.cmml">
+       2
+      </cn> 
+     </apply> 
+     <apply xref="p1.1.m1.1.3.2.4.2.8" xml:id="p1.1.m1.1.3.2.4.2.8.cmml"> 
+      <times definitionURL="" encoding="" xref="p1.1.m1.1.3.2.4.2.8.1" xml:id="p1.1.m1.1.3.2.4.2.8.1.cmml" /> 
+      <cn definitionURL="" encoding="" base="10" xref="p1.1.m1.1.3.2.4.2.4" type="integer" xml:id="p1.1.m1.1.3.2.4.2.4.cmml">
+       4
+      </cn> 
+      <ci definitionURL="" encoding="" xref="p1.1.m1.1.3.2.4.2.5" xml:id="p1.1.m1.1.3.2.4.2.5.cmml">
+       a
+      </ci> 
+      <ci definitionURL="" encoding="" xref="p1.1.m1.1.3.2.4.2.6" xml:id="p1.1.m1.1.3.2.4.2.6.cmml">
+       c
+      </ci> 
+     </apply> 
+    </apply> 
+   </apply> 
+  </apply> 
+  <apply xref="p1.1.m1.1.3.3" xml:id="p1.1.m1.1.3.3.cmml"> 
+   <times definitionURL="" encoding="" xref="p1.1.m1.1.3.3.3" xml:id="p1.1.m1.1.3.3.3.cmml" /> 
+   <cn definitionURL="" encoding="" base="10" xref="p1.1.m1.1.3.3.1" type="integer" xml:id="p1.1.m1.1.3.3.1.cmml">
+    2
+   </cn> 
+   <ci definitionURL="" encoding="" xref="p1.1.m1.1.3.3.2" xml:id="p1.1.m1.1.3.3.2.cmml">
+    a
+   </ci> 
+  </apply> 
+ </apply> 
+</apply>
+<mrow xmlns:m="http://www.w3.org/1998/Math/MathML" xref="p1.1.m1.1.9.cmml" xml:id="p1.1.m1.1.9"> 
+ <mrow xref="p1.1.m1.1.9.1.cmml" xml:id="p1.1.m1.1.9.1"> 
+  <mi xref="p1.1.m1.1.1.cmml" xml:id="p1.1.m1.1.1">
+   a
+  </mi> 
+   
+  <msup xref="p1.1.m1.1.9.1.2.cmml" xml:id="p1.1.m1.1.9.1.2"> 
+   <mi xref="p1.1.m1.1.2.cmml" xml:id="p1.1.m1.1.2">
+    x
+   </mi> 
+   <mn xref="p1.1.m1.1.3.1.cmml" xml:id="p1.1.m1.1.3.1">
+    2
+   </mn> 
+  </msup> 
+ </mrow> 
+ <mo xref="p1.1.m1.1.4.cmml" xml:id="p1.1.m1.1.4">
+  +
+ </mo> 
+ <mrow xref="p1.1.m1.1.9.2.cmml" xml:id="p1.1.m1.1.9.2"> 
+  <mi xref="p1.1.m1.1.5.cmml" xml:id="p1.1.m1.1.5">
+   b
+  </mi> 
+   
+  <mi xref="p1.1.m1.1.6.cmml" xml:id="p1.1.m1.1.6">
+   x
+  </mi> 
+ </mrow> 
+ <mo xref="p1.1.m1.1.4.cmml" xml:id="p1.1.m1.1.4a">
+  +
+ </mo> 
+ <mi xref="p1.1.m1.1.8.cmml" xml:id="p1.1.m1.1.8">
+  c
+ </mi> 
+</mrow>
+<mrow xmlns:m="http://www.w3.org/1998/Math/MathML" xref="p1.1.m1.1.5.cmml" xml:id="p1.1.m1.1.5"> 
+ <mi xref="p1.1.m1.1.1.cmml" xml:id="p1.1.m1.1.1">
+  sin
+ </mi> 
+  
+ <mrow xref="p1.1.m1.1.5.cmml" xml:id="p1.1.m1.1.5b"> 
+  <mo xref="p1.1.m1.1.5.cmml" xml:id="p1.1.m1.1.5c">
+   (
+  </mo><mi xref="p1.1.m1.1.3.cmml" xml:id="p1.1.m1.1.3">
+   x
+  </mi> 
+   
+  <mo xref="p1.1.m1.1.5.cmml" xml:id="p1.1.m1.1.5d">
+   )
+  </mo> 
+ </mrow> 
+</mrow>
+<mrow xmlns:m="http://www.w3.org/1998/Math/MathML" xref="p1.1.m1.1.4.cmml" xml:id="p1.1.m1.1.4"> 
+ <mi xref="p1.1.m1.1.1.cmml" xml:id="p1.1.m1.1.1">
+  x
+ </mi> 
+ <mo xref="p1.1.m1.1.2.cmml" xml:id="p1.1.m1.1.2">
+  +
+ </mo> 
+ <mn xref="p1.1.m1.1.3.cmml" xml:id="p1.1.m1.1.3">
+  5
+ </mn> 
+</mrow>
+<mrow xmlns:m="http://www.w3.org/1998/Math/MathML" xref="p1.1.m1.1.9.cmml" xml:id="p1.1.m1.1.9"> 
+ <mrow xref="p1.1.m1.1.9.1.cmml" xml:id="p1.1.m1.1.9.1"> 
+  <mi xref="p1.1.m1.1.1.cmml" xml:id="p1.1.m1.1.1">
+   a
+  </mi> 
+   
+  <msup xref="p1.1.m1.1.9.1.2.cmml" xml:id="p1.1.m1.1.9.1.2"> 
+   <mi xref="p1.1.m1.1.2.cmml" xml:id="p1.1.m1.1.2">
+    x
+   </mi> 
+   <mn xref="p1.1.m1.1.3.1.cmml" xml:id="p1.1.m1.1.3.1">
+    2
+   </mn> 
+  </msup> 
+ </mrow> 
+ <mo xref="p1.1.m1.1.4.cmml" xml:id="p1.1.m1.1.4">
+  +
+ </mo> 
+ <mrow xref="p1.1.m1.1.9.2.cmml" xml:id="p1.1.m1.1.9.2"> 
+  <mi xref="p1.1.m1.1.5.cmml" xml:id="p1.1.m1.1.5">
+   b
+  </mi> 
+   
+  <mi xref="p1.1.m1.1.6.cmml" xml:id="p1.1.m1.1.6">
+   x
+  </mi> 
+ </mrow> 
+ <mo xref="p1.1.m1.1.4.cmml" xml:id="p1.1.m1.1.4a">
+  +
+ </mo> 
+ <mi xref="p1.1.m1.1.8.cmml" xml:id="p1.1.m1.1.8">
+  c
+ </mi> 
+</mrow>
+<mrow xmlns:m="http://www.w3.org/1998/Math/MathML" xref="p1.1.m1.1.cmml" xml:id="p1.1.m1.1b"> 
+ <merror xref="p1.1.m1.1.cmml" class="ltx_ERROR undefined undefined" xml:id="p1.1.m1.1c"> 
+  <mtext xref="p1.1.m1.1.cmml" xml:id="p1.1.m1.1d">
+   Align
+  </mtext> 
+ </merror> 
+ <mi xml:id="p1.1.m1.1.1">
+  l
+ </mi> 
+ <mi xml:id="p1.1.m1.1.2">
+  t
+ </mi> 
+ <mo xref="p1.1.m1.1.3.cmml" xml:id="p1.1.m1.1.3">
+  ;
+ </mo> 
+ <mi xml:id="p1.1.m1.1.4">
+  a
+ </mi> 
+ <mi xml:id="p1.1.m1.1.5">
+  p
+ </mi> 
+ <mi xml:id="p1.1.m1.1.6">
+  p
+ </mi> 
+ <mi xml:id="p1.1.m1.1.7">
+  l
+ </mi> 
+ <mi xml:id="p1.1.m1.1.8">
+  y
+ </mi> 
+ <merror xref="p1.1.m1.1.cmml" class="ltx_ERROR undefined undefined" xml:id="p1.1.m1.1e"> 
+  <mtext xref="p1.1.m1.1.cmml" xml:id="p1.1.m1.1f">
+   Align
+  </mtext> 
+ </merror> 
+ <mi xml:id="p1.1.m1.1.9">
+  g
+ </mi> 
+ <mi xml:id="p1.1.m1.1.10">
+  t
+ </mi> 
+ <mo xref="p1.1.m1.1.11.cmml" xml:id="p1.1.m1.1.11">
+  ;
+ </mo> 
+ <merror xref="p1.1.m1.1.cmml" class="ltx_ERROR undefined undefined" xml:id="p1.1.m1.1g"> 
+  <mtext xref="p1.1.m1.1.cmml" xml:id="p1.1.m1.1h">
+   Align
+  </mtext> 
+ </merror> 
+ <mi xml:id="p1.1.m1.1.12">
+  l
+ </mi> 
+ <mi xml:id="p1.1.m1.1.13">
+  t
+ </mi> 
+ <mo xref="p1.1.m1.1.14.cmml" xml:id="p1.1.m1.1.14">
+  ;
+ </mo> 
+ <mi xml:id="p1.1.m1.1.15">
+  p
+ </mi> 
+ <mi xml:id="p1.1.m1.1.16">
+  l
+ </mi> 
+ <mi xml:id="p1.1.m1.1.17">
+  u
+ </mi> 
+ <mi xml:id="p1.1.m1.1.18">
+  s
+ </mi> 
+ <mo xref="p1.1.m1.1.19.cmml" xml:id="p1.1.m1.1.19">
+  /
+ </mo> 
+ <merror xref="p1.1.m1.1.cmml" class="ltx_ERROR undefined undefined" xml:id="p1.1.m1.1i"> 
+  <mtext xref="p1.1.m1.1.cmml" xml:id="p1.1.m1.1j">
+   Align
+  </mtext> 
+ </merror> 
+ <mi xml:id="p1.1.m1.1.20">
+  g
+ </mi> 
+ <mi xml:id="p1.1.m1.1.21">
+  t
+ </mi> 
+ <mo xref="p1.1.m1.1.22.cmml" xml:id="p1.1.m1.1.22">
+  ;
+ </mo> 
+ <merror xref="p1.1.m1.1.cmml" class="ltx_ERROR undefined undefined" xml:id="p1.1.m1.1k"> 
+  <mtext xref="p1.1.m1.1.cmml" xml:id="p1.1.m1.1l">
+   Align
+  </mtext> 
+ </merror> 
+ <mi xml:id="p1.1.m1.1.23">
+  l
+ </mi> 
+ <mi xml:id="p1.1.m1.1.24">
+  t
+ </mi> 
+ <mo xref="p1.1.m1.1.25.cmml" xml:id="p1.1.m1.1.25">
+  ;
+ </mo> 
+ <mi xml:id="p1.1.m1.1.26">
+  a
+ </mi> 
+ <mi xml:id="p1.1.m1.1.27">
+  p
+ </mi> 
+ <mi xml:id="p1.1.m1.1.28">
+  p
+ </mi> 
+ <mi xml:id="p1.1.m1.1.29">
+  l
+ </mi> 
+ <mi xml:id="p1.1.m1.1.30">
+  y
+ </mi> 
+ <merror xref="p1.1.m1.1.cmml" class="ltx_ERROR undefined undefined" xml:id="p1.1.m1.1m"> 
+  <mtext xref="p1.1.m1.1.cmml" xml:id="p1.1.m1.1n">
+   Align
+  </mtext> 
+ </merror> 
+ <mi xml:id="p1.1.m1.1.31">
+  g
+ </mi> 
+ <mi xml:id="p1.1.m1.1.32">
+  t
+ </mi> 
+ <mo xref="p1.1.m1.1.33.cmml" xml:id="p1.1.m1.1.33">
+  ;
+ </mo> 
+ <merror xref="p1.1.m1.1.cmml" class="ltx_ERROR undefined undefined" xml:id="p1.1.m1.1o"> 
+  <mtext xref="p1.1.m1.1.cmml" xml:id="p1.1.m1.1p">
+   Align
+  </mtext> 
+ </merror> 
+ <mi xml:id="p1.1.m1.1.34">
+  l
+ </mi> 
+ <mi xml:id="p1.1.m1.1.35">
+  t
+ </mi> 
+ <mo xref="p1.1.m1.1.36.cmml" xml:id="p1.1.m1.1.36">
+  ;
+ </mo> 
+ <mi xml:id="p1.1.m1.1.37">
+  t
+ </mi> 
+ <mi xml:id="p1.1.m1.1.38">
+  i
+ </mi> 
+ <mi xml:id="p1.1.m1.1.39">
+  m
+ </mi> 
+ <mi xml:id="p1.1.m1.1.40">
+  e
+ </mi> 
+ <mi xml:id="p1.1.m1.1.41">
+  s
+ </mi> 
+ <mo xref="p1.1.m1.1.42.cmml" xml:id="p1.1.m1.1.42">
+  /
+ </mo> 
+ <merror xref="p1.1.m1.1.cmml" class="ltx_ERROR undefined undefined" xml:id="p1.1.m1.1q"> 
+  <mtext xref="p1.1.m1.1.cmml" xml:id="p1.1.m1.1r">
+   Align
+  </mtext> 
+ </merror> 
+ <mi xml:id="p1.1.m1.1.43">
+  g
+ </mi> 
+ <mi xml:id="p1.1.m1.1.44">
+  t
+ </mi> 
+ <mo xref="p1.1.m1.1.45.cmml" xml:id="p1.1.m1.1.45">
+  ;
+ </mo> 
+ <merror xref="p1.1.m1.1.cmml" class="ltx_ERROR undefined undefined" xml:id="p1.1.m1.1s"> 
+  <mtext xref="p1.1.m1.1.cmml" xml:id="p1.1.m1.1t">
+   Align
+  </mtext> 
+ </merror> 
+ <mi xml:id="p1.1.m1.1.46">
+  l
+ </mi> 
+ <mi xml:id="p1.1.m1.1.47">
+  t
+ </mi> 
+ <mo xref="p1.1.m1.1.48.cmml" xml:id="p1.1.m1.1.48">
+  ;
+ </mo> 
+ <mi xml:id="p1.1.m1.1.49">
+  c
+ </mi> 
+ <mi xml:id="p1.1.m1.1.50">
+  i
+ </mi> 
+ <merror xref="p1.1.m1.1.cmml" class="ltx_ERROR undefined undefined" xml:id="p1.1.m1.1u"> 
+  <mtext xref="p1.1.m1.1.cmml" xml:id="p1.1.m1.1v">
+   Align
+  </mtext> 
+ </merror> 
+ <mi xml:id="p1.1.m1.1.51">
+  g
+ </mi> 
+ <mi xml:id="p1.1.m1.1.52">
+  t
+ </mi> 
+ <mo xref="p1.1.m1.1.53.cmml" xml:id="p1.1.m1.1.53">
+  ;
+ </mo> 
+ <mi xml:id="p1.1.m1.1.54">
+  a
+ </mi> 
+ <merror xref="p1.1.m1.1.cmml" class="ltx_ERROR undefined undefined" xml:id="p1.1.m1.1w"> 
+  <mtext xref="p1.1.m1.1.cmml" xml:id="p1.1.m1.1x">
+   Align
+  </mtext> 
+ </merror> 
+ <mi xml:id="p1.1.m1.1.55">
+  l
+ </mi> 
+ <mi xml:id="p1.1.m1.1.56">
+  t
+ </mi> 
+ <mo xref="p1.1.m1.1.57.cmml" xml:id="p1.1.m1.1.57">
+  ;
+ </mo> 
+ <mo xref="p1.1.m1.1.58.cmml" xml:id="p1.1.m1.1.58">
+  /
+ </mo> 
+ <mi xml:id="p1.1.m1.1.59">
+  c
+ </mi> 
+ <mi xml:id="p1.1.m1.1.60">
+  i
+ </mi> 
+ <merror xref="p1.1.m1.1.cmml" class="ltx_ERROR undefined undefined" xml:id="p1.1.m1.1y"> 
+  <mtext xref="p1.1.m1.1.cmml" xml:id="p1.1.m1.1z">
+   Align
+  </mtext> 
+ </merror> 
+ <mi xml:id="p1.1.m1.1.61">
+  g
+ </mi> 
+ <mi xml:id="p1.1.m1.1.62">
+  t
+ </mi> 
+ <mo xref="p1.1.m1.1.63.cmml" xml:id="p1.1.m1.1.63">
+  ;
+ </mo> 
+ <merror xref="p1.1.m1.1.cmml" class="ltx_ERROR undefined undefined" xml:id="p1.1.m1.1aa"> 
+  <mtext xref="p1.1.m1.1.cmml" xml:id="p1.1.m1.1ab">
+   Align
+  </mtext> 
+ </merror> 
+ <mi xml:id="p1.1.m1.1.64">
+  l
+ </mi> 
+ <mi xml:id="p1.1.m1.1.65">
+  t
+ </mi> 
+ <mo xref="p1.1.m1.1.66.cmml" xml:id="p1.1.m1.1.66">
+  ;
+ </mo> 
+ <mi xml:id="p1.1.m1.1.67">
+  a
+ </mi> 
+ <mi xml:id="p1.1.m1.1.68">
+  p
+ </mi> 
+ <mi xml:id="p1.1.m1.1.69">
+  p
+ </mi> 
+ <mi xml:id="p1.1.m1.1.70">
+  l
+ </mi> 
+ <mi xml:id="p1.1.m1.1.71">
+  y
+ </mi> 
+ <merror xref="p1.1.m1.1.cmml" class="ltx_ERROR undefined undefined" xml:id="p1.1.m1.1ac"> 
+  <mtext xref="p1.1.m1.1.cmml" xml:id="p1.1.m1.1ad">
+   Align
+  </mtext> 
+ </merror> 
+ <mi xml:id="p1.1.m1.1.72">
+  g
+ </mi> 
+ <mi xml:id="p1.1.m1.1.73">
+  t
+ </mi> 
+ <mo xref="p1.1.m1.1.74.cmml" xml:id="p1.1.m1.1.74">
+  ;
+ </mo> 
+ <merror xref="p1.1.m1.1.cmml" class="ltx_ERROR undefined undefined" xml:id="p1.1.m1.1ae"> 
+  <mtext xref="p1.1.m1.1.cmml" xml:id="p1.1.m1.1af">
+   Align
+  </mtext> 
+ </merror> 
+ <mi xml:id="p1.1.m1.1.75">
+  l
+ </mi> 
+ <mi xml:id="p1.1.m1.1.76">
+  t
+ </mi> 
+ <mo xref="p1.1.m1.1.77.cmml" xml:id="p1.1.m1.1.77">
+  ;
+ </mo> 
+ <mi xml:id="p1.1.m1.1.78">
+  p
+ </mi> 
+ <mi xml:id="p1.1.m1.1.79">
+  o
+ </mi> 
+ <mi xml:id="p1.1.m1.1.80">
+  w
+ </mi> 
+ <mi xml:id="p1.1.m1.1.81">
+  e
+ </mi> 
+ <mi xml:id="p1.1.m1.1.82">
+  r
+ </mi> 
+ <mo xref="p1.1.m1.1.83.cmml" xml:id="p1.1.m1.1.83">
+  /
+ </mo> 
+ <merror xref="p1.1.m1.1.cmml" class="ltx_ERROR undefined undefined" xml:id="p1.1.m1.1ag"> 
+  <mtext xref="p1.1.m1.1.cmml" xml:id="p1.1.m1.1ah">
+   Align
+  </mtext> 
+ </merror> 
+ <mi xml:id="p1.1.m1.1.84">
+  g
+ </mi> 
+ <mi xml:id="p1.1.m1.1.85">
+  t
+ </mi> 
+ <mo xref="p1.1.m1.1.86.cmml" xml:id="p1.1.m1.1.86">
+  ;
+ </mo> 
+ <merror xref="p1.1.m1.1.cmml" class="ltx_ERROR undefined undefined" xml:id="p1.1.m1.1ai"> 
+  <mtext xref="p1.1.m1.1.cmml" xml:id="p1.1.m1.1aj">
+   Align
+  </mtext> 
+ </merror> 
+ <mi xml:id="p1.1.m1.1.87">
+  l
+ </mi> 
+ <mi xml:id="p1.1.m1.1.88">
+  t
+ </mi> 
+ <mo xref="p1.1.m1.1.89.cmml" xml:id="p1.1.m1.1.89">
+  ;
+ </mo> 
+ <mi xml:id="p1.1.m1.1.90">
+  c
+ </mi> 
+ <mi xml:id="p1.1.m1.1.91">
+  i
+ </mi> 
+ <merror xref="p1.1.m1.1.cmml" class="ltx_ERROR undefined undefined" xml:id="p1.1.m1.1ak"> 
+  <mtext xref="p1.1.m1.1.cmml" xml:id="p1.1.m1.1al">
+   Align
+  </mtext> 
+ </merror> 
+ <mi xml:id="p1.1.m1.1.92">
+  g
+ </mi> 
+ <mi xml:id="p1.1.m1.1.93">
+  t
+ </mi> 
+ <mo xref="p1.1.m1.1.94.cmml" xml:id="p1.1.m1.1.94">
+  ;
+ </mo> 
+ <mi xml:id="p1.1.m1.1.95">
+  x
+ </mi> 
+ <merror xref="p1.1.m1.1.cmml" class="ltx_ERROR undefined undefined" xml:id="p1.1.m1.1am"> 
+  <mtext xref="p1.1.m1.1.cmml" xml:id="p1.1.m1.1an">
+   Align
+  </mtext> 
+ </merror> 
+ <mi xml:id="p1.1.m1.1.96">
+  l
+ </mi> 
+ <mi xml:id="p1.1.m1.1.97">
+  t
+ </mi> 
+ <mo xref="p1.1.m1.1.98.cmml" xml:id="p1.1.m1.1.98">
+  ;
+ </mo> 
+ <mo xref="p1.1.m1.1.99.cmml" xml:id="p1.1.m1.1.99">
+  /
+ </mo> 
+ <mi xml:id="p1.1.m1.1.100">
+  c
+ </mi> 
+ <mi xml:id="p1.1.m1.1.101">
+  i
+ </mi> 
+ <merror xref="p1.1.m1.1.cmml" class="ltx_ERROR undefined undefined" xml:id="p1.1.m1.1ao"> 
+  <mtext xref="p1.1.m1.1.cmml" xml:id="p1.1.m1.1ap">
+   Align
+  </mtext> 
+ </merror> 
+ <mi xml:id="p1.1.m1.1.102">
+  g
+ </mi> 
+ <mi xml:id="p1.1.m1.1.103">
+  t
+ </mi> 
+ <mo xref="p1.1.m1.1.104.cmml" xml:id="p1.1.m1.1.104">
+  ;
+ </mo> 
+ <merror xref="p1.1.m1.1.cmml" class="ltx_ERROR undefined undefined" xml:id="p1.1.m1.1aq"> 
+  <mtext xref="p1.1.m1.1.cmml" xml:id="p1.1.m1.1ar">
+   Align
+  </mtext> 
+ </merror> 
+ <mi xml:id="p1.1.m1.1.105">
+  l
+ </mi> 
+ <mi xml:id="p1.1.m1.1.106">
+  t
+ </mi> 
+ <mo xref="p1.1.m1.1.107.cmml" xml:id="p1.1.m1.1.107">
+  ;
+ </mo> 
+ <mi xml:id="p1.1.m1.1.108">
+  c
+ </mi> 
+ <mi xml:id="p1.1.m1.1.109">
+  n
+ </mi> 
+ <merror xref="p1.1.m1.1.cmml" class="ltx_ERROR undefined undefined" xml:id="p1.1.m1.1as"> 
+  <mtext xref="p1.1.m1.1.cmml" xml:id="p1.1.m1.1at">
+   Align
+  </mtext> 
+ </merror> 
+ <mi xml:id="p1.1.m1.1.110">
+  g
+ </mi> 
+ <mi xml:id="p1.1.m1.1.111">
+  t
+ </mi> 
+ <mo xref="p1.1.m1.1.112.cmml" xml:id="p1.1.m1.1.112">
+  ;
+ </mo> 
+ <mn xref="p1.1.m1.1.113.cmml" xml:id="p1.1.m1.1.113">
+  2
+ </mn> 
+ <merror xref="p1.1.m1.1.cmml" class="ltx_ERROR undefined undefined" xml:id="p1.1.m1.1au"> 
+  <mtext xref="p1.1.m1.1.cmml" xml:id="p1.1.m1.1av">
+   Align
+  </mtext> 
+ </merror> 
+ <mi xml:id="p1.1.m1.1.114">
+  l
+ </mi> 
+ <mi xml:id="p1.1.m1.1.115">
+  t
+ </mi> 
+ <mo xref="p1.1.m1.1.116.cmml" xml:id="p1.1.m1.1.116">
+  ;
+ </mo> 
+ <mo xref="p1.1.m1.1.117.cmml" xml:id="p1.1.m1.1.117">
+  /
+ </mo> 
+ <mi xml:id="p1.1.m1.1.118">
+  c
+ </mi> 
+ <mi xml:id="p1.1.m1.1.119">
+  n
+ </mi> 
+ <merror xref="p1.1.m1.1.cmml" class="ltx_ERROR undefined undefined" xml:id="p1.1.m1.1aw"> 
+  <mtext xref="p1.1.m1.1.cmml" xml:id="p1.1.m1.1ax">
+   Align
+  </mtext> 
+ </merror> 
+ <mi xml:id="p1.1.m1.1.120">
+  g
+ </mi> 
+ <mi xml:id="p1.1.m1.1.121">
+  t
+ </mi> 
+ <mo xref="p1.1.m1.1.122.cmml" xml:id="p1.1.m1.1.122">
+  ;
+ </mo> 
+ <merror xref="p1.1.m1.1.cmml" class="ltx_ERROR undefined undefined" xml:id="p1.1.m1.1ay"> 
+  <mtext xref="p1.1.m1.1.cmml" xml:id="p1.1.m1.1az">
+   Align
+  </mtext> 
+ </merror> 
+ <mi xml:id="p1.1.m1.1.123">
+  l
+ </mi> 
+ <mi xml:id="p1.1.m1.1.124">
+  t
+ </mi> 
+ <mo xref="p1.1.m1.1.125.cmml" xml:id="p1.1.m1.1.125">
+  ;
+ </mo> 
+ <mo xref="p1.1.m1.1.126.cmml" xml:id="p1.1.m1.1.126">
+  /
+ </mo> 
+ <mi xml:id="p1.1.m1.1.127">
+  a
+ </mi> 
+ <mi xml:id="p1.1.m1.1.128">
+  p
+ </mi> 
+ <mi xml:id="p1.1.m1.1.129">
+  p
+ </mi> 
+ <mi xml:id="p1.1.m1.1.130">
+  l
+ </mi> 
+ <mi xml:id="p1.1.m1.1.131">
+  y
+ </mi> 
+ <merror xref="p1.1.m1.1.cmml" class="ltx_ERROR undefined undefined" xml:id="p1.1.m1.1ba"> 
+  <mtext xref="p1.1.m1.1.cmml" xml:id="p1.1.m1.1bb">
+   Align
+  </mtext> 
+ </merror> 
+ <mi xml:id="p1.1.m1.1.132">
+  g
+ </mi> 
+ <mi xml:id="p1.1.m1.1.133">
+  t
+ </mi> 
+ <mo xref="p1.1.m1.1.134.cmml" xml:id="p1.1.m1.1.134">
+  ;
+ </mo> 
+ <merror xref="p1.1.m1.1.cmml" class="ltx_ERROR undefined undefined" xml:id="p1.1.m1.1bc"> 
+  <mtext xref="p1.1.m1.1.cmml" xml:id="p1.1.m1.1bd">
+   Align
+  </mtext> 
+ </merror> 
+ <mi xml:id="p1.1.m1.1.135">
+  l
+ </mi> 
+ <mi xml:id="p1.1.m1.1.136">
+  t
+ </mi> 
+ <mo xref="p1.1.m1.1.137.cmml" xml:id="p1.1.m1.1.137">
+  ;
+ </mo> 
+ <mo xref="p1.1.m1.1.138.cmml" xml:id="p1.1.m1.1.138">
+  /
+ </mo> 
+ <mi xml:id="p1.1.m1.1.139">
+  a
+ </mi> 
+ <mi xml:id="p1.1.m1.1.140">
+  p
+ </mi> 
+ <mi xml:id="p1.1.m1.1.141">
+  p
+ </mi> 
+ <mi xml:id="p1.1.m1.1.142">
+  l
+ </mi> 
+ <mi xml:id="p1.1.m1.1.143">
+  y
+ </mi> 
+ <merror xref="p1.1.m1.1.cmml" class="ltx_ERROR undefined undefined" xml:id="p1.1.m1.1be"> 
+  <mtext xref="p1.1.m1.1.cmml" xml:id="p1.1.m1.1bf">
+   Align
+  </mtext> 
+ </merror> 
+ <mi xml:id="p1.1.m1.1.144">
+  g
+ </mi> 
+ <mi xml:id="p1.1.m1.1.145">
+  t
+ </mi> 
+ <mo xref="p1.1.m1.1.146.cmml" xml:id="p1.1.m1.1.146">
+  ;
+ </mo> 
+ <merror xref="p1.1.m1.1.cmml" class="ltx_ERROR undefined undefined" xml:id="p1.1.m1.1bg"> 
+  <mtext xref="p1.1.m1.1.cmml" xml:id="p1.1.m1.1bh">
+   Align
+  </mtext> 
+ </merror> 
+ <mi xml:id="p1.1.m1.1.147">
+  l
+ </mi> 
+ <mi xml:id="p1.1.m1.1.148">
+  t
+ </mi> 
+ <mo xref="p1.1.m1.1.149.cmml" xml:id="p1.1.m1.1.149">
+  ;
+ </mo> 
+ <mi xml:id="p1.1.m1.1.150">
+  a
+ </mi> 
+ <mi xml:id="p1.1.m1.1.151">
+  p
+ </mi> 
+ <mi xml:id="p1.1.m1.1.152">
+  p
+ </mi> 
+ <mi xml:id="p1.1.m1.1.153">
+  l
+ </mi> 
+ <mi xml:id="p1.1.m1.1.154">
+  y
+ </mi> 
+ <merror xref="p1.1.m1.1.cmml" class="ltx_ERROR undefined undefined" xml:id="p1.1.m1.1bi"> 
+  <mtext xref="p1.1.m1.1.cmml" xml:id="p1.1.m1.1bj">
+   Align
+  </mtext> 
+ </merror> 
+ <mi xml:id="p1.1.m1.1.155">
+  g
+ </mi> 
+ <mi xml:id="p1.1.m1.1.156">
+  t
+ </mi> 
+ <mo xref="p1.1.m1.1.157.cmml" xml:id="p1.1.m1.1.157">
+  ;
+ </mo> 
+ <merror xref="p1.1.m1.1.cmml" class="ltx_ERROR undefined undefined" xml:id="p1.1.m1.1bk"> 
+  <mtext xref="p1.1.m1.1.cmml" xml:id="p1.1.m1.1bl">
+   Align
+  </mtext> 
+ </merror> 
+ <mi xml:id="p1.1.m1.1.158">
+  l
+ </mi> 
+ <mi xml:id="p1.1.m1.1.159">
+  t
+ </mi> 
+ <mo xref="p1.1.m1.1.160.cmml" xml:id="p1.1.m1.1.160">
+  ;
+ </mo> 
+ <mi xml:id="p1.1.m1.1.161">
+  t
+ </mi> 
+ <mi xml:id="p1.1.m1.1.162">
+  i
+ </mi> 
+ <mi xml:id="p1.1.m1.1.163">
+  m
+ </mi> 
+ <mi xml:id="p1.1.m1.1.164">
+  e
+ </mi> 
+ <mi xml:id="p1.1.m1.1.165">
+  s
+ </mi> 
+ <mo xref="p1.1.m1.1.166.cmml" xml:id="p1.1.m1.1.166">
+  /
+ </mo> 
+ <merror xref="p1.1.m1.1.cmml" class="ltx_ERROR undefined undefined" xml:id="p1.1.m1.1bm"> 
+  <mtext xref="p1.1.m1.1.cmml" xml:id="p1.1.m1.1bn">
+   Align
+  </mtext> 
+ </merror> 
+ <mi xml:id="p1.1.m1.1.167">
+  g
+ </mi> 
+ <mi xml:id="p1.1.m1.1.168">
+  t
+ </mi> 
+ <mo xref="p1.1.m1.1.169.cmml" xml:id="p1.1.m1.1.169">
+  ;
+ </mo> 
+ <merror xref="p1.1.m1.1.cmml" class="ltx_ERROR undefined undefined" xml:id="p1.1.m1.1bo"> 
+  <mtext xref="p1.1.m1.1.cmml" xml:id="p1.1.m1.1bp">
+   Align
+  </mtext> 
+ </merror> 
+ <mi xml:id="p1.1.m1.1.170">
+  l
+ </mi> 
+ <mi xml:id="p1.1.m1.1.171">
+  t
+ </mi> 
+ <mo xref="p1.1.m1.1.172.cmml" xml:id="p1.1.m1.1.172">
+  ;
+ </mo> 
+ <mi xml:id="p1.1.m1.1.173">
+  c
+ </mi> 
+ <mi xml:id="p1.1.m1.1.174">
+  i
+ </mi> 
+ <merror xref="p1.1.m1.1.cmml" class="ltx_ERROR undefined undefined" xml:id="p1.1.m1.1bq"> 
+  <mtext xref="p1.1.m1.1.cmml" xml:id="p1.1.m1.1br">
+   Align
+  </mtext> 
+ </merror> 
+ <mi xml:id="p1.1.m1.1.175">
+  g
+ </mi> 
+ <mi xml:id="p1.1.m1.1.176">
+  t
+ </mi> 
+ <mo xref="p1.1.m1.1.177.cmml" xml:id="p1.1.m1.1.177">
+  ;
+ </mo> 
+ <mi xml:id="p1.1.m1.1.178">
+  b
+ </mi> 
+ <merror xref="p1.1.m1.1.cmml" class="ltx_ERROR undefined undefined" xml:id="p1.1.m1.1bs"> 
+  <mtext xref="p1.1.m1.1.cmml" xml:id="p1.1.m1.1bt">
+   Align
+  </mtext> 
+ </merror> 
+ <mi xml:id="p1.1.m1.1.179">
+  l
+ </mi> 
+ <mi xml:id="p1.1.m1.1.180">
+  t
+ </mi> 
+ <mo xref="p1.1.m1.1.181.cmml" xml:id="p1.1.m1.1.181">
+  ;
+ </mo> 
+ <mo xref="p1.1.m1.1.182.cmml" xml:id="p1.1.m1.1.182">
+  /
+ </mo> 
+ <mi xml:id="p1.1.m1.1.183">
+  c
+ </mi> 
+ <mi xml:id="p1.1.m1.1.184">
+  i
+ </mi> 
+ <merror xref="p1.1.m1.1.cmml" class="ltx_ERROR undefined undefined" xml:id="p1.1.m1.1bu"> 
+  <mtext xref="p1.1.m1.1.cmml" xml:id="p1.1.m1.1bv">
+   Align
+  </mtext> 
+ </merror> 
+ <mi xml:id="p1.1.m1.1.185">
+  g
+ </mi> 
+ <mi xml:id="p1.1.m1.1.186">
+  t
+ </mi> 
+ <mo xref="p1.1.m1.1.187.cmml" xml:id="p1.1.m1.1.187">
+  ;
+ </mo> 
+ <merror xref="p1.1.m1.1.cmml" class="ltx_ERROR undefined undefined" xml:id="p1.1.m1.1bw"> 
+  <mtext xref="p1.1.m1.1.cmml" xml:id="p1.1.m1.1bx">
+   Align
+  </mtext> 
+ </merror> 
+ <mi xml:id="p1.1.m1.1.188">
+  l
+ </mi> 
+ <mi xml:id="p1.1.m1.1.189">
+  t
+ </mi> 
+ <mo xref="p1.1.m1.1.190.cmml" xml:id="p1.1.m1.1.190">
+  ;
+ </mo> 
+ <mi xml:id="p1.1.m1.1.191">
+  c
+ </mi> 
+ <mi xml:id="p1.1.m1.1.192">
+  i
+ </mi> 
+ <merror xref="p1.1.m1.1.cmml" class="ltx_ERROR undefined undefined" xml:id="p1.1.m1.1by"> 
+  <mtext xref="p1.1.m1.1.cmml" xml:id="p1.1.m1.1bz">
+   Align
+  </mtext> 
+ </merror> 
+ <mi xml:id="p1.1.m1.1.193">
+  g
+ </mi> 
+ <mi xml:id="p1.1.m1.1.194">
+  t
+ </mi> 
+ <mo xref="p1.1.m1.1.195.cmml" xml:id="p1.1.m1.1.195">
+  ;
+ </mo> 
+ <mi xml:id="p1.1.m1.1.196">
+  x
+ </mi> 
+ <merror xref="p1.1.m1.1.cmml" class="ltx_ERROR undefined undefined" xml:id="p1.1.m1.1ca"> 
+  <mtext xref="p1.1.m1.1.cmml" xml:id="p1.1.m1.1cb">
+   Align
+  </mtext> 
+ </merror> 
+ <mi xml:id="p1.1.m1.1.197">
+  l
+ </mi> 
+ <mi xml:id="p1.1.m1.1.198">
+  t
+ </mi> 
+ <mo xref="p1.1.m1.1.199.cmml" xml:id="p1.1.m1.1.199">
+  ;
+ </mo> 
+ <mo xref="p1.1.m1.1.200.cmml" xml:id="p1.1.m1.1.200">
+  /
+ </mo> 
+ <mi xml:id="p1.1.m1.1.201">
+  c
+ </mi> 
+ <mi xml:id="p1.1.m1.1.202">
+  i
+ </mi> 
+ <merror xref="p1.1.m1.1.cmml" class="ltx_ERROR undefined undefined" xml:id="p1.1.m1.1cc"> 
+  <mtext xref="p1.1.m1.1.cmml" xml:id="p1.1.m1.1cd">
+   Align
+  </mtext> 
+ </merror> 
+ <mi xml:id="p1.1.m1.1.203">
+  g
+ </mi> 
+ <mi xml:id="p1.1.m1.1.204">
+  t
+ </mi> 
+ <mo xref="p1.1.m1.1.205.cmml" xml:id="p1.1.m1.1.205">
+  ;
+ </mo> 
+ <merror xref="p1.1.m1.1.cmml" class="ltx_ERROR undefined undefined" xml:id="p1.1.m1.1ce"> 
+  <mtext xref="p1.1.m1.1.cmml" xml:id="p1.1.m1.1cf">
+   Align
+  </mtext> 
+ </merror> 
+ <mi xml:id="p1.1.m1.1.206">
+  l
+ </mi> 
+ <mi xml:id="p1.1.m1.1.207">
+  t
+ </mi> 
+ <mo xref="p1.1.m1.1.208.cmml" xml:id="p1.1.m1.1.208">
+  ;
+ </mo> 
+ <mo xref="p1.1.m1.1.209.cmml" xml:id="p1.1.m1.1.209">
+  /
+ </mo> 
+ <mi xml:id="p1.1.m1.1.210">
+  a
+ </mi> 
+ <mi xml:id="p1.1.m1.1.211">
+  p
+ </mi> 
+ <mi xml:id="p1.1.m1.1.212">
+  p
+ </mi> 
+ <mi xml:id="p1.1.m1.1.213">
+  l
+ </mi> 
+ <mi xml:id="p1.1.m1.1.214">
+  y
+ </mi> 
+ <merror xref="p1.1.m1.1.cmml" class="ltx_ERROR undefined undefined" xml:id="p1.1.m1.1cg"> 
+  <mtext xref="p1.1.m1.1.cmml" xml:id="p1.1.m1.1ch">
+   Align
+  </mtext> 
+ </merror> 
+ <mi xml:id="p1.1.m1.1.215">
+  g
+ </mi> 
+ <mi xml:id="p1.1.m1.1.216">
+  t
+ </mi> 
+ <mo xref="p1.1.m1.1.217.cmml" xml:id="p1.1.m1.1.217">
+  ;
+ </mo> 
+ <merror xref="p1.1.m1.1.cmml" class="ltx_ERROR undefined undefined" xml:id="p1.1.m1.1ci"> 
+  <mtext xref="p1.1.m1.1.cmml" xml:id="p1.1.m1.1cj">
+   Align
+  </mtext> 
+ </merror> 
+ <mi xml:id="p1.1.m1.1.218">
+  l
+ </mi> 
+ <mi xml:id="p1.1.m1.1.219">
+  t
+ </mi> 
+ <mo xref="p1.1.m1.1.220.cmml" xml:id="p1.1.m1.1.220">
+  ;
+ </mo> 
+ <mi xml:id="p1.1.m1.1.221">
+  c
+ </mi> 
+ <mi xml:id="p1.1.m1.1.222">
+  i
+ </mi> 
+ <merror xref="p1.1.m1.1.cmml" class="ltx_ERROR undefined undefined" xml:id="p1.1.m1.1ck"> 
+  <mtext xref="p1.1.m1.1.cmml" xml:id="p1.1.m1.1cl">
+   Align
+  </mtext> 
+ </merror> 
+ <mi xml:id="p1.1.m1.1.223">
+  g
+ </mi> 
+ <mi xml:id="p1.1.m1.1.224">
+  t
+ </mi> 
+ <mo xref="p1.1.m1.1.225.cmml" xml:id="p1.1.m1.1.225">
+  ;
+ </mo> 
+ <mi xml:id="p1.1.m1.1.226">
+  c
+ </mi> 
+ <merror xref="p1.1.m1.1.cmml" class="ltx_ERROR undefined undefined" xml:id="p1.1.m1.1cm"> 
+  <mtext xref="p1.1.m1.1.cmml" xml:id="p1.1.m1.1cn">
+   Align
+  </mtext> 
+ </merror> 
+ <mi xml:id="p1.1.m1.1.227">
+  l
+ </mi> 
+ <mi xml:id="p1.1.m1.1.228">
+  t
+ </mi> 
+ <mo xref="p1.1.m1.1.229.cmml" xml:id="p1.1.m1.1.229">
+  ;
+ </mo> 
+ <mo xref="p1.1.m1.1.230.cmml" xml:id="p1.1.m1.1.230">
+  /
+ </mo> 
+ <mi xml:id="p1.1.m1.1.231">
+  c
+ </mi> 
+ <mi xml:id="p1.1.m1.1.232">
+  i
+ </mi> 
+ <merror xref="p1.1.m1.1.cmml" class="ltx_ERROR undefined undefined" xml:id="p1.1.m1.1co"> 
+  <mtext xref="p1.1.m1.1.cmml" xml:id="p1.1.m1.1cp">
+   Align
+  </mtext> 
+ </merror> 
+ <mi xml:id="p1.1.m1.1.233">
+  g
+ </mi> 
+ <mi xml:id="p1.1.m1.1.234">
+  t
+ </mi> 
+ <mo xref="p1.1.m1.1.235.cmml" xml:id="p1.1.m1.1.235">
+  ;
+ </mo> 
+ <merror xref="p1.1.m1.1.cmml" class="ltx_ERROR undefined undefined" xml:id="p1.1.m1.1cq"> 
+  <mtext xref="p1.1.m1.1.cmml" xml:id="p1.1.m1.1cr">
+   Align
+  </mtext> 
+ </merror> 
+ <mi xml:id="p1.1.m1.1.236">
+  l
+ </mi> 
+ <mi xml:id="p1.1.m1.1.237">
+  t
+ </mi> 
+ <mo xref="p1.1.m1.1.238.cmml" xml:id="p1.1.m1.1.238">
+  ;
+ </mo> 
+ <mo xref="p1.1.m1.1.239.cmml" xml:id="p1.1.m1.1.239">
+  /
+ </mo> 
+ <mi xml:id="p1.1.m1.1.240">
+  a
+ </mi> 
+ <mi xml:id="p1.1.m1.1.241">
+  p
+ </mi> 
+ <mi xml:id="p1.1.m1.1.242">
+  p
+ </mi> 
+ <mi xml:id="p1.1.m1.1.243">
+  l
+ </mi> 
+ <mi xml:id="p1.1.m1.1.244">
+  y
+ </mi> 
+ <merror xref="p1.1.m1.1.cmml" class="ltx_ERROR undefined undefined" xml:id="p1.1.m1.1cs"> 
+  <mtext xref="p1.1.m1.1.cmml" xml:id="p1.1.m1.1ct">
+   Align
+  </mtext> 
+ </merror> 
+ <mi xml:id="p1.1.m1.1.245">
+  g
+ </mi> 
+ <mi xml:id="p1.1.m1.1.246">
+  t
+ </mi> 
+ <mo xref="p1.1.m1.1.247.cmml" xml:id="p1.1.m1.1.247">
+  ;
+ </mo> 
+</mrow>
+<mrow xmlns:m="http://www.w3.org/1998/Math/MathML" xref="p1.1.m1.1.4.cmml" xml:id="p1.1.m1.1.4"> 
+ <mi xref="p1.1.m1.1.1.cmml" xml:id="p1.1.m1.1.1">
+  x
+ </mi> 
+ <mo xref="p1.1.m1.1.2.cmml" xml:id="p1.1.m1.1.2">
+  =
+ </mo> 
+ <mstyle displaystyle="true" xref="p1.1.m1.1.3.cmml" xml:id="p1.1.m1.1.3"> 
+  <mfrac xref="p1.1.m1.1.3.cmml" xml:id="p1.1.m1.1.3a"> 
+   <mrow xref="p1.1.m1.1.3.2.cmml" xml:id="p1.1.m1.1.3.2"> 
+    <mrow xref="p1.1.m1.1.3.2.5.cmml" xml:id="p1.1.m1.1.3.2.5"> 
+     <mo xref="p1.1.m1.1.3.2.1.cmml" xml:id="p1.1.m1.1.3.2.1">
+      -
+     </mo> 
+     <mi xref="p1.1.m1.1.3.2.2.cmml" xml:id="p1.1.m1.1.3.2.2">
+      b
+     </mi> 
+    </mrow> 
+    <mo xref="p1.1.m1.1.3.2.3.cmml" xml:id="p1.1.m1.1.3.2.3">
+     ±
+    </mo> 
+    <msqrt xref="p1.1.m1.1.3.2.4.cmml" xml:id="p1.1.m1.1.3.2.4"> 
+      
+      <msup xref="p1.1.m1.1.3.2.4.2.7.cmml" xml:id="p1.1.m1.1.3.2.4.2.7"> 
+       <mi xref="p1.1.m1.1.3.2.4.2.1.cmml" xml:id="p1.1.m1.1.3.2.4.2.1">
+        b
+       </mi> 
+       <mn xref="p1.1.m1.1.3.2.4.2.2.1.cmml" xml:id="p1.1.m1.1.3.2.4.2.2.1">
+        2
+       </mn> 
+      </msup> 
+      <mo xref="p1.1.m1.1.3.2.4.2.3.cmml" xml:id="p1.1.m1.1.3.2.4.2.3">
+       -
+      </mo> 
+      <mrow xref="p1.1.m1.1.3.2.4.2.8.cmml" xml:id="p1.1.m1.1.3.2.4.2.8"> 
+       <mn xref="p1.1.m1.1.3.2.4.2.4.cmml" xml:id="p1.1.m1.1.3.2.4.2.4">
+        4
+       </mn> 
+        
+       <mi xref="p1.1.m1.1.3.2.4.2.5.cmml" xml:id="p1.1.m1.1.3.2.4.2.5">
+        a
+       </mi> 
+        
+       <mi xref="p1.1.m1.1.3.2.4.2.6.cmml" xml:id="p1.1.m1.1.3.2.4.2.6">
+        c
+       </mi> 
+      </mrow> 
+      
+    </msqrt> 
+   </mrow> 
+   <mrow xref="p1.1.m1.1.3.3.cmml" xml:id="p1.1.m1.1.3.3"> 
+    <mn xref="p1.1.m1.1.3.3.1.cmml" xml:id="p1.1.m1.1.3.3.1">
+     2
+    </mn> 
+     
+    <mi xref="p1.1.m1.1.3.3.2.cmml" xml:id="p1.1.m1.1.3.3.2">
+     a
+    </mi> 
+   </mrow> 
+  </mfrac> 
+ </mstyle> 
+</mrow>
+
