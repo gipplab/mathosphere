@@ -1,25 +1,20 @@
 package de.tuberlin.dima.schubotz.wiki;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
-
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.net.URI;
-import java.util.Arrays;
-import java.util.Collection;
-
 import de.tuberlin.dima.schubotz.wiki.preprocess.ProcessWikiProgram;
+import eu.stratosphere.api.common.Plan;
+import eu.stratosphere.api.java.ExecutionEnvironment;
+import eu.stratosphere.client.LocalExecutor;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
-import eu.stratosphere.api.common.Plan;
-import eu.stratosphere.api.java.ExecutionEnvironment;
-import eu.stratosphere.client.LocalExecutor;
+import java.io.*;
+import java.net.URI;
+import java.util.Arrays;
+import java.util.Collection;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 @RunWith(Parameterized.class)
 public class ProcessWikiIT {

@@ -1,23 +1,10 @@
 package de.tuberlin.dima.schubotz.fse;
 
-import java.util.regex.Pattern;
-
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.xpath.XPathExpressionException;
-
-import de.tuberlin.dima.schubotz.common.utils.CSVHelper;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import com.google.common.collect.HashMultiset;
-
 import de.tuberlin.dima.schubotz.common.mappers.OutputSimple;
 import de.tuberlin.dima.schubotz.common.types.OutputSimpleTuple;
-import de.tuberlin.dima.schubotz.fse.mappers.DocCleaner;
-import de.tuberlin.dima.schubotz.fse.mappers.QueryCleaner;
-import de.tuberlin.dima.schubotz.fse.mappers.QueryMapper;
-import de.tuberlin.dima.schubotz.fse.mappers.QuerySectionMatcher;
-import de.tuberlin.dima.schubotz.fse.mappers.SectionMapper;
+import de.tuberlin.dima.schubotz.common.utils.CSVHelper;
+import de.tuberlin.dima.schubotz.fse.mappers.*;
 import de.tuberlin.dima.schubotz.fse.types.QueryTuple;
 import de.tuberlin.dima.schubotz.fse.types.ResultTuple;
 import de.tuberlin.dima.schubotz.fse.types.SectionTuple;
@@ -29,6 +16,12 @@ import eu.stratosphere.api.java.operators.DataSource;
 import eu.stratosphere.api.java.typeutils.BasicTypeInfo;
 import eu.stratosphere.core.fs.FileSystem.WriteMode;
 import eu.stratosphere.core.fs.Path;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.xpath.XPathExpressionException;
+import java.util.regex.Pattern;
 
 /**
  * Performs the queries for the NTCIR-Math11-Workshop 2014 fully automated.

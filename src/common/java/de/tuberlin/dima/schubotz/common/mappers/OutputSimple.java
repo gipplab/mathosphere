@@ -1,11 +1,11 @@
 package de.tuberlin.dima.schubotz.common.mappers;
 
-import java.util.Iterator;
-
 import de.tuberlin.dima.schubotz.common.types.OutputSimpleTuple;
 import de.tuberlin.dima.schubotz.fse.types.ResultTuple;
 import eu.stratosphere.api.java.functions.GroupReduceFunction;
 import eu.stratosphere.util.Collector;
+
+import java.util.Iterator;
 
 /**
  * Adds rank and runtag. Outputs 1000 results per query.

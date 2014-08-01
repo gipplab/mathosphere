@@ -1,14 +1,10 @@
 package de.tuberlin.dima.schubotz.common.utils;
 
-import java.io.BufferedInputStream;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Scanner;
-
 import de.tuberlin.dima.schubotz.fse.MainProgram;
 import eu.stratosphere.core.fs.Path;
+
+import java.io.*;
+import java.util.Scanner;
 
 public class TestUtils {
     public static String getTestQueryString() throws IOException {

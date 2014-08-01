@@ -1,9 +1,7 @@
 package de.tuberlin.dima.schubotz.common.utils;
 
-import java.io.*;
-import java.nio.charset.StandardCharsets;
-import java.util.StringTokenizer;
-
+import cz.muni.fi.mir.mathmlcanonicalization.ConfigException;
+import cz.muni.fi.mir.mathmlcanonicalization.MathMLCanonicalizer;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -12,8 +10,12 @@ import org.jsoup.select.Elements;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import cz.muni.fi.mir.mathmlcanonicalization.ConfigException;
-import cz.muni.fi.mir.mathmlcanonicalization.MathMLCanonicalizer;
+import java.io.BufferedInputStream;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
+import java.util.StringTokenizer;
 
 
 public class ExtractHelper {

@@ -1,19 +1,11 @@
 package de.tuberlin.dima.schubotz.wiki;
 
-import java.io.IOException;
-import java.util.regex.Pattern;
-
-import de.tuberlin.dima.schubotz.common.utils.CSVHelper;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import com.google.common.collect.HashMultiset;
-
 import de.tuberlin.dima.schubotz.common.mappers.OutputSimple;
 import de.tuberlin.dima.schubotz.common.types.OutputSimpleTuple;
+import de.tuberlin.dima.schubotz.common.utils.CSVHelper;
 import de.tuberlin.dima.schubotz.fse.types.ResultTuple;
 import de.tuberlin.dima.schubotz.wiki.mappers.QueryWikiMatcher;
-import de.tuberlin.dima.schubotz.wiki.mappers.WikiCleaner;
 import de.tuberlin.dima.schubotz.wiki.mappers.WikiQueryCleaner;
 import de.tuberlin.dima.schubotz.wiki.mappers.WikiQueryMapper;
 import de.tuberlin.dima.schubotz.wiki.types.WikiQueryTuple;
@@ -26,6 +18,11 @@ import eu.stratosphere.api.java.operators.DataSource;
 import eu.stratosphere.api.java.typeutils.BasicTypeInfo;
 import eu.stratosphere.core.fs.FileSystem.WriteMode;
 import eu.stratosphere.core.fs.Path;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import java.io.IOException;
+import java.util.regex.Pattern;
 
 /**
  * Returns search results for NTCIR-11 2014 Wikipedia Subtask

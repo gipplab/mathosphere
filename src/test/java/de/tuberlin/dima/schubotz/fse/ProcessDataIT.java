@@ -1,8 +1,12 @@
 package de.tuberlin.dima.schubotz.fse;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.fail;
+import de.tuberlin.dima.schubotz.fse.preprocess.ProcessData;
+import eu.stratosphere.api.common.Plan;
+import eu.stratosphere.api.java.ExecutionEnvironment;
+import eu.stratosphere.client.LocalExecutor;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -11,14 +15,7 @@ import java.io.FileReader;
 import java.util.Arrays;
 import java.util.Collection;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
-
-import de.tuberlin.dima.schubotz.fse.preprocess.ProcessData;
-import eu.stratosphere.api.common.Plan;
-import eu.stratosphere.api.java.ExecutionEnvironment;
-import eu.stratosphere.client.LocalExecutor;
+import static org.junit.Assert.*;
 
 @RunWith(Parameterized.class)
 public class ProcessDataIT {

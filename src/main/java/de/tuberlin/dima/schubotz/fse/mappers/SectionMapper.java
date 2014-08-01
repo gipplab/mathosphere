@@ -1,21 +1,19 @@
 package de.tuberlin.dima.schubotz.fse.mappers;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
+import com.google.common.collect.HashMultiset;
+import de.tuberlin.dima.schubotz.common.utils.ExtractHelper;
+import de.tuberlin.dima.schubotz.common.utils.XMLHelper;
+import de.tuberlin.dima.schubotz.fse.types.SectionTuple;
+import eu.stratosphere.api.java.functions.FlatMapFunction;
+import eu.stratosphere.util.Collector;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.jsoup.Jsoup;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 
-import com.google.common.collect.HashMultiset;
-
-import de.tuberlin.dima.schubotz.common.utils.ExtractHelper;
-import de.tuberlin.dima.schubotz.common.utils.XMLHelper;
-import de.tuberlin.dima.schubotz.fse.types.SectionTuple;
-import eu.stratosphere.api.java.functions.FlatMapFunction;
-import eu.stratosphere.util.Collector;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @SuppressWarnings("serial")
 public class SectionMapper extends FlatMapFunction<String, SectionTuple> {

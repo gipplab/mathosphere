@@ -1,18 +1,17 @@
 package de.tuberlin.dima.schubotz.fse.mappers;
 
-import java.util.regex.Pattern;
-
+import de.tuberlin.dima.schubotz.common.utils.ExtractHelper;
+import de.tuberlin.dima.schubotz.common.utils.XMLHelper;
+import de.tuberlin.dima.schubotz.fse.types.QueryTuple;
+import eu.stratosphere.api.java.functions.FlatMapFunction;
+import eu.stratosphere.util.Collector;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import de.tuberlin.dima.schubotz.common.utils.ExtractHelper;
-import de.tuberlin.dima.schubotz.common.utils.XMLHelper;
-import de.tuberlin.dima.schubotz.fse.types.QueryTuple;
-import eu.stratosphere.api.java.functions.FlatMapFunction;
-import eu.stratosphere.util.Collector;
+import java.util.regex.Pattern;
 
 @SuppressWarnings("serial")
 public class QueryMapper extends FlatMapFunction<String, QueryTuple> {

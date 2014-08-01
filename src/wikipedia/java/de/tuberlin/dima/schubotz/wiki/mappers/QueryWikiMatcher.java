@@ -1,20 +1,18 @@
 package de.tuberlin.dima.schubotz.wiki.mappers;
 
-import java.util.Arrays;
-import java.util.Collection;
-
-import de.tuberlin.dima.schubotz.common.utils.ComparisonHelper;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import com.google.common.collect.HashMultiset;
-
+import de.tuberlin.dima.schubotz.common.utils.ComparisonHelper;
 import de.tuberlin.dima.schubotz.fse.types.ResultTuple;
 import de.tuberlin.dima.schubotz.wiki.types.WikiQueryTuple;
 import de.tuberlin.dima.schubotz.wiki.types.WikiTuple;
 import eu.stratosphere.api.java.functions.FlatMapFunction;
 import eu.stratosphere.configuration.Configuration;
 import eu.stratosphere.util.Collector;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import java.util.Arrays;
+import java.util.Collection;
 
 /**
  * Takes in {@link de.tuberlin.dima.schubotz.wiki.types.WikiTuple},

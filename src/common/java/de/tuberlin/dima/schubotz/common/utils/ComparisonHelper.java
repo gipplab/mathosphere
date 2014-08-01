@@ -1,21 +1,16 @@
 package de.tuberlin.dima.schubotz.common.utils;
 
-import org.apache.commons.lang.StringEscapeUtils;
+import com.google.common.collect.HashMultiset;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import com.google.common.collect.HashMultiset;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
-import org.jsoup.nodes.TextNode;
 import org.jsoup.parser.Parser;
 import org.jsoup.select.NodeVisitor;
 
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.Set;
 
 /**
  * Helper class for calculating TFIDF scores

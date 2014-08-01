@@ -1,20 +1,19 @@
 package de.tuberlin.dima.schubotz.fse;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
+import de.tuberlin.dima.schubotz.common.utils.TestUtils;
+import eu.stratosphere.api.common.Plan;
+import eu.stratosphere.api.java.ExecutionEnvironment;
+import eu.stratosphere.client.LocalExecutor;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
 
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collection;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
-
-import de.tuberlin.dima.schubotz.common.utils.TestUtils;
-import eu.stratosphere.api.common.Plan;
-import eu.stratosphere.api.java.ExecutionEnvironment;
-import eu.stratosphere.client.LocalExecutor;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 @RunWith(Parameterized.class)
 public class MainIT {
