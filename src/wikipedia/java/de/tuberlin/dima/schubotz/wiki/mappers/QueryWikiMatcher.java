@@ -102,7 +102,7 @@ public class QueryWikiMatcher extends FlatMapFunction<WikiTuple, ResultTuple> {
                 latexScore = 0;
             }
 
-            mmlScore = ComparisonHelper.calculateMMLScore(in.getMML(), query.getMML()) / 3.0;
+            mmlScore = ComparisonHelper.calculateMMLScore(in.getMML(), query.getMML()) / 30.0;
             pmmlScore = ComparisonHelper.calculatePMMLScore(in.getPMML(), query.getPMML());
             finalScore = latexScore + mmlScore + pmmlScore;
 
