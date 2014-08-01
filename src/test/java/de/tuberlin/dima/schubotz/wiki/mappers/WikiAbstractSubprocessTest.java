@@ -26,12 +26,14 @@ import static org.junit.Assert.assertTrue;
 
 /**
  * Used as template for test classes to compare actual and expected output.
+ * This file is dependent on the cleaners working. TODO REFACTOR
  */
 @Ignore
 public abstract class WikiAbstractSubprocessTest {
     protected static final String STR_SPLIT = WikiProgram.STR_SPLIT;
     private static final String QUERY_SEPARATOR = WikiProgram.QUERY_SEPARATOR;
     private static final String WIKI_SEPARATOR = WikiProgram.WIKI_SEPARATOR;
+    //TODO REFACTOR THIS METHOD OF PASSING SEPARATORS to a getChar() method or setFormat
     private static final String CSV_LINE_SEPARATOR = WikiProgram.CSV_LINE_SEPARATOR;
     private static final String CSV_FIELD_SEPARATOR = WikiProgram.CSV_FIELD_SEPARATOR;
     private static final Log LOG = LogFactory.getLog(WikiAbstractSubprocessTest.class);
@@ -75,6 +77,7 @@ public abstract class WikiAbstractSubprocessTest {
         if (dir.contains("expected")) { //Process as csv with tuples
             CsvReader reader = env.readCsvFile(dir);
             reader = reader.lineDelimiter(CSV_LINE_SEPARATOR);
+            reader = reader.fieldDelimiter(CSV_FIELD_SEPARATOR.charAt(0));
             if (dir.contains("Query")) {
                 return reader.tupleType(WikiQueryTuple.class);
             } else {
