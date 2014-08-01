@@ -38,10 +38,21 @@ public class ProcessWikiMapTest extends WikiAbstractSubprocessTest {
     /**
      * Test on known problem wikis.
      */
-    @Test
+    @Ignore
     public void testSpecialDataset() throws Exception {
         String inputFilename = "de/tuberlin/dima/schubotz/wiki/mappers/wikiSpecialDump.xml";
         String expectedOutputFilename = "de/tuberlin/dima/schubotz/wiki/mappers/wikiSpecialDump.expected.csv";
+        DataSet<String> data = (DataSet<String>) getCleanedData(inputFilename);
+        DataSet<WikiTuple> outputSet = data.flatMap(new ProcessWikiMapper(STR_SPLIT));
+        testDataMap(outputSet, expectedOutputFilename);
+    }
+    /**
+     * Test on training wiki (first 50 of dump, used to evaluate current progress)
+     */
+    @Test
+    public void testTrainingDataset() throws Exception {
+        String inputFilename = "de/tuberlin/dima/schubotz/wiki/mappers/wikiTrainingDump.xml";
+        String expectedOutputFilename = "de/tuberlin/dima/schubotz/wiki/mappers/wikiTrainingDump.expected.csv";
         DataSet<String> data = (DataSet<String>) getCleanedData(inputFilename);
         DataSet<WikiTuple> outputSet = data.flatMap(new ProcessWikiMapper(STR_SPLIT));
         testDataMap(outputSet, expectedOutputFilename);
