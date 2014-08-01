@@ -124,16 +124,14 @@ public class WikiProgram {
 				: 16);
 		output = (args.length > 1 ? args[1]
 				: "file://mnt/ntcir-math/test-output/WikiProgramOUT-" + System.currentTimeMillis() + ".csv");
-		wikiInput = (args.length > 2 ? args[2]
-				: "file:///mnt/ntcir-math/testdata/augmentedWikiDump.xml");
-		wikiQueryInput = (args.length > 3 ? args[3]
+		wikiQueryInput = (args.length > 2 ? args[2]
 				: "file:///mnt/ntcir-math/queries/wikiQuery.xml");
-		latexWikiMapInput = (args.length > 4 ? args[4]
+		latexWikiMapInput = (args.length > 3 ? args[3]
 				: "file:///mnt/ntcir-math/queries/latexWikiMap.csv");
-        tupleWikiInput = (args.length > 5 ? args[5]
+        tupleWikiInput = (args.length > 4 ? args[4]
                 : "file:///mnt/ntcir-math/queries/tupleWikiMap.csv");
 		try {
-			numWiki = Integer.valueOf(args[6]);
+			numWiki = Integer.valueOf(args[5]);
 		} catch (Exception e) {
 			if (LOG.isWarnEnabled()) {
 				LOG.warn("numWiki not given as parameter or is not a number, defaulting to 30040");
