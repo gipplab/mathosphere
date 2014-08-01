@@ -162,9 +162,7 @@ public class WikiProgram {
 	@SuppressWarnings("serial")
 	public static void ConfigurePlan() throws IOException {
 		env = ExecutionEnvironment.getExecutionEnvironment();
-		TextInputFormat formatWiki = new TextInputFormat(new Path(wikiInput));
 
-		
 		//Generate latexWikiMap from preprocessed files
 		latexWikiMultiset = CSVHelper.csvToMultiset(latexWikiMapInput);
         DataSet<WikiTuple> wikiSet = CSVHelper.csvToWikiTuple(env, tupleWikiInput);
