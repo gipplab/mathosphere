@@ -1,4 +1,4 @@
-<mrow xmlns:m="http://www.w3.org/1998/Math/MathML" xref="p1.1.m1.1.6.cmml" xml:id="p1.1.m1.1.6"> 
+<mrow xref="p1.1.m1.1.6.cmml" xml:id="p1.1.m1.1.6">
 	<msup xref="p1.1.m1.1.1.cmml" accent="true" xml:id="p1.1.m1.1.1"> 
 		<mi xref="p1.1.m1.1.1.2.cmml" xml:id="p1.1.m1.1.1.2">
 			α
@@ -25,7 +25,7 @@
 		</mo> 
 	</mrow> 
 </mrow>
-<mover xmlns:m="http://www.w3.org/1998/Math/MathML" xref="p1.1.m1.1.1.cmml" accent="true" xml:id="p1.1.m1.1.1"> 
+<mover xref="p1.1.m1.1.1.cmml" accent="true" xml:id="p1.1.m1.1.1">
 	<msup xref="p1.1.m1.1.1.2.cmml" accent="true" xml:id="p1.1.m1.1.1.2"> 
 		<mi xref="p1.1.m1.1.1.2.1.2.cmml" xml:id="p1.1.m1.1.1.2.1.2">
 			α
@@ -38,13 +38,13 @@
 		̄
 	</mo> 
 </mover>
-<mi xmlns:m="http://www.w3.org/1998/Math/MathML" xref="p1.1.m1.1.1.cmml" xml:id="p1.1.m1.1.1">
+<mi xref="p1.1.m1.1.1.cmml" xml:id="p1.1.m1.1.1">
 	D
 </mi>
-<mi xmlns:m="http://www.w3.org/1998/Math/MathML" xref="p1.1.m1.1.1.cmml" xml:id="p1.1.m1.1.1">
+<mi xref="p1.1.m1.1.1.cmml" xml:id="p1.1.m1.1.1">
 	α
 </mi>
-<mrow xmlns:m="http://www.w3.org/1998/Math/MathML" xref="p1.1.m1.1.17.cmml" xml:id="p1.1.m1.1.17"> 
+<mrow xref="p1.1.m1.1.17.cmml" xml:id="p1.1.m1.1.17">
 	<mrow xref="p1.1.m1.1.17.cmml" xml:id="p1.1.m1.1.17a"> 
 		<mi xref="p1.1.m1.1.1.cmml" xml:id="p1.1.m1.1.1">
 			α
@@ -128,7 +128,7 @@
 		.
 	</mo> 
 </mrow>
-<mrow xmlns:m="http://www.w3.org/1998/Math/MathML" xref="p1.1.m1.1.7.cmml" xml:id="p1.1.m1.1.7"> 
+<mrow xref="p1.1.m1.1.7.cmml" xml:id="p1.1.m1.1.7">
 	<mi xref="p1.1.m1.1.1.cmml" xml:id="p1.1.m1.1.1">
 		A
 	</mi> 
@@ -185,13 +185,13 @@
 		</mn> 
 	</msup> 
 </mrow>
-<mi xmlns:m="http://www.w3.org/1998/Math/MathML" xref="p1.1.m1.1.1.cmml" xml:id="p1.1.m1.1.1">
+<mi xref="p1.1.m1.1.1.cmml" xml:id="p1.1.m1.1.1">
 	A
 </mi>
-<mi xmlns:m="http://www.w3.org/1998/Math/MathML" xref="p1.1.m1.1.1.cmml" xml:id="p1.1.m1.1.1">
+<mi xref="p1.1.m1.1.1.cmml" xml:id="p1.1.m1.1.1">
 	D
 </mi>
-<mi xmlns:m="http://www.w3.org/1998/Math/MathML" xref="p1.1.m1.1.1.cmml" xml:id="p1.1.m1.1.1">
+<mi xref="p1.1.m1.1.1.cmml" xml:id="p1.1.m1.1.1">
 	H
 </mi>
 

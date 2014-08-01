@@ -1,14 +1,7 @@
 package de.tuberlin.dima.schubotz.fse.mappers;
 
-import java.util.Arrays;
-import java.util.Collection;
-
-import de.tuberlin.dima.schubotz.common.utils.ComparisonHelper;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import com.google.common.collect.HashMultiset;
-
+import de.tuberlin.dima.schubotz.common.utils.ComparisonHelper;
 import de.tuberlin.dima.schubotz.fse.MainProgram;
 import de.tuberlin.dima.schubotz.fse.types.QueryTuple;
 import de.tuberlin.dima.schubotz.fse.types.ResultTuple;
@@ -16,6 +9,11 @@ import de.tuberlin.dima.schubotz.fse.types.SectionTuple;
 import eu.stratosphere.api.java.functions.FlatMapFunction;
 import eu.stratosphere.configuration.Configuration;
 import eu.stratosphere.util.Collector;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import java.util.Arrays;
+import java.util.Collection;
 
 /**
  * Takes in each document, compares it to each query and maps a score in the form of a {@link de.tuberlin.dima.schubotz.fse.types.ResultTuple}

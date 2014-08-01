@@ -1,8 +1,5 @@
 package de.tuberlin.dima.schubotz.wiki.types;
 
-import org.jsoup.nodes.Document;
-
-import eu.stratosphere.api.java.tuple.Tuple2;
 import eu.stratosphere.api.java.tuple.Tuple4;
 
 @SuppressWarnings("serial")

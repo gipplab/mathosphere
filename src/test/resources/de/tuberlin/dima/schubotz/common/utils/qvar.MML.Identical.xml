@@ -1,4 +1,4 @@
-<apply xmlns:m="http://www.w3.org/1998/Math/MathML" xref="p1.1.m1.1.6" xml:id="p1.1.m1.1.6.cmml"> 
+<apply xref="p1.1.m1.1.6" xml:id="p1.1.m1.1.6.cmml">
  <times definitionURL="" encoding="" xref="p1.1.m1.1.6.1" xml:id="p1.1.m1.1.6.1.cmml" /> 
  <apply xref="p1.1.m1.1.1" xml:id="p1.1.m1.1.1.cmml"> 
   <ci definitionURL="" encoding="" xref="p1.1.m1.1.1.1" xml:id="p1.1.m1.1.1.1.cmml">
@@ -20,7 +20,7 @@
   </ci> 
  </apply> 
 </apply>
-<apply xmlns:m="http://www.w3.org/1998/Math/MathML" xref="p1.1.m1.1.1" xml:id="p1.1.m1.1.1.cmml"> 
+<apply xref="p1.1.m1.1.1" xml:id="p1.1.m1.1.1.cmml">
  <ci definitionURL="" encoding="" xref="p1.1.m1.1.1.1" xml:id="p1.1.m1.1.1.1.cmml">
   normal- ̄
  </ci> 
@@ -33,13 +33,13 @@
   </ci> 
  </apply> 
 </apply>
-<ci xmlns:m="http://www.w3.org/1998/Math/MathML" definitionURL="" encoding="" xref="p1.1.m1.1.1" xml:id="p1.1.m1.1.1.cmml">
+<ci definitionURL="" encoding="" xref="p1.1.m1.1.1" xml:id="p1.1.m1.1.1.cmml">
  D
 </ci>
-<ci xmlns:m="http://www.w3.org/1998/Math/MathML" definitionURL="" encoding="" xref="p1.1.m1.1.1" xml:id="p1.1.m1.1.1.cmml">
+<ci definitionURL="" encoding="" xref="p1.1.m1.1.1" xml:id="p1.1.m1.1.1.cmml">
  α
 </ci>
-<apply xmlns:m="http://www.w3.org/1998/Math/MathML" xref="p1.1.m1.1.17" xml:id="p1.1.m1.1.17.cmml"> 
+<apply xref="p1.1.m1.1.17" xml:id="p1.1.m1.1.17.cmml">
  <eq definitionURL="" encoding="" xref="p1.1.m1.1.2" xml:id="p1.1.m1.1.2.cmml" /> 
  <ci definitionURL="" encoding="" xref="p1.1.m1.1.1" xml:id="p1.1.m1.1.1.cmml">
   α
@@ -98,7 +98,7 @@
   </apply> 
  </apply> 
 </apply>
-<apply xmlns:m="http://www.w3.org/1998/Math/MathML" xref="p1.1.m1.1.7" xml:id="p1.1.m1.1.7.cmml"> 
+<apply xref="p1.1.m1.1.7" xml:id="p1.1.m1.1.7.cmml">
  <eq definitionURL="" encoding="" xref="p1.1.m1.1.2" xml:id="p1.1.m1.1.2.cmml" /> 
  <ci definitionURL="" encoding="" xref="p1.1.m1.1.1" xml:id="p1.1.m1.1.1.cmml">
   A
@@ -144,12 +144,12 @@
   </cn> 
  </apply> 
 </apply>
-<ci xmlns:m="http://www.w3.org/1998/Math/MathML" definitionURL="" encoding="" xref="p1.1.m1.1.1" xml:id="p1.1.m1.1.1.cmml">
+<ci definitionURL="" encoding="" xref="p1.1.m1.1.1" xml:id="p1.1.m1.1.1.cmml">
  A
 </ci>
-<ci xmlns:m="http://www.w3.org/1998/Math/MathML" definitionURL="" encoding="" xref="p1.1.m1.1.1" xml:id="p1.1.m1.1.1.cmml">
+<ci definitionURL="" encoding="" xref="p1.1.m1.1.1" xml:id="p1.1.m1.1.1.cmml">
  D
 </ci>
-<ci xmlns:m="http://www.w3.org/1998/Math/MathML" definitionURL="" encoding="" xref="p1.1.m1.1.1" xml:id="p1.1.m1.1.1.cmml">
+<ci definitionURL="" encoding="" xref="p1.1.m1.1.1" xml:id="p1.1.m1.1.1.cmml">
  H
 </ci>

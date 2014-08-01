@@ -1,19 +1,19 @@
 package de.tuberlin.dima.schubotz.common.utils;
 
-import java.io.*;
-import java.util.Scanner;
-
+import com.google.common.collect.HashMultiset;
 import de.tuberlin.dima.schubotz.wiki.WikiProgram;
 import de.tuberlin.dima.schubotz.wiki.types.WikiTuple;
 import eu.stratosphere.api.java.DataSet;
 import eu.stratosphere.api.java.ExecutionEnvironment;
-import eu.stratosphere.api.java.io.CsvInputFormat;
 import eu.stratosphere.api.java.io.CsvReader;
-import eu.stratosphere.api.java.operators.DataSource;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.google.common.collect.HashMultiset;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Scanner;
 
 /**
  * Helper for preprocessed generated CSV files

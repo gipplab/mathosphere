@@ -1,10 +1,5 @@
 package de.tuberlin.dima.schubotz.fse.preprocess;
 
-import java.util.regex.Pattern;
-
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.xpath.XPathExpressionException;
-
 import de.tuberlin.dima.schubotz.fse.MainProgram;
 import de.tuberlin.dima.schubotz.fse.mappers.DocCleaner;
 import de.tuberlin.dima.schubotz.fse.mappers.QueryCleaner;
@@ -21,6 +16,10 @@ import eu.stratosphere.api.java.tuple.Tuple2;
 import eu.stratosphere.api.java.typeutils.BasicTypeInfo;
 import eu.stratosphere.core.fs.FileSystem.WriteMode;
 import eu.stratosphere.core.fs.Path;
+
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.xpath.XPathExpressionException;
+import java.util.regex.Pattern;
 
 public class ProcessData {
 	static ExecutionEnvironment env;

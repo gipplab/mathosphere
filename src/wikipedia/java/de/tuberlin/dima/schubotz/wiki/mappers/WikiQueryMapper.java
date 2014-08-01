@@ -1,5 +1,10 @@
 package de.tuberlin.dima.schubotz.wiki.mappers;
 
+import de.tuberlin.dima.schubotz.common.utils.ExtractHelper;
+import de.tuberlin.dima.schubotz.fse.MainProgram;
+import de.tuberlin.dima.schubotz.wiki.types.WikiQueryTuple;
+import eu.stratosphere.api.java.functions.FlatMapFunction;
+import eu.stratosphere.util.Collector;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.jsoup.Jsoup;
@@ -7,13 +12,6 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.parser.Parser;
 import org.jsoup.select.Elements;
-
-import de.tuberlin.dima.schubotz.common.utils.ExtractHelper;
-import de.tuberlin.dima.schubotz.common.utils.XMLHelper;
-import de.tuberlin.dima.schubotz.fse.MainProgram;
-import de.tuberlin.dima.schubotz.wiki.types.WikiQueryTuple;
-import eu.stratosphere.api.java.functions.FlatMapFunction;
-import eu.stratosphere.util.Collector;
 
 
 @SuppressWarnings("serial")

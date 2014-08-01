@@ -1,18 +1,11 @@
 package de.tuberlin.dima.schubotz.wiki.preprocess;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.util.regex.Pattern;
-
-import de.tuberlin.dima.schubotz.wiki.types.WikiTuple;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import de.tuberlin.dima.schubotz.wiki.WikiProgram;
 import de.tuberlin.dima.schubotz.wiki.mappers.WikiCleaner;
 import de.tuberlin.dima.schubotz.wiki.mappers.WikiQueryCleaner;
 import de.tuberlin.dima.schubotz.wiki.mappers.WikiQueryMapper;
 import de.tuberlin.dima.schubotz.wiki.types.WikiQueryTuple;
+import de.tuberlin.dima.schubotz.wiki.types.WikiTuple;
 import eu.stratosphere.api.java.DataSet;
 import eu.stratosphere.api.java.ExecutionEnvironment;
 import eu.stratosphere.api.java.aggregation.Aggregations;
@@ -24,6 +17,12 @@ import eu.stratosphere.api.java.tuple.Tuple2;
 import eu.stratosphere.api.java.typeutils.BasicTypeInfo;
 import eu.stratosphere.core.fs.FileSystem.WriteMode;
 import eu.stratosphere.core.fs.Path;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.util.regex.Pattern;
 
 public class ProcessWikiProgram {
 	private static final Log LOG = LogFactory.getLog(ProcessWikiProgram.class);

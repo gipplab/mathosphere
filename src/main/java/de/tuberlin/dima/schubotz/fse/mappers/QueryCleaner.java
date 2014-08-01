@@ -1,10 +1,9 @@
 package de.tuberlin.dima.schubotz.fse.mappers;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import eu.stratosphere.api.java.functions.FlatMapFunction;
 import eu.stratosphere.util.Collector;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  * Cleans main task queries. TODO find way to do this using stratosphere built in data input?
