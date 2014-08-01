@@ -22,14 +22,14 @@ public class WikiMainIT {
 	private String inputQuery;
     private String inputLatexWikiMap;
     private String inputTupleWikiMap;
-	private String outputDir;
+	private String output;
 	private Boolean debug;
 
 	@Parameterized.Parameters
 	public static Collection<Object[]> inputNumDocs() {
 		return Arrays.asList(new Object[][] {
 				{new Integer(30040),
-                 "/home/jjl4/",
+                 "/home/jjl4/wikiProgramOutput.csv",
                  "de/tuberlin/dima/schubotz/wiki/wikiTrainingQuery.xml",
                  "de/tuberlin/dima/schubotz/wiki/mappers/wikiTrainingDump.expectedLatex.csv",
                  "de/tuberlin/dima/schubotz/wiki/mappers/wikiTrainingDump.expected.csv",
@@ -38,14 +38,14 @@ public class WikiMainIT {
 	}
 	@SuppressWarnings("hiding")
 	public WikiMainIT(Integer numWiki,
-                      String outputDir,
+                      String output,
                       String inputQuery,
                       String inputLatexWikiMap,
                       String inputTupleWikiMap,
                       Boolean debug) {
 
 		this.numWiki = numWiki;
-        this.outputDir = outputDir;
+        this.output = output;
 		this.inputQuery = inputQuery;
         this.inputLatexWikiMap = inputLatexWikiMap;
         this.inputTupleWikiMap = inputTupleWikiMap;
@@ -54,13 +54,12 @@ public class WikiMainIT {
 
 	@Test
 	public void TestLocalExecution() throws Exception {
-		String wikiOutput = outputDir + "wikiProgramOutput.csv";
 		try {
 			String wikiQueryInput = getClass().getClassLoader().getResource(inputQuery).getPath();
             String wikiLatexMapInput = getClass().getClassLoader().getResource(inputLatexWikiMap).getPath();
             String wikiTupleMapInput = getClass().getClassLoader().getResource(inputTupleWikiMap).getPath();
 			WikiProgram.parseArgs(new String[] {"1",
-											  wikiOutput,
+											  output,
 											  wikiQueryInput,
 											  wikiLatexMapInput,
                                               wikiTupleMapInput,
@@ -88,7 +87,7 @@ public class WikiMainIT {
 		//Check to make sure correct file output
 		BufferedReader br = null; 
 		try {
-			br = new BufferedReader(new FileReader(new File(new URI(wikiOutput).getPath())));
+			br = new BufferedReader(new FileReader(new File(new URI(output).getPath())));
 			assertEquals(Boolean.valueOf(br.readLine() != null), true);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
