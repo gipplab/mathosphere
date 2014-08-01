@@ -1,13 +1,13 @@
 package de.tuberlin.dima.schubotz.common.utils;
 
-import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
-import junit.framework.TestCase;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
-import java.io.*;
-import java.net.URL;
+import java.io.BufferedInputStream;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Scanner;
