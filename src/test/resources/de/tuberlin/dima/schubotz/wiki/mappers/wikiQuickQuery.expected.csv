@@ -1,4 +1,4 @@
-NTCIR11-Math-1 , W<S>(<S>2<S>,<S>k<S>)<S>><S>2<S>^<S>k<S>/<S>k<S>^<S>\<S>varepsilon , <m:apply xmlns:m="http://www.w3.org/1998/Math/MathML" xref="m1.1.13.pmml" xml:id="m1.1.13"> 
+NTCIR11-Math-1W<S>(<S>2<S>,<S>k<S>)<S>><S>2<S>^<S>k<S>/<S>k<S>^<S>\<S>varepsilon<m:apply xmlns:m="http://www.w3.org/1998/Math/MathML" xref="m1.1.13.pmml" xml:id="m1.1.13"> 
  <m:gt xref="m1.1.7.pmml" xml:id="m1.1.7" /> 
  <m:apply xref="m1.1.13.1.pmml" xml:id="m1.1.13.1"> 
   <m:times xref="m1.1.13.1.1.pmml" xml:id="m1.1.13.1.1" /> 
@@ -41,7 +41,7 @@ NTCIR11-Math-1 , W<S>(<S>2<S>,<S>k<S>)<S>><S>2<S>^<S>k<S>/<S>k<S>^<S>\<S>varepsi
   </m:apply> 
  </m:apply> 
 </m:apply>
- , <m:mrow xmlns:m="http://www.w3.org/1998/Math/MathML" xref="m1.1.13" xml:id="m1.1.13.pmml"> 
+<m:mrow xmlns:m="http://www.w3.org/1998/Math/MathML" xref="m1.1.13" xml:id="m1.1.13.pmml"> 
  <m:mrow xref="m1.1.13.1" xml:id="m1.1.13.1.pmml"> 
   <m:mi xref="m1.1.1" xml:id="m1.1.1.pmml">
    W
@@ -92,7 +92,7 @@ NTCIR11-Math-1 , W<S>(<S>2<S>,<S>k<S>)<S>><S>2<S>^<S>k<S>/<S>k<S>^<S>\<S>varepsi
   </m:msup> 
  </m:mrow> 
 </m:mrow>
-<E>NTCIR11-Math-2 , (<S>X<S>,<S>\<S>Sigma<S>) , <m:apply xmlns:m="http://www.w3.org/1998/Math/MathML" xref="m3.1.6.pmml" xml:id="m3.1.6"> 
+NTCIR11-Math-2(<S>X<S>,<S>\<S>Sigma<S>)<m:apply xmlns:m="http://www.w3.org/1998/Math/MathML" xref="m3.1.6.pmml" xml:id="m3.1.6"> 
  <m:interval closure="open" xml:id="m3.1.6.1" /> 
  <m:ci xref="m3.1.2.pmml" xml:id="m3.1.2">
   X
@@ -101,7 +101,7 @@ NTCIR11-Math-1 , W<S>(<S>2<S>,<S>k<S>)<S>><S>2<S>^<S>k<S>/<S>k<S>^<S>\<S>varepsi
   normal-Σ
  </m:ci> 
 </m:apply>
- , <m:mrow xmlns:m="http://www.w3.org/1998/Math/MathML" xref="m3.1.6" xml:id="m3.1.6.pmml"> 
+<m:mrow xmlns:m="http://www.w3.org/1998/Math/MathML" xref="m3.1.6" xml:id="m3.1.6.pmml"> 
  <m:mo xref="m3.1.6" xml:id="m3.1.6a.pmml">
   (
  </m:mo><m:mrow xref="m3.1.6" xml:id="m3.1.6b.pmml"> 
@@ -120,4 +120,4 @@ NTCIR11-Math-1 , W<S>(<S>2<S>,<S>k<S>)<S>><S>2<S>^<S>k<S>/<S>k<S>^<S>\<S>varepsi
   )
  </m:mo> 
 </m:mrow>
-<E>
+
