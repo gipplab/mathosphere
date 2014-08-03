@@ -50,13 +50,28 @@ public class ProcessWikiMapper extends FlatMapFunction<String, WikiTuple> {
             return;
         }
         String docID;
-        if (doc.select("title").first() == null) {
+        /*if (doc.select("title").first() == null) {
             if (LOG.isWarnEnabled()) {
                 LOG.warn("Could not find title tag, assigning this_was_null: " + in);
             }
             docID = "this_was_null";
+            } else {
+                docID = doc.select("title").first().text();
+                if (docID == null) {
+                    if (LOG.isWarnEnabled()) {
+                        LOG.warn("docID was null, assigning this_was_null: " + in);
+                    }
+                    docID = "this_was_null";
+                }
+            }
+        */
+        if (doc.select("page > id").first() == null) {
+            if (LOG.isWarnEnabled()) {
+                LOG.warn("Could not find ID tag under page tag, assigning this_was_null: " + in);
+            }
+            docID = "this_was_null";
         } else {
-            docID = doc.select("title").first().text();
+            docID = doc.select("page > id").first().text(); //direct child <id> of <page>
             if (docID == null) {
                 if (LOG.isWarnEnabled()) {
                     LOG.warn("docID was null, assigning this_was_null: " + in);
