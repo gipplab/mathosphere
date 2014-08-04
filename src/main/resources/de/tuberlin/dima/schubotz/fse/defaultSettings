@@ -1,0 +1,9 @@
+#Default settings
+#Name of main class to run
+main=WikiProgram
+#Filename of dataset
+dataset=wikiAugmentedDump.xml
+#Filename of queryset
+queryset=wikiQuery.xml
+#Output directory
+outputdir=./
