@@ -4,6 +4,7 @@ import com.google.common.collect.HashMultiset;
 import de.tuberlin.dima.schubotz.common.mappers.OutputSimple;
 import de.tuberlin.dima.schubotz.common.types.OutputSimpleTuple;
 import de.tuberlin.dima.schubotz.common.utils.CSVHelper;
+import de.tuberlin.dima.schubotz.common.utils.SafeLogWrapper;
 import de.tuberlin.dima.schubotz.fse.mappers.*;
 import de.tuberlin.dima.schubotz.fse.types.QueryTuple;
 import de.tuberlin.dima.schubotz.fse.types.ResultTuple;
@@ -16,8 +17,7 @@ import eu.stratosphere.api.java.operators.DataSource;
 import eu.stratosphere.api.java.typeutils.BasicTypeInfo;
 import eu.stratosphere.core.fs.FileSystem.WriteMode;
 import eu.stratosphere.core.fs.Path;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPathExpressionException;
@@ -36,7 +36,7 @@ public class MainProgram {
 	 * Log for this class. Leave all logging implementations up to
 	 * Stratosphere and its config files.
 	 */
-	private static final Log LOG = LogFactory.getLog( MainProgram.class );
+	private static final SafeLogWrapper LOG = new SafeLogWrapper(MainProgram.class);
 	/**
 	 * Delimiter used in between Tex and Keyword tokens
 	 */

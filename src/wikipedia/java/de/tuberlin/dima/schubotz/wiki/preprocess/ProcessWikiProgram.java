@@ -1,5 +1,6 @@
 package de.tuberlin.dima.schubotz.wiki.preprocess;
 
+import de.tuberlin.dima.schubotz.common.utils.SafeLogWrapper;
 import de.tuberlin.dima.schubotz.wiki.WikiProgram;
 import de.tuberlin.dima.schubotz.wiki.mappers.WikiCleaner;
 import de.tuberlin.dima.schubotz.wiki.mappers.WikiQueryCleaner;
@@ -17,15 +18,14 @@ import eu.stratosphere.api.java.tuple.Tuple2;
 import eu.stratosphere.api.java.typeutils.BasicTypeInfo;
 import eu.stratosphere.core.fs.FileSystem.WriteMode;
 import eu.stratosphere.core.fs.Path;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.log4j.Logger;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.regex.Pattern;
 
 public class ProcessWikiProgram {
-	private static final Log LOG = LogFactory.getLog(ProcessWikiProgram.class);
+	private static final SafeLogWrapper LOG = new SafeLogWrapper(ProcessWikiProgram.class);
 	static int noSubTasks;
 	static String wikiInput;
 	static String wikiQueryInput;
@@ -75,8 +75,6 @@ public class ProcessWikiProgram {
         long heapSize = Runtime.getRuntime().maxMemory();
         //Print the jvm heap size.
         System.out.println("Heap Size = " + heapSize/1000./1000.);
-
-        Log LOG = LogFactory.getLog(ProcessWikiProgram.class);
 		parseArgs(args);
 		ConfigurePlan();
 		env.setDegreeOfParallelism(noSubTasks);

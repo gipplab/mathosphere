@@ -15,8 +15,7 @@ import eu.stratosphere.client.LocalExecutor;
 import eu.stratosphere.core.fs.FileSystem;
 import eu.stratosphere.core.fs.Path;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+
 import org.junit.Ignore;
 
 import java.io.File;

@@ -2,6 +2,7 @@ package de.tuberlin.dima.schubotz.fse.mappers;
 
 import com.google.common.collect.HashMultiset;
 import de.tuberlin.dima.schubotz.common.utils.ComparisonHelper;
+import de.tuberlin.dima.schubotz.common.utils.SafeLogWrapper;
 import de.tuberlin.dima.schubotz.fse.MainProgram;
 import de.tuberlin.dima.schubotz.fse.types.QueryTuple;
 import de.tuberlin.dima.schubotz.fse.types.ResultTuple;
@@ -9,8 +10,7 @@ import de.tuberlin.dima.schubotz.fse.types.SectionTuple;
 import eu.stratosphere.api.java.functions.FlatMapFunction;
 import eu.stratosphere.configuration.Configuration;
 import eu.stratosphere.util.Collector;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -29,33 +29,29 @@ public class QuerySectionMatcher extends FlatMapFunction<SectionTuple,ResultTupl
 	 * 	{@link MainProgram#keywordDivide} 
 	 */
 	double weight;
-	private boolean debug;
-	
 	/**
 	 * QueryTuple dataset taken from broadcast variable in {@link QuerySectionMatcher#open}
 	 */
 	Collection<QueryTuple> queries;
 	
-	private static Log LOG = LogFactory.getLog(QuerySectionMatcher.class);
-	
+	private static final SafeLogWrapper LOG = new SafeLogWrapper(QuerySectionMatcher.class);
+
 	/**
 	 * @param STR_SPLIT {@link MainProgram#STR_SPLIT} sent as parameter to ensure serializability
 	 * @param latexDocsMultiset {@link MainProgram#latexDocsMultiset} sent as parameter to ensure serializability
 	 * @param keywordDocsMultiset {@link MainProgram#keywordDocsMultiset} sent as parameter to ensure serializability
 	 * @param numDocs {@link MainProgram#numDocs} sent as parameter to ensure serializability
 	 * @param weight {@link MainProgram#keywordDivide} sent as parameter to ensure serializability
-	 * @param debug {@link MainProgram#debug} sent as parameter to ensure serializability
 	 */
 	@SuppressWarnings("hiding")
 	public QuerySectionMatcher (String STR_SPLIT, HashMultiset<String> latexDocsMultiset,
 								HashMultiset<String> keywordDocsMultiset, int numDocs,
-								double weight, boolean debug) {
+								double weight) {
 		this.STR_SPLIT = STR_SPLIT;
 		this.latexDocsMultiset = latexDocsMultiset;
 		this.keywordDocsMultiset = keywordDocsMultiset;
 		this.numDocs = numDocs;
 		this.weight = weight;
-		this.debug = debug;
 	}
 	
 	@Override
@@ -89,14 +85,12 @@ public class QuerySectionMatcher extends FlatMapFunction<SectionTuple,ResultTupl
 		double finalScore =0.;
 		//Loop through queries and calculate tfidf scores
 		for (QueryTuple query : queries) {
-			if (LOG.isDebugEnabled() && debug) {  
-				LOG.debug(query.toString());
-				LOG.debug(in.toString());
-				LOG.debug(Arrays.asList(in.getLatex().split(STR_SPLIT)));
-			}
+            LOG.debug(query.toString());
+            LOG.debug(in.toString());
+            LOG.debug(Arrays.asList(in.getLatex().split(STR_SPLIT)));
 			if (!sectionLatex.isEmpty()) {
 				queryLatex = HashMultiset.create(Arrays.asList(query.getLatex().split(STR_SPLIT)));
-				latexScore = ComparisonHelper.calculateTFIDFScore(queryLatex, sectionLatex, latexDocsMultiset, numDocs, debug);
+				latexScore = ComparisonHelper.calculateTFIDFScore(queryLatex, sectionLatex, latexDocsMultiset, numDocs);
 			} else {
 				latexScore = 0.;
 			}
@@ -110,9 +104,7 @@ public class QuerySectionMatcher extends FlatMapFunction<SectionTuple,ResultTupl
 			finalScore = (keywordScore/weight) + latexScore; //TODO why is keywordScore and/or latexScore producing NaN?
 
 			if( Double.isNaN( finalScore )) {
-				if (LOG.isWarnEnabled() ) {
-					LOG.warn("NaN hit! Latex: " + Double.toString(latexScore) + " Keyword: " + Double.toString(keywordScore));
-				}
+				LOG.warn("NaN hit! Latex: ", latexScore, " Keyword: ", keywordScore);
 				finalScore = 0;
 			}
 			out.collect(new ResultTuple(query.getID(), in.getID(), Double.valueOf(finalScore)));

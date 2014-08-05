@@ -1,8 +1,6 @@
 package de.tuberlin.dima.schubotz.common.utils;
 
 import com.google.common.collect.HashMultiset;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Node;
@@ -16,7 +14,7 @@ import java.util.HashSet;
  * Helper class for calculating TFIDF scores
  */
 public class ComparisonHelper {
-	private static Log LOG = LogFactory.getLog(ComparisonHelper.class);
+	private static final SafeLogWrapper LOG = new SafeLogWrapper(ComparisonHelper.class);
 	
 	/**
 	 * @param queryTokens
@@ -25,7 +23,7 @@ public class ComparisonHelper {
 	 * @return
 	 */
 	public static double calculateTFIDFScore(HashMultiset<String> queryTokens, HashMultiset<String> sectionTokens,
-											 HashMultiset<String> map, int numDocs, boolean debug) {
+											 HashMultiset<String> map, int numDocs) {
 		/*
 		 * NaN possibilities:
 		 * -1) The total number of terms in the document is zero (tf = x/0)- 
@@ -50,19 +48,15 @@ public class ComparisonHelper {
 			tf = termFreqDoc / termTotal; //can be zero but not undefined
 			idf = Math.log(((double) numDocs) / (1d + termFreqTotal)); //will never be undefined due to +1
 			total += tf * idf;
-			if (debug && LOG.isDebugEnabled()) {
-				LOG.debug("Term: " + element);
-				LOG.debug("Freq in Doc: " + termFreqDoc);
-				LOG.debug("Num doc with term: " + termFreqTotal);
-				LOG.debug("tf: " + tf);
-				LOG.debug("idf: " + idf);
-				LOG.debug("total: " + total);
-			}
+			LOG.debug("Term: " + element);
+			LOG.debug("Freq in Doc: " + termFreqDoc);
+			LOG.debug("Num doc with term: " + termFreqTotal);
+			LOG.debug("tf: " + tf);
+			LOG.debug("idf: " + idf);
+			LOG.debug("total: " + total);
 		}
-		if (debug && LOG.isDebugEnabled()) {
-			LOG.debug("end total: " + total);
-			LOG.debug("END END END END");
-		}
+		LOG.debug("end total: " + total);
+		LOG.debug("END END END END");
 		return total;
 		
 	}
