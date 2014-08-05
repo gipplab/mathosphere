@@ -6,8 +6,7 @@ import de.tuberlin.dima.schubotz.wiki.types.WikiTuple;
 import eu.stratosphere.api.java.DataSet;
 import eu.stratosphere.api.java.ExecutionEnvironment;
 import eu.stratosphere.api.java.io.CsvReader;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -19,7 +18,7 @@ import java.util.Scanner;
  * Helper for preprocessed generated CSV files
  */
 public class CSVHelper {
-	public static Log LOG = LogFactory.getLog(CSVHelper.class);
+    private static final SafeLogWrapper LOG = new SafeLogWrapper(CSVHelper.class);
     public static final String CSV_LINE_SEPARATOR = WikiProgram.CSV_LINE_SEPARATOR;
     public static final char CSV_FIELD_SEPARATOR = WikiProgram.CSV_FIELD_SEPARATOR.charAt(0);
 	/**
@@ -41,10 +40,8 @@ public class CSVHelper {
                 try {
                     out.add(parts[0], Integer.valueOf(parts[1]).intValue());
                 } catch (ArrayIndexOutOfBoundsException e) {
-                    if (LOG.isWarnEnabled()) {
-                        LOG.warn("Bad format in CSV!");
-                        LOG.warn("Line: " + line);
-                    }
+                    LOG.warn("Bad format in CSV!");
+                    LOG.warn("Line: " + line);
                     continue;
                 }
             }

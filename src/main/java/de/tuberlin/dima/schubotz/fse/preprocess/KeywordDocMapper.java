@@ -5,8 +5,7 @@ import eu.stratosphere.api.java.functions.FlatMapFunction;
 import eu.stratosphere.api.java.tuple.Tuple2;
 import eu.stratosphere.configuration.Configuration;
 import eu.stratosphere.util.Collector;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+
 import org.jsoup.Jsoup;
 
 import java.util.Arrays;

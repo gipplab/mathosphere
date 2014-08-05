@@ -3,34 +3,37 @@ package de.tuberlin.dima.schubotz.common.utils;
 import cz.muni.fi.mir.mathmlcanonicalization.ConfigException;
 import cz.muni.fi.mir.mathmlcanonicalization.MathMLCanonicalizer;
 import org.apache.commons.lang.StringEscapeUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import java.io.BufferedInputStream;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.StringTokenizer;
 
 
 public class ExtractHelper {
 	//XML configuration file for canonicalizer
-    static InputStream configInputStream = ExtractHelper.class.getClassLoader()
-            .getResourceAsStream("de/tuberlin/dima/schubotz/common/utils/canonicalizer-config.xml");
-	static MathMLCanonicalizer canonicalizer;
+    private static InputStream configInputStream;
+	static final MathMLCanonicalizer canonicalizer;
+    private static final SafeLogWrapper LOG;
 
 	static {
-		try {
-			canonicalizer = new MathMLCanonicalizer(configInputStream);
-            canonicalizer.setEnforcingXHTMLPlusMathMLDTD(true); //DTD will resolve all HTML entities
-		} catch (ConfigException e) {
-			throw new RuntimeException("Unable to configure canonicalizer, exiting", e);
-		}
+        LOG = new SafeLogWrapper(ExtractHelper.class);
+        try (InputStream configInputStream = ExtractHelper.class.getClassLoader()
+                            .getResourceAsStream("de/tuberlin/dima/schubotz/common/utils/canonicalizer-config.xml")) {
+            try {
+                canonicalizer = new MathMLCanonicalizer(configInputStream);
+                canonicalizer.setEnforcingXHTMLPlusMathMLDTD(true); //DTD will resolve all HTML entities
+            } catch (ConfigException e) {
+                throw new RuntimeException("Unable to configure canonicalizer, exiting", e);
+            }
+        } catch(final IOException e) {
+            throw new RuntimeException("Could not find config for canonicalizer, exiting", e);
+
+        }
 	}
 	public static StringTokenizer tokenize (String latex) {
 		//tokenize latex
@@ -48,7 +51,6 @@ public class ExtractHelper {
 	}
 	
 	public static String constructOutput (String in, String TEX_SPLIT) {
-		Log LOG = LogFactory.getLog(ExtractHelper.class);
 		StringTokenizer tok;
 		String nextTok;
 		StringBuilder out = new StringBuilder();
@@ -72,7 +74,6 @@ public class ExtractHelper {
 	 * @return out String of latex tokens
 	 */
 	public static String extractLatexXMLHelper(NodeList LatexElements, String TEX_SPLIT) {
-		Log LOG = LogFactory.getLog(ExtractHelper.class);
 		String curLatex;
 		Node node;
 		StringBuilder out = new StringBuilder();
@@ -99,7 +100,6 @@ public class ExtractHelper {
 	 * @return out String[] of {latex,content mathml,presentation mathml}
 	 */
 	public static String[] extractWikiMath(Elements MathElements, String STR_SPLIT) {
-		Log LOG = LogFactory.getLog(ExtractHelper.class);
 		String curLatex;
 		StringBuilder latex = new StringBuilder();
 		if (MathElements == null) {

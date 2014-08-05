@@ -1,12 +1,12 @@
 package de.tuberlin.dima.schubotz.fse.mappers;
 
 import de.tuberlin.dima.schubotz.common.utils.ExtractHelper;
+import de.tuberlin.dima.schubotz.common.utils.SafeLogWrapper;
 import de.tuberlin.dima.schubotz.common.utils.XMLHelper;
 import de.tuberlin.dima.schubotz.fse.types.QueryTuple;
 import eu.stratosphere.api.java.functions.FlatMapFunction;
 import eu.stratosphere.util.Collector;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -26,8 +26,7 @@ public class QueryMapper extends FlatMapFunction<String, QueryTuple> {
 	/**
 	 * Logger for QueryMapper.
 	 */
-	private static final Log LOG = LogFactory.getLog(QueryMapper.class);
-	
+	private static final SafeLogWrapper LOG = new SafeLogWrapper(QueryMapper.class);
 	/**
 	 * @param WORD_SPLIT {@link de.tuberlin.dima.schubotz.fse.MainProgram#WORD_SPLIT} sent as parameter to ensure serializability. 
 	 * @param STR_SPLIT {@link de.tuberlin.dima.schubotz.fse.MainProgram#STR_SPLIT} sent as parameter to ensure serializability.
@@ -59,9 +58,7 @@ public class QueryMapper extends FlatMapFunction<String, QueryTuple> {
 			//Extract query id from XML
 			main = XMLHelper.getElementB(doc, "//num");
 		} catch (Exception e) {
-			if (LOG.isWarnEnabled()) {
-				LOG.warn("Unable to parse XML in query: " + value);
-			}
+			LOG.warn("Unable to parse XML in query: " + value);
 			return;
 		}
 		String queryID = main.getTextContent();
@@ -71,9 +68,7 @@ public class QueryMapper extends FlatMapFunction<String, QueryTuple> {
 		try {
 			LatexElements = XMLHelper.getElementsB(doc, "//*[name()='m:annotation']"); //get all annotation tags
 		} catch (Exception e) {
-			if (LOG.isWarnEnabled()) {
-				LOG.warn("Unable to find annotation tags in query: " + value);
-			}
+			LOG.warn("Unable to find annotation tags in query: " + value);
 		}
 		String latex = ExtractHelper.extractLatexXMLHelper(LatexElements, STR_SPLIT);
 		

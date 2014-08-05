@@ -18,8 +18,7 @@ import eu.stratosphere.api.java.operators.DataSource;
 import eu.stratosphere.api.java.typeutils.BasicTypeInfo;
 import eu.stratosphere.core.fs.FileSystem.WriteMode;
 import eu.stratosphere.core.fs.Path;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+
 
 import java.io.IOException;
 import java.util.regex.Pattern;

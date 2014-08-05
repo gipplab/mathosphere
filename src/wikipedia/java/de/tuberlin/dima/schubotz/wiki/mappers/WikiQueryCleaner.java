@@ -2,8 +2,7 @@ package de.tuberlin.dima.schubotz.wiki.mappers;
 
 import eu.stratosphere.api.java.functions.FlatMapFunction;
 import eu.stratosphere.util.Collector;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+
 import org.springframework.web.util.HtmlUtils;
 
 /**

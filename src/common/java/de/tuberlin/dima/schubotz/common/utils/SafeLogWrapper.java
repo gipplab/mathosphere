@@ -4,6 +4,8 @@ import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
 import java.io.Serializable;
+import java.util.Arrays;
+import java.util.HashSet;
 
 /**
  * Wraps around Stratosphere's log4j log to provide log level guards as well as level customization.
@@ -13,10 +15,9 @@ public class SafeLogWrapper implements Serializable {
     private final Class logClass;
     /**
      * @param logClass class to which this log belongs
-     * @param rawLog log to wrap around
      */
-    public SafeLogWrapper(Class logClass, Logger rawLog) {
-        this.logger = rawLog;
+    public SafeLogWrapper(Class logClass) {
+        logger = Logger.getLogger(logClass);
         this.logClass = logClass;
     }
     /**
@@ -26,55 +27,46 @@ public class SafeLogWrapper implements Serializable {
     public void setLevel(Level level) {
         Logger.getLogger(logClass).setLevel(level);
     }
-    public void fatal(String msg) {
+    public void fatal(Object... params) {
+        HashSet<Object> paramSet = new HashSet<>(Arrays.asList(params));
+        //Remove any throwables from the set
+        Throwable ex = removeThrowable(paramSet);
         if (logger.isEnabledFor(Level.FATAL)) {
             logger.fatal(msg);
         }
     }
-    public void fatal(String msg, Throwable t) {
-        if (logger.isEnabledFor(Level.FATAL)) {
-            logger.fatal(msg, t);
-        }
-    }
-    public void error(String msg) {
+    public void error(Object... params) {
         if (logger.isEnabledFor(Level.ERROR)) {
             logger.error(msg);
         }
     }
-    public void error(String msg, Throwable t) {
-        if (logger.isEnabledFor(Level.ERROR)) {
-            logger.error(msg);
-        }
-    }
-    public void warn(String msg) {
+    public void warn(Object... params) {
         if (logger.isEnabledFor(Level.WARN)) {
             logger.warn(msg);
         }
     }
-    public void warn(String msg, Throwable t) {
-        if (logger.isEnabledFor(Level.WARN)) {
-            logger.warn(msg, t);
-        }
-    }
-    public void info(String msg) {
+    public void info(Object... params) {
         if (logger.isInfoEnabled()) {
             logger.info(msg);
         }
     }
-    public void info(String msg, Throwable t) {
-        if (logger.isInfoEnabled()) {
-            logger.info(msg, t);
-        }
-    }
-    public void debug(String msg) {
+    public void debug(Object... params) {
         if (logger.isDebugEnabled()) {
             logger.debug(msg);
         }
     }
-    public void debug(String msg, Throwable t) {
-        if (logger.isDebugEnabled()) {
-            logger.debug(msg, t);
+    public String buildString(Object[] params) {
+
+    }
+    public Throwable removeThrowable(HashSet<Object> params) {
+        Throwable out;
+        for (final Object param : params) {
+            if (param instanceof Throwable) {
+
+
+            }
         }
     }
+
 
 }
