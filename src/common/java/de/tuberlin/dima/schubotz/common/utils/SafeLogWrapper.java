@@ -1,20 +1,21 @@
 package de.tuberlin.dima.schubotz.common.utils;
 
-import org.apache.commons.logging.Log;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
+
+import java.io.Serializable;
 
 /**
  * Wraps around Stratosphere's log4j log to provide log level guards as well as level customization.
  */
-public class SafeLogWrapper {
-    private final Log logger;
+public class SafeLogWrapper implements Serializable {
+    private final Logger logger;
     private final Class logClass;
     /**
      * @param logClass class to which this log belongs
      * @param rawLog log to wrap around
      */
-    public SafeLogWrapper(Class logClass, Log rawLog) {
+    public SafeLogWrapper(Class logClass, Logger rawLog) {
         this.logger = rawLog;
         this.logClass = logClass;
     }
@@ -26,32 +27,32 @@ public class SafeLogWrapper {
         Logger.getLogger(logClass).setLevel(level);
     }
     public void fatal(String msg) {
-        if (logger.isFatalEnabled()) {
+        if (logger.isEnabledFor(Level.FATAL)) {
             logger.fatal(msg);
         }
     }
     public void fatal(String msg, Throwable t) {
-        if (logger.isFatalEnabled()) {
+        if (logger.isEnabledFor(Level.FATAL)) {
             logger.fatal(msg, t);
         }
     }
     public void error(String msg) {
-        if (logger.isErrorEnabled()) {
+        if (logger.isEnabledFor(Level.ERROR)) {
             logger.error(msg);
         }
     }
     public void error(String msg, Throwable t) {
-        if (logger.isErrorEnabled()) {
+        if (logger.isEnabledFor(Level.ERROR)) {
             logger.error(msg);
         }
     }
     public void warn(String msg) {
-        if (logger.isWarnEnabled()) {
+        if (logger.isEnabledFor(Level.WARN)) {
             logger.warn(msg);
         }
     }
     public void warn(String msg, Throwable t) {
-        if (logger.isWarnEnabled()) {
+        if (logger.isEnabledFor(Level.WARN)) {
             logger.warn(msg, t);
         }
     }
