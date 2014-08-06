@@ -1,6 +1,7 @@
 package de.tuberlin.dima.schubotz.fse.preprocess;
 
 import de.tuberlin.dima.schubotz.common.utils.ExtractHelper;
+import de.tuberlin.dima.schubotz.common.utils.SafeLogWrapper;
 import de.tuberlin.dima.schubotz.common.utils.XMLHelper;
 import de.tuberlin.dima.schubotz.fse.types.QueryTuple;
 import eu.stratosphere.api.java.functions.FlatMapFunction;
@@ -20,7 +21,7 @@ import java.util.Set;
 public class LatexDocMapper extends FlatMapFunction<String, Tuple2<String,Integer>>{
 	HashSet<String> latex;
 	String STR_SPLIT;
-	private static final Log LOG = LogFactory.getLog(LatexDocMapper.class);
+	private static final SafeLogWrapper LOG = new SafeLogWrapper(LatexDocMapper.class);
 	
 	@SuppressWarnings("hiding")
 	public LatexDocMapper(String STR_SPLIT) {
@@ -53,9 +54,7 @@ public class LatexDocMapper extends FlatMapFunction<String, Tuple2<String,Intege
 			Document doc = XMLHelper.String2Doc( lines[1], false );
 			LatexElements= XMLHelper.getElementsB( doc, "//annotation" ); //get all annotation tags
 		} catch ( Exception e ){
-			if (LOG.isWarnEnabled()) {
-				LOG.warn("XMLHelper could not parse document:"+lines[0], e);
-			}
+            LOG.warn("XMLHelper could not parse document:",lines[0], e);
 			LatexElements = null;
 		}
 		//Extract latex

@@ -2,22 +2,25 @@ package de.tuberlin.dima.schubotz.common.utils;
 
 import org.apache.commons.logging.LogFactory;
 import org.apache.commons.logging.Log;
+import org.apache.log4j.Category;
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 
 import java.io.Serializable;
-import java.io.StringBufferInputStream;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashSet;
 
 /**
  * Wraps around an Apache Commons log interface to provide log level guards as well as level customization.
  * Takes in any objects, removes all throwables and sends the last one, and then takes the remaining
- * objects and runs {@link SafeLogWrapper#buildString(java.util.HashSet)}
+ * objects and runs {@link SafeLogWrapper#buildString(Iterable)}
  */
 public class SafeLogWrapper implements Serializable {
     private final Log logger;
     private final Class logClass;
 
-    public static SafeLogWrapperLevel level = SafeLogWrapperLevel.DEBUG;
+    private SafeLogWrapperLevel level = SafeLogWrapperLevel.DEBUG;
 
 
     /**
@@ -32,6 +35,11 @@ public class SafeLogWrapper implements Serializable {
      * @param level specify this using SafeLogWrapper level fields (e.g. SafeLogWrapper.FATAL)
      */
     public void setLevel(SafeLogWrapperLevel level) {
+        try {
+            ((Category) logger).setLevel(Level.toLevel(level.toString()));
+        } catch (ClassCastException e) {
+            warn("Unable to cast to Log4j. Did Apache Flink switch loggers?", e);
+        }
         this.level = level;
     }
     public void fatal(Object... params) {
@@ -60,14 +68,13 @@ public class SafeLogWrapper implements Serializable {
         }
     }
     private void outputMsg(Object... params) {
-        HashSet<Object> paramSet = new HashSet<>(Arrays.asList(params));
-            //Remove any throwables from the set
-            Throwable ex = removeThrowable(paramSet);
-            String msg = buildString(paramSet);
-            logger.fatal(msg, ex);
+        final Collection<Object> paramSet = new HashSet<>(Arrays.asList(params));
+         //Remove any throwables from the set
+        final Throwable ex = removeThrowable(paramSet);
+        logger.fatal(buildString(paramSet), ex);
     }
-    private static String buildString(HashSet<Object> params) {
-        StringBuilder builder = new StringBuilder();
+    private static String buildString(Iterable<Object> params) {
+        final StringBuilder builder = new StringBuilder();
         for (final Object param : params) {
             //All objects implement toString
             builder.append(param.toString());
@@ -75,7 +82,7 @@ public class SafeLogWrapper implements Serializable {
         return builder.toString();
 
     }
-    private static Throwable removeThrowable(HashSet<Object> params) {
+    private static Throwable removeThrowable(Collection<Object> params) {
         Throwable out = null;
         for (final Object param : params) {
             if (param instanceof Throwable) {
@@ -90,6 +97,6 @@ public class SafeLogWrapper implements Serializable {
      * To check if a level is below another level, use <code>level.compareTo(anotherLevel) < 0</code>
      */
     public enum SafeLogWrapperLevel {
-        DEBUG, INFO, WARN, ERROR, FATAL;
+        DEBUG, INFO, WARN, ERROR, FATAL, OFF;
     }
 }

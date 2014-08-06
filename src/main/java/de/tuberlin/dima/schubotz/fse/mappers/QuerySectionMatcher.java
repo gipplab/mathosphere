@@ -85,8 +85,8 @@ public class QuerySectionMatcher extends FlatMapFunction<SectionTuple,ResultTupl
 		double finalScore =0.;
 		//Loop through queries and calculate tfidf scores
 		for (QueryTuple query : queries) {
-            LOG.debug(query.toString());
-            LOG.debug(in.toString());
+            LOG.debug(query);
+            LOG.debug(in);
             LOG.debug(Arrays.asList(in.getLatex().split(STR_SPLIT)));
 			if (!sectionLatex.isEmpty()) {
 				queryLatex = HashMultiset.create(Arrays.asList(query.getLatex().split(STR_SPLIT)));
@@ -97,7 +97,8 @@ public class QuerySectionMatcher extends FlatMapFunction<SectionTuple,ResultTupl
 			
 			if (!sectionKeywords.isEmpty()) {
 				queryKeywords = HashMultiset.create(Arrays.asList(query.getKeywords().split(STR_SPLIT)));
-				keywordScore = ComparisonHelper.calculateTFIDFScore(queryKeywords, sectionKeywords, keywordDocsMultiset, numDocs, debug);
+				keywordScore = ComparisonHelper.calculateTFIDFScore(queryKeywords, sectionKeywords,
+                        keywordDocsMultiset, numDocs);
 			} else {
 				keywordScore = 0.;
 			}
