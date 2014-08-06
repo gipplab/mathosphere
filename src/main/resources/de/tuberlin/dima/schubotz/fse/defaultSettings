@@ -1,12 +1,13 @@
 #Default settings
-#Name of main class to run
-#Options: MainProgram, WikiProgram, ProcessWikiProgram
+#Name of main class to run. Options: MainProgram, WikiProgram, ProcessWikiProgram
 main=WikiProgram
 #Filename and path of dataset
 dataset=wikiAugmentedDump.xml
 #Filename of queryset
 queryset=wikiQuery.xml
-#Filename and path of map of keywords to number of documents
-keywordDocsMapInput=
+#Filename and path of map of keywords to number of documents (if running MainProgram)
+keywordDocsMapInput=keywordDocsMap.csv
+#Filename and path of map of latex to number of documents (if running MainProgram)
+latexDocsMapInput=latexDocsMap.csv
 #Output directory for all files
 outputdir=./
