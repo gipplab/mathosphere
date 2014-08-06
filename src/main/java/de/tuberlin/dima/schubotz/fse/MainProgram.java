@@ -21,6 +21,8 @@ import eu.stratosphere.core.fs.Path;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPathExpressionException;
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.regex.Pattern;
 
 /**
@@ -31,7 +33,7 @@ public class MainProgram {
 	/**
 	 * Main execution environment for Stratosphere.
 	 */
-	static ExecutionEnvironment env;
+	private static ExecutionEnvironment env;
 	/**
 	 * Log for this class. Leave all logging implementations up to
 	 * Stratosphere and its config files.
@@ -40,7 +42,7 @@ public class MainProgram {
 	/**
 	 * Delimiter used in between Tex and Keyword tokens
 	 */
-	public static final String STR_SPLIT = "<S>";
+	public static final String STR_SEPARATOR = "<S>";
 	/**
 	 * Pattern which will return word tokens
 	 */
@@ -53,14 +55,12 @@ public class MainProgram {
 	 * HashMultiset of latex tokens : count of number of documents containing that latex token
 	 */
 	public static HashMultiset<String> latexDocsMultiset;
-	
-	
-	
+
 	//SETTINGS
 	/**
 	 * The overall maximal results that can be returned per query.
 	 */
-	public final static int MaxResultsPerQuery = 1000;
+	public static final int MAX_RESULTS_PER_QUERY = 1000;
 	/**
 	 * Tag on which to split documents.
 	 */
@@ -79,99 +79,59 @@ public class MainProgram {
 	 */
 	public static final String RUNTAG = "fse_LATEX";
 	
-	
-	
-	// ARGUMENTS
-	/**
-	 * The number of parallel tasks to be executed
-	 */
-	static int noSubTasks;
-	/**
-	 * The Input XML-File that contains the document collection
-	 */
-	static String docsInput;
-	/**
-	 * The Input CSV-file with the human evaluation
-	 */
-	static String queryInput;
-	/**
-	 * The Output file with the calculated results
-	 */
-	static String output;
-	/**
-	 * Input file of map of keywords to number of documents that contain that keyword
-	 */
-	static String keywordDocsMapInput;
-	/**
-	 * Input file of map of latex tokens to number of documents that contain that token 
-	 */
-	static String latexDocsMapInput;
-	/**
-	 * Total number of documents
-	 */
-	public static int numDocs = 0;
-	/**
-	 * Whether or not to do low level debugging (TODO make it based on logger level?)
-	 */
-	public static boolean debug;
 
-	
-	protected static void parseArg (String[] args) throws Exception {
-		// parse job parameters
-		noSubTasks = (args.length > 0 ? Integer.parseInt( args[0] )
-			: 16);
-		docsInput = (args.length > 1 ? args[1]
-			: "file:///mnt/ntcir-math/testdata/test10000.xml");
-		queryInput = (args.length > 2 ? args[2]
-			: "file:///mnt/ntcir-math/queries/fQuery.xml");
-		output = (args.length > 3 ? args[3]
-			: "file:///mnt/ntcir-math/test-output/LATEXtestout-" + System.currentTimeMillis() + ".csv");
-		keywordDocsMapInput = (args.length > 4 ? args[4]
-			: "file:///mnt/ntcir-math/queries/keywordDocsMap.csv");
-		latexDocsMapInput = (args.length > 5 ? args[5]
-			: "file:///mnt/ntcir-math/queries/latexDocsMap.csv");
-		if (args.length > 6) {
-			numDocs = Integer.valueOf(args[6]);
-		} else {
-			throw new Exception("numDocs not given or is not a number!");
-		}
-		debug = (args.length > 7 ? (args[7].equals("debug") ? true : false) : false);
+    /**
+     * @param args arguments to parse
+     * @return Returns true if args parsed successfully, false if not.
+     * @throws IOException {@link Settings#loadConfig(String)} may throw
+     */
+	protected static boolean parseArg (String[] args) throws IOException {
+        if (args.length > 0) {
+            Settings.loadConfig(args[0]);
+            return true;
+        } else {
+            System.out.println("Usage: stratosphere run <jar-file> {/path/to/settings}");
+            return false;
+        }
 	}
 
 	public static void main (String[] args) throws Exception {
-		try {
-			parseArg( args );
-		} catch (Exception e) {
-			LOG.fatal("Arguments incorrect.", e);
-			e.printStackTrace();
-			System.exit(0);
-		}
-		try {
-			ConfigurePlan();
-			env.setDegreeOfParallelism( noSubTasks );
-			env.execute( "Mathosphere" );
-		} catch (Exception e) {
-			System.out.println("Aborting!");
-			System.exit(0);
-		}
-		System.exit(1);
+        final boolean parsed = parseArg(args);
+        if (parsed) {
+            configureEnv();
+            configurePlan();
+            env.execute("Mathosphere");
+        }
 	}
+    /**
+     * Configure ExecutionEnvironment
+     */
+    protected static void configureEnv() {
+        env = ExecutionEnvironment.getExecutionEnvironment();
+        env.setDegreeOfParallelism(Integer.parseInt(Settings.getProperty("numSubTasks")));
+    }
 
-	public static ExecutionEnvironment getExecutionEnvironment () throws Exception {
-		return env;
-	}
+    /**
+     * Configure ExecutioniEnvironment
+     * @throws java.lang.NoSuchMethodException attempt to access method by reflection may fail
+     * @throws java.lang.reflect.InvocationTargetException attempt to access method by reflection may fail
+     * @throws java.lang.IllegalAccessException attempt to access method by reflection may fail
+     */
+    protected static void configurePlan() throws NoSuchMethodException,
+            InvocationTargetException, IllegalAccessException {
+        final String planName = Settings.getProperty("main");
+        MainProgram.class.getClass().getMethod(planName).invoke(null);
+    }
 
 	/**
 	 * @throws XPathExpressionException
 	 * @throws ParserConfigurationException
 	 */
 	@SuppressWarnings("serial")
-	protected static void ConfigurePlan () throws XPathExpressionException, ParserConfigurationException, Exception {
-		env = ExecutionEnvironment.getExecutionEnvironment();
-		
+	protected static void configureMainPlan () throws XPathExpressionException, ParserConfigurationException, Exception {
 		//Set of keywords and latex contained in document and queries, mapped to counts of how many documents contain each token
-		keywordDocsMultiset = CSVHelper.csvToMultiset(keywordDocsMapInput);
-		latexDocsMultiset = CSVHelper.csvToMultiset(latexDocsMapInput);
+		keywordDocsMultiset = CSVHelper.csvToMultiset(Settings.getProperty("keywordDocsMapInput"));
+		latexDocsMultiset = CSVHelper.csvToMultiset(Settings.getProperty("latexDocsMapInput"));
 		
 		TextInputFormat format = new TextInputFormat(new Path(docsInput));
 		format.setDelimiter(DOCUMENT_SEPARATOR);
@@ -186,24 +146,31 @@ public class MainProgram {
 		// TODO IMPLEMENT ADDITIONAL SCORING METHODS 
 		
 		//Extract LaTeX and keywords 
-		DataSet<QueryTuple> queryDataSet = cleanQueryText.flatMap(new QueryMapper(WORD_SPLIT, STR_SPLIT));
-		DataSet<SectionTuple> sectionDataSet = cleanArticleText.flatMap(new SectionMapper(WORD_SPLIT, STR_SPLIT, keywordDocsMultiset));
+		DataSet<QueryTuple> queryDataSet = cleanQueryText.flatMap(new QueryMapper(WORD_SPLIT, STR_SEPARATOR));
+		DataSet<SectionTuple> sectionDataSet = cleanArticleText.flatMap(new SectionMapper(WORD_SPLIT, STR_SEPARATOR, keywordDocsMultiset));
 		
 		
 		//Compare LaTeX and keywords, score
-		DataSet<ResultTuple> latexMatches = sectionDataSet.flatMap(new QuerySectionMatcher(STR_SPLIT, latexDocsMultiset, keywordDocsMultiset,
-																						   numDocs, keywordDivide, debug))
-														  .withBroadcastSet(queryDataSet, "Queries"); 
-		
-		
+		DataSet<ResultTuple> latexMatches = sectionDataSet.flatMap(new QuerySectionMatcher(STR_SEPARATOR, latexDocsMultiset, keywordDocsMultiset,
+																						   numDocs, keywordDivide))
+														  .withBroadcastSet(queryDataSet, "Queries");
 		//Output
 		DataSet<OutputSimpleTuple> outputTuples = latexMatches//Group by queryid
 														.groupBy(0)
 														//Sort by score <queryid, docid, score>
 														.sortGroup(2, Order.DESCENDING) 
-														.reduceGroup(new OutputSimple(MaxResultsPerQuery,RUNTAG));			 
+														.reduceGroup(new OutputSimple(MAX_RESULTS_PER_QUERY,RUNTAG));
 		outputTuples.writeAsCsv(output,"\n"," ",WriteMode.OVERWRITE);
 
 	}
+
+    protected static void configureWikiPlan() {
+
+    }
+    protected static void configureProcessWikiPlan() {
+
+    }
+    protected static void configureProcessMainDocumentsPlan() {
+    }
 }
 

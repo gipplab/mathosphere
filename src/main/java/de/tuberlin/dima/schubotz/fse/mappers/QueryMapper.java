@@ -68,7 +68,7 @@ public class QueryMapper extends FlatMapFunction<String, QueryTuple> {
 		try {
 			LatexElements = XMLHelper.getElementsB(doc, "//*[name()='m:annotation']"); //get all annotation tags
 		} catch (Exception e) {
-			LOG.warn("Unable to find annotation tags in query: " + value);
+			LOG.warn("Unable to find annotation tags in query: ", value);
 		}
 		String latex = ExtractHelper.extractLatexXMLHelper(LatexElements, STR_SPLIT);
 		

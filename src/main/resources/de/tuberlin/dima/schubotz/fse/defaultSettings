@@ -1,13 +1,16 @@
 #Default settings
-#Name of main class to run. Options: MainProgram, WikiProgram, ProcessWikiProgram
-main=WikiProgram
-#Filename and path of dataset
-dataset=wikiAugmentedDump.xml
-#Filename of queryset
-queryset=wikiQuery.xml
-#Filename and path of map of keywords to number of documents (if running MainProgram)
-keywordDocsMapInput=keywordDocsMap.csv
-#Filename and path of map of latex to number of documents (if running MainProgram)
-latexDocsMapInput=latexDocsMap.csv
+#Parallelization
+numSubTasks=1
+
+#Name of plan configuration to run.
+#Options: configureWikiPlan, configureProcessWikiPlan, configureMainPlan, configureProcessMainDocumentsPlan
+main=configureMainPlan
+
+#Name of settings file for plan configuration
+#Default is the package resource settings file
+planSettings=de/tuberlin/dima/schubotz/fse/defaultConfigureMainSettings
+
 #Output directory for all files
 outputdir=./
+
+runtag=fse_tune

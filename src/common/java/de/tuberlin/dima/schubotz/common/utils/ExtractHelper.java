@@ -16,7 +16,6 @@ import java.util.StringTokenizer;
 
 public class ExtractHelper {
 	//XML configuration file for canonicalizer
-    private static InputStream configInputStream;
 	static final MathMLCanonicalizer canonicalizer;
     private static final SafeLogWrapper LOG;
 
@@ -24,15 +23,12 @@ public class ExtractHelper {
         LOG = new SafeLogWrapper(ExtractHelper.class);
         try (InputStream configInputStream = ExtractHelper.class.getClassLoader()
                             .getResourceAsStream("de/tuberlin/dima/schubotz/common/utils/canonicalizer-config.xml")) {
-            try {
-                canonicalizer = new MathMLCanonicalizer(configInputStream);
-                canonicalizer.setEnforcingXHTMLPlusMathMLDTD(true); //DTD will resolve all HTML entities
-            } catch (ConfigException e) {
-                throw new RuntimeException("Unable to configure canonicalizer, exiting", e);
-            }
+            canonicalizer = new MathMLCanonicalizer(configInputStream);
+            canonicalizer.setEnforcingXHTMLPlusMathMLDTD(true); //DTD will resolve all HTML entities
         } catch(final IOException e) {
             throw new RuntimeException("Could not find config for canonicalizer, exiting", e);
-
+        } catch (final ConfigException e) {
+            throw new RuntimeException("Unable to configure canonicalizer, exiting", e);
         }
 	}
 	public static StringTokenizer tokenize (String latex) {

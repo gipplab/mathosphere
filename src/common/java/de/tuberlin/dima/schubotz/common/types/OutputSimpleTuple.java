@@ -7,7 +7,7 @@ import eu.stratosphere.api.java.tuple.Tuple6;
  */
 @SuppressWarnings("serial")
 public class OutputSimpleTuple extends Tuple6<String,Integer,String,Integer,Double,String> {
-	String runtag;
+	private String runtag;
 	/**
 	 * Blank constructor required for Stratosphere execution
 	 */
@@ -34,8 +34,5 @@ public class OutputSimpleTuple extends Tuple6<String,Integer,String,Integer,Doub
 		this.f3 = rank;
 		this.f4 = score;
 		this.f5 = runtag;
-	}
-	public enum fields {
-		queryId,delim,docId,rank,score,runtag
 	}
 }

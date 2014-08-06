@@ -14,7 +14,7 @@ public class QueryCleaner extends FlatMapFunction<String, String> {
 	@Override
 	public void flatMap(String in, Collector<String> out) throws Exception {
 		if (in.trim().isEmpty() || in.startsWith("\r\n</topics>")) {
-            LOG.warn("Corrupt query " + in);
+            LOG.warn("Corrupt query ", in);
 			return;
 		}
 		if (in.startsWith("<?xml")) {
