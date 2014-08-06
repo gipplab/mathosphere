@@ -35,27 +35,27 @@ public class SafeLogWrapper implements Serializable {
         this.level = level;
     }
     public void fatal(Object... params) {
-        if (logger.isFatalEnabled() && level.compareTo(SafeLogWrapperLevel.FATAL) >= 0) {
+        if (logger.isFatalEnabled() && level.compareTo(SafeLogWrapperLevel.FATAL) <= 0) {
             outputMsg(params);
         }
     }
     public void error(Object... params) {
-        if (logger.isFatalEnabled() && level.compareTo(SafeLogWrapperLevel.ERROR) >= 0) {
+        if (logger.isFatalEnabled() && level.compareTo(SafeLogWrapperLevel.ERROR) <= 0) {
             outputMsg(params);
         }
     }
     public void warn(Object... params) {
-        if (logger.isWarnEnabled() && level.compareTo(SafeLogWrapperLevel.WARN) >= 0) {
+        if (logger.isWarnEnabled() && level.compareTo(SafeLogWrapperLevel.WARN) <= 0) {
             outputMsg(params);
         }
     }
     public void info(Object... params) {
-        if (logger.isInfoEnabled() && level.compareTo(SafeLogWrapperLevel.INFO) >= 0) {
+        if (logger.isInfoEnabled() && level.compareTo(SafeLogWrapperLevel.INFO) <= 0) {
             outputMsg(params);
         }
     }
     public void debug(Object... params) {
-        if (logger.isDebugEnabled() && level.compareTo(SafeLogWrapperLevel.DEBUG) >= 0) {
+        if (logger.isDebugEnabled() && level.compareTo(SafeLogWrapperLevel.DEBUG) <= 0) {
             outputMsg(params);
         }
     }
