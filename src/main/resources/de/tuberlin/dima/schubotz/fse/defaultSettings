@@ -2,11 +2,11 @@
 #Parallelization
 numSubTasks=1
 
-#Name of plan configuration to run.
+#Name of algorithm configuration to run.
 #Options: configureWikiPlan, configureProcessWikiPlan, configureMainPlan, configureProcessMainDocumentsPlan
 main=configureMainPlan
 
-#Name of settings file for plan configuration
+#Name of settings file for algorithm configuration
 #Default is the package resource settings file
 planSettings=de/tuberlin/dima/schubotz/fse/defaultConfigureMainSettings
 

@@ -53,14 +53,7 @@ public class WikiProgram {
 	 * Used to split input into stratosphere for queries
 	 */
 	public static final String QUERY_SEPARATOR = "</topic>";
-    /**
-     * Used for line splitting so that CsvReader is not looking for "\n" in XML
-     */
-    public static final String CSV_LINE_SEPARATOR = "\u001E";
-    /**
-     * Used for field splitting so that CsvReader doesn't get messed up on comma latex tokens
-     */
-    public static final String CSV_FIELD_SEPARATOR = "\u001F";
+
     //public static final String CSV_FIELD_SEPARATOR = "\u01DF";
 	/**
 	 * HashMultiset for storing preprocessed data of latex token : count 
@@ -171,7 +164,7 @@ public class WikiProgram {
 		DataSet<String> cleanWikiQueryText = rawWikiQueryText.flatMap(new WikiQueryCleaner());
 		DataSet<WikiQueryTuple> wikiQuerySet = cleanWikiQueryText.flatMap(new WikiQueryMapper(STR_SPLIT));
 
-		DataSet<ResultTuple> matches = wikiSet.flatMap(new QueryWikiMatcher(STR_SPLIT, latexWikiMultiset, numWiki, debug))
+		DataSet<ResultTuple> matches = wikiSet.flatMap(new QueryWikiMatcher(STR_SPLIT, latexWikiMultiset, numWiki))
 									  .withBroadcastSet(wikiQuerySet, "Queries");
 		
 		DataSet<OutputSimpleTuple> outputTuples = matches//Group by queryid

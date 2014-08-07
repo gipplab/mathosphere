@@ -37,10 +37,10 @@ public class QuerySectionMatcher extends FlatMapFunction<SectionTuple,ResultTupl
 	private static final SafeLogWrapper LOG = new SafeLogWrapper(QuerySectionMatcher.class);
 
 	/**
-	 * @param STR_SPLIT {@link MainProgram#STR_SPLIT} sent as parameter to ensure serializability
-	 * @param latexDocsMultiset {@link MainProgram#latexDocsMultiset} sent as parameter to ensure serializability
-	 * @param keywordDocsMultiset {@link MainProgram#keywordDocsMultiset} sent as parameter to ensure serializability
-	 * @param numDocs {@link MainProgram#numDocs} sent as parameter to ensure serializability
+	 * @param STR_SPLIT {@link MainProgram#STR_SEPARATOR} sent as parameter to ensure serializability
+	 * @param latexDocsMultiset latexDocsMultiset sent as parameter to ensure serializability
+	 * @param keywordDocsMultiset keywordDocsMultiset sent as parameter to ensure serializability
+	 * @param numDocs numDocs sent as parameter to ensure serializability
 	 * @param weight {@link MainProgram#keywordDivide} sent as parameter to ensure serializability
 	 */
 	@SuppressWarnings("hiding")
