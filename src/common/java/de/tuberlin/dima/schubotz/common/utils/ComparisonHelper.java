@@ -63,14 +63,17 @@ public class ComparisonHelper {
 	}
 
     /**
-     * Basic implementation of leaf node matching.
-     * //TODO implement multiple scoring functions, make them modular and swappable
+     * Interface method for calculating MML score.
      * @param wikiMML stringified mathml of wiki
      * @param queryMML stringified mathml of query
      * @return numMatch number of leaf nodes in wiki that also occur in query. does not take into account repeats
      */
     public static int calculateMMLScore(String wikiMML, String queryMML) {
-        //HashSet containing leaf node text for comparison
+        return cmmlLeafScore(wikiMML, queryMML);
+    }
+
+    private static int cmmlLeafScore (String wikiMML, String queryMML) {
+                //HashSet containing leaf node text for comparison
         final Collection<String> leafNodes = new HashSet<>();
         final Document wikiDoc = Jsoup.parse(wikiMML, "", Parser.xmlParser());
         final Document queryDoc = Jsoup.parse(queryMML, "", Parser.xmlParser());

@@ -85,41 +85,6 @@ public class ProcessWikiProgram {
 		return env;
 	}
 	public static void ConfigurePlan() throws IOException, URISyntaxException {
-		env = ExecutionEnvironment.getExecutionEnvironment();
-		
-		TextInputFormat formatWiki = new TextInputFormat(new Path(wikiInput));
-		formatWiki.setDelimiter(WIKI_SEPARATOR); //this will leave a null doc at the end and a useless doc at the beginning. also, each will be missing a </page>
-		DataSet<String> rawWikiText = new DataSource<>( env, formatWiki, BasicTypeInfo.STRING_TYPE_INFO );
-		DataSet<String> cleanWikiText = rawWikiText.flatMap(new WikiCleaner());
 
-
-		TextInputFormat formatQuery = new TextInputFormat(new Path(wikiQueryInput));
-		formatQuery.setDelimiter(QUERY_SEPARATOR); //this will leave a System.getProperty("line.separator")</topics> at the end as well as header info at the begin 
-		DataSet<String> rawWikiQueryText = new DataSource<>(env, formatQuery, BasicTypeInfo.STRING_TYPE_INFO);
-		DataSet<String> cleanWikiQueryText = rawWikiQueryText.flatMap(new WikiQueryCleaner());
-		DataSet<WikiQueryTuple> wikiQuerySet = cleanWikiQueryText.flatMap(new WikiQueryMapper(STR_SPLIT));
-		
-		DataSet<Tuple2<String,Integer>> latexWikiResults = cleanWikiText.flatMap(new ProcessLatexWikiMapper(STR_SPLIT))
-																		.withBroadcastSet(wikiQuerySet, "Queries")
-																		.groupBy(0) //group by latex
-																		.aggregate(Aggregations.SUM,1); //sum counts
-
-        DataSet<WikiTuple> wikiSet = cleanWikiText.flatMap(new ProcessWikiMapper(STR_SPLIT));
-
-		//Count total number of documents and output
-		cleanWikiText.map(new MapFunction<String,Integer>() {
-			@Override
-			public Integer map(String in) {
-				return 1;
-			}
-		}).reduce(new ReduceFunction<Integer>() {
-			@Override
-			public Integer reduce(Integer in1, Integer in2) {
-				return in1 + in2;
-			}
-		}).writeAsText(numWikiOutput,WriteMode.OVERWRITE);
-		
-		latexWikiResults.writeAsCsv(latexWikiMapOutput, CSV_LINE_SEPARATOR, CSV_FIELD_SEPARATOR, WriteMode.OVERWRITE);
-        wikiSet.writeAsCsv(tupleWikiMapOutput, CSV_LINE_SEPARATOR, CSV_FIELD_SEPARATOR, WriteMode.OVERWRITE);
 	}
 }

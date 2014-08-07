@@ -1,28 +1,16 @@
 package de.tuberlin.dima.schubotz.fse;
 
-import com.google.common.collect.HashMultiset;
-import de.tuberlin.dima.schubotz.common.mappers.OutputSimple;
-import de.tuberlin.dima.schubotz.common.types.OutputSimpleTuple;
-import de.tuberlin.dima.schubotz.common.utils.CSVHelper;
 import de.tuberlin.dima.schubotz.common.utils.SafeLogWrapper;
-import de.tuberlin.dima.schubotz.fse.mappers.*;
-import de.tuberlin.dima.schubotz.fse.types.QueryTuple;
-import de.tuberlin.dima.schubotz.fse.types.ResultTuple;
-import de.tuberlin.dima.schubotz.fse.types.SectionTuple;
-import eu.stratosphere.api.common.operators.Order;
-import eu.stratosphere.api.java.DataSet;
+import de.tuberlin.dima.schubotz.fse.algorithms.Algorithm;
+import de.tuberlin.dima.schubotz.fse.client.ClientConsole;
 import eu.stratosphere.api.java.ExecutionEnvironment;
-import eu.stratosphere.api.java.io.TextInputFormat;
-import eu.stratosphere.api.java.operators.DataSource;
-import eu.stratosphere.api.java.typeutils.BasicTypeInfo;
-import eu.stratosphere.core.fs.FileSystem.WriteMode;
-import eu.stratosphere.core.fs.Path;
 
 
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.xpath.XPathExpressionException;
 import java.io.IOException;
+import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
 import java.util.regex.Pattern;
 
 /**
@@ -39,64 +27,28 @@ public class MainProgram {
 	 * Stratosphere and its config files.
 	 */
 	private static final SafeLogWrapper LOG = new SafeLogWrapper(MainProgram.class);
+    /**
+     * Used for line splitting so that CsvReader is not looking for "\n" in XML
+     */
+    public static final String CSV_LINE_SEPARATOR = "\u001D";
+    /**
+     * Used for field splitting so that CsvReader doesn't get messed up on comma latex tokens
+     */
+    public static final String CSV_FIELD_SEPARATOR = "\u001E";
 	/**
 	 * Delimiter used in between Tex and Keyword tokens
 	 */
-	public static final String STR_SEPARATOR = "<S>";
-	/**
+	public static final String STR_SEPARATOR = "\u001F";
+    /**
 	 * Pattern which will return word tokens
 	 */
 	public static final Pattern WORD_SPLIT = Pattern.compile("\\W+", Pattern.UNICODE_CHARACTER_CLASS);
-	/**
-	 * HashMultiset of keywords : count of number of documents containing that keyword
-	 */
-	public static HashMultiset<String> keywordDocsMultiset;
-	/**
-	 * HashMultiset of latex tokens : count of number of documents containing that latex token
-	 */
-	public static HashMultiset<String> latexDocsMultiset;
 
-	//SETTINGS
-	/**
-	 * The overall maximal results that can be returned per query.
-	 */
-	public static final int MAX_RESULTS_PER_QUERY = 1000;
-	/**
-	 * Tag on which to split documents.
-	 */
-	public static final String DOCUMENT_SEPARATOR = "</ARXIVFILESPLIT>";
-	/**
-	 * Tag on which to split queries.
-	 */
-	public static final String QUERY_SEPARATOR = "</topic>";
-	/**
-	 * Amount to deweight keywords by. Divide tfidf_keyword by this 
-	 * to get final keyword score.
-	 */
-	public static double keywordDivide = 6.36; 
-	/**
-	 * Runtag ID
-	 */
-	public static final String RUNTAG = "fse_LATEX";
-	
-
-    /**
-     * @param args arguments to parse
-     * @return Returns true if args parsed successfully, false if not.
-     * @throws IOException {@link Settings#loadConfig(String)} may throw
-     */
-	protected static boolean parseArg (String[] args) throws IOException {
-        if (args.length > 0) {
-            Settings.loadConfig(args[0]);
-            return true;
-        } else {
-            System.out.println("Usage: stratosphere run <jar-file> {/path/to/settings}");
-            return false;
-        }
-	}
 
 	public static void main (String[] args) throws Exception {
-        final boolean parsed = parseArg(args);
+        ClientConsole cli = new ClientConsole();
+        Settings settings = new Settings();
+        final boolean parsed = cli.parseParameters(args, settings);
         if (parsed) {
             configureEnv();
             configurePlan();
@@ -106,71 +58,62 @@ public class MainProgram {
     /**
      * Configure ExecutionEnvironment
      */
-    protected static void configureEnv() {
+    private static void configureEnv() {
         env = ExecutionEnvironment.getExecutionEnvironment();
         env.setDegreeOfParallelism(Integer.parseInt(Settings.getProperty("numSubTasks")));
     }
 
     /**
-     * Configure ExecutioniEnvironment
-     * @throws java.lang.NoSuchMethodException attempt to access method by reflection may fail
-     * @throws java.lang.reflect.InvocationTargetException attempt to access method by reflection may fail
-     * @throws java.lang.IllegalAccessException attempt to access method by reflection may fail
+     * Configure ExecutionEnvironment
      */
-    protected static void configurePlan() throws NoSuchMethodException,
-            InvocationTargetException, IllegalAccessException {
+    private static void configurePlan() {
         final String planName = Settings.getProperty("main");
-        MainProgram.class.getClass().getMethod(planName).invoke(null);
+        final String planClassname = MainProgram.class.getClass().getPackage().getName() + ".algorithms." + planName;
+
+        try {
+            final Class<?> planClass = Class.forName(planClassname);
+
+            final Class planInterface = Algorithm.class;
+            final ClassLoader classLoader = planInterface.getClassLoader();
+            final Class<?>[] interfaces = new Class<?>[] {planInterface};
+            //Construct handler containing algorithm to configure
+            final InvocationHandler handler = new PlanInvocationHandler(
+                    (Algorithm) planClass.newInstance());
+            //Construct proxy class to run configure method
+            final Algorithm algorithmToConfigure =
+                    (Algorithm) Proxy.newProxyInstance(classLoader, interfaces, handler);
+
+            algorithmToConfigure.configure(env);
+
+        } catch (final ClassNotFoundException ignore) {
+            throw new IllegalArgumentException ("Unable to find algorithm: " + planName);
+        } catch (final InstantiationException ignore) {
+            throw new IllegalArgumentException ("Unable to instantiate algorithm: " + planName);
+        } catch (final IllegalAccessException ignore) {
+            throw new IllegalArgumentException ("Unable to access algorithm: " + planName + ", is it public?");
+        }
     }
 
-	/**
-	 * @throws XPathExpressionException
-	 * @throws ParserConfigurationException
-	 */
-	@SuppressWarnings("serial")
-	protected static void configureMainPlan () throws XPathExpressionException, ParserConfigurationException, Exception {
-		//Set of keywords and latex contained in document and queries, mapped to counts of how many documents contain each token
-		keywordDocsMultiset = CSVHelper.csvToMultiset(Settings.getProperty("keywordDocsMapInput"));
-		latexDocsMultiset = CSVHelper.csvToMultiset(Settings.getProperty("latexDocsMapInput"));
-		
-		TextInputFormat format = new TextInputFormat(new Path(docsInput));
-		format.setDelimiter(DOCUMENT_SEPARATOR);
-		DataSet<String> rawArticleText = new DataSource<>(env, format, BasicTypeInfo.STRING_TYPE_INFO);
-		DataSet<String> cleanArticleText = rawArticleText.flatMap(new DocCleaner());
-		
-		TextInputFormat formatQueries = new TextInputFormat(new Path(queryInput));
-		formatQueries.setDelimiter(QUERY_SEPARATOR); 
-		DataSet<String> rawQueryText = new DataSource<>(env, formatQueries, BasicTypeInfo.STRING_TYPE_INFO);
-		DataSet<String> cleanQueryText = rawQueryText.flatMap(new QueryCleaner());
-		
-		// TODO IMPLEMENT ADDITIONAL SCORING METHODS 
-		
-		//Extract LaTeX and keywords 
-		DataSet<QueryTuple> queryDataSet = cleanQueryText.flatMap(new QueryMapper(WORD_SPLIT, STR_SEPARATOR));
-		DataSet<SectionTuple> sectionDataSet = cleanArticleText.flatMap(new SectionMapper(WORD_SPLIT, STR_SEPARATOR, keywordDocsMultiset));
-		
-		
-		//Compare LaTeX and keywords, score
-		DataSet<ResultTuple> latexMatches = sectionDataSet.flatMap(new QuerySectionMatcher(STR_SEPARATOR, latexDocsMultiset, keywordDocsMultiset,
-																						   numDocs, keywordDivide))
-														  .withBroadcastSet(queryDataSet, "Queries");
-		//Output
-		DataSet<OutputSimpleTuple> outputTuples = latexMatches//Group by queryid
-														.groupBy(0)
-														//Sort by score <queryid, docid, score>
-														.sortGroup(2, Order.DESCENDING) 
-														.reduceGroup(new OutputSimple(MAX_RESULTS_PER_QUERY,RUNTAG));
-		outputTuples.writeAsCsv(output,"\n"," ",WriteMode.OVERWRITE);
-
-	}
-
-    protected static void configureWikiPlan() {
-
-    }
-    protected static void configureProcessWikiPlan() {
-
-    }
-    protected static void configureProcessMainDocumentsPlan() {
+    /**
+     * Handler to invoke methods on a Algorithm object
+     */
+    private static class PlanInvocationHandler implements InvocationHandler {
+        private final Algorithm algorithm;
+        protected PlanInvocationHandler(Algorithm algorithm) {
+            this.algorithm = algorithm;
+        }
+        /**
+         * Invoke given method on algorithm this handler was constructed with.
+         * @param obj ignored (required by interface)
+         * @param method method to execute
+         * @param args arguments for method
+         * @return method return
+         */
+        @Override
+        public Object invoke(Object obj, Method method, Object[] args)
+                throws InvocationTargetException, IllegalArgumentException, IllegalAccessException {
+            return method.invoke(this.algorithm, args);
+        }
     }
 }
 
