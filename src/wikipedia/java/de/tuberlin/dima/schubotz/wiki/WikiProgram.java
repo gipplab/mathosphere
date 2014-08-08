@@ -45,14 +45,7 @@ public class WikiProgram {
 	 * Generates matches for words separated by whitespace
 	 */
 	public static final Pattern WORD_SPLIT = Pattern.compile("\\W+", Pattern.UNICODE_CHARACTER_CLASS);
-	/**
-	 * Used to split input into stratosphere for wikis
-	 */
-	public static final String WIKI_SEPARATOR = "</page>";
-	/**
-	 * Used to split input into stratosphere for queries
-	 */
-	public static final String QUERY_SEPARATOR = "</topic>";
+
 
     //public static final String CSV_FIELD_SEPARATOR = "\u01DF";
 	/**

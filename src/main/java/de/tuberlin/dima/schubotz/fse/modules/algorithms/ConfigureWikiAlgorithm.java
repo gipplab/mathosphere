@@ -1,4 +1,4 @@
-package de.tuberlin.dima.schubotz.fse.algorithms;
+package de.tuberlin.dima.schubotz.fse.modules.algorithms;
 
 import de.tuberlin.dima.schubotz.common.utils.CSVHelper;
 import de.tuberlin.dima.schubotz.wiki.mappers.WikiCleaner;
@@ -20,6 +20,9 @@ import eu.stratosphere.api.java.typeutils.BasicTypeInfo;
 import eu.stratosphere.core.fs.FileSystem;
 import eu.stratosphere.core.fs.Path;
 
+import java.util.Collection;
+import java.util.Collections;
+
 /**
  * Created by jjl4 on 8/7/14.
  */
@@ -27,6 +30,18 @@ public class ConfigureWikiAlgorithm implements Algorithm {
     static {
         //Load all settings
     }
+
+    @Override
+    public Collection getOptionsAsIterable() {
+        //No options
+        return Collections.emptyList();
+    }
+
+    @Override Collection getPropertiesAsIterable() {
+
+    }
+
+
     public void configure(ExecutionEnvironment env) {
         env = ExecutionEnvironment.getExecutionEnvironment();
 

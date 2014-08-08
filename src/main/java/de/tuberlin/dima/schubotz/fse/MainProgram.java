@@ -1,16 +1,18 @@
 package de.tuberlin.dima.schubotz.fse;
 
 import de.tuberlin.dima.schubotz.common.utils.SafeLogWrapper;
-import de.tuberlin.dima.schubotz.fse.algorithms.Algorithm;
+import de.tuberlin.dima.schubotz.fse.modules.algorithms.Algorithm;
 import de.tuberlin.dima.schubotz.fse.client.ClientConsole;
+import de.tuberlin.dima.schubotz.fse.modules.inputs.Input;
+import de.tuberlin.dima.schubotz.fse.modules.output.Output;
+import de.tuberlin.dima.schubotz.fse.settings.SettingNames;
+import de.tuberlin.dima.schubotz.fse.settings.Settings;
 import eu.stratosphere.api.java.ExecutionEnvironment;
 
 
-import java.io.IOException;
-import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.lang.reflect.Proxy;
+import java.lang.reflect.*;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.regex.Pattern;
 
 /**
@@ -46,12 +48,44 @@ public class MainProgram {
 
 
 	public static void main (String[] args) throws Exception {
-        ClientConsole cli = new ClientConsole();
-        Settings settings = new Settings();
-        final boolean parsed = cli.parseParameters(args, settings);
-        if (parsed) {
-            configureEnv();
-            configurePlan();
+        final Algorithm algorithm = ClientConsole.parseParameters(args);
+        final Collection<Class> modulesToExecute = new ArrayList<>();
+        configureEnv();
+
+        if (algorithm != null) {
+            final Class inputClass = getClass(
+                    Settings.getProperty(SettingNames.INPUT_OPTION),getParentPackageName(Input.class));
+            if (Input.class.isAssignableFrom(inputClass)) {
+                final Constructor<? extends Input> inputConstructor = Input.class.cast(inputClass).getClass()
+                        .getConstructor();
+                final Input inputObj = inputConstructor.newInstance();
+                inputObj.configure(env);
+            } else {
+                throw new IllegalArgumentException(
+                        "Input class: " + Settings.getProperty(SettingNames.INPUT_OPTION) + "could not be found.");
+            }
+            for (final Class clazz : algorithm.getRequiredInputsAsIterable()) {
+                if (Input.class.isAssignableFrom(clazz)) {
+                    final Constructor<? extends Input> addInputConstructor = Input.class.cast(clazz).getClass()
+                            .getConstructor();
+                    final Input addInputObj = addInputConstructor.newInstance();
+                    addInputObj.configure(env);
+                } else{
+                    throw new IllegalArgumentException(
+                            "Programmer required input class: " + clazz.getSimpleName() + " could not be found.");
+                }
+            }
+
+            algorithm.configure(env);
+
+            final Class outputClass = getClass(
+                    Settings.getProperty(SettingNames.OUTPUT_OPTION),getParentPackageName(Output.class));
+            if (Output.class.isAssignableFrom(outputClass)) {
+                final Constructor<? extends Output> outputConstructor = Output.class.cast(outputClass).getClass()
+                        .getConstructor();
+                final Output outputObj = outputConstructor.newInstance();
+                outputObj.configure(env);
+            }
             env.execute("Mathosphere");
         }
 	}
@@ -60,14 +94,45 @@ public class MainProgram {
      */
     private static void configureEnv() {
         env = ExecutionEnvironment.getExecutionEnvironment();
-        env.setDegreeOfParallelism(Integer.parseInt(Settings.getProperty("numSubTasks")));
+        env.setDegreeOfParallelism(Integer.parseInt(Settings.getProperty(SettingNames.NUM_SUB_TASKS)));
+    }
+
+
+    /**
+     * Gets class to execute based on name.
+     * @param inputName name of class
+     * @param packageName simple name of parent package to search for (e.g. ...fse.inputs.Input
+     *                    has package name of "inputs")
+     * @return class
+     * @throws IllegalArgumentException if unable to find class
+     */
+    public static Class getClass(String inputName, String packageName) throws IllegalArgumentException {
+        final String inputClassname = MainProgram.class.getClass().getPackage().getName() +
+                '.' + packageName + '.' + inputName;
+        try {
+            return Class.forName(inputClassname);
+        } catch (final ClassNotFoundException ignore) {
+            throw new IllegalArgumentException ("Unable to find class: " + inputName);
+        }
     }
 
     /**
-     * Configure ExecutionEnvironment
+     * Get parent package name based on class. (E.g. Input.class would return "inputs")
+     * @param clazz class name
+     * @return parent package name
      */
-    private static void configurePlan() {
-        final String planName = Settings.getProperty("main");
+    public static String getParentPackageName(Class clazz) {
+        final String[] split = clazz.getPackage().getName().split(".");
+        return split[split.length-1];
+    }
+
+
+
+    /**
+     * Gets the algorithm to execute based on name. If it doesn't exist, throw exceptions.
+     */
+    /*
+    public static Algorithm getAlgorithm(String planName) throws IllegalArgumentException {
         final String planClassname = MainProgram.class.getClass().getPackage().getName() + ".algorithms." + planName;
 
         try {
@@ -79,12 +144,8 @@ public class MainProgram {
             //Construct handler containing algorithm to configure
             final InvocationHandler handler = new PlanInvocationHandler(
                     (Algorithm) planClass.newInstance());
-            //Construct proxy class to run configure method
-            final Algorithm algorithmToConfigure =
-                    (Algorithm) Proxy.newProxyInstance(classLoader, interfaces, handler);
-
-            algorithmToConfigure.configure(env);
-
+            //Construct proxy class to run configure method, return it
+            return (Algorithm) Proxy.newProxyInstance(classLoader, interfaces, handler);
         } catch (final ClassNotFoundException ignore) {
             throw new IllegalArgumentException ("Unable to find algorithm: " + planName);
         } catch (final InstantiationException ignore) {
@@ -97,10 +158,11 @@ public class MainProgram {
     /**
      * Handler to invoke methods on a Algorithm object
      */
+        /*
     private static class PlanInvocationHandler implements InvocationHandler {
-        private final Algorithm algorithm;
-        protected PlanInvocationHandler(Algorithm algorithm) {
-            this.algorithm = algorithm;
+        private final Object object;
+        protected PlanInvocationHandler(Object object) {
+            this.object = object;
         }
         /**
          * Invoke given method on algorithm this handler was constructed with.
@@ -109,11 +171,13 @@ public class MainProgram {
          * @param args arguments for method
          * @return method return
          */
+    /*
         @Override
         public Object invoke(Object obj, Method method, Object[] args)
                 throws InvocationTargetException, IllegalArgumentException, IllegalAccessException {
-            return method.invoke(this.algorithm, args);
+            return method.invoke(this.object, args);
         }
     }
+    */
 }
 
