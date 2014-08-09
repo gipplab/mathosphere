@@ -1,6 +1,7 @@
 package de.tuberlin.dima.schubotz.fse.modules.algorithms;
 
 import de.tuberlin.dima.schubotz.common.utils.CSVHelper;
+import de.tuberlin.dima.schubotz.fse.modules.inputs.Input;
 import de.tuberlin.dima.schubotz.wiki.mappers.WikiCleaner;
 import de.tuberlin.dima.schubotz.wiki.mappers.WikiQueryCleaner;
 import de.tuberlin.dima.schubotz.wiki.mappers.WikiQueryMapper;
@@ -19,6 +20,7 @@ import eu.stratosphere.api.java.tuple.Tuple2;
 import eu.stratosphere.api.java.typeutils.BasicTypeInfo;
 import eu.stratosphere.core.fs.FileSystem;
 import eu.stratosphere.core.fs.Path;
+import org.apache.commons.cli.Option;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -26,35 +28,20 @@ import java.util.Collections;
 /**
  * Created by jjl4 on 8/7/14.
  */
-public class ConfigureWikiAlgorithm implements Algorithm {
+public class RawToPreprocessed implements Algorithm {
     static {
         //Load all settings
     }
 
     @Override
-    public Collection getOptionsAsIterable() {
+    public Collection<Option> getOptionsAsIterable() {
         //No options
         return Collections.emptyList();
     }
 
-    @Override Collection getPropertiesAsIterable() {
-
-    }
-
-
-    public void configure(ExecutionEnvironment env) {
+    public void configure(ExecutionEnvironment env, DataStorage data) {
         env = ExecutionEnvironment.getExecutionEnvironment();
 
-        TextInputFormat formatWiki = new TextInputFormat(new Path(wikiInput));
-        formatWiki.setDelimiter(WIKI_SEPARATOR); //this will leave a null doc at the end and a useless doc at the beginning. also, each will be missing a </page>
-        DataSet<String> rawWikiText = new DataSource<>(env, formatWiki, BasicTypeInfo.STRING_TYPE_INFO);
-        DataSet<String> cleanWikiText = rawWikiText.flatMap(new WikiCleaner());
-
-
-        TextInputFormat formatQuery = new TextInputFormat(new Path(wikiQueryInput));
-        formatQuery.setDelimiter(QUERY_SEPARATOR); //this will leave a System.getProperty("line.separator")</topics> at the end as well as header info at the begin
-        DataSet<String> rawWikiQueryText = new DataSource<>(env, formatQuery, BasicTypeInfo.STRING_TYPE_INFO);
-        DataSet<String> cleanWikiQueryText = rawWikiQueryText.flatMap(new WikiQueryCleaner());
         DataSet<WikiQueryTuple> wikiQuerySet = cleanWikiQueryText.flatMap(new WikiQueryMapper(STR_SPLIT));
 
         DataSet<Tuple2<String, Integer>> latexWikiResults = cleanWikiText.flatMap(new ProcessLatexWikiMapper(STR_SPLIT))
@@ -82,5 +69,6 @@ public class ConfigureWikiAlgorithm implements Algorithm {
 
         latexWikiResults.writeAsCsv(latexWikiMapOutput, CSV_LINE_SEPARATOR, CSV_FIELD_SEPARATOR, FileSystem.WriteMode.OVERWRITE);
         wikiSet.writeAsCsv(tupleWikiMapOutput, CSV_LINE_SEPARATOR, CSV_FIELD_SEPARATOR, FileSystem.WriteMode.OVERWRITE);
+
     }
 }

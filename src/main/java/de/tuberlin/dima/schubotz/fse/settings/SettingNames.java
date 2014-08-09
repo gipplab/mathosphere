@@ -9,13 +9,13 @@ public enum SettingNames {
      */
     INPUT_OPTION("i"),
     /**
-     * Set classname for outputclass.
+     * Filename and path to data file (raw)
      */
-    OUTPUT_OPTION("f"),
+    DATARAW_FILE("d"),
     /**
-     * Filename and path to data file
+     * Filename and path to data file (tuple csv)
      */
-    DATA_FILE("d"),
+    DATATUPLE_FILE("e"),
     /**
      * Filename and path to query file
      */
@@ -49,7 +49,7 @@ public enum SettingNames {
     NUM_DOC("n");
 
 
-    private String cmdLineOptionLetter;
+    private final String cmdLineOptionLetter;
 
     SettingNames(String letter) {
         this.cmdLineOptionLetter = letter;

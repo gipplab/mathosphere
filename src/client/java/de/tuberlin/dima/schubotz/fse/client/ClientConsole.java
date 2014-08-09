@@ -33,16 +33,11 @@ public class ClientConsole {
         final String algorithm = args[0];
         final String[] params = Arrays.copyOfRange(args, 1, args.length);
         try {
-            final Class returnedClass = MainProgram.getClass(
-                    algorithm, MainProgram.getParentPackageName(Algorithm.class));
-            if (Algorithm.class.isAssignableFrom(returnedClass)) {
-                final Algorithm algorithmClass = Algorithm.class.cast(returnedClass);
-                Settings.loadOptions(params, algorithmClass);
-                return algorithmClass;
-            } else {
-                throw new IllegalArgumentException();
-            }
-
+            final Class returnedClass = MainProgram.getSubClass(
+                    algorithm, Algorithm.class);
+            final Algorithm algorithmClass = Algorithm.class.cast(returnedClass);
+            Settings.loadOptions(params, algorithmClass);
+            return algorithmClass;
         } catch (IllegalArgumentException e) {
             System.out.println(e.getMessage());
             System.out.println("Invalid algorithm specified.");
