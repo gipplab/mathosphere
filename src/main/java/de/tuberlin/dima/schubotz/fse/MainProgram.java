@@ -1,10 +1,11 @@
 package de.tuberlin.dima.schubotz.fse;
 
 import de.tuberlin.dima.schubotz.common.utils.SafeLogWrapper;
+import de.tuberlin.dima.schubotz.fse.modules.Module;
 import de.tuberlin.dima.schubotz.fse.modules.algorithms.Algorithm;
 import de.tuberlin.dima.schubotz.fse.client.ClientConsole;
 import de.tuberlin.dima.schubotz.fse.modules.inputs.Input;
-import de.tuberlin.dima.schubotz.fse.modules.output.Output;
+import de.tuberlin.dima.schubotz.fse.settings.DataStorage;
 import de.tuberlin.dima.schubotz.fse.settings.SettingNames;
 import de.tuberlin.dima.schubotz.fse.settings.Settings;
 import eu.stratosphere.api.java.ExecutionEnvironment;
@@ -53,39 +54,30 @@ public class MainProgram {
         configureEnv();
 
         if (algorithm != null) {
-            final Class inputClass = getClass(
-                    Settings.getProperty(SettingNames.INPUT_OPTION),getParentPackageName(Input.class));
-            if (Input.class.isAssignableFrom(inputClass)) {
-                final Constructor<? extends Input> inputConstructor = Input.class.cast(inputClass).getClass()
-                        .getConstructor();
-                final Input inputObj = inputConstructor.newInstance();
-                inputObj.configure(env);
-            } else {
-                throw new IllegalArgumentException(
-                        "Input class: " + Settings.getProperty(SettingNames.INPUT_OPTION) + "could not be found.");
-            }
+            final DataStorage data = new DataStorage();
+
+            //Run input module specified by command line
+            final Class inputClass = getSubClass(
+                    Settings.getProperty(SettingNames.INPUT_OPTION),Input.class);
+            final Module inputObj = (Module) getObjectFromGenericClass(inputClass, Input.class);
+            inputObj.configure(env, data);
+
+            /* Trust user to run input module for now
+            //Run input modules required by algorithm
             for (final Class clazz : algorithm.getRequiredInputsAsIterable()) {
-                if (Input.class.isAssignableFrom(clazz)) {
-                    final Constructor<? extends Input> addInputConstructor = Input.class.cast(clazz).getClass()
-                            .getConstructor();
-                    final Input addInputObj = addInputConstructor.newInstance();
-                    addInputObj.configure(env);
-                } else{
-                    throw new IllegalArgumentException(
-                            "Programmer required input class: " + clazz.getSimpleName() + " could not be found.");
-                }
-            }
+                final Module addInputObj = (Module) getObjectFromGenericClass(clazz, Input.class);
+                addInputObj.configure(env, data);
+            }*/
 
-            algorithm.configure(env);
+            algorithm.configure(env, data);
 
+            /* Algorithms are tied to output (preprocess, etc.)
             final Class outputClass = getClass(
-                    Settings.getProperty(SettingNames.OUTPUT_OPTION),getParentPackageName(Output.class));
-            if (Output.class.isAssignableFrom(outputClass)) {
-                final Constructor<? extends Output> outputConstructor = Output.class.cast(outputClass).getClass()
-                        .getConstructor();
-                final Output outputObj = outputConstructor.newInstance();
-                outputObj.configure(env);
-            }
+                    Settings.getProperty(SettingNames.OUTPUT_OPTION),Output.class.getPackage().getName());
+            final Module outputObj = (Module) getObjectFromGenericClass(outputClass, Output.class);
+            outputObj.configure(env, data);
+            */
+
             env.execute("Mathosphere");
         }
 	}
@@ -97,35 +89,60 @@ public class MainProgram {
         env.setDegreeOfParallelism(Integer.parseInt(Settings.getProperty(SettingNames.NUM_SUB_TASKS)));
     }
 
-
     /**
-     * Gets class to execute based on name.
-     * @param inputName name of class
-     * @param packageName simple name of parent package to search for (e.g. ...fse.inputs.Input
-     *                    has package name of "inputs")
-     * @return class
-     * @throws IllegalArgumentException if unable to find class
+     * Constructs object instance from a generic class, given expected class to
+     * output. Always guaranteed to work if it does not throw an exception.
+     * @param clazz generic class
+     * @param expectedClass class of object expected to be returned
+     * @return object of specific class. throws exception rather than returning null
+     * @throws IllegalArgumentException if for any reason unable to create the object
      */
-    public static Class getClass(String inputName, String packageName) throws IllegalArgumentException {
-        final String inputClassname = MainProgram.class.getClass().getPackage().getName() +
-                '.' + packageName + '.' + inputName;
-        try {
-            return Class.forName(inputClassname);
-        } catch (final ClassNotFoundException ignore) {
-            throw new IllegalArgumentException ("Unable to find class: " + inputName);
+    public static Object getObjectFromGenericClass(Class<?> clazz, Class<?> expectedClass)
+            throws IllegalArgumentException {
+        if (expectedClass.isAssignableFrom(clazz)) {
+            try {
+                final Constructor<?> objectConstructor = clazz.getClass()
+                        .getConstructor();
+                return objectConstructor.newInstance();
+            } catch (final NoSuchMethodException ignore) {
+                throw new IllegalArgumentException("Unable to find constructor for class: " + clazz.getName());
+            } catch (final InstantiationException ignore) {
+                throw new IllegalArgumentException("Unable to instantiate class: " + clazz.getName());
+            } catch (final InvocationTargetException ignore) {
+                throw new IllegalArgumentException("Unable to invoke class: " + clazz.getName());
+            } catch (final IllegalAccessException ignore) {
+                throw new IllegalArgumentException("Unable to access class: " + clazz.getName() + ", is it public?");
+            }
+        } else{
+            throw new IllegalArgumentException("Expected class: " + expectedClass.getName() + " and given class: " +
+                    clazz.getName() + " do not match");
         }
     }
 
     /**
-     * Get parent package name based on class. (E.g. Input.class would return "inputs")
-     * @param clazz class name
-     * @return parent package name
+     * Gets module to execute, given expected superclass and its name.
+     * Guaranteed to return class that extends expected class
+     * if no exception is thrown
+     * @param inputName name of class
+     * @param expectedClass superclass expected
+     * @return class
+     * @throws IllegalArgumentException if unable to find class
      */
-    public static String getParentPackageName(Class clazz) {
-        final String[] split = clazz.getPackage().getName().split(".");
-        return split[split.length-1];
+    public static Class getSubClass(String inputName, Class<?> expectedClass) throws IllegalArgumentException {
+        try {
+            final String packageName = expectedClass.getPackage().getName();
+            final String fullName = packageName + "." + inputName;
+            final Class returnedClass = Class.forName(fullName);
+            if (expectedClass.isAssignableFrom(returnedClass)) {
+                return Class.forName(packageName);
+            } else {
+                throw new ClassNotFoundException();
+            }
+        } catch (final ClassNotFoundException ignore) {
+            throw new IllegalArgumentException ("Unable to find class: " + inputName + " that was a subclass of " +
+                    expectedClass.getName());
+        }
     }
-
 
 
     /**

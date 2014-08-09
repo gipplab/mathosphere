@@ -27,7 +27,7 @@ public class ProcessLatexWikiMapper extends FlatMapFunction<String,Tuple2<String
 	private String STR_SPLIT;
 	private HashSet<String> latex;
 	
-	SafeLogWrapper LOG = new SafeLogWrapper(ProcessLatexWikiMapper.class, LogFactory.getLog(ProcessLatexWikiMapper.class));
+	SafeLogWrapper LOG = new SafeLogWrapper(ProcessLatexWikiMapper.class);
 	
 	@SuppressWarnings("hiding")
 	public ProcessLatexWikiMapper(String STR_SPLIT) {

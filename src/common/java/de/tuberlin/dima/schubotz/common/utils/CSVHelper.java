@@ -2,6 +2,7 @@ package de.tuberlin.dima.schubotz.common.utils;
 
 import com.google.common.collect.HashMultiset;
 import de.tuberlin.dima.schubotz.fse.MainProgram;
+import de.tuberlin.dima.schubotz.fse.types.DataTuple;
 import de.tuberlin.dima.schubotz.wiki.WikiProgram;
 import de.tuberlin.dima.schubotz.wiki.types.WikiTuple;
 import eu.stratosphere.api.java.DataSet;
@@ -71,11 +72,11 @@ public class CSVHelper {
      * @param in filename
      * @return dataset
      */
-    public static DataSet<WikiTuple> csvToWikiTuple(ExecutionEnvironment env, String in) {
+    public static DataSet<DataTuple> csvToDataTuple(ExecutionEnvironment env, String in) {
         final CsvReader reader = env.readCsvFile(in);
         reader.fieldDelimiter(CSV_FIELD_SEPARATOR);
         reader.lineDelimiter(CSV_LINE_SEPARATOR);
-        return reader.tupleType(WikiTuple.class);
+        return reader.tupleType(DataTuple.class);
     }
 
     /**

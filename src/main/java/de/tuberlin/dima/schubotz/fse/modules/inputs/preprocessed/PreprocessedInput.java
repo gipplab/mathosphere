@@ -1,7 +1,9 @@
-package de.tuberlin.dima.schubotz.fse.modules.inputs;
+package de.tuberlin.dima.schubotz.fse.modules.inputs.preprocessed;
 
 import com.google.common.collect.HashMultiset;
 import de.tuberlin.dima.schubotz.common.utils.CSVHelper;
+import de.tuberlin.dima.schubotz.fse.modules.inputs.Input;
+import de.tuberlin.dima.schubotz.fse.settings.DataStorage;
 import de.tuberlin.dima.schubotz.fse.settings.SettingNames;
 import de.tuberlin.dima.schubotz.fse.settings.Settings;
 import eu.stratosphere.api.java.ExecutionEnvironment;
@@ -13,7 +15,7 @@ import java.util.Collection;
 /**
  * Inputs additional multisets
  */
-public class ConfigureMultisetInput implements Input {
+public class PreprocessedInput implements Input {
     /**
      * Command line options to add
      */
@@ -47,11 +49,9 @@ public class ConfigureMultisetInput implements Input {
      * @param env ExecutionEnvironment
      */
     @Override
-    public void configure(ExecutionEnvironment env) {
-        final HashMultiset<String> keywordDocsMap =
-                CSVHelper.csvToMultiset(Settings.getProperty(SettingNames.KEYWORD_DOCS_MAP));
-        final HashMultiset<String> latexDocsMap =
-                CSVHelper.csvToMultiset(Settings.getProperty(SettingNames.LATEX_DOCS_MAP));
-
+    public void configure(ExecutionEnvironment env, DataStorage data) {
+        data.setDataTupleSet(CSVHelper.csvToDataTuple(env, Settings.getProperty(SettingNames.DATATUPLE_FILE)));
+        data.setKeywordSet(CSVHelper.csvToMultiset(Settings.getProperty(SettingNames.KEYWORD_DOCS_MAP)));
+        data.setLatexSet(CSVHelper.csvToMultiset(Settings.getProperty(SettingNames.LATEX_DOCS_MAP)));
     }
 }

@@ -10,14 +10,4 @@ import java.util.Collection;
  * Created by jjl4 on 8/8/14.
  */
 public interface Input extends Module {
-    /**
-     * Get command line options
-     * @return options
-     */
-    Collection<Option> getOptionsAsIterable();
-    /**
-     * Configure inputs
-     * @param env ExecutionEnvironment
-     */
-    void configure(ExecutionEnvironment env);
 }

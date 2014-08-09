@@ -1,8 +1,9 @@
 package de.tuberlin.dima.schubotz.fse.settings;
 
 import de.tuberlin.dima.schubotz.common.utils.SafeLogWrapper;
-import de.tuberlin.dima.schubotz.fse.modules.Module;
+import de.tuberlin.dima.schubotz.fse.MainProgram;
 import de.tuberlin.dima.schubotz.fse.modules.algorithms.Algorithm;
+import de.tuberlin.dima.schubotz.fse.modules.inputs.Input;
 import org.apache.commons.cli.*;
 
 
@@ -29,12 +30,6 @@ public class Settings {
     private static final Option INPUT_OPTION = new Option(
             SettingNames.INPUT_OPTION.getLetter(), SettingNames.INPUT_OPTION.toString(),
             true, "Input class to run.");
-    private static final Option DATA_FILE = new Option(
-            SettingNames.DATA_FILE.getLetter(), SettingNames.DATA_FILE.toString(),
-            true, "Path to data file.");
-    private static final Option QUERY_FILE = new Option(
-            SettingNames.QUERY_FILE.getLetter(), SettingNames.QUERY_FILE.toString(),
-            true, "Path to query file.");
     private static final Option RUNTAG = new Option(
             SettingNames.RUNTAG.getLetter(), SettingNames.RUNTAG.toString(),
             true, "Runtag name.");
@@ -44,19 +39,15 @@ public class Settings {
     private static final Option OUTPUT_DIR = new Option(
             SettingNames.OUTPUT_DIR.getLetter(), SettingNames.OUTPUT_DIR.toString(),
             true, "Directory for output files.");
+    //TODO currently algorithms require specific OUTPUT_OPTION
+    /*
     private static final Option OUTPUT_OPTION = new Option(
             SettingNames.OUTPUT_OPTION.getLetter(), SettingNames.OUTPUT_OPTION.toString(),
-            true, "Output class to run.");
+            true, "Output class to run.");*/
 
     static {
         INPUT_OPTION.setRequired(true);
         INPUT_OPTION.setArgName("input-format");
-
-        DATA_FILE.setRequired(true);
-        DATA_FILE.setArgName("/path/to/data");
-
-        QUERY_FILE.setRequired(true);
-        QUERY_FILE.setArgName("/path/to/queries");
 
         RUNTAG.setRequired(true);
         RUNTAG.setArgName("runtag");
@@ -64,18 +55,14 @@ public class Settings {
         NUM_SUB_TASKS.setRequired(true);
         NUM_SUB_TASKS.setArgName("num-subtasks");
 
-        OUTPUT_OPTION.setRequired(true);
-        OUTPUT_OPTION.setArgName("output-format");
+
 
         OUTPUT_DIR.setRequired(true);
         OUTPUT_DIR.setArgName("/path/to/output");
 
         GeneralOptions.addOption(INPUT_OPTION);
-        GeneralOptions.addOption(DATA_FILE);
-        GeneralOptions.addOption(QUERY_FILE);
         GeneralOptions.addOption(RUNTAG);
         GeneralOptions.addOption(NUM_SUB_TASKS);
-        GeneralOptions.addOption(OUTPUT_OPTION);
         GeneralOptions.addOption(OUTPUT_DIR);
 
         for (final Object option : GeneralOptions.getOptions()) {
@@ -93,23 +80,35 @@ public class Settings {
      */
     public static void loadOptions(String[] args, Algorithm algorithm) throws ParseException {
         final CommandLineParser parser = new PosixParser();
-        //Add algorithm specific options
+        //Add algorithm specific options to be loaded
         for (final Option option : algorithm.getOptionsAsIterable()) {
             AllOptions.addOption(option);
         }
-        //Add algorithm required input options
-        for (final Class clazz : algorithm.getRequiredInputsAsIterable()) {
-            if (Module.class.isAssignableFrom(clazz)) {
-                (Module) clazz
-
-            }
-            for (final Option addOption : clazz.getOptionsAsIterable()) {
+        /* Save this for maybe later implementation? for now trust user to specify all
+        //Add algorithm required input options to be loaded
+        for (final Class<? extends Input> clazz : algorithm.getRequiredInputsAsIterable()) {
+            final Input input = (Input) MainProgram.getObjectFromGenericClass(clazz, Input.class);
+            for (final Option addOption : input.getOptionsAsIterable()) {
                 AllOptions.addOption(addOption);
             }
         }
+        */
 
-        //Load commandline options, check to make sure it contains all required options
         final CommandLine line = parser.parse(AllOptions, args, false);
+        //First load the user specified input module in order to load options specified by that input module
+        if(line.hasOption(INPUT_OPTION.getOpt())) {
+            String input = line.getOptionValue(INPUT_OPTION.getOpt());
+            final Class returnedClass = MainProgram.getSubClass(
+                    input, Input.class);
+            final Input inputClass = Input.class.cast(returnedClass);
+            for (final Option option : inputClass.getOptionsAsIterable()) {
+                AllOptions.addOption(option);
+            }
+        } else {
+            throw new MissingArgumentException(INPUT_OPTION);
+        }
+
+        //Load commandline options and check to make sure all required options are present
         for (final Object object : AllOptions.getOptions()) {
             if (object instanceof Option) {
                 final Option option = Option.class.cast(object);
