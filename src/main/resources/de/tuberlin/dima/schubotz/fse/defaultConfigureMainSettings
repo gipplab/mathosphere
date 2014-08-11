@@ -1,0 +1,11 @@
+#Filename and path of dataset
+dataset=test10000.xml
+
+#Filename of queryset
+queryset=fQuery.xml
+
+#Number of documents
+numDoc=10000
+
+
+
