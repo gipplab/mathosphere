@@ -6,7 +6,7 @@ import de.tuberlin.dima.schubotz.fse.common.utils.SafeLogWrapper;
 import de.tuberlin.dima.schubotz.fse.types.QueryTuple;
 import de.tuberlin.dima.schubotz.fse.types.ResultTuple;
 
-import de.tuberlin.dima.schubotz.fse.types.WikiTuple;
+import de.tuberlin.dima.schubotz.fse.types.DataTuple;
 import eu.stratosphere.api.java.functions.FlatMapFunction;
 import eu.stratosphere.configuration.Configuration;
 import eu.stratosphere.util.Collector;
@@ -22,7 +22,7 @@ import java.util.regex.Pattern;
  * and outputs a score. 
  */
 @SuppressWarnings("serial")
-public class QueryWikiMatcher extends FlatMapFunction<WikiTuple, ResultTuple> {
+public class QueryWikiMatcher extends FlatMapFunction<DataTuple, ResultTuple> {
 	/**
 	 * See {@link de.tuberlin.dima.schubotz.wiki.WikiProgram#STR_SPLIT}
 	 */
@@ -72,7 +72,7 @@ public class QueryWikiMatcher extends FlatMapFunction<WikiTuple, ResultTuple> {
 	 * @throws Exception
 	 */
 	@Override
-	public void flatMap(WikiTuple in, Collector<ResultTuple> out) throws Exception {
+	public void flatMap(DataTuple in, Collector<ResultTuple> out) throws Exception {
 		HashMultiset<String> sectionLatex = HashMultiset.create(Arrays.asList(in.getLatex().split(STR_SPLIT)));
 		
 

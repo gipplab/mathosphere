@@ -29,7 +29,13 @@ public class DataTuple extends Tuple5<String, String, String, String, String> {
 		this.f4 = pmml;
 	}
 
-	public String getID() {
+    public DataTuple(DataTuple wikiTuple) {
+    }
+
+    public DataTuple(String docID, String s, String s1, String s2) {
+    }
+
+    public String getID() {
 		return this.f0;
 	}
 

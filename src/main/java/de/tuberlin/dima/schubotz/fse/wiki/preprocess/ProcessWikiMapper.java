@@ -1,7 +1,7 @@
 package de.tuberlin.dima.schubotz.fse.wiki.preprocess;
 
 import de.tuberlin.dima.schubotz.fse.common.utils.ExtractHelper;
-import de.tuberlin.dima.schubotz.fse.types.WikiTuple;
+import de.tuberlin.dima.schubotz.fse.types.DataTuple;
 import eu.stratosphere.api.java.functions.FlatMapFunction;
 import eu.stratosphere.util.Collector;
 
@@ -14,10 +14,10 @@ import org.jsoup.parser.Parser;
 import org.jsoup.select.Elements;
 
 /**
- * Map de.tuberlin.dima.schubotz.fse.wiki text to {@link de.tuberlin.dima.schubotz.fse.types.WikiTuple}
+ * Map de.tuberlin.dima.schubotz.fse.wiki text to {@link de.tuberlin.dima.schubotz.fse.types.DataTuple}
  */
 @SuppressWarnings("serial")
-public class ProcessWikiMapper extends FlatMapFunction<String, WikiTuple> {
+public class ProcessWikiMapper extends FlatMapFunction<String, DataTuple> {
     /**
      * See {@link de.tuberlin.dima.schubotz.wiki.WikiProgram#STR_SPLIT}
      */
@@ -38,7 +38,7 @@ public class ProcessWikiMapper extends FlatMapFunction<String, WikiTuple> {
      * Takes in de.tuberlin.dima.schubotz.fse.wiki string, parses wikiID and latex
      */
     @Override
-    public void flatMap (String in, Collector<WikiTuple> out) {
+    public void flatMap (String in, Collector<DataTuple> out) {
         final Document doc;
 
         try {
@@ -90,7 +90,7 @@ public class ProcessWikiMapper extends FlatMapFunction<String, WikiTuple> {
                 LOG.info(docID + " has no math.");
             }
         } else {
-            out.collect(new WikiTuple(docID, outputLatex.toString(), cmml.toString(), pmml.toString()));
+            out.collect(new DataTuple(docID, outputLatex.toString(), cmml.toString(), pmml.toString()));
         }
         if (LOG.isInfoEnabled()) {
             LOG.info(docID + " complete!");
