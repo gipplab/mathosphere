@@ -1,36 +1,12 @@
-/*
 package de.tuberlin.dima.schubotz.fse.modules.algorithms;
 
-import CSVHelper;
-import de.tuberlin.dima.schubotz.fse.modules.inputs.Input;
 import de.tuberlin.dima.schubotz.fse.settings.DataStorage;
-import de.tuberlin.dima.schubotz.fse.types.QueryTuple;
-import de.tuberlin.dima.schubotz.fse.types.WikiTuple;
-import WikiCleaner;
-import WikiQueryCleaner;
-import WikiQueryMapper;
-import ProcessLatexWikiMapper;
-import ProcessWikiMapper;
-import eu.stratosphere.api.java.DataSet;
 import eu.stratosphere.api.java.ExecutionEnvironment;
-import eu.stratosphere.api.java.aggregation.Aggregations;
-import eu.stratosphere.api.java.functions.MapFunction;
-import eu.stratosphere.api.java.functions.ReduceFunction;
-import eu.stratosphere.api.java.io.TextInputFormat;
-import eu.stratosphere.api.java.operators.DataSource;
-import eu.stratosphere.api.java.tuple.Tuple2;
-import eu.stratosphere.api.java.typeutils.BasicTypeInfo;
-import eu.stratosphere.core.fs.FileSystem;
-import eu.stratosphere.core.fs.Path;
 import org.apache.commons.cli.Option;
 
 import java.util.Collection;
 import java.util.Collections;
 
-*/
-/**
- * Created by jjl4 on 8/7/14.
- *//*
 
 public class RawToPreprocessed implements Algorithm {
     static {
@@ -44,7 +20,8 @@ public class RawToPreprocessed implements Algorithm {
     }
 
     public void configure(ExecutionEnvironment env, DataStorage data) {
-        env = ExecutionEnvironment.getExecutionEnvironment();
+        /*env = ExecutionEnvironment.getExecutionEnvironment();
+        WikiQueryCleaner rawWikiQueryText;
         DataSet<String> cleanWikiQueryText = rawWikiQueryText.flatMap(new WikiQueryCleaner());
         DataSet<QueryTuple> wikiQuerySet = cleanWikiQueryText.flatMap(new WikiQueryMapper(STR_SPLIT));
 
@@ -73,7 +50,6 @@ public class RawToPreprocessed implements Algorithm {
 
         latexWikiResults.writeAsCsv(latexWikiMapOutput, CSV_LINE_SEPARATOR, CSV_FIELD_SEPARATOR, FileSystem.WriteMode.OVERWRITE);
         wikiSet.writeAsCsv(tupleWikiMapOutput, CSV_LINE_SEPARATOR, CSV_FIELD_SEPARATOR, FileSystem.WriteMode.OVERWRITE);
-
+*/
     }
 }
-*/

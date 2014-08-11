@@ -33,6 +33,7 @@ public class DataTuple extends Tuple5<String, String, String, String, String> {
     }
 
     public DataTuple(String docID, String s, String s1, String s2) {
+
     }
 
     public String getID() {
