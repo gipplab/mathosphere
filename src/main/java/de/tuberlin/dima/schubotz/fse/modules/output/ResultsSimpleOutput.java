@@ -1,8 +1,8 @@
 package de.tuberlin.dima.schubotz.fse.modules.output;
 
-import de.tuberlin.dima.schubotz.common.mappers.OutputSimple;
-import de.tuberlin.dima.schubotz.common.types.OutputSimpleTuple;
-import de.tuberlin.dima.schubotz.common.utils.CSVHelper;
+import de.tuberlin.dima.schubotz.fse.common.mappers.OutputSimple;
+import de.tuberlin.dima.schubotz.fse.common.types.OutputSimpleTuple;
+import de.tuberlin.dima.schubotz.fse.common.utils.CSVHelper;
 import de.tuberlin.dima.schubotz.fse.settings.DataStorage;
 import de.tuberlin.dima.schubotz.fse.settings.SettingNames;
 import de.tuberlin.dima.schubotz.fse.settings.Settings;

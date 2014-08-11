@@ -1,8 +1,8 @@
-package de.tuberlin.dima.schubotz.wiki.preprocess;
+package de.tuberlin.dima.schubotz.fse.wiki.preprocess;
 
-import de.tuberlin.dima.schubotz.common.utils.ExtractHelper;
-import de.tuberlin.dima.schubotz.common.utils.SafeLogWrapper;
-import de.tuberlin.dima.schubotz.wiki.types.WikiQueryTuple;
+import de.tuberlin.dima.schubotz.fse.common.utils.ExtractHelper;
+import de.tuberlin.dima.schubotz.fse.common.utils.SafeLogWrapper;
+import de.tuberlin.dima.schubotz.fse.types.QueryTuple;
 import eu.stratosphere.api.java.functions.FlatMapFunction;
 import eu.stratosphere.api.java.tuple.Tuple2;
 import eu.stratosphere.configuration.Configuration;
@@ -18,7 +18,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Maps wiki document to a collector of 
+ * Maps de.tuberlin.dima.schubotz.fse.wiki document to a collector of
  * Tuple2<LatexToken,1> for aggregation
  * later.
  */
@@ -36,8 +36,8 @@ public class ProcessLatexWikiMapper extends FlatMapFunction<String,Tuple2<String
 	@Override
 	public void open(Configuration parameters) {
 		latex = new HashSet<String>();
-		Collection<WikiQueryTuple> queries = getRuntimeContext().getBroadcastVariable( "Queries" );
-		for (WikiQueryTuple query : queries) {
+		Collection<QueryTuple> queries = getRuntimeContext().getBroadcastVariable( "Queries" );
+		for (QueryTuple query : queries) {
 			String[] tokens = query.getLatex().split(STR_SPLIT); //get list of latex
 			for ( String token : tokens ) {
 				if (!token.equals("")) {
@@ -51,10 +51,10 @@ public class ProcessLatexWikiMapper extends FlatMapFunction<String,Tuple2<String
 		Document doc;
 		Elements LatexElements;
 		try {
-			doc = Jsoup.parse(in); //using jsoup b/c wiki html is TERRIBLE
+			doc = Jsoup.parse(in); //using jsoup b/c de.tuberlin.dima.schubotz.fse.wiki html is TERRIBLE
 			LatexElements = doc.select("annotation[encoding=application/x-tex]");
 		} catch (Exception e) {
-			LOG.warn("Unable to parse wiki using Jsoup: " + in);
+			LOG.warn("Unable to parse de.tuberlin.dima.schubotz.fse.wiki using Jsoup: " + in);
 			return;
 		}
 		String sectionLatex = ExtractHelper.extractLatex(LatexElements, STR_SPLIT);

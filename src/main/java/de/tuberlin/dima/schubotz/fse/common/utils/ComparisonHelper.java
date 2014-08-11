@@ -1,4 +1,4 @@
-package de.tuberlin.dima.schubotz.common.utils;
+package de.tuberlin.dima.schubotz.fse.common.utils;
 
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Multiset;
@@ -64,9 +64,9 @@ public class ComparisonHelper {
 
     /**
      * Interface method for calculating MML score.
-     * @param wikiMML stringified mathml of wiki
+     * @param wikiMML stringified mathml of de.tuberlin.dima.schubotz.fse.wiki
      * @param queryMML stringified mathml of query
-     * @return numMatch number of leaf nodes in wiki that also occur in query. does not take into account repeats
+     * @return numMatch number of leaf nodes in de.tuberlin.dima.schubotz.fse.wiki that also occur in query. does not take into account repeats
      */
     public static int calculateMMLScore(String wikiMML, String queryMML) {
         return cmmlLeafScore(wikiMML, queryMML);
@@ -100,7 +100,7 @@ public class ComparisonHelper {
 
         //Java closure workaround
         final int[] score = {0};
-        //Drill down to leaf nodes in wiki, if in query hashset add to score
+        //Drill down to leaf nodes in de.tuberlin.dima.schubotz.fse.wiki, if in query hashset add to score
         wikiDoc.traverse(new NodeVisitor() {
             @Override
             public void head(Node node, int depth) {

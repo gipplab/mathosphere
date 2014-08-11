@@ -1,12 +1,14 @@
-package de.tuberlin.dima.schubotz.wiki.mappers;
+package de.tuberlin.dima.schubotz.fse.wiki.mappers;
 
 import eu.stratosphere.api.java.functions.FlatMapFunction;
 import eu.stratosphere.util.Collector;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.web.util.HtmlUtils;
 
 /**
- * Cleans up and formats wiki text TODO no known better way
+ * Cleans up and formats de.tuberlin.dima.schubotz.fse.wiki text TODO no known better way
  * Required due to Stratosphere split on {@link de.tuberlin.dima.schubotz.wiki.WikiProgram#WIKI_SEPARATOR}
  * Returns HTML/XML with unescaped entities in them.
  */

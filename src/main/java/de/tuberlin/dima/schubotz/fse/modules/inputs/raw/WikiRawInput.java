@@ -3,7 +3,7 @@ package de.tuberlin.dima.schubotz.fse.modules.inputs.raw;
 import de.tuberlin.dima.schubotz.fse.settings.DataStorage;
 import de.tuberlin.dima.schubotz.fse.settings.SettingNames;
 import de.tuberlin.dima.schubotz.fse.settings.Settings;
-import de.tuberlin.dima.schubotz.wiki.mappers.WikiQueryCleaner;
+import de.tuberlin.dima.schubotz.fse.wiki.mappers.WikiQueryCleaner;
 import eu.stratosphere.api.java.DataSet;
 import eu.stratosphere.api.java.ExecutionEnvironment;
 import eu.stratosphere.api.java.io.TextInputFormat;
@@ -48,6 +48,8 @@ public class WikiRawInput implements RawInput {
         options.addOption(QUERY_FILE);
     }
 
+    private static final String WIKI_SEPARATOR = "" ;
+
     @Override
     public Collection<Option> getOptionsAsIterable() {
         return Collections.emptyList();
@@ -60,12 +62,11 @@ public class WikiRawInput implements RawInput {
         formatQuery.setDelimiter(QUERY_SEPARATOR);
         final DataSet<String> rawWikiQueryText = new DataSource<>(env, formatQuery, BasicTypeInfo.STRING_TYPE_INFO);
         data.setQuerySet(rawWikiQueryText.flatMap(new WikiQueryCleaner()));
-
-        TextInputFormat formatWiki = new TextInputFormat(new Path(wikiInput));
+        /*TextInputFormat formatWiki = new TextInputFormat(new Path(wikiInput));
         //this will leave a null doc at the end and a useless doc at the beginning. also, each will be missing a </page>
         formatWiki.setDelimiter(WIKI_SEPARATOR);
         DataSet<String> rawWikiText = new DataSource<>(env, formatWiki, BasicTypeInfo.STRING_TYPE_INFO);
         DataSet<String> cleanWikiText = rawWikiText.flatMap(new WikiCleaner());
-
+*/
     }
 }

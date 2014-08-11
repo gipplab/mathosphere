@@ -1,10 +1,8 @@
-package de.tuberlin.dima.schubotz.common.utils;
+package de.tuberlin.dima.schubotz.fse.common.utils;
 
 import com.google.common.collect.HashMultiset;
 import de.tuberlin.dima.schubotz.fse.MainProgram;
 import de.tuberlin.dima.schubotz.fse.types.DataTuple;
-import de.tuberlin.dima.schubotz.wiki.WikiProgram;
-import de.tuberlin.dima.schubotz.wiki.types.WikiTuple;
 import eu.stratosphere.api.java.DataSet;
 import eu.stratosphere.api.java.ExecutionEnvironment;
 import eu.stratosphere.api.java.io.CsvReader;

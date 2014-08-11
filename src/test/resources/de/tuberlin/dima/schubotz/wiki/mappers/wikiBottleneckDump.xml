@@ -5729,7 +5729,7 @@ In materials science, crystallographic [[texture (crystalline)|texture]] (or pre
   |publisher = [[Cambridge]]
   |year = 2000
   |isbn = 978-0-521-79420-6}}&lt;/ref&gt;  
-The most common definition of the angles is due to Bunge and corresponds to the ZXZ convention.  It is important to note, however, that the application generally involves axis transformations of tensor quantities, i.e. passive rotations.  Thus the matrix that corresponds to the Bunge Euler angles is the transpose of that shown in the table above.&lt;ref&gt;{{Citation
+The most de.tuberlin.dima.schubotz.common definition of the angles is due to Bunge and corresponds to the ZXZ convention.  It is important to note, however, that the application generally involves axis transformations of tensor quantities, i.e. passive rotations.  Thus the matrix that corresponds to the Bunge Euler angles is the transpose of that shown in the table above.&lt;ref&gt;{{Citation
   |last = Bunge
   |first = H.
   |title = Texture Analysis in Materials Science: Mathematical Methods
@@ -5835,7 +5835,7 @@ Many mobile computing devices contain [[accelerometer]]s which can determine the
 [[Category:Analytic geometry]]</text>
       <sha1>44h0ct9j54y5p4xeetrg9tyg5phrkf6</sha1>
       <model>wikitext</model>
-      <format>text/x-wiki</format>
+      <format>text/x-de.tuberlin.dima.schubotz.fse.wiki</format>
     </revision>
   </page>
 </mediawiki>

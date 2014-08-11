@@ -44,7 +44,7 @@
 == Wikipedia subtask ==</text>
       <sha1>p8pdteca0b4b74brw76li33cczi57vh</sha1>
       <model>wikitext</model>
-      <format>text/x-wiki</format>
+      <format>text/x-de.tuberlin.dima.schubotz.fse.wiki</format>
     </revision>
   </page>
   <page>
@@ -348,7 +348,7 @@ The albedos of [[planet]]s, [[Natural satellite|satellites]] and [[asteroid]]s c
 
 The overall albedo of the [[Moon]] is around 0.12, but it is strongly directional and non-Lambertian, displaying also a strong [[opposition effect]].&lt;ref name=&quot;medkeff&quot; /&gt; While such reflectance properties are different from those of any terrestrial terrains, they are typical of the [[regolith]] surfaces of airless solar system bodies.
 
-Two common albedos that are used in astronomy are the (V-band) [[geometric albedo]] (measuring brightness when illumination comes from directly behind the observer) and the [[Bond albedo]] (measuring total proportion of electromagnetic energy reflected). Their values can differ significantly, which is a common source of confusion.
+Two de.tuberlin.dima.schubotz.common albedos that are used in astronomy are the (V-band) [[geometric albedo]] (measuring brightness when illumination comes from directly behind the observer) and the [[Bond albedo]] (measuring total proportion of electromagnetic energy reflected). Their values can differ significantly, which is a de.tuberlin.dima.schubotz.common source of confusion.
 
 In detailed studies, the directional reflectance properties of astronomical bodies are often expressed in terms of the five [[Hapke parameters]] which semi-empirically describe the variation of albedo with [[phase angle (astronomy)|phase angle]], including a characterization of the opposition effect of [[regolith]] surfaces.
 
@@ -582,7 +582,7 @@ Human activities (e.g. deforestation, farming, and urbanization) change the albe
 [[Category:Radiation]]</text>
       <sha1>pt1i41wab0bv5tx8a2b60kwhau9rfef</sha1>
       <model>wikitext</model>
-      <format>text/x-wiki</format>
+      <format>text/x-de.tuberlin.dima.schubotz.fse.wiki</format>
     </revision>
   </page>
   <page>
@@ -1416,7 +1416,7 @@ In general application such an oversight will lead to the average value artifici
 [[it:Media (statistica)#Media aritmetica]]</text>
       <sha1>r585efk38t0ij6aujtoskijjeuoggsm</sha1>
       <model>wikitext</model>
-      <format>text/x-wiki</format>
+      <format>text/x-de.tuberlin.dima.schubotz.fse.wiki</format>
     </revision>
   </page>
 </mediawiki>

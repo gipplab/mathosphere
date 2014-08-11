@@ -1,9 +1,9 @@
 package de.tuberlin.dima.schubotz.fse;
 
-import de.tuberlin.dima.schubotz.common.utils.SafeLogWrapper;
+import de.tuberlin.dima.schubotz.fse.common.utils.SafeLogWrapper;
+import de.tuberlin.dima.schubotz.fse.client.ClientConsole;
 import de.tuberlin.dima.schubotz.fse.modules.Module;
 import de.tuberlin.dima.schubotz.fse.modules.algorithms.Algorithm;
-import de.tuberlin.dima.schubotz.fse.client.ClientConsole;
 import de.tuberlin.dima.schubotz.fse.modules.inputs.Input;
 import de.tuberlin.dima.schubotz.fse.settings.DataStorage;
 import de.tuberlin.dima.schubotz.fse.settings.SettingNames;
@@ -21,7 +21,10 @@ import java.util.regex.Pattern;
  */
 
 public class MainProgram {
-	/**
+    public static final String STR_SPLIT = "" ;
+    public static final String DOCUMENT_SEPARATOR = "";
+    public static final String QUERY_SEPARATOR = "";
+    /**
 	 * Main execution environment for Stratosphere.
 	 */
 	private static ExecutionEnvironment env;

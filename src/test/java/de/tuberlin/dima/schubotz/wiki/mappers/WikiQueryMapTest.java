@@ -4,6 +4,7 @@ import de.tuberlin.dima.schubotz.wiki.types.WikiQueryTuple;
 import eu.stratosphere.api.java.DataSet;
 import org.junit.Ignore;
 import org.junit.Test;
+import de.tuberlin.dima.schubotz.fse.wiki.mappers.WikiQueryMapper;
 
 
 /**

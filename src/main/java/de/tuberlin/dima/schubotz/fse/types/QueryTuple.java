@@ -1,12 +1,13 @@
 package de.tuberlin.dima.schubotz.fse.types;
 
-import eu.stratosphere.api.java.tuple.Tuple3;
+
+import eu.stratosphere.api.java.tuple.Tuple4;
 
 /**
  * Tuple storing data extracted from queries from main task.
  */
 @SuppressWarnings("serial")
-public class QueryTuple extends Tuple3<String,String,String> {
+public class QueryTuple extends Tuple4<String,String,String,String> {
 	private String str_split;
 	
 	/**
@@ -62,6 +63,13 @@ public class QueryTuple extends Tuple3<String,String,String> {
 			this.f2 = keyword;
 		}
 	}
+    // TODO: fix
+    public String getMML() {
+        return this.f2;
+    }
+    public String getPMML() {
+        return this.f3;
+    }
 	@Override
 	public String toString() {
 		return this.f0 + "," + this.f1 + "," + this.f2;

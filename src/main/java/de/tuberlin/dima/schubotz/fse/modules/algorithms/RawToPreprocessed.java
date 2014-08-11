@@ -1,14 +1,16 @@
+/*
 package de.tuberlin.dima.schubotz.fse.modules.algorithms;
 
-import de.tuberlin.dima.schubotz.common.utils.CSVHelper;
+import CSVHelper;
 import de.tuberlin.dima.schubotz.fse.modules.inputs.Input;
-import de.tuberlin.dima.schubotz.wiki.mappers.WikiCleaner;
-import de.tuberlin.dima.schubotz.wiki.mappers.WikiQueryCleaner;
-import de.tuberlin.dima.schubotz.wiki.mappers.WikiQueryMapper;
-import de.tuberlin.dima.schubotz.wiki.preprocess.ProcessLatexWikiMapper;
-import de.tuberlin.dima.schubotz.wiki.preprocess.ProcessWikiMapper;
-import de.tuberlin.dima.schubotz.wiki.types.WikiQueryTuple;
-import de.tuberlin.dima.schubotz.wiki.types.WikiTuple;
+import de.tuberlin.dima.schubotz.fse.settings.DataStorage;
+import de.tuberlin.dima.schubotz.fse.types.QueryTuple;
+import de.tuberlin.dima.schubotz.fse.types.WikiTuple;
+import WikiCleaner;
+import WikiQueryCleaner;
+import WikiQueryMapper;
+import ProcessLatexWikiMapper;
+import ProcessWikiMapper;
 import eu.stratosphere.api.java.DataSet;
 import eu.stratosphere.api.java.ExecutionEnvironment;
 import eu.stratosphere.api.java.aggregation.Aggregations;
@@ -25,9 +27,11 @@ import org.apache.commons.cli.Option;
 import java.util.Collection;
 import java.util.Collections;
 
+*/
 /**
  * Created by jjl4 on 8/7/14.
- */
+ *//*
+
 public class RawToPreprocessed implements Algorithm {
     static {
         //Load all settings
@@ -41,8 +45,8 @@ public class RawToPreprocessed implements Algorithm {
 
     public void configure(ExecutionEnvironment env, DataStorage data) {
         env = ExecutionEnvironment.getExecutionEnvironment();
-
-        DataSet<WikiQueryTuple> wikiQuerySet = cleanWikiQueryText.flatMap(new WikiQueryMapper(STR_SPLIT));
+        DataSet<String> cleanWikiQueryText = rawWikiQueryText.flatMap(new WikiQueryCleaner());
+        DataSet<QueryTuple> wikiQuerySet = cleanWikiQueryText.flatMap(new WikiQueryMapper(STR_SPLIT));
 
         DataSet<Tuple2<String, Integer>> latexWikiResults = cleanWikiText.flatMap(new ProcessLatexWikiMapper(STR_SPLIT))
                 .withBroadcastSet(wikiQuerySet, "Queries")
@@ -72,3 +76,4 @@ public class RawToPreprocessed implements Algorithm {
 
     }
 }
+*/

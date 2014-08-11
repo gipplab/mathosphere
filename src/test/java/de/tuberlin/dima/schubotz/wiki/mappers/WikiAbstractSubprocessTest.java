@@ -17,6 +17,8 @@ import eu.stratosphere.core.fs.Path;
 import org.apache.commons.io.FileUtils;
 
 import org.junit.Ignore;
+import de.tuberlin.dima.schubotz.fse.wiki.mappers.WikiCleaner;
+import de.tuberlin.dima.schubotz.fse.wiki.mappers.WikiQueryCleaner;
 
 import java.io.File;
 

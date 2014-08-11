@@ -1,10 +1,12 @@
-package de.tuberlin.dima.schubotz.wiki.preprocess;
+package de.tuberlin.dima.schubotz.fse.wiki.preprocess;
 
-import de.tuberlin.dima.schubotz.common.utils.ExtractHelper;
-import de.tuberlin.dima.schubotz.wiki.types.WikiTuple;
+import de.tuberlin.dima.schubotz.fse.common.utils.ExtractHelper;
+import de.tuberlin.dima.schubotz.fse.types.WikiTuple;
 import eu.stratosphere.api.java.functions.FlatMapFunction;
 import eu.stratosphere.util.Collector;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -12,7 +14,7 @@ import org.jsoup.parser.Parser;
 import org.jsoup.select.Elements;
 
 /**
- * Map wiki text to {@link de.tuberlin.dima.schubotz.wiki.types.WikiTuple}
+ * Map de.tuberlin.dima.schubotz.fse.wiki text to {@link de.tuberlin.dima.schubotz.fse.types.WikiTuple}
  */
 @SuppressWarnings("serial")
 public class ProcessWikiMapper extends FlatMapFunction<String, WikiTuple> {
@@ -25,7 +27,7 @@ public class ProcessWikiMapper extends FlatMapFunction<String, WikiTuple> {
     private final Log LOG = LogFactory.getLog(ProcessWikiMapper.class);
 
     /**
-     * @param {@link de.tuberlin.dima.schubotz.wiki.WikiProgram#STR_SPLIT} passed in to ensure serializability
+     * @param {@link de.tuberlin.dima.schubotz.de.tuberlin.dima.schubotz.fse.wiki.WikiProgram#STR_SPLIT} passed in to ensure serializability
      */
     @SuppressWarnings("hiding")
     public ProcessWikiMapper(String STR_SPLIT) {
@@ -33,17 +35,17 @@ public class ProcessWikiMapper extends FlatMapFunction<String, WikiTuple> {
     }
 
     /**
-     * Takes in wiki string, parses wikiID and latex
+     * Takes in de.tuberlin.dima.schubotz.fse.wiki string, parses wikiID and latex
      */
     @Override
     public void flatMap (String in, Collector<WikiTuple> out) {
         final Document doc;
 
         try {
-            doc = Jsoup.parse(in, "", Parser.xmlParser()); //using jsoup b/c wiki html is invalid, also handles entities
+            doc = Jsoup.parse(in, "", Parser.xmlParser()); //using jsoup b/c de.tuberlin.dima.schubotz.fse.wiki html is invalid, also handles entities
         } catch (final RuntimeException e) {
             if (LOG.isWarnEnabled()) {
-                LOG.warn("Unable to parse XML in wiki: " + in);
+                LOG.warn("Unable to parse XML in de.tuberlin.dima.schubotz.fse.wiki: " + in);
             }
             e.printStackTrace();
             return;
@@ -97,7 +99,7 @@ public class ProcessWikiMapper extends FlatMapFunction<String, WikiTuple> {
 
 
     /**
-     * Processes <math> elements per wiki and attaches
+     * Processes <math> elements per de.tuberlin.dima.schubotz.fse.wiki and attaches
      * info to string builders given in parameter
      * @param MathElement
      * @param docID
@@ -127,7 +129,7 @@ public class ProcessWikiMapper extends FlatMapFunction<String, WikiTuple> {
         }
         final Elements MMLElements = SemanticElement.children();
 
-        final Elements PmmlElements = new Elements(); //how are we handling multiple math tags per wiki?
+        final Elements PmmlElements = new Elements(); //how are we handling multiple math tags per de.tuberlin.dima.schubotz.fse.wiki?
         final Elements CmmlElements = new Elements();
         final Elements LatexElements = new Elements();
         //All data is well formed: 1) Presentation MML 2) annotation-CMML 3) annotation-TEX

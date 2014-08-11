@@ -1,10 +1,9 @@
-package de.tuberlin.dima.schubotz.common.utils;
+package de.tuberlin.dima.schubotz.fse.common.utils;
 
 import org.apache.commons.logging.LogFactory;
 import org.apache.commons.logging.Log;
 import org.apache.log4j.Category;
 import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
 
 import java.io.Serializable;
 import java.util.Arrays;

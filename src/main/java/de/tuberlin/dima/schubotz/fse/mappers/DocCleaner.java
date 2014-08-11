@@ -1,6 +1,6 @@
 package de.tuberlin.dima.schubotz.fse.mappers;
 
-import de.tuberlin.dima.schubotz.common.utils.SafeLogWrapper;
+import de.tuberlin.dima.schubotz.fse.common.utils.SafeLogWrapper;
 import eu.stratosphere.api.java.functions.FlatMapFunction;
 import eu.stratosphere.util.Collector;
 
