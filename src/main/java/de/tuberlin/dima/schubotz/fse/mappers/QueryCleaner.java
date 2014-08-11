@@ -14,6 +14,7 @@ public class QueryCleaner extends FlatMapFunction<String, String> {
 	
 	@Override
 	public void flatMap(String in, Collector<String> out) throws Exception {
+        //TODO: check if \r is required
 		if (in.trim().length() == 0 || in.startsWith("\r\n</topics>")) {
 			if (LOG.isWarnEnabled()) {
 				LOG.warn("Corrupt query " + in); 
