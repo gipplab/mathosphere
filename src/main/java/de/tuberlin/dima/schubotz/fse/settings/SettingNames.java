@@ -46,7 +46,9 @@ public enum SettingNames {
     /**
      * Document total
      */
-    NUM_DOC("n");
+    NUM_DOC("n"),
+    QUERY_SEPARATOR("qs"),
+    DOCUMENT_SEPARATOR("ds");
 
 
     private final String cmdLineOptionLetter;

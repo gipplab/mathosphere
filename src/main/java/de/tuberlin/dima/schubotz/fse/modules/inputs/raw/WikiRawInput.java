@@ -1,5 +1,6 @@
 package de.tuberlin.dima.schubotz.fse.modules.inputs.raw;
 
+import de.tuberlin.dima.schubotz.fse.modules.inputs.Input;
 import de.tuberlin.dima.schubotz.fse.settings.DataStorage;
 import de.tuberlin.dima.schubotz.fse.settings.SettingNames;
 import de.tuberlin.dima.schubotz.fse.settings.Settings;
@@ -19,7 +20,7 @@ import java.util.Collections;
 /**
  * Created by jjl4 on 8/7/14.
  */
-public class WikiRawInput implements RawInput {
+public class WikiRawInput implements Input {
     /**
      * TODO Consider moving these into command line options/settings properties
      */
