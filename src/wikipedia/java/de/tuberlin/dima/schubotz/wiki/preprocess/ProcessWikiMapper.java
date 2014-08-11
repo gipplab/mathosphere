@@ -4,8 +4,7 @@ import de.tuberlin.dima.schubotz.common.utils.ExtractHelper;
 import de.tuberlin.dima.schubotz.wiki.types.WikiTuple;
 import eu.stratosphere.api.java.functions.FlatMapFunction;
 import eu.stratosphere.util.Collector;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;

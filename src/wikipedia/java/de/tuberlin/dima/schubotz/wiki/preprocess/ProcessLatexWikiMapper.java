@@ -1,13 +1,13 @@
 package de.tuberlin.dima.schubotz.wiki.preprocess;
 
 import de.tuberlin.dima.schubotz.common.utils.ExtractHelper;
+import de.tuberlin.dima.schubotz.common.utils.SafeLogWrapper;
 import de.tuberlin.dima.schubotz.wiki.types.WikiQueryTuple;
 import eu.stratosphere.api.java.functions.FlatMapFunction;
 import eu.stratosphere.api.java.tuple.Tuple2;
 import eu.stratosphere.configuration.Configuration;
 import eu.stratosphere.util.Collector;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
@@ -27,7 +27,7 @@ public class ProcessLatexWikiMapper extends FlatMapFunction<String,Tuple2<String
 	private String STR_SPLIT;
 	private HashSet<String> latex;
 	
-	Log LOG = LogFactory.getLog(ProcessLatexWikiMapper.class);
+	SafeLogWrapper LOG = new SafeLogWrapper(ProcessLatexWikiMapper.class);
 	
 	@SuppressWarnings("hiding")
 	public ProcessLatexWikiMapper(String STR_SPLIT) {
@@ -54,9 +54,7 @@ public class ProcessLatexWikiMapper extends FlatMapFunction<String,Tuple2<String
 			doc = Jsoup.parse(in); //using jsoup b/c wiki html is TERRIBLE
 			LatexElements = doc.select("annotation[encoding=application/x-tex]");
 		} catch (Exception e) {
-			if (LOG.isWarnEnabled()) {
-				LOG.warn("Unable to parse wiki using Jsoup: " + in);
-			}
+			LOG.warn("Unable to parse wiki using Jsoup: " + in);
 			return;
 		}
 		String sectionLatex = ExtractHelper.extractLatex(LatexElements, STR_SPLIT);

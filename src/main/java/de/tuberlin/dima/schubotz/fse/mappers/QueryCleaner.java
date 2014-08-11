@@ -1,25 +1,22 @@
 package de.tuberlin.dima.schubotz.fse.mappers;
 
+import de.tuberlin.dima.schubotz.common.utils.SafeLogWrapper;
 import eu.stratosphere.api.java.functions.FlatMapFunction;
 import eu.stratosphere.util.Collector;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+
 
 /**
  * Cleans main task queries. TODO find way to do this using stratosphere built in data input?
  * Required due to Stratosphere split on {@link de.tuberlin.dima.schubotz.fse.MainProgram#QUERY_SEPARATOR}
  */
 public class QueryCleaner extends FlatMapFunction<String, String> {
-	Log LOG = LogFactory.getLog(QueryCleaner.class);
-	
+    private static final SafeLogWrapper LOG = new SafeLogWrapper(QueryCleaner.class);
 	@Override
 	public void flatMap(String in, Collector<String> out) throws Exception {
         //TODO: check if \r is required
-		if (in.trim().length() == 0 || in.startsWith("\r\n</topics>")) {
-			if (LOG.isWarnEnabled()) {
-				LOG.warn("Corrupt query " + in); 
-			}
-			return; 
+		if (in.trim().isEmpty() || in.startsWith("\r\n</topics>")) {
+            LOG.warn("Corrupt query ", in);
+			return;
 		}
 		if (in.startsWith("<?xml")) {
 			in += "</topic></topics>";

@@ -2,12 +2,12 @@ package de.tuberlin.dima.schubotz.fse.mappers;
 
 import com.google.common.collect.HashMultiset;
 import de.tuberlin.dima.schubotz.common.utils.ExtractHelper;
+import de.tuberlin.dima.schubotz.common.utils.SafeLogWrapper;
 import de.tuberlin.dima.schubotz.common.utils.XMLHelper;
 import de.tuberlin.dima.schubotz.fse.types.SectionTuple;
 import eu.stratosphere.api.java.functions.FlatMapFunction;
 import eu.stratosphere.util.Collector;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+
 import org.jsoup.Jsoup;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
@@ -20,28 +20,28 @@ public class SectionMapper extends FlatMapFunction<String, SectionTuple> {
 	/**
 	 * Pattern for extracting the filename from the ARXIV tag.
 	 */
-	final static Pattern filnamePattern = Pattern
+	static final Pattern filnamePattern = Pattern
 	         .compile( "<ARXIVFILESPLIT\\\\nFilename=\"\\./\\d+/(.*?)/\\1_(\\d+)_(\\d+)\\.xhtml\">" );
-	private static final Log LOG = LogFactory.getLog(SectionMapper.class);
+	private static final SafeLogWrapper LOG = new SafeLogWrapper(SectionMapper.class);
 	/**
 	 * {@link de.tuberlin.dima.schubotz.fse.MainProgram#WORD_SPLIT}
 	 */
-	Pattern WORD_SPLIT;
+	private Pattern WORD_SPLIT;
 	/**
 	 * {@link de.tuberlin.dima.schubotz.fse.MainProgram#STR_SPLIT}
 	 */
-	String STR_SPLIT;
-	
-	HashMultiset<String> keywords;
+	private String STR_SPLIT;
+
+	private HashMultiset<String> keywords;
 
 	/**
-	 * @param WORD_SPLIT {@link de.tuberlin.dima.schubotz.fse.MainProgram#WORD_SPLIT} sent as parameter to ensure serializability. 
+	 * @param WORD_SPLIT {@link de.tuberlin.dima.schubotz.fse.MainProgram#WORD_SPLIT} sent as parameter to ensure serializability.
 	 * @param STR_SPLIT {@link de.tuberlin.dima.schubotz.fse.MainProgram#STR_SPLIT} sent as parameter to ensure serializability.
 	 * @param keywords set of keywords in queries. used to determine whether to include a keyword or not.
 	 */
 	@SuppressWarnings("hiding")
 	public SectionMapper (Pattern WORD_SPLIT, String STR_SPLIT, HashMultiset<String> keywords) {
-		this.WORD_SPLIT = WORD_SPLIT;		
+		this.WORD_SPLIT = WORD_SPLIT;
 		this.STR_SPLIT = STR_SPLIT;
 		this.keywords = keywords;
 	}
@@ -65,10 +65,8 @@ public class SectionMapper extends FlatMapFunction<String, SectionTuple> {
 		if ( matcher.find() ) {
 			docID = matcher.group(1) + "_" + matcher.group(2) + "_" + matcher.group(3) + ".xhtml";
 		} else {
-			if (LOG.isWarnEnabled()) {
-				LOG.warn("null docID! (possible non ARXIV document input)");
-			}
-			return; 
+			LOG.warn("null docID! (possible non ARXIV document input)");
+			return;
 		}
 		
 		//Parse string as XML
@@ -83,9 +81,7 @@ public class SectionMapper extends FlatMapFunction<String, SectionTuple> {
 		try {
 			plainText = Jsoup.parse(value).text();
 		} catch (Exception e) {
-			if (LOG.isWarnEnabled()) {
-				LOG.warn("Jsoup could not parse the document: ", e);
-			}
+			LOG.warn("Jsoup could not parse the document: ", e);
 			return;
 		}
 		String[] tokens = WORD_SPLIT.split(plainText.toLowerCase()); 

@@ -1,12 +1,12 @@
 package de.tuberlin.dima.schubotz.fse.preprocess;
 
+import de.tuberlin.dima.schubotz.common.utils.SafeLogWrapper;
 import de.tuberlin.dima.schubotz.fse.types.QueryTuple;
 import eu.stratosphere.api.java.functions.FlatMapFunction;
 import eu.stratosphere.api.java.tuple.Tuple2;
 import eu.stratosphere.configuration.Configuration;
 import eu.stratosphere.util.Collector;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+
 import org.jsoup.Jsoup;
 
 import java.util.Arrays;
@@ -20,7 +20,7 @@ public class KeywordDocMapper extends FlatMapFunction<String, Tuple2<String,Inte
 	HashSet<String> keywords;
 	Pattern WORD_SPLIT;
 	String STR_SPLIT;
-	private static final Log LOG = LogFactory.getLog(KeywordDocMapper.class);
+	private static final SafeLogWrapper LOG = new SafeLogWrapper(KeywordDocMapper.class);
 	
 	@SuppressWarnings("hiding")
 	public KeywordDocMapper(Pattern WORD_SPLIT, String STR_SPLIT) {
@@ -52,9 +52,7 @@ public class KeywordDocMapper extends FlatMapFunction<String, Tuple2<String,Inte
 		try {
 			plainText = Jsoup.parse(value).text();
 		} catch (Exception e){
-			if (LOG.isWarnEnabled()) {
-				LOG.warn("JSoup could not parse document: " + value, e);
-			}
+			LOG.warn("JSoup could not parse document: ", value, e);
 			e.printStackTrace();
 			return;
 		}

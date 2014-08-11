@@ -1,68 +1,91 @@
 package de.tuberlin.dima.schubotz.common.utils;
 
 import com.google.common.collect.HashMultiset;
+import de.tuberlin.dima.schubotz.fse.MainProgram;
+import de.tuberlin.dima.schubotz.fse.types.DataTuple;
 import de.tuberlin.dima.schubotz.wiki.WikiProgram;
 import de.tuberlin.dima.schubotz.wiki.types.WikiTuple;
 import eu.stratosphere.api.java.DataSet;
 import eu.stratosphere.api.java.ExecutionEnvironment;
 import eu.stratosphere.api.java.io.CsvReader;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import eu.stratosphere.core.fs.FileSystem;
+
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Scanner;
+import java.util.regex.Pattern;
 
 /**
  * Helper for preprocessed generated CSV files
  */
 public class CSVHelper {
-	public static Log LOG = LogFactory.getLog(CSVHelper.class);
-    public static final String CSV_LINE_SEPARATOR = WikiProgram.CSV_LINE_SEPARATOR;
-    public static final char CSV_FIELD_SEPARATOR = WikiProgram.CSV_FIELD_SEPARATOR.charAt(0);
+    private static final SafeLogWrapper LOG = new SafeLogWrapper(CSVHelper.class);
+    public static final String CSV_LINE_SEPARATOR = MainProgram.CSV_LINE_SEPARATOR;
+    public static final char CSV_FIELD_SEPARATOR = MainProgram.CSV_FIELD_SEPARATOR.charAt(0);
+    private static final Pattern CSV_LINE_SPLIT = Pattern.compile(CSV_LINE_SEPARATOR);
+    private static final Pattern CSV_FIELD_SPLIT = Pattern.compile(String.valueOf(CSV_FIELD_SEPARATOR));
 	/**
+     * Attempts to read CSV into multiset. Throws RuntimeExceptions if resource is badly formatted or unavailable.
 	 * @param in path + name of file to read from
 	 * @return HashMultiset, where index is first CSV field, count is second CSV field
-	 * @throws FileNotFoundException
-	 * @throws IOException
 	 */
-	public static HashMultiset<String> csvToMultiset(String in) throws FileNotFoundException, IOException {
-		HashMultiset<String> out = HashMultiset.create();
-        final InputStream is = new FileInputStream(in);
-        try {
+	public static HashMultiset<String> csvToMultiset(String in) throws IllegalArgumentException {
+        if (in == null) {
+            throw new IllegalArgumentException("Filename given cannot be null.");
+        }
+		final HashMultiset<String> out = HashMultiset.create();
+        try (final InputStream is = new FileInputStream(in)) {
             final Scanner s = new Scanner(is, "UTF-8");
             s.useDelimiter("\\A");
             //TODO more hacks, make this more efficient?
-            String[] lines = s.next().split(CSV_LINE_SEPARATOR);
-            for (String line : lines) {
-                String[] parts = line.split(String.valueOf(CSV_FIELD_SEPARATOR));
-                try {
-                    out.add(parts[0], Integer.valueOf(parts[1]).intValue());
-                } catch (ArrayIndexOutOfBoundsException e) {
-                    if (LOG.isWarnEnabled()) {
-                        LOG.warn("Bad format in CSV!");
-                        LOG.warn("Line: " + line);
+            final String[] lines = CSV_LINE_SPLIT.split(s.next());
+            for (final String line : lines) {
+                final String[] parts = CSV_FIELD_SPLIT.split(line);
+                if(parts.length < 2 || parts[0].isEmpty() || parts[1].isEmpty()) {
+                    LOG.warn("Bad format in CSV: ", in);
+                    LOG.warn("Line: ", line);
+                }else {
+                    try {
+                        out.add(parts[0], Integer.valueOf(parts[1]).intValue());
+                    } catch (final NumberFormatException ignore) {
+                        LOG.warn("Bad number format in CSV: ", in);
+                        LOG.warn("Line: ", line);
                     }
-                    continue;
                 }
             }
-        } finally {
-            is.close();
+        } catch (final FileNotFoundException ignore) {
+            throw new IllegalArgumentException("Unable to find CSV file: " + in);
+        } catch (final IOException e) {
+            LOG.fatal(e.getLocalizedMessage());
+            throw new IllegalArgumentException("CSV file: " + in + " is corrupted. Read log for details" +
+                    " (FATAL level must be enabled)");
         }
         return out;
 	}
 
     /**
      * Must be run in stratosphere environment
+     * @param env ExecutionEnvironment
      * @param in filename
      * @return dataset
      */
-    public static DataSet<WikiTuple> csvToWikiTuple(ExecutionEnvironment env, String in) {
-        CsvReader reader = env.readCsvFile(in);
+    public static DataSet<DataTuple> csvToDataTuple(ExecutionEnvironment env, String in) {
+        final CsvReader reader = env.readCsvFile(in);
         reader.fieldDelimiter(CSV_FIELD_SEPARATOR);
         reader.lineDelimiter(CSV_LINE_SEPARATOR);
-        return reader.tupleType(WikiTuple.class);
+        return reader.tupleType(DataTuple.class);
+    }
+
+    /**
+     * Output CSV files from dataset.
+     * @param in dataset to output
+     * @param outputPath path to output
+     */
+    public static void outputCSV(DataSet<?> in, String outputPath) {
+        in.writeAsCsv(outputPath,
+                CSV_LINE_SEPARATOR, String.valueOf(CSV_FIELD_SEPARATOR), FileSystem.WriteMode.OVERWRITE);
     }
 }

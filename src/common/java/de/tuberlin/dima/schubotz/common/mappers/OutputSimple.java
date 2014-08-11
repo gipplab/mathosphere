@@ -9,20 +9,17 @@ import java.util.Iterator;
 
 /**
  * Adds rank and runtag. Outputs 1000 results per query.
- * @param ResultTuple
- * @return OutputSimpleTuple
- *
  */
 @SuppressWarnings("serial")
 public class OutputSimple extends GroupReduceFunction<ResultTuple, OutputSimpleTuple> {
 	/**
 	 * See {@link de.tuberlin.dima.schubotz.wiki.WikiProgram#MaxResultsPerQuery}
 	 */
-	int queryLimit;
+	private final int queryLimit;
 	/**
 	 * See {@link de.tuberlin.dima.schubotz.wiki.WikiProgram#RUNTAG} 
 	 */
-	String runtag;
+	private final String runtag;
 	
 	/**
 	 * @param queryLimit {@link de.tuberlin.dima.schubotz.wiki.WikiProgram#MaxResultsPerQuery} passed in for serializability
@@ -33,15 +30,20 @@ public class OutputSimple extends GroupReduceFunction<ResultTuple, OutputSimpleT
 		this.queryLimit = queryLimit;
 		this.runtag = runtag;
 	}
-	
+
+    /**
+     * takes in {@link ResultTuple} per query, maps to {@link OutputSimple#queryLimit} number of
+     * {@link OutputSimpleTuple}OutputSimpleTuple
+     * @param in
+     * @param out
+     */
 	@Override
 	public void reduce(Iterator<ResultTuple> in, Collector<OutputSimpleTuple> out) {
 		int current = 0;
-		ResultTuple curTup;
 		// for each element in group
 		while(in.hasNext() && current < queryLimit) {
-			curTup = in.next();
-			out.collect(new OutputSimpleTuple(curTup.f0,curTup.f1,new Integer(current+1),curTup.f2,runtag));
+			final ResultTuple curTup = in.next();
+			out.collect(new OutputSimpleTuple(curTup.f0,curTup.f1,current+1,curTup.f2,runtag));
 			current++;
 		}
 	}
