@@ -1,0 +1,3 @@
+[submodule "lib/MathMLCan"]
+	path = lib/MathMLCan
+	url = https://github.com/TU-Berlin/MathMLCan.git
