@@ -1,11 +1,13 @@
-package de.tuberlin.dima.schubotz.wiki.mappers;
+package de.tuberlin.dima.schubotz.fse.wiki.mappers;
 
-import de.tuberlin.dima.schubotz.common.utils.ExtractHelper;
+import de.tuberlin.dima.schubotz.fse.common.utils.ExtractHelper;
 import de.tuberlin.dima.schubotz.fse.MainProgram;
-import de.tuberlin.dima.schubotz.wiki.types.WikiQueryTuple;
+import de.tuberlin.dima.schubotz.fse.types.QueryTuple;
 import eu.stratosphere.api.java.functions.FlatMapFunction;
 import eu.stratosphere.util.Collector;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -14,7 +16,7 @@ import org.jsoup.select.Elements;
 
 
 @SuppressWarnings("serial")
-public class WikiQueryMapper extends FlatMapFunction<String,WikiQueryTuple>{
+public class WikiQueryMapper extends FlatMapFunction<String,QueryTuple>{
 	Log LOG = LogFactory.getLog(WikiQueryMapper.class);
 	/**
 	 * See {@link MainProgram#STR_SPLIT}
@@ -30,14 +32,14 @@ public class WikiQueryMapper extends FlatMapFunction<String,WikiQueryTuple>{
 	}
 	
 	/**
-	 * Takes in a query, parses and outputs {@link de.tuberlin.dima.schubotz.wiki.types.WikiQueryTuple}
+	 * Takes in a query, parses and outputs {@link de.tuberlin.dima.schubotz.fse.types.QueryTuple}
 	 */
 	@Override
-	public void flatMap(String in, Collector<WikiQueryTuple> out) {
+	public void flatMap(String in, Collector<QueryTuple> out) {
 		Document doc;
 		Element main;
 		try {
-			doc = Jsoup.parse(in, "", Parser.xmlParser()); //using jsoup b/c wiki html is invalid, also handles entities
+			doc = Jsoup.parse(in, "", Parser.xmlParser()); //using jsoup b/c de.tuberlin.dima.schubotz.fse.wiki html is invalid, also handles entities
 			main = doc.getElementsByTag("num").first(); //title is in <num>
 		} catch (Exception e) {
 			if (LOG.isWarnEnabled()) {
@@ -123,7 +125,7 @@ public class WikiQueryMapper extends FlatMapFunction<String,WikiQueryTuple>{
 				LOG.warn("Extract helper failed on query: " + in);
 			}
 		} else {
-			out.collect(new WikiQueryTuple(queryID,latex,cmml,pmml));
+			out.collect(new QueryTuple(queryID,latex,cmml,pmml));
 		}
 	}
 	

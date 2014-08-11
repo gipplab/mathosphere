@@ -1,4 +1,4 @@
-package de.tuberlin.dima.schubotz.common.types;
+package de.tuberlin.dima.schubotz.fse.common.types;
 
 import eu.stratosphere.api.java.tuple.Tuple6;
 

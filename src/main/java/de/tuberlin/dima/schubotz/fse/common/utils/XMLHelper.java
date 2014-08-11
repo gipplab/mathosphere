@@ -1,4 +1,4 @@
-package de.tuberlin.dima.schubotz.common.utils;
+package de.tuberlin.dima.schubotz.fse.common.utils;
 
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Multiset;

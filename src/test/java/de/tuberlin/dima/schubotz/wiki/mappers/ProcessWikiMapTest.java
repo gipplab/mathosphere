@@ -1,14 +1,14 @@
 package de.tuberlin.dima.schubotz.wiki.mappers;
 
-import de.tuberlin.dima.schubotz.wiki.preprocess.ProcessWikiMapper;
+import de.tuberlin.dima.schubotz.fse.wiki.preprocess.ProcessWikiMapper;
 import de.tuberlin.dima.schubotz.wiki.types.WikiTuple;
 import eu.stratosphere.api.java.DataSet;
 import org.junit.Ignore;
 import org.junit.Test;
 
 /**
- * Used to test WikiMapper on the wiki sets with dependency on wikiQuery.expected files.
- * If running tests on full wiki set, the others should be @Ignore annotated.
+ * Used to test WikiMapper on the de.tuberlin.dima.schubotz.fse.wiki sets with dependency on wikiQuery.expected files.
+ * If running tests on full de.tuberlin.dima.schubotz.fse.wiki set, the others should be @Ignore annotated.
  * TODO parameterize this
  */
 public class ProcessWikiMapTest extends WikiAbstractSubprocessTest {
@@ -25,7 +25,7 @@ public class ProcessWikiMapTest extends WikiAbstractSubprocessTest {
 
     }
     /**
-     * Test on full wiki set. Make sure to change inputFilename to wherever dataset is located.
+     * Test on full de.tuberlin.dima.schubotz.fse.wiki set. Make sure to change inputFilename to wherever dataset is located.
      */
     @Ignore
     public void testFullDataset() throws Exception {
@@ -47,7 +47,7 @@ public class ProcessWikiMapTest extends WikiAbstractSubprocessTest {
         testDataMap(outputSet, expectedOutputFilename);
     }
     /**
-     * Test on training wiki (first 50 of dump, used to evaluate current progress)
+     * Test on training de.tuberlin.dima.schubotz.fse.wiki (first 50 of dump, used to evaluate current progress)
      */
     @Test
     public void testTrainingDataset() throws Exception {

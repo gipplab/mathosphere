@@ -1,3 +1,4 @@
+/*
 package de.tuberlin.dima.schubotz.wiki;
 
 import eu.stratosphere.api.common.Plan;
@@ -103,4 +104,4 @@ public class WikiMainIT {
 	}
 
 
-}
+}*/

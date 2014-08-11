@@ -66,14 +66,14 @@
 	<build>
         <resources>
             <resource>
-                <directory>src/common/resources</directory>
+                <directory>src/de.tuberlin.dima.schubotz.common/resources</directory>
                 <includes>
                     <include>**/*.xml</include>
                 </includes>
             </resource>
         </resources>
 		<plugins>
-			<plugin>
+			<!-- <plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>build-helper-maven-plugin</artifactId>
 				<version>1.7</version>
@@ -87,13 +87,13 @@
 						<configuration>
 							<sources>
 								<source>src/wikipedia/java</source>
-								<source>src/common/java</source>
+								<source>src/de.tuberlin.dima.schubotz.common/java</source>
 							</sources>
 						</configuration>
 					</execution>
 				</executions>
 			</plugin>
-			<!-- build as single jar with all dependencies -->
+			<! - - build as single jar with all dependencies -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-shade-plugin</artifactId>
@@ -103,7 +103,7 @@
 					<transformers>
 						<transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
 							<manifestEntries>
-                                <Main-Class>de.tuberlin.dima.schubotz.wiki.preprocess.ProcessWikiProgram</Main-Class>
+                                <Main-Class>de.tuberlin.dima.schubotz.de.tuberlin.dima.schubotz.fse.wiki.preprocess.ProcessWikiProgram</Main-Class>
 								<Pact-Assembler-Class>de.tuberlin.dima.schubotz.fse.FilterMath</Pact-Assembler-Class>
 							</manifestEntries>
 						</transformer>
@@ -145,7 +145,7 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>2.17</version>
             </plugin>
-			<plugin>
+			<!-- <plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-failsafe-plugin</artifactId>
 				<version>2.17</version>
@@ -164,7 +164,7 @@
 						</configuration>
 					</execution>
 				</executions>
-			</plugin>
+			</plugin> -->
 		</plugins>
 	</build>
 </project>

@@ -1,11 +1,12 @@
-package de.tuberlin.dima.schubotz.wiki.mappers;
+package de.tuberlin.dima.schubotz.fse.wiki.mappers;
 
 import com.google.common.collect.HashMultiset;
-import de.tuberlin.dima.schubotz.common.utils.ComparisonHelper;
-import de.tuberlin.dima.schubotz.common.utils.SafeLogWrapper;
+import de.tuberlin.dima.schubotz.fse.common.utils.ComparisonHelper;
+import de.tuberlin.dima.schubotz.fse.common.utils.SafeLogWrapper;
+import de.tuberlin.dima.schubotz.fse.types.QueryTuple;
 import de.tuberlin.dima.schubotz.fse.types.ResultTuple;
-import de.tuberlin.dima.schubotz.wiki.types.WikiQueryTuple;
-import de.tuberlin.dima.schubotz.wiki.types.WikiTuple;
+
+import de.tuberlin.dima.schubotz.fse.types.WikiTuple;
 import eu.stratosphere.api.java.functions.FlatMapFunction;
 import eu.stratosphere.configuration.Configuration;
 import eu.stratosphere.util.Collector;
@@ -17,7 +18,7 @@ import java.util.regex.Pattern;
 
 /**
  * Takes in {@link de.tuberlin.dima.schubotz.wiki.types.WikiTuple},
- * broadcast variable "Queries", maps each wiki to each query
+ * broadcast variable "Queries", maps each de.tuberlin.dima.schubotz.fse.wiki to each query
  * and outputs a score. 
  */
 @SuppressWarnings("serial")
@@ -43,7 +44,7 @@ public class QueryWikiMatcher extends FlatMapFunction<WikiTuple, ResultTuple> {
 	/**
 	 * Query tuples from broadcast variable; assigned in {@link QueryWikiMatcher#open}
 	 */
-	Collection<WikiQueryTuple> queries;
+	Collection<QueryTuple> queries;
 	
 	private static final SafeLogWrapper LOG = new SafeLogWrapper(QueryWikiMatcher.class);
 	
@@ -76,7 +77,7 @@ public class QueryWikiMatcher extends FlatMapFunction<WikiTuple, ResultTuple> {
 		
 
 
-        for (final WikiQueryTuple query : queries) {
+        for (final QueryTuple query : queries) {
             HashMultiset<String> queryLatex;
             //double latexScore;
             LOG.debug(query);

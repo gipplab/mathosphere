@@ -1,6 +1,6 @@
-package de.tuberlin.dima.schubotz.common.mappers;
+package de.tuberlin.dima.schubotz.fse.common.mappers;
 
-import de.tuberlin.dima.schubotz.common.types.OutputSimpleTuple;
+import de.tuberlin.dima.schubotz.fse.common.types.OutputSimpleTuple;
 import de.tuberlin.dima.schubotz.fse.types.ResultTuple;
 import eu.stratosphere.api.java.functions.GroupReduceFunction;
 import eu.stratosphere.util.Collector;

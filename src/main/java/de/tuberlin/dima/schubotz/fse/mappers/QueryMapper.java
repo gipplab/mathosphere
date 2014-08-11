@@ -1,8 +1,8 @@
 package de.tuberlin.dima.schubotz.fse.mappers;
 
-import de.tuberlin.dima.schubotz.common.utils.ExtractHelper;
-import de.tuberlin.dima.schubotz.common.utils.SafeLogWrapper;
-import de.tuberlin.dima.schubotz.common.utils.XMLHelper;
+import de.tuberlin.dima.schubotz.fse.common.utils.ExtractHelper;
+import de.tuberlin.dima.schubotz.fse.common.utils.SafeLogWrapper;
+import de.tuberlin.dima.schubotz.fse.common.utils.XMLHelper;
 import de.tuberlin.dima.schubotz.fse.types.QueryTuple;
 import eu.stratosphere.api.java.functions.FlatMapFunction;
 import eu.stratosphere.util.Collector;

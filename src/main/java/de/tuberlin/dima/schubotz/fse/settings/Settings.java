@@ -1,6 +1,6 @@
 package de.tuberlin.dima.schubotz.fse.settings;
 
-import de.tuberlin.dima.schubotz.common.utils.SafeLogWrapper;
+import de.tuberlin.dima.schubotz.fse.common.utils.SafeLogWrapper;
 import de.tuberlin.dima.schubotz.fse.MainProgram;
 import de.tuberlin.dima.schubotz.fse.modules.algorithms.Algorithm;
 import de.tuberlin.dima.schubotz.fse.modules.inputs.Input;

@@ -1,5 +1,6 @@
 package de.tuberlin.dima.schubotz.common.utils;
 
+import de.tuberlin.dima.schubotz.fse.common.utils.ComparisonHelper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -27,13 +28,13 @@ public class ComparisonHelperTest {
 
     /**
      * Params in form of prefix, expected result.
-     * Prefixes are the common prefix of the test resource
+     * Prefixes are the de.tuberlin.dima.schubotz.de.tuberlin.dima.schubotz.fse.common prefix of the test resource
      * @return array of parameters
      */
     @Parameterized.Parameters
 	public static Collection<Object[]> inputNumDocs() {
 		return Arrays.asList(new Object[][]{
-                {"de/tuberlin/dima/schubotz/common/utils/qvar.MML.Identical", 24.0}
+                {"de/tuberlin/dima/schubotz/de.tuberlin.dima.schubotz.de.tuberlin.dima.schubotz.fse.common/utils/qvar.MML.Identical", 24.0}
         });
 	}
 

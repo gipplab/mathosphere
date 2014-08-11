@@ -1,4 +1,4 @@
-package de.tuberlin.dima.schubotz.common.utils;
+package de.tuberlin.dima.schubotz.fse.common.utils;
 
 import cz.muni.fi.mir.mathmlcanonicalization.ConfigException;
 import cz.muni.fi.mir.mathmlcanonicalization.MathMLCanonicalizer;
@@ -22,7 +22,7 @@ public class ExtractHelper {
 	static {
         LOG = new SafeLogWrapper(ExtractHelper.class);
         try (InputStream configInputStream = ExtractHelper.class.getClassLoader()
-                            .getResourceAsStream("de/tuberlin/dima/schubotz/common/utils/canonicalizer-config.xml")) {
+                            .getResourceAsStream("de/tuberlin/dima/schubotz/de.tuberlin.dima.schubotz.de.tuberlin.dima.schubotz.fse.common/utils/canonicalizer-config.xml")) {
             canonicalizer = new MathMLCanonicalizer(configInputStream);
             canonicalizer.setEnforcingXHTMLPlusMathMLDTD(true); //DTD will resolve all HTML entities
         } catch(final IOException e) {

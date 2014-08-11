@@ -1,8 +1,8 @@
 package de.tuberlin.dima.schubotz.fse.mappers;
 
 import com.google.common.collect.HashMultiset;
-import de.tuberlin.dima.schubotz.common.utils.ComparisonHelper;
-import de.tuberlin.dima.schubotz.common.utils.SafeLogWrapper;
+import de.tuberlin.dima.schubotz.fse.common.utils.ComparisonHelper;
+import de.tuberlin.dima.schubotz.fse.common.utils.SafeLogWrapper;
 import de.tuberlin.dima.schubotz.fse.MainProgram;
 import de.tuberlin.dima.schubotz.fse.types.QueryTuple;
 import de.tuberlin.dima.schubotz.fse.types.ResultTuple;
