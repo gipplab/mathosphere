@@ -24,7 +24,6 @@
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="true" />
         <module name="math-tests" />
-        <module name="mathml-canonicalizer" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
