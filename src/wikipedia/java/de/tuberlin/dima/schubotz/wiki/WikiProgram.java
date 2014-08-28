@@ -175,9 +175,9 @@ public class WikiProgram {
 		DataSet<ResultTuple> matches = wikiSet.flatMap(new QueryWikiMatcher(STR_SPLIT, latexWikiMultiset, numWiki, debug))
 									  .withBroadcastSet(wikiQuerySet, "Queries");
 		
-		DataSet<OutputSimpleTuple> outputTuples = matches//Group by queryid
+		DataSet<OutputSimpleTuple> outputTuples = matches//Group by queryId
 				.groupBy(0)
-				//Sort by score <queryid, docid, score>
+				//Sort by score <queryId, docid, score>
 				.sortGroup(2, Order.DESCENDING) 
 				.reduceGroup(new OutputSimple(MaxResultsPerQuery,RUNTAG));	
 		outputTuples.writeAsCsv(output,"\n"," ",WriteMode.OVERWRITE);
