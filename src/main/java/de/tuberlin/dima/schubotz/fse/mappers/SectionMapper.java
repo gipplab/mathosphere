@@ -12,6 +12,7 @@ import org.jsoup.Jsoup;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 
+import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -33,6 +34,7 @@ public class SectionMapper extends FlatMapFunction<String, SectionTuple> {
 	String STR_SPLIT;
 	
 	HashMultiset<String> keywords;
+    ArrayList<String> cmml;
 
 	/**
 	 * @param WORD_SPLIT {@link de.tuberlin.dima.schubotz.fse.MainProgram#WORD_SPLIT} sent as parameter to ensure serializability. 
@@ -74,6 +76,8 @@ public class SectionMapper extends FlatMapFunction<String, SectionTuple> {
 		//Parse string as XML
 		Document doc = XMLHelper.String2Doc(lines[1], false); 
 		NodeList LatexElements = XMLHelper.getElementsB(doc, "//annotation"); //get all annotation tags
+        //TODO: Check if we need to look for the encoding="MathML-Content" attribute in the future
+        NodeList CmmlElements = XMLHelper.getElementsB(doc, "//annotation-xml"); //get all cmml tags
 		
 		//Extract latex
 		String latex = ExtractHelper.extractLatexXMLHelper(LatexElements, STR_SPLIT);
@@ -88,8 +92,13 @@ public class SectionMapper extends FlatMapFunction<String, SectionTuple> {
 			}
 			return;
 		}
-		String[] tokens = WORD_SPLIT.split(plainText.toLowerCase()); 
-		SectionTuple tup = new SectionTuple(docID,latex,"",STR_SPLIT);
+        cmml = new ArrayList<>(CmmlElements.getLength());
+        for (int i = 0; i < CmmlElements.getLength(); i++) {
+            String cmmlString = XMLHelper.printDocument( CmmlElements.item(i) );
+            cmml.add(i, cmmlString);
+        }
+        String[] tokens = WORD_SPLIT.split(plainText.toLowerCase());
+		SectionTuple tup = new SectionTuple(docID,latex,"",STR_SPLIT, cmml);
 		for (String token : tokens) {
 			if (keywords.contains(token)) {
 				if (!token.equals(""))

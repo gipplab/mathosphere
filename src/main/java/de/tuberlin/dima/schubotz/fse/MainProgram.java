@@ -197,9 +197,9 @@ public class MainProgram {
 		
 		
 		//Output
-		DataSet<OutputSimpleTuple> outputTuples = latexMatches//Group by queryid
+		DataSet<OutputSimpleTuple> outputTuples = latexMatches//Group by queryId
 														.groupBy(0)
-														//Sort by score <queryid, docid, score>
+														//Sort by score <queryId, docid, score>
 														.sortGroup(2, Order.DESCENDING) 
 														.reduceGroup(new OutputSimple(MaxResultsPerQuery,RUNTAG));			 
 		outputTuples.writeAsCsv(output,"\n"," ",WriteMode.OVERWRITE);
