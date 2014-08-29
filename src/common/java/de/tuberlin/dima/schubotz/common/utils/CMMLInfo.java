@@ -92,4 +92,8 @@ public class CMMLInfo {
             return "cmml not printable";
         }
     }
+
+    public Integer getMatchDepth(CMMLInfo other) {
+        return Integer.MAX_VALUE;
+    }
 }
