@@ -48,9 +48,10 @@ public class MainProgram {
         LOG.setLevel(SafeLogWrapper.SafeLogWrapperLevel.INFO);
 
         final Algorithm algorithm = ClientConsole.parseParameters(args);
-        configureEnv();
 
         if (algorithm != null) {
+            configureEnv();
+
             final DataStorage data = new DataStorage();
 
             //Run input module specified by command line
