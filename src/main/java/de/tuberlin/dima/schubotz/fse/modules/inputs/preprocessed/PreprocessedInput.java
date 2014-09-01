@@ -16,7 +16,7 @@ import java.util.Collection;
 /**
  * Inputs additional multisets
  */
-public class PreprocessedInput extends Input {
+public class PreprocessedInput implements Input {
     /**
      * Command line options to add
      */

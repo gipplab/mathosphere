@@ -17,7 +17,7 @@ import java.util.regex.Pattern;
  * Created by jjl4 on 8/7/14.
 */
 
-public class PreprocessedToResults extends Algorithm {
+public class PreprocessedToResults implements Algorithm {
     //Add any commandline options here
     private static final Option NUM_DOCS= new Option(
             SettingNames.NUM_DOC.getLetter(), SettingNames.NUM_DOC.toString(), true,

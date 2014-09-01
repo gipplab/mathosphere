@@ -6,6 +6,7 @@ import de.tuberlin.dima.schubotz.fse.modules.inputs.Input;
 import de.tuberlin.dima.schubotz.fse.utils.SafeLogWrapper;
 import org.apache.commons.cli.*;
 
+import java.io.Serializable;
 import java.util.Properties;
 
 /**
@@ -13,7 +14,7 @@ import java.util.Properties;
  * Is statically initialized with default properties.
  * Used to generate Properties objects
  */
-public class Settings {
+public class Settings implements Serializable {
     private static final SafeLogWrapper LOG = new SafeLogWrapper(Settings.class);
     private static final Options GeneralOptions = new Options();
     private static final Options AllOptions = new Options();

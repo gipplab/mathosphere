@@ -20,7 +20,7 @@ import java.util.Collection;
  * Configures input for ARXIV data input format.
  * Cleans data using mapper cleaners.
  */
-public abstract class RawInput extends Input {
+public abstract class RawInput implements Input {
     private final Cleaner queryCleaner;
     private final Cleaner docCleaner;
 

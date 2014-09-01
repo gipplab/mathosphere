@@ -1,9 +1,11 @@
 package de.tuberlin.dima.schubotz.fse.settings;
 
+import java.io.Serializable;
+
 /**
  * Enum all settings here.
  */
-public enum SettingNames {
+public enum SettingNames implements Serializable {
     /**
      * Name of algorithm class to run
      */

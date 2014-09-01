@@ -10,7 +10,7 @@ import java.util.Collections;
 /**
  * Created by jjl4 on 8/7/14.
  */
-public class PreprocessedOutput extends Output {
+public class PreprocessedOutput implements Output {
     @Override
     public Collection<Option> getOptionsAsIterable() {
         return Collections.emptyList();

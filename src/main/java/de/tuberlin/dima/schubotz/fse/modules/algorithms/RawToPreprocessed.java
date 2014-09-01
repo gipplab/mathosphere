@@ -16,18 +16,16 @@ import eu.stratosphere.api.java.aggregation.Aggregations;
 import eu.stratosphere.api.java.functions.MapFunction;
 import eu.stratosphere.api.java.functions.ReduceFunction;
 import eu.stratosphere.api.java.tuple.Tuple2;
+import eu.stratosphere.core.fs.FileSystem;
 import org.apache.commons.cli.Option;
 
-import java.io.ByteArrayOutputStream;
-import java.io.FileDescriptor;
-import java.io.FileOutputStream;
-import java.io.PrintStream;
+import java.io.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.regex.Pattern;
 
 
-public class RawToPreprocessed extends Algorithm {
+public class RawToPreprocessed implements Algorithm  {
     private static final SafeLogWrapper LOG = new SafeLogWrapper(RawToPreprocessed.class);
     private static final String STR_SEPARATOR = MainProgram.STR_SEPARATOR;
     private static final Pattern WORD_SPLIT = MainProgram.WORD_SPLIT;
@@ -40,30 +38,27 @@ public class RawToPreprocessed extends Algorithm {
 
     @Override
     public void configure(ExecutionEnvironment env, DataStorage data) {
+       //Output dir generation
+        String outputDir = Settings.getProperty(SettingNames.OUTPUT_DIR);
+        if (!outputDir.endsWith("/")) {
+            outputDir += "/";
+        }
+
         final DataSet<RawDataTuple> querySet = data.getQuerySet();
         final DataSet<RawDataTuple> dataSet = data.getDataSet();
 
-        //Redirect standard output to string to log number of documents, then reset StdOut
-        try {
-            final ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            System.setOut(new PrintStream(baos));
-
-            //Count total number of documents and output
-            dataSet.map(new MapFunction<RawDataTuple, Integer>() {
-                @Override
-                public Integer map(RawDataTuple in) {
-                    return 1;
-                }
-            }).reduce(new ReduceFunction<Integer>() {
-                @Override
-                public Integer reduce(Integer in1, Integer in2) {
-                    return in1.intValue() + in2.intValue();
-                }
-            }).print();
-            LOG.info("The number of documents is: " + baos.toString());
-        } finally {
-            System.setOut(new PrintStream(new FileOutputStream(FileDescriptor.out)));
-        }
+        //Count total number of documents and output
+        dataSet.map(new MapFunction<RawDataTuple, Integer>() {
+            @Override
+            public Integer map(RawDataTuple in) {
+                return 1;
+            }
+        }).reduce(new ReduceFunction<Integer>() {
+            @Override
+            public Integer reduce(Integer in1, Integer in2) {
+                return in1.intValue() + in2.intValue();
+            }
+        }).writeAsText(outputDir + "numDocs.csv", FileSystem.WriteMode.OVERWRITE);
 
         //Process all data
         final DataSet<DataTuple> preprocessedData = dataSet.flatMap(new DataPreprocess(
@@ -86,11 +81,7 @@ public class RawToPreprocessed extends Algorithm {
                 .groupBy(0) //group on String
                 .aggregate(Aggregations.SUM, 1); //aggregate on Integer
 
-        //Output!
-        String outputDir = Settings.getProperty(SettingNames.OUTPUT_DIR);
-        if (!outputDir.endsWith("/")) {
-            outputDir += "/";
-        }
+
         CSVHelper.outputCSV(preprocessedData, outputDir + "preprocessedData.csv");
         CSVHelper.outputCSV(preprocessedQueries, outputDir + "preprocessedQueries.csv");
         CSVHelper.outputCSV(latexCounts, outputDir + "latexCounts.csv");

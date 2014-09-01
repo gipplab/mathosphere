@@ -6,10 +6,12 @@ import de.tuberlin.dima.schubotz.fse.types.RawDataTuple;
 import de.tuberlin.dima.schubotz.fse.types.ResultTuple;
 import eu.stratosphere.api.java.DataSet;
 
+import java.io.Serializable;
+
 /**
  * Created by Jimmy on 8/9/2014.
  */
-public class DataStorage {
+public class DataStorage implements Serializable {
     private DataSet<RawDataTuple> querySet;
     private DataSet<RawDataTuple> dataSet;
     private DataSet<ResultTuple> resultSet;
