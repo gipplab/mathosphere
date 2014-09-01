@@ -16,6 +16,10 @@ public class QueryCleaner extends Cleaner {
     private static final SafeLogWrapper LOG = new SafeLogWrapper(QueryCleaner.class);
     private static final String DELIM = "</topic>";
 
+    /**
+     * Delimiter for Stratosphere to split on
+     * @return delimiter
+     */
     @Override
     public String getDelimiter() {
         return DELIM;
@@ -26,7 +30,7 @@ public class QueryCleaner extends Cleaner {
         //Check if empty query or query is end document
         //Do length check so it will not be running contains() or trim() too much
         if (doc.length() < 200 && doc.contains("</topics>")) {
-            LOG.warn("Corrupt query ", in);
+            LOG.warn("Endpiece of split ", in);
             return;
         } else if (doc.length() < 200 && doc.trim().isEmpty()) {
             return;
