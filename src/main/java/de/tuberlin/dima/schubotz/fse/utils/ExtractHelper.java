@@ -53,13 +53,13 @@ public class ExtractHelper {
         return new StringTokenizer(result,"\\()[]+-*:1234567890,; |\t=_^*/.~!<>&\"", true);
 	}
 	
-	private static String constructOutput(String in, String TEX_SPLIT) {
-        final StringBuilder out = new StringBuilder();
+	private static void constructOutput(StringBuilder out, String in, String TEX_SPLIT) {
         final StringTokenizer tok = tokenize(in);
         while (tok.hasMoreTokens()) {
             final String nextTok = tok.nextToken();
+            //TODO fix tokenizer so this check isn't necessary
             if (!" ".equals(nextTok) && !nextTok.isEmpty()) {
-                if (out.toString().isEmpty()) {
+                if (out.length() == 0) {
                     out.append(nextTok);
                 } else {
                     out.append(TEX_SPLIT);
@@ -67,7 +67,42 @@ public class ExtractHelper {
                 }
 			}
 		}
+	}
+
+    /**
+	 * @param LatexElements (Jsoup Elements)
+	 * @param TEX_SPLIT
+	 * @return
+	 */
+	private static String extractLatex(Elements LatexElements, String TEX_SPLIT) {
+        final StringBuilder out = new StringBuilder();
+		if (LatexElements == null) {
+			return "";
+		}
+        String curLatex = "";
+        for (final Element element : LatexElements) {
+			try {
+				curLatex = element.text();
+                constructOutput(out, curLatex, TEX_SPLIT);
+			} catch (final NullPointerException e) {
+                LOG.debug("Element does not have text: ", curLatex, " in ", LatexElements);
+			}
+		}
 		return out.toString();
+	}
+
+	/**
+     * This method returns strings with escaped HTML entities.
+	 * @param elements Elements to canonicalize.
+	 * @return
+	 */
+	private static String extractCanonicalizedDoc(Elements elements) throws Exception {
+        final String doc = elements.toString(); //toString escapes HTML entities
+		final InputStream input = new BufferedInputStream(
+                new ByteArrayInputStream(doc.getBytes(StandardCharsets.UTF_8)),doc.length());
+		final ByteArrayOutputStream output = new ByteArrayOutputStream();
+		canonicalizer.canonicalize(input,output);
+        return output.toString(StandardCharsets.UTF_8.toString());
 	}
 
     /**
@@ -158,9 +193,36 @@ public class ExtractHelper {
         if (curLatex == null || curCmml == null || curPmml == null) {
             LOG.warn("Bug in canonicalization or element has no math. Moving on: ", docID, ": ", MathElement.text());
         } else {
-            outputLatex.append(curLatex);
-            cmml.append(curCmml);
-            pmml.append(curPmml);
+            if (outputLatex.length() == 0) {
+                if (!curLatex.isEmpty()) {
+                    outputLatex.append(curLatex);
+                }
+            } else {
+                if (!curLatex.isEmpty()) {
+                    outputLatex.append(STR_SPLIT);
+                    outputLatex.append(curLatex);
+                }
+            }
+            if (cmml.length() == 0) {
+                if (!curCmml.isEmpty()) {
+                    cmml.append(curCmml);
+                }
+            } else {
+                if (!curCmml.isEmpty()) {
+                    cmml.append(STR_SPLIT);
+                    cmml.append(curCmml);
+                }
+            }
+            if (pmml.length() == 0) {
+                if (!curPmml.isEmpty()) {
+                    pmml.append(curPmml);
+                }
+            } else {
+                if (!curPmml.isEmpty()) {
+                    pmml.append(STR_SPLIT);
+                    pmml.append(curPmml);
+                }
+            }
         }
     }
 
@@ -196,41 +258,6 @@ public class ExtractHelper {
             }
         }
     }
-
-	/**
-	 * @param LatexElements (Jsoup Elements)
-	 * @param TEX_SPLIT
-	 * @return
-	 */
-	private static String extractLatex(Elements LatexElements, String TEX_SPLIT) {
-        final StringBuilder out = new StringBuilder();
-		if (LatexElements == null) {
-			return "";
-		}
-        String curLatex = "";
-        for (final Element element : LatexElements) {
-			try {
-				curLatex = element.text();
-                out.append(constructOutput(curLatex, TEX_SPLIT));
-			} catch (final NullPointerException e) {
-                LOG.debug("Element does not have text: ", curLatex, " in ", LatexElements);
-			}
-		}
-		return out.toString();
-		
-	}
-	
-	/**
-     * This method returns strings with escaped HTML entities.
-	 * @param elements Elements to canonicalize.
-	 * @return
-	 */
-	private static String extractCanonicalizedDoc(Elements elements) throws Exception {
-        final String doc = elements.toString(); //toString escapes HTML entities
-		final InputStream input = new BufferedInputStream(
-                new ByteArrayInputStream(doc.getBytes(StandardCharsets.UTF_8)),doc.length());
-		final ByteArrayOutputStream output = new ByteArrayOutputStream();
-		canonicalizer.canonicalize(input,output);
-        return output.toString(StandardCharsets.UTF_8.toString());
-	}
 }
+
+
