@@ -1,21 +1,11 @@
 package de.tuberlin.dima.schubotz.fse;
 
-import de.tuberlin.dima.schubotz.fse.preprocess.ProcessData;
-import eu.stratosphere.api.common.Plan;
-import eu.stratosphere.api.java.ExecutionEnvironment;
-import eu.stratosphere.client.LocalExecutor;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.util.Arrays;
 import java.util.Collection;
-
-import static org.junit.Assert.*;
 
 @RunWith(Parameterized.class)
 public class ProcessDataIT {
@@ -40,10 +30,11 @@ public class ProcessDataIT {
 		String keywordDocsFilename;
 		String latexDocsFilename;
 		String numDocsFilename;
+        /*
 		try {
 			String inputFilename = "file://" + getClass().getClassLoader().getResources(inputFile).nextElement().getPath();
 			System.out.println("ProcessData testing on: " + inputFilename);
-			String queryFile = "file://" + getClass().getClassLoader().getResources("fQuery.xml").nextElement().getPath();
+			String queryFile = "file://" + getClass().getClassLoader().getResources("de/tuberlin/dima/schubotz/fse/fQuery.xml").nextElement().getPath();
 			if (!debugOutput.equals("")) {
 				keywordDocsFilename = debugOutput + "keywordDocsMap.csv";
 				latexDocsFilename = debugOutput + "latexDocsMap.csv";
@@ -88,7 +79,7 @@ public class ProcessDataIT {
 			e.printStackTrace();
 		} finally {
 			br.close();
-		}
+		}*/
 		
 		
 	}

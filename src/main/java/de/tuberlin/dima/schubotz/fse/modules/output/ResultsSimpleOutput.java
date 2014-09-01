@@ -1,11 +1,11 @@
 package de.tuberlin.dima.schubotz.fse.modules.output;
 
-import de.tuberlin.dima.schubotz.fse.common.mappers.OutputSimple;
-import de.tuberlin.dima.schubotz.fse.common.types.OutputSimpleTuple;
-import de.tuberlin.dima.schubotz.fse.common.utils.CSVHelper;
+import de.tuberlin.dima.schubotz.fse.mappers.OutputSimple;
 import de.tuberlin.dima.schubotz.fse.settings.DataStorage;
 import de.tuberlin.dima.schubotz.fse.settings.SettingNames;
 import de.tuberlin.dima.schubotz.fse.settings.Settings;
+import de.tuberlin.dima.schubotz.fse.types.OutputSimpleTuple;
+import de.tuberlin.dima.schubotz.fse.utils.CSVHelper;
 import eu.stratosphere.api.common.operators.Order;
 import eu.stratosphere.api.java.DataSet;
 import eu.stratosphere.api.java.ExecutionEnvironment;
@@ -17,7 +17,7 @@ import java.util.Collections;
 /**
  * Outputs to CSV in simple format
  */
-public class ResultsSimpleOutput implements Output {
+public class ResultsSimpleOutput extends Output {
     private static final int MAX_RESULTS_PER_QUERY = 1000;
 
     @Override

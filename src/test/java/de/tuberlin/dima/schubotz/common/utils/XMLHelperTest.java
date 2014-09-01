@@ -1,7 +1,7 @@
 package de.tuberlin.dima.schubotz.common.utils;
 
 import com.google.common.collect.Multiset;
-import de.tuberlin.dima.schubotz.fse.common.utils.XMLHelper;
+import de.tuberlin.dima.schubotz.fse.utils.XMLHelper;
 import eu.stratosphere.api.java.tuple.Tuple2;
 import junit.framework.TestCase;
 import org.w3c.dom.Node;
@@ -10,7 +10,7 @@ import org.w3c.dom.NodeList;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import static de.tuberlin.dima.schubotz.fse.common.utils.XMLHelper.getIdentifiersFromCmml;
+import static de.tuberlin.dima.schubotz.fse.utils.XMLHelper.getIdentifiersFromCmml;
 
 public class XMLHelperTest extends TestCase {
 

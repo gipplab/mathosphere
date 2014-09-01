@@ -1,7 +1,6 @@
 package de.tuberlin.dima.schubotz.fse.modules.algorithms;
 
 
-import com.google.common.collect.HashMultiset;
 import de.tuberlin.dima.schubotz.fse.MainProgram;
 import de.tuberlin.dima.schubotz.fse.settings.DataStorage;
 import de.tuberlin.dima.schubotz.fse.settings.SettingNames;
@@ -18,14 +17,12 @@ import java.util.regex.Pattern;
  * Created by jjl4 on 8/7/14.
 */
 
-public class PreprocessedToResults implements Algorithm {
+public class PreprocessedToResults extends Algorithm {
     //Add any commandline options here
     private static final Option NUM_DOCS= new Option(
             SettingNames.NUM_DOC.getLetter(), SettingNames.NUM_DOC.toString(), true,
             "Number of documents");
     private static final Options MainOptions = new Options();
-
-
 
     static {
         //Load command line options here
@@ -34,31 +31,30 @@ public class PreprocessedToResults implements Algorithm {
         MainOptions.addOption(NUM_DOCS);
     }
 
-
-
     private static final Pattern WORD_SPLIT = MainProgram.WORD_SPLIT;
     private static final String STR_SEPARATOR = MainProgram.STR_SEPARATOR;
-/*
+
+    /*
      * Amount to deweight keywords by. Divide tfidf_keyword by this
      * to get final keyword score.
-*/
-
-	private static final double KEYWORD_DIVIDE = 6.36;
+    */
+    private static final double KEYWORD_DIVIDE = 6.36;
 
     @Override
     public Collection<Option> getOptionsAsIterable() {
         return MainOptions.getOptions();
     }
 
-/*
+    /**
      * Configures this algorithm.
      * Must be configured after settings are loaded, otherwise will throw exception.
      * @param env ExecutionEnvironment */
-
-
     @Override
     public void configure(ExecutionEnvironment env, DataStorage data) {
-        HashMultiset<String> latexWikiMultiset = data.getLatexSet();
+        /*
+        HashMultiset<String> latexMultiset = data.getLatexSet();
+        DataSet<DataTuple> querySet = data.getQuerySet().flatMap(new QueryMapper(WORD_SPLIT, STR_SEPARATOR));
+
 
         /*WikiQueryMapper cleanWikiQueryText;
         DataSet<QueryTuple> wikiQuerySet = cleanWikiQueryText.flatMap(new WikiQueryMapper(STR_SPLIT));

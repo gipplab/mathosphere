@@ -1,6 +1,5 @@
 package de.tuberlin.dima.schubotz.fse;
 
-import de.tuberlin.dima.schubotz.fse.common.utils.SafeLogWrapper;
 import de.tuberlin.dima.schubotz.fse.client.ClientConsole;
 import de.tuberlin.dima.schubotz.fse.modules.Module;
 import de.tuberlin.dima.schubotz.fse.modules.algorithms.Algorithm;
@@ -8,12 +7,9 @@ import de.tuberlin.dima.schubotz.fse.modules.inputs.Input;
 import de.tuberlin.dima.schubotz.fse.settings.DataStorage;
 import de.tuberlin.dima.schubotz.fse.settings.SettingNames;
 import de.tuberlin.dima.schubotz.fse.settings.Settings;
+import de.tuberlin.dima.schubotz.fse.utils.SafeLogWrapper;
 import eu.stratosphere.api.java.ExecutionEnvironment;
 
-
-import java.lang.reflect.*;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.regex.Pattern;
 
 /**
@@ -21,17 +17,10 @@ import java.util.regex.Pattern;
  */
 
 public class MainProgram {
-    public static final String STR_SPLIT = "" ;
-    public static final String DOCUMENT_SEPARATOR = "";
-    public static final String QUERY_SEPARATOR = "";
     /**
 	 * Main execution environment for Stratosphere.
 	 */
 	private static ExecutionEnvironment env;
-	/**
-	 * Log for this class. Leave all logging implementations up to
-	 * Stratosphere and its config files.
-	 */
 	private static final SafeLogWrapper LOG = new SafeLogWrapper(MainProgram.class);
     /**
      * Used for line splitting so that CsvReader is not looking for "\n" in XML
@@ -50,20 +39,24 @@ public class MainProgram {
 	 */
 	public static final Pattern WORD_SPLIT = Pattern.compile("\\W+", Pattern.UNICODE_CHARACTER_CLASS);
 
+    private MainProgram() {
+    }
 
-	public static void main (String[] args) throws Exception {
+
+    public static void main (String[] args) throws Exception {
+        //Turn off debugging for now
+        LOG.setLevel(SafeLogWrapper.SafeLogWrapperLevel.INFO);
+
         final Algorithm algorithm = ClientConsole.parseParameters(args);
-        final Collection<Class> modulesToExecute = new ArrayList<>();
         configureEnv();
 
         if (algorithm != null) {
             final DataStorage data = new DataStorage();
 
             //Run input module specified by command line
-            final Class inputClass = getSubClass(
+            final Input inputModule = Module.getModule(
                     Settings.getProperty(SettingNames.INPUT_OPTION),Input.class);
-            final Module inputObj = (Module) getObjectFromGenericClass(inputClass, Input.class);
-            inputObj.configure(env, data);
+            inputModule.configure(env, data);
 
             /* Trust user to run input module for now
             //Run input modules required by algorithm
@@ -100,6 +93,7 @@ public class MainProgram {
      * @return object of specific class. throws exception rather than returning null
      * @throws IllegalArgumentException if for any reason unable to create the object
      */
+    /*
     public static Object getObjectFromGenericClass(Class<?> clazz, Class<?> expectedClass)
             throws IllegalArgumentException {
         if (expectedClass.isAssignableFrom(clazz)) {
@@ -126,15 +120,16 @@ public class MainProgram {
      * Gets module to execute, given expected superclass and its name.
      * Guaranteed to return class that extends expected class
      * if no exception is thrown
-     * @param inputName name of class
+     * @param className name of class
      * @param expectedClass superclass expected
      * @return class
      * @throws IllegalArgumentException if unable to find class
      */
-    public static Class getSubClass(String inputName, Class<?> expectedClass) throws IllegalArgumentException {
+    /*
+    public static Class getSubClass(String className, Class<?> expectedClass) throws IllegalArgumentException {
         try {
             final String packageName = expectedClass.getPackage().getName();
-            final String fullName = packageName + "." + inputName;
+            final String fullName = packageName + '.' + className;
             final Class returnedClass = Class.forName(fullName);
             if (expectedClass.isAssignableFrom(returnedClass)) {
                 return Class.forName(packageName);
@@ -142,7 +137,7 @@ public class MainProgram {
                 throw new ClassNotFoundException();
             }
         } catch (final ClassNotFoundException ignore) {
-            throw new IllegalArgumentException ("Unable to find class: " + inputName + " that was a subclass of " +
+            throw new IllegalArgumentException ("Unable to find class: " + className + " that was a subclass of " +
                     expectedClass.getName());
         }
     }

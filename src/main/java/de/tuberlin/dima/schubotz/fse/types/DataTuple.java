@@ -5,58 +5,31 @@ import eu.stratosphere.api.java.tuple.Tuple5;
 /**
  * Holds all data.
  */
-public class DataTuple extends Tuple5<String, String, String, String, String> {
+public final class DataTuple extends Tuple5<String, String, String, String, String> {
     public DataTuple () {
-		this.f0 = "nulldoc";
-		this.f1 = "";
-        this.f2 = "";
-        this.f3 = "";
-        this.f4 = "";
+        setFields("this_was_null", "", "", "", "");
 	}
 
 	/**
 	 * @param docID
 	 * @param latex
-     * @param plaintext
+     * @param keywords
      * @param mml
      * @param pmml
 	 */
-	public DataTuple (String docID, String latex, String plaintext, String mml, String pmml) {
-		this.f0 = docID;
-		this.f1 = latex;
-        this.f2 = plaintext;
-		this.f3 = mml;
-		this.f4 = pmml;
+	public DataTuple (String docID, String latex, String keywords, String mml, String pmml) {
+        setFields(docID, latex, keywords, mml, pmml);
 	}
 
-    public DataTuple(DataTuple wikiTuple) {
+    public String getNamedField(fields field) {
+        return getField(field.ordinal());
     }
 
-    public DataTuple(String docID, String s, String s1, String s2) {
-
+    private void setNamedField(fields field, String value) {
+        setField(value, field.ordinal());
     }
 
-    public String getID() {
-		return this.f0;
-	}
-
-	public String getLatex() {
-		return this.f1;
-	}
-
-    public String getPlaintext() {
-        return this.f2;
+    public enum fields {
+        docID, latex, keywords, mml, pmml
     }
-
-	public String getMML() {
-		return this.f3;
-	}
-
-	public String getPMML() {
-		return this.f4;
-	}
-    @Override
-	public String toString() {
-		return getID() + "," + getLatex() + "," + getPlaintext() + "," + getMML() + "," + getPMML();
-	}
 }

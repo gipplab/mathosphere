@@ -1,6 +1,6 @@
 package de.tuberlin.dima.schubotz.common.utils;
 
-import de.tuberlin.dima.schubotz.fse.common.utils.ComparisonHelper;
+import de.tuberlin.dima.schubotz.fse.utils.ComparisonHelper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;

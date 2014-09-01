@@ -1,11 +1,10 @@
 package de.tuberlin.dima.schubotz.fse.settings;
 
-import de.tuberlin.dima.schubotz.fse.common.utils.SafeLogWrapper;
-import de.tuberlin.dima.schubotz.fse.MainProgram;
+import de.tuberlin.dima.schubotz.fse.modules.Module;
 import de.tuberlin.dima.schubotz.fse.modules.algorithms.Algorithm;
 import de.tuberlin.dima.schubotz.fse.modules.inputs.Input;
+import de.tuberlin.dima.schubotz.fse.utils.SafeLogWrapper;
 import org.apache.commons.cli.*;
-
 
 import java.util.Properties;
 
@@ -72,13 +71,17 @@ public class Settings {
         }
     }
 
+    private Settings() {
+    }
+
     /**
      * Load options from arguments for specific algorithm.
      * @param args arguments
      * @param algorithm algorithm
      * @throws ParseException commandlineparser may fail or options may be missing
      */
-    public static void loadOptions(String[] args, Algorithm algorithm) throws ParseException {
+    public static void loadOptions(String[] args, Algorithm algorithm)
+            throws MissingArgumentException, ParseException {
         final CommandLineParser parser = new PosixParser();
         //Add algorithm specific options to be loaded
         for (final Option option : algorithm.getOptionsAsIterable()) {
@@ -97,10 +100,8 @@ public class Settings {
         final CommandLine line = parser.parse(AllOptions, args, false);
         //First load the user specified input module in order to load options specified by that input module
         if(line.hasOption(INPUT_OPTION.getOpt())) {
-            String input = line.getOptionValue(INPUT_OPTION.getOpt());
-            final Class returnedClass = MainProgram.getSubClass(
-                    input, Input.class);
-            final Input inputClass = Input.class.cast(returnedClass);
+            final String input = line.getOptionValue(INPUT_OPTION.getOpt());
+            final Input inputClass = Module.getModule(input, Input.class);
             for (final Option option : inputClass.getOptionsAsIterable()) {
                 AllOptions.addOption(option);
             }

@@ -8,11 +8,11 @@ import java.util.Scanner;
 
 public class TestUtils {
     public static String getTestQueryString() throws IOException {
-        return getFileContents("fQuery.xml");
+        return getFileContents("de/tuberlin/dima/schubotz/fse/fQuery.xml");
     }
 
     public static String getTestFile10() throws IOException {
-        return getFileContents("test10.xml");
+        return getFileContents("de/tuberlin/dima/schubotz/fse/test10.xml");
     }
 	public static String getTestResultForTest11() throws IOException {
 		return getFileContents( "expectedMatch.xml" );
@@ -23,7 +23,7 @@ public class TestUtils {
     }
     
     public static Path getTestFile10Path() {
-    	return new Path("test10.xml");
+    	return new Path("de/tuberlin/dima/schubotz/fse/test10.xml");
     }
 
     static String getFileContents(String fname) throws IOException {
