@@ -1,4 +1,3 @@
-/*
 package de.tuberlin.dima.schubotz.wiki;
 
 import eu.stratosphere.api.common.Plan;
@@ -19,6 +18,7 @@ import static org.junit.Assert.fail;
 
 @RunWith(Parameterized.class)
 public class WikiMainIT {
+    /*
 	private Integer numWiki;
 	private String inputQuery;
     private String inputLatexWikiMap;
@@ -102,6 +102,7 @@ public class WikiMainIT {
 			br.close();
 		}
 	}
+	*/
 
 
-}*/
+}

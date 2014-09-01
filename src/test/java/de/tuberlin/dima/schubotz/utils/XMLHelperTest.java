@@ -1,4 +1,4 @@
-package de.tuberlin.dima.schubotz.common.utils;
+package de.tuberlin.dima.schubotz.utils;
 
 import com.google.common.collect.Multiset;
 import de.tuberlin.dima.schubotz.fse.utils.XMLHelper;
@@ -13,6 +13,7 @@ import java.util.HashMap;
 import static de.tuberlin.dima.schubotz.fse.utils.XMLHelper.getIdentifiersFromCmml;
 
 public class XMLHelperTest extends TestCase {
+
 
     public void testCompactForm() throws Exception {
 
