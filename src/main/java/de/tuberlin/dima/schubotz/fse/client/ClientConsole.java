@@ -1,5 +1,6 @@
 package de.tuberlin.dima.schubotz.fse.client;
 
+import de.tuberlin.dima.schubotz.fse.MainProgram;
 import de.tuberlin.dima.schubotz.fse.modules.Module;
 import de.tuberlin.dima.schubotz.fse.modules.algorithms.Algorithm;
 import de.tuberlin.dima.schubotz.fse.modules.inputs.Input;
@@ -39,9 +40,9 @@ public class ClientConsole {
         final String input = args[1];
         final String[] params = Arrays.copyOfRange(args, 2, args.length);
         try {
-            final Algorithm algorithmClass = Module.getModule(
+            final Algorithm algorithmClass = MainProgram.getModule(
                     algorithm, Algorithm.class);
-            final Input inputClass = Module.getModule(
+            final Input inputClass = MainProgram.getModule(
                     input, Input.class);
             Settings.loadOptions(params, algorithmClass, inputClass);
         } catch (final IllegalArgumentException e) {

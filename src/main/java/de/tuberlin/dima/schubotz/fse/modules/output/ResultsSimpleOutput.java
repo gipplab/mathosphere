@@ -17,7 +17,7 @@ import java.util.Collections;
 /**
  * Outputs to CSV in simple format
  */
-public class ResultsSimpleOutput extends Output {
+public class ResultsSimpleOutput implements Output {
     private static final int MAX_RESULTS_PER_QUERY = 1000;
 
     @Override
