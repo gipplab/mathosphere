@@ -18,7 +18,7 @@ public class ArxivCleaner extends Cleaner {
     /**
 	 * Pattern for extracting the filename from the ARXIV tag.
 	 */
-	static final Pattern FILENAME_PATTERN = Pattern
+	private static final Pattern FILENAME_PATTERN = Pattern
 	         .compile("<ARXIVFILESPLIT\\\\nFilename=\"\\./\\d+/(.*?)/\\1_(\\d+)_(\\d+)\\.xhtml\">");
 
     private static final String DELIM = "</ARXIVFILESPLIT>";

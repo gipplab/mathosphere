@@ -5,6 +5,7 @@ import de.tuberlin.dima.schubotz.fse.MainProgram;
 import eu.stratosphere.api.java.DataSet;
 import eu.stratosphere.api.java.ExecutionEnvironment;
 import eu.stratosphere.api.java.io.CsvReader;
+import eu.stratosphere.api.java.tuple.Tuple;
 import eu.stratosphere.core.fs.FileSystem;
 
 import java.io.FileInputStream;
@@ -19,8 +20,8 @@ import java.util.regex.Pattern;
  */
 public class CSVHelper {
     private static final SafeLogWrapper LOG = new SafeLogWrapper(CSVHelper.class);
-    public static final String CSV_LINE_SEPARATOR = MainProgram.CSV_LINE_SEPARATOR;
-    public static final char CSV_FIELD_SEPARATOR = MainProgram.CSV_FIELD_SEPARATOR.charAt(0);
+    private static final String CSV_LINE_SEPARATOR = MainProgram.CSV_LINE_SEPARATOR;
+    private static final char CSV_FIELD_SEPARATOR = MainProgram.CSV_FIELD_SEPARATOR.charAt(0);
     private static final Pattern CSV_LINE_SPLIT = Pattern.compile(CSV_LINE_SEPARATOR);
     private static final Pattern CSV_FIELD_SPLIT = Pattern.compile(String.valueOf(CSV_FIELD_SEPARATOR));
 
@@ -75,7 +76,7 @@ public class CSVHelper {
      * @param in filename
      * @return dataset
      */
-    public static DataSet<?> csvToTuple(ExecutionEnvironment env, Class clazz, String in) {
+    public static <T extends Tuple> DataSet<T> csvToTuple(ExecutionEnvironment env, Class<T> clazz, String in) {
         final CsvReader reader = env.readCsvFile(in);
         reader.fieldDelimiter(CSV_FIELD_SEPARATOR);
         reader.lineDelimiter(CSV_LINE_SEPARATOR);

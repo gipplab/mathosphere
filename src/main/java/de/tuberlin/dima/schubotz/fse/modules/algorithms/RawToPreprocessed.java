@@ -57,7 +57,7 @@ public class RawToPreprocessed extends Algorithm {
             }).reduce(new ReduceFunction<Integer>() {
                 @Override
                 public Integer reduce(Integer in1, Integer in2) {
-                    return in1 + in2;
+                    return in1.intValue() + in2.intValue();
                 }
             }).print();
             LOG.info("The number of documents is: " + baos.toString());

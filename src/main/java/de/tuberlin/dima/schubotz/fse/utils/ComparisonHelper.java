@@ -39,15 +39,14 @@ public class ComparisonHelper {
 		final double termTotal = (double) sectionTokens.size(); //total number of terms in current section
 
         //Calculations based on http://tfidf.com/
-		double tf = 0.0; //term frequency
-		double idf = 0.0; //inverse document frequency
 		double total = 0.0;
 				
 		for (final String element : queryTokens.elementSet()) { //strips duplicates in query due to multiple formulas
-            double termFreqDoc = (double) sectionTokens.count(element); //frequency in current section
-            double termFreqTotal = (double) map.count(element); //number of documents that contain the term
-            tf = termFreqDoc / termTotal; //can be zero but not undefined
-			idf = StrictMath.log(((double) numDocs) / (1.0 + termFreqTotal)); //will never be undefined due to +1
+            final double termFreqDoc = (double) sectionTokens.count(element); //frequency in current section
+            final double termFreqTotal = (double) map.count(element); //number of documents that contain the term
+            final double tf = termFreqDoc / termTotal; //term frequency, can be zero but not undefined
+            //inverse document frequency, will never be undefined due to +1
+			final double idf = StrictMath.log(((double) numDocs) / (1.0 + termFreqTotal));
 			total += tf * idf;
 			LOG.debug("Term: " + element);
 			LOG.debug("Freq in Doc: " + termFreqDoc);

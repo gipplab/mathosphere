@@ -22,7 +22,7 @@ public class QueryDocMatcher extends FlatMapFunction<DataTuple,ResultTuple> {
 	private final HashMultiset<String> latexDocsMultiset;
 	private final HashMultiset<String> keywordDocsMultiset;
 	private final int numDocs;
-	private double weight;
+	private final double weight;
 	/**
 	 * QueryTuple dataset taken from broadcast variable in {@link QueryDocMatcher#open}
 	 */

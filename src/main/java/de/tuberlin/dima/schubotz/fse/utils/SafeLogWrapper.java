@@ -5,7 +5,6 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.log4j.Category;
 import org.apache.log4j.Level;
 
-import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
@@ -43,35 +42,35 @@ public class SafeLogWrapper {
     }
     public void fatal(Object... params) {
         if (logger.isFatalEnabled() && level.compareTo(SafeLogWrapperLevel.FATAL) <= 0) {
-            Throwable ex = removeThrowable(params);
+            final Throwable ex = removeThrowable(params);
             logger.fatal(outputMsg(params), ex);
         }
     }
     public void error(Object... params) {
         if (logger.isFatalEnabled() && level.compareTo(SafeLogWrapperLevel.ERROR) <= 0) {
-            Throwable ex = removeThrowable(params);
+            final Throwable ex = removeThrowable(params);
             logger.error(outputMsg(params), ex);
         }
     }
     public void warn(Object... params) {
         if (logger.isWarnEnabled() && level.compareTo(SafeLogWrapperLevel.WARN) <= 0) {
-            Throwable ex = removeThrowable(params);
+            final Throwable ex = removeThrowable(params);
             logger.warn(outputMsg(params), ex);
         }
     }
     public void info(Object... params) {
         if (logger.isInfoEnabled() && level.compareTo(SafeLogWrapperLevel.INFO) <= 0) {
-            Throwable ex = removeThrowable(params);
+            final Throwable ex = removeThrowable(params);
             logger.info(outputMsg(params), ex);
         }
     }
     public void debug(Object... params) {
         if (logger.isDebugEnabled() && level.compareTo(SafeLogWrapperLevel.DEBUG) <= 0) {
-            Throwable ex = removeThrowable(params);
+            final Throwable ex = removeThrowable(params);
             logger.debug(outputMsg(params), ex);
         }
     }
-    private String outputMsg(Object... params) {
+    private static String outputMsg(Object... params) {
         final Collection<Object> paramSet = new HashSet<>(Arrays.asList(params));
          //Remove first throwable from the set
         removeThrowable(params);
