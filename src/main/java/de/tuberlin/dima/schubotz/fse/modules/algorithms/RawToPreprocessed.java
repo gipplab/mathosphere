@@ -3,6 +3,7 @@ package de.tuberlin.dima.schubotz.fse.modules.algorithms;
 import de.tuberlin.dima.schubotz.fse.MainProgram;
 import de.tuberlin.dima.schubotz.fse.mappers.preprocess.DataPreprocess;
 import de.tuberlin.dima.schubotz.fse.mappers.preprocess.FieldCountPreprocess;
+import de.tuberlin.dima.schubotz.fse.modules.output.PreprocessedOutput;
 import de.tuberlin.dima.schubotz.fse.settings.DataStorage;
 import de.tuberlin.dima.schubotz.fse.settings.SettingNames;
 import de.tuberlin.dima.schubotz.fse.settings.Settings;
@@ -38,27 +39,8 @@ public class RawToPreprocessed implements Algorithm  {
 
     @Override
     public void configure(ExecutionEnvironment env, DataStorage data) {
-       //Output dir generation
-        String outputDir = Settings.getProperty(SettingNames.OUTPUT_DIR);
-        if (!outputDir.endsWith("/")) {
-            outputDir += "/";
-        }
-
         final DataSet<RawDataTuple> querySet = data.getQuerySet();
         final DataSet<RawDataTuple> dataSet = data.getDataSet();
-
-        //Count total number of documents and output
-        dataSet.map(new MapFunction<RawDataTuple, Integer>() {
-            @Override
-            public Integer map(RawDataTuple in) {
-                return 1;
-            }
-        }).reduce(new ReduceFunction<Integer>() {
-            @Override
-            public Integer reduce(Integer in1, Integer in2) {
-                return in1.intValue() + in2.intValue();
-            }
-        }).writeAsText(outputDir + "numDocs.csv", FileSystem.WriteMode.OVERWRITE);
 
         //Process all data
         final DataSet<DataTuple> preprocessedData = dataSet.flatMap(new DataPreprocess(
@@ -66,7 +48,6 @@ public class RawToPreprocessed implements Algorithm  {
 
         final DataSet<DataTuple> preprocessedQueries = querySet.flatMap(new DataPreprocess(
                 MainProgram.WORD_SPLIT, MainProgram.STR_SEPARATOR));
-
 
         //Count up latex and keyword tokens
         final DataSet<Tuple2<String, Integer>> latexCounts = preprocessedData.flatMap(
@@ -81,6 +62,27 @@ public class RawToPreprocessed implements Algorithm  {
                 .groupBy(0) //group on String
                 .aggregate(Aggregations.SUM, 1); //aggregate on Integer
 
+        //Output dir generation
+        String outputDir = Settings.getProperty(SettingNames.OUTPUT_DIR);
+        if (!outputDir.endsWith("/")) {
+            outputDir += "/";
+        }
+        if (!outputDir.startsWith("file://")) {
+            outputDir = "file://" + outputDir;
+        }
+
+        //Count total number of documents and output
+        dataSet.map(new MapFunction<RawDataTuple, Integer>() {
+            @Override
+            public Integer map(RawDataTuple in) {
+                return 1;
+            }
+        }).reduce(new ReduceFunction<Integer>() {
+            @Override
+            public Integer reduce(Integer in1, Integer in2) {
+                return in1.intValue() + in2.intValue();
+            }
+        }).writeAsText(outputDir + "numDocs.csv", FileSystem.WriteMode.OVERWRITE);
 
         CSVHelper.outputCSV(preprocessedData, outputDir + "preprocessedData.csv");
         CSVHelper.outputCSV(preprocessedQueries, outputDir + "preprocessedQueries.csv");
