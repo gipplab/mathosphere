@@ -201,13 +201,13 @@ public class ExtractHelper {
             switch (encoding) {
                 case "MathML-Presentation":
                     pmmlElements.add(annotationXML.child(0));
-                    pmmlElements.remove(); //remove elements so that following method does not pick up on them
+                    mmlElements.remove(annotationXML); //remove elements so that following method does not pick up on them
                     //Non annotated elements are CMML
                     extractNonAnnotatedXMLElements(mmlElements, latexElements, cmmlElements);
                     break;
                 case "MathML-Content":
                     cmmlElements.add(annotationXML.child(0));
-                    cmmlElements.remove();
+                    mmlElements.remove(annotationXML);
                     //Non annotated elements are PMML
                     extractNonAnnotatedXMLElements(mmlElements, latexElements, pmmlElements);
                     break;
@@ -237,7 +237,7 @@ public class ExtractHelper {
                         curElement.attr(NAMESPACE_NAME, NAMESPACE);
                         LatexElements.add(curElement); //keep root annotation tag b/c will be parsed by ExtractLatex
                     } else {
-                        LOG.warn("Odd annotation tag: ", MMLElements);
+                        LOG.warn("Odd annotation tag: ", curElement);
                     }
                 } else { //Non annotated
                     //Add namespace information so canonicalizer can parse it
