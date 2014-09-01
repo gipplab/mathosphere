@@ -2,6 +2,7 @@ package de.tuberlin.dima.schubotz.fse.client;
 
 import de.tuberlin.dima.schubotz.fse.modules.Module;
 import de.tuberlin.dima.schubotz.fse.modules.algorithms.Algorithm;
+import de.tuberlin.dima.schubotz.fse.modules.inputs.Input;
 import de.tuberlin.dima.schubotz.fse.settings.Settings;
 import org.apache.commons.cli.MissingArgumentException;
 import org.apache.commons.cli.ParseException;
@@ -15,45 +16,49 @@ public class ClientConsole {
     private ClientConsole() {}
     private static void printHelp() {
         //TODO
-        System.out.println("Usage: stratosphere run <this-jar-file> algorithm [ARGUMENTS]");
+        System.out.println("Usage: stratosphere run <this-jar-file> algorithm input [ARGUMENTS]");
         System.out.println("HELP GOES HERE");
     }
 
     /**
-     * Parses command line arguments. Returns null if error.
+     * Parses command line arguments.
      * @param args args from command line
-     * @return algorithm if parameters parsed correctly, null otherwise
+     * @return boolean true if parameters parsed correctly, false otherwise
      */
 
-    public static Algorithm parseParameters(String[] args) {
+    public static boolean parseParameters(String[] args) {
         if (args.length < 1) {
             System.out.println("No algorithm specified.");
             printHelp();
-            return null;
+            return false;
+        } else if (args.length < 2) {
+            System.out.println("No input specified.");
+            return false;
         }
         final String algorithm = args[0];
-        final String[] params = Arrays.copyOfRange(args, 1, args.length);
+        final String input = args[1];
+        final String[] params = Arrays.copyOfRange(args, 2, args.length);
         try {
             final Algorithm algorithmClass = Module.getModule(
                     algorithm, Algorithm.class);
-            Settings.loadOptions(params, algorithmClass);
-            return algorithmClass;
+            final Input inputClass = Module.getModule(
+                    input, Input.class);
+            Settings.loadOptions(params, algorithmClass, inputClass);
         } catch (final IllegalArgumentException e) {
             System.out.println(e.getMessage());
             System.out.println("Invalid algorithm specified.");
             printHelp();
-            return null;
+            return false;
         } catch (final MissingArgumentException e) {
             System.out.println(e.getMessage());
-            System.out.println("Missing argument.");
             printHelp();
-            return null;
+            return false;
         } catch (final ParseException e) {
             System.out.println(e.getMessage());
-            System.out.println("Parse exception.");
             printHelp();
-            return null;
+            return false;
         }
+        return true;
     }
         /*
     private static void printHelpForMain() {
