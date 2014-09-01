@@ -5,9 +5,13 @@ package de.tuberlin.dima.schubotz.fse.settings;
  */
 public enum SettingNames {
     /**
-     * Set classname for input class.
+     * Name of algorithm class to run
      */
-    INPUT_OPTION("i"),
+    ALGORITHM(""),
+    /**
+     * Name of input class to run
+     */
+    INPUT(""),
     /**
      * Filename and path to data file (raw)
      */

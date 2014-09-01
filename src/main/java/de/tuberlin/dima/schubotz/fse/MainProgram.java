@@ -49,17 +49,22 @@ public class MainProgram {
         //Turn off debugging for now
         LOG.setLevel(SafeLogWrapper.SafeLogWrapperLevel.INFO);
 
-        final Algorithm algorithm = ClientConsole.parseParameters(args);
+        final boolean parsed = ClientConsole.parseParameters(args);
 
-        if (algorithm != null) {
+        if (parsed) {
             configureEnv();
 
             final DataStorage data = new DataStorage();
 
             //Run input module specified by command line
             final Input inputModule = Module.getModule(
-                    Settings.getProperty(SettingNames.INPUT_OPTION),Input.class);
+                    Settings.getProperty(SettingNames.INPUT), Input.class);
             inputModule.configure(env, data);
+
+            //Run algorith module specified by command line
+            final Algorithm algoModule = Module.getModule(
+                    Settings.getProperty(SettingNames.ALGORITHM), Algorithm.class);
+            algoModule.configure(env, data);
 
             /* Trust user to run input module for now
             //Run input modules required by algorithm
@@ -68,7 +73,6 @@ public class MainProgram {
                 addInputObj.configure(env, data);
             }*/
 
-            algorithm.configure(env, data);
 
             /* Algorithms are tied to output (preprocess, etc.)
             final Class outputClass = getClass(

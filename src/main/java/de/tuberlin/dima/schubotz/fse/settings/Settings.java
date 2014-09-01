@@ -26,9 +26,6 @@ public class Settings {
      * List of all command line options.
      * The names should be set in the enum {@link Settings#}
      */
-    private static final Option INPUT_OPTION = new Option(
-            SettingNames.INPUT_OPTION.getLetter(), SettingNames.INPUT_OPTION.toString(),
-            true, "Input class to run.");
     private static final Option RUNTAG = new Option(
             SettingNames.RUNTAG.getLetter(), SettingNames.RUNTAG.toString(),
             true, "Runtag name.");
@@ -45,21 +42,15 @@ public class Settings {
             true, "Output class to run.");*/
 
     static {
-        INPUT_OPTION.setRequired(true);
-        INPUT_OPTION.setArgName("input-format");
-
         RUNTAG.setRequired(true);
         RUNTAG.setArgName("runtag");
 
         NUM_SUB_TASKS.setRequired(true);
         NUM_SUB_TASKS.setArgName("num-subtasks");
 
-
-
         OUTPUT_DIR.setRequired(true);
         OUTPUT_DIR.setArgName("/path/to/output");
 
-        GeneralOptions.addOption(INPUT_OPTION);
         GeneralOptions.addOption(RUNTAG);
         GeneralOptions.addOption(NUM_SUB_TASKS);
         GeneralOptions.addOption(OUTPUT_DIR);
@@ -80,13 +71,19 @@ public class Settings {
      * @param algorithm algorithm
      * @throws ParseException commandlineparser may fail or options may be missing
      */
-    public static void loadOptions(String[] args, Algorithm algorithm)
+    public static void loadOptions(String[] args, Algorithm algorithm, Input input)
             throws MissingArgumentException, ParseException {
-        final CommandLineParser parser = new PosixParser();
         //Add algorithm specific options to be loaded
         for (final Option option : algorithm.getOptionsAsIterable()) {
             AllOptions.addOption(option);
         }
+        setProperty(SettingNames.ALGORITHM, algorithm.getClass().getSimpleName());
+
+        //Add input specific options to be loaded
+        for (final Option option : input.getOptionsAsIterable()) {
+            AllOptions.addOption(option);
+        }
+        setProperty(SettingNames.INPUT, input.getClass().getSimpleName());
         /* Save this for maybe later implementation? for now trust user to specify all
         //Add algorithm required input options to be loaded
         for (final Class<? extends Input> clazz : algorithm.getRequiredInputsAsIterable()) {
@@ -97,19 +94,9 @@ public class Settings {
         }
         */
 
-        final CommandLine line = parser.parse(AllOptions, args, false);
-        //First load the user specified input module in order to load options specified by that input module
-        if(line.hasOption(INPUT_OPTION.getOpt())) {
-            final String input = line.getOptionValue(INPUT_OPTION.getOpt());
-            final Input inputClass = Module.getModule(input, Input.class);
-            for (final Option option : inputClass.getOptionsAsIterable()) {
-                AllOptions.addOption(option);
-            }
-        } else {
-            throw new MissingArgumentException(INPUT_OPTION);
-        }
-
+        final CommandLineParser parser = new PosixParser();
         //Load commandline options and check to make sure all required options are present
+        final CommandLine line = parser.parse(AllOptions, args, false);
         for (final Object object : AllOptions.getOptions()) {
             if (object instanceof Option) {
                 final Option option = Option.class.cast(object);
