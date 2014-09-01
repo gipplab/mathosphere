@@ -121,8 +121,8 @@ public class ExtractHelper {
         final Element SemanticElement;
         try {
             SemanticElement = MathElement.child(0);
-            if (!"semantics".equals(SemanticElement.tagName()) || !"m:semantics".equals(SemanticElement.tagName())) {
-                LOG.warn("Non semantics tag: ", docID, ": ", MathElement);
+            if (!"semantics".equals(SemanticElement.tagName()) && !"m:semantics".equals(SemanticElement.tagName())) {
+                LOG.warn("Non semantics tag: ", docID, ": ", SemanticElement);
                 return;
             }
         } catch (final RuntimeException e) {
