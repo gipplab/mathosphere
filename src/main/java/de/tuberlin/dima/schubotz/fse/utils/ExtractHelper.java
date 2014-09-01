@@ -10,11 +10,12 @@ import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.StringTokenizer;
+import java.util.regex.Pattern;
 
 
 public class ExtractHelper {
 	//XML configuration file for canonicalizer
-	static final MathMLCanonicalizer canonicalizer;
+	private static final MathMLCanonicalizer canonicalizer;
     //For XML math processing
     private static final String NAMESPACE = "http://www.w3.org/1998/Math/MathML";
     private static final String NAMESPACE_NAME = "xmlns:m";
@@ -33,16 +34,17 @@ public class ExtractHelper {
         }
 	}
 
+    private static final Pattern LATEX_CLEANER = Pattern.compile("\\\\qvar\\{(.*?)\\}|\\\\displaystyle");
+
     private ExtractHelper() {
     }
 
-    public static StringTokenizer tokenize (String latex) {
+    private static StringTokenizer tokenize(String latex) {
         String result = latex;
 		//tokenize latex
 		//from https://github.com/TU-Berlin/mathosphere/blob/TFIDF/math-tests/src/main/java/de/tuberlin/dima/schubotz/fse/MathFormula.java.normalizeTex
 		result = StringEscapeUtils.unescapeHtml(result);
-		result = result.replaceAll("\\\\qvar\\{(.*?)\\}", "");
-		result = result.replaceAll("\\\\displaystyle", "");
+		result = LATEX_CLEANER.matcher(result).replaceAll("");
 		result = result.replace("{", " ");
 		result = result.replace("}", " ");
 		result = result.replace("\n"," ");
@@ -51,16 +53,17 @@ public class ExtractHelper {
         return new StringTokenizer(result,"\\()[]+-*:1234567890,; |\t=_^*/.~!<>&\"", true);
 	}
 	
-	public static String constructOutput (String in, String TEX_SPLIT) {
+	private static String constructOutput(String in, String TEX_SPLIT) {
         final StringBuilder out = new StringBuilder();
         final StringTokenizer tok = tokenize(in);
         while (tok.hasMoreTokens()) {
-            String nextTok = tok.nextToken();
-            if (!(nextTok.equals(" ")) && !(nextTok.isEmpty())) {
-                if (out.toString().equals("")) {
+            final String nextTok = tok.nextToken();
+            if (!" ".equals(nextTok) && !nextTok.isEmpty()) {
+                if (out.toString().isEmpty()) {
                     out.append(nextTok);
                 } else {
-                    out.append(TEX_SPLIT + nextTok.trim());//TODO ArrayLists non serializable so make do with this...
+                    out.append(TEX_SPLIT);
+                    out.append(nextTok.trim());
                 }
 			}
 		}
@@ -89,7 +92,7 @@ public class ExtractHelper {
         //Assume only one root element and that it is <semantic>
         try {
             SemanticElement = MathElement.child(0);
-            if (!SemanticElement.tagName().equals("semantics")) {
+            if (!"semantics".equals(SemanticElement.tagName())) {
                 LOG.warn("Non semantics tag: ", docID, ": ", MathElement.text());
             }
         } catch (final RuntimeException e) {
@@ -170,12 +173,12 @@ public class ExtractHelper {
      * @param NonAnnotatedElements elements to add nonannotated elements to
      */
     private static void extractNonAnnotatedXMLElements(
-            Elements MMLElements, List LatexElements, List NonAnnotatedElements) {
+            Elements MMLElements, List<Element> LatexElements, List<Element> NonAnnotatedElements) {
         for (final Element curElement : MMLElements) {
             try {
                 final String encoding = curElement.attr("encoding");
                 if (curElement.tagName().contains("annotation")) {
-                    if (encoding.equals("application/x-tex")) { //Latex annotation tag
+                    if ("application/x-tex".equals(encoding)) { //Latex annotation tag
                         //Add namespace information so canonicalizer can parse it
                         curElement.attr(NAMESPACE_NAME, NAMESPACE);
                         LatexElements.add(curElement); //keep root annotation tag b/c will be parsed by ExtractLatex
@@ -199,7 +202,7 @@ public class ExtractHelper {
 	 * @param TEX_SPLIT
 	 * @return
 	 */
-	public static String extractLatex(Elements LatexElements, String TEX_SPLIT) {
+	private static String extractLatex(Elements LatexElements, String TEX_SPLIT) {
         final StringBuilder out = new StringBuilder();
 		if (LatexElements == null) {
 			return "";
@@ -222,9 +225,8 @@ public class ExtractHelper {
 	 * @param elements Elements to canonicalize.
 	 * @return
 	 */
-	public static String extractCanonicalizedDoc(Elements elements) throws Exception {
+	private static String extractCanonicalizedDoc(Elements elements) throws Exception {
         final String doc = elements.toString(); //toString escapes HTML entities
-        final int length = doc.length();
 		final InputStream input = new BufferedInputStream(
                 new ByteArrayInputStream(doc.getBytes(StandardCharsets.UTF_8)),doc.length());
 		final ByteArrayOutputStream output = new ByteArrayOutputStream();

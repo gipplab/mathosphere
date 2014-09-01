@@ -64,9 +64,9 @@ public class PreprocessedInput extends Input {
     @Override
     public void configure(ExecutionEnvironment env, DataStorage data) {
         data.setDataTupleSet(
-                (DataSet<DataTuple>) CSVHelper.csvToTuple(env, DataTuple.class, Settings.getProperty(SettingNames.DATATUPLE_FILE)));
+                CSVHelper.csvToTuple(env, DataTuple.class, Settings.getProperty(SettingNames.DATATUPLE_FILE)));
         data.setQueryTupleSet(
-                (DataSet<DataTuple>) CSVHelper.csvToTuple(env, DataTuple.class, Settings.getProperty(SettingNames.QUERYTUPLE_FILE)));
+                CSVHelper.csvToTuple(env, DataTuple.class, Settings.getProperty(SettingNames.QUERYTUPLE_FILE)));
         data.setKeywordSet(CSVHelper.csvToMultiset(Settings.getProperty(SettingNames.KEYWORD_DOCS_MAP)));
         data.setLatexSet(CSVHelper.csvToMultiset(Settings.getProperty(SettingNames.LATEX_DOCS_MAP)));
     }
