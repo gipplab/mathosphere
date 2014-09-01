@@ -40,10 +40,11 @@ public class MainIT {
     	String keywordDocsFilename="";
     	String latexDocsFilename="";
     	String outputFilename;
+        /*
     	try {
 	        String inputFilename = "file://" + getClass().getClassLoader().getResources(inputFile).nextElement().getPath(); 
 	        System.out.println("Integration testing on: " + inputFilename);
-	        String queryFile = "file://" + getClass().getClassLoader().getResources("fQuery.xml").nextElement().getPath();
+	        String queryFile = "file://" + getClass().getClassLoader().getResources("de/tuberlin/dima/schubotz/fse/fQuery.xml").nextElement().getPath();
 	        if (!outputDir.equals("")) {
 	        	keywordDocsFilename = outputDir + "keywordDocsMap.csv";
 	        	latexDocsFilename = outputDir + "latexDocsMap.csv";
@@ -88,7 +89,7 @@ public class MainIT {
         	fail("Output file error");
     		e.printStackTrace();
     		return;
-        }
+        }*/
         
     }
 }

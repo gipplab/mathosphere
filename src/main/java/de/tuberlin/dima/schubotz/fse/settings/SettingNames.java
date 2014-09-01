@@ -47,14 +47,15 @@ public enum SettingNames {
      * Document total
      */
     NUM_DOC("n"),
-    QUERY_SEPARATOR("qs"),
-    DOCUMENT_SEPARATOR("ds");
+    //QUERY_SEPARATOR("qs"),
+    //DOCUMENT_SEPARATOR("ds"),
+    QUERYTUPLE_FILE("qt");
 
 
     private final String cmdLineOptionLetter;
 
     SettingNames(String letter) {
-        this.cmdLineOptionLetter = letter;
+        cmdLineOptionLetter = letter;
     }
 
     public String getLetter() {

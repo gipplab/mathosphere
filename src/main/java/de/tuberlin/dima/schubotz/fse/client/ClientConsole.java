@@ -1,9 +1,10 @@
 package de.tuberlin.dima.schubotz.fse.client;
 
-import de.tuberlin.dima.schubotz.fse.MainProgram;
+import de.tuberlin.dima.schubotz.fse.modules.Module;
 import de.tuberlin.dima.schubotz.fse.modules.algorithms.Algorithm;
 import de.tuberlin.dima.schubotz.fse.settings.Settings;
-import org.apache.commons.cli.*;
+import org.apache.commons.cli.MissingArgumentException;
+import org.apache.commons.cli.ParseException;
 
 import java.util.Arrays;
 
@@ -11,6 +12,7 @@ import java.util.Arrays;
  * Created by jjl4 on 8/7/14.
  */
 public class ClientConsole {
+    private ClientConsole() {}
     private static void printHelp() {
         //TODO
         System.out.println("Usage: stratosphere run <this-jar-file> algorithm [ARGUMENTS]");
@@ -18,8 +20,7 @@ public class ClientConsole {
     }
 
     /**
-     * Parses command line arguments. All required arguments are guaranteed
-     * to exist if this method does not throw an exception.
+     * Parses command line arguments. Returns null if error.
      * @param args args from command line
      * @return algorithm if parameters parsed correctly, null otherwise
      */
@@ -33,18 +34,23 @@ public class ClientConsole {
         final String algorithm = args[0];
         final String[] params = Arrays.copyOfRange(args, 1, args.length);
         try {
-            final Class returnedClass = MainProgram.getSubClass(
+            final Algorithm algorithmClass = Module.getModule(
                     algorithm, Algorithm.class);
-            final Algorithm algorithmClass = Algorithm.class.cast(returnedClass);
             Settings.loadOptions(params, algorithmClass);
             return algorithmClass;
-        } catch (IllegalArgumentException e) {
+        } catch (final IllegalArgumentException e) {
             System.out.println(e.getMessage());
             System.out.println("Invalid algorithm specified.");
             printHelp();
             return null;
-        } catch (ParseException e) {
+        } catch (final MissingArgumentException e) {
             System.out.println(e.getMessage());
+            System.out.println("Missing argument.");
+            printHelp();
+            return null;
+        } catch (final ParseException e) {
+            System.out.println(e.getMessage());
+            System.out.println("Parse exception.");
             printHelp();
             return null;
         }

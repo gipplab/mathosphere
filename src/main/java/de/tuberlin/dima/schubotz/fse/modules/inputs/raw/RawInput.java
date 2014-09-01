@@ -1,7 +1,6 @@
 package de.tuberlin.dima.schubotz.fse.modules.inputs.raw;
 
-import de.tuberlin.dima.schubotz.fse.mappers.DocCleaner;
-import de.tuberlin.dima.schubotz.fse.mappers.QueryCleaner;
+import de.tuberlin.dima.schubotz.fse.mappers.cleaners.Cleaner;
 import de.tuberlin.dima.schubotz.fse.modules.inputs.Input;
 import de.tuberlin.dima.schubotz.fse.settings.DataStorage;
 import de.tuberlin.dima.schubotz.fse.settings.SettingNames;
@@ -18,16 +17,16 @@ import org.apache.commons.cli.Options;
 import java.util.Collection;
 
 /**
- * Configures input for ARXIV data input format
+ * Configures input for ARXIV data input format.
+ * Cleans data using mapper cleaners.
  */
-public class RawInput implements Input {
+public abstract class RawInput extends Input {
+    private final Cleaner queryCleaner;
+    private final Cleaner docCleaner;
+
     /**
      * TODO Consider moving these into command line options/settings properties
-     */
-    //private static final String DOCUMENT_SEPARATOR = "</ARXIVFILESPLIT>";
-	//private static final String QUERY_SEPARATOR = "</topic>";
-
-    //Add any options here
+     */    //Add any options here
     private static final Option DATA_FILE = new Option(
             SettingNames.DATARAW_FILE.getLetter(), SettingNames.DATARAW_FILE.toString(),
             true, "Path to data file.");
@@ -49,6 +48,12 @@ public class RawInput implements Input {
         options.addOption(QUERY_FILE);
     }
 
+    protected RawInput(Cleaner queryCleaner, Cleaner docCleaner) {
+        this.queryCleaner = queryCleaner;
+        this.docCleaner = docCleaner;
+    }
+
+
     @Override
     public Collection<Option> getOptionsAsIterable() {
         return options.getOptions();
@@ -56,17 +61,17 @@ public class RawInput implements Input {
 
     @Override
     public void configure(ExecutionEnvironment env, DataStorage data) {
-        final TextInputFormat formatQueries = new TextInputFormat(new Path(
+        final TextInputFormat inputQueries = new TextInputFormat(new Path(
                 Settings.getProperty(SettingNames.QUERY_FILE)));
-        formatQueries.setDelimiter(Settings.getProperty(SettingNames.QUERY_SEPARATOR));
-        final DataSet<String> rawQueryText = new DataSource<>(env, formatQueries, BasicTypeInfo.STRING_TYPE_INFO);
-        data.setQuerySet(rawQueryText.flatMap(new QueryCleaner()));
+        inputQueries.setDelimiter(queryCleaner.getDelimiter());
+        final DataSet<String> rawQueryText = new DataSource<>(env, inputQueries, BasicTypeInfo.STRING_TYPE_INFO);
+        data.setQuerySet(rawQueryText.flatMap(queryCleaner));
 
-        final TextInputFormat format = new TextInputFormat(new Path(
+        final TextInputFormat inputData = new TextInputFormat(new Path(
                 Settings.getProperty(SettingNames.DATARAW_FILE)));
-        formatQueries.setDelimiter(Settings.getProperty(SettingNames.DOCUMENT_SEPARATOR));
-        final DataSet<String> rawArticleText = new DataSource<>(env, format, BasicTypeInfo.STRING_TYPE_INFO);
-        data.setDataRawSet(rawArticleText.flatMap(new DocCleaner()));
+        inputData.setDelimiter(docCleaner.getDelimiter());
+        final DataSet<String> rawArticleText = new DataSource<>(env, inputData, BasicTypeInfo.STRING_TYPE_INFO);
+        data.setDataSet(rawArticleText.flatMap(docCleaner));
     }
 
 }

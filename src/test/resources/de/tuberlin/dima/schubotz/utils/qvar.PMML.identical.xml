@@ -1,0 +1,197 @@
+<mrow xref="p1.1.m1.1.6.cmml" xml:id="p1.1.m1.1.6">
+	<msup xref="p1.1.m1.1.1.cmml" accent="true" xml:id="p1.1.m1.1.1"> 
+		<mi xref="p1.1.m1.1.1.2.cmml" xml:id="p1.1.m1.1.1.2">
+			α
+		</mi> 
+		<mo xref="p1.1.m1.1.1.1.cmml" stretchy="false" xml:id="p1.1.m1.1.1.1">
+			̄
+		</mo> 
+	</msup> 
+
+	<mrow xref="p1.1.m1.1.6.2.cmml" xml:id="p1.1.m1.1.6.2"> 
+		<mo xref="p1.1.m1.1.6.2.cmml" xml:id="p1.1.m1.1.6.2a">
+			(
+			</mo><msub xref="p1.1.m1.1.6.2.cmml" xml:id="p1.1.m1.1.6.2b"> 
+			<mi xref="p1.1.m1.1.3.cmml" xml:id="p1.1.m1.1.3">
+				θ
+			</mi> 
+			<mi xref="p1.1.m1.1.4.1.cmml" xml:id="p1.1.m1.1.4.1">
+				i
+			</mi> 
+		</msub> 
+
+		<mo xref="p1.1.m1.1.6.2.cmml" xml:id="p1.1.m1.1.6.2c">
+			)
+		</mo> 
+	</mrow> 
+</mrow>
+<mover xref="p1.1.m1.1.1.cmml" accent="true" xml:id="p1.1.m1.1.1">
+	<msup xref="p1.1.m1.1.1.2.cmml" accent="true" xml:id="p1.1.m1.1.1.2"> 
+		<mi xref="p1.1.m1.1.1.2.1.2.cmml" xml:id="p1.1.m1.1.1.2.1.2">
+			α
+		</mi> 
+		<mo xref="p1.1.m1.1.1.2.1.1.cmml" stretchy="false" xml:id="p1.1.m1.1.1.2.1.1">
+			̄
+		</mo> 
+	</msup> 
+	<mo xref="p1.1.m1.1.1.1.cmml" stretchy="false" xml:id="p1.1.m1.1.1.1">
+		̄
+	</mo> 
+</mover>
+<mi xref="p1.1.m1.1.1.cmml" xml:id="p1.1.m1.1.1">
+	D
+</mi>
+<mi xref="p1.1.m1.1.1.cmml" xml:id="p1.1.m1.1.1">
+	α
+</mi>
+<mrow xref="p1.1.m1.1.17.cmml" xml:id="p1.1.m1.1.17">
+	<mrow xref="p1.1.m1.1.17.cmml" xml:id="p1.1.m1.1.17a"> 
+		<mi xref="p1.1.m1.1.1.cmml" xml:id="p1.1.m1.1.1">
+			α
+		</mi> 
+		<mo xref="p1.1.m1.1.2.cmml" xml:id="p1.1.m1.1.2">
+			=
+		</mo> 
+		<mrow xref="p1.1.m1.1.17.1.cmml" xml:id="p1.1.m1.1.17.1"> 
+			<mrow xref="p1.1.m1.1.17.1.1.cmml" xml:id="p1.1.m1.1.17.1.1"> 
+				<mrow xref="p1.1.m1.1.17.1.1.2.cmml" xml:id="p1.1.m1.1.17.1.1.2"> 
+					<mo xref="p1.1.m1.1.17.1.1.2.cmml" xml:id="p1.1.m1.1.17.1.1.2a">
+						(
+						</mo><mrow xref="p1.1.m1.1.17.1.1.2.cmml" xml:id="p1.1.m1.1.17.1.1.2b"> 
+						<mn xref="p1.1.m1.1.4.cmml" xml:id="p1.1.m1.1.4">
+							1
+						</mn> 
+						<mo xref="p1.1.m1.1.5.cmml" xml:id="p1.1.m1.1.5">
+							-
+						</mo> 
+						<mi xref="p1.1.m1.1.6.cmml" xml:id="p1.1.m1.1.6">
+							D
+						</mi> 
+					</mrow> 
+
+					<mo xref="p1.1.m1.1.17.1.1.2.cmml" xml:id="p1.1.m1.1.17.1.1.2c">
+						)
+					</mo> 
+				</mrow> 
+
+				<msup xref="p1.1.m1.1.8.cmml" accent="true" xml:id="p1.1.m1.1.8"> 
+					<mi xref="p1.1.m1.1.8.2.cmml" xml:id="p1.1.m1.1.8.2">
+						α
+					</mi> 
+					<mo xref="p1.1.m1.1.8.1.cmml" stretchy="false" xml:id="p1.1.m1.1.8.1">
+						̄
+					</mo> 
+				</msup> 
+
+				<mrow xref="p1.1.m1.1.17.1.1.3.cmml" xml:id="p1.1.m1.1.17.1.1.3"> 
+					<mo xref="p1.1.m1.1.17.1.1.3.cmml" xml:id="p1.1.m1.1.17.1.1.3a">
+						(
+						</mo><msub xref="p1.1.m1.1.17.1.1.3.cmml" xml:id="p1.1.m1.1.17.1.1.3b"> 
+						<mi xref="p1.1.m1.1.10.cmml" xml:id="p1.1.m1.1.10">
+							θ
+						</mi> 
+						<mi xref="p1.1.m1.1.11.1.cmml" xml:id="p1.1.m1.1.11.1">
+							i
+						</mi> 
+					</msub> 
+
+					<mo xref="p1.1.m1.1.17.1.1.3.cmml" xml:id="p1.1.m1.1.17.1.1.3c">
+						)
+					</mo> 
+				</mrow> 
+			</mrow> 
+			<mo xref="p1.1.m1.1.13.cmml" xml:id="p1.1.m1.1.13">
+				+
+			</mo> 
+			<mrow xref="p1.1.m1.1.17.1.2.cmml" xml:id="p1.1.m1.1.17.1.2"> 
+				<mi xref="p1.1.m1.1.14.cmml" xml:id="p1.1.m1.1.14">
+					D
+				</mi> 
+
+				<msup xref="p1.1.m1.1.15.cmml" accent="true" xml:id="p1.1.m1.1.15"> 
+					<msup xref="p1.1.m1.1.15.2.cmml" accent="true" xml:id="p1.1.m1.1.15.2"> 
+						<mi xref="p1.1.m1.1.15.2.1.2.cmml" xml:id="p1.1.m1.1.15.2.1.2">
+							α
+						</mi> 
+						<mo xref="p1.1.m1.1.15.2.1.1.cmml" stretchy="false" xml:id="p1.1.m1.1.15.2.1.1">
+							̄
+						</mo> 
+					</msup> 
+					<mo xref="p1.1.m1.1.15.1.cmml" stretchy="false" xml:id="p1.1.m1.1.15.1">
+						̄
+					</mo> 
+				</msup> 
+			</mrow> 
+		</mrow> 
+	</mrow> 
+	<mo xref="p1.1.m1.1.17.cmml" xml:id="p1.1.m1.1.17b">
+		.
+	</mo> 
+</mrow>
+<mrow xref="p1.1.m1.1.7.cmml" xml:id="p1.1.m1.1.7">
+	<mi xref="p1.1.m1.1.1.cmml" xml:id="p1.1.m1.1.1">
+		A
+	</mi> 
+	<mo xref="p1.1.m1.1.2.cmml" xml:id="p1.1.m1.1.2">
+		=
+	</mo> 
+	<msup xref="p1.1.m1.1.7.1.cmml" xml:id="p1.1.m1.1.7.1"> 
+		<mrow xref="p1.1.m1.1.4.cmml" xml:id="p1.1.m1.1.4"> 
+			<mo xref="p1.1.m1.1.4.cmml" xml:id="p1.1.m1.1.4a">
+				(
+				</mo><mstyle displaystyle="true" xref="p1.1.m1.1.4.cmml" xml:id="p1.1.m1.1.4b"> 
+				<mfrac xref="p1.1.m1.1.4.cmml" xml:id="p1.1.m1.1.4c"> 
+					<mrow xref="p1.1.m1.1.4.2.cmml" xml:id="p1.1.m1.1.4.2"> 
+						<mn xref="p1.1.m1.1.4.2.4.cmml" xml:id="p1.1.m1.1.4.2.4">
+							1329
+						</mn> 
+						<mo xref="p1.1.m1.1.4.2.5.cmml" xml:id="p1.1.m1.1.4.2.5">
+							×
+						</mo> 
+						<msup xref="p1.1.m1.1.4.2.9.cmml" xml:id="p1.1.m1.1.4.2.9"> 
+							<mn xref="p1.1.m1.1.4.2.7.cmml" xml:id="p1.1.m1.1.4.2.7">
+								10
+							</mn> 
+							<mrow xref="p1.1.m1.1.4.2.8.1.cmml" xml:id="p1.1.m1.1.4.2.8.1"> 
+								<mo xref="p1.1.m1.1.4.2.8.1.1.cmml" xml:id="p1.1.m1.1.4.2.8.1.1">
+									-
+								</mo> 
+								<mrow xref="p1.1.m1.1.4.2.8.1.5.cmml" xml:id="p1.1.m1.1.4.2.8.1.5"> 
+									<mi xref="p1.1.m1.1.4.2.8.1.2.cmml" xml:id="p1.1.m1.1.4.2.8.1.2">
+										H
+									</mi> 
+									<mo xref="p1.1.m1.1.4.2.8.1.3.cmml" xml:id="p1.1.m1.1.4.2.8.1.3">
+										/
+									</mo> 
+									<mn xref="p1.1.m1.1.4.2.8.1.4.cmml" xml:id="p1.1.m1.1.4.2.8.1.4">
+										5
+									</mn> 
+								</mrow> 
+							</mrow> 
+						</msup> 
+					</mrow> 
+					<mi xref="p1.1.m1.1.4.3.cmml" xml:id="p1.1.m1.1.4.3">
+						D
+					</mi> 
+				</mfrac> 
+			</mstyle> 
+
+			<mo xref="p1.1.m1.1.4.cmml" xml:id="p1.1.m1.1.4d">
+				)
+			</mo> 
+		</mrow> 
+		<mn xref="p1.1.m1.1.6.1.cmml" xml:id="p1.1.m1.1.6.1">
+			2
+		</mn> 
+	</msup> 
+</mrow>
+<mi xref="p1.1.m1.1.1.cmml" xml:id="p1.1.m1.1.1">
+	A
+</mi>
+<mi xref="p1.1.m1.1.1.cmml" xml:id="p1.1.m1.1.1">
+	D
+</mi>
+<mi xref="p1.1.m1.1.1.cmml" xml:id="p1.1.m1.1.1">
+	H
+</mi>
+
