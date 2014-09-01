@@ -14,7 +14,6 @@ import java.util.regex.Pattern;
  */
 public class ArxivCleaner extends Cleaner {
     private static final SafeLogWrapper LOG = new SafeLogWrapper(ArxivCleaner.class);
-    private static final Pattern TAG_SPLIT = Pattern.compile("\\n");
     /**
 	 * Pattern for extracting the filename from the ARXIV tag.
 	 */
@@ -35,8 +34,7 @@ public class ArxivCleaner extends Cleaner {
             return;
         }
 
-        final String[] lines = TAG_SPLIT.split(doc, 2);
-        final Matcher matcher = FILENAME_PATTERN.matcher(lines[0]);
+        final Matcher matcher = FILENAME_PATTERN.matcher(doc);
         String docID = "this_was_null";
         if (matcher.find()) {
             docID = matcher.group(1) + '_' + matcher.group(2) + '_' + matcher.group(3) + ".xhtml";
