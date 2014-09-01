@@ -114,17 +114,19 @@ public class ExtractHelper {
                                     StringBuilder pmml,
                                     String STR_SPLIT) {
         if (MathElement.children().size() > 1) {
-            LOG.warn("Multiple elements under math tag, assuming first: ", docID, ": ", MathElement.text());
-        }        final Element SemanticElement;
+            LOG.warn("Multiple elements under math tag, assuming first: ", docID, ": ", MathElement);
+        }
 
         //Assume only one root element and that it is <semantic>
+        final Element SemanticElement;
         try {
             SemanticElement = MathElement.child(0);
-            if (!"semantics".equals(SemanticElement.tagName())) {
-                LOG.warn("Non semantics tag: ", docID, ": ", MathElement.text());
+            if (!"semantics".equals(SemanticElement.tagName()) || !"m:semantics".equals(SemanticElement.tagName())) {
+                LOG.warn("Non semantics tag: ", docID, ": ", MathElement);
+                return;
             }
         } catch (final RuntimeException e) {
-            LOG.warn("Unable to find semantics elements: ", docID, ": ", MathElement.text(), e);
+            LOG.warn("Unable to find semantics elements: ", docID, ": ", MathElement, e);
             return;
         }
         final Elements MMLElements = SemanticElement.children();
@@ -149,7 +151,7 @@ public class ExtractHelper {
         }
 
         if (curLatex == null || curCmml == null || curPmml == null) {
-            LOG.warn("Bug in canonicalization or element has no math. Moving on: ", docID, ": ", MathElement.text());
+            LOG.warn("Bug in canonicalization or element has no math. Moving on: ", docID, ": ", MathElement);
         } else {
             appendSeparator(outputLatex, curLatex, STR_SPLIT);
             appendSeparator(cmml, curCmml, STR_SPLIT);
