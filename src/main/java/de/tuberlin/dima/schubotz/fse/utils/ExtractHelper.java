@@ -41,14 +41,14 @@ public class ExtractHelper {
 		//tokenize latex
 		//from https://github.com/TU-Berlin/mathosphere/blob/TFIDF/math-tests/src/main/java/de/tuberlin/dima/schubotz/fse/MathFormula.java.normalizeTex
 		result = StringEscapeUtils.unescapeHtml(result);
-		result = result.replaceAll("\\\\qvar\\{(.*?)\\}", ""); //TODO these are not working correctly
+		result = result.replaceAll("\\\\qvar\\{(.*?)\\}", "");
 		result = result.replaceAll("\\\\displaystyle", "");
 		result = result.replace("{", " ");
 		result = result.replace("}", " ");
 		result = result.replace("\n"," ");
 		result = result.replace("\r"," ");
 		result = result.trim();
-        return new StringTokenizer(latex,"\\()[]+-*:1234567890,; |\t=_^*/.~!<>&\"", true);
+        return new StringTokenizer(result,"\\()[]+-*:1234567890,; |\t=_^*/.~!<>&\"", true);
 	}
 	
 	public static String constructOutput (String in, String TEX_SPLIT) {
