@@ -1,9 +1,9 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="MainTest10" type="Application" factoryName="Application" show_console_on_std_out="true" show_console_on_std_err="true">
-    <output_file path="$PROJECT_DIR$/../data/output" is_save="true" />
+    <output_file path="$PROJECT_DIR$/../data/output/maintest10.log" is_save="true" />
     <option name="MAIN_CLASS_NAME" value="de.tuberlin.dima.schubotz.fse.MainProgram" />
     <option name="VM_PARAMETERS" value="" />
-    <option name="PROGRAM_PARAMETERS" value="RawToPreprocessed ArxivRawInput -r &quot;preprocess&quot; -p 1 -o ./output -d test10.xml" />
+    <option name="PROGRAM_PARAMETERS" value="RawToPreprocessed ArxivRawInput -r &quot;preprocess&quot; -p 1 -o file://$USER_HOME$/output -d file://$PROJECT_DIR$/../data/test10.xml -q file://$PROJECT_DIR$/../data/fQuery.xml" />
     <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$/../data" />
     <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
     <option name="ALTERNATIVE_JRE_PATH" value="" />
