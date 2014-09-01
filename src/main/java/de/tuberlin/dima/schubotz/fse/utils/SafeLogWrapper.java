@@ -65,10 +65,9 @@ public class SafeLogWrapper implements Serializable {
         }
     }
     private static String outputMsg(Object... params) {
-        final Collection<Object> paramSet = new HashSet<>(Arrays.asList(params));
          //Remove first throwable from the set
         removeThrowable(params);
-        return buildString(paramSet);
+        return buildString(Arrays.asList(params));
     }
     private static String buildString(Iterable<Object> params) {
         final StringBuilder builder = new StringBuilder();
