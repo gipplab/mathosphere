@@ -108,7 +108,6 @@ public class ExtractHelper {
     /**
      * Processes <math> elements and attaches
      * info to string builders given in parameter
-     * //TODO split this gargantuan method up
      * @param MathElement
      * @param docID
      * @param outputLatex
@@ -134,47 +133,12 @@ public class ExtractHelper {
             LOG.warn("Unable to find semantics elements: ", docID, ": ", MathElement.text(), e);
             return;
         }
-
         final Elements MMLElements = SemanticElement.children();
         final Elements PmmlElements = new Elements();
         final Elements CmmlElements = new Elements();
         final Elements LatexElements = new Elements();
 
-        //Two methods of writing tags - with namespace or without
-        final Elements annotationXMLElements = MMLElements.select("annotation-xml, m:annotation-xml");
-        Element annotationXML = null;
-        if (annotationXMLElements.isEmpty()) {
-            LOG.warn("Unable to find annotation tags in element: ", MathElement);
-        } else if (annotationXMLElements.size() > 1) {
-            LOG.warn("Multiple annotation tags in element, assuming first: ", MathElement);
-            annotationXML = annotationXMLElements.first();
-        } else {
-            annotationXML = annotationXMLElements.first();
-        }
-
-        //Any element not under annotation tag is opposite of what's under annotation-xml
-        //Always assuming one root element per MathMLType
-        if(annotationXML != null) {
-            final String encoding = annotationXML.attr("encoding");
-            //Add namespace information so canonicalizer can parse it
-            annotationXML.child(0).attr(NAMESPACE_NAME, NAMESPACE); //ignore root annotation tag
-            switch (encoding) {
-                case "MathML-Presentation":
-                    PmmlElements.add(annotationXML.child(0));
-                    PmmlElements.remove(); //remove elements so that following method does not pick up on them
-                    //Non annotated elements are CMML
-                    extractNonAnnotatedXMLElements(MMLElements, LatexElements, CmmlElements);     break;
-                case "MathML-Content":
-                    CmmlElements.add(annotationXML.child(0));
-                    CmmlElements.remove();
-                    //Non annotated elements are PMML
-                    extractNonAnnotatedXMLElements(MMLElements, LatexElements, PmmlElements);
-                    break;
-                default:
-                    LOG.warn("Annotation tag is malformed in element: ", MathElement);
-                    break;
-            }
-        }
+        parseElements(MMLElements, PmmlElements, CmmlElements, LatexElements);
 
         // Canonicalize and stringify everything. At this stage it is ok
         // to have empty elements sent to ExtractHelper - methods
@@ -193,35 +157,60 @@ public class ExtractHelper {
         if (curLatex == null || curCmml == null || curPmml == null) {
             LOG.warn("Bug in canonicalization or element has no math. Moving on: ", docID, ": ", MathElement.text());
         } else {
-            if (outputLatex.length() == 0) {
-                if (!curLatex.isEmpty()) {
-                    outputLatex.append(curLatex);
-                }
-            } else {
-                if (!curLatex.isEmpty()) {
-                    outputLatex.append(STR_SPLIT);
-                    outputLatex.append(curLatex);
-                }
+            appendSeparator(outputLatex, curLatex, STR_SPLIT);
+            appendSeparator(cmml, curCmml, STR_SPLIT);
+            appendSeparator(pmml, curPmml, STR_SPLIT);
+       }
+    }
+
+    private static void appendSeparator(StringBuilder output, String tok, String STR_SPLIT) {
+        if (output.length() == 0) {
+            if (!tok.isEmpty()) {
+                output.append(tok);
             }
-            if (cmml.length() == 0) {
-                if (!curCmml.isEmpty()) {
-                    cmml.append(curCmml);
-                }
-            } else {
-                if (!curCmml.isEmpty()) {
-                    cmml.append(STR_SPLIT);
-                    cmml.append(curCmml);
-                }
+        } else {
+            if (!tok.isEmpty()) {
+                output.append(STR_SPLIT);
+                output.append(tok);
             }
-            if (pmml.length() == 0) {
-                if (!curPmml.isEmpty()) {
-                    pmml.append(curPmml);
-                }
-            } else {
-                if (!curPmml.isEmpty()) {
-                    pmml.append(STR_SPLIT);
-                    pmml.append(curPmml);
-                }
+        }
+    }
+
+    private static void parseElements(Elements mmlElements, Elements pmmlElements, Elements cmmlElements, Elements latexElements) {
+        //Two methods of writing tags - with namespace or without
+        final Elements annotationXMLElements = mmlElements.select("annotation-xml, m:annotation-xml");
+        Element annotationXML = null;
+        if (annotationXMLElements.isEmpty()) {
+            LOG.warn("Unable to find annotation tags in element: ", mmlElements);
+        } else if (annotationXMLElements.size() > 1) {
+            LOG.warn("Multiple annotation tags in element, assuming first: ", mmlElements);
+            annotationXML = annotationXMLElements.first();
+        } else {
+            annotationXML = annotationXMLElements.first();
+        }
+
+        //Any element not under annotation tag is opposite of what's under annotation-xml
+        //Always assuming one root element per MathMLType
+        if(annotationXML != null) {
+            final String encoding = annotationXML.attr("encoding");
+            //Add namespace information so canonicalizer can parse it
+            annotationXML.child(0).attr(NAMESPACE_NAME, NAMESPACE); //ignore root annotation tag
+            switch (encoding) {
+                case "MathML-Presentation":
+                    pmmlElements.add(annotationXML.child(0));
+                    pmmlElements.remove(); //remove elements so that following method does not pick up on them
+                    //Non annotated elements are CMML
+                    extractNonAnnotatedXMLElements(mmlElements, latexElements, cmmlElements);
+                    break;
+                case "MathML-Content":
+                    cmmlElements.add(annotationXML.child(0));
+                    cmmlElements.remove();
+                    //Non annotated elements are PMML
+                    extractNonAnnotatedXMLElements(mmlElements, latexElements, pmmlElements);
+                    break;
+                default:
+                    LOG.warn("Annotation tag is malformed in element: ", mmlElements);
+                    break;
             }
         }
     }
