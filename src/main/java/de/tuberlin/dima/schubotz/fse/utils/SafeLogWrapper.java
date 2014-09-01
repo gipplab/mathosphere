@@ -2,9 +2,12 @@ package de.tuberlin.dima.schubotz.fse.utils;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.commons.logging.impl.Log4JLogger;
 import org.apache.log4j.Category;
 import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
@@ -13,31 +16,22 @@ import java.util.HashSet;
  * Wraps around an Apache Commons log interface to provide log level guards as well as level customization.
  * Takes in any objects, removes all throwables and sends the last one, and then takes the remaining
  * objects and runs {@link SafeLogWrapper#buildString(Iterable)}
- * //TODO determine if custom level is necessary
  */
-public class SafeLogWrapper {
+public class SafeLogWrapper implements Serializable {
     private final Log logger;
-
-    private SafeLogWrapperLevel level = SafeLogWrapperLevel.DEBUG;
+    private static SafeLogWrapperLevel level = SafeLogWrapperLevel.DEBUG;
     /**
      * @param logClass class to which this log belongs
      */
     public SafeLogWrapper(Class logClass) {
         logger = LogFactory.getLog(logClass);
-        //Set default level to current logger level
-        level = SafeLogWrapperLevel.valueOf(((Category) logger).getLevel().toString());
-
     }
     /**
-     * Set level for the logger. This is a hack due to commons not allowing you to set the level.
+     * Set level for the logger. This is a hack  with direct access to log4j
+     * due to commons logging not allowing you to set the level.
      * @param level specify this using SafeLogWrapper level fields (e.g. SafeLogWrapper.FATAL)
      */
     public void setLevel(SafeLogWrapperLevel level) {
-        try {
-            ((Category) logger).setLevel(Level.toLevel(level.toString()));
-        } catch (final ClassCastException e) {
-            warn("Unable to cast to Log4j. Did Apache Flink switch loggers?", e);
-        }
         this.level = level;
     }
     public void fatal(Object... params) {
