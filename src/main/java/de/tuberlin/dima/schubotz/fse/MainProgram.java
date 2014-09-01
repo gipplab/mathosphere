@@ -10,6 +10,8 @@ import de.tuberlin.dima.schubotz.fse.settings.Settings;
 import de.tuberlin.dima.schubotz.fse.utils.SafeLogWrapper;
 import eu.stratosphere.api.java.ExecutionEnvironment;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.regex.Pattern;
 
 /**
@@ -84,37 +86,6 @@ public class MainProgram {
     private static void configureEnv() {
         env = ExecutionEnvironment.getExecutionEnvironment();
         env.setDegreeOfParallelism(Integer.parseInt(Settings.getProperty(SettingNames.NUM_SUB_TASKS)));
-    }
-
-    /**
-     * Constructs object instance from a generic class, given expected class to
-     * output. Always guaranteed to work if it does not throw an exception.
-     * @param clazz generic class
-     * @param expectedClass class of object expected to be returned
-     * @return object of specific class. throws exception rather than returning null
-     * @throws IllegalArgumentException if for any reason unable to create the object
-     */
-    /*
-    public static Object getObjectFromGenericClass(Class<?> clazz, Class<?> expectedClass)
-            throws IllegalArgumentException {
-        if (expectedClass.isAssignableFrom(clazz)) {
-            try {
-                final Constructor<?> objectConstructor = clazz.getClass()
-                        .getConstructor();
-                return objectConstructor.newInstance();
-            } catch (final NoSuchMethodException ignore) {
-                throw new IllegalArgumentException("Unable to find constructor for class: " + clazz.getName());
-            } catch (final InstantiationException ignore) {
-                throw new IllegalArgumentException("Unable to instantiate class: " + clazz.getName());
-            } catch (final InvocationTargetException ignore) {
-                throw new IllegalArgumentException("Unable to invoke class: " + clazz.getName());
-            } catch (final IllegalAccessException ignore) {
-                throw new IllegalArgumentException("Unable to access class: " + clazz.getName() + ", is it public?");
-            }
-        } else{
-            throw new IllegalArgumentException("Expected class: " + expectedClass.getName() + " and given class: " +
-                    clazz.getName() + " do not match");
-        }
     }
 
     /**
