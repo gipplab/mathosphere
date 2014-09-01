@@ -67,12 +67,7 @@ public class DataPreprocess extends FlatMapFunction<RawDataTuple, DataTuple> {
         final StringBuilder keywordList = new StringBuilder();
         final String[] tokens = WORD_SPLIT.split(plainText.toLowerCase());
  		for (final String token : tokens) {
-            if (keywordList.length() == 0) {
-                keywordList.append(token);
-            } else {
-                keywordList.append(STR_SPLIT);
-                keywordList.append(token);
-            }
+            ExtractHelper.appendSeparator(keywordList, token, STR_SPLIT);
         }
 
         //Stringify then output
