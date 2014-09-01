@@ -1,7 +1,5 @@
 package de.tuberlin.dima.schubotz.fse.mappers;
 
-import de.tuberlin.dima.schubotz.fse.wiki.preprocess.ProcessLatexWikiMapper;
-import de.tuberlin.dima.schubotz.wiki.types.WikiQueryTuple;
 import eu.stratosphere.api.java.DataSet;
 import eu.stratosphere.api.java.tuple.Tuple2;
 import org.junit.Test;
@@ -15,6 +13,7 @@ public class ProcessLatexWikiMapTest extends WikiAbstractSubprocessTest {
      */
     @Test
     public void testTrainingDataset() throws Exception {
+        /*
         String inputFilename = "de/tuberlin/dima/schubotz/wiki/mappers/wikiTrainingDump.xml";
         String queryFilename = "de/tuberlin/dima/schubotz/wiki/mappers/wikiQuery.expected.csv";
         String expectedOutputFilename = "de/tuberlin/dima/schubotz/wiki/mappers/wikiTrainingDump.expectedLatex.csv";
@@ -24,6 +23,7 @@ public class ProcessLatexWikiMapTest extends WikiAbstractSubprocessTest {
         DataSet<Tuple2<String, Integer>> outputSet = data.flatMap(new ProcessLatexWikiMapper(STR_SPLIT))
                                                         .withBroadcastSet(queries, "Queries");
         testDataMap(outputSet, expectedOutputFilename);
+        */
 
     }
 }

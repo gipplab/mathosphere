@@ -1,7 +1,6 @@
-/*
+
 package de.tuberlin.dima.schubotz.wiki;
 
-import de.tuberlin.dima.schubotz.wiki.preprocess.ProcessWikiProgram;
 import eu.stratosphere.api.common.Plan;
 import eu.stratosphere.api.java.ExecutionEnvironment;
 import eu.stratosphere.client.LocalExecutor;
@@ -19,6 +18,7 @@ import static org.junit.Assert.fail;
 
 @RunWith(Parameterized.class)
 public class ProcessWikiIT {
+    /*
 	private String debugWikiInput;
 	private String debugOutput;
 	
@@ -83,7 +83,8 @@ public class ProcessWikiIT {
 			br.close();
 		}
 	}
+	*/
 	
 
 }
-*/
+

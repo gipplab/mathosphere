@@ -1,4 +1,4 @@
-package de.tuberlin.dima.schubotz.common.utils;
+package de.tuberlin.dima.schubotz.utils;
 
 import de.tuberlin.dima.schubotz.fse.utils.ComparisonHelper;
 import org.junit.Test;

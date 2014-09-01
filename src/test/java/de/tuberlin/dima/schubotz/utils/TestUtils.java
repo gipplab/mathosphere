@@ -1,4 +1,4 @@
-package de.tuberlin.dima.schubotz.common.utils;
+package de.tuberlin.dima.schubotz.utils;
 
 import de.tuberlin.dima.schubotz.fse.MainProgram;
 import eu.stratosphere.core.fs.Path;
@@ -17,10 +17,12 @@ public class TestUtils {
 	public static String getTestResultForTest11() throws IOException {
 		return getFileContents( "expectedMatch.xml" );
 	}
+    /*
     public static String getTestFile1() throws IOException {
         String[] split = getTestFile10().split(MainProgram.DOCUMENT_SEPARATOR,2);
         return split[0];
     }
+    */
     
     public static Path getTestFile10Path() {
     	return new Path("de/tuberlin/dima/schubotz/fse/test10.xml");

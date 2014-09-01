@@ -1,7 +1,5 @@
 package de.tuberlin.dima.schubotz.fse.mappers;
 
-import de.tuberlin.dima.schubotz.fse.wiki.preprocess.ProcessWikiMapper;
-import de.tuberlin.dima.schubotz.wiki.types.WikiTuple;
 import eu.stratosphere.api.java.DataSet;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -15,6 +13,7 @@ public class ProcessWikiMapTest extends WikiAbstractSubprocessTest {
     /**
      * Test on first two wikis.
      */
+    /*
     @Ignore
     public void testQuickDataset() throws Exception {
         String inputFilename = "de/tuberlin/dima/schubotz/wiki/mappers/wikiQuickDump.xml";
@@ -27,6 +26,7 @@ public class ProcessWikiMapTest extends WikiAbstractSubprocessTest {
     /**
      * Test on full de.tuberlin.dima.schubotz.fse.wiki set. Make sure to change inputFilename to wherever dataset is located.
      */
+    /*
     @Ignore
     public void testFullDataset() throws Exception {
         String inputFilename = "/home/jjl4/wikiAugmentedDump.xml";
@@ -38,6 +38,7 @@ public class ProcessWikiMapTest extends WikiAbstractSubprocessTest {
     /**
      * Test on known problem wikis.
      */
+    /*
     @Ignore
     public void testSpecialDataset() throws Exception {
         String inputFilename = "de/tuberlin/dima/schubotz/wiki/mappers/wikiSpecialDump.xml";
@@ -49,6 +50,7 @@ public class ProcessWikiMapTest extends WikiAbstractSubprocessTest {
     /**
      * Test on training de.tuberlin.dima.schubotz.fse.wiki (first 50 of dump, used to evaluate current progress)
      */
+    /*
     @Test
     public void testTrainingDataset() throws Exception {
         String inputFilename = "de/tuberlin/dima/schubotz/wiki/mappers/wikiTrainingDump.xml";
@@ -56,5 +58,5 @@ public class ProcessWikiMapTest extends WikiAbstractSubprocessTest {
         DataSet<String> data = (DataSet<String>) getCleanedData(inputFilename);
         DataSet<WikiTuple> outputSet = data.flatMap(new ProcessWikiMapper(STR_SPLIT));
         testDataMap(outputSet, expectedOutputFilename);
-    }
+    }*/
 }

@@ -1,14 +1,9 @@
 package de.tuberlin.dima.schubotz.fse;
 
-import de.tuberlin.dima.schubotz.common.utils.TestUtils;
-import eu.stratosphere.api.common.Plan;
-import eu.stratosphere.api.java.ExecutionEnvironment;
-import eu.stratosphere.client.LocalExecutor;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collection;
 

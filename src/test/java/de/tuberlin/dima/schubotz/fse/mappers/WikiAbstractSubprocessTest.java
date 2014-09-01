@@ -1,10 +1,5 @@
 package de.tuberlin.dima.schubotz.fse.mappers;
 
-import de.tuberlin.dima.schubotz.fse.wiki.mappers.WikiCleaner;
-import de.tuberlin.dima.schubotz.fse.wiki.mappers.WikiQueryCleaner;
-import de.tuberlin.dima.schubotz.wiki.WikiProgram;
-import de.tuberlin.dima.schubotz.wiki.types.WikiQueryTuple;
-import de.tuberlin.dima.schubotz.wiki.types.WikiTuple;
 import eu.stratosphere.api.common.Plan;
 import eu.stratosphere.api.java.DataSet;
 import eu.stratosphere.api.java.ExecutionEnvironment;
@@ -30,6 +25,7 @@ import static org.junit.Assert.assertTrue;
  */
 @Ignore
 public abstract class WikiAbstractSubprocessTest {
+    /*
     protected static final String STR_SPLIT = WikiProgram.STR_SPLIT;
     private static final String QUERY_SEPARATOR = WikiProgram.QUERY_SEPARATOR;
     private static final String WIKI_SEPARATOR = WikiProgram.WIKI_SEPARATOR;
@@ -46,6 +42,7 @@ public abstract class WikiAbstractSubprocessTest {
      * @param expectedOutputFile expected file
      * @throws Exception execute(plan) can throw any exception
      */
+    /*
     protected void testDataMap(DataSet<?> outputSet,
                                String expectedOutputFile) throws Exception {
 
@@ -96,4 +93,5 @@ public abstract class WikiAbstractSubprocessTest {
                     .flatMap(cleaner);
         }
     }
+    */
 }
