@@ -56,16 +56,10 @@ public class ExtractHelper {
 	private static void constructOutput(StringBuilder out, String in, String TEX_SPLIT) {
         final StringTokenizer tok = tokenize(in);
         while (tok.hasMoreTokens()) {
-            final String nextTok = tok.nextToken();
+            String nextTok = tok.nextToken();
             //TODO fix tokenizer so this check isn't necessary
-            if (!" ".equals(nextTok) && !nextTok.isEmpty()) {
-                if (out.length() == 0) {
-                    out.append(nextTok);
-                } else {
-                    out.append(TEX_SPLIT);
-                    out.append(nextTok.trim());
-                }
-			}
+            nextTok = nextTok.trim();
+            appendSeparator(out, nextTok, TEX_SPLIT);
 		}
 	}
 
@@ -163,7 +157,14 @@ public class ExtractHelper {
        }
     }
 
-    private static void appendSeparator(StringBuilder output, String tok, String STR_SPLIT) {
+    /**
+     * Appends separators plus a token to a StringBuilder correctly.
+     * Handles empty tokens by discarding them.
+     * @param output
+     * @param tok
+     * @param STR_SPLIT
+     */
+    public static void appendSeparator(StringBuilder output, String tok, String STR_SPLIT) {
         if (output.length() == 0) {
             if (!tok.isEmpty()) {
                 output.append(tok);
