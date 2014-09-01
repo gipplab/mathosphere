@@ -24,7 +24,7 @@ public class ExtractHelper {
 	static {
         LOG = new SafeLogWrapper(ExtractHelper.class);
         try (InputStream configInputStream = ExtractHelper.class.getClassLoader()
-                            .getResourceAsStream("de/tuberlin/dima/schubotz/de.tuberlin.dima.schubotz.de.tuberlin.dima.schubotz.fse.common/utils/canonicalizer-config.xml")) {
+                            .getResourceAsStream("de/tuberlin/dima/schubotz/utils/canonicalizer-config.xml")) {
             canonicalizer = new MathMLCanonicalizer(configInputStream);
             canonicalizer.setEnforcingXHTMLPlusMathMLDTD(true); //DTD will resolve all HTML entities
         } catch(final IOException e) {
@@ -179,7 +179,7 @@ public class ExtractHelper {
 
     private static void parseElements(Elements mmlElements, Elements pmmlElements, Elements cmmlElements, Elements latexElements) {
         //Two methods of writing tags - with namespace or without
-        final Elements annotationXMLElements = mmlElements.select("annotation-xml, m:annotation-xml");
+        final Elements annotationXMLElements = mmlElements.select("annotation-xml, m|annotation-xml");
         Element annotationXML = null;
         if (annotationXMLElements.isEmpty()) {
             LOG.warn("Unable to find annotation tags in element: ", mmlElements);
