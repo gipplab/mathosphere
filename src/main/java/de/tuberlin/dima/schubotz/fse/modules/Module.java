@@ -23,12 +23,12 @@ public interface Module extends Serializable {
      * Gets options for command line.
      * @return options
      */
-    public abstract Collection<Option> getOptionsAsIterable();
+    public Collection<Option> getOptionsAsIterable();
     /**
      * Configures environment.
      * @param env ExecutionEnvironment
      */
-    public abstract void configure(ExecutionEnvironment env, DataStorage data);
+    public void configure(ExecutionEnvironment env, DataStorage data);
 
 }
 
