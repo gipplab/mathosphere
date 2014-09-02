@@ -74,13 +74,11 @@ public class RawToPreprocessed implements Algorithm  {
                 .withBroadcastSet(preprocessedQueries, "Queries")
                 .groupBy(0) //group on String
                 .aggregate(Aggregations.SUM, 1); //aggregate on Integer
-
         final DataSet<Tuple2<String, Integer>> keywordCounts = preprocessedData.flatMap(
                 new FieldCountPreprocess(DataTuple.fields.keywords.ordinal(), STR_SEPARATOR, WORD_SPLIT))
                 .withBroadcastSet(preprocessedQueries, "Queries")
                 .groupBy(0) //group on String
                 .aggregate(Aggregations.SUM, 1); //aggregate on Integer
-
 
         CSVHelper.outputCSV(preprocessedData, outputDir + "preprocessedData.csv");
         CSVHelper.outputCSV(preprocessedQueries, outputDir + "preprocessedQueries.csv");

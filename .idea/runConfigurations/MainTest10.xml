@@ -3,7 +3,7 @@
     <output_file path="$PROJECT_DIR$/../data/output/maintest10.log" is_save="true" />
     <option name="MAIN_CLASS_NAME" value="de.tuberlin.dima.schubotz.fse.MainProgram" />
     <option name="VM_PARAMETERS" value="" />
-    <option name="PROGRAM_PARAMETERS" value="RawToPreprocessed ArxivRawInput -r &quot;preprocess&quot; -p 1 -o file://$USER_HOME$/output -d file://$PROJECT_DIR$/../data/test10.xml -q file://$PROJECT_DIR$/../data/fQuery.xml" />
+    <option name="PROGRAM_PARAMETERS" value="RawToPreprocessed ArxivRawInput -r &quot;preprocess&quot; -p 1 -o file://$PROJECT_DIR$/../data/output -d file://$PROJECT_DIR$/../data/test10.xml -q file://$PROJECT_DIR$/../data/fQuery.xml" />
     <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$/../data" />
     <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
     <option name="ALTERNATIVE_JRE_PATH" value="" />
