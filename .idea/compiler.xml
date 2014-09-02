@@ -28,7 +28,6 @@
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="math-tests" target="1.7" />
-      <module name="mathml-canonicalizer" target="1.6" />
     </bytecodeTargetLevel>
   </component>
 </project>

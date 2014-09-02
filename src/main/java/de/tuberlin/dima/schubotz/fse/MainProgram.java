@@ -54,7 +54,6 @@ public class MainProgram {
     private MainProgram() {
     }
 
-
     public static void main (String[] args) throws Exception {
         //Turn off debugging for now
         LOG.setLevel(SafeLogWrapper.SafeLogWrapperLevel.INFO);
