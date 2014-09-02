@@ -35,7 +35,7 @@ public class CMMLInfo {
 
     public CMMLInfo toStrictCmml() {
         try {
-            cmmlDoc = XMLHelper.XslTransform(cmmlDoc, "de/tuberlin/dima/schubotz/common/utils/RobertMinerC2s.xsl");
+            cmmlDoc = XMLHelper.XslTransform(cmmlDoc, "de/tuberlin/dima/schubotz/utils/RobertMinerC2s.xsl");
         } catch (TransformerException | ParserConfigurationException e) {
             e.printStackTrace();
         }
