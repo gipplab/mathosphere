@@ -89,7 +89,7 @@ public final class XMLHelper {
         return output;
     }
 
-    public static ArrayList<Tuple2<String, String>> getMMLLeaves(Node n) throws ParserConfigurationException, SAXException, XPathExpressionException, IOException {
+    public static ArrayList<Tuple2<String, String>> getMMLLeaves(Node n) throws XPathExpressionException{
         Node cmmlRoot = XMLHelper.getElementB(n, "./semantics/*[1]");
         return traverseNode(cmmlRoot, "");
 
