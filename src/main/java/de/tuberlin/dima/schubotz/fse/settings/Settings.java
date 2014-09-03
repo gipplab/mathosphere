@@ -32,7 +32,7 @@ public class Settings implements Serializable {
             true, "Runtag name.");
     private static final Option NUM_SUB_TASKS = new Option(
             SettingNames.NUM_SUB_TASKS.getLetter(), SettingNames.NUM_SUB_TASKS.toString(),
-            true, "Parellelization");
+            false, "Parellelization");
     private static final Option OUTPUT_DIR = new Option(
             SettingNames.OUTPUT_DIR.getLetter(), SettingNames.OUTPUT_DIR.toString(),
             true, "Directory for output files.");
