@@ -4,6 +4,7 @@ import com.google.common.collect.Multiset;
 import de.tuberlin.dima.schubotz.fse.utils.XMLHelper;
 import eu.stratosphere.api.java.tuple.Tuple2;
 import junit.framework.TestCase;
+import org.junit.Ignore;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
@@ -11,7 +12,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import static de.tuberlin.dima.schubotz.fse.utils.XMLHelper.getIdentifiersFromCmml;
-
+@Ignore
 public class XMLHelperTest extends TestCase {
 
 
@@ -33,7 +34,7 @@ public class XMLHelperTest extends TestCase {
 		}
 	}
 
-	public void testCompareNode() throws Exception {
+    public void testCompareNode() throws Exception {
 		String testFile1 = TestUtils.getTestQueryString();
 		//Get nodelist of all <math> descendants of <root><topic>
 		NodeList MathMLElements = XMLHelper.String2NodeList(testFile1, "/topics//math");//"/topics/topic/query/formula/math" topic/query/formula

@@ -67,6 +67,13 @@
             <artifactId>mathml-canonicalizer</artifactId>
             <version>1.2-Mathosphere-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <groupId>xmlunit</groupId>
+            <artifactId>xmlunit</artifactId>
+            <version>1.5</version>
+        </dependency>
+
+
     </dependencies>
 	<build>
         <resources>

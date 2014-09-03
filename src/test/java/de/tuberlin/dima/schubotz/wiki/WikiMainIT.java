@@ -1,22 +1,12 @@
 package de.tuberlin.dima.schubotz.wiki;
 
-import eu.stratosphere.api.common.Plan;
-import eu.stratosphere.api.java.ExecutionEnvironment;
-import eu.stratosphere.client.LocalExecutor;
-import org.junit.Test;
+import org.junit.Ignore;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
-import java.io.*;
-import java.net.URI;
-import java.util.Arrays;
-import java.util.Collection;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
-
 
 @RunWith(Parameterized.class)
+@Ignore
 public class WikiMainIT {
     /*
 	private Integer numWiki;
