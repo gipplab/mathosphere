@@ -105,6 +105,9 @@
     <orderEntry type="library" name="Maven: org.springframework:spring-core:4.0.6.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-context:4.0.6.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-expression:4.0.6.RELEASE" level="project" />
+    <orderEntry type="library" name="Maven: cz.muni.fi.mir:mathml-canonicalizer:1.2-Mathosphere-SNAPSHOT" level="project" />
+    <orderEntry type="library" name="Maven: org.jdom:jdom2:2.0.5" level="project" />
+    <orderEntry type="library" name="Maven: xmlunit:xmlunit:1.5" level="project" />
   </component>
 </module>
 
