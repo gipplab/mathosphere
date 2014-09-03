@@ -46,16 +46,16 @@ public class ClientConsole {
                     input, Input.class);
             Settings.loadOptions(params, algorithmClass, inputClass);
         } catch (final IllegalArgumentException e) {
-            System.out.println(e.getMessage());
+            System.out.println("This is Mathosphere: " + e.getMessage());
             System.out.println("Invalid algorithm specified.");
             printHelp();
             return false;
         } catch (final MissingArgumentException e) {
-            System.out.println(e.getMessage());
+            System.out.println("This is Mathosphere: " + e.getMessage());
             printHelp();
             return false;
         } catch (final ParseException e) {
-            System.out.println(e.getMessage());
+            System.out.println("This is Mathosphere: " + e.getMessage());
             printHelp();
             return false;
         }
