@@ -2,6 +2,7 @@ package de.tuberlin.dima.schubotz.utils;
 
 import de.tuberlin.dima.schubotz.fse.utils.CMMLInfo;
 import junit.framework.TestCase;
+import org.custommonkey.xmlunit.XMLUnit;
 
 public class CMMLInfoTest extends TestCase {
     String rawTests[] = {"<annotation-xml encoding=\"MathML-Content\" id=\"I1.i2.p1.1.m1.1.cmml\" xref=\"I1.i2.p1.1.m1.1\">\n" +
@@ -85,7 +86,7 @@ public class CMMLInfoTest extends TestCase {
         for (String rawTest : rawTests) {
             CMMLInfo cmmlElement = new CMMLInfo(rawTest);
             // Ignore Windows style line-breaks
-            assertEquals(rawTest, cmmlElement.toString().replace("\r", ""));
+            XMLUnit.compareXML(rawTest,cmmlElement.toString());
         }
     }
 
@@ -101,6 +102,6 @@ public class CMMLInfoTest extends TestCase {
         String simpleMathTag = TestUtils.getFileContents("de/tuberlin/dima/schubotz/utils/sample.mml");
         String simpleStrictMathTag = TestUtils.getFileContents("de/tuberlin/dima/schubotz/utils/reference_sample.mml");
         CMMLInfo cmml = new CMMLInfo(simpleMathTag);
-        assertEquals(simpleStrictMathTag, cmml.toStrictCmml().toString());
+        XMLUnit.compareXML(simpleStrictMathTag, cmml.toStrictCmml().toString());
     }
 }
