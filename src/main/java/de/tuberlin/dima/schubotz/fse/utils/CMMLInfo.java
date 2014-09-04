@@ -1,5 +1,7 @@
 package de.tuberlin.dima.schubotz.fse.utils;
 
+import de.tuberlin.dima.schubotz.mathMLQueryGenerator.XQueryGenerator;
+import net.sf.saxon.s9api.XQueryExecutable;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -10,8 +12,27 @@ import javax.xml.transform.TransformerException;
 import javax.xml.xpath.XPathExpressionException;
 import java.io.IOException;
 
-public class CMMLInfo {
+public class CMMLInfo {private final static String FN_PATH_FROM_ROOT="declare namespace functx = \"http://www.functx.com\";\n" +
+                "declare function functx:path-to-node\n" +
+                "  ( $nodes as node()* )  as xs:string* {\n" +
+                "\n" +
+                "$nodes/string-join(ancestor-or-self::*/name(.), '/')\n" +
+                " } ;"
+        ;
+    // from http://x-query.com/pipermail/talk/2005-May/000607.html
+    private final static String FN_PATH_FROM_ROOT2 = "declare function path-from-root($x as node()) {\n" +
+            " if ($x/parent::*) then\n" +
+            " concat( path-from-root($x/parent::*), \"/\", node-name($x) )\n" +
+            " else\n" +
+            " concat( \"/\", node-name($x) )\n" +
+            " };\n";
 
+    private static final String XQUERY_HEADER = "declare default element namespace \"http://www.w3.org/1998/Math/MathML\";\n" +
+            FN_PATH_FROM_ROOT+
+            "<result>{\n" +
+            "let $m := .";
+    private static final String XQUERY_FOOTER = "<element><x>{$x}</x><p>{data(functx:path-to-node($x))}</p></element>}\n" +
+            "</result>";
     private Document cmmlDoc;
 
     private final static String MathHeader = "<?xml version=\"1.0\" ?>\n" +
@@ -19,6 +40,7 @@ public class CMMLInfo {
             "<semantics>\n";
     private final static String MathFooter = "</semantics>\n" +
             "</math>";
+
 
     @SuppressWarnings("UnusedDeclaration")
     public CMMLInfo(Document cmml) {
@@ -95,5 +117,33 @@ public class CMMLInfo {
 
     public Integer getMatchDepth(CMMLInfo other) {
         return Integer.MAX_VALUE;
+    }
+
+    public Integer getDepth( XQueryExecutable query ) throws Exception {
+        Document doc = XMLHelper.runXQuery(query, toString());
+        final NodeList elementsB = doc.getElementsByTagName("p");
+        if( elementsB.getLength() ==0) {
+            return null;
+        }
+        Integer depth = Integer.MAX_VALUE;
+        //find the match with lowest depth
+        for (int i = 0; i < elementsB.getLength(); i++) {
+            String path= elementsB.item(i).getTextContent();
+            int currentDepth = path.split("/").length;
+            if(currentDepth<depth)
+                depth=currentDepth;
+        }
+        return depth;
+    }
+
+    public XQueryExecutable getXQuery() {
+        final String queryString;
+        XQueryGenerator gen = new XQueryGenerator(cmmlDoc);
+        gen.setHeader(XQUERY_HEADER);
+        gen.setFooter(XQUERY_FOOTER);
+        queryString = gen.toString();
+        if ( queryString == null )
+            return null;
+        return XMLHelper.compileXQuerySting(queryString);
     }
 }

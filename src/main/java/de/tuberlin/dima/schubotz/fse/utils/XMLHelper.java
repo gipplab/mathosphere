@@ -3,6 +3,8 @@ package de.tuberlin.dima.schubotz.fse.utils;
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Multiset;
 import eu.stratosphere.api.java.tuple.Tuple2;
+import net.sf.saxon.Configuration;
+import net.sf.saxon.s9api.*;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -18,6 +20,7 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMResult;
 import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.sax.SAXSource;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 import javax.xml.xpath.*;
@@ -283,6 +286,10 @@ public final class XMLHelper {
     }
 
     public static Document getNewDocument() throws ParserConfigurationException {
+        return getNewDocument(false);
+    }
+
+    public static Document getNewDocument(Boolean nameSpaceAwareness) throws ParserConfigurationException {
         DocumentBuilder builder = getDocumentBuilder(false);
         return builder.newDocument();
     }
@@ -477,6 +484,8 @@ public final class XMLHelper {
         //XQueryCompiler xqueryCompiler;
     }
 
+
+
     /**
      * The Class Mynode.
      */
@@ -584,5 +593,39 @@ public final class XMLHelper {
         Transformer transformer = tFactory.newTransformer(new StreamSource(is));
         transformer.transform(new DOMSource(srcNode), new DOMResult(doc));
         return doc;
+    }
+
+    public static XQueryCompiler getXQueryCompiler(){
+        Configuration saxonConfig = new Configuration();
+        Processor processor = new Processor(saxonConfig);
+        return processor.newXQueryCompiler();
+    }
+
+    public static XQueryExecutable compileXQuerySting(String xQuery){
+        try {
+            return getXQueryCompiler().compile(xQuery);
+        } catch (SaxonApiException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public static Document runXQuery(XQueryExecutable query, String source) throws SaxonApiException, ParserConfigurationException {
+        XQueryEvaluator xqueryEval = query.load();
+        xqueryEval.setSource(new SAXSource(new InputSource(
+                new StringReader(source))));
+        Document doc = XMLHelper.getNewDocument();
+        xqueryEval.run(new DOMDestination(doc));
+        return doc;
+    }
+    public static Document runXQuery(XQueryExecutable query, Document doc) throws SaxonApiException, ParserConfigurationException {
+        Processor proc = new Processor(false);
+        XdmNode temp = proc.newDocumentBuilder().wrap(doc);
+        XQueryEvaluator xqueryEval = query.load();
+
+        xqueryEval.setContextItem(temp);
+        Document out = XMLHelper.getNewDocument(true);
+        xqueryEval.run(new DOMDestination(out));
+        return out;
     }
 }
