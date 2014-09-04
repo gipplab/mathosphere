@@ -11,9 +11,16 @@ public class TestUtils {
         return getFileContents("de/tuberlin/dima/schubotz/fse/fQuery.xml");
     }
 
-    public static String getTestFile10() throws IOException {
+    public static String getTestFile10String() throws IOException {
         return getFileContents("de/tuberlin/dima/schubotz/fse/test10.xml");
     }
+    public static String getTestFile10StringPath() {
+        return "de/tuberlin/dima/schubotz/fse/test10.xml";
+    }
+    public static String getFQueryStringPath() {
+        return "de/tuberlin/dima/schubotz/fse/fQuery.xml";
+    }
+
 	public static String getTestResultForTest11() throws IOException {
 		return getFileContents( "expectedMatch.xml" );
 	}
