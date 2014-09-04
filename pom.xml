@@ -56,17 +56,29 @@
 			<artifactId>spring-web</artifactId>
 			<version>4.0.6.RELEASE</version>
 		</dependency>
-		<!-- custom version of MathMLCan -->
-		<dependency>
-			<groupId>cz.muni.fi.mir</groupId>
-			<artifactId>mathml-canonicalizer</artifactId>
-			<version>1.2-Mathosphere-SNAPSHOT</version>
-		</dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>4.0.6.RELEASE</version>
+        </dependency>
+
+        <dependency>
+            <groupId>cz.muni.fi.mir</groupId>
+            <artifactId>mathml-canonicalizer</artifactId>
+            <version>1.2-Mathosphere-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>xmlunit</groupId>
+            <artifactId>xmlunit</artifactId>
+            <version>1.5</version>
+        </dependency>
+
+
     </dependencies>
 	<build>
         <resources>
             <resource>
-                <directory>src/common/resources</directory>
+                <directory>src/de.tuberlin.dima.schubotz.common/resources</directory>
                 <includes>
                     <include>**/*.xml</include>
                     <include>**/*.xsl</include>
@@ -74,7 +86,7 @@
             </resource>
         </resources>
 		<plugins>
-			<plugin>
+			<!-- <plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>build-helper-maven-plugin</artifactId>
 				<version>1.7</version>
@@ -88,13 +100,13 @@
 						<configuration>
 							<sources>
 								<source>src/wikipedia/java</source>
-								<source>src/common/java</source>
+								<source>src/de.tuberlin.dima.schubotz.common/java</source>
 							</sources>
 						</configuration>
 					</execution>
 				</executions>
 			</plugin>
-			<!-- build as single jar with all dependencies -->
+			<! - - build as single jar with all dependencies -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-shade-plugin</artifactId>
@@ -104,8 +116,8 @@
 					<transformers>
 						<transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
 							<manifestEntries>
-                                <Main-Class>de.tuberlin.dima.schubotz.wiki.preprocess.ProcessWikiProgram</Main-Class>
-								<Pact-Assembler-Class>de.tuberlin.dima.schubotz.fse.FilterMath</Pact-Assembler-Class>
+                                <Main-Class>de.tuberlin.dima.schubotz.fse.MainProgram</Main-Class>
+								<!--<Pact-Assembler-Class>de.tuberlin.dima.schubotz.fse.FilterMath</Pact-Assembler-Class>-->
 							</manifestEntries>
 						</transformer>
 					</transformers>
@@ -146,7 +158,7 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>2.17</version>
             </plugin>
-			<plugin>
+			<!-- <plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-failsafe-plugin</artifactId>
 				<version>2.17</version>
@@ -165,7 +177,7 @@
 						</configuration>
 					</execution>
 				</executions>
-			</plugin>
+			</plugin> -->
 		</plugins>
 	</build>
 </project>

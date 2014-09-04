@@ -1,23 +1,8 @@
+
 package de.tuberlin.dima.schubotz.wiki;
 
-import de.tuberlin.dima.schubotz.wiki.preprocess.ProcessWikiProgram;
-import eu.stratosphere.api.common.Plan;
-import eu.stratosphere.api.java.ExecutionEnvironment;
-import eu.stratosphere.client.LocalExecutor;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
-
-import java.io.*;
-import java.net.URI;
-import java.util.Arrays;
-import java.util.Collection;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
-
-@RunWith(Parameterized.class)
 public class ProcessWikiIT {
+    /*
 	private String debugWikiInput;
 	private String debugOutput;
 	
@@ -38,7 +23,7 @@ public class ProcessWikiIT {
 		String debugLatexOutput = debugOutput + "latexWikiMap.csv";
 		String debugNumWikiOutput = debugOutput + "numWiki.txt";
 		if (debugWikiInput.equals("")) {
-			debugWikiInput = "file://" + getClass().getClassLoader().getResources("de.tuberlin.dima.schubotz.wiki/mappers/wikiQuickDump.xml").nextElement().getPath();
+			debugWikiInput = "file://" + getClass().getClassLoader().getResources("de.tuberlin.dima.schubotz.de.tuberlin.dima.schubotz.fse.wiki/mappers/wikiQuickDump.xml").nextElement().getPath();
 		}
 		try {
 			String wikiQueryInput = "file://" + getClass().getClassLoader().getResources("de/tuberlin/dima/schubotz/wiki/mappers/wikiQuery.xml").nextElement().getPath();
@@ -82,6 +67,8 @@ public class ProcessWikiIT {
 			br.close();
 		}
 	}
+	*/
 	
 
 }
+
