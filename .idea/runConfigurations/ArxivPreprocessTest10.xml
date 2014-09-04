@@ -1,6 +1,7 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="ArxivPreprocessTest10" type="Application" factoryName="Application" show_console_on_std_out="true" show_console_on_std_err="true">
     <output_file path="$PROJECT_DIR$/../data/output/maintest10.log" is_save="true" />
+    <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
     <option name="MAIN_CLASS_NAME" value="de.tuberlin.dima.schubotz.fse.MainProgram" />
     <option name="VM_PARAMETERS" value="" />
     <option name="PROGRAM_PARAMETERS" value="RawToPreprocessed ArxivRawInput -r &quot;preprocess&quot; -p 1 -o file://$PROJECT_DIR$/../data/output -d file://$PROJECT_DIR$/../data/test10.xml -q file://$PROJECT_DIR$/../data/fQuery.xml" />
