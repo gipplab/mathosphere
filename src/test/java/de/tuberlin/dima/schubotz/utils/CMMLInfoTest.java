@@ -1,8 +1,14 @@
 package de.tuberlin.dima.schubotz.utils;
 
 import de.tuberlin.dima.schubotz.fse.utils.CMMLInfo;
+import de.tuberlin.dima.schubotz.fse.utils.XMLHelper;
 import junit.framework.TestCase;
+import net.sf.saxon.s9api.XQueryExecutable;
 import org.custommonkey.xmlunit.XMLUnit;
+import org.w3c.dom.Document;
+
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.IOException;
 
 public class CMMLInfoTest extends TestCase {
     String rawTests[] = {"<annotation-xml encoding=\"MathML-Content\" id=\"I1.i2.p1.1.m1.1.cmml\" xref=\"I1.i2.p1.1.m1.1\">\n" +
@@ -77,6 +83,7 @@ public class CMMLInfoTest extends TestCase {
         int i = 0;
         for (String rawTest : rawTests) {
             CMMLInfo cmmlElement = new CMMLInfo(rawTest);
+            System.out.println(cmmlElement);
             assertEquals("Test " + i + " failed", isEquation[i], cmmlElement.isEquation());
             i++;
         }
@@ -103,5 +110,29 @@ public class CMMLInfoTest extends TestCase {
         String simpleStrictMathTag = TestUtils.getFileContents("de/tuberlin/dima/schubotz/utils/reference_sample.mml");
         CMMLInfo cmml = new CMMLInfo(simpleMathTag);
         XMLUnit.compareXML(simpleStrictMathTag, cmml.toStrictCmml().toString());
+    }
+    private XQueryExecutable getQueryI() throws IOException, ParserConfigurationException {
+        final String ciI = TestUtils.getFileContents("de/tuberlin/dima/schubotz/utils/I.mml.xml");
+        CMMLInfo cmml = new CMMLInfo(ciI);
+        return cmml.getXQuery();
+    }
+
+    public void testGenerateXQuery() throws Exception
+    {
+        final String ciI = TestUtils.getFileContents("de/tuberlin/dima/schubotz/utils/I.mml.xml");
+        final String sampleMML = TestUtils.getFileContents("de/tuberlin/dima/schubotz/utils/q1.xml");
+        CMMLInfo cmml = new CMMLInfo(ciI);
+        final XQueryExecutable xQuery = cmml.getXQuery();
+        Document doc = XMLHelper.runXQuery(xQuery,sampleMML);
+
+        System.out.println(XMLHelper.printDocument(doc));
+    }
+    public void testGetDepth() throws Exception {
+        XQueryExecutable iQuery = getQueryI();
+        final String sampleMML = TestUtils.getFileContents("de/tuberlin/dima/schubotz/utils/q1.xml");
+        CMMLInfo cmml = new CMMLInfo(sampleMML);
+        Integer depth = cmml.getDepth(iQuery);
+        assertEquals(8,(int) depth);
+
     }
 }
