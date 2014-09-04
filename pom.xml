@@ -72,7 +72,11 @@
             <artifactId>xmlunit</artifactId>
             <version>1.5</version>
         </dependency>
-
+        <dependency>
+            <groupId>de.tuberlin.dima.schubotz</groupId>
+            <artifactId>MathMLQueryGenerator</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
 
     </dependencies>
 	<build>

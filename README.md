@@ -3,6 +3,8 @@
 ```bash
 cd lib/MathMLCan
 mvn install
+cd ../MathMLQueryGenerator
+mvn install
 cd ../..
 mvn install
 ```
