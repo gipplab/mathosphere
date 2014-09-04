@@ -1,26 +1,23 @@
 package de.tuberlin.dima.schubotz.fse;
 
-import com.google.common.collect.HashMultiset;
-import de.tuberlin.dima.schubotz.common.mappers.OutputSimple;
-import de.tuberlin.dima.schubotz.common.types.OutputSimpleTuple;
-import de.tuberlin.dima.schubotz.common.utils.CSVHelper;
-import de.tuberlin.dima.schubotz.fse.mappers.*;
-import de.tuberlin.dima.schubotz.fse.types.QueryTuple;
-import de.tuberlin.dima.schubotz.fse.types.ResultTuple;
-import de.tuberlin.dima.schubotz.fse.types.SectionTuple;
-import eu.stratosphere.api.common.operators.Order;
-import eu.stratosphere.api.java.DataSet;
+import de.tuberlin.dima.schubotz.fse.client.ClientConsole;
+import de.tuberlin.dima.schubotz.fse.modules.Module;
+import de.tuberlin.dima.schubotz.fse.modules.algorithms.Algorithm;
+import de.tuberlin.dima.schubotz.fse.modules.inputs.Input;
+import de.tuberlin.dima.schubotz.fse.settings.DataStorage;
+import de.tuberlin.dima.schubotz.fse.settings.SettingNames;
+import de.tuberlin.dima.schubotz.fse.settings.Settings;
+import de.tuberlin.dima.schubotz.fse.utils.SafeLogWrapper;
+import eu.stratosphere.api.common.Plan;
 import eu.stratosphere.api.java.ExecutionEnvironment;
-import eu.stratosphere.api.java.io.TextInputFormat;
-import eu.stratosphere.api.java.operators.DataSource;
-import eu.stratosphere.api.java.typeutils.BasicTypeInfo;
-import eu.stratosphere.core.fs.FileSystem.WriteMode;
-import eu.stratosphere.core.fs.Path;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import eu.stratosphere.client.LocalExecutor;
+import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider;
+import org.springframework.core.type.filter.AssignableTypeFilter;
 
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.xpath.XPathExpressionException;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.util.Set;
 import java.util.regex.Pattern;
 
 /**
@@ -28,182 +25,219 @@ import java.util.regex.Pattern;
  */
 
 public class MainProgram {
-	/**
+    /**
 	 * Main execution environment for Stratosphere.
 	 */
-	static ExecutionEnvironment env;
-	/**
-	 * Log for this class. Leave all logging implementations up to
-	 * Stratosphere and its config files.
-	 */
-	private static final Log LOG = LogFactory.getLog( MainProgram.class );
+	private static ExecutionEnvironment env;
+	private static final SafeLogWrapper LOG = new SafeLogWrapper(MainProgram.class);
+    /**
+     * Used for line splitting so that CsvReader is not looking for "\n" in XML
+     */
+    public static final String CSV_LINE_SEPARATOR = "\u001D";
+    /**
+     * Used for field splitting so that CsvReader doesn't get messed up on comma latex tokens
+     */
+    public static final String CSV_FIELD_SEPARATOR = "\u001E";
 	/**
 	 * Delimiter used in between Tex and Keyword tokens
 	 */
-	public static final String STR_SPLIT = "<S>";
-	/**
+	public static final String STR_SEPARATOR = "\u001F";
+    /**
 	 * Pattern which will return word tokens
 	 */
 	public static final Pattern WORD_SPLIT = Pattern.compile("\\W+", Pattern.UNICODE_CHARACTER_CLASS);
-	/**
-	 * HashMultiset of keywords : count of number of documents containing that keyword
-	 */
-	public static HashMultiset<String> keywordDocsMultiset;
-	/**
-	 * HashMultiset of latex tokens : count of number of documents containing that latex token
-	 */
-	public static HashMultiset<String> latexDocsMultiset;
-	
-	
-	
-	//SETTINGS
-	/**
-	 * The overall maximal results that can be returned per query.
-	 */
-	public final static int MaxResultsPerQuery = 1000;
-	/**
-	 * Tag on which to split documents.
-	 */
-	public static final String DOCUMENT_SEPARATOR = "</ARXIVFILESPLIT>";
-	/**
-	 * Tag on which to split queries.
-	 */
-	public static final String QUERY_SEPARATOR = "</topic>";
-	/**
-	 * Amount to deweight keywords by. Divide tfidf_keyword by this 
-	 * to get final keyword score.
-	 */
-	public static double keywordDivide = 6.36; 
-	/**
-	 * Runtag ID
-	 */
-	public static final String RUNTAG = "fse_LATEX";
-	
-	
-	
-	// ARGUMENTS
-	/**
-	 * The number of parallel tasks to be executed
-	 */
-	static int noSubTasks;
-	/**
-	 * The Input XML-File that contains the document collection
-	 */
-	static String docsInput;
-	/**
-	 * The Input CSV-file with the human evaluation
-	 */
-	static String queryInput;
-	/**
-	 * The Output file with the calculated results
-	 */
-	static String output;
-	/**
-	 * Input file of map of keywords to number of documents that contain that keyword
-	 */
-	static String keywordDocsMapInput;
-	/**
-	 * Input file of map of latex tokens to number of documents that contain that token 
-	 */
-	static String latexDocsMapInput;
-	/**
-	 * Total number of documents
-	 */
-	public static int numDocs = 0;
-	/**
-	 * Whether or not to do low level debugging (TODO make it based on logger level?)
-	 */
-	public static boolean debug;
+    /**
+     * Pattern which will replace all dots in package name with slashes for Spring
+     */
+    private static final Pattern PACKAGE = Pattern.compile("\\.");
 
-	
-	protected static void parseArg (String[] args) throws Exception {
-		// parse job parameters
-		noSubTasks = (args.length > 0 ? Integer.parseInt( args[0] )
-			: 16);
-		docsInput = (args.length > 1 ? args[1]
-			: "file:///mnt/ntcir-math/testdata/test10000.xml");
-		queryInput = (args.length > 2 ? args[2]
-			: "file:///mnt/ntcir-math/queries/fQuery.xml");
-		output = (args.length > 3 ? args[3]
-			: "file:///mnt/ntcir-math/test-output/LATEXtestout-" + System.currentTimeMillis() + ".csv");
-		keywordDocsMapInput = (args.length > 4 ? args[4]
-			: "file:///mnt/ntcir-math/queries/keywordDocsMap.csv");
-		latexDocsMapInput = (args.length > 5 ? args[5]
-			: "file:///mnt/ntcir-math/queries/latexDocsMap.csv");
-		if (args.length > 6) {
-			numDocs = Integer.valueOf(args[6]);
-		} else {
-			throw new Exception("numDocs not given or is not a number!");
-		}
-		debug = (args.length > 7 ? (args[7].equals("debug") ? true : false) : false);
+    private MainProgram() {
+    }
+
+    public static void main (String[] args) throws Exception {
+        //Turn off debugging for now
+        LOG.setLevel(SafeLogWrapper.SafeLogWrapperLevel.INFO);
+
+        final boolean parsed = ClientConsole.parseParameters(args);
+
+        if (parsed) {
+            configureEnv();
+
+            final DataStorage data = new DataStorage();
+
+            //Run input module specified by command line
+            final Input inputModule = getModule(
+                    Settings.getProperty(SettingNames.INPUT), Input.class);
+            inputModule.configure(env, data);
+
+            //Run algorith module specified by command line
+            final Algorithm algoModule = getModule(
+                    Settings.getProperty(SettingNames.ALGORITHM), Algorithm.class);
+            algoModule.configure(env, data);
+
+            /* Trust user to run input module for now
+            //Run input modules required by algorithm
+            for (final Class clazz : algorithm.getRequiredInputsAsIterable()) {
+                final Module addInputObj = (Module) getObjectFromGenericClass(clazz, Input.class);
+                addInputObj.configure(env, data);
+            }*/
+
+
+            /* Algorithms are tied to output (preprocess, etc.)
+            final Class outputClass = getClass(
+                    Settings.getProperty(SettingNames.OUTPUT_OPTION),Output.class.getPackage().getName());
+            final Module outputObj = (Module) getObjectFromGenericClass(outputClass, Output.class);
+            outputObj.configure(env, data);
+            */
+
+            //Plan plan = env.createProgramPlan();
+	        //LocalExecutor.execute(plan);
+            env.execute("Mathosphere");
+        }
 	}
+    /**
+     * Configure ExecutionEnvironment
+     */
+    private static void configureEnv() {
+        env = ExecutionEnvironment.getExecutionEnvironment();
+        //env = ExecutionEnvironment.createLocalEnvironment();
+        env.setDegreeOfParallelism(Integer.parseInt(Settings.getProperty(SettingNames.NUM_SUB_TASKS)));
+    }
 
-	public static void main (String[] args) throws Exception {
-		try {
-			parseArg( args );
-		} catch (Exception e) {
-			LOG.fatal("Arguments incorrect.", e);
-			e.printStackTrace();
-			System.exit(0);
-		}
-		try {
-			ConfigurePlan();
-			env.setDegreeOfParallelism( noSubTasks );
-			env.execute( "Mathosphere" );
-		} catch (Exception e) {
-			System.out.println("Aborting!");
-			System.exit(0);
-		}
-		System.exit(1);
-	}
 
-	public static ExecutionEnvironment getExecutionEnvironment () throws Exception {
-		return env;
-	}
+    /**
+     * Gets module to execute, given expected subclass and its name.
+     * Guaranteed to return class of expected subclass that extends
+     * module if no exception is thrown
+     * @param moduleName name of module
+     * @param expectedClass module subclass expected
+     * @return class
+     * @throws IllegalArgumentException if unable to find class
+     * @throws ClassCastException if unable to cast to expectedClass
+     */
+    public static <T extends Module> T getModule(String moduleName, Class<T> expectedClass)
+        throws IllegalArgumentException, ClassCastException {
 
-	/**
-	 * @throws XPathExpressionException
-	 * @throws ParserConfigurationException
-	 */
-	@SuppressWarnings("serial")
-	protected static void ConfigurePlan () throws XPathExpressionException, ParserConfigurationException, Exception {
-		env = ExecutionEnvironment.getExecutionEnvironment();
-		
-		//Set of keywords and latex contained in document and queries, mapped to counts of how many documents contain each token
-		keywordDocsMultiset = CSVHelper.csvToMultiset(keywordDocsMapInput);
-		latexDocsMultiset = CSVHelper.csvToMultiset(latexDocsMapInput);
-		
-		TextInputFormat format = new TextInputFormat(new Path(docsInput));
-		format.setDelimiter(DOCUMENT_SEPARATOR);
-		DataSet<String> rawArticleText = new DataSource<>(env, format, BasicTypeInfo.STRING_TYPE_INFO);
-		DataSet<String> cleanArticleText = rawArticleText.flatMap(new DocCleaner());
-		
-		TextInputFormat formatQueries = new TextInputFormat(new Path(queryInput));
-		formatQueries.setDelimiter(QUERY_SEPARATOR); 
-		DataSet<String> rawQueryText = new DataSource<>(env, formatQueries, BasicTypeInfo.STRING_TYPE_INFO);
-		DataSet<String> cleanQueryText = rawQueryText.flatMap(new QueryCleaner());
-		
-		// TODO IMPLEMENT ADDITIONAL SCORING METHODS 
-		
-		//Extract LaTeX and keywords 
-		DataSet<QueryTuple> queryDataSet = cleanQueryText.flatMap(new QueryMapper(WORD_SPLIT, STR_SPLIT));
-		DataSet<SectionTuple> sectionDataSet = cleanArticleText.flatMap(new SectionMapper(WORD_SPLIT, STR_SPLIT, keywordDocsMultiset));
-		
-		
-		//Compare LaTeX and keywords, score
-		DataSet<ResultTuple> latexMatches = sectionDataSet.flatMap(new QuerySectionMatcher(STR_SPLIT, latexDocsMultiset, keywordDocsMultiset,
-																						   numDocs, keywordDivide, debug))
-														  .withBroadcastSet(queryDataSet, "Queries"); 
-		
-		
-		//Output
-		DataSet<OutputSimpleTuple> outputTuples = latexMatches//Group by queryId
-														.groupBy(0)
-														//Sort by score <queryId, docid, score>
-														.sortGroup(2, Order.DESCENDING) 
-														.reduceGroup(new OutputSimple(MaxResultsPerQuery,RUNTAG));			 
-		outputTuples.writeAsCsv(output,"\n"," ",WriteMode.OVERWRITE);
+        final ClassPathScanningCandidateComponentProvider provider = new
+                ClassPathScanningCandidateComponentProvider(false);
+        provider.addIncludeFilter(new AssignableTypeFilter(expectedClass));
 
-	}
+        // scan in modules package, replace dots with slashes
+        final Set<BeanDefinition> components = provider.findCandidateComponents(
+                PACKAGE.matcher(Module.class.getPackage().getName()).replaceAll("/"));
+        try {
+            for (final BeanDefinition component : components) {
+                final Class cls = Class.forName(component.getBeanClassName());
+                if (cls.getSimpleName().equals(moduleName)) {
+                    return expectedClass.cast(getObjectFromGenericClass(cls));
+                }
+            }
+        } catch (final ClassNotFoundException e) {
+            throw new IllegalArgumentException("Unable to find module: " + moduleName);
+        }
+        throw new IllegalArgumentException("Unable to find module: " + moduleName);
+    }
+
+    /**
+     * Constructs object instance from a generic class.
+     * Always guaranteed to work if it does not throw an exception.
+     * @param clazz generic class
+     * @return object of specific class. throws exception rather than returning null
+     * @throws IllegalArgumentException if for any reason unable to create the object
+     */
+    private static <T> T getObjectFromGenericClass(Class<T> clazz)
+            throws IllegalArgumentException {
+        try {
+            final Constructor<T> objectConstructor = clazz.getConstructor();
+            return objectConstructor.newInstance();
+        } catch (final NoSuchMethodException ignore) {
+            throw new IllegalArgumentException("Unable to find constructor for class: " + clazz.getName());
+        } catch (final InstantiationException ignore) {
+            throw new IllegalArgumentException("Unable to instantiate class: " + clazz.getName());
+        } catch (final InvocationTargetException ignore) {
+            throw new IllegalArgumentException("Unable to invoke class: " + clazz.getName());
+        } catch (final IllegalAccessException ignore) {
+            throw new IllegalArgumentException("Unable to access class: " + clazz.getName() + ", is it public?");
+        }
+    }
+
+    /**
+     * Gets module to execute, given expected superclass and its name.
+     * Guaranteed to return class that extends expected class
+     * if no exception is thrown
+     * @param className name of class
+     * @param expectedClass superclass expected
+     * @return class
+     * @throws IllegalArgumentException if unable to find class
+     */
+    /*
+    public static Class getSubClass(String className, Class<?> expectedClass) throws IllegalArgumentException {
+        try {
+            final String packageName = expectedClass.getPackage().getName();
+            final String fullName = packageName + '.' + className;
+            final Class returnedClass = Class.forName(fullName);
+            if (expectedClass.isAssignableFrom(returnedClass)) {
+                return Class.forName(packageName);
+            } else {
+                throw new ClassNotFoundException();
+            }
+        } catch (final ClassNotFoundException ignore) {
+            throw new IllegalArgumentException ("Unable to find class: " + className + " that was a subclass of " +
+                    expectedClass.getName());
+        }
+    }
+
+
+    /**
+     * Gets the algorithm to execute based on name. If it doesn't exist, throw exceptions.
+     */
+    /*
+    public static Algorithm getAlgorithm(String planName) throws IllegalArgumentException {
+        final String planClassname = MainProgram.class.getClass().getPackage().getName() + ".algorithms." + planName;
+
+        try {
+            final Class<?> planClass = Class.forName(planClassname);
+
+            final Class planInterface = Algorithm.class;
+            final ClassLoader classLoader = planInterface.getClassLoader();
+            final Class<?>[] interfaces = new Class<?>[] {planInterface};
+            //Construct handler containing algorithm to configure
+            final InvocationHandler handler = new PlanInvocationHandler(
+                    (Algorithm) planClass.newInstance());
+            //Construct proxy class to run configure method, return it
+            return (Algorithm) Proxy.newProxyInstance(classLoader, interfaces, handler);
+        } catch (final ClassNotFoundException ignore) {
+            throw new IllegalArgumentException ("Unable to find algorithm: " + planName);
+        } catch (final InstantiationException ignore) {
+            throw new IllegalArgumentException ("Unable to instantiate algorithm: " + planName);
+        } catch (final IllegalAccessException ignore) {
+            throw new IllegalArgumentException ("Unable to access algorithm: " + planName + ", is it public?");
+        }
+    }
+
+    /**
+     * Handler to invoke methods on a Algorithm object
+     */
+        /*
+    private static class PlanInvocationHandler implements InvocationHandler {
+        private final Object object;
+        protected PlanInvocationHandler(Object object) {
+            this.object = object;
+        }
+        /**
+         * Invoke given method on algorithm this handler was constructed with.
+         * @param obj ignored (required by interface)
+         * @param method method to execute
+         * @param args arguments for method
+         * @return method return
+         */
+    /*
+        @Override
+        public Object invoke(Object obj, Method method, Object[] args)
+                throws InvocationTargetException, IllegalArgumentException, IllegalAccessException {
+            return method.invoke(this.object, args);
+        }
+    }
+    */
 }
 
