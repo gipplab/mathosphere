@@ -18,7 +18,7 @@ public class ArxivCleaner extends Cleaner {
 	 * Pattern for extracting the filename from the ARXIV tag.
 	 */
 	private static final Pattern FILENAME_PATTERN = Pattern
-	         .compile("<ARXIVFILESPLIT\\\\nFilename=\"\\./\\d+/(.*?)/\\1_(\\d+)_(\\d+)\\.xhtml\">");
+	         .compile("<ARXIVFILESPLIT.*?Filename=\"\\./\\d+/(.*?)/\\1_(\\d+)_(\\d+)\\.xhtml\">");
 
     private static final String DELIM = "</ARXIVFILESPLIT>";
 
@@ -42,7 +42,11 @@ public class ArxivCleaner extends Cleaner {
             LOG.warn("Null docID, assigning this_was_null: ", doc);
         }
         //Strip Arxiv line
-        doc = doc.substring(doc.indexOf("<?xml"));
+        try {
+            doc = doc.substring(doc.indexOf("<?xml"));
+        } catch (final StringIndexOutOfBoundsException e) {
+            LOG.warn("Badly formatted xml title, exiting: ", doc);
+        }
         doc = HtmlUtils.htmlUnescape(doc);
         out.collect(new RawDataTuple(docID, doc));
     }
