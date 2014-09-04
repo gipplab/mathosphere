@@ -82,7 +82,7 @@
 	<build>
         <resources>
             <resource>
-                <directory>src/de.tuberlin.dima.schubotz.common/resources</directory>
+                <directory>src/main/resources</directory>
                 <includes>
                     <include>**/*.xml</include>
                     <include>**/*.xsl</include>
