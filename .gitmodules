@@ -1,4 +1,3 @@
-
 [submodule "lib/MathMLQueryGenerator"]
 	path = lib/MathMLQueryGenerator
 	url = https://github.com/physikerwelt/MathMLQueryGenerator.git
