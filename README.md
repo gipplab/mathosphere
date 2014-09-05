@@ -1,9 +1,11 @@
 ## Build instructions
 
 ```bash
+git submodule init
+git submodule update
 mvn install
 ```
-
+[![Build Status](https://drone.io/github.com/TU-Berlin/mathosphere2/status.png)](https://drone.io/github.com/TU-Berlin/mathosphere2/latest)
 ## Run instructions
 
 ```
