@@ -1,17 +1,11 @@
 ## Build instructions
 
 ```bash
-cd lib/MathMLCan
-mvn install
-cd ../MathMLQueryGenerator
-mvn install
-cd ../..
+git submodule init
+git submodule update
 mvn install
 ```
-
-TODO: find a way how to automate that. See #26
-
-
+[![Build Status](https://drone.io/github.com/TU-Berlin/mathosphere2/status.png)](https://drone.io/github.com/TU-Berlin/mathosphere2/latest)
 ## Run instructions
 
 ```

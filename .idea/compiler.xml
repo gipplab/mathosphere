@@ -23,11 +23,19 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="true" />
-        <module name="math-tests" />
+        <module name="math-tests (1)" />
+        <module name="mathml-canonicalizer" />
+        <module name="MathMLQueryGenerator" />
+        <module name="MathMLQueryGenerator (1)" />
+        <module name="mathosphere-core" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="math-tests" target="1.7" />
+      <module name="math-tests (1)" target="1.7" />
+      <module name="mathml-canonicalizer" target="1.6" />
+      <module name="MathMLQueryGenerator" target="1.7" />
+      <module name="mathosphere-core" target="1.7" />
     </bytecodeTargetLevel>
   </component>
 </project>
