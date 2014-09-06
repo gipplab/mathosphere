@@ -1,0 +1,256 @@
+ERROR Element 1:
+Nested semantics tags
+Throws two exceptions:
+WARN  de.tuberlin.dima.schubotz.fse.utils.ExtractHelper - Multiple annotation tags in element, assuming first:
+WARN  de.tuberlin.dima.schubotz.fse.utils.ExtractHelper - Odd annotation tag:
+
+<math xmlns="http://www.w3.org/1998/Math/MathML" xref="S6.Ex121.m1.1.cmml" alttext="\displaystyle{}^{\text{(Lemma~{}\ref{l:GettingToMaxTypeTerm}, $T\gg_{%&#10;\varepsilon,\varepsilon^{\prime}}1$)}\leadsto}" class="ltx_Math" id="S6.Ex121.m1.1" display="inline">
+   <semantics xref="S6.Ex121.m1.1.cmml" id="S6.Ex121.m1.1a">
+      <msup xref="S6.Ex121.m1.1.1.cmml" id="S6.Ex121.m1.1.1">
+         <mi xref="S6.Ex121.m1.1.1.cmml" id="S6.Ex121.m1.1.1a"></mi>
+         <mrow xref="S6.Ex121.m1.1.1.1.cmml" id="S6.Ex121.m1.1.1.1">
+            <mrow xref="S6.Ex121.m1.1.1.1.1.cmml" id="S6.Ex121.m1.1.1.1.1">
+               <mtext xref="S6.Ex121.m1.1.1.1.1.cmml" id="S6.Ex121.m1.1.1.1.1a">(Lemma¬ </mtext>
+               <mtext xref="S6.Ex121.m1.1.1.1.1.cmml" id="S6.Ex121.m1.1.1.1.1b"><a xmlns="http://www.w3.org/1999/xhtml" href="#Thmthm40" class="ltx_ref" title="Lemma 40. ‚<t_£ >6. Batyrev-Tschinkel-Manin‚<t_ôs> conjecture for flag variety. ‚<t_£ >Translate of horospheres and counting problems"><span class="ltx_text ltx_ref_tag">40</span></a></mtext>
+               <mtext xref="S6.Ex121.m1.1.1.1.1.cmml" id="S6.Ex121.m1.1.1.1.1e">,¬ </mtext>
+               <semantics xref="S6.Ex121.m1.1.1.1.1.1.m1.1.cmml" id="S6.Ex121.m1.1.1.1.1.1.m1.1a">
+                  <mrow xref="S6.Ex121.m1.1.1.1.1.1.m1.1.5.cmml" id="S6.Ex121.m1.1.1.1.1.1.m1.1.5">
+                     <mi xref="S6.Ex121.m1.1.1.1.1.1.m1.1.1.cmml" id="S6.Ex121.m1.1.1.1.1.1.m1.1.1">T</mi>
+                     <msub xref="S6.Ex121.m1.1.1.1.1.1.m1.1.5.1.cmml" id="S6.Ex121.m1.1.1.1.1.1.m1.1.5.1">
+                        <mo xref="S6.Ex121.m1.1.1.1.1.1.m1.1.2.cmml" id="S6.Ex121.m1.1.1.1.1.1.m1.1.2">‚â´</mo>
+                        <mrow xref="S6.Ex121.m1.1.1.1.1.1.m1.1.3.1.cmml" id="S6.Ex121.m1.1.1.1.1.1.m1.1.3.1">
+                           <mi xref="S6.Ex121.m1.1.1.1.1.1.m1.1.3.1.1.cmml" id="S6.Ex121.m1.1.1.1.1.1.m1.1.3.1.1">Œµ</mi>
+                           <mo xref="S6.Ex121.m1.1.1.1.1.1.m1.1.3.1.cmml" id="S6.Ex121.m1.1.1.1.1.1.m1.1.3.1a">,</mo>
+                           <msup xref="S6.Ex121.m1.1.1.1.1.1.m1.1.3.1.6.cmml" id="S6.Ex121.m1.1.1.1.1.1.m1.1.3.1.6">
+                              <mi xref="S6.Ex121.m1.1.1.1.1.1.m1.1.3.1.3.cmml" id="S6.Ex121.m1.1.1.1.1.1.m1.1.3.1.3">Œµ</mi>
+                              <mo xref="S6.Ex121.m1.1.1.1.1.1.m1.1.3.1.4.1.cmml" id="S6.Ex121.m1.1.1.1.1.1.m1.1.3.1.4.1">‚<t_≤<>/mo>
+                           </msup>
+                        </mrow>
+                     </msub>
+                     <mn xref="S6.Ex121.m1.1.1.1.1.1.m1.1.4.cmml" id="S6.Ex121.m1.1.1.1.1.1.m1.1.4">1</mn>
+                  </mrow>
+                  <annotation-xml xref="S6.Ex121.m1.1.1.1.1.1.m1.1" id="S6.Ex121.m1.1.1.1.1.1.m1.1.cmml" encoding="MathML-Content">
+                     <apply xref="S6.Ex121.m1.1.1.1.1.1.m1.1.5" id="S6.Ex121.m1.1.1.1.1.1.m1.1.5.cmml">
+                        <apply xref="S6.Ex121.m1.1.1.1.1.1.m1.1.5.1" id="S6.Ex121.m1.1.1.1.1.1.m1.1.5.1.cmml">
+                           <csymbol cd="ambiguous" id="S6.Ex121.m1.1.1.1.1.1.m1.1.5.1.1.cmml">subscript</csymbol>
+                           <csymbol xref="S6.Ex121.m1.1.1.1.1.1.m1.1.2" cd="latexml" id="S6.Ex121.m1.1.1.1.1.1.m1.1.2.cmml">much-greater-than</csymbol>
+                           <apply xref="S6.Ex121.m1.1.1.1.1.1.m1.1.3.1" id="S6.Ex121.m1.1.1.1.1.1.m1.1.3.1.cmml">
+                              <list id="S6.Ex121.m1.1.1.1.1.1.m1.1.3.1.5.cmml"></list>
+                              <ci xref="S6.Ex121.m1.1.1.1.1.1.m1.1.3.1.1" id="S6.Ex121.m1.1.1.1.1.1.m1.1.3.1.1.cmml">Œµ</ci>
+                              <apply xref="S6.Ex121.m1.1.1.1.1.1.m1.1.3.1.6" id="S6.Ex121.m1.1.1.1.1.1.m1.1.3.1.6.cmml">
+                                 <csymbol cd="ambiguous" id="S6.Ex121.m1.1.1.1.1.1.m1.1.3.1.6.1.cmml">superscript</csymbol>
+                                 <ci xref="S6.Ex121.m1.1.1.1.1.1.m1.1.3.1.3" id="S6.Ex121.m1.1.1.1.1.1.m1.1.3.1.3.cmml">Œµ</ci>
+                                 <ci xref="S6.Ex121.m1.1.1.1.1.1.m1.1.3.1.4.1" id="S6.Ex121.m1.1.1.1.1.1.m1.1.3.1.4.1.cmml">normal-‚<t_≤<>/ci>
+                              </apply>
+                           </apply>
+                        </apply>
+                        <ci xref="S6.Ex121.m1.1.1.1.1.1.m1.1.1" id="S6.Ex121.m1.1.1.1.1.1.m1.1.1.cmml">T</ci>
+                        <cn xref="S6.Ex121.m1.1.1.1.1.1.m1.1.4" id="S6.Ex121.m1.1.1.1.1.1.m1.1.4.cmml" type="integer">1</cn>
+                     </apply>
+                  </annotation-xml>
+                  <annotation xref="S6.Ex121.m1.1.1.1.1.1.m1.1.cmml" id="S6.Ex121.m1.1.1.1.1.1.m1.1b" encoding="application/x-tex">T\gg_{\varepsilon,\varepsilon^{\prime}}1</annotation>
+               </semantics>
+               <mtext xref="S6.Ex121.m1.1.1.1.1.cmml" id="S6.Ex121.m1.1.1.1.1f">)</mtext>
+            </mrow>
+            <mo xref="S6.Ex121.m1.1.1.1.2.cmml" id="S6.Ex121.m1.1.1.1.2">‚Üù</mo>
+            <mi xref="S6.Ex121.m1.1.1.1.3.cmml" id="S6.Ex121.m1.1.1.1.3"></mi>
+         </mrow>
+      </msup>
+      <annotation-xml xref="S6.Ex121.m1.1" id="S6.Ex121.m1.1.cmml" encoding="MathML-Content">
+         <apply xref="S6.Ex121.m1.1.1" id="S6.Ex121.m1.1.1.cmml">
+            <apply xref="S6.Ex121.m1.1.1.1" id="S6.Ex121.m1.1.1.1.cmml">
+               <csymbol xref="S6.Ex121.m1.1.1.1.2" cd="latexml" id="S6.Ex121.m1.1.1.1.2.cmml">leads-to</csymbol>
+               <mtext xref="S6.Ex121.m1.1.1.1.1" id="S6.Ex121.m1.1.1.1.1.cmml">(Lemma¬ 40, T‚â´Œµ,Œµ‚<t_≤1>subscriptmuch-greater-thanŒµsuperscriptŒµnormal-‚<t_≤T>1T\gg_{\varepsilon,\varepsilon^{\prime}}1)</mtext>
+               <csymbol xref="S6.Ex121.m1.1.1.1.3" cd="latexml" id="S6.Ex121.m1.1.1.1.3.cmml">absent</csymbol>
+            </apply>
+         </apply>
+      </annotation-xml>
+      <annotation xref="S6.Ex121.m1.1.cmml" id="S6.Ex121.m1.1b" encoding="application/x-tex">\displaystyle{}^{\text{(Lemma~{}\ref{l:GettingToMaxTypeTerm}, $T\gg_{%
+         \varepsilon,\varepsilon^{\prime}}1$)}\leadsto}
+      </annotation>
+   </semantics>
+</math>
+
+ERROR Element 2:
+Nested semantics
+Throws two exceptions:
+WARN  de.tuberlin.dima.schubotz.fse.utils.ExtractHelper - Multiple annotation tags in element, assuming first:
+WARN  de.tuberlin.dima.schubotz.fse.utils.ExtractHelper - Odd annotation tag: 
+
+<math xmlns="http://www.w3.org/1998/Math/MathML" xref="S4.E23.m1.1.cmml" alttext="\Psi^{+}(x,\lambda^{(3)})=\cases{\psi_{2}^{-}(x,\lambda)&amp;\hbox{if\ \ \ \ $x&gt;0,%&#10;$}\cr\Psi^{+}(x,\lambda)-w_{2}(\lambda)\varphi_{1}(x,\lambda)&amp;\hbox{if\ \ \ \ %&#10;$x&lt;0$}\cr}" class="ltx_Math" id="S4.E23.m1.1" display="block">
+   <semantics xref="S4.E23.m1.1.cmml" id="S4.E23.m1.1a">
+      <mrow xref="S4.E23.m1.1.11.cmml" id="S4.E23.m1.1.11">
+         <mrow xref="S4.E23.m1.1.11.1.cmml" id="S4.E23.m1.1.11.1">
+            <msup xref="S4.E23.m1.1.11.1.2.cmml" id="S4.E23.m1.1.11.1.2">
+               <mi xref="S4.E23.m1.1.1.cmml" mathvariant="normal" id="S4.E23.m1.1.1">Œ®</mi>
+               <mo xref="S4.E23.m1.1.2.1.cmml" id="S4.E23.m1.1.2.1">+</mo>
+            </msup>
+            <mo xref="S4.E23.m1.1.11.1.1.cmml" id="S4.E23.m1.1.11.1.1">‚Å¢</mo>
+            <mrow xref="S4.E23.m1.1.11.1.3.cmml" id="S4.E23.m1.1.11.1.3">
+               <mo xref="S4.E23.m1.1.11.1.3.cmml" id="S4.E23.m1.1.11.1.3a">(</mo>
+               <mrow xref="S4.E23.m1.1.11.1.3.cmml" id="S4.E23.m1.1.11.1.3b">
+                  <mi xref="S4.E23.m1.1.4.cmml" id="S4.E23.m1.1.4">x</mi>
+                  <mo xref="S4.E23.m1.1.11.1.3.cmml" id="S4.E23.m1.1.11.1.3c">,</mo>
+                  <msup xref="S4.E23.m1.1.11.1.3.2.cmml" id="S4.E23.m1.1.11.1.3.2">
+                     <mi xref="S4.E23.m1.1.6.cmml" id="S4.E23.m1.1.6">Œª</mi>
+                     <mrow xref="S4.E23.m1.1.7.1.cmml" id="S4.E23.m1.1.7.1">
+                        <mo xref="S4.E23.m1.1.7.1.cmml" id="S4.E23.m1.1.7.1a">(</mo>
+                        <mn xref="S4.E23.m1.1.7.1.cmml" id="S4.E23.m1.1.7.1b">3</mn>
+                        <mo xref="S4.E23.m1.1.7.1.cmml" id="S4.E23.m1.1.7.1c">)</mo>
+                     </mrow>
+                  </msup>
+               </mrow>
+               <mo xref="S4.E23.m1.1.11.1.3.cmml" id="S4.E23.m1.1.11.1.3d">)</mo>
+            </mrow>
+         </mrow>
+         <mo xref="S4.E23.m1.1.9.cmml" id="S4.E23.m1.1.9">=</mo>
+         <mrow xref="S4.E23.m1.1.10.cmml" id="S4.E23.m1.1.10">
+            <mo xref="S4.E23.m1.1.10.cmml" id="S4.E23.m1.1.10a">{</mo>
+            <mtable xref="S4.E23.m1.1.10.cmml" id="S4.E23.m1.1.10b" rowspacing="0.2ex" columnspacing="0.4em">
+               <mtr xref="S4.E23.m1.1.10.cmml" id="S4.E23.m1.1.10c">
+                  <mtd xref="S4.E23.m1.1.10.cmml" columnalign="left" id="S4.E23.m1.1.10d">
+                     <mrow id="S4.E23.m1.1.10.1.1.1">
+                        <msubsup id="S4.E23.m1.1.10.1.1.1.10">
+                           <mi id="S4.E23.m1.1.10.1.1.1.1">œà</mi>
+                           <mn id="S4.E23.m1.1.10.1.1.1.2.1">2</mn>
+                           <mo id="S4.E23.m1.1.10.1.1.1.3.1">-</mo>
+                        </msubsup>
+                        <mo id="S4.E23.m1.1.10.1.1.1.9">‚Å¢</mo>
+                        <mrow id="S4.E23.m1.1.10.1.1.1.11">
+                           <mo id="S4.E23.m1.1.10.1.1.1.11a">(</mo>
+                           <mrow id="S4.E23.m1.1.10.1.1.1.11b">
+                              <mi id="S4.E23.m1.1.10.1.1.1.5">x</mi>
+                              <mo id="S4.E23.m1.1.10.1.1.1.11c">,</mo>
+                              <mi id="S4.E23.m1.1.10.1.1.1.7">Œª</mi>
+                           </mrow>
+                           <mo id="S4.E23.m1.1.10.1.1.1.11d">)</mo>
+                        </mrow>
+                     </mrow>
+                  </mtd>
+                  <mtd xref="S4.E23.m1.1.10.cmml" columnalign="left" id="S4.E23.m1.1.10e">
+                     <mrow id="S4.E23.m1.1.10.1.2.1">
+                        <mtext mathvariant="italic" id="S4.E23.m1.1.10.1.2.1a">if¬ ¬ ¬ ¬ </mtext>
+                        <semantics xref="S4.E23.m1.1.10.1.2.1.1.1.m1.1.cmml" id="S4.E23.m1.1.10.1.2.1.1.1.m1.1a">
+                           <mrow xref="S4.E23.m1.1.10.1.2.1.1.1.m1.1.5.cmml" id="S4.E23.m1.1.10.1.2.1.1.1.m1.1.5">
+                              <mrow xref="S4.E23.m1.1.10.1.2.1.1.1.m1.1.5.cmml" id="S4.E23.m1.1.10.1.2.1.1.1.m1.1.5a">
+                                 <mi xref="S4.E23.m1.1.10.1.2.1.1.1.m1.1.1.cmml" id="S4.E23.m1.1.10.1.2.1.1.1.m1.1.1">x</mi>
+                                 <mo xref="S4.E23.m1.1.10.1.2.1.1.1.m1.1.2.cmml" id="S4.E23.m1.1.10.1.2.1.1.1.m1.1.2">&gt;</mo>
+                                 <mn xref="S4.E23.m1.1.10.1.2.1.1.1.m1.1.3.cmml" id="S4.E23.m1.1.10.1.2.1.1.1.m1.1.3">0</mn>
+                              </mrow>
+                              <mo xref="S4.E23.m1.1.10.1.2.1.1.1.m1.1.5.cmml" id="S4.E23.m1.1.10.1.2.1.1.1.m1.1.5b">,</mo>
+                           </mrow>
+                           <annotation-xml xref="S4.E23.m1.1.10.1.2.1.1.1.m1.1" id="S4.E23.m1.1.10.1.2.1.1.1.m1.1.cmml" encoding="MathML-Content">
+                              <apply xref="S4.E23.m1.1.10.1.2.1.1.1.m1.1.5" id="S4.E23.m1.1.10.1.2.1.1.1.m1.1.5.cmml">
+                                 <gt xref="S4.E23.m1.1.10.1.2.1.1.1.m1.1.2" id="S4.E23.m1.1.10.1.2.1.1.1.m1.1.2.cmml"></gt>
+                                 <ci xref="S4.E23.m1.1.10.1.2.1.1.1.m1.1.1" id="S4.E23.m1.1.10.1.2.1.1.1.m1.1.1.cmml">x</ci>
+                                 <cn xref="S4.E23.m1.1.10.1.2.1.1.1.m1.1.3" id="S4.E23.m1.1.10.1.2.1.1.1.m1.1.3.cmml" type="integer">0</cn>
+                              </apply>
+                           </annotation-xml>
+                           <annotation xref="S4.E23.m1.1.10.1.2.1.1.1.m1.1.cmml" id="S4.E23.m1.1.10.1.2.1.1.1.m1.1b" encoding="application/x-tex">x&gt;0,</annotation>
+                        </semantics>
+                     </mrow>
+                  </mtd>
+               </mtr>
+               <mtr xref="S4.E23.m1.1.10.cmml" id="S4.E23.m1.1.10f">
+                  <mtd xref="S4.E23.m1.1.10.cmml" columnalign="left" id="S4.E23.m1.1.10g">
+                     <mrow id="S4.E23.m1.1.10.2.1.1">
+                        <mrow id="S4.E23.m1.1.10.2.1.1.21">
+                           <msup id="S4.E23.m1.1.10.2.1.1.21.2">
+                              <mi mathvariant="normal" id="S4.E23.m1.1.10.2.1.1.1">Œ®</mi>
+                              <mo id="S4.E23.m1.1.10.2.1.1.2.1">+</mo>
+                           </msup>
+                           <mo id="S4.E23.m1.1.10.2.1.1.21.1">‚Å¢</mo>
+                           <mrow id="S4.E23.m1.1.10.2.1.1.21.3">
+                              <mo id="S4.E23.m1.1.10.2.1.1.21.3a">(</mo>
+                              <mrow id="S4.E23.m1.1.10.2.1.1.21.3b">
+                                 <mi id="S4.E23.m1.1.10.2.1.1.4">x</mi>
+                                 <mo id="S4.E23.m1.1.10.2.1.1.21.3c">,</mo>
+                                 <mi id="S4.E23.m1.1.10.2.1.1.6">Œª</mi>
+                              </mrow>
+                              <mo id="S4.E23.m1.1.10.2.1.1.21.3d">)</mo>
+                           </mrow>
+                        </mrow>
+                        <mo id="S4.E23.m1.1.10.2.1.1.8">-</mo>
+                        <mrow id="S4.E23.m1.1.10.2.1.1.22">
+                           <msub id="S4.E23.m1.1.10.2.1.1.22.2">
+                              <mi id="S4.E23.m1.1.10.2.1.1.9">w</mi>
+                              <mn id="S4.E23.m1.1.10.2.1.1.10.1">2</mn>
+                           </msub>
+                           <mo id="S4.E23.m1.1.10.2.1.1.22.1">‚Å¢</mo>
+                           <mrow id="S4.E23.m1.1.10.2.1.1.12">
+                              <mo id="S4.E23.m1.1.10.2.1.1.12a">(</mo>
+                              <mi id="S4.E23.m1.1.10.2.1.1.12b">Œª</mi>
+                              <mo id="S4.E23.m1.1.10.2.1.1.12c">)</mo>
+                           </mrow>
+                           <mo id="S4.E23.m1.1.10.2.1.1.22.1a">‚Å¢</mo>
+                           <msub id="S4.E23.m1.1.10.2.1.1.22.3">
+                              <mi id="S4.E23.m1.1.10.2.1.1.14">œÜ</mi>
+                              <mn id="S4.E23.m1.1.10.2.1.1.15.1">1</mn>
+                           </msub>
+                           <mo id="S4.E23.m1.1.10.2.1.1.22.1b">‚Å¢</mo>
+                           <mrow id="S4.E23.m1.1.10.2.1.1.22.4">
+                              <mo id="S4.E23.m1.1.10.2.1.1.22.4a">(</mo>
+                              <mrow id="S4.E23.m1.1.10.2.1.1.22.4b">
+                                 <mi id="S4.E23.m1.1.10.2.1.1.17">x</mi>
+                                 <mo id="S4.E23.m1.1.10.2.1.1.22.4c">,</mo>
+                                 <mi id="S4.E23.m1.1.10.2.1.1.19">Œª</mi>
+                              </mrow>
+                              <mo id="S4.E23.m1.1.10.2.1.1.22.4d">)</mo>
+                           </mrow>
+                        </mrow>
+                     </mrow>
+                  </mtd>
+                  <mtd xref="S4.E23.m1.1.10.cmml" columnalign="left" id="S4.E23.m1.1.10h">
+                     <mrow id="S4.E23.m1.1.10.2.2.1">
+                        <mtext mathvariant="italic" id="S4.E23.m1.1.10.2.2.1a">if¬ ¬ ¬ ¬ </mtext>
+                        <semantics xref="S4.E23.m1.1.10.2.2.1.1.1.m1.1.cmml" id="S4.E23.m1.1.10.2.2.1.1.1.m1.1a">
+                           <mrow xref="S4.E23.m1.1.10.2.2.1.1.1.m1.1.4.cmml" id="S4.E23.m1.1.10.2.2.1.1.1.m1.1.4">
+                              <mi xref="S4.E23.m1.1.10.2.2.1.1.1.m1.1.1.cmml" id="S4.E23.m1.1.10.2.2.1.1.1.m1.1.1">x</mi>
+                              <mo xref="S4.E23.m1.1.10.2.2.1.1.1.m1.1.2.cmml" id="S4.E23.m1.1.10.2.2.1.1.1.m1.1.2">&lt;</mo>
+                              <mn xref="S4.E23.m1.1.10.2.2.1.1.1.m1.1.3.cmml" id="S4.E23.m1.1.10.2.2.1.1.1.m1.1.3">0</mn>
+                           </mrow>
+                           <annotation-xml xref="S4.E23.m1.1.10.2.2.1.1.1.m1.1" id="S4.E23.m1.1.10.2.2.1.1.1.m1.1.cmml" encoding="MathML-Content">
+                              <apply xref="S4.E23.m1.1.10.2.2.1.1.1.m1.1.4" id="S4.E23.m1.1.10.2.2.1.1.1.m1.1.4.cmml">
+                                 <lt xref="S4.E23.m1.1.10.2.2.1.1.1.m1.1.2" id="S4.E23.m1.1.10.2.2.1.1.1.m1.1.2.cmml"></lt>
+                                 <ci xref="S4.E23.m1.1.10.2.2.1.1.1.m1.1.1" id="S4.E23.m1.1.10.2.2.1.1.1.m1.1.1.cmml">x</ci>
+                                 <cn xref="S4.E23.m1.1.10.2.2.1.1.1.m1.1.3" id="S4.E23.m1.1.10.2.2.1.1.1.m1.1.3.cmml" type="integer">0</cn>
+                              </apply>
+                           </annotation-xml>
+                           <annotation xref="S4.E23.m1.1.10.2.2.1.1.1.m1.1.cmml" id="S4.E23.m1.1.10.2.2.1.1.1.m1.1b" encoding="application/x-tex">x&lt;0</annotation>
+                        </semantics>
+                     </mrow>
+                  </mtd>
+               </mtr>
+            </mtable>
+         </mrow>
+      </mrow>
+      <annotation-xml xref="S4.E23.m1.1" id="S4.E23.m1.1.cmml" encoding="MathML-Content">
+         <apply xref="S4.E23.m1.1.11" id="S4.E23.m1.1.11.cmml">
+            <eq xref="S4.E23.m1.1.9" id="S4.E23.m1.1.9.cmml"></eq>
+            <apply xref="S4.E23.m1.1.11.1" id="S4.E23.m1.1.11.1.cmml">
+               <times xref="S4.E23.m1.1.11.1.1" id="S4.E23.m1.1.11.1.1.cmml"></times>
+               <apply xref="S4.E23.m1.1.11.1.2" id="S4.E23.m1.1.11.1.2.cmml">
+                  <csymbol cd="ambiguous" id="S4.E23.m1.1.11.1.2.1.cmml">superscript</csymbol>
+                  <ci xref="S4.E23.m1.1.1" id="S4.E23.m1.1.1.cmml">normal-Œ®</ci>
+                  <plus xref="S4.E23.m1.1.2.1" id="S4.E23.m1.1.2.1.cmml"></plus>
+               </apply>
+               <apply xref="S4.E23.m1.1.11.1.3" id="S4.E23.m1.1.11.1.3.cmml">
+                  <interval id="S4.E23.m1.1.11.1.3.1.cmml" closure="open"></interval>
+                  <ci xref="S4.E23.m1.1.4" id="S4.E23.m1.1.4.cmml">x</ci>
+                  <apply xref="S4.E23.m1.1.11.1.3.2" id="S4.E23.m1.1.11.1.3.2.cmml">
+                     <csymbol cd="ambiguous" id="S4.E23.m1.1.11.1.3.2.1.cmml">superscript</csymbol>
+                     <ci xref="S4.E23.m1.1.6" id="S4.E23.m1.1.6.cmml">Œª</ci>
+                     <cn xref="S4.E23.m1.1.7.1" id="S4.E23.m1.1.7.1.cmml" type="integer">3</cn>
+                  </apply>
+               </apply>
+            </apply>
+            <mtext xref="S4.E23.m1.1.10" id="S4.E23.m1.1.10.cmml">‚Å¢œà2-xŒªif¬ ¬ ¬ ¬ x&gt;0,x0x&gt;0,-‚Å¢Œ®+xŒª‚Å¢w2ŒªœÜ1xŒªif¬ ¬ ¬ ¬ x&lt;0x0x&lt;0</mtext>
+         </apply>
+      </annotation-xml>
+      <annotation xref="S4.E23.m1.1.cmml" id="S4.E23.m1.1b" encoding="application/x-tex">\Psi^{+}(x,\lambda^{(3)})=\cases{\psi_{2}^{-}(x,\lambda)&amp;\hbox{if\ \ \ \ $x&gt;0,%
+         $}\cr\Psi^{+}(x,\lambda)-w_{2}(\lambda)\varphi_{1}(x,\lambda)&amp;\hbox{if\ \ \ \ %
+         $x&lt;0$}\cr}
+      </annotation>
+   </semantics>
+</math>
+
