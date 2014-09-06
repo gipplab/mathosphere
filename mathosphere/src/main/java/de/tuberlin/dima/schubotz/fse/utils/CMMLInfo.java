@@ -1,6 +1,6 @@
 package de.tuberlin.dima.schubotz.fse.utils;
 
-import de.tuberlin.dima.schubotz.mathMLQueryGenerator.XQueryGenerator;
+import de.tuberlin.dima.schubotz.mathmlquerygenerator.XQueryGenerator;
 import net.sf.saxon.s9api.XQueryExecutable;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -12,7 +12,8 @@ import javax.xml.transform.TransformerException;
 import javax.xml.xpath.XPathExpressionException;
 import java.io.IOException;
 
-public class CMMLInfo {private final static String FN_PATH_FROM_ROOT="declare namespace functx = \"http://www.functx.com\";\n" +
+public class CMMLInfo {
+	private final static String FN_PATH_FROM_ROOT="declare namespace functx = \"http://www.functx.com\";\n" +
                 "declare function functx:path-to-node\n" +
                 "  ( $nodes as node()* )  as xs:string* {\n" +
                 "\n" +

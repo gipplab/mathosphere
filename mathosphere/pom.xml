@@ -75,7 +75,7 @@
         </dependency>
         <dependency>
             <groupId>de.tuberlin.dima.schubotz</groupId>
-            <artifactId>MathMLQueryGenerator</artifactId>
+            <artifactId>mathmlquerygenerator</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
 
