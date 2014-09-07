@@ -5,14 +5,14 @@ import de.tuberlin.dima.schubotz.fse.modules.inputs.Input;
 import de.tuberlin.dima.schubotz.fse.settings.DataStorage;
 import de.tuberlin.dima.schubotz.fse.settings.SettingNames;
 import de.tuberlin.dima.schubotz.fse.settings.Settings;
-import eu.stratosphere.api.java.DataSet;
-import eu.stratosphere.api.java.ExecutionEnvironment;
-import eu.stratosphere.api.java.io.TextInputFormat;
-import eu.stratosphere.api.java.operators.DataSource;
-import eu.stratosphere.api.java.typeutils.BasicTypeInfo;
-import eu.stratosphere.core.fs.Path;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
+import org.apache.flink.api.java.DataSet;
+import org.apache.flink.api.java.ExecutionEnvironment;
+import org.apache.flink.api.java.io.TextInputFormat;
+import org.apache.flink.api.java.operators.DataSource;
+import org.apache.flink.api.java.typeutils.BasicTypeInfo;
+import org.apache.flink.core.fs.Path;
 
 import java.util.Collection;
 
@@ -59,7 +59,7 @@ public abstract class RawInput implements Input {
         return options.getOptions();
     }
 
-    @Override
+
     public void configure(ExecutionEnvironment env, DataStorage data) {
         final TextInputFormat inputQueries = new TextInputFormat(new Path(
                 Settings.getProperty(SettingNames.QUERY_FILE)));

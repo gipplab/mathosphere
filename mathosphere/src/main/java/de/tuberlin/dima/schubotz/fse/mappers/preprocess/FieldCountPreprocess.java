@@ -1,10 +1,10 @@
 package de.tuberlin.dima.schubotz.fse.mappers.preprocess;
 
 import de.tuberlin.dima.schubotz.fse.types.DataTuple;
-import eu.stratosphere.api.java.functions.FlatMapFunction;
-import eu.stratosphere.api.java.tuple.Tuple2;
-import eu.stratosphere.configuration.Configuration;
-import eu.stratosphere.util.Collector;
+import org.apache.flink.api.java.functions.RichFlatMapFunction;
+import org.apache.flink.api.java.tuple.Tuple2;
+import org.apache.flink.configuration.Configuration;
+import org.apache.flink.util.Collector;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -14,7 +14,7 @@ import java.util.regex.Pattern;
 /**
  * Counts occurrence of token in specified field per tuple.
  */
-public class FieldCountPreprocess extends FlatMapFunction<DataTuple, Tuple2<String, Integer>> {
+public class FieldCountPreprocess extends RichFlatMapFunction<DataTuple, Tuple2<String, Integer>> {
     private final String STR_SPLIT;
     private final Pattern WORD_SPLIT;
     private final int ordinal;
@@ -28,7 +28,6 @@ public class FieldCountPreprocess extends FlatMapFunction<DataTuple, Tuple2<Stri
 
     @Override
 	public void open(Configuration parameters) throws Exception {
-        super.open(parameters);
 		//Get keywords from queries
 		final Collection<DataTuple> queries = getRuntimeContext().getBroadcastVariable( "Queries" );
 		for (final DataTuple query : queries) {

@@ -1,6 +1,7 @@
 package de.tuberlin.dima.schubotz.fse.types;
 
-import eu.stratosphere.api.java.tuple.Tuple6;
+
+import org.apache.flink.api.java.tuple.Tuple6;
 
 /**
  * Tuple that stores simple output for printing.

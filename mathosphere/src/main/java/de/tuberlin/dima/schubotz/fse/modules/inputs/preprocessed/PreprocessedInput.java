@@ -6,9 +6,9 @@ import de.tuberlin.dima.schubotz.fse.settings.SettingNames;
 import de.tuberlin.dima.schubotz.fse.settings.Settings;
 import de.tuberlin.dima.schubotz.fse.types.DataTuple;
 import de.tuberlin.dima.schubotz.fse.utils.CSVHelper;
-import eu.stratosphere.api.java.ExecutionEnvironment;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
+import org.apache.flink.api.java.ExecutionEnvironment;
 
 import java.util.Collection;
 

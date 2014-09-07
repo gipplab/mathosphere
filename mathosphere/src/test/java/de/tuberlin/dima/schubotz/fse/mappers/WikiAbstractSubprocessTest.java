@@ -1,22 +1,6 @@
 package de.tuberlin.dima.schubotz.fse.mappers;
 
-import eu.stratosphere.api.common.Plan;
-import eu.stratosphere.api.java.DataSet;
-import eu.stratosphere.api.java.ExecutionEnvironment;
-import eu.stratosphere.api.java.functions.FlatMapFunction;
-import eu.stratosphere.api.java.io.CsvReader;
-import eu.stratosphere.api.java.io.TextInputFormat;
-import eu.stratosphere.api.java.operators.DataSource;
-import eu.stratosphere.api.java.typeutils.BasicTypeInfo;
-import eu.stratosphere.client.LocalExecutor;
-import eu.stratosphere.core.fs.FileSystem;
-import eu.stratosphere.core.fs.Path;
-import org.apache.commons.io.FileUtils;
 import org.junit.Ignore;
-
-import java.io.File;
-
-import static org.junit.Assert.assertTrue;
 
 
 /**

@@ -1,8 +1,8 @@
 package de.tuberlin.dima.schubotz.fse.mappers.preprocess;
 
 import de.tuberlin.dima.schubotz.fse.types.RawDataTuple;
-import eu.stratosphere.api.java.tuple.Tuple2;
-import eu.stratosphere.util.Collector;
+import org.apache.flink.api.java.tuple.Tuple2;
+import org.apache.flink.util.Collector;
 import org.jsoup.nodes.Element;
 
 public class FormulaNames extends DataPreprocessTemplate<Tuple2<String,String>> {
