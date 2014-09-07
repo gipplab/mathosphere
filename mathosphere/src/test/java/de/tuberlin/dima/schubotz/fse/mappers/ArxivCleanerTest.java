@@ -2,7 +2,7 @@ package de.tuberlin.dima.schubotz.fse.mappers;
 
 import de.tuberlin.dima.schubotz.fse.mappers.cleaners.ArxivCleaner;
 import de.tuberlin.dima.schubotz.fse.types.RawDataTuple;
-import eu.stratosphere.util.Collector;
+import org.apache.flink.util.Collector;
 import org.junit.Test;
 
 import java.util.ArrayList;

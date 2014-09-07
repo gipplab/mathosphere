@@ -26,7 +26,7 @@ public class SafeLogWrapper implements Serializable {
      * @param level specify this using SafeLogWrapper level fields (e.g. SafeLogWrapper.FATAL)
      */
     public void setLevel(SafeLogWrapperLevel level) {
-        this.level = level;
+        SafeLogWrapper.level = level;
     }
     public void fatal(Object... params) {
         if (logger.isFatalEnabled() && level.compareTo(SafeLogWrapperLevel.FATAL) <= 0) {

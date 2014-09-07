@@ -1,8 +1,8 @@
 package de.tuberlin.dima.schubotz.fse.modules;
 
 import de.tuberlin.dima.schubotz.fse.settings.DataStorage;
-import eu.stratosphere.api.java.ExecutionEnvironment;
 import org.apache.commons.cli.Option;
+import org.apache.flink.api.java.ExecutionEnvironment;
 
 import java.io.Serializable;
 import java.util.Collection;

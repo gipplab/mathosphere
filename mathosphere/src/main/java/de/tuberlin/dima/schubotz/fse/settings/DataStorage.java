@@ -4,7 +4,7 @@ import com.google.common.collect.HashMultiset;
 import de.tuberlin.dima.schubotz.fse.types.DataTuple;
 import de.tuberlin.dima.schubotz.fse.types.RawDataTuple;
 import de.tuberlin.dima.schubotz.fse.types.ResultTuple;
-import eu.stratosphere.api.java.DataSet;
+import org.apache.flink.api.java.DataSet;
 
 import java.io.Serializable;
 

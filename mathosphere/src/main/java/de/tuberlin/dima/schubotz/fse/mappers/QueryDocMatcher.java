@@ -6,9 +6,9 @@ import de.tuberlin.dima.schubotz.fse.types.DataTuple;
 import de.tuberlin.dima.schubotz.fse.types.ResultTuple;
 import de.tuberlin.dima.schubotz.fse.utils.ComparisonHelper;
 import de.tuberlin.dima.schubotz.fse.utils.SafeLogWrapper;
-import eu.stratosphere.api.java.functions.FlatMapFunction;
-import eu.stratosphere.configuration.Configuration;
-import eu.stratosphere.util.Collector;
+import org.apache.flink.api.java.functions.RichFlatMapFunction;
+import org.apache.flink.configuration.Configuration;
+import org.apache.flink.util.Collector;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -16,7 +16,7 @@ import java.util.Collection;
 /**
  * Takes in each document, compares it to each query and maps a score in the form of a {@link de.tuberlin.dima.schubotz.fse.types.ResultTuple}
  */
-public class QueryDocMatcher extends FlatMapFunction<DataTuple,ResultTuple> {
+public class QueryDocMatcher extends RichFlatMapFunction<DataTuple, ResultTuple> {
 	//ARGUMENTS 
 	private final String STR_SPLIT;
 	private final HashMultiset<String> latexDocsMultiset;
@@ -46,10 +46,9 @@ public class QueryDocMatcher extends FlatMapFunction<DataTuple,ResultTuple> {
 		this.numDocs = numDocs;
 		this.weight = weight;
 	}
-	
+
 	@Override
 	public void open(Configuration parameters) throws Exception {
-        super.open(parameters);
 		queries = getRuntimeContext().getBroadcastVariable("Queries"); 
 	}
 
@@ -110,4 +109,5 @@ public class QueryDocMatcher extends FlatMapFunction<DataTuple,ResultTuple> {
                     finalScore));
 		}
 	}
+
 }

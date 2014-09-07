@@ -1,6 +1,6 @@
 package de.tuberlin.dima.schubotz.utils;
 
-import eu.stratosphere.core.fs.Path;
+import org.apache.flink.core.fs.Path;
 
 import java.io.*;
 import java.util.Scanner;

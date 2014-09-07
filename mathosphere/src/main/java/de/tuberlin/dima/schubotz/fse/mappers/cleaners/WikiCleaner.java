@@ -2,7 +2,7 @@ package de.tuberlin.dima.schubotz.fse.mappers.cleaners;
 
 import de.tuberlin.dima.schubotz.fse.types.RawDataTuple;
 import de.tuberlin.dima.schubotz.fse.utils.SafeLogWrapper;
-import eu.stratosphere.util.Collector;
+import org.apache.flink.util.Collector;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;

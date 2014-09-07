@@ -1,6 +1,7 @@
 package de.tuberlin.dima.schubotz.fse.types;
 
-import eu.stratosphere.api.java.tuple.Tuple2;
+
+import org.apache.flink.api.java.tuple.Tuple2;
 
 /**
  * Contains title, data. The data should be cleaned

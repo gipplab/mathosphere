@@ -2,7 +2,7 @@ package de.tuberlin.dima.schubotz.fse.utils;
 
 import cz.muni.fi.mir.mathmlcanonicalization.ConfigException;
 import cz.muni.fi.mir.mathmlcanonicalization.MathMLCanonicalizer;
-import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
@@ -43,7 +43,7 @@ public class ExtractHelper {
         String result = latex;
 		//tokenize latex
 		//from https://github.com/TU-Berlin/mathosphere/blob/TFIDF/math-tests/src/main/java/de/tuberlin/dima/schubotz/fse/MathFormula.java.normalizeTex
-		result = StringEscapeUtils.unescapeHtml(result);
+		result = StringEscapeUtils.unescapeXml( result );
 		result = LATEX_CLEANER.matcher(result).replaceAll("");
 		result = result.replace("{", " ");
 		result = result.replace("}", " ");
