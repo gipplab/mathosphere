@@ -10,14 +10,14 @@ import de.tuberlin.dima.schubotz.fse.types.DataTuple;
 import de.tuberlin.dima.schubotz.fse.types.RawDataTuple;
 import de.tuberlin.dima.schubotz.fse.utils.CSVHelper;
 import de.tuberlin.dima.schubotz.fse.utils.SafeLogWrapper;
-import eu.stratosphere.api.java.DataSet;
-import eu.stratosphere.api.java.ExecutionEnvironment;
-import eu.stratosphere.api.java.aggregation.Aggregations;
-import eu.stratosphere.api.java.functions.MapFunction;
-import eu.stratosphere.api.java.functions.ReduceFunction;
-import eu.stratosphere.api.java.tuple.Tuple2;
-import eu.stratosphere.core.fs.FileSystem;
 import org.apache.commons.cli.Option;
+import org.apache.flink.api.common.functions.MapFunction;
+import org.apache.flink.api.common.functions.ReduceFunction;
+import org.apache.flink.api.java.DataSet;
+import org.apache.flink.api.java.ExecutionEnvironment;
+import org.apache.flink.api.java.aggregation.Aggregations;
+import org.apache.flink.api.java.tuple.Tuple2;
+import org.apache.flink.core.fs.FileSystem;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -41,8 +41,8 @@ public class RawToPreprocessed implements Algorithm  {
         final DataSet<RawDataTuple> dataSet = data.getDataSet();
 
         //Process all data
-        final DataSet<DataTuple> preprocessedData = dataSet.flatMap(new DataPreprocess(
-                MainProgram.WORD_SPLIT, MainProgram.STR_SEPARATOR));
+        final DataSet<DataTuple> preprocessedData = dataSet.flatMap( new DataPreprocess(
+	        MainProgram.WORD_SPLIT, MainProgram.STR_SEPARATOR ) );
 
         final DataSet<DataTuple> preprocessedQueries = querySet.flatMap(new DataPreprocess(
                 MainProgram.WORD_SPLIT, MainProgram.STR_SEPARATOR));
@@ -52,7 +52,7 @@ public class RawToPreprocessed implements Algorithm  {
                 new FieldCountPreprocess(DataTuple.fields.latex.ordinal(), STR_SEPARATOR, WORD_SPLIT))
                 .withBroadcastSet(preprocessedQueries, "Queries")
                 .groupBy(0) //group on String
-                .aggregate(Aggregations.SUM, 1); //aggregate on Integer
+                .aggregate( Aggregations.SUM, 1); //aggregate on Integer
         final DataSet<Tuple2<String, Integer>> keywordCounts = preprocessedData.flatMap(
                 new FieldCountPreprocess(DataTuple.fields.keywords.ordinal(), STR_SEPARATOR, WORD_SPLIT))
                 .withBroadcastSet(preprocessedQueries, "Queries")

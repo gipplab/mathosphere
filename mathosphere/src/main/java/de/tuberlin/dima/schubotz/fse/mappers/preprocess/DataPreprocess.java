@@ -4,7 +4,7 @@ import de.tuberlin.dima.schubotz.fse.MainProgram;
 import de.tuberlin.dima.schubotz.fse.types.DataTuple;
 import de.tuberlin.dima.schubotz.fse.types.RawDataTuple;
 import de.tuberlin.dima.schubotz.fse.utils.ExtractHelper;
-import eu.stratosphere.util.Collector;
+import org.apache.flink.util.Collector;
 import org.jsoup.nodes.Element;
 
 import java.util.regex.Pattern;
@@ -32,7 +32,6 @@ public class DataPreprocess extends DataPreprocessTemplate<DataTuple> {
      * @param in RawDataTuple
      * @param out DataTuple of document
      */
-	@Override
 	public void flatMap(RawDataTuple in, Collector<DataTuple> out) {
         docID = in.getNamedField(RawDataTuple.fields.ID);
         data = in.getNamedField(RawDataTuple.fields.rawData);

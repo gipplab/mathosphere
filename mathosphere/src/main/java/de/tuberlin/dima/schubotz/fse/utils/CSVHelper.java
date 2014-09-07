@@ -2,11 +2,11 @@ package de.tuberlin.dima.schubotz.fse.utils;
 
 import com.google.common.collect.HashMultiset;
 import de.tuberlin.dima.schubotz.fse.MainProgram;
-import eu.stratosphere.api.java.DataSet;
-import eu.stratosphere.api.java.ExecutionEnvironment;
-import eu.stratosphere.api.java.io.CsvReader;
-import eu.stratosphere.api.java.tuple.Tuple;
-import eu.stratosphere.core.fs.FileSystem;
+import org.apache.flink.api.java.DataSet;
+import org.apache.flink.api.java.ExecutionEnvironment;
+import org.apache.flink.api.java.io.CsvReader;
+import org.apache.flink.api.java.tuple.Tuple;
+import org.apache.flink.core.fs.FileSystem;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;

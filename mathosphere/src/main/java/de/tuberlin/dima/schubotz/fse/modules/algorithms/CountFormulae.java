@@ -6,11 +6,11 @@ import de.tuberlin.dima.schubotz.fse.settings.SettingNames;
 import de.tuberlin.dima.schubotz.fse.settings.Settings;
 import de.tuberlin.dima.schubotz.fse.types.RawDataTuple;
 import de.tuberlin.dima.schubotz.fse.utils.SafeLogWrapper;
-import eu.stratosphere.api.java.DataSet;
-import eu.stratosphere.api.java.ExecutionEnvironment;
-import eu.stratosphere.api.java.operators.FlatMapOperator;
-import eu.stratosphere.api.java.tuple.Tuple2;
 import org.apache.commons.cli.Option;
+import org.apache.flink.api.java.DataSet;
+import org.apache.flink.api.java.ExecutionEnvironment;
+import org.apache.flink.api.java.operators.FlatMapOperator;
+import org.apache.flink.api.java.tuple.Tuple2;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -28,7 +28,7 @@ public class CountFormulae implements Algorithm  {
         return Collections.emptyList();
     }
 
-    @Override
+
     public void configure(ExecutionEnvironment env, DataStorage data) {
         final DataSet<RawDataTuple> dataSet = data.getDataSet();
 
@@ -44,6 +44,14 @@ public class CountFormulae implements Algorithm  {
         if (!outputDir.startsWith("file://")) {
             outputDir = "file://" + outputDir;
         }
+//	    preprocessedData.output(
+//		    // build and configure OutputFormat
+//		   JDBCOutputFormat.buildJDBCOutputFormat()
+//			    .setDrivername("org.apache.derby.jdbc.EmbeddedDriver")
+//			    .setDBUrl("jdbc:derby:memory:persons")
+//			    .setQuery("insert into persons (name, age, height) values (?,?,?)")
+//			    .finish()
+//	    );
 	    preprocessedData.writeAsCsv( outputDir +"/fcnt.csv" );
 
     }

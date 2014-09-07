@@ -4,9 +4,9 @@ package de.tuberlin.dima.schubotz.fse.modules.algorithms;
 import de.tuberlin.dima.schubotz.fse.MainProgram;
 import de.tuberlin.dima.schubotz.fse.settings.DataStorage;
 import de.tuberlin.dima.schubotz.fse.settings.SettingNames;
-import eu.stratosphere.api.java.ExecutionEnvironment;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
+import org.apache.flink.api.java.ExecutionEnvironment;
 
 import java.util.Collection;
 import java.util.regex.Pattern;
