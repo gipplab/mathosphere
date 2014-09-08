@@ -9,3 +9,5 @@ src/test/resources/WikiData/augmentedWikiDump.xml
 .idea/libraries
 .idea/dictionaries/Moritz.xml
 mathosphere/src/test/resources/testpassword
+.idea/dataSources.ids
+.idea/dataSources.xml

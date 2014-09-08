@@ -5,6 +5,7 @@
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/lib/MathMLCan" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/lib/MathMLQueryGenerator" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/lib/incubator-flink" vcs="Git" />
   </component>
 </project>
 
