@@ -39,9 +39,9 @@ public class ArxivCleanerTest {
         testFiletags.add("<ARXIVFILESPLIT Filename=\"./10/gr-qc9710100/gr-qc9710100_1_6.xhtml\"><?xml asdf");
 
         final List<String> expectedFilenames = new ArrayList<>();
-        expectedFilenames.add("0704.0097_1_10.xhtml");
-        expectedFilenames.add("1006.1022_1_11.xhtml");
-        expectedFilenames.add("gr-qc9710100_1_6.xhtml");
+        expectedFilenames.add("0704.0097_1_10");
+        expectedFilenames.add("1006.1022_1_11");
+        expectedFilenames.add("gr-qc9710100_1_6");
 
         final DummyCollector dummyCollector = new DummyCollector();
         final ArxivCleaner ac = new ArxivCleaner();

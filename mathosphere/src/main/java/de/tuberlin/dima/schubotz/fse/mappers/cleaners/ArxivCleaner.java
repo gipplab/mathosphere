@@ -37,7 +37,7 @@ public class ArxivCleaner extends Cleaner {
         final Matcher matcher = FILENAME_PATTERN.matcher(doc);
         String docID = "this_was_null";
         if (matcher.find()) {
-            docID = matcher.group(1) + '_' + matcher.group(2) + '_' + matcher.group(3) + ".xhtml";
+            docID = matcher.group(1) + '_' + matcher.group(2) + '_' + matcher.group(3);
         } else {
             LOG.warn("Null docID, assigning this_was_null: ", doc);
         }
