@@ -1,5 +1,6 @@
 package de.tuberlin.dima.schubotz.fse.modules.algorithms;
 
+import de.tuberlin.dima.schubotz.fse.mappers.preprocess.FormulaNames;
 import de.tuberlin.dima.schubotz.fse.settings.DataStorage;
 import de.tuberlin.dima.schubotz.fse.settings.SettingNames;
 import de.tuberlin.dima.schubotz.fse.settings.Settings;
@@ -16,8 +17,9 @@ import org.apache.flink.api.java.tuple.Tuple2;
 import java.util.Collection;
 
 
-public class CountFormulae implements Algorithm  {
-    private static final SafeLogWrapper LOG = new SafeLogWrapper(CountFormulae.class);
+public class IndexFormulaeNames implements Algorithm  {
+    private static final SafeLogWrapper LOG = new SafeLogWrapper(IndexFormulaeNames.class);
+
 	//TODO: Make this configurable as other settings too
 	private final static String DBURL = "jdbc:mysql://localhost:3306/mathosphere";
 	public static final String DRIVERNAME = "org.mariadb.jdbc.Driver";
@@ -39,24 +41,23 @@ public class CountFormulae implements Algorithm  {
     }
 
 
-
     public void configure(ExecutionEnvironment env, DataStorage data) throws Exception {
         final DataSet<RawDataTuple> dataSet = data.getDataSet();
+        String PW;
+        PW = Settings.getProperty(SettingNames.PASSWORD);
 
         //Process all data
-	    FlatMapOperator<RawDataTuple, Tuple2<String, Integer>> preprocessedData = dataSet.flatMap( new de.tuberlin.dima.schubotz.fse.mappers.preprocess.CountFormulae() );
+	    FlatMapOperator<RawDataTuple, Tuple2<String, String>> names = dataSet.flatMap( new FormulaNames() );
 
-        String PW = Settings.getProperty(SettingNames.PASSWORD);
-        preprocessedData.output(
-		    // build and configure OutputFormat
-	    JDBCOutputFormat.buildJDBCOutputFormat()
-		    .setDrivername( DRIVERNAME )
-		    .setDBUrl( DBURL)
-		    .setPassword( PW )
-		    .setUsername( USER )
-		    .setQuery("insert ignore into formulae_count (pageId, count ) values (?,?)")
-		    .finish()
-	    );
-
+        names.output(
+                // build and configure OutputFormat
+                JDBCOutputFormat.buildJDBCOutputFormat()
+                        .setDrivername(DRIVERNAME)
+                        .setDBUrl(DBURL)
+                        .setPassword(PW)
+                        .setUsername(USER)
+                        .setQuery("insert into formulae_name (pageId, formula_name ) values (?,?)")
+                        .finish()
+        );
     }
 }
