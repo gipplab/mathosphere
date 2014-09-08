@@ -11,13 +11,11 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
+import javax.xml.namespace.NamespaceContext;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.*;
 import javax.xml.transform.dom.DOMResult;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.sax.SAXSource;
@@ -489,6 +487,7 @@ public final class XMLHelper {
 
 
 
+
     /**
      * The Class Mynode.
      */
@@ -587,13 +586,21 @@ public final class XMLHelper {
             return nodes.iterator();
         }
     }
-
-    public static Document XslTransform(Node srcNode, String xsltResourceNamme) throws TransformerException, ParserConfigurationException {
+    public static Map<String,Transformer> transformerCache = new HashMap<>();
+    private static Transformer getTransformer(String xsltResourceNamme) throws TransformerConfigurationException {
+        if ( transformerCache.containsKey(xsltResourceNamme) ){
+            return transformerCache.get(xsltResourceNamme);
+        }
         System.setProperty("javax.xml.transform.TransformerFactory", "net.sf.saxon.TransformerFactoryImpl");
         final InputStream is = XMLHelper.class.getClassLoader().getResourceAsStream(xsltResourceNamme);
-        Document doc = getNewDocument();
         TransformerFactory tFactory = TransformerFactory.newInstance();
         Transformer transformer = tFactory.newTransformer(new StreamSource(is));
+        transformerCache.put(xsltResourceNamme,transformer);
+        return transformer;
+    }
+    public static Document XslTransform(Node srcNode, String xsltResourceNamme) throws TransformerException, ParserConfigurationException {
+        Transformer transformer = getTransformer(xsltResourceNamme);
+        Document doc = getNewDocument();
         transformer.transform(new DOMSource(srcNode), new DOMResult(doc));
         return doc;
     }
@@ -630,5 +637,28 @@ public final class XMLHelper {
         Document out = XMLHelper.getNewDocument(true);
         xqueryEval.run(new DOMDestination(out));
         return out;
+    }
+    public static XPath namespaceAwareXpath(final String prefix, final String nsURI) {
+        XPathFactory xPathfactory = XPathFactory.newInstance();
+        XPath xpath = xPathfactory.newXPath();
+        NamespaceContext ctx = new NamespaceContext() {
+            @Override
+            public String getNamespaceURI(String aPrefix) {
+                if (aPrefix.equals(prefix))
+                    return nsURI;
+                else
+                    return null;
+            }
+            @Override
+            public Iterator getPrefixes(String val) {
+                throw new UnsupportedOperationException();
+            }
+            @Override
+            public String getPrefix(String uri) {
+                throw new UnsupportedOperationException();
+            }
+        };
+        xpath.setNamespaceContext(ctx);
+        return xpath;
     }
 }

@@ -2,8 +2,32 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/lib/incubator-flink/flink-addons/flink-addons.iml" filepath="$PROJECT_DIR$/lib/incubator-flink/flink-addons/flink-addons.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lib/incubator-flink/flink-addons/flink-avro/flink-avro.iml" filepath="$PROJECT_DIR$/lib/incubator-flink/flink-addons/flink-avro/flink-avro.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lib/incubator-flink/flink-clients/flink-clients.iml" filepath="$PROJECT_DIR$/lib/incubator-flink/flink-clients/flink-clients.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lib/incubator-flink/flink-compiler/flink-compiler.iml" filepath="$PROJECT_DIR$/lib/incubator-flink/flink-compiler/flink-compiler.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lib/incubator-flink/flink-core/flink-core.iml" filepath="$PROJECT_DIR$/lib/incubator-flink/flink-core/flink-core.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lib/incubator-flink/flink-dist/flink-dist.iml" filepath="$PROJECT_DIR$/lib/incubator-flink/flink-dist/flink-dist.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lib/incubator-flink/flink-examples/flink-examples.iml" filepath="$PROJECT_DIR$/lib/incubator-flink/flink-examples/flink-examples.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lib/incubator-flink/flink-addons/flink-hadoop-compatibility/flink-hadoop-compatibility.iml" filepath="$PROJECT_DIR$/lib/incubator-flink/flink-addons/flink-hadoop-compatibility/flink-hadoop-compatibility.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lib/incubator-flink/flink-java/flink-java.iml" filepath="$PROJECT_DIR$/lib/incubator-flink/flink-java/flink-java.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lib/incubator-flink/flink-examples/flink-java-examples/flink-java-examples.iml" filepath="$PROJECT_DIR$/lib/incubator-flink/flink-examples/flink-java-examples/flink-java-examples.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lib/incubator-flink/flink-addons/flink-jdbc/flink-jdbc.iml" filepath="$PROJECT_DIR$/lib/incubator-flink/flink-addons/flink-jdbc/flink-jdbc.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lib/incubator-flink/flink-parent.iml" filepath="$PROJECT_DIR$/lib/incubator-flink/flink-parent.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lib/incubator-flink/flink-quickstart/flink-quickstart.iml" filepath="$PROJECT_DIR$/lib/incubator-flink/flink-quickstart/flink-quickstart.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lib/incubator-flink/flink-quickstart/flink-quickstart-java/flink-quickstart-java.iml" filepath="$PROJECT_DIR$/lib/incubator-flink/flink-quickstart/flink-quickstart-java/flink-quickstart-java.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lib/incubator-flink/flink-quickstart/flink-quickstart-scala/flink-quickstart-scala.iml" filepath="$PROJECT_DIR$/lib/incubator-flink/flink-quickstart/flink-quickstart-scala/flink-quickstart-scala.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lib/incubator-flink/flink-runtime/flink-runtime.iml" filepath="$PROJECT_DIR$/lib/incubator-flink/flink-runtime/flink-runtime.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lib/incubator-flink/flink-scala/flink-scala.iml" filepath="$PROJECT_DIR$/lib/incubator-flink/flink-scala/flink-scala.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lib/incubator-flink/flink-examples/flink-scala-examples/flink-scala-examples.iml" filepath="$PROJECT_DIR$/lib/incubator-flink/flink-examples/flink-scala-examples/flink-scala-examples.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lib/incubator-flink/flink-addons/flink-spargel/flink-spargel.iml" filepath="$PROJECT_DIR$/lib/incubator-flink/flink-addons/flink-spargel/flink-spargel.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lib/incubator-flink/flink-addons/flink-streaming/flink-streaming-connectors/flink-streaming-connectors.iml" filepath="$PROJECT_DIR$/lib/incubator-flink/flink-addons/flink-streaming/flink-streaming-connectors/flink-streaming-connectors.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lib/incubator-flink/flink-addons/flink-streaming/flink-streaming-core/flink-streaming-core.iml" filepath="$PROJECT_DIR$/lib/incubator-flink/flink-addons/flink-streaming/flink-streaming-core/flink-streaming-core.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lib/incubator-flink/flink-addons/flink-streaming/flink-streaming-examples/flink-streaming-examples.iml" filepath="$PROJECT_DIR$/lib/incubator-flink/flink-addons/flink-streaming/flink-streaming-examples/flink-streaming-examples.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lib/incubator-flink/flink-addons/flink-streaming/flink-streaming-parent.iml" filepath="$PROJECT_DIR$/lib/incubator-flink/flink-addons/flink-streaming/flink-streaming-parent.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lib/incubator-flink/flink-test-utils/flink-test-utils.iml" filepath="$PROJECT_DIR$/lib/incubator-flink/flink-test-utils/flink-test-utils.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lib/incubator-flink/flink-tests/flink-tests.iml" filepath="$PROJECT_DIR$/lib/incubator-flink/flink-tests/flink-tests.iml" />
       <module fileurl="file://$PROJECT_DIR$/lib/MathMLCan/mathml-canonicalizer.iml" filepath="$PROJECT_DIR$/lib/MathMLCan/mathml-canonicalizer.iml" />
-      <module fileurl="file://$PROJECT_DIR$/lib/MathMLQueryGenerator/mathmlquerygenerator.iml" filepath="$PROJECT_DIR$/lib/MathMLQueryGenerator/mathmlquerygenerator.iml" />
       <module fileurl="file://$PROJECT_DIR$/lib/MathMLQueryGenerator/mathmlquerygenerator.iml" filepath="$PROJECT_DIR$/lib/MathMLQueryGenerator/mathmlquerygenerator.iml" />
       <module fileurl="file://$PROJECT_DIR$/mathosphere.iml" filepath="$PROJECT_DIR$/mathosphere.iml" />
       <module fileurl="file://$PROJECT_DIR$/mathosphere/mathosphere-core.iml" filepath="$PROJECT_DIR$/mathosphere/mathosphere-core.iml" />

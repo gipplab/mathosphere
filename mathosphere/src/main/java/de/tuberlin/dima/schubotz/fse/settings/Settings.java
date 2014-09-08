@@ -125,7 +125,7 @@ public class Settings implements Serializable {
      * @param name SettingsName of property
      * @param value value
      */
-    private static void setProperty(SettingNames name, String value) {
+    public static void setProperty(SettingNames name, String value) {
         CURRENT_PROPERTIES.setProperty(name.toString(), value);
     }
 

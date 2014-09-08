@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="DataSourceManagerImpl" format="xml" hash="4263716291">
-    <data-source source="LOCAL" name="MySQL - @localhost" uuid="22c4e8ac-7e9f-4f29-a3e7-0b6ec3bd31cb">
+  <component name="DataSourceManagerImpl" format="xml" hash="1920485655">
+    <data-source source="LOCAL" name="MySQL - mathosphere@localhost" uuid="22c4e8ac-7e9f-4f29-a3e7-0b6ec3bd31cb">
       <driver-ref>mysql</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>com.mysql.jdbc.Driver</jdbc-driver>
-      <jdbc-url>jdbc:mysql://localhost:3306</jdbc-url>
+      <jdbc-url>jdbc:mysql://localhost:3306/mathosphere</jdbc-url>
       <user-name>root</user-name>
       <user-password>dfc7dfdddfd9df98df9adf9bdf98df84</user-password>
+      <schema-pattern>mathosphere.*</schema-pattern>
+      <default-schemas>mathosphere.*</default-schemas>
       <driver-properties>
         <property name="zeroDateTimeBehavior" value="convertToNull" />
         <property name="tinyInt1isBit" value="false" />

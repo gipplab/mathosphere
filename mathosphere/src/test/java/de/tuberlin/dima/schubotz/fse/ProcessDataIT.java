@@ -1,5 +1,7 @@
 package de.tuberlin.dima.schubotz.fse;
 
+import de.tuberlin.dima.schubotz.fse.client.ClientConsole;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -8,6 +10,7 @@ import java.util.Arrays;
 import java.util.Collection;
 
 @RunWith(Parameterized.class)
+@Ignore
 public class ProcessDataIT {
 	private Integer numDocs;
 	private String inputFile;
@@ -30,7 +33,7 @@ public class ProcessDataIT {
 		String keywordDocsFilename;
 		String latexDocsFilename;
 		String numDocsFilename;
-        /*
+
 		try {
 			String inputFilename = "file://" + getClass().getClassLoader().getResources(inputFile).nextElement().getPath();
 			System.out.println("ProcessData testing on: " + inputFilename);
@@ -44,42 +47,43 @@ public class ProcessDataIT {
 				latexDocsFilename = "file://" + getClass().getClassLoader().getResources("latexDocsMap.csv").nextElement().getPath();
 		        numDocsFilename = "file://" + getClass().getClassLoader().getResources("numDocs.txt").nextElement().getPath();
 			}
-			ProcessData.parseArg(new String[]{"16",
-											  inputFilename,
-											  queryFile,
-											  keywordDocsFilename,
-											  latexDocsFilename,
-											  numDocsFilename});
-			ProcessData.ConfigurePlan();
+			ClientConsole.parseParameters( new String[]{"16",
+				inputFilename,
+				queryFile,
+				keywordDocsFilename,
+				latexDocsFilename,
+				numDocsFilename} );
+
+			//ProcessData.ConfigurePlan();
 		} catch (Exception e) {
 			e.printStackTrace();
 			return;
 		}
-		try {
-	        ExecutionEnvironment env = ProcessData.getExecutionEnvironment();
-	        Plan plan = env.createProgramPlan();
-	        LocalExecutor.execute(plan);
-		} catch (Exception e) {
-			fail("Execution error.");
-			e.printStackTrace();
-			return;
-		}
-		
-		//Check to make sure correct file output
-		BufferedReader br = null; 
-		try {
-			br = new BufferedReader(new FileReader(new File(numDocsFilename)));
-			assertEquals(Integer.valueOf(br.readLine()),numDocs);
-			br = new BufferedReader(new FileReader(new File(keywordDocsFilename)));
-			assertNotNull(br.readLine());
-			br = new BufferedReader(new FileReader(new File(latexDocsFilename)));
-			assertNotNull(br.readLine());
-		} catch (FileNotFoundException e) {
-			fail("Files not outputted or given directory is incorrect.");
-			e.printStackTrace();
-		} finally {
-			br.close();
-		}*/
+//		try {
+//	        ExecutionEnvironment env = ProcessData.getExecutionEnvironment();
+//	        Plan plan = env.createProgramPlan();
+//	        LocalExecutor.execute( plan );
+//		} catch (Exception e) {
+//			fail("Execution error.");
+//			e.printStackTrace();
+//			return;
+//		}
+//
+//		//Check to make sure correct file output
+//		BufferedReader br = null;
+//		try {
+//			br = new BufferedReader(new FileReader(new File(numDocsFilename)));
+//			assertEquals(Integer.valueOf(br.readLine()),numDocs);
+//			br = new BufferedReader(new FileReader(new File(keywordDocsFilename)));
+//			assertNotNull(br.readLine());
+//			br = new BufferedReader(new FileReader(new File(latexDocsFilename)));
+//			assertNotNull(br.readLine());
+//		} catch (FileNotFoundException e) {
+//			fail("Files not outputted or given directory is incorrect.");
+//			e.printStackTrace();
+//		} finally {
+//			br.close();
+//		}
 		
 		
 	}
