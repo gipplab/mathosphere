@@ -9,6 +9,8 @@ import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathExpression;
 import javax.xml.xpath.XPathExpressionException;
 import java.io.IOException;
 
@@ -46,10 +48,16 @@ public class CMMLInfo {
     @SuppressWarnings("UnusedDeclaration")
     public CMMLInfo(Document cmml) {
         cmmlDoc = cmml;
+        new XmlNamespaceTranslator()
+                .addTranslation(null, "http://www.w3.org/1998/Math/MathML")
+                .translateNamespaces(cmmlDoc);
     }
 
     public CMMLInfo(String cmml) throws IOException, ParserConfigurationException {
         cmmlDoc = XMLHelper.String2Doc(cmml, true);
+        new XmlNamespaceTranslator()
+                .addTranslation(null, "http://www.w3.org/1998/Math/MathML")
+                .translateNamespaces(cmmlDoc);
     }
 
     public static CMMLInfo newFromSnippet(String snippet) throws IOException, ParserConfigurationException {
@@ -65,8 +73,12 @@ public class CMMLInfo {
         return this;
     }
 
-    public boolean isEquation() throws ParserConfigurationException, SAXException, XPathExpressionException, IOException {
-        NodeList elementsB = XMLHelper.getElementsB(cmmlDoc, "/annotation-xml/apply/eq");
+    public boolean isEquation() throws ParserConfigurationException, SAXException, XPathExpressionException, IOException, TransformerException {
+        Node cmmlMain = XQueryGenerator.getMainElement(cmmlDoc);
+        XPath xpath = XMLHelper.namespaceAwareXpath("m", "http://www.w3.org/1998/Math/MathML");
+        XPathExpression xEquation = xpath.compile("./m:apply/m:eq");
+
+        NodeList elementsB = XMLHelper.getElementsB(cmmlMain, xEquation);
         return elementsB.getLength() > 0;
     }
 

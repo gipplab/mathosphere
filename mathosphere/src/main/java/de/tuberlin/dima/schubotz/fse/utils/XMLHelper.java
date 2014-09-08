@@ -11,6 +11,7 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
+import javax.xml.namespace.NamespaceContext;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -489,6 +490,7 @@ public final class XMLHelper {
 
 
 
+
     /**
      * The Class Mynode.
      */
@@ -630,5 +632,28 @@ public final class XMLHelper {
         Document out = XMLHelper.getNewDocument(true);
         xqueryEval.run(new DOMDestination(out));
         return out;
+    }
+    public static XPath namespaceAwareXpath(final String prefix, final String nsURI) {
+        XPathFactory xPathfactory = XPathFactory.newInstance();
+        XPath xpath = xPathfactory.newXPath();
+        NamespaceContext ctx = new NamespaceContext() {
+            @Override
+            public String getNamespaceURI(String aPrefix) {
+                if (aPrefix.equals(prefix))
+                    return nsURI;
+                else
+                    return null;
+            }
+            @Override
+            public Iterator getPrefixes(String val) {
+                throw new UnsupportedOperationException();
+            }
+            @Override
+            public String getPrefix(String uri) {
+                throw new UnsupportedOperationException();
+            }
+        };
+        xpath.setNamespaceContext(ctx);
+        return xpath;
     }
 }
