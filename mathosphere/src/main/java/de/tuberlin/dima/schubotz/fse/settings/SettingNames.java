@@ -53,6 +53,7 @@ public enum SettingNames implements Serializable {
      * Document total
      */
     NUM_DOC("n"),
+    PASSWORD("P"),
     //QUERY_SEPARATOR("qs"),
     //DOCUMENT_SEPARATOR("ds"),
     QUERYTUPLE_FILE("qt");

@@ -25,7 +25,7 @@
         <processorPath useClasspath="true" />
         <module name="math-tests (1)" />
         <module name="mathml-canonicalizer" />
-        <module name="MathMLQueryGenerator" />
+        <module name="mathmlquerygenerator" />
         <module name="MathMLQueryGenerator (1)" />
         <module name="mathosphere-core" />
       </profile>
@@ -35,6 +35,7 @@
       <module name="math-tests (1)" target="1.7" />
       <module name="mathml-canonicalizer" target="1.6" />
       <module name="MathMLQueryGenerator" target="1.7" />
+      <module name="mathmlquerygenerator" target="1.7" />
       <module name="mathosphere-core" target="1.7" />
     </bytecodeTargetLevel>
   </component>

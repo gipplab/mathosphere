@@ -2,9 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/lib/MathMLQueryGenerator/MathMLQueryGenerator.iml" filepath="$PROJECT_DIR$/lib/MathMLQueryGenerator/MathMLQueryGenerator.iml" />
-      <module fileurl="file://$PROJECT_DIR$/math-tests.iml" filepath="$PROJECT_DIR$/math-tests.iml" />
       <module fileurl="file://$PROJECT_DIR$/lib/MathMLCan/mathml-canonicalizer.iml" filepath="$PROJECT_DIR$/lib/MathMLCan/mathml-canonicalizer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lib/MathMLQueryGenerator/mathmlquerygenerator.iml" filepath="$PROJECT_DIR$/lib/MathMLQueryGenerator/mathmlquerygenerator.iml" />
+      <module fileurl="file://$PROJECT_DIR$/mathosphere.iml" filepath="$PROJECT_DIR$/mathosphere.iml" />
       <module fileurl="file://$PROJECT_DIR$/mathosphere/mathosphere-core.iml" filepath="$PROJECT_DIR$/mathosphere/mathosphere-core.iml" />
     </modules>
   </component>
