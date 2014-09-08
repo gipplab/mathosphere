@@ -812,6 +812,7 @@
       <column name="fId" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
       <column name="pageId" sqlType="VARCHAR" precision="50" scale="0" nullable="false" jdbcType="12"/>
       <column name="formula_name" sqlType="VARCHAR" precision="50" scale="0" nullable="false" jdbcType="12"/>
+      <column name="isEquation" sqlType="TINYINT" precision="3" scale="0" nullable="true" jdbcType="-6"/>
       <primary-key name="PRIMARY" columns="fId"/>
       <foreign-key name="formulae_name_ibfk_1" columns="pageId" ref-table="formulae_count" ref-schema="" ref-catalog="mathosphere" ref-columns="pageId" update-rule="3" delete-rule="3" deferrability="2"/>
       <index name="pageId_formula_name_index" unique="true" columns="pageId,formula_name"/>
