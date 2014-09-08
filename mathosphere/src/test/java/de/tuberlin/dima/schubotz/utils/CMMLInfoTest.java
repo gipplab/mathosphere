@@ -83,7 +83,6 @@ public class CMMLInfoTest extends TestCase {
         int i = 0;
         for (String rawTest : rawTests) {
             CMMLInfo cmmlElement = new CMMLInfo(rawTest);
-            System.out.println(cmmlElement);
             assertEquals("Test " + i + " failed", isEquation[i], cmmlElement.isEquation());
             i++;
         }
@@ -134,5 +133,11 @@ public class CMMLInfoTest extends TestCase {
         Integer depth = cmml.getDepth(iQuery);
         assertEquals(8,(int) depth);
 
+    }
+
+    public void testIsEquation2()throws Exception {
+        final String sampleMML = TestUtils.getFileContents("de/tuberlin/dima/schubotz/utils/Emc2.xml");
+        CMMLInfo cmmlElement = new CMMLInfo(sampleMML);
+        assertTrue(cmmlElement.isEquation());
     }
 }

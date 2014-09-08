@@ -4,6 +4,31 @@
     <file url="file://$PROJECT_DIR$" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/lib/MathMLCan" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/lib/MathMLQueryGenerator" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/lib/incubator-flink" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/lib/incubator-flink/flink-addons" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/lib/incubator-flink/flink-addons/flink-avro" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/lib/incubator-flink/flink-addons/flink-hadoop-compatibility" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/lib/incubator-flink/flink-addons/flink-jdbc" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/lib/incubator-flink/flink-addons/flink-spargel" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/lib/incubator-flink/flink-addons/flink-streaming" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/lib/incubator-flink/flink-addons/flink-streaming/flink-streaming-connectors" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/lib/incubator-flink/flink-addons/flink-streaming/flink-streaming-core" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/lib/incubator-flink/flink-addons/flink-streaming/flink-streaming-examples" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/lib/incubator-flink/flink-clients" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/lib/incubator-flink/flink-compiler" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/lib/incubator-flink/flink-core" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/lib/incubator-flink/flink-dist" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/lib/incubator-flink/flink-examples" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/lib/incubator-flink/flink-examples/flink-java-examples" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/lib/incubator-flink/flink-examples/flink-scala-examples" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/lib/incubator-flink/flink-java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/lib/incubator-flink/flink-quickstart" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/lib/incubator-flink/flink-quickstart/flink-quickstart-java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/lib/incubator-flink/flink-quickstart/flink-quickstart-scala" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/lib/incubator-flink/flink-runtime" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/lib/incubator-flink/flink-scala" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/lib/incubator-flink/flink-test-utils" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/lib/incubator-flink/flink-tests" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/mathosphere" charset="UTF-8" />
   </component>
 </project>
