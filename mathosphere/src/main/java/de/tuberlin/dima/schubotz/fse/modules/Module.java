@@ -20,7 +20,7 @@ public interface Module extends Serializable {
      * Configures environment.
      * @param env ExecutionEnvironment
      */
-    public void configure(ExecutionEnvironment env, DataStorage data);
+    public void configure(ExecutionEnvironment env, DataStorage data) throws Exception;
 
 }
 
