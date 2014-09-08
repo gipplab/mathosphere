@@ -1,6 +1,5 @@
 package de.tuberlin.dima.schubotz.utils;
 
-import junit.framework.TestCase;
 import org.apache.flink.api.java.DataSet;
 import org.apache.flink.api.java.ExecutionEnvironment;
 import org.apache.flink.api.java.io.jdbc.JDBCInputFormat;
@@ -20,12 +19,13 @@ import java.sql.Statement;
 
 import static de.tuberlin.dima.schubotz.utils.TestUtils.getFileContents;
 import static org.apache.flink.api.java.typeutils.BasicTypeInfo.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Created by Moritz on 07.09.2014.
  */
 @RunWith(JUnit4.class)
-public class JDBCTest extends TestCase {
+public class JDBCTest {
 	private final static String DBURL="jdbc:mysql://localhost:3306/test";
 	public static final String DRIVERNAME = "org.mariadb.jdbc.Driver";
 	public static final String USER = "test";
@@ -112,4 +112,9 @@ public class JDBCTest extends TestCase {
 		stat.close();
 		conn.close();
 	}
+    @Test
+    public void testSize(){
+        String sql = "UPDATE formulae_name set isEquation = ? WHERE pageId = ? and formula_name = ? LIMIT 1";
+         assertEquals(1,sql.split("\\?,").length);
+    }
 }
