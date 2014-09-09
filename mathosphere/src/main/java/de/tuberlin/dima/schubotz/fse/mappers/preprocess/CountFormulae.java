@@ -18,12 +18,12 @@ public class CountFormulae extends DataPreprocessTemplate<Tuple2<String,Integer>
         docID = in.getNamedField(RawDataTuple.fields.ID);
         data = in.getNamedField(RawDataTuple.fields.rawData);
 		setDoc();
-		if( setMath() ) {
-			Integer count = mathElements.size();
-			out.collect( new Tuple2<>( docID,count ) );
-		} else {
-			out.collect( new Tuple2<>( docID, 0 ) );
-		}
+//		if( setMath() ) {
+//			Integer count = mathElements.size();
+//			out.collect( new Tuple2<>( docID,count ) );
+//		} else {
+//			out.collect( new Tuple2<>( docID, 0 ) );
+//		}
 		setMath();
 	}
 

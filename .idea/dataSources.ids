@@ -805,8 +805,16 @@
       <column name="count" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
       <column name="ts" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="Q1VSUkVOVF9USU1FU1RBTVA=" version="true"/>
       <primary-key name="PRIMARY" columns="pageId"/>
+      <exported-key name="formulae_fulltext_ibfk_1" table="formulae_fulltext" schema="" catalog="mathosphere" columns="pageId"/>
       <exported-key name="formulae_name_ibfk_1" table="formulae_name" schema="" catalog="mathosphere" columns="pageId"/>
       <exported-key name="referee_votes_ibfk_1" table="referee_votes" schema="" catalog="mathosphere" columns="pageId"/>
+    </table>
+    <table name="formulae_fulltext" schema="" catalog="mathosphere" type="TABLE">
+      <column name="pageId" sqlType="VARCHAR" precision="50" scale="0" nullable="false" jdbcType="12"/>
+      <column name="formula_name" sqlType="VARCHAR" precision="50" scale="0" nullable="false" jdbcType="12"/>
+      <column name="value" sqlType="LONGTEXT" precision="2147483647" scale="0" nullable="true" jdbcType="-1"/>
+      <foreign-key name="formulae_fulltext_ibfk_1" columns="pageId" ref-table="formulae_count" ref-schema="" ref-catalog="mathosphere" ref-columns="pageId" update-rule="3" delete-rule="3" deferrability="2"/>
+      <index name="pageId_formula_name_index" unique="true" columns="pageId,formula_name"/>
     </table>
     <table name="formulae_name" schema="" catalog="mathosphere" type="TABLE">
       <column name="fId" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>

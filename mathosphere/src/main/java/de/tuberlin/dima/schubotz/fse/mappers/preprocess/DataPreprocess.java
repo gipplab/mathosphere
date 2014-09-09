@@ -3,9 +3,7 @@ package de.tuberlin.dima.schubotz.fse.mappers.preprocess;
 import de.tuberlin.dima.schubotz.fse.MainProgram;
 import de.tuberlin.dima.schubotz.fse.types.DataTuple;
 import de.tuberlin.dima.schubotz.fse.types.RawDataTuple;
-import de.tuberlin.dima.schubotz.fse.utils.ExtractHelper;
 import org.apache.flink.util.Collector;
-import org.jsoup.nodes.Element;
 
 import java.util.regex.Pattern;
 
@@ -41,37 +39,37 @@ public class DataPreprocess extends DataPreprocessTemplate<DataTuple> {
 		}
 
 
-        final StringBuilder outputLatex = new StringBuilder();
-        final StringBuilder cmml = new StringBuilder();
-        final StringBuilder pmml = new StringBuilder();
-        for (final Element MathElement : mathElements ) {
-            ExtractHelper.processMathElement(MathElement, docID, outputLatex, cmml, pmml, STR_SPLIT);
-        }
-
-        //Delete all math so they don't show up in keyword list
-        mathElements.remove();
-
-        // Keyword list generation
-        // WARNING: THIS IS RELIANT ON ALL NON RELEVANT TEXT (SUCH AS
-        // TITLE TEXT) BEING STRIPPED ALREADY
-        final String plainText = doc.text();
-        final StringBuilder keywordList = new StringBuilder();
-        final String[] tokens = WORD_SPLIT.split(plainText.toLowerCase());
- 		for (final String token : tokens) {
-            ExtractHelper.appendSeparator(keywordList, token, STR_SPLIT);
-        }
-
-        //Stringify then output
-        final String outputLatexStr = outputLatex.toString();
-        final String cmmlStr = cmml.toString();
-        final String pmmlStr = pmml.toString();
-        if (outputLatexStr.isEmpty() && cmmlStr.isEmpty() && pmmlStr.isEmpty()) {
-            LOG.info(docID, " has no math.");
-        } else {
-            out.collect(new DataTuple(
-                    docID, outputLatex.toString(), keywordList.toString(), cmml.toString(), pmml.toString()));
-        }
-        LOG.info(docID, " complete!");
+//        final StringBuilder outputLatex = new StringBuilder();
+//        final StringBuilder cmml = new StringBuilder();
+//        final StringBuilder pmml = new StringBuilder();
+//        for (final Element MathElement : mathElements ) {
+//            ExtractHelper.processMathElement(MathElement, docID, outputLatex, cmml, pmml, STR_SPLIT);
+//        }
+//
+//        //Delete all math so they don't show up in keyword list
+//        mathElements.remove();
+//
+//        // Keyword list generation
+//        // WARNING: THIS IS RELIANT ON ALL NON RELEVANT TEXT (SUCH AS
+//        // TITLE TEXT) BEING STRIPPED ALREADY
+//        final String plainText = doc.text();
+//        final StringBuilder keywordList = new StringBuilder();
+//        final String[] tokens = WORD_SPLIT.split(plainText.toLowerCase());
+// 		for (final String token : tokens) {
+//            ExtractHelper.appendSeparator(keywordList, token, STR_SPLIT);
+//        }
+//
+//        //Stringify then output
+//        final String outputLatexStr = outputLatex.toString();
+//        final String cmmlStr = cmml.toString();
+//        final String pmmlStr = pmml.toString();
+//        if (outputLatexStr.isEmpty() && cmmlStr.isEmpty() && pmmlStr.isEmpty()) {
+//            LOG.info(docID, " has no math.");
+//        } else {
+//            out.collect(new DataTuple(
+//                    docID, outputLatex.toString(), keywordList.toString(), cmml.toString(), pmml.toString()));
+//        }
+//        LOG.info(docID, " complete!");
 	}
 
 }
