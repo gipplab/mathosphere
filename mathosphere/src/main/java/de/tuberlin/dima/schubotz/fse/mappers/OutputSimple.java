@@ -9,19 +9,8 @@ import org.apache.flink.util.Collector;
  * Adds rank and runtag. Outputs 1000 results per query.
  */
 public class OutputSimple implements GroupReduceFunction<ResultTuple, OutputSimpleTuple> {
-	/**
-	 * See {@link de.tuberlin.dima.schubotz.wiki.WikiProgram#MaxResultsPerQuery}
-	 */
 	private final int queryLimit;
-	/**
-	 * See {@link de.tuberlin.dima.schubotz.wiki.WikiProgram#RUNTAG} 
-	 */
 	private final String runtag;
-	
-	/**
-	 * @param queryLimit {@link de.tuberlin.dima.schubotz.wiki.WikiProgram#MaxResultsPerQuery} passed in for serializability
-	 * @param runtag {@link de.tuberlin.dima.schubotz.wiki.WikiProgram#RUNTAG} passed in for serializability
-	 */
 	public OutputSimple(int queryLimit, String runtag) {
 		this.queryLimit = queryLimit;
 		this.runtag = runtag;
@@ -43,7 +32,7 @@ public class OutputSimple implements GroupReduceFunction<ResultTuple, OutputSimp
 
 		while(in.iterator().hasNext() && current < queryLimit) {
 			final ResultTuple curTup = in.iterator().next();
-			out.collect(new OutputSimpleTuple(curTup.f0,curTup.f1,current+1,curTup.f2,runtag));
+			out.collect(new OutputSimpleTuple(curTup.f0,curTup.f1,current+1,curTup.f3,runtag));
 			current++;
 		}
 	}
