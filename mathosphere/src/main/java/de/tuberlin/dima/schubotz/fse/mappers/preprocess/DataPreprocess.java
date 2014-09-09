@@ -1,6 +1,7 @@
 package de.tuberlin.dima.schubotz.fse.mappers.preprocess;
 
 import de.tuberlin.dima.schubotz.fse.MainProgram;
+import de.tuberlin.dima.schubotz.fse.mappers.DataPreprocessTemplate;
 import de.tuberlin.dima.schubotz.fse.types.DataTuple;
 import de.tuberlin.dima.schubotz.fse.types.RawDataTuple;
 import de.tuberlin.dima.schubotz.fse.utils.ExtractHelper;
@@ -9,7 +10,7 @@ import org.jsoup.nodes.Element;
 
 import java.util.regex.Pattern;
 
-public class DataPreprocess extends DataPreprocessTemplate<DataTuple> {
+public class DataPreprocess extends DataPreprocessTemplate<RawDataTuple,DataTuple> {
 	private final Pattern WORD_SPLIT;
 	private final String STR_SPLIT;
 
@@ -57,7 +58,7 @@ public class DataPreprocess extends DataPreprocessTemplate<DataTuple> {
         final String plainText = doc.text();
         final StringBuilder keywordList = new StringBuilder();
         final String[] tokens = WORD_SPLIT.split(plainText.toLowerCase());
- 		for (final String token : tokens) {
+		for (final String token : tokens) {
             ExtractHelper.appendSeparator(keywordList, token, STR_SPLIT);
         }
 

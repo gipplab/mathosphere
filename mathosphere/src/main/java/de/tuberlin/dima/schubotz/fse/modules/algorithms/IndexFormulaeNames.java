@@ -1,6 +1,6 @@
 package de.tuberlin.dima.schubotz.fse.modules.algorithms;
 
-import de.tuberlin.dima.schubotz.fse.mappers.preprocess.FormulaNames;
+import de.tuberlin.dima.schubotz.fse.mappers.dbMapper.FormulaNames;
 import de.tuberlin.dima.schubotz.fse.settings.DataStorage;
 import de.tuberlin.dima.schubotz.fse.settings.SettingNames;
 import de.tuberlin.dima.schubotz.fse.settings.Settings;
