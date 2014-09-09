@@ -17,8 +17,8 @@ public class ExtractHelper {
 	//XML configuration file for canonicalizer
 	private static final MathMLCanonicalizer canonicalizer;
     //For XML math processing
-    private static final String NAMESPACE = "http://www.w3.org/1998/Math/MathML";
-    private static final String NAMESPACE_NAME = "xmlns:m";
+    public static final String NAMESPACE = "http://www.w3.org/1998/Math/MathML";
+    public static final String NAMESPACE_NAME = "xmlns:m";
     private static final SafeLogWrapper LOG;
 
 	static {
