@@ -1,0 +1,318 @@
+<math xmlns="http://www.w3.org/1998/Math/MathML" xref="S3.E26.m1.1.cmml" alttext="\displaystyle(\phi^{1})^{2}=\left\{\begin{array}[]{l}{a^{2}\over 3}\left[1+%
+\left({1\over 1-X}+\sqrt{X\over(X-1)^{3}}\right)^{1\over 3}-\left(-{1\over 1-X%
+}+\sqrt{X\over(X-1)^{3}}\right)^{1\over 3}\right]\hskip{43.248189pt}(z&gt;z_{0})%
+\\
+{a^{2}\over 3}\left[1+\left({1\over 1-X}+\sqrt{X\over(X-1)^{3}}\right)^{1\over
+3%
+}e^{-{2\pi\over 3}i}+\left({1\over 1-X}-\sqrt{X\over(X-1)^{3}}\right)^{1\over 3%
+}e^{{2\pi\over 3}i}\right]\,\,(z&lt;z_{0})\end{array}\right." class="ltx_Math" id="S3.E26.m1.1" display="inline">
+    <semantics xref="S3.E26.m1.1.cmml" id="S3.E26.m1.1a">
+        <mrow xref="S3.E26.m1.1.10.cmml" id="S3.E26.m1.1.10">
+            <msup xref="S3.E26.m1.1.10.1.cmml" id="S3.E26.m1.1.10.1">
+                <mrow xref="S3.E26.m1.1.10.1.2.cmml" id="S3.E26.m1.1.10.1.2">
+                    <mo xref="S3.E26.m1.1.10.1.2.cmml" id="S3.E26.m1.1.10.1.2a">(</mo>
+                    <msup xref="S3.E26.m1.1.10.1.2.cmml" id="S3.E26.m1.1.10.1.2b">
+                        <mi xref="S3.E26.m1.1.2.cmml" id="S3.E26.m1.1.2">?</mi>
+                        <mn xref="S3.E26.m1.1.3.1.cmml" id="S3.E26.m1.1.3.1">1</mn>
+                    </msup>
+                    <mo xref="S3.E26.m1.1.10.1.2.cmml" id="S3.E26.m1.1.10.1.2c">)</mo>
+                </mrow>
+                <mn xref="S3.E26.m1.1.5.1.cmml" id="S3.E26.m1.1.5.1">2</mn>
+            </msup>
+            <mo xref="S3.E26.m1.1.6.cmml" id="S3.E26.m1.1.6">=</mo>
+            <mrow xref="S3.E26.m1.1.8.cmml" id="S3.E26.m1.1.8">
+                <mo xref="S3.E26.m1.1.8.cmml" id="S3.E26.m1.1.8a">{</mo>
+                <mtable xref="S3.E26.m1.1.8.cmml" id="S3.E26.m1.1.8b" rowspacing="0.2ex" columnspacing="0.4em">
+                    <mtr xref="S3.E26.m1.1.8.cmml" id="S3.E26.m1.1.8c">
+                        <mtd xref="S3.E26.m1.1.8.cmml" columnalign="left" id="S3.E26.m1.1.8d">
+                            <mrow id="S3.E26.m1.1.8.1.1.1b">
+                                <mstyle id="S3.E26.m1.1.8.1.1.1.1" displaystyle="true">
+                                    <mfrac id="S3.E26.m1.1.8.1.1.1.1a">
+                                        <msup id="S3.E26.m1.1.8.1.1.1.1.2">
+                                            <mi id="S3.E26.m1.1.8.1.1.1.1.2.1">a</mi>
+                                            <mn id="S3.E26.m1.1.8.1.1.1.1.2.2.1">2</mn>
+                                        </msup>
+                                        <mn id="S3.E26.m1.1.8.1.1.1.1.3">3</mn>
+                                    </mfrac>
+                                </mstyle>
+                                <mrow id="S3.E26.m1.1.8.1.1.1">
+                                    <mo id="S3.E26.m1.1.8.1.1.1.2">[</mo>
+                                    <mn id="S3.E26.m1.1.8.1.1.1.3">1</mn>
+                                    <mo id="S3.E26.m1.1.8.1.1.1.4">+</mo>
+                                    <msup id="S3.E26.m1.1.8.1.1.1.27a">
+                                        <mrow id="S3.E26.m1.1.8.1.1.1.27">
+                                            <mo id="S3.E26.m1.1.8.1.1.1.5">(</mo>
+                                            <mstyle id="S3.E26.m1.1.8.1.1.1.6" displaystyle="true">
+                                                <mfrac id="S3.E26.m1.1.8.1.1.1.6a">
+                                                    <mn id="S3.E26.m1.1.8.1.1.1.6.2">1</mn>
+                                                    <mrow id="S3.E26.m1.1.8.1.1.1.6.3">
+                                                        <mn id="S3.E26.m1.1.8.1.1.1.6.3.1">1</mn>
+                                                        <mo id="S3.E26.m1.1.8.1.1.1.6.3.2">-</mo>
+                                                        <mi id="S3.E26.m1.1.8.1.1.1.6.3.3">X</mi>
+                                                    </mrow>
+                                                </mfrac>
+                                            </mstyle>
+                                            <mo id="S3.E26.m1.1.8.1.1.1.7">+</mo>
+                                            <msqrt id="S3.E26.m1.1.8.1.1.1.8">
+                                                <mstyle id="S3.E26.m1.1.8.1.1.1.8.2" displaystyle="true">
+                                                    <mfrac id="S3.E26.m1.1.8.1.1.1.8.2a">
+                                                        <mi id="S3.E26.m1.1.8.1.1.1.8.2.1.2">X</mi>
+                                                        <msup id="S3.E26.m1.1.8.1.1.1.8.2.1.3">
+                                                            <mrow id="S3.E26.m1.1.8.1.1.1.8.2.1.3.8">
+                                                                <mo id="S3.E26.m1.1.8.1.1.1.8.2.1.3.8a">(</mo>
+                                                                <mrow id="S3.E26.m1.1.8.1.1.1.8.2.1.3.8b">
+                                                                    <mi id="S3.E26.m1.1.8.1.1.1.8.2.1.3.2">X</mi>
+                                                                    <mo id="S3.E26.m1.1.8.1.1.1.8.2.1.3.3">-</mo>
+                                                                    <mn id="S3.E26.m1.1.8.1.1.1.8.2.1.3.4">1</mn>
+                                                                </mrow>
+                                                                <mo id="S3.E26.m1.1.8.1.1.1.8.2.1.3.8c">)</mo>
+                                                            </mrow>
+                                                            <mn id="S3.E26.m1.1.8.1.1.1.8.2.1.3.6.1">3</mn>
+                                                        </msup>
+                                                    </mfrac>
+                                                </mstyle>
+                                            </msqrt>
+                                            <mo id="S3.E26.m1.1.8.1.1.1.9">)</mo>
+                                        </mrow>
+                                        <mfrac id="S3.E26.m1.1.8.1.1.1.10.1">
+                                            <mn id="S3.E26.m1.1.8.1.1.1.10.1.1.2">1</mn>
+                                            <mn id="S3.E26.m1.1.8.1.1.1.10.1.1.3">3</mn>
+                                        </mfrac>
+                                    </msup>
+                                    <mo id="S3.E26.m1.1.8.1.1.1.11">-</mo>
+                                    <msup id="S3.E26.m1.1.8.1.1.1.28a">
+                                        <mrow id="S3.E26.m1.1.8.1.1.1.28">
+                                            <mo id="S3.E26.m1.1.8.1.1.1.12">(</mo>
+                                            <mo id="S3.E26.m1.1.8.1.1.1.13">-</mo>
+                                            <mstyle id="S3.E26.m1.1.8.1.1.1.14" displaystyle="true">
+                                                <mfrac id="S3.E26.m1.1.8.1.1.1.14a">
+                                                    <mn id="S3.E26.m1.1.8.1.1.1.14.2">1</mn>
+                                                    <mrow id="S3.E26.m1.1.8.1.1.1.14.3">
+                                                        <mn id="S3.E26.m1.1.8.1.1.1.14.3.1">1</mn>
+                                                        <mo id="S3.E26.m1.1.8.1.1.1.14.3.2">-</mo>
+                                                        <mi id="S3.E26.m1.1.8.1.1.1.14.3.3">X</mi>
+                                                    </mrow>
+                                                </mfrac>
+                                            </mstyle>
+                                            <mo id="S3.E26.m1.1.8.1.1.1.15">+</mo>
+                                            <msqrt id="S3.E26.m1.1.8.1.1.1.16">
+                                                <mstyle id="S3.E26.m1.1.8.1.1.1.16.2" displaystyle="true">
+                                                    <mfrac id="S3.E26.m1.1.8.1.1.1.16.2a">
+                                                        <mi id="S3.E26.m1.1.8.1.1.1.16.2.1.2">X</mi>
+                                                        <msup id="S3.E26.m1.1.8.1.1.1.16.2.1.3">
+                                                            <mrow id="S3.E26.m1.1.8.1.1.1.16.2.1.3.8">
+                                                                <mo id="S3.E26.m1.1.8.1.1.1.16.2.1.3.8a">(</mo>
+                                                                <mrow id="S3.E26.m1.1.8.1.1.1.16.2.1.3.8b">
+                                                                    <mi id="S3.E26.m1.1.8.1.1.1.16.2.1.3.2">X</mi>
+                                                                    <mo id="S3.E26.m1.1.8.1.1.1.16.2.1.3.3">-</mo>
+                                                                    <mn id="S3.E26.m1.1.8.1.1.1.16.2.1.3.4">1</mn>
+                                                                </mrow>
+                                                                <mo id="S3.E26.m1.1.8.1.1.1.16.2.1.3.8c">)</mo>
+                                                            </mrow>
+                                                            <mn id="S3.E26.m1.1.8.1.1.1.16.2.1.3.6.1">3</mn>
+                                                        </msup>
+                                                    </mfrac>
+                                                </mstyle>
+                                            </msqrt>
+                                            <mo id="S3.E26.m1.1.8.1.1.1.17">)</mo>
+                                        </mrow>
+                                        <mfrac id="S3.E26.m1.1.8.1.1.1.18.1">
+                                            <mn id="S3.E26.m1.1.8.1.1.1.18.1.1.2">1</mn>
+                                            <mn id="S3.E26.m1.1.8.1.1.1.18.1.1.3">3</mn>
+                                        </mfrac>
+                                    </msup>
+                                    <mo id="S3.E26.m1.1.8.1.1.1.19">]</mo>
+                                </mrow>
+                                <mo mathvariant="italic" separator="true" id="S3.E26.m1.1.8.1.1.1.20">?????</mo>
+                                <mrow id="S3.E26.m1.1.8.1.1.1a">
+                                    <mo id="S3.E26.m1.1.8.1.1.1.21">(</mo>
+                                    <mi id="S3.E26.m1.1.8.1.1.1.22">z</mi>
+                                    <mo id="S3.E26.m1.1.8.1.1.1.23">&gt;</mo>
+                                    <msub id="S3.E26.m1.1.8.1.1.1.29">
+                                        <mi id="S3.E26.m1.1.8.1.1.1.24">z</mi>
+                                        <mn id="S3.E26.m1.1.8.1.1.1.25.1">0</mn>
+                                    </msub>
+                                    <mo id="S3.E26.m1.1.8.1.1.1.26">)</mo>
+                                </mrow>
+                            </mrow>
+                        </mtd>
+                    </mtr>
+                    <mtr xref="S3.E26.m1.1.8.cmml" id="S3.E26.m1.1.8e">
+                        <mtd xref="S3.E26.m1.1.8.cmml" columnalign="left" id="S3.E26.m1.1.8f">
+                            <mrow id="S3.E26.m1.1.8.2.1.1b">
+                                <mstyle id="S3.E26.m1.1.8.2.1.1.1" displaystyle="true">
+                                    <mfrac id="S3.E26.m1.1.8.2.1.1.1a">
+                                        <msup id="S3.E26.m1.1.8.2.1.1.1.2">
+                                            <mi id="S3.E26.m1.1.8.2.1.1.1.2.1">a</mi>
+                                            <mn id="S3.E26.m1.1.8.2.1.1.1.2.2.1">2</mn>
+                                        </msup>
+                                        <mn id="S3.E26.m1.1.8.2.1.1.1.3">3</mn>
+                                    </mfrac>
+                                </mstyle>
+                                <mrow id="S3.E26.m1.1.8.2.1.1">
+                                    <mo id="S3.E26.m1.1.8.2.1.1.2">[</mo>
+                                    <mn id="S3.E26.m1.1.8.2.1.1.3">1</mn>
+                                    <mo id="S3.E26.m1.1.8.2.1.1.4">+</mo>
+                                    <msup id="S3.E26.m1.1.8.2.1.1.31a">
+                                        <mrow id="S3.E26.m1.1.8.2.1.1.31">
+                                            <mo id="S3.E26.m1.1.8.2.1.1.5">(</mo>
+                                            <mstyle id="S3.E26.m1.1.8.2.1.1.6" displaystyle="true">
+                                                <mfrac id="S3.E26.m1.1.8.2.1.1.6a">
+                                                    <mn id="S3.E26.m1.1.8.2.1.1.6.2">1</mn>
+                                                    <mrow id="S3.E26.m1.1.8.2.1.1.6.3">
+                                                        <mn id="S3.E26.m1.1.8.2.1.1.6.3.1">1</mn>
+                                                        <mo id="S3.E26.m1.1.8.2.1.1.6.3.2">-</mo>
+                                                        <mi id="S3.E26.m1.1.8.2.1.1.6.3.3">X</mi>
+                                                    </mrow>
+                                                </mfrac>
+                                            </mstyle>
+                                            <mo id="S3.E26.m1.1.8.2.1.1.7">+</mo>
+                                            <msqrt id="S3.E26.m1.1.8.2.1.1.8">
+                                                <mstyle id="S3.E26.m1.1.8.2.1.1.8.2" displaystyle="true">
+                                                    <mfrac id="S3.E26.m1.1.8.2.1.1.8.2a">
+                                                        <mi id="S3.E26.m1.1.8.2.1.1.8.2.1.2">X</mi>
+                                                        <msup id="S3.E26.m1.1.8.2.1.1.8.2.1.3">
+                                                            <mrow id="S3.E26.m1.1.8.2.1.1.8.2.1.3.8">
+                                                                <mo id="S3.E26.m1.1.8.2.1.1.8.2.1.3.8a">(</mo>
+                                                                <mrow id="S3.E26.m1.1.8.2.1.1.8.2.1.3.8b">
+                                                                    <mi id="S3.E26.m1.1.8.2.1.1.8.2.1.3.2">X</mi>
+                                                                    <mo id="S3.E26.m1.1.8.2.1.1.8.2.1.3.3">-</mo>
+                                                                    <mn id="S3.E26.m1.1.8.2.1.1.8.2.1.3.4">1</mn>
+                                                                </mrow>
+                                                                <mo id="S3.E26.m1.1.8.2.1.1.8.2.1.3.8c">)</mo>
+                                                            </mrow>
+                                                            <mn id="S3.E26.m1.1.8.2.1.1.8.2.1.3.6.1">3</mn>
+                                                        </msup>
+                                                    </mfrac>
+                                                </mstyle>
+                                            </msqrt>
+                                            <mo id="S3.E26.m1.1.8.2.1.1.9">)</mo>
+                                        </mrow>
+                                        <mfrac id="S3.E26.m1.1.8.2.1.1.10.1">
+                                            <mn id="S3.E26.m1.1.8.2.1.1.10.1.1.2">1</mn>
+                                            <mn id="S3.E26.m1.1.8.2.1.1.10.1.1.3">3</mn>
+                                        </mfrac>
+                                    </msup>
+                                    <msup id="S3.E26.m1.1.8.2.1.1.32">
+                                        <mi id="S3.E26.m1.1.8.2.1.1.11">e</mi>
+                                        <mrow id="S3.E26.m1.1.8.2.1.1.12.1">
+                                            <mo id="S3.E26.m1.1.8.2.1.1.12.1.1">-</mo>
+                                            <mrow id="S3.E26.m1.1.8.2.1.1.12.1.4">
+                                                <mfrac id="S3.E26.m1.1.8.2.1.1.12.1.2">
+                                                    <mrow id="S3.E26.m1.1.8.2.1.1.12.1.2.2">
+                                                        <mn id="S3.E26.m1.1.8.2.1.1.12.1.2.2.1">2</mn>
+                                                        <mo id="S3.E26.m1.1.8.2.1.1.12.1.2.2.3">?</mo>
+                                                        <mi id="S3.E26.m1.1.8.2.1.1.12.1.2.2.2">?</mi>
+                                                    </mrow>
+                                                    <mn id="S3.E26.m1.1.8.2.1.1.12.1.2.3">3</mn>
+                                                </mfrac>
+                                                <mo id="S3.E26.m1.1.8.2.1.1.12.1.4.1">?</mo>
+                                                <mi id="S3.E26.m1.1.8.2.1.1.12.1.3">i</mi>
+                                            </mrow>
+                                        </mrow>
+                                    </msup>
+                                    <mo id="S3.E26.m1.1.8.2.1.1.13">+</mo>
+                                    <msup id="S3.E26.m1.1.8.2.1.1.33a">
+                                        <mrow id="S3.E26.m1.1.8.2.1.1.33">
+                                            <mo id="S3.E26.m1.1.8.2.1.1.14">(</mo>
+                                            <mstyle id="S3.E26.m1.1.8.2.1.1.15" displaystyle="true">
+                                                <mfrac id="S3.E26.m1.1.8.2.1.1.15a">
+                                                    <mn id="S3.E26.m1.1.8.2.1.1.15.2">1</mn>
+                                                    <mrow id="S3.E26.m1.1.8.2.1.1.15.3">
+                                                        <mn id="S3.E26.m1.1.8.2.1.1.15.3.1">1</mn>
+                                                        <mo id="S3.E26.m1.1.8.2.1.1.15.3.2">-</mo>
+                                                        <mi id="S3.E26.m1.1.8.2.1.1.15.3.3">X</mi>
+                                                    </mrow>
+                                                </mfrac>
+                                            </mstyle>
+                                            <mo id="S3.E26.m1.1.8.2.1.1.16">-</mo>
+                                            <msqrt id="S3.E26.m1.1.8.2.1.1.17">
+                                                <mstyle id="S3.E26.m1.1.8.2.1.1.17.2" displaystyle="true">
+                                                    <mfrac id="S3.E26.m1.1.8.2.1.1.17.2a">
+                                                        <mi id="S3.E26.m1.1.8.2.1.1.17.2.1.2">X</mi>
+                                                        <msup id="S3.E26.m1.1.8.2.1.1.17.2.1.3">
+                                                            <mrow id="S3.E26.m1.1.8.2.1.1.17.2.1.3.8">
+                                                                <mo id="S3.E26.m1.1.8.2.1.1.17.2.1.3.8a">(</mo>
+                                                                <mrow id="S3.E26.m1.1.8.2.1.1.17.2.1.3.8b">
+                                                                    <mi id="S3.E26.m1.1.8.2.1.1.17.2.1.3.2">X</mi>
+                                                                    <mo id="S3.E26.m1.1.8.2.1.1.17.2.1.3.3">-</mo>
+                                                                    <mn id="S3.E26.m1.1.8.2.1.1.17.2.1.3.4">1</mn>
+                                                                </mrow>
+                                                                <mo id="S3.E26.m1.1.8.2.1.1.17.2.1.3.8c">)</mo>
+                                                            </mrow>
+                                                            <mn id="S3.E26.m1.1.8.2.1.1.17.2.1.3.6.1">3</mn>
+                                                        </msup>
+                                                    </mfrac>
+                                                </mstyle>
+                                            </msqrt>
+                                            <mo id="S3.E26.m1.1.8.2.1.1.18">)</mo>
+                                        </mrow>
+                                        <mfrac id="S3.E26.m1.1.8.2.1.1.19.1">
+                                            <mn id="S3.E26.m1.1.8.2.1.1.19.1.1.2">1</mn>
+                                            <mn id="S3.E26.m1.1.8.2.1.1.19.1.1.3">3</mn>
+                                        </mfrac>
+                                    </msup>
+                                    <msup id="S3.E26.m1.1.8.2.1.1.34">
+                                        <mi id="S3.E26.m1.1.8.2.1.1.20">e</mi>
+                                        <mrow id="S3.E26.m1.1.8.2.1.1.21.1">
+                                            <mfrac id="S3.E26.m1.1.8.2.1.1.21.1.1">
+                                                <mrow id="S3.E26.m1.1.8.2.1.1.21.1.1.2">
+                                                    <mn id="S3.E26.m1.1.8.2.1.1.21.1.1.2.1">2</mn>
+                                                    <mo id="S3.E26.m1.1.8.2.1.1.21.1.1.2.3">?</mo>
+                                                    <mi id="S3.E26.m1.1.8.2.1.1.21.1.1.2.2">?</mi>
+                                                </mrow>
+                                                <mn id="S3.E26.m1.1.8.2.1.1.21.1.1.3">3</mn>
+                                            </mfrac>
+                                            <mo id="S3.E26.m1.1.8.2.1.1.21.1.3">?</mo>
+                                            <mi id="S3.E26.m1.1.8.2.1.1.21.1.2">i</mi>
+                                        </mrow>
+                                    </msup>
+                                    <mo id="S3.E26.m1.1.8.2.1.1.22" rpadding="3.34pt">]</mo>
+                                </mrow>
+                                <mrow id="S3.E26.m1.1.8.2.1.1a">
+                                    <mo id="S3.E26.m1.1.8.2.1.1.25">(</mo>
+                                    <mi id="S3.E26.m1.1.8.2.1.1.26">z</mi>
+                                    <mo id="S3.E26.m1.1.8.2.1.1.27">&lt;</mo>
+                                    <msub id="S3.E26.m1.1.8.2.1.1.35">
+                                        <mi id="S3.E26.m1.1.8.2.1.1.28">z</mi>
+                                        <mn id="S3.E26.m1.1.8.2.1.1.29.1">0</mn>
+                                    </msub>
+                                    <mo id="S3.E26.m1.1.8.2.1.1.30">)</mo>
+                                </mrow>
+                            </mrow>
+                        </mtd>
+                    </mtr>
+                </mtable>
+            </mrow>
+        </mrow>
+        <annotation-xml xref="S3.E26.m1.1" id="S3.E26.m1.1.cmml" encoding="MathML-Content">
+            <apply xref="S3.E26.m1.1.10" id="S3.E26.m1.1.10.cmml">
+                <eq xref="S3.E26.m1.1.6" id="S3.E26.m1.1.6.cmml"></eq>
+                <apply xref="S3.E26.m1.1.10.1" id="S3.E26.m1.1.10.1.cmml">
+                    <csymbol cd="ambiguous" id="S3.E26.m1.1.10.1.1.cmml">superscript</csymbol>
+                    <apply xref="S3.E26.m1.1.10.1.2" id="S3.E26.m1.1.10.1.2.cmml">
+                        <csymbol cd="ambiguous" id="S3.E26.m1.1.10.1.2.1.cmml">superscript</csymbol>
+                        <ci xref="S3.E26.m1.1.2" id="S3.E26.m1.1.2.cmml">?</ci>
+                        <cn xref="S3.E26.m1.1.3.1" id="S3.E26.m1.1.3.1.cmml" type="integer">1</cn>
+                    </apply>
+                    <cn xref="S3.E26.m1.1.5.1" id="S3.E26.m1.1.5.1.cmml" type="integer">2</cn>
+                </apply>
+                <mtext xref="S3.E26.m1.1.8" id="S3.E26.m1.1.8.cmml">a23[1+(1-1X+X-X13)13-(-1-1X+X-X13)13]?????(z&gt;z0)a23[1+(1-1X+X-X13)13e-??2?3i+(1-1X-X-X13)13e??2?3i](z
+                    <z0)< text="">
+                </z0)
+                <></mtext>
+            </apply>
+        </annotation-xml>
+        <annotation xref="S3.E26.m1.1.cmml" id="S3.E26.m1.1b" encoding="application/x-tex">
+            \displaystyle(\phi^{1})^{2}=\left\{\begin{array}[]{l}{a^{2}\over 3}\left[1+%
+            \left({1\over 1-X}+\sqrt{X\over(X-1)^{3}}\right)^{1\over 3}-\left(-{1\over 1-X%
+            }+\sqrt{X\over(X-1)^{3}}\right)^{1\over 3}\right]\hskip{43.248189pt}(z&gt;z_{0})%
+            \\
+            {a^{2}\over 3}\left[1+\left({1\over 1-X}+\sqrt{X\over(X-1)^{3}}\right)^{1\over
+            3%
+            }e^{-{2\pi\over 3}i}+\left({1\over 1-X}-\sqrt{X\over(X-1)^{3}}\right)^{1\over 3%
+            }e^{{2\pi\over 3}i}\right]\,\,(z<z_{0})\end{array}\right.< nnotation="">
+        </z_{0})\end{array}\right.
+        <></annotation>
+    </semantics>
+</math>

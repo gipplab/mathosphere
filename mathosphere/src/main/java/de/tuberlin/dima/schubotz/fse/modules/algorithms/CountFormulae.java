@@ -15,6 +15,9 @@ import org.apache.flink.api.java.tuple.Tuple2;
 public class CountFormulae extends SimpleDbMapper {
     private static final SafeLogWrapper LOG = new SafeLogWrapper(CountFormulae.class);
 
+    public CountFormulae() {
+        super();
+    }
 
 
     public void configure(ExecutionEnvironment env, DataStorage data) throws Exception {

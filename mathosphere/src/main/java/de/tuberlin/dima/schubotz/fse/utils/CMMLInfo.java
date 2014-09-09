@@ -114,7 +114,7 @@ public class CMMLInfo {
 
 
     public CMMLInfo abstract2CDs() {
-        toStrictCmml();
+        //toStrictCmml();
         abstractNodeCD(cmmlDoc);
         return this;
     }
