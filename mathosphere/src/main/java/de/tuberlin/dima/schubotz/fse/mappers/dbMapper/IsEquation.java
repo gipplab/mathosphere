@@ -1,13 +1,16 @@
-package de.tuberlin.dima.schubotz.fse.mappers.preprocess;
+package de.tuberlin.dima.schubotz.fse.mappers.dbMapper;
 
+import de.tuberlin.dima.schubotz.fse.mappers.DataPreprocessTemplate;
 import de.tuberlin.dima.schubotz.fse.types.RawDataTuple;
 import de.tuberlin.dima.schubotz.fse.utils.CMMLInfo;
 import de.tuberlin.dima.schubotz.fse.utils.SafeLogWrapper;
 import org.apache.flink.api.java.tuple.Tuple3;
 import org.apache.flink.util.Collector;
 import org.jsoup.nodes.Element;
+import org.jsoup.nodes.Entities;
+import org.springframework.web.util.HtmlUtils;
 
-public class IsEquation extends DataPreprocessTemplate<Tuple3<Boolean,String,String>> {
+public class IsEquation extends DataPreprocessTemplate<RawDataTuple,Tuple3<Boolean,String,String>> {
     private static final SafeLogWrapper LOG = new SafeLogWrapper(IsEquation.class);
 
 	@Override
@@ -15,10 +18,15 @@ public class IsEquation extends DataPreprocessTemplate<Tuple3<Boolean,String,Str
         docID = in.getNamedField(RawDataTuple.fields.ID);
         data = in.getNamedField(RawDataTuple.fields.rawData);
 		setDoc();
+		// avoid to create thing such as  &plusmn;
+		doc.outputSettings().escapeMode( Entities.EscapeMode.xhtml);
 		if( setMath() ) {
 			for ( Element mathElement : mathElements ) {
 				String id = mathElement.attr( "id" );
-                Boolean equation= isEquation(mathElement.toString());
+				mathElement.select( "annotation, m|annotation").remove();
+				mathElement.select( "mtext, m|mtext").remove();
+				String mathString = HtmlUtils.htmlUnescape( mathElement.toString() );
+                Boolean equation= isEquation(mathString);
                 if (equation != null){
                     out.collect( new Tuple3<>(equation, docID,id)  );
                 }

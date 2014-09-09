@@ -1,6 +1,6 @@
 package de.tuberlin.dima.schubotz.fse.modules.algorithms;
 
-import de.tuberlin.dima.schubotz.fse.mappers.dbMapper.IsEquation;
+import de.tuberlin.dima.schubotz.fse.mappers.dbMapper.FormulaToDB;
 import de.tuberlin.dima.schubotz.fse.settings.DataStorage;
 import de.tuberlin.dima.schubotz.fse.settings.SettingNames;
 import de.tuberlin.dima.schubotz.fse.settings.Settings;
@@ -14,10 +14,10 @@ import org.apache.flink.api.java.tuple.Tuple3;
 //import org.intellij.lang.annotations.Language;
 
 
-public class EquationOrFormula extends SimpleDbAlorithm {
-    private static final SafeLogWrapper LOG = new SafeLogWrapper(EquationOrFormula.class);
+public class SaveFormulaInMySQL extends SimpleDbAlorithm {
+    private static final SafeLogWrapper LOG = new SafeLogWrapper(SaveFormulaInMySQL.class);
 
-    public EquationOrFormula() {
+    public SaveFormulaInMySQL() {
         super();
     }
 
@@ -25,11 +25,11 @@ public class EquationOrFormula extends SimpleDbAlorithm {
     public void configure(ExecutionEnvironment env, DataStorage data) {
         final DataSet<RawDataTuple> dataSet = data.getDataSet();
 
-        String        PW = Settings.getProperty(SettingNames.PASSWORD);
+        String PW = Settings.getProperty(SettingNames.PASSWORD);
 
-        FlatMapOperator<RawDataTuple, Tuple3<Boolean,String, String>> equations = dataSet.flatMap(new IsEquation());
+        FlatMapOperator<RawDataTuple, Tuple3<String,String, String>> equations = dataSet.flatMap(new FormulaToDB());
         //@Language("SQL")
-        String sql = "UPDATE formulae_name set isEquation = ? WHERE pageId = ? and formula_name = ? LIMIT 1";
+        String sql = "insert ignore into formulae_fulltext (pageId, formula_name,  value  ) values (?,?,?)";
         equations.output(
                 JDBCOutputFormat.buildJDBCOutputFormat()
                         .setDrivername(DRIVERNAME)

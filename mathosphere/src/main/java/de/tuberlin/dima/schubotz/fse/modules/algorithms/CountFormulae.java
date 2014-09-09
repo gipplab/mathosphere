@@ -12,16 +12,19 @@ import org.apache.flink.api.java.operators.FlatMapOperator;
 import org.apache.flink.api.java.tuple.Tuple2;
 
 
-public class CountFormulae extends SimpleDbMapper {
+public class CountFormulae extends SimpleDbAlorithm {
     private static final SafeLogWrapper LOG = new SafeLogWrapper(CountFormulae.class);
 
+    public CountFormulae() {
+        super();
+    }
 
 
     public void configure(ExecutionEnvironment env, DataStorage data) throws Exception {
         final DataSet<RawDataTuple> dataSet = data.getDataSet();
 
         //Process all data
-	    FlatMapOperator<RawDataTuple, Tuple2<String, Integer>> preprocessedData = dataSet.flatMap( new de.tuberlin.dima.schubotz.fse.mappers.preprocess.CountFormulae() );
+	    FlatMapOperator<RawDataTuple, Tuple2<String, Integer>> preprocessedData = dataSet.flatMap( new de.tuberlin.dima.schubotz.fse.mappers.dbMapper.CountFormulae() );
 
         String PW = Settings.getProperty(SettingNames.PASSWORD);
         preprocessedData.output(
