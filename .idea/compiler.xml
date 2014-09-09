@@ -27,30 +27,8 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="true" />
-        <module name="flink-avro" />
-        <module name="flink-clients" />
-        <module name="flink-compiler" />
-        <module name="flink-core" />
-        <module name="flink-hadoop-compatibility" />
-        <module name="flink-java" />
-        <module name="flink-java-examples" />
-        <module name="flink-jdbc" />
-        <module name="flink-quickstart-java" />
-        <module name="flink-quickstart-scala" />
-        <module name="flink-runtime" />
-        <module name="flink-scala" />
-        <module name="flink-scala-examples" />
-        <module name="flink-spargel" />
-        <module name="flink-streaming-connectors" />
-        <module name="flink-streaming-core" />
-        <module name="flink-streaming-examples" />
-        <module name="flink-test-utils" />
-        <module name="flink-tests" />
         <module name="math-tests (1)" />
-        <module name="mathml-canonicalizer" />
-        <module name="mathmlquerygenerator" />
         <module name="MathMLQueryGenerator (1)" />
-        <module name="mathosphere-core" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>

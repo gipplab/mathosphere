@@ -34,7 +34,7 @@ public class TestUtils {
     	return new Path("de/tuberlin/dima/schubotz/fse/test10.xml");
     }
 
-    static String getFileContents(String fname) throws IOException {
+    public static String getFileContents(String fname) throws IOException {
         final InputStream is = TestUtils.class.getClassLoader().getResourceAsStream(fname);
         try {
             final Scanner s = new Scanner(is, "UTF-8");

@@ -1,8 +1,10 @@
 package de.tuberlin.dima.schubotz.fse.modules.algorithms;
 
 import de.tuberlin.dima.schubotz.fse.settings.SettingNames;
+import de.tuberlin.dima.schubotz.fse.settings.Settings;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
+import org.apache.flink.api.java.io.jdbc.JDBCOutputFormat;
 
 import java.util.Collection;
 
@@ -24,8 +26,30 @@ public abstract class SimpleDbMapper implements Algorithm {
         PASSWORD.setArgName("password");
         MainOptions.addOption(PASSWORD);
     }
+
+    public String getSql() {
+        return sql;
+    }
+
+    public void setSql(String sql) {
+        this.sql = sql;
+    }
+
+    private String sql;
+
     @Override
     public Collection<Option> getOptionsAsIterable() {
         return MainOptions.getOptions();
+    }
+
+    protected JDBCOutputFormat getOutput() {
+        String PW = Settings.getProperty(SettingNames.PASSWORD);
+        return JDBCOutputFormat.buildJDBCOutputFormat()
+                .setDrivername(DRIVERNAME)
+                .setDBUrl(DBURL)
+                .setPassword(PW)
+                .setUsername(USER)
+                .setQuery(sql)
+                .finish();
     }
 }

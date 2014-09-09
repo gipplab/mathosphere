@@ -2,6 +2,7 @@ package de.tuberlin.dima.schubotz.fse.settings;
 
 import com.google.common.collect.HashMultiset;
 import de.tuberlin.dima.schubotz.fse.types.DataTuple;
+import de.tuberlin.dima.schubotz.fse.types.DatabaseTuple;
 import de.tuberlin.dima.schubotz.fse.types.RawDataTuple;
 import de.tuberlin.dima.schubotz.fse.types.ResultTuple;
 import org.apache.flink.api.java.DataSet;
@@ -19,6 +20,16 @@ public class DataStorage implements Serializable {
     private HashMultiset<String> latexSet;
 
     private DataSet<DataTuple> dataTupleSet;
+
+    public DataSet<DatabaseTuple> getDatabaseTupleDataSet() {
+        return databaseTupleDataSet;
+    }
+
+    public void setDatabaseTupleDataSet(DataSet<DatabaseTuple> databaseTupleDataSet) {
+        this.databaseTupleDataSet = databaseTupleDataSet;
+    }
+
+    private DataSet<DatabaseTuple> databaseTupleDataSet;
     private DataSet<DataTuple> queryTupleSet;
 
     public DataSet<DataTuple> getQueryTupleSet() {

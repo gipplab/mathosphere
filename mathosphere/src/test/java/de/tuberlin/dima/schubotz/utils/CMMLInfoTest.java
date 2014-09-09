@@ -88,6 +88,15 @@ public class CMMLInfoTest extends TestCase {
         }
     }
 
+	public void testIdentifier() throws Exception {
+		int i = 0;
+		for (String rawTest : rawTests) {
+			CMMLInfo cmmlElement = new CMMLInfo(rawTest);
+			System.out.println(cmmlElement.getIdentifiers().toString());
+			//assertEquals("Test " + i + " failed", isEquation[i], cmmlElement.isEquation());
+			i++;
+		}
+	}
     public void testToString() throws Exception {
         for (String rawTest : rawTests) {
             CMMLInfo cmmlElement = new CMMLInfo(rawTest);
