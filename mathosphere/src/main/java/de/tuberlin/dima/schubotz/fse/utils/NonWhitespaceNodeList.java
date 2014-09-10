@@ -10,11 +10,11 @@ import java.util.List;
 /**
  * from http://stackoverflow.com/questions/229310/how-to-ignore-whitespace-while-reading-a-file-to-produce-an-xml-dom
  */
-class NdLst implements NodeList, Iterable<Node> {
+class NonWhitespaceNodeList implements NodeList, Iterable<Node> {
 
 	private final List<Node> nodes;
 
-	public NdLst(NodeList list) {
+	public NonWhitespaceNodeList(NodeList list) {
 		nodes = new ArrayList<>();
 		for (int i = 0; i < list.getLength(); i++) {
 			if (!isWhitespaceNode(list.item(i))) {
@@ -35,8 +35,8 @@ class NdLst implements NodeList, Iterable<Node> {
 
 	private static boolean isWhitespaceNode(Node n) {
 		if (n.getNodeType() == Node.TEXT_NODE) {
-			String val = n.getNodeValue();
-			return val.trim().length() == 0;
+			final String val = n.getNodeValue();
+			return val.trim().isEmpty();
 		} else {
 			return false;
 		}
@@ -46,4 +46,8 @@ class NdLst implements NodeList, Iterable<Node> {
 	public Iterator<Node> iterator() {
 		return nodes.iterator();
 	}
+
+    public Node getFirstElement() {
+        return nodes.get(0);
+    }
 }
