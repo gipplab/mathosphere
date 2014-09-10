@@ -3,6 +3,7 @@ package de.tuberlin.dima.schubotz.fse.utils;
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Multiset;
 import de.tuberlin.dima.schubotz.mathmlquerygenerator.XQueryGenerator;
+import net.sf.saxon.s9api.SaxonApiException;
 import net.sf.saxon.s9api.XQueryExecutable;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -59,6 +60,8 @@ public class CMMLInfo {
 		"geq",
 		"equivalent"
 	);
+	private XQueryExecutable xQueryExecutable = null;
+	private boolean isStrict;
 
 
 	@SuppressWarnings("UnusedDeclaration")
@@ -70,12 +73,17 @@ public class CMMLInfo {
     }
 
     public CMMLInfo(String cmml) throws IOException, ParserConfigurationException {
-        cmmlDoc = XMLHelper.String2Doc(cmml, true);
-        new XmlNamespaceTranslator()
+	    cmmlDoc = XMLHelper.String2Doc(cmml, true);
+	    new XmlNamespaceTranslator()
                 .addTranslation(null, "http://www.w3.org/1998/Math/MathML")
                 .translateNamespaces(cmmlDoc);
     }
-
+	public CMMLInfo(CMMLInfo other){
+		this.cmmlDoc = (Document) other.cmmlDoc.cloneNode( true );
+	}
+	public CMMLInfo clone(){
+		return new CMMLInfo( this );
+	}
     public static CMMLInfo newFromSnippet(String snippet) throws IOException, ParserConfigurationException {
         return new CMMLInfo(MathHeader + snippet + MathFooter);
     }
@@ -83,6 +91,7 @@ public class CMMLInfo {
     public CMMLInfo toStrictCmml() {
         try {
             cmmlDoc = XMLHelper.XslTransform(cmmlDoc, "de/tuberlin/dima/schubotz/utils/RobertMinerC2s.xsl");
+	        isStrict = true;
         } catch (TransformerException | ParserConfigurationException e) {
             e.printStackTrace();
         }
@@ -164,13 +173,33 @@ public class CMMLInfo {
         }
     }
 
-    public Integer getMatchDepth(CMMLInfo other) {
-        return Integer.MAX_VALUE;
+    public Boolean isMatch(XQueryExecutable query ) {
+	    Document doc = null;
+	    try {
+		    doc = XMLHelper.runXQuery( query, toString() );
+		    final NodeList elementsB = doc.getElementsByTagName("p");
+		    if( elementsB.getLength() ==0) {
+			    return false;
+		    } else {
+			    return true;
+		    }
+	    } catch ( SaxonApiException e ) {
+		    e.printStackTrace();
+	    } catch ( ParserConfigurationException e ) {
+		    e.printStackTrace();
+	    }
+        return null;
     }
 
-    public Integer getDepth( XQueryExecutable query ) throws Exception {
-        Document doc = XMLHelper.runXQuery(query, toString());
-        final NodeList elementsB = doc.getElementsByTagName("p");
+    public Integer getDepth( XQueryExecutable query ) {
+	    Document doc = null;
+	    try {
+		    doc = XMLHelper.runXQuery( query, toString() );
+	    } catch ( Exception e ) {
+		    e.printStackTrace();
+		    return null;
+	    }
+	    final NodeList elementsB = doc.getElementsByTagName("p");
         if( elementsB.getLength() ==0) {
             return null;
         }
@@ -186,10 +215,13 @@ public class CMMLInfo {
     }
 
     public XQueryExecutable getXQuery() {
-        final String queryString = getXQueryString();
-        if ( queryString == null )
-            return null;
-        return XMLHelper.compileXQuerySting(queryString);
+	    if(xQueryExecutable == null) {
+		    final String queryString = getXQueryString();
+		    if ( queryString == null )
+			    return null;
+		    xQueryExecutable = XMLHelper.compileXQuerySting( queryString );
+	    }
+	    return xQueryExecutable;
     }
 
     public String getXQueryString() {
@@ -200,4 +232,22 @@ public class CMMLInfo {
         queryString = gen.toString();
         return queryString;
     }
+
+	public CMMLInfo toDataCmml () {
+	try {
+		cmmlDoc = XMLHelper.XslTransform(cmmlDoc, "de/tuberlin/dima/schubotz/utils/RobertMinerC2s.xsl");
+	} catch (TransformerException | ParserConfigurationException e) {
+		e.printStackTrace();
+	}
+	return this;
+	}
+
+	public Double getCoverage (Multiset queryTokens) {
+		Multiset<String> our = getElements();
+		if (our.contains( queryTokens ) ){
+			return 1.;
+		} else {
+			return 0.;
+		}
+	}
 }

@@ -22,13 +22,17 @@ public final class DatabaseTuple extends Tuple5<String, String, Integer, Short, 
         setFields(docID, latex, keywords, mml, pmml);
 	}
 
-    public Object getNamedField(fields field) {
-        return getField(field.ordinal());
-    }
-
-    private void setNamedField(fields field, String value) {
-        setField(value, field.ordinal());
-    }
+	public <T> T getNamedField(fields field) {
+		return (T) getField( field.ordinal() );
+	}
+	//TODO: Check if we really need this.
+	public Boolean getBooleanField(fields fields){
+		Short s = getNamedField( fields );
+		if(s!=0) return true; else return false;
+	}
+	public <T> void setNamedField(fields field, T value) {
+		setField(value, field.ordinal());
+	}
 
     public enum fields {
 	    pageId, formulaName, fId, isEquation,value

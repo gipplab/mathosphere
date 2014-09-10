@@ -280,7 +280,7 @@ public final class XMLHelper {
             return builder.parse(is);
         } catch (SAXException e) {
             System.out.println("cannot parse following content\\n\\n" + InputXMLString);
-            e.printStackTrace();
+            //e.printStackTrace();
             return null;
         }
 
