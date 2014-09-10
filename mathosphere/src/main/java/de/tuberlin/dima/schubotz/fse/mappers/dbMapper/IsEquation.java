@@ -1,6 +1,6 @@
 package de.tuberlin.dima.schubotz.fse.mappers.dbMapper;
 
-import de.tuberlin.dima.schubotz.fse.mappers.DataPreprocessTemplate;
+import de.tuberlin.dima.schubotz.fse.mappers.preprocess.DataPreprocessTemplate;
 import de.tuberlin.dima.schubotz.fse.types.RawDataTuple;
 import de.tuberlin.dima.schubotz.fse.utils.CMMLInfo;
 import de.tuberlin.dima.schubotz.fse.utils.SafeLogWrapper;

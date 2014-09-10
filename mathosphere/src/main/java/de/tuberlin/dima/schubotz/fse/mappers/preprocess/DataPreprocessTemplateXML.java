@@ -7,6 +7,9 @@ import org.apache.flink.api.java.functions.RichFlatMapFunction;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.IOException;
+
 
 /**
  * Created by Moritz on 06.09.2014.
@@ -22,7 +25,7 @@ public abstract class DataPreprocessTemplateXML<T> extends RichFlatMapFunction<R
 		try {
 			doc = XMLHelper.String2Doc( data,true );
 			return true;
-		} catch (final Exception e) {
+		} catch (final IOException|ParserConfigurationException e) {
 		    LOG.warn("Unable to parse XML data document(" + docID + "): ", data, e);
 			return  false;
 		}

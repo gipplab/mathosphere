@@ -1,4 +1,4 @@
-package de.tuberlin.dima.schubotz.fse.mappers;
+package de.tuberlin.dima.schubotz.fse.mappers.preprocess;
 
 import de.tuberlin.dima.schubotz.fse.mappers.preprocess.DataPreprocess;
 import de.tuberlin.dima.schubotz.fse.utils.SafeLogWrapper;
