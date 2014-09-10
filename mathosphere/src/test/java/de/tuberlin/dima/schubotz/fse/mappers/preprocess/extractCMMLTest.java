@@ -25,9 +25,9 @@ public class extractCMMLTest {
     public void testGetElement() throws Exception {
         final extractCMML extractCMML = new de.tuberlin.dima.schubotz.fse.mappers.preprocess.extractCMML();
 
-        Collector<Tuple3<String,String,String>> out = new Collector<Tuple3<String,String,String>>() {
+        Collector<Tuple3<Integer,String,String>> out = new Collector<Tuple3<Integer,String,String>>() {
             @Override
-            public void collect(Tuple3<String,String,String> record) {
+            public void collect(Tuple3<Integer,String,String> record) {
                 //System.out.println(record.getField(0)+","+record.getField(1)+","+record.getField(2));
                 try {
                     // Fail if XQuery string can not be generated
