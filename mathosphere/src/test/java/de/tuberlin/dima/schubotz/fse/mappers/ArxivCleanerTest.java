@@ -2,6 +2,7 @@ package de.tuberlin.dima.schubotz.fse.mappers;
 
 import de.tuberlin.dima.schubotz.fse.mappers.cleaners.ArxivCleaner;
 import de.tuberlin.dima.schubotz.fse.types.RawDataTuple;
+import de.tuberlin.dima.schubotz.utils.GenericCollector;
 import org.apache.flink.util.Collector;
 import org.junit.Test;
 
@@ -9,28 +10,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Created by Jimmy on 9/3/2014.
  */
 public class ArxivCleanerTest {
-    public static class DummyCollector implements Collector<RawDataTuple> {
-        private final ArrayList<String> data = new ArrayList<>();
-
-        public List<String> getData() {
-            return new ArrayList<>(data);
-        }
-
-        @Override
-        public void collect(RawDataTuple record) {
-            data.add(record.getNamedField(RawDataTuple.fields.ID));
-        }
-
-        @Override
-        public void close() {
-
-        }
-    }
     @Test
     public void testFilenames() {
         final List<String> testFiletags = new ArrayList<>();
@@ -43,15 +28,22 @@ public class ArxivCleanerTest {
         expectedFilenames.add("1006.1022_1_11");
         expectedFilenames.add("gr-qc9710100_1_6");
 
-        final DummyCollector dummyCollector = new DummyCollector();
+        final GenericCollector<RawDataTuple> dummyCollector = new GenericCollector<>();
         final ArxivCleaner ac = new ArxivCleaner();
 
         for (final String test : testFiletags) {
             ac.flatMap(test, dummyCollector);
         }
-        final List<String> retrievedFilenames = dummyCollector.getData();
-
+        final List<String> retrievedFilenames = new ArrayList<>();
+        for (final RawDataTuple tuple : dummyCollector.getDatalist()) {
+            retrievedFilenames.add(tuple.toString());
+        }
         assertArrayEquals(expectedFilenames.toArray(), retrievedFilenames.toArray());
 
     }
+    @Test
+    public void getDelimiterTest(){
+		final ArxivCleaner arxivCleaner = new ArxivCleaner();
+		assertEquals( "</ARXIVFILESPLIT>",arxivCleaner.getDelimiter() );
+	}
 }

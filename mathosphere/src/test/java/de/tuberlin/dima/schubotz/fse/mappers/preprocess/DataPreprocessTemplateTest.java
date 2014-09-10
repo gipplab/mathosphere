@@ -1,6 +1,5 @@
 package de.tuberlin.dima.schubotz.fse.mappers.preprocess;
 
-import de.tuberlin.dima.schubotz.fse.mappers.DataPreprocessTemplate;
 import de.tuberlin.dima.schubotz.fse.types.DataTuple;
 import de.tuberlin.dima.schubotz.utils.TestUtils;
 import junit.framework.TestCase;
