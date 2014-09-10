@@ -53,7 +53,7 @@
         <module name="mathosphere-core" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
+    <bytecodeTargetLevel target="1.7">
       <module name="flink-addons" target="1.6" />
       <module name="flink-avro" target="1.6" />
       <module name="flink-clients" target="1.6" />
@@ -79,10 +79,7 @@
       <module name="flink-streaming-parent" target="1.6" />
       <module name="flink-test-utils" target="1.6" />
       <module name="flink-tests" target="1.6" />
-      <module name="math-tests" target="1.7" />
-      <module name="math-tests (1)" target="1.7" />
       <module name="mathml-canonicalizer" target="1.6" />
-      <module name="MathMLQueryGenerator" target="1.7" />
       <module name="mathmlquerygenerator" target="1.7" />
       <module name="mathosphere-core" target="1.7" />
     </bytecodeTargetLevel>
