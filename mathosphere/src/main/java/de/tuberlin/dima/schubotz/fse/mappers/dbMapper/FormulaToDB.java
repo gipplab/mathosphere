@@ -6,6 +6,7 @@ import org.apache.flink.api.java.tuple.Tuple3;
 import org.apache.flink.util.Collector;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Entities;
+import org.jsoup.select.Elements;
 
 public class FormulaToDB extends DataPreprocessTemplate<RawDataTuple,Tuple3<String,String,String>> {
 
@@ -19,7 +20,8 @@ public class FormulaToDB extends DataPreprocessTemplate<RawDataTuple,Tuple3<Stri
 				String id = mathElement.attr( "id" );
                 doc.outputSettings().escapeMode(Entities.EscapeMode.xhtml);
                 doc.outputSettings().prettyPrint(false);
-				out.collect( new Tuple3<>( docID,id, mathElement.toString() ) );
+                final Elements removed = mathElement.select("annotation, m|annotation").remove();
+                out.collect( new Tuple3<>( docID,id, removed.toString() ) );
 			}
 		}
 	}
