@@ -1,14 +1,11 @@
 package de.tuberlin.dima.schubotz.fse.mappers.dbMapper;
 
-import de.tuberlin.dima.schubotz.fse.mappers.DataPreprocessTemplate;
+import de.tuberlin.dima.schubotz.fse.mappers.preprocess.DataPreprocessTemplate;
 import de.tuberlin.dima.schubotz.fse.types.DatabaseTuple;
 import de.tuberlin.dima.schubotz.fse.utils.CMMLInfo;
 import de.tuberlin.dima.schubotz.fse.utils.SafeLogWrapper;
 import org.apache.flink.api.java.tuple.Tuple3;
 import org.apache.flink.util.Collector;
-
-import javax.xml.parsers.ParserConfigurationException;
-import java.io.IOException;
 
 public class ToStrict extends DataPreprocessTemplate<DatabaseTuple, Tuple3<Integer,String,String>> {
     private static final SafeLogWrapper LOG = new SafeLogWrapper(ToStrict.class);
@@ -23,10 +20,6 @@ public class ToStrict extends DataPreprocessTemplate<DatabaseTuple, Tuple3<Integ
                         (Integer) in.getNamedField(DatabaseTuple.fields.fId),
                         cmml.toStrictCmml().toString(),
                         "" ));
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (ParserConfigurationException e) {
-                e.printStackTrace();
             } catch (Exception e){
                 e.printStackTrace();
             }
