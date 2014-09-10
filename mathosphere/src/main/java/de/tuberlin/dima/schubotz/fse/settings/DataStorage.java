@@ -19,16 +19,18 @@ public class DataStorage implements Serializable {
     private DataSet<ResultTuple> resultSet;
     private HashMultiset<String> keywordSet;
     private HashMultiset<String> latexSet;
-    private DataSet<Tuple3<String, String, String>> cQuerySet;
+	//TODO: Assign names to those datasets
+    private DataSet<Tuple3<Integer, String, String>> cQuerySet;
+	private DataSet<Tuple3<Integer,String,Integer>> votes;
     private DataSet<DataTuple> dataTupleSet;
     private DataSet<DatabaseTuple> databaseTupleDataSet;
     private DataSet<DataTuple> queryTupleSet;
 
-    public DataSet<Tuple3<String, String, String>> getcQuerySet() {
+    public DataSet<Tuple3<Integer, String, String>> getcQuerySet() {
         return cQuerySet;
     }
 
-    public void setcQuerySet(DataSet<Tuple3<String, String, String>> cQuerySet) {
+    public void setcQuerySet(DataSet<Tuple3<Integer, String, String>> cQuerySet) {
         this.cQuerySet = cQuerySet;
     }
 
@@ -96,4 +98,11 @@ public class DataStorage implements Serializable {
         this.keywordSet = HashMultiset.create(keywordSet);
     }
 
+	public DataSet<Tuple3<Integer, String, Integer>> getVotes () {
+		return votes;
+	}
+
+	public void setVotes (DataSet<Tuple3<Integer, String, Integer>> votes) {
+		this.votes = votes;
+	}
 }

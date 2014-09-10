@@ -20,7 +20,7 @@ public class ArxivCleaner extends Cleaner {
 	private static final Pattern FILENAME_PATTERN = Pattern
 	         .compile("<ARXIVFILESPLIT.*?Filename=\"\\./\\d+/(.*?)/\\1_(\\d+)_(\\d+)\\.xhtml\">");
 
-    private static final String DELIM = "</ARXIVFILESPLIT>";
+    public static final String DELIM = "</ARXIVFILESPLIT>";
 
     @Override
     public String getDelimiter() {
@@ -34,21 +34,41 @@ public class ArxivCleaner extends Cleaner {
             return;
         }
 
-        final Matcher matcher = FILENAME_PATTERN.matcher(doc);
-        String docID = "this_was_null";
-        if (matcher.find()) {
-            docID = matcher.group(1) + '_' + matcher.group(2) + '_' + matcher.group(3);
-        } else {
-            LOG.warn("Null docID, assigning this_was_null: ", doc);
-        }
-        //Strip Arxiv line
-        try {
-            doc = doc.substring(doc.indexOf("<?xml"));
-        } catch (final StringIndexOutOfBoundsException e) {
-            LOG.warn("Badly formatted xml title, exiting: ", doc);
-        }
-        doc = HtmlUtils.htmlUnescape(doc);
-        out.collect(new RawDataTuple(docID, doc));
+	    String docID = null;
+	    try {
+		    docID = getDocId( doc );
+	    } catch ( Exception e ) {
+		    docID = "this_was_null";
+		    LOG.warn( "Null docID, assigning this_was_null: ", doc,e );
+	    }
+	    //Strip Arxiv line
+	    try {
+		    doc = getDocString( doc );
+		    doc = HtmlUtils.htmlUnescape(doc);
+		    out.collect(new RawDataTuple(docID, doc));
+	    } catch ( Exception e ) {
+		    LOG.warn( "Badly formatted xml title, exiting: ", doc, e );
+	    }
+
     }
+
+	public static String getDocString (String doc) throws Exception {
+	    doc = doc.substring(doc.indexOf("<?xml")).trim();
+		if(! doc.endsWith( "</html>" )){
+			throw new Exception( "Missing </html> at doc footer "  );
+		}
+
+		return doc;
+	}
+
+	public static String getDocId (String doc) throws Exception {
+		final Matcher matcher = FILENAME_PATTERN.matcher(doc);
+
+		if (matcher.find()) {
+		    return matcher.group(1) + '_' + matcher.group(2) + '_' + matcher.group(3);
+		} else {
+			throw new Exception( "NullDoc" );
+		}
+	}
 
 }
