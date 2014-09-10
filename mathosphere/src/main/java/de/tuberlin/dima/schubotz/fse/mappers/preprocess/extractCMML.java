@@ -8,16 +8,16 @@ import org.apache.flink.util.Collector;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-public class extractCMML extends DataPreprocessTemplate<RawDataTuple,Tuple3<String,String,String>>{
+public class extractCMML extends DataPreprocessTemplate<RawDataTuple,Tuple3<Integer,String,String>>{
 
-    private String qID;
+    private Integer qID;
 
     /**
      * @param in RawDataTuple
      * @param out DataTuple of document
      */
-	public void flatMap(RawDataTuple in, Collector<Tuple3<String,String,String>> out) {
-        qID = in.getField(0);
+	public void flatMap(RawDataTuple in, Collector<Tuple3<Integer,String,String>> out) {
+        qID = Integer.parseInt( in.getField(0).toString().replace( "NTCIR11-Math-","" ));
         data = in.getField(1);
         if ( ! setDoc() ) return;
         mathElements = doc.select("formula, m|formula");
@@ -26,7 +26,7 @@ public class extractCMML extends DataPreprocessTemplate<RawDataTuple,Tuple3<Stri
             return ;
         }
         for (Element mathElement : mathElements) {
-            Tuple3<String, String, String> annotationXML = getElement(mathElement);
+            Tuple3<Integer, String, String> annotationXML = getElement(mathElement);
             if (annotationXML != null ){
                 out.collect( annotationXML );
             }
@@ -34,7 +34,7 @@ public class extractCMML extends DataPreprocessTemplate<RawDataTuple,Tuple3<Stri
 
         }
 
-    public Tuple3<String,String,String> getElement( Element mathElement) {
+    public Tuple3<Integer,String,String> getElement( Element mathElement) {
         String id = mathElement.attr("id");
         final Elements annotationXMLElements = mathElement.select("annotation-xml, m|annotation-xml");
 
@@ -53,7 +53,7 @@ public class extractCMML extends DataPreprocessTemplate<RawDataTuple,Tuple3<Stri
         }
         final Elements mathRoots = mathElement.select("math, m|math");
         for (Element root : mathRoots) {
-            root.attr(ExtractHelper.NAMESPACE_NAME, ExtractHelper.NAMESPACE);
+            root.attr("xmlns", ExtractHelper.NAMESPACE);
             root.select("annotation, m|annotation").remove();
             return new Tuple3<>(qID,id,root.toString().replaceAll("<m:","<").replaceAll("</m:","</"));
         }

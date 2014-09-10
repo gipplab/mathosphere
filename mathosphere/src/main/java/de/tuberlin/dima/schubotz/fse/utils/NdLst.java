@@ -46,4 +46,8 @@ class NdLst implements NodeList, Iterable<Node> {
 	public Iterator<Node> iterator() {
 		return nodes.iterator();
 	}
+
+    public Node getFirstElement() {
+        return nodes.get(0);
+    }
 }
