@@ -280,7 +280,7 @@ public final class XMLHelper {
             return builder.parse(is);
         } catch (SAXException e) {
             System.out.println("cannot parse following content\\n\\n" + InputXMLString);
-            e.printStackTrace();
+            //e.printStackTrace();
             return null;
         }
 
@@ -486,8 +486,6 @@ public final class XMLHelper {
     }
 
 
-
-
     /**
      * The Class Mynode.
      */
@@ -547,6 +545,21 @@ public final class XMLHelper {
             }
         }
 
+        public NdLst() {
+            nodes = new ArrayList<>();
+        }
+        public NdLst filter(String name){
+            NdLst out = new NdLst();
+            for (Node node : this) {
+                if (node.getLocalName().matches(name)){
+                    out.nodes.add(node);
+                }
+            }
+            return out;
+        }
+        public Node getFirstChild(String name){
+            return filter(name).item(0);
+        }
         /**
          * Checks if is whitespace node.
          *

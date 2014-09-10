@@ -6,18 +6,15 @@ import org.apache.flink.api.java.io.jdbc.JDBCInputFormat;
 import org.apache.flink.api.java.io.jdbc.JDBCOutputFormat;
 import org.apache.flink.api.java.tuple.Tuple5;
 import org.apache.flink.api.java.typeutils.TupleTypeInfo;
-import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
 
-import static de.tuberlin.dima.schubotz.utils.TestUtils.getFileContents;
 import static org.apache.flink.api.java.typeutils.BasicTypeInfo.*;
 import static org.junit.Assert.assertEquals;
 
@@ -28,25 +25,17 @@ import static org.junit.Assert.assertEquals;
 public class JDBCTest {
 	private final static String DBURL="jdbc:mysql://localhost:3306/test";
 	public static final String DRIVERNAME = "org.mariadb.jdbc.Driver";
-	public static final String USER = "test";
+	public static final String USER = "mathosphere";
 	public static String PASSWORD ;
 
 
     @Before
     public void beforeMethod() {
-        if (this.getClass().getClassLoader().getResource( "testpassword") == null){
-            Assume.assumeTrue( false );
-        }
-        try {
-            PASSWORD = getFileContents( "testpassword" );
-        } catch ( IOException e ) {
-            e.printStackTrace();
-
-        }
+	    PASSWORD = TestUtils.setTestPassword();
     }
 
 
-@Test
+	@Test
 	public void testMaria() throws Exception{
 		Connection  connection = DriverManager.getConnection(DBURL, USER, PASSWORD );
 		Statement stmt = connection.createStatement();
