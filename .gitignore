@@ -11,3 +11,4 @@ src/test/resources/WikiData/augmentedWikiDump.xml
 mathosphere/src/test/resources/testpassword
 .idea/dataSources.ids
 .idea/dataSources.xml
+mathosphere/src/test/resources/de/tuberlin/dima/schubotz/gold.xml

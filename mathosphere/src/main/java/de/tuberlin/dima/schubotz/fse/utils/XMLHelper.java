@@ -119,16 +119,16 @@ public final class XMLHelper {
             if (n.out.equals("mws:qvar")) {
                 String qname = n.node.getAttributes().getNamedItem("name").toString();
                 if (n.qVar == null) {
-                    n.out = "MYQVARNEW";
+                    n.out = "\\qvar{x_0}";
                     n.qVar = new HashMap<>();
-                    n.qVar.put(qname, 1);
+                    n.qVar.put(qname, 0);
                 } else {
                     Integer qInt = n.qVar.get(qname);
                     if (qInt == null) {
-                        n.out = "MYQVARNEW";
+                        n.out = "\\qvar{x_"+ (n.qVar.size() ) +"}";
                         n.qVar.put(qname, n.qVar.size());
                     } else {
-                        n.out = "MYQVAR" + qInt + "OLD";
+                        n.out = "\\qqvar{x_"+ qInt +"}";
                     }
                 }
             }
@@ -280,7 +280,7 @@ public final class XMLHelper {
             return builder.parse(is);
         } catch (SAXException e) {
             System.out.println("cannot parse following content\\n\\n" + InputXMLString);
-            e.printStackTrace();
+            //e.printStackTrace();
             return null;
         }
 
@@ -486,8 +486,6 @@ public final class XMLHelper {
     }
 
 
-
-
     /**
      * The Class Mynode.
      */
@@ -517,73 +515,6 @@ public final class XMLHelper {
         public Mynode(Node node, Map<String, Integer> qVar) {
             this.node = node;
             this.qVar = qVar;
-        }
-    }
-
-    /**
-     * Compil
-     * /**
-     * The Class NdLst.
-     */
-    @SuppressWarnings("UnusedDeclaration")
-    public static class NdLst implements NodeList, Iterable<Node> {
-
-        /**
-         * The nodes.
-         */
-        private List<Node> nodes;
-
-        /**
-         * Instantiates a new nd lst.
-         *
-         * @param list the list
-         */
-        public NdLst(NodeList list) {
-            nodes = new ArrayList<>();
-            for (int i = 0; i < list.getLength(); i++) {
-                if (!isWhitespaceNode(list.item(i))) {
-                    nodes.add(list.item(i));
-                }
-            }
-        }
-
-        /**
-         * Checks if is whitespace node.
-         *
-         * @param n the n
-         * @return true, if is whitespace node
-         */
-        private static boolean isWhitespaceNode(Node n) {
-            if (n.getNodeType() == Node.TEXT_NODE) {
-                String val = n.getNodeValue();
-                return val.trim().length() == 0;
-            } else {
-                return false;
-            }
-        }
-
-        /* (non-Javadoc)
-         * @see org.w3c.dom.NodeList#item(int)
-         */
-        @Override
-        public Node item(int index) {
-            return nodes.get(index);
-        }
-
-        /* (non-Javadoc)
-         * @see org.w3c.dom.NodeList#getLength()
-         */
-        @Override
-        public int getLength() {
-            return nodes.size();
-        }
-
-        /* (non-Javadoc)
-         * @see java.lang.Iterable#iterator()
-         */
-        @Override
-        public Iterator<Node> iterator() {
-            return nodes.iterator();
         }
     }
     public static Map<String,Transformer> transformerCache = new HashMap<>();
