@@ -20,7 +20,7 @@ public class ArxivCleaner extends Cleaner {
 	private static final Pattern FILENAME_PATTERN = Pattern
 	         .compile("<ARXIVFILESPLIT.*?Filename=\"\\./\\d+/(.*?)/\\1_(\\d+)_(\\d+)\\.xhtml\">");
 
-    private static final String DELIM = "</ARXIVFILESPLIT>";
+    public static final String DELIM = "</ARXIVFILESPLIT>";
 
     @Override
     public String getDelimiter() {
@@ -34,21 +34,26 @@ public class ArxivCleaner extends Cleaner {
             return;
         }
 
-        final Matcher matcher = FILENAME_PATTERN.matcher(doc);
-        String docID = "this_was_null";
-        if (matcher.find()) {
-            docID = matcher.group(1) + '_' + matcher.group(2) + '_' + matcher.group(3);
-        } else {
-            LOG.warn("Null docID, assigning this_was_null: ", doc);
-        }
-        //Strip Arxiv line
+	    String docID = "";
+	    final Matcher matcher = FILENAME_PATTERN.matcher(doc);
+		if (matcher.find()) {
+		    docID = matcher.group(1) + '_' + matcher.group(2) + '_' + matcher.group(3);
+		} else {
+		    docID = "this_was_null";
+		    LOG.warn( "Null docID, assigning this_was_null: ", doc);
+	    }
+	    //Strip Arxiv line
         try {
-            doc = doc.substring(doc.indexOf("<?xml"));
+            doc = doc.substring(doc.indexOf("<?xml")).trim();
         } catch (final StringIndexOutOfBoundsException e) {
             LOG.warn("Badly formatted xml title, exiting: ", doc);
+            return;
         }
-        doc = HtmlUtils.htmlUnescape(doc);
-        out.collect(new RawDataTuple(docID, doc));
+        if (doc.endsWith("</html>")) {
+            doc = HtmlUtils.htmlUnescape(doc);
+            out.collect(new RawDataTuple(docID, doc));
+        } else {
+            LOG.warn("Badly formatted doc footer, exiting: ", doc);
+        }
     }
-
 }

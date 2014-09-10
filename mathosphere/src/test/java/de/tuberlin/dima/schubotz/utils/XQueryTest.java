@@ -3,6 +3,7 @@ package de.tuberlin.dima.schubotz.utils;
 import junit.framework.TestCase;
 import net.sf.saxon.Configuration;
 import net.sf.saxon.s9api.*;
+import org.junit.Test;
 import org.xml.sax.InputSource;
 
 import javax.xml.transform.Source;
@@ -16,7 +17,8 @@ import java.io.StringReader;
  * Created by mas9 on 8/29/14.
  * from http://stackoverflow.com/questions/15233826/how-do-i-run-an-xquery-against-xml-in-a-string
  */
-public class XQueryTest extends TestCase {
+public class XQueryTest {
+    @Test
     public void testMain() {
         try {
             final String tableXml =  TestUtils.getFileContents("de/tuberlin/dima/schubotz/utils/q1.xml");
@@ -38,7 +40,7 @@ public class XQueryTest extends TestCase {
             // Avert your eyes!
             xqueryEval.setURIResolver(new URIResolver() {
                 @Override
-                public Source resolve(String href, String base) throws TransformerException {
+                public Source resolve(String href, String base) {
                     return new StreamSource(new StringReader(tableXml));
                 }
             });

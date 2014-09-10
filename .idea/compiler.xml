@@ -53,36 +53,33 @@
         <module name="mathosphere-core" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="flink-addons" target="1.6" />
-      <module name="flink-avro" target="1.6" />
-      <module name="flink-clients" target="1.6" />
-      <module name="flink-compiler" target="1.6" />
-      <module name="flink-core" target="1.6" />
-      <module name="flink-dist" target="1.6" />
-      <module name="flink-examples" target="1.6" />
-      <module name="flink-hadoop-compatibility" target="1.6" />
-      <module name="flink-java" target="1.6" />
-      <module name="flink-java-examples" target="1.6" />
-      <module name="flink-jdbc" target="1.6" />
-      <module name="flink-parent" target="1.6" />
-      <module name="flink-quickstart" target="1.6" />
-      <module name="flink-quickstart-java" target="1.6" />
-      <module name="flink-quickstart-scala" target="1.6" />
-      <module name="flink-runtime" target="1.6" />
-      <module name="flink-scala" target="1.6" />
-      <module name="flink-scala-examples" target="1.6" />
-      <module name="flink-spargel" target="1.6" />
-      <module name="flink-streaming-connectors" target="1.6" />
-      <module name="flink-streaming-core" target="1.6" />
-      <module name="flink-streaming-examples" target="1.6" />
-      <module name="flink-streaming-parent" target="1.6" />
-      <module name="flink-test-utils" target="1.6" />
-      <module name="flink-tests" target="1.6" />
-      <module name="math-tests" target="1.7" />
-      <module name="math-tests (1)" target="1.7" />
-      <module name="mathml-canonicalizer" target="1.6" />
-      <module name="MathMLQueryGenerator" target="1.7" />
+    <bytecodeTargetLevel target="1.7">
+      <module name="flink-addons" target="1.7" />
+      <module name="flink-avro" target="1.7" />
+      <module name="flink-clients" target="1.7" />
+      <module name="flink-compiler" target="1.7" />
+      <module name="flink-core" target="1.7" />
+      <module name="flink-dist" target="1.7" />
+      <module name="flink-examples" target="1.7" />
+      <module name="flink-hadoop-compatibility" target="1.7" />
+      <module name="flink-java" target="1.7" />
+      <module name="flink-java-examples" target="1.7" />
+      <module name="flink-jdbc" target="1.7" />
+      <module name="flink-parent" target="1.7" />
+      <module name="flink-quickstart" target="1.7" />
+      <module name="flink-quickstart-java" target="1.7" />
+      <module name="flink-quickstart-scala" target="1.7" />
+      <module name="flink-runtime" target="1.7" />
+      <module name="flink-scala" target="1.7" />
+      <module name="flink-scala-examples" target="1.7" />
+      <module name="flink-spargel" target="1.7" />
+      <module name="flink-streaming-connectors" target="1.7" />
+      <module name="flink-streaming-core" target="1.7" />
+      <module name="flink-streaming-examples" target="1.7" />
+      <module name="flink-streaming-parent" target="1.7" />
+      <module name="flink-test-utils" target="1.7" />
+      <module name="flink-tests" target="1.7" />
+      <module name="mathml-canonicalizer" target="1.7" />
       <module name="mathmlquerygenerator" target="1.7" />
       <module name="mathosphere-core" target="1.7" />
     </bytecodeTargetLevel>
