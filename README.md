@@ -7,7 +7,12 @@ mvn install
 ```
 [![Build Status](https://drone.io/github.com/TU-Berlin/mathosphere2/status.png)](https://drone.io/github.com/TU-Berlin/mathosphere2/latest)
 ## Run instructions
+If accessing a remote database, link with the following command before executing:
+```
+ssh -L [localport]:localhost:[serverport] [server]
+```
 
+Running the program:
 ```
 stratosphere run -j math-tests.jar -a "[algorithm module name] [input module name] [ARGUMENTS]"
 

@@ -149,4 +149,32 @@ public class CMMLInfoTest extends TestCase {
         CMMLInfo cmmlElement = new CMMLInfo(sampleMML);
         assertTrue(cmmlElement.isEquation());
     }
+
+    public void test2CMML2() throws Exception{
+        final String sampleMML = TestUtils.getFileContents("de/tuberlin/dima/schubotz/fse/mappers/testquery1.xml");
+        CMMLInfo cmml = new CMMLInfo( sampleMML );
+        XQueryExecutable standardQuery = cmml.getXQuery();
+
+            CMMLInfo strict = new CMMLInfo(sampleMML).toStrictCmml();
+            XQueryExecutable CDQuery = strict.getXQuery();
+            CMMLInfo cmmlElement = new CMMLInfo(sampleMML);
+            System.out.println(cmmlElement.toStrictCmml().getXQuery());
+
+    }
+    public void testStrictQueryTest() throws Exception{
+        final String sampleMML = TestUtils.getFileContents("de/tuberlin/dima/schubotz/utils/query1.xml");
+        CMMLInfo mml = new CMMLInfo(sampleMML);
+        System.out.println( XMLHelper.CompactForm( mml.toStrictCmml().abstract2CDs()) );
+
+    }
+    public void testDtQueryTest() throws Exception{
+        final String sampleMML = TestUtils.getFileContents("de/tuberlin/dima/schubotz/utils/query1.xml");
+        CMMLInfo mml = new CMMLInfo(sampleMML);
+        System.out.println(XMLHelper.CompactForm(mml.toStrictCmml().abstract2DTs()));
+        System.out.println(mml.getXQueryString());
+
+
+    }
+
+
 }
