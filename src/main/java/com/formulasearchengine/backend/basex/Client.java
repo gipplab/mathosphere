@@ -49,8 +49,8 @@ public class Client {
 			measurement = System.nanoTime() - measurement;
 			currentResult.setTime( measurement );
 			while (rs.next()) {
-				rank++;
 				currentResult.addHit( rs.getItemAsString( null ) , "" , score.toString(), rank.toString()  );
+				rank++;
 			}
 
 			conn.close();

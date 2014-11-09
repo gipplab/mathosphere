@@ -4047,5 +4047,94 @@ _{{j=0}}^{{i}}K_{j}}\over{\displaystyle\sum_{{i=0}}^{n}{\Big[}[H^{+}]^{{n-i}}%
   </semantics>
 </math>
 </mws:expr>
+<mws:expr url="dummy22"><math xmlns="http://www.w3.org/1998/Math/MathML" id="math.4416.4" class="ltx_Math" alttext="{\displaystyle{\text{Ker}}(k_{*}-l_{*})\cong{\text{Im}}(i_{*},j_{*}).}"  xml:id="math.4416.4.1" xref="math.4416.4.1.cmml">
+    <semantics xml:id="math.4416.4.1a" xref="math.4416.4.1.cmml">
+        <mrow xml:id="math.4416.4.1.19" xref="math.4416.4.1.19.cmml">
+            <mrow xml:id="math.4416.4.1.19a" xref="math.4416.4.1.19.cmml">
+                <mrow xml:id="math.4416.4.1.19.1" xref="math.4416.4.1.19.1.cmml">
+                    <mtext xml:id="math.4416.4.1.1" xref="math.4416.4.1.1.cmml">Ker</mtext>
+                    <mo xml:id="math.4416.4.1.19.1.1" xref="math.4416.4.1.19.1.1.cmml">⁢</mo>
+                    <mrow xml:id="math.4416.4.1.19.1.2" xref="math.4416.4.1.19.1.2.cmml">
+                        <mo xml:id="math.4416.4.1.19.1.2a" xref="math.4416.4.1.19.1.2.cmml">(</mo>
+                        <mrow xml:id="math.4416.4.1.19.1.2b" xref="math.4416.4.1.19.1.2.cmml">
+                            <msub xml:id="math.4416.4.1.19.1.2.1" xref="math.4416.4.1.19.1.2.1.cmml">
+                                <mi xml:id="math.4416.4.1.3" xref="math.4416.4.1.3.cmml">k</mi>
+                                <mo xml:id="math.4416.4.1.4.1" xref="math.4416.4.1.4.1.cmml">*</mo>
+                            </msub>
+                            <mo xml:id="math.4416.4.1.5" xref="math.4416.4.1.5.cmml">-</mo>
+                            <msub xml:id="math.4416.4.1.19.1.2.2" xref="math.4416.4.1.19.1.2.2.cmml">
+                                <mi xml:id="math.4416.4.1.6" xref="math.4416.4.1.6.cmml">l</mi>
+                                <mo xml:id="math.4416.4.1.7.1" xref="math.4416.4.1.7.1.cmml">*</mo>
+                            </msub>
+                        </mrow>
+                        <mo xml:id="math.4416.4.1.19.1.2c" xref="math.4416.4.1.19.1.2.cmml">)</mo>
+                    </mrow>
+                </mrow>
+                <mo xml:id="math.4416.4.1.9" xref="math.4416.4.1.9.cmml">≅</mo>
+                <mrow xml:id="math.4416.4.1.19.2" xref="math.4416.4.1.19.2.cmml">
+                    <mtext xml:id="math.4416.4.1.10" xref="math.4416.4.1.10.cmml">Im</mtext>
+                    <mo xml:id="math.4416.4.1.19.2.1" xref="math.4416.4.1.19.2.1.cmml">⁢</mo>
+                    <mrow xml:id="math.4416.4.1.19.2.2" xref="math.4416.4.1.19.2.2.cmml">
+                        <mo xml:id="math.4416.4.1.19.2.2a" xref="math.4416.4.1.19.2.2.cmml">(</mo>
+                        <mrow xml:id="math.4416.4.1.19.2.2b" xref="math.4416.4.1.19.2.2.cmml">
+                            <msub xml:id="math.4416.4.1.19.2.2.2" xref="math.4416.4.1.19.2.2.2.cmml">
+                                <mi xml:id="math.4416.4.1.12" xref="math.4416.4.1.12.cmml">i</mi>
+                                <mo xml:id="math.4416.4.1.13.1" xref="math.4416.4.1.13.1.cmml">*</mo>
+                            </msub>
+                            <mo xml:id="math.4416.4.1.19.2.2c" xref="math.4416.4.1.19.2.2.cmml">,</mo>
+                            <msub xml:id="math.4416.4.1.19.2.2.3" xref="math.4416.4.1.19.2.2.3.cmml">
+                                <mi xml:id="math.4416.4.1.15" xref="math.4416.4.1.15.cmml">j</mi>
+                                <mo xml:id="math.4416.4.1.16.1" xref="math.4416.4.1.16.1.cmml">*</mo>
+                            </msub>
+                        </mrow>
+                        <mo xml:id="math.4416.4.1.19.2.2d" xref="math.4416.4.1.19.2.2.cmml">)</mo>
+                    </mrow>
+                </mrow>
+            </mrow>
+            <mo xml:id="math.4416.4.1.19b" xref="math.4416.4.1.19.cmml">.</mo>
+        </mrow>
+        <annotation-xml encoding="MathML-Content" xml:id="math.4416.4.1.cmml" xref="math.4416.4.1">
+            <apply xml:id="math.4416.4.1.19.cmml" xref="math.4416.4.1.19">
+                <approx xml:id="math.4416.4.1.9.cmml" xref="math.4416.4.1.9"/>
+                <apply xml:id="math.4416.4.1.19.1.cmml" xref="math.4416.4.1.19.1">
+                    <times xml:id="math.4416.4.1.19.1.1.cmml" xref="math.4416.4.1.19.1.1"/>
+                    <mtext xml:id="math.4416.4.1.1.cmml" xref="math.4416.4.1.1">Ker</mtext>
+                    <apply xml:id="math.4416.4.1.19.1.2.cmml" xref="math.4416.4.1.19.1.2">
+                        <minus xml:id="math.4416.4.1.5.cmml" xref="math.4416.4.1.5"/>
+                        <apply xml:id="math.4416.4.1.19.1.2.1.cmml" xref="math.4416.4.1.19.1.2.1">
+                            <csymbol cd="ambiguous" xml:id="math.4416.4.1.19.1.2.1.1.cmml">subscript</csymbol>
+                            <ci xml:id="math.4416.4.1.3.cmml" xref="math.4416.4.1.3">k</ci>
+                            <times xml:id="math.4416.4.1.4.1.cmml" xref="math.4416.4.1.4.1"/>
+                        </apply>
+                        <apply xml:id="math.4416.4.1.19.1.2.2.cmml" xref="math.4416.4.1.19.1.2.2">
+                            <csymbol cd="ambiguous" xml:id="math.4416.4.1.19.1.2.2.1.cmml">subscript</csymbol>
+                            <ci xml:id="math.4416.4.1.6.cmml" xref="math.4416.4.1.6">l</ci>
+                            <times xml:id="math.4416.4.1.7.1.cmml" xref="math.4416.4.1.7.1"/>
+                        </apply>
+                    </apply>
+                </apply>
+                <apply xml:id="math.4416.4.1.19.2.cmml" xref="math.4416.4.1.19.2">
+                    <times xml:id="math.4416.4.1.19.2.1.cmml" xref="math.4416.4.1.19.2.1"/>
+                    <mtext xml:id="math.4416.4.1.10.cmml" xref="math.4416.4.1.10">Im</mtext>
+                    <apply xml:id="math.4416.4.1.19.2.2.cmml" xref="math.4416.4.1.19.2.2">
+                        <interval closure="open" xml:id="math.4416.4.1.19.2.2.1.cmml"/>
+                        <apply xml:id="math.4416.4.1.19.2.2.2.cmml" xref="math.4416.4.1.19.2.2.2">
+                            <csymbol cd="ambiguous" xml:id="math.4416.4.1.19.2.2.2.1.cmml">subscript</csymbol>
+                            <ci xml:id="math.4416.4.1.12.cmml" xref="math.4416.4.1.12">i</ci>
+                            <times xml:id="math.4416.4.1.13.1.cmml" xref="math.4416.4.1.13.1"/>
+                        </apply>
+                        <apply xml:id="math.4416.4.1.19.2.2.3.cmml" xref="math.4416.4.1.19.2.2.3">
+                            <csymbol cd="ambiguous" xml:id="math.4416.4.1.19.2.2.3.1.cmml">subscript</csymbol>
+                            <ci xml:id="math.4416.4.1.15.cmml" xref="math.4416.4.1.15">j</ci>
+                            <times xml:id="math.4416.4.1.16.1.cmml" xref="math.4416.4.1.16.1"/>
+                        </apply>
+                    </apply>
+                </apply>
+            </apply>
+        </annotation-xml>
+        <annotation encoding="application/x-tex" xml:id="math.4416.4.1b" xref="math.4416.4.1.cmml">{\displaystyle{\text{Ker}}(k_{*}-l_{*})\cong{\text{Im}}(i_{*},j_{*}).}</annotation>
+    </semantics>
+</math>
+</mws:expr>
 
 </mws:harvest>

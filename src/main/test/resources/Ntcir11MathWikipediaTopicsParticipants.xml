@@ -1124,7 +1124,7 @@ _{1}}}\lambda_{{\alpha_{1}}}^{{[1]}}\Gamma_{{\alpha_{\qvar{x2}}
               </m:apply>
               <m:apply xml:id="m43.1.19.2" xref="m43.1.19.2.pmml">
                 <m:times xml:id="m43.1.19.2.1" xref="m43.1.19.2.1.pmml"/>
-                <m:mtext xml:id="m43.1.10" xref="m43.1.10.pmml">?x0</m:mtext>
+                <mws:qvar xmlns:mws="http://search.mathweb.org/ns" name="x0"/>
                 <m:apply xml:id="m43.1.19.2.2" xref="m43.1.19.2.2.pmml">
                   <m:interval closure="open" xml:id="m43.1.19.2.2.1"/>
                   <m:apply xml:id="m43.1.19.2.2.2" xref="m43.1.19.2.2.2.pmml">
@@ -1164,7 +1164,7 @@ _{1}}}\lambda_{{\alpha_{1}}}^{{[1]}}\Gamma_{{\alpha_{\qvar{x2}}
                   </m:mrow>
                   <m:mo xml:id="m43.1.9.pmml" xref="m43.1.9">≅</m:mo>
                   <m:mrow xml:id="m43.1.19.2.pmml" xref="m43.1.19.2">
-                    <m:mtext xml:id="m43.1.10.pmml" xref="m43.1.10">?x0</m:mtext>
+                    <mws:qvar xmlns:mws="http://search.mathweb.org/ns" name="x0"/>
                     <m:mo xml:id="m43.1.19.2.1.pmml" xref="m43.1.19.2.1">⁢</m:mo>
                     <m:mrow xml:id="m43.1.19.2.2.pmml" xref="m43.1.19.2.2">
                       <m:mo xml:id="m43.1.19.2.2a.pmml" xref="m43.1.19.2.2">(</m:mo>
@@ -1326,7 +1326,7 @@ _{1}}}\lambda_{{\alpha_{1}}}^{{[1]}}\Gamma_{{\alpha_{\qvar{x2}}
               <m:apply xml:id="m47.1.10.1" xref="m47.1.10.1.pmml">
                 <m:csymbol cd="ambiguous" xml:id="m47.1.10.1.1">subscript</m:csymbol>
                 <m:ci xml:id="m47.1.1" xref="m47.1.1.pmml">E</m:ci>
-                <m:mtext xml:id="m47.1.2.1" xref="m47.1.2.1.pmml">?x0</m:mtext>
+                <mws:qvar xmlns:mws="http://search.mathweb.org/ns" name="x0"/>
               </m:apply>
               <m:apply xml:id="m47.1.10.2" xref="m47.1.10.2.pmml">
                 <m:plus xml:id="m47.1.6" xref="m47.1.6.pmml"/>
@@ -1346,7 +1346,7 @@ _{1}}}\lambda_{{\alpha_{1}}}^{{[1]}}\Gamma_{{\alpha_{\qvar{x2}}
               <m:mrow xml:id="m47.1.10.pmml" xref="m47.1.10">
                 <m:msub xml:id="m47.1.10.1.pmml" xref="m47.1.10.1">
                   <m:mi xml:id="m47.1.1.pmml" xref="m47.1.1">E</m:mi>
-                  <m:mtext xml:id="m47.1.2.1.pmml" xref="m47.1.2.1">?x0</m:mtext>
+                  <mws:qvar xmlns:mws="http://search.mathweb.org/ns" name="x0"/>
                 </m:msub>
                 <m:mo xml:id="m47.1.3.pmml" xref="m47.1.3">=</m:mo>
                 <m:mrow xml:id="m47.1.10.2.pmml" xref="m47.1.10.2">
@@ -3250,7 +3250,7 @@ _{1}}}\lambda_{{\alpha_{1}}}^{{[1]}}\Gamma_{{\alpha_{\qvar{x2}}
                               <m:ci xml:id="m103.1.9.2.4.1.3.3.2" xref="m103.1.9.2.4.1.3.3.2.pmml">t</m:ci>
                             </m:apply>
                           </m:apply>
-                          <m:mtext xml:id="m103.1.9.2.4.1.4" xref="m103.1.9.2.4.1.4.pmml">?x13</m:mtext>
+                          <mws:qvar xmlns:mws="http://search.mathweb.org/ns" name="x13"/>
                         </m:apply>
                       </m:apply>
                     </m:apply>
@@ -3479,7 +3479,7 @@ _{1}}}\lambda_{{\alpha_{1}}}^{{[1]}}\Gamma_{{\alpha_{\qvar{x2}}
                                 </m:mrow>
                               </m:mfrac>
                               <m:mo movablelimits="false" xml:id="m103.1.9.2.4.1.5b.pmml" xref="m103.1.9.2.4.1.5">⁢</m:mo>
-                              <m:mtext xml:id="m103.1.9.2.4.1.4.pmml" xref="m103.1.9.2.4.1.4">?x13</m:mtext>
+                              <mws:qvar xmlns:mws="http://search.mathweb.org/ns" name="x13"/>
                             </m:mrow>
                           </m:munder>
                           <m:mo movablelimits="false" xml:id="m103.1.9.2.7c.pmml" xref="m103.1.9.2.7">)</m:mo>
@@ -4214,7 +4214,7 @@ d}u_{\qvar{x15}}}{\operatorname{d}t}}{\text{)}}}}</m:annotation>
                     <m:abs xml:id="m121.1.24.3.3.1.1"/>
                     <m:apply xml:id="m121.1.24.3.3.1.2" xref="m121.1.24.3.3.1.2.pmml">
                       <m:times xml:id="m121.1.24.3.3.1.2.1" xref="m121.1.24.3.3.1.2.1.pmml"/>
-                      <m:mtext xml:id="m121.1.15" xref="m121.1.15.pmml">?x0</m:mtext>
+                      <mws:qvar xmlns:mws="http://search.mathweb.org/ns" name="x0"/>
                       <m:ci xml:id="m121.1.17" xref="m121.1.17.pmml">z</m:ci>
                     </m:apply>
                   </m:apply>
@@ -4251,7 +4251,7 @@ d}u_{\qvar{x15}}}{\operatorname{d}t}}{\text{)}}}}</m:annotation>
                       <m:mrow xml:id="m121.1.24.3.3.1.pmml" xref="m121.1.24.3.3.1">
                         <m:mo fence="true" xml:id="m121.1.24.3.3.1a.pmml" xref="m121.1.24.3.3.1">|</m:mo>
                         <m:mrow xml:id="m121.1.24.3.3.1.2.pmml" xref="m121.1.24.3.3.1.2">
-                          <m:mtext xml:id="m121.1.15.pmml" xref="m121.1.15">?x0</m:mtext>
+                          <mws:qvar xmlns:mws="http://search.mathweb.org/ns" name="x0"/>
                           <m:mo xml:id="m121.1.24.3.3.1.2.1.pmml" xref="m121.1.24.3.3.1.2.1">⁢</m:mo>
                           <m:mrow xml:id="m121.1.17.pmml" xref="m121.1.17">
                             <m:mo xml:id="m121.1.17a.pmml" xref="m121.1.17">(</m:mo>
@@ -4493,7 +4493,7 @@ d}u_{\qvar{x15}}}{\operatorname{d}t}}{\text{)}}}}</m:annotation>
                 <m:csymbol cd="latexml" xml:id="m131.1.15" xref="m131.1.15.pmml">direct-sum</m:csymbol>
                 <m:apply xml:id="m131.1.18.2.1" xref="m131.1.18.2.1.pmml">
                   <m:times xml:id="m131.1.18.2.1.1" xref="m131.1.18.2.1.1.pmml"/>
-                  <m:mtext xml:id="m131.1.4" xref="m131.1.4.pmml">?x1</m:mtext>
+                  <mws:qvar xmlns:mws="http://search.mathweb.org/ns" name="x1"/>
                   <m:apply xml:id="m131.1.18.2.1.2" xref="m131.1.18.2.1.2.pmml">
                     <m:interval closure="open" xml:id="m131.1.18.2.1.2.1"/>
                     <m:apply xml:id="m131.1.18.2.1.2.2" xref="m131.1.18.2.1.2.2.pmml">
@@ -4532,7 +4532,7 @@ d}u_{\qvar{x15}}}{\operatorname{d}t}}{\text{)}}}}</m:annotation>
                 <m:mo xml:id="m131.1.3.pmml" xref="m131.1.3">=</m:mo>
                 <m:mrow xml:id="m131.1.18.2.pmml" xref="m131.1.18.2">
                   <m:mrow xml:id="m131.1.18.2.1.pmml" xref="m131.1.18.2.1">
-                    <m:mtext xml:id="m131.1.4.pmml" xref="m131.1.4">?x1</m:mtext>
+                    <mws:qvar xmlns:mws="http://search.mathweb.org/ns" name="x1"/>
                     <m:mo xml:id="m131.1.18.2.1.1.pmml" xref="m131.1.18.2.1.1">⁢</m:mo>
                     <m:mrow xml:id="m131.1.18.2.1.2.pmml" xref="m131.1.18.2.1.2">
                       <m:mo xml:id="m131.1.18.2.1.2a.pmml" xref="m131.1.18.2.1.2">(</m:mo>

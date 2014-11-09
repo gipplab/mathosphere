@@ -34,6 +34,7 @@ time java -Xmx12G -jar basex-backend-0.0.1-SNAPSHOT-jar-with-dependencies.jar -d
 ```
 
 * Overall runtime 8min 24seconds.
-* Submitted to http://ntcir11-wmc.nii.ac.jp/index.php/Special:MathUpload as run 85.
-* Only up to 81% correct.
+* Submitted to http://ntcir11-wmc.nii.ac.jp/index.php/Special:MathUpload as run 86.
+* Only up to 83% correct.
+* 81% according to the new formula centric match.
 * No errors during import.
