@@ -4136,5 +4136,124 @@ _{{j=0}}^{{i}}K_{j}}\over{\displaystyle\sum_{{i=0}}^{n}{\Big[}[H^{+}]^{{n-i}}%
     </semantics>
 </math>
 </mws:expr>
-
+<mws:expr url="dummy23">
+    <math xmlns="http://www.w3.org/1998/Math/MathML" id="p1.1.m1" class="ltx_Math" alttext="{\displaystyle D(G,H)=\sum_{{i=1}}^{{29}}|F_{i}(G)-F_{i}(H)|}" display="inline" xml:id="p1.1.m1.1" xref="p1.1.m1.1.cmml">
+        <semantics xml:id="p1.1.m1.1a" xref="p1.1.m1.1.cmml">
+            <mrow xml:id="p1.1.m1.1.24" xref="p1.1.m1.1.24.cmml">
+                <mrow xml:id="p1.1.m1.1.24.1" xref="p1.1.m1.1.24.1.cmml">
+                    <mi xml:id="p1.1.m1.1.1" xref="p1.1.m1.1.1.cmml">D</mi>
+                    <mo xml:id="p1.1.m1.1.24.1.1" xref="p1.1.m1.1.24.1.1.cmml">⁢</mo>
+                    <mrow xml:id="p1.1.m1.1.24.1.2" xref="p1.1.m1.1.24.1.2.cmml">
+                        <mo xml:id="p1.1.m1.1.24.1.2a" xref="p1.1.m1.1.24.1.2.cmml">(</mo>
+                        <mrow xml:id="p1.1.m1.1.24.1.2b" xref="p1.1.m1.1.24.1.2.cmml">
+                            <mi xml:id="p1.1.m1.1.3" xref="p1.1.m1.1.3.cmml">G</mi>
+                            <mo xml:id="p1.1.m1.1.24.1.2c" xref="p1.1.m1.1.24.1.2.cmml">,</mo>
+                            <mi xml:id="p1.1.m1.1.5" xref="p1.1.m1.1.5.cmml">H</mi>
+                        </mrow>
+                        <mo xml:id="p1.1.m1.1.24.1.2d" xref="p1.1.m1.1.24.1.2.cmml">)</mo>
+                    </mrow>
+                </mrow>
+                <mo xml:id="p1.1.m1.1.7" xref="p1.1.m1.1.7.cmml">=</mo>
+                <mrow xml:id="p1.1.m1.1.24.2" xref="p1.1.m1.1.24.2.cmml">
+                    <mstyle displaystyle="true" xml:id="p1.1.m1.1.24.2.1" xref="p1.1.m1.1.24.2.1.cmml">
+                        <munderover xml:id="p1.1.m1.1.24.2.1a" xref="p1.1.m1.1.24.2.1.cmml">
+                            <mo largeop="true" movablelimits="false" symmetric="true" xml:id="p1.1.m1.1.8" xref="p1.1.m1.1.8.cmml">∑</mo>
+                            <mrow xml:id="p1.1.m1.1.9.1" xref="p1.1.m1.1.9.1.cmml">
+                                <mi xml:id="p1.1.m1.1.9.1.1" xref="p1.1.m1.1.9.1.1.cmml">i</mi>
+                                <mo xml:id="p1.1.m1.1.9.1.2" xref="p1.1.m1.1.9.1.2.cmml">=</mo>
+                                <mn xml:id="p1.1.m1.1.9.1.3" xref="p1.1.m1.1.9.1.3.cmml">1</mn>
+                            </mrow>
+                            <mn xml:id="p1.1.m1.1.10.1" xref="p1.1.m1.1.10.1.cmml">29</mn>
+                        </munderover>
+                    </mstyle>
+                    <mrow xml:id="p1.1.m1.1.24.2.2" xref="p1.1.m1.1.24.2.2.cmml">
+                        <mo fence="true" xml:id="p1.1.m1.1.24.2.2a" xref="p1.1.m1.1.24.2.2.cmml">|</mo>
+                        <mrow xml:id="p1.1.m1.1.24.2.2.2" xref="p1.1.m1.1.24.2.2.2.cmml">
+                            <mrow xml:id="p1.1.m1.1.24.2.2.2.1" xref="p1.1.m1.1.24.2.2.2.1.cmml">
+                                <msub xml:id="p1.1.m1.1.24.2.2.2.1.2" xref="p1.1.m1.1.24.2.2.2.1.2.cmml">
+                                    <mi xml:id="p1.1.m1.1.12" xref="p1.1.m1.1.12.cmml">F</mi>
+                                    <mi xml:id="p1.1.m1.1.13.1" xref="p1.1.m1.1.13.1.cmml">i</mi>
+                                </msub>
+                                <mo xml:id="p1.1.m1.1.24.2.2.2.1.1" xref="p1.1.m1.1.24.2.2.2.1.1.cmml">⁢</mo>
+                                <mrow xml:id="p1.1.m1.1.15" xref="p1.1.m1.1.15.cmml">
+                                    <mo xml:id="p1.1.m1.1.15a" xref="p1.1.m1.1.15.cmml">(</mo>
+                                    <mi xml:id="p1.1.m1.1.15b" xref="p1.1.m1.1.15.cmml">G</mi>
+                                    <mo xml:id="p1.1.m1.1.15c" xref="p1.1.m1.1.15.cmml">)</mo>
+                                </mrow>
+                            </mrow>
+                            <mo xml:id="p1.1.m1.1.17" xref="p1.1.m1.1.17.cmml">-</mo>
+                            <mrow xml:id="p1.1.m1.1.24.2.2.2.2" xref="p1.1.m1.1.24.2.2.2.2.cmml">
+                                <msub xml:id="p1.1.m1.1.24.2.2.2.2.2" xref="p1.1.m1.1.24.2.2.2.2.2.cmml">
+                                    <mi xml:id="p1.1.m1.1.18" xref="p1.1.m1.1.18.cmml">F</mi>
+                                    <mi xml:id="p1.1.m1.1.19.1" xref="p1.1.m1.1.19.1.cmml">i</mi>
+                                </msub>
+                                <mo xml:id="p1.1.m1.1.24.2.2.2.2.1" xref="p1.1.m1.1.24.2.2.2.2.1.cmml">⁢</mo>
+                                <mrow xml:id="p1.1.m1.1.21" xref="p1.1.m1.1.21.cmml">
+                                    <mo xml:id="p1.1.m1.1.21a" xref="p1.1.m1.1.21.cmml">(</mo>
+                                    <mi xml:id="p1.1.m1.1.21b" xref="p1.1.m1.1.21.cmml">H</mi>
+                                    <mo xml:id="p1.1.m1.1.21c" xref="p1.1.m1.1.21.cmml">)</mo>
+                                </mrow>
+                            </mrow>
+                        </mrow>
+                        <mo fence="true" xml:id="p1.1.m1.1.24.2.2b" xref="p1.1.m1.1.24.2.2.cmml">|</mo>
+                    </mrow>
+                </mrow>
+            </mrow>
+            <annotation-xml encoding="MathML-Content" xml:id="p1.1.m1.1.cmml" xref="p1.1.m1.1">
+                <apply xml:id="p1.1.m1.1.24.cmml" xref="p1.1.m1.1.24">
+                    <eq xml:id="p1.1.m1.1.7.cmml" xref="p1.1.m1.1.7"/>
+                    <apply xml:id="p1.1.m1.1.24.1.cmml" xref="p1.1.m1.1.24.1">
+                        <times xml:id="p1.1.m1.1.24.1.1.cmml" xref="p1.1.m1.1.24.1.1"/>
+                        <ci xml:id="p1.1.m1.1.1.cmml" xref="p1.1.m1.1.1">D</ci>
+                        <apply xml:id="p1.1.m1.1.24.1.2.cmml" xref="p1.1.m1.1.24.1.2">
+                            <interval closure="open" xml:id="p1.1.m1.1.24.1.2.1.cmml"/>
+                            <ci xml:id="p1.1.m1.1.3.cmml" xref="p1.1.m1.1.3">G</ci>
+                            <ci xml:id="p1.1.m1.1.5.cmml" xref="p1.1.m1.1.5">H</ci>
+                        </apply>
+                    </apply>
+                    <apply xml:id="p1.1.m1.1.24.2.cmml" xref="p1.1.m1.1.24.2">
+                        <apply xml:id="p1.1.m1.1.24.2.1.cmml" xref="p1.1.m1.1.24.2.1">
+                            <csymbol cd="ambiguous" xml:id="p1.1.m1.1.24.2.1.1.cmml">superscript</csymbol>
+                            <apply xml:id="p1.1.m1.1.24.2.1.2.cmml">
+                                <csymbol cd="ambiguous" xml:id="p1.1.m1.1.24.2.1.2.1.cmml">subscript</csymbol>
+                                <sum xml:id="p1.1.m1.1.8.cmml" xref="p1.1.m1.1.8"/>
+                                <apply xml:id="p1.1.m1.1.9.1.cmml" xref="p1.1.m1.1.9.1">
+                                    <eq xml:id="p1.1.m1.1.9.1.2.cmml" xref="p1.1.m1.1.9.1.2"/>
+                                    <ci xml:id="p1.1.m1.1.9.1.1.cmml" xref="p1.1.m1.1.9.1.1">i</ci>
+                                    <cn type="integer" xml:id="p1.1.m1.1.9.1.3.cmml" xref="p1.1.m1.1.9.1.3">1</cn>
+                                </apply>
+                            </apply>
+                            <cn type="integer" xml:id="p1.1.m1.1.10.1.cmml" xref="p1.1.m1.1.10.1">29</cn>
+                        </apply>
+                        <apply xml:id="p1.1.m1.1.24.2.2.cmml" xref="p1.1.m1.1.24.2.2">
+                            <abs xml:id="p1.1.m1.1.24.2.2.1.cmml"/>
+                            <apply xml:id="p1.1.m1.1.24.2.2.2.cmml" xref="p1.1.m1.1.24.2.2.2">
+                                <minus xml:id="p1.1.m1.1.17.cmml" xref="p1.1.m1.1.17"/>
+                                <apply xml:id="p1.1.m1.1.24.2.2.2.1.cmml" xref="p1.1.m1.1.24.2.2.2.1">
+                                    <times xml:id="p1.1.m1.1.24.2.2.2.1.1.cmml" xref="p1.1.m1.1.24.2.2.2.1.1"/>
+                                    <apply xml:id="p1.1.m1.1.24.2.2.2.1.2.cmml" xref="p1.1.m1.1.24.2.2.2.1.2">
+                                        <csymbol cd="ambiguous" xml:id="p1.1.m1.1.24.2.2.2.1.2.1.cmml">subscript</csymbol>
+                                        <ci xml:id="p1.1.m1.1.12.cmml" xref="p1.1.m1.1.12">F</ci>
+                                        <ci xml:id="p1.1.m1.1.13.1.cmml" xref="p1.1.m1.1.13.1">i</ci>
+                                    </apply>
+                                    <ci xml:id="p1.1.m1.1.15.cmml" xref="p1.1.m1.1.15">G</ci>
+                                </apply>
+                                <apply xml:id="p1.1.m1.1.24.2.2.2.2.cmml" xref="p1.1.m1.1.24.2.2.2.2">
+                                    <times xml:id="p1.1.m1.1.24.2.2.2.2.1.cmml" xref="p1.1.m1.1.24.2.2.2.2.1"/>
+                                    <apply xml:id="p1.1.m1.1.24.2.2.2.2.2.cmml" xref="p1.1.m1.1.24.2.2.2.2.2">
+                                        <csymbol cd="ambiguous" xml:id="p1.1.m1.1.24.2.2.2.2.2.1.cmml">subscript</csymbol>
+                                        <ci xml:id="p1.1.m1.1.18.cmml" xref="p1.1.m1.1.18">F</ci>
+                                        <ci xml:id="p1.1.m1.1.19.1.cmml" xref="p1.1.m1.1.19.1">i</ci>
+                                    </apply>
+                                    <ci xml:id="p1.1.m1.1.21.cmml" xref="p1.1.m1.1.21">H</ci>
+                                </apply>
+                            </apply>
+                        </apply>
+                    </apply>
+                </apply>
+            </annotation-xml>
+            <annotation encoding="application/x-tex" xml:id="p1.1.m1.1b" xref="p1.1.m1.1.cmml">{\displaystyle D(G,H)=\sum_{{i=1}}^{{29}}|F_{i}(G)-F_{i}(H)|}</annotation>
+        </semantics>
+    </math>
+</mws:expr>
 </mws:harvest>
