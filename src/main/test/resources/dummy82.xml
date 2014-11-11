@@ -1,0 +1,24 @@
+
+    <apply >
+        <ci >normal-:</ci>
+        <apply >
+            <csymbol cd="ambiguous" >subscript</csymbol>
+            <ci >h</ci>
+            <ci >i</ci>
+        </apply>
+        <apply >
+            <ci >normal-→</ci>
+            <ci >X</ci>
+            <apply >
+                <set />
+                <apply >
+                    <minus />
+                    <cn type="integer" >1</cn>
+                </apply>
+                <apply >
+                    <plus />
+                    <cn type="integer" >1</cn>
+                </apply>
+            </apply>
+        </apply>
+    </apply>

@@ -63,7 +63,9 @@ public class Benchmark {
 			.addOption( querySource )
 			.addOption( resultSink )
 			.addOption( help )
-			.addOption( "c", "CSV", false, "Print CSV instead of XML output" );
+			.addOption( "c", "CSV", false, "Print CSV instead of XML output" )
+			.addOption( "i", "ignoreLength", false, "Includes matches were the matching is tree is longer" +
+				"than the search pattern. For example $x+y+z$ for the pattern $x+y$."  );
 		CommandLineParser parser = new GnuParser();
 		try {
 			CommandLine line = parser.parse( options, args );
@@ -100,6 +102,7 @@ public class Benchmark {
 		final NtcirTopicReader ntcirTopicReader = new NtcirTopicReader( queries );
 		ntcirTopicReader.setFooter( BASEX_FOOTER );
 		ntcirTopicReader.setHeader( BASEX_HEADER );
+		ntcirTopicReader.setRestricLength( ! line.hasOption("i") );
 		List<NtcirPattern> patterns = ntcirTopicReader.extractPatterns();
 		final Client client = new Client( patterns );
 		srv.shutdown(); srv = null;
