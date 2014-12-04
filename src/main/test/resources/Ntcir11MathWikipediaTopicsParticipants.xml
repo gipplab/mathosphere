@@ -3251,8 +3251,7 @@
                                                                 <m:ci xml:id="m52.1.9.2.4.1.3.3.2" xref="m52.1.9.2.4.1.3.3.2.pmml">t</m:ci>
                                                             </m:apply>
                                                         </m:apply>
-                                                        <m:mtext xml:id="m52.1.9.2.4.1.4" xref="m52.1.9.2.4.1.4.pmml">?
-                                                            x13</m:mtext>
+                                                        <mws:qvar xmlns:mws="http://search.mathweb.org/ns" name="x13"/>
                                                     </m:apply>
                                                 </m:apply>
                                             </m:apply>
@@ -3477,8 +3476,7 @@
                                                                     </m:mrow>
                                                                 </m:mfrac>
                                                                 <m:mo movablelimits="false" xml:id="m52.1.9.2.4.1.5b.pmml" xref="m52.1.9.2.4.1.5">⁢</m:mo>
-                                                                <m:mtext xml:id="m52.1.9.2.4.1.4.pmml" xref="m52.1.9.2.4.1.4">?
-                                                                    x13</m:mtext>
+                                                                <mws:qvar xmlns:mws="http://search.mathweb.org/ns" name="x13"/>
                                                             </m:mrow>
                                                         </m:munder>
                                                         <m:mo movablelimits="false" xml:id="m52.1.9.2.7a.pmml">)</m:mo>
