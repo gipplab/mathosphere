@@ -99,7 +99,7 @@
                                 <m:csymbol cd="ambiguous" xml:id="m3.1.8.1">superscript</m:csymbol>
                                 <m:apply xml:id="m3.1.8.2" xref="m3.1.8.2.pmml">
                                     <m:factorial xml:id="m3.1.6" xref="m3.1.6.pmml"/>
-                                    <m:apply xml:id="XM5" xref="XM5.pmml">
+                                    <m:apply xml:id="XM7" xref="XM7.pmml">
                                         <m:minus xml:id="m3.1.3" xref="m3.1.3.pmml"/>
                                         <m:ci xml:id="m3.1.2" xref="m3.1.2.pmml">p</m:ci>
                                         <m:cn type="integer" xml:id="m3.1.4" xref="m3.1.4.pmml">1</m:cn>
@@ -112,7 +112,7 @@
                                     <m:mrow xml:id="m3.1.8.2.pmml" xref="m3.1.8.2">
                                         <m:mrow xml:id="m3.1.8.2.1b.pmml">
                                             <m:mo xml:id="m3.1.8.2.1.pmml">(</m:mo>
-                                            <m:mrow xml:id="XM5.pmml" xref="XM5">
+                                            <m:mrow xml:id="XM7.pmml" xref="XM7">
                                                 <m:mi xml:id="m3.1.2.pmml" xref="m3.1.2">p</m:mi>
                                                 <m:mo xml:id="m3.1.3.pmml" xref="m3.1.3">-</m:mo>
                                                 <m:mn xml:id="m3.1.4.pmml" xref="m3.1.4">1</m:mn>
@@ -475,15 +475,15 @@
                                         </m:apply>
                                         <m:apply xml:id="m9.1.28.2.2.6a" xref="m9.1.28.2.2.6.pmml">
                                             <m:csymbol cd="latexml" xml:id="m9.1.28.2.2.6" xref="m9.1.28.2.2.6.pmml">ket</m:csymbol>
-                                            <m:apply xml:id="XM6" xref="XM6.pmml">
-                                                <m:times xml:id="XM6.1" xref="XM6.1.pmml"/>
-                                                <m:apply xml:id="XM6.2" xref="XM6.2.pmml">
-                                                    <m:csymbol cd="ambiguous" xml:id="XM6.2.1">subscript</m:csymbol>
+                                            <m:apply xml:id="XM8" xref="XM8.pmml">
+                                                <m:times xml:id="XM8.1" xref="XM8.1.pmml"/>
+                                                <m:apply xml:id="XM8.2" xref="XM8.2.pmml">
+                                                    <m:csymbol cd="ambiguous" xml:id="XM8.2.1">subscript</m:csymbol>
                                                     <m:ci xml:id="m9.1.20" xref="m9.1.20.pmml">i</m:ci>
                                                     <m:cn type="integer" xml:id="m9.1.21.1" xref="m9.1.21.1.pmml">1</m:cn>
                                                 </m:apply>
-                                                <m:apply xml:id="XM6.3" xref="XM6.3.pmml">
-                                                    <m:csymbol cd="ambiguous" xml:id="XM6.3.1">subscript</m:csymbol>
+                                                <m:apply xml:id="XM8.3" xref="XM8.3.pmml">
+                                                    <m:csymbol cd="ambiguous" xml:id="XM8.3.1">subscript</m:csymbol>
                                                     <m:ci xml:id="m9.1.22" xref="m9.1.22.pmml">i</m:ci>
                                                     <m:cn type="integer" xml:id="m9.1.23.1" xref="m9.1.23.1.pmml">2</m:cn>
                                                 </m:apply>
@@ -575,13 +575,13 @@
                                             <m:mo xml:id="m9.1.28.2.2.1c.pmml" xref="m9.1.28.2.2.1">⁢</m:mo>
                                             <m:mrow xml:id="m9.1.28.2.2.6b.pmml" xref="m9.1.28.2.2.6">
                                                 <m:mo fence="true" xml:id="m9.1.28.2.2.6.pmml" xref="m9.1.28.2.2.6">|</m:mo>
-                                                <m:mrow xml:id="XM6.pmml" xref="XM6">
-                                                    <m:msub xml:id="XM6.2.pmml" xref="XM6.2">
+                                                <m:mrow xml:id="XM8.pmml" xref="XM8">
+                                                    <m:msub xml:id="XM8.2.pmml" xref="XM8.2">
                                                         <m:mi xml:id="m9.1.20.pmml" xref="m9.1.20">i</m:mi>
                                                         <m:mn xml:id="m9.1.21.1.pmml" xref="m9.1.21.1">1</m:mn>
                                                     </m:msub>
-                                                    <m:mo xml:id="XM6.1.pmml" xref="XM6.1">⁢</m:mo>
-                                                    <m:msub xml:id="XM6.3.pmml" xref="XM6.3">
+                                                    <m:mo xml:id="XM8.1.pmml" xref="XM8.1">⁢</m:mo>
+                                                    <m:msub xml:id="XM8.3.pmml" xref="XM8.3">
                                                         <m:mi xml:id="m9.1.22.pmml" xref="m9.1.22">i</m:mi>
                                                         <m:mn xml:id="m9.1.23.1.pmml" xref="m9.1.23.1">2</m:mn>
                                                     </m:msub>
@@ -647,10 +647,10 @@
                         <m:semantics xml:id="m11.1a">
                             <m:apply xml:id="m11.1.18" xref="m11.1.18.pmml">
                                 <m:csymbol cd="ambiguous" xml:id="m11.1.18a" xref="m11.1.18.pmml">formulae-sequence</m:csymbol>
-                                <m:apply xml:id="XM10" xref="XM10.pmml">
+                                <m:apply xml:id="XM12" xref="XM12.pmml">
                                     <m:eq xml:id="m11.1.7" xref="m11.1.7.pmml"/>
-                                    <m:apply xml:id="XM10.1" xref="XM10.1.pmml">
-                                        <m:times xml:id="XM10.1.1" xref="XM10.1.1.pmml"/>
+                                    <m:apply xml:id="XM12.1" xref="XM12.1.pmml">
+                                        <m:times xml:id="XM12.1.1" xref="XM12.1.1.pmml"/>
                                         <m:apply xml:id="m11.1.1" xref="m11.1.1.pmml">
                                             <m:divide xml:id="m11.1.1.1"/>
                                             <m:ci xml:id="m11.1.1.2" xref="m11.1.1.2.pmml">d</m:ci>
@@ -660,9 +660,9 @@
                                                 <m:ci xml:id="m11.1.1.3.2" xref="m11.1.1.3.2.pmml">x</m:ci>
                                             </m:apply>
                                         </m:apply>
-                                        <m:apply xml:id="XM7" xref="XM7.pmml">
-                                            <m:apply xml:id="XM7.1" xref="XM7.1.pmml">
-                                                <m:csymbol cd="ambiguous" xml:id="XM7.1.1">subscript</m:csymbol>
+                                        <m:apply xml:id="XM9" xref="XM9.pmml">
+                                            <m:apply xml:id="XM9.1" xref="XM9.1.pmml">
+                                                <m:csymbol cd="ambiguous" xml:id="XM9.1.1">subscript</m:csymbol>
                                                 <m:log xml:id="m11.1.3" xref="m11.1.3.pmml"/>
                                                 <m:ci xml:id="m11.1.4.1" xref="m11.1.4.1.pmml">c</m:ci>
                                             </m:apply>
@@ -682,14 +682,14 @@
                                         </m:apply>
                                     </m:apply>
                                 </m:apply>
-                                <m:apply xml:id="XM11" xref="XM11.pmml">
-                                    <m:csymbol cd="ambiguous" xml:id="XM11a" xref="XM11.pmml">formulae-sequence</m:csymbol>
-                                    <m:apply xml:id="XM8" xref="XM8.pmml">
+                                <m:apply xml:id="XM13" xref="XM13.pmml">
+                                    <m:csymbol cd="ambiguous" xml:id="XM13a" xref="XM13.pmml">formulae-sequence</m:csymbol>
+                                    <m:apply xml:id="XM10" xref="XM10.pmml">
                                         <m:gt xml:id="m11.1.12" xref="m11.1.12.pmml"/>
                                         <m:ci xml:id="m11.1.11" xref="m11.1.11.pmml">c</m:ci>
                                         <m:cn type="integer" xml:id="m11.1.13" xref="m11.1.13.pmml">0</m:cn>
                                     </m:apply>
-                                    <m:apply xml:id="XM9" xref="XM9.pmml">
+                                    <m:apply xml:id="XM11" xref="XM11.pmml">
                                         <m:neq xml:id="m11.1.16" xref="m11.1.16.pmml"/>
                                         <m:ci xml:id="m11.1.15" xref="m11.1.15.pmml">c</m:ci>
                                         <m:cn type="integer" xml:id="m11.1.17" xref="m11.1.17.pmml">1</m:cn>
@@ -698,8 +698,8 @@
                             </m:apply>
                             <m:annotation-xml encoding="MathML-Presentation" xml:id="m11.1b">
                                 <m:mrow xml:id="m11.1.18a.pmml" xref="m11.1.18">
-                                    <m:mrow xml:id="XM10.pmml" xref="XM10">
-                                        <m:mrow xml:id="XM10.1.pmml" xref="XM10.1">
+                                    <m:mrow xml:id="XM12.pmml" xref="XM12">
+                                        <m:mrow xml:id="XM12.1.pmml" xref="XM12.1">
                                             <m:mfrac xml:id="m11.1.1.pmml" xref="m11.1.1">
                                                 <m:mi xml:id="m11.1.1.2.pmml" xref="m11.1.1.2">d</m:mi>
                                                 <m:mrow xml:id="m11.1.1.3.pmml" xref="m11.1.1.3">
@@ -708,18 +708,18 @@
                                                     <m:mi xml:id="m11.1.1.3.2.pmml" xref="m11.1.1.3.2">x</m:mi>
                                                 </m:mrow>
                                             </m:mfrac>
-                                            <m:mo xml:id="XM10.1.1.pmml" xref="XM10.1.1">⁢</m:mo>
-                                            <m:mrow xml:id="XM10.1.2b.pmml">
-                                                <m:mo xml:id="XM10.1.2.pmml">(</m:mo>
-                                                <m:mrow xml:id="XM7.pmml" xref="XM7">
-                                                    <m:msub xml:id="XM7.1.pmml" xref="XM7.1">
+                                            <m:mo xml:id="XM12.1.1.pmml" xref="XM12.1.1">⁢</m:mo>
+                                            <m:mrow xml:id="XM12.1.2b.pmml">
+                                                <m:mo xml:id="XM12.1.2.pmml">(</m:mo>
+                                                <m:mrow xml:id="XM9.pmml" xref="XM9">
+                                                    <m:msub xml:id="XM9.1.pmml" xref="XM9.1">
                                                         <m:mi xml:id="m11.1.3.pmml" xref="m11.1.3">log</m:mi>
                                                         <m:mi xml:id="m11.1.4.1.pmml" xref="m11.1.4.1">c</m:mi>
                                                     </m:msub>
-                                                    <m:mo xml:id="XM7a.pmml" xref="XM7">⁡</m:mo>
+                                                    <m:mo xml:id="XM9a.pmml" xref="XM9">⁡</m:mo>
                                                     <m:mi xml:id="m11.1.5.pmml" xref="m11.1.5">x</m:mi>
                                                 </m:mrow>
-                                                <m:mo xml:id="XM10.1.2a.pmml">)</m:mo>
+                                                <m:mo xml:id="XM12.1.2a.pmml">)</m:mo>
                                             </m:mrow>
                                         </m:mrow>
                                         <m:mo xml:id="m11.1.7.pmml" xref="m11.1.7">=</m:mo>
@@ -737,14 +737,14 @@
                                         </m:mfrac>
                                     </m:mrow>
                                     <m:mo xml:id="m11.1.18.pmml" xref="m11.1.18">,</m:mo>
-                                    <m:mrow xml:id="XM11a.pmml" xref="XM11">
-                                        <m:mrow xml:id="XM8.pmml" xref="XM8">
+                                    <m:mrow xml:id="XM13a.pmml" xref="XM13">
+                                        <m:mrow xml:id="XM10.pmml" xref="XM10">
                                             <m:mi xml:id="m11.1.11.pmml" xref="m11.1.11">c</m:mi>
                                             <m:mo xml:id="m11.1.12.pmml" xref="m11.1.12">&gt;</m:mo>
                                             <m:mn xml:id="m11.1.13.pmml" xref="m11.1.13">0</m:mn>
                                         </m:mrow>
-                                        <m:mo xml:id="XM11.pmml" xref="XM11">,</m:mo>
-                                        <m:mrow xml:id="XM9.pmml" xref="XM9">
+                                        <m:mo xml:id="XM13.pmml" xref="XM13">,</m:mo>
+                                        <m:mrow xml:id="XM11.pmml" xref="XM11">
                                             <m:mi xml:id="m11.1.15.pmml" xref="m11.1.15">c</m:mi>
                                             <m:mo xml:id="m11.1.16.pmml" xref="m11.1.16">≠</m:mo>
                                             <m:mn xml:id="m11.1.17.pmml" xref="m11.1.17">1</m:mn>
@@ -1095,15 +1095,15 @@
                                 <m:apply xml:id="m22.1.19.1" xref="m22.1.19.1.pmml">
                                     <m:times xml:id="m22.1.19.1.1" xref="m22.1.19.1.1.pmml"/>
                                     <m:mtext xml:id="m22.1.1" xref="m22.1.1.pmml">Ker</m:mtext>
-                                    <m:apply xml:id="XM12" xref="XM12.pmml">
+                                    <m:apply xml:id="XM14" xref="XM14.pmml">
                                         <m:minus xml:id="m22.1.5" xref="m22.1.5.pmml"/>
-                                        <m:apply xml:id="XM12.1" xref="XM12.1.pmml">
-                                            <m:csymbol cd="ambiguous" xml:id="XM12.1.1">subscript</m:csymbol>
+                                        <m:apply xml:id="XM14.1" xref="XM14.1.pmml">
+                                            <m:csymbol cd="ambiguous" xml:id="XM14.1.1">subscript</m:csymbol>
                                             <m:ci xml:id="m22.1.3" xref="m22.1.3.pmml">k</m:ci>
                                             <m:times xml:id="m22.1.4.1" xref="m22.1.4.1.pmml"/>
                                         </m:apply>
-                                        <m:apply xml:id="XM12.2" xref="XM12.2.pmml">
-                                            <m:csymbol cd="ambiguous" xml:id="XM12.2.1">subscript</m:csymbol>
+                                        <m:apply xml:id="XM14.2" xref="XM14.2.pmml">
+                                            <m:csymbol cd="ambiguous" xml:id="XM14.2.1">subscript</m:csymbol>
                                             <m:ci xml:id="m22.1.6" xref="m22.1.6.pmml">l</m:ci>
                                             <m:times xml:id="m22.1.7.1" xref="m22.1.7.1.pmml"/>
                                         </m:apply>
@@ -1113,13 +1113,13 @@
                                     <m:times xml:id="m22.1.19.2.1" xref="m22.1.19.2.1.pmml"/>
                                     <mws:qvar xmlns:mws="http://search.mathweb.org/ns" name="x0"/>
                                     <m:interval closure="open" xml:id="m22.1.19.2.2" xref="m22.1.19.2.2.pmml">
-                                        <m:apply xml:id="XM13" xref="XM13.pmml">
-                                            <m:csymbol cd="ambiguous" xml:id="XM13.1">subscript</m:csymbol>
+                                        <m:apply xml:id="XM15" xref="XM15.pmml">
+                                            <m:csymbol cd="ambiguous" xml:id="XM15.1">subscript</m:csymbol>
                                             <m:ci xml:id="m22.1.12" xref="m22.1.12.pmml">i</m:ci>
                                             <m:times xml:id="m22.1.13.1" xref="m22.1.13.1.pmml"/>
                                         </m:apply>
-                                        <m:apply xml:id="XM14" xref="XM14.pmml">
-                                            <m:csymbol cd="ambiguous" xml:id="XM14.1">subscript</m:csymbol>
+                                        <m:apply xml:id="XM16" xref="XM16.pmml">
+                                            <m:csymbol cd="ambiguous" xml:id="XM16.1">subscript</m:csymbol>
                                             <m:ci xml:id="m22.1.15" xref="m22.1.15.pmml">j</m:ci>
                                             <m:times xml:id="m22.1.16.1" xref="m22.1.16.1.pmml"/>
                                         </m:apply>
@@ -1134,13 +1134,13 @@
                                             <m:mo xml:id="m22.1.19.1.1.pmml" xref="m22.1.19.1.1">⁢</m:mo>
                                             <m:mrow xml:id="m22.1.19.1.2b.pmml">
                                                 <m:mo xml:id="m22.1.19.1.2.pmml">(</m:mo>
-                                                <m:mrow xml:id="XM12.pmml" xref="XM12">
-                                                    <m:msub xml:id="XM12.1.pmml" xref="XM12.1">
+                                                <m:mrow xml:id="XM14.pmml" xref="XM14">
+                                                    <m:msub xml:id="XM14.1.pmml" xref="XM14.1">
                                                         <m:mi xml:id="m22.1.3.pmml" xref="m22.1.3">k</m:mi>
                                                         <m:mo xml:id="m22.1.4.1.pmml" xref="m22.1.4.1">*</m:mo>
                                                     </m:msub>
                                                     <m:mo xml:id="m22.1.5.pmml" xref="m22.1.5">-</m:mo>
-                                                    <m:msub xml:id="XM12.2.pmml" xref="XM12.2">
+                                                    <m:msub xml:id="XM14.2.pmml" xref="XM14.2">
                                                         <m:mi xml:id="m22.1.6.pmml" xref="m22.1.6">l</m:mi>
                                                         <m:mo xml:id="m22.1.7.1.pmml" xref="m22.1.7.1">*</m:mo>
                                                     </m:msub>
@@ -1154,12 +1154,12 @@
                                             <m:mo xml:id="m22.1.19.2.1.pmml" xref="m22.1.19.2.1">⁢</m:mo>
                                             <m:mrow xml:id="m22.1.19.2.2c.pmml" xref="m22.1.19.2.2">
                                                 <m:mo xml:id="m22.1.19.2.2.pmml" xref="m22.1.19.2.2">(</m:mo>
-                                                <m:msub xml:id="XM13.pmml" xref="XM13">
+                                                <m:msub xml:id="XM15.pmml" xref="XM15">
                                                     <m:mi xml:id="m22.1.12.pmml" xref="m22.1.12">i</m:mi>
                                                     <m:mo xml:id="m22.1.13.1.pmml" xref="m22.1.13.1">*</m:mo>
                                                 </m:msub>
                                                 <m:mo xml:id="m22.1.19.2.2a.pmml" xref="m22.1.19.2.2">,</m:mo>
-                                                <m:msub xml:id="XM14.pmml" xref="XM14">
+                                                <m:msub xml:id="XM16.pmml" xref="XM16">
                                                     <m:mi xml:id="m22.1.15.pmml" xref="m22.1.15">j</m:mi>
                                                     <m:mo xml:id="m22.1.16.1.pmml" xref="m22.1.16.1">*</m:mo>
                                                 </m:msub>
@@ -1208,21 +1208,21 @@
                                     </m:apply>
                                     <m:apply xml:id="m23.1.24.2.2a" xref="m23.1.24.2.2.pmml">
                                         <m:abs xml:id="m23.1.24.2.2" xref="m23.1.24.2.2.pmml"/>
-                                        <m:apply xml:id="XM15" xref="XM15.pmml">
+                                        <m:apply xml:id="XM17" xref="XM17.pmml">
                                             <m:minus xml:id="m23.1.17" xref="m23.1.17.pmml"/>
-                                            <m:apply xml:id="XM15.1" xref="XM15.1.pmml">
-                                                <m:times xml:id="XM15.1.1" xref="XM15.1.1.pmml"/>
-                                                <m:apply xml:id="XM15.1.2" xref="XM15.1.2.pmml">
-                                                    <m:csymbol cd="ambiguous" xml:id="XM15.1.2.1">subscript</m:csymbol>
+                                            <m:apply xml:id="XM17.1" xref="XM17.1.pmml">
+                                                <m:times xml:id="XM17.1.1" xref="XM17.1.1.pmml"/>
+                                                <m:apply xml:id="XM17.1.2" xref="XM17.1.2.pmml">
+                                                    <m:csymbol cd="ambiguous" xml:id="XM17.1.2.1">subscript</m:csymbol>
                                                     <m:ci xml:id="m23.1.12" xref="m23.1.12.pmml">F</m:ci>
                                                     <m:ci xml:id="m23.1.13.1" xref="m23.1.13.1.pmml">i</m:ci>
                                                 </m:apply>
                                                 <m:ci xml:id="m23.1.15" xref="m23.1.15.pmml">G</m:ci>
                                             </m:apply>
-                                            <m:apply xml:id="XM15.2" xref="XM15.2.pmml">
-                                                <m:times xml:id="XM15.2.1" xref="XM15.2.1.pmml"/>
-                                                <m:apply xml:id="XM15.2.2" xref="XM15.2.2.pmml">
-                                                    <m:csymbol cd="ambiguous" xml:id="XM15.2.2.1">subscript</m:csymbol>
+                                            <m:apply xml:id="XM17.2" xref="XM17.2.pmml">
+                                                <m:times xml:id="XM17.2.1" xref="XM17.2.1.pmml"/>
+                                                <m:apply xml:id="XM17.2.2" xref="XM17.2.2.pmml">
+                                                    <m:csymbol cd="ambiguous" xml:id="XM17.2.2.1">subscript</m:csymbol>
                                                     <m:ci xml:id="m23.1.18" xref="m23.1.18.pmml">F</m:ci>
                                                     <mws:qvar xmlns:mws="http://search.mathweb.org/ns" name="x1"/>
                                                 </m:apply>
@@ -1258,30 +1258,30 @@
                                         </m:msubsup>
                                         <m:mrow xml:id="m23.1.24.2.2b.pmml" xref="m23.1.24.2.2">
                                             <m:mo xml:id="m23.1.24.2.2.pmml" xref="m23.1.24.2.2">|</m:mo>
-                                            <m:mrow xml:id="XM15.pmml" xref="XM15">
-                                                <m:mrow xml:id="XM15.1.pmml" xref="XM15.1">
-                                                    <m:msub xml:id="XM15.1.2.pmml" xref="XM15.1.2">
+                                            <m:mrow xml:id="XM17.pmml" xref="XM17">
+                                                <m:mrow xml:id="XM17.1.pmml" xref="XM17.1">
+                                                    <m:msub xml:id="XM17.1.2.pmml" xref="XM17.1.2">
                                                         <m:mi xml:id="m23.1.12.pmml" xref="m23.1.12">F</m:mi>
                                                         <m:mi xml:id="m23.1.13.1.pmml" xref="m23.1.13.1">i</m:mi>
                                                     </m:msub>
-                                                    <m:mo xml:id="XM15.1.1.pmml" xref="XM15.1.1">⁢</m:mo>
-                                                    <m:mrow xml:id="XM15.1.3b.pmml">
-                                                        <m:mo xml:id="XM15.1.3.pmml">(</m:mo>
+                                                    <m:mo xml:id="XM17.1.1.pmml" xref="XM17.1.1">⁢</m:mo>
+                                                    <m:mrow xml:id="XM17.1.3b.pmml">
+                                                        <m:mo xml:id="XM17.1.3.pmml">(</m:mo>
                                                         <m:mi xml:id="m23.1.15.pmml" xref="m23.1.15">G</m:mi>
-                                                        <m:mo xml:id="XM15.1.3a.pmml">)</m:mo>
+                                                        <m:mo xml:id="XM17.1.3a.pmml">)</m:mo>
                                                     </m:mrow>
                                                 </m:mrow>
                                                 <m:mo xml:id="m23.1.17.pmml" xref="m23.1.17">-</m:mo>
-                                                <m:mrow xml:id="XM15.2.pmml" xref="XM15.2">
-                                                    <m:msub xml:id="XM15.2.2.pmml" xref="XM15.2.2">
+                                                <m:mrow xml:id="XM17.2.pmml" xref="XM17.2">
+                                                    <m:msub xml:id="XM17.2.2.pmml" xref="XM17.2.2">
                                                         <m:mi xml:id="m23.1.18.pmml" xref="m23.1.18">F</m:mi>
                                                         <mws:qvar xmlns:mws="http://search.mathweb.org/ns" name="x1"/>
                                                     </m:msub>
-                                                    <m:mo xml:id="XM15.2.1.pmml" xref="XM15.2.1">⁢</m:mo>
-                                                    <m:mrow xml:id="XM15.2.3b.pmml">
-                                                        <m:mo xml:id="XM15.2.3.pmml">(</m:mo>
+                                                    <m:mo xml:id="XM17.2.1.pmml" xref="XM17.2.1">⁢</m:mo>
+                                                    <m:mrow xml:id="XM17.2.3b.pmml">
+                                                        <m:mo xml:id="XM17.2.3.pmml">(</m:mo>
                                                         <m:mi xml:id="m23.1.21.pmml" xref="m23.1.21">H</m:mi>
-                                                        <m:mo xml:id="XM15.2.3a.pmml">)</m:mo>
+                                                        <m:mo xml:id="XM17.2.3a.pmml">)</m:mo>
                                                     </m:mrow>
                                                 </m:mrow>
                                             </m:mrow>
@@ -1360,8 +1360,8 @@
                                 <m:apply xml:id="m25.1.10.1" xref="m25.1.10.1.pmml">
                                     <m:times xml:id="m25.1.10.1.1" xref="m25.1.10.1.1.pmml"/>
                                     <m:ci xml:id="m25.1.1" xref="m25.1.1.pmml">λ</m:ci>
-                                    <m:apply xml:id="XM16" xref="XM16.pmml">
-                                        <m:times xml:id="XM16.1" xref="XM16.1.pmml"/>
+                                    <m:apply xml:id="XM18" xref="XM18.pmml">
+                                        <m:times xml:id="XM18.1" xref="XM18.1.pmml"/>
                                         <m:ci xml:id="m25.1.3" xref="m25.1.3.pmml">L</m:ci>
                                         <m:ci xml:id="m25.1.5" xref="m25.1.5.pmml">B</m:ci>
                                     </m:apply>
@@ -1375,13 +1375,13 @@
                                         <m:mo xml:id="m25.1.10.1.1.pmml" xref="m25.1.10.1.1">⁢</m:mo>
                                         <m:mrow xml:id="m25.1.10.1.2b.pmml">
                                             <m:mo xml:id="m25.1.10.1.2.pmml">(</m:mo>
-                                            <m:mrow xml:id="XM16.pmml" xref="XM16">
+                                            <m:mrow xml:id="XM18.pmml" xref="XM18">
                                                 <m:mi xml:id="m25.1.3.pmml" xref="m25.1.3">L</m:mi>
-                                                <m:mo xml:id="XM16.1.pmml" xref="XM16.1">⁢</m:mo>
-                                                <m:mrow xml:id="XM16.2b.pmml">
-                                                    <m:mo xml:id="XM16.2.pmml">(</m:mo>
+                                                <m:mo xml:id="XM18.1.pmml" xref="XM18.1">⁢</m:mo>
+                                                <m:mrow xml:id="XM18.2b.pmml">
+                                                    <m:mo xml:id="XM18.2.pmml">(</m:mo>
                                                     <m:mi xml:id="m25.1.5.pmml" xref="m25.1.5">B</m:mi>
-                                                    <m:mo xml:id="XM16.2a.pmml">)</m:mo>
+                                                    <m:mo xml:id="XM18.2a.pmml">)</m:mo>
                                                 </m:mrow>
                                             </m:mrow>
                                             <m:mo xml:id="m25.1.10.1.2a.pmml">)</m:mo>
@@ -1789,11 +1789,11 @@
                                         <m:ci xml:id="m34.1.7" xref="m34.1.7.pmml">P</m:ci>
                                         <m:ci xml:id="m34.1.9" xref="m34.1.9.pmml">X</m:ci>
                                     </m:apply>
-                                    <m:apply xml:id="XM17" xref="XM17.pmml">
+                                    <m:apply xml:id="XM19" xref="XM19.pmml">
                                         <m:minus xml:id="m34.1.14" xref="m34.1.14.pmml"/>
                                         <m:ci xml:id="m34.1.13" xref="m34.1.13.pmml">X</m:ci>
-                                        <m:apply xml:id="XM17.1" xref="XM17.1.pmml">
-                                            <m:csymbol cd="ambiguous" xml:id="XM17.1.1">subscript</m:csymbol>
+                                        <m:apply xml:id="XM19.1" xref="XM19.1.pmml">
+                                            <m:csymbol cd="ambiguous" xml:id="XM19.1.1">subscript</m:csymbol>
                                             <m:ci xml:id="m34.1.15" xref="m34.1.15.pmml">α</m:ci>
                                             <mws:qvar xmlns:mws="http://search.mathweb.org/ns" name="x0"/>
                                         </m:apply>
@@ -1828,10 +1828,10 @@
                                         <m:mo xml:id="m34.1.11.pmml" xref="m34.1.11">/</m:mo>
                                         <m:mrow xml:id="m34.1.18.2.2b.pmml">
                                             <m:mo xml:id="m34.1.18.2.2.pmml">(</m:mo>
-                                            <m:mrow xml:id="XM17.pmml" xref="XM17">
+                                            <m:mrow xml:id="XM19.pmml" xref="XM19">
                                                 <m:mi xml:id="m34.1.13.pmml" xref="m34.1.13">X</m:mi>
                                                 <m:mo xml:id="m34.1.14.pmml" xref="m34.1.14">-</m:mo>
-                                                <m:msub xml:id="XM17.1.pmml" xref="XM17.1">
+                                                <m:msub xml:id="XM19.1.pmml" xref="XM19.1">
                                                     <m:mi xml:id="m34.1.15.pmml" xref="m34.1.15">α</m:mi>
                                                     <mws:qvar xmlns:mws="http://search.mathweb.org/ns" name="x0"/>
                                                 </m:msub>
@@ -1954,8 +1954,8 @@
                                 <m:apply xml:id="m37.1.14.1" xref="m37.1.14.1.pmml">
                                     <m:times xml:id="m37.1.14.1.1" xref="m37.1.14.1.1.pmml"/>
                                     <m:ci xml:id="m37.1.1" xref="m37.1.1.pmml">H</m:ci>
-                                    <m:apply xml:id="XM18" xref="XM18.pmml">
-                                        <m:times xml:id="XM18.1" xref="XM18.1.pmml"/>
+                                    <m:apply xml:id="XM20" xref="XM20.pmml">
+                                        <m:times xml:id="XM20.1" xref="XM20.1.pmml"/>
                                         <m:ci xml:id="m37.1.3" xref="m37.1.3.pmml">j</m:ci>
                                         <m:ci xml:id="m37.1.4" xref="m37.1.4.pmml">ω</m:ci>
                                     </m:apply>
@@ -1964,8 +1964,8 @@
                                     <m:times xml:id="m37.1.14.2.1" xref="m37.1.14.2.1.pmml"/>
                                     <m:ci xml:id="m37.1.7" xref="m37.1.7.pmml">ℱ</m:ci>
                                     <m:set xml:id="m37.1.14.2.2" xref="m37.1.14.2.2.pmml">
-                                        <m:apply xml:id="XM19" xref="XM19.pmml">
-                                            <m:times xml:id="XM19.1" xref="XM19.1.pmml"/>
+                                        <m:apply xml:id="XM21" xref="XM21.pmml">
+                                            <m:times xml:id="XM21.1" xref="XM21.1.pmml"/>
                                             <m:ci xml:id="m37.1.9" xref="m37.1.9.pmml">h</m:ci>
                                             <m:ci xml:id="m37.1.11" xref="m37.1.11.pmml">t</m:ci>
                                         </m:apply>
@@ -1979,9 +1979,9 @@
                                         <m:mo xml:id="m37.1.14.1.1.pmml" xref="m37.1.14.1.1">⁢</m:mo>
                                         <m:mrow xml:id="m37.1.14.1.2b.pmml">
                                             <m:mo xml:id="m37.1.14.1.2.pmml">(</m:mo>
-                                            <m:mrow xml:id="XM18.pmml" xref="XM18">
+                                            <m:mrow xml:id="XM20.pmml" xref="XM20">
                                                 <m:mi xml:id="m37.1.3.pmml" xref="m37.1.3">j</m:mi>
-                                                <m:mo xml:id="XM18.1.pmml" xref="XM18.1">⁢</m:mo>
+                                                <m:mo xml:id="XM20.1.pmml" xref="XM20.1">⁢</m:mo>
                                                 <m:mi xml:id="m37.1.4.pmml" xref="m37.1.4">ω</m:mi>
                                             </m:mrow>
                                             <m:mo xml:id="m37.1.14.1.2a.pmml">)</m:mo>
@@ -1993,13 +1993,13 @@
                                         <m:mo xml:id="m37.1.14.2.1.pmml" xref="m37.1.14.2.1">⁢</m:mo>
                                         <m:mrow xml:id="m37.1.14.2.2b.pmml" xref="m37.1.14.2.2">
                                             <m:mo xml:id="m37.1.14.2.2.pmml" xref="m37.1.14.2.2">{</m:mo>
-                                            <m:mrow xml:id="XM19.pmml" xref="XM19">
+                                            <m:mrow xml:id="XM21.pmml" xref="XM21">
                                                 <m:mi xml:id="m37.1.9.pmml" xref="m37.1.9">h</m:mi>
-                                                <m:mo xml:id="XM19.1.pmml" xref="XM19.1">⁢</m:mo>
-                                                <m:mrow xml:id="XM19.2b.pmml">
-                                                    <m:mo xml:id="XM19.2.pmml">(</m:mo>
+                                                <m:mo xml:id="XM21.1.pmml" xref="XM21.1">⁢</m:mo>
+                                                <m:mrow xml:id="XM21.2b.pmml">
+                                                    <m:mo xml:id="XM21.2.pmml">(</m:mo>
                                                     <m:mi xml:id="m37.1.11.pmml" xref="m37.1.11">t</m:mi>
-                                                    <m:mo xml:id="XM19.2a.pmml">)</m:mo>
+                                                    <m:mo xml:id="XM21.2a.pmml">)</m:mo>
                                                 </m:mrow>
                                             </m:mrow>
                                             <m:mo xml:id="m37.1.14.2.2a.pmml" xref="m37.1.14.2.2">}</m:mo>
@@ -2049,7 +2049,7 @@
                                     <m:eq xml:id="m39.1.7" xref="m39.1.7.pmml"/>
                                     <m:apply xml:id="m39.1.26.2" xref="m39.1.26.2.pmml">
                                         <m:csymbol cd="ambiguous" xml:id="m39.1.26.2.1">superscript</m:csymbol>
-                                        <m:apply xml:id="XM20" xref="XM20.pmml">
+                                        <m:apply xml:id="XM22" xref="XM22.pmml">
                                             <m:plus xml:id="m39.1.3" xref="m39.1.3.pmml"/>
                                             <m:ci xml:id="m39.1.2" xref="m39.1.2.pmml">x</m:ci>
                                             <m:ci xml:id="m39.1.4" xref="m39.1.4.pmml">y</m:ci>
@@ -2134,7 +2134,7 @@
                                         <m:msup xml:id="m39.1.26.2.pmml" xref="m39.1.26.2">
                                             <m:mrow xml:id="m39.1.26.2.2b.pmml">
                                                 <m:mo xml:id="m39.1.26.2.2.pmml">(</m:mo>
-                                                <m:mrow xml:id="XM20.pmml" xref="XM20">
+                                                <m:mrow xml:id="XM22.pmml" xref="XM22">
                                                     <m:mi xml:id="m39.1.2.pmml" xref="m39.1.2">x</m:mi>
                                                     <m:mo xml:id="m39.1.3.pmml" xref="m39.1.3">+</m:mo>
                                                     <m:mi xml:id="m39.1.4.pmml" xref="m39.1.4">y</m:mi>
@@ -2350,7 +2350,7 @@
                                 </m:apply>
                                 <m:apply xml:id="m42.1.12.2" xref="m42.1.12.2.pmml">
                                     <m:csymbol cd="ambiguous" xml:id="m42.1.12.2.1">superscript</m:csymbol>
-                                    <m:apply xml:id="XM21" xref="XM21.pmml">
+                                    <m:apply xml:id="XM23" xref="XM23.pmml">
                                         <m:plus xml:id="m42.1.8" xref="m42.1.8.pmml"/>
                                         <m:apply xml:id="m42.1.7" xref="m42.1.7.pmml">
                                             <m:root xml:id="m42.1.7a" xref="m42.1.7.pmml"/>
@@ -2380,7 +2380,7 @@
                                     <m:msup xml:id="m42.1.12.2.pmml" xref="m42.1.12.2">
                                         <m:mrow xml:id="m42.1.12.2.2b.pmml">
                                             <m:mo xml:id="m42.1.12.2.2.pmml">(</m:mo>
-                                            <m:mrow xml:id="XM21.pmml" xref="XM21">
+                                            <m:mrow xml:id="XM23.pmml" xref="XM23">
                                                 <m:msqrt xml:id="m42.1.7.pmml" xref="m42.1.7">
                                                     <m:mrow xml:id="m42.1.7.2.pmml" xref="m42.1.7.2">
                                                         <m:mn xml:id="m42.1.7.2.1.pmml" xref="m42.1.7.2.1">3</m:mn>
@@ -2435,17 +2435,17 @@
                                                 </m:apply>
                                             </m:apply>
                                         </m:apply>
-                                        <m:apply xml:id="XM22" xref="XM22.pmml">
+                                        <m:apply xml:id="XM24" xref="XM24.pmml">
                                             <m:plus xml:id="m43.1.12" xref="m43.1.12.pmml"/>
-                                            <m:apply xml:id="XM22.1" xref="XM22.1.pmml">
-                                                <m:times xml:id="XM22.1.1" xref="XM22.1.1.pmml"/>
+                                            <m:apply xml:id="XM24.1" xref="XM24.1.pmml">
+                                                <m:times xml:id="XM24.1.1" xref="XM24.1.1.pmml"/>
                                                 <m:apply xml:id="m43.1.9" xref="m43.1.9.pmml">
                                                     <m:divide xml:id="m43.1.9.1"/>
                                                     <m:ci xml:id="m43.1.9.2" xref="m43.1.9.2.pmml">A</m:ci>
                                                     <m:cn type="integer" xml:id="m43.1.9.3" xref="m43.1.9.3.pmml">2</m:cn>
                                                 </m:apply>
-                                                <m:apply xml:id="XM22.1.2" xref="XM22.1.2.pmml">
-                                                    <m:csymbol cd="ambiguous" xml:id="XM22.1.2.1">subscript</m:csymbol>
+                                                <m:apply xml:id="XM24.1.2" xref="XM24.1.2.pmml">
+                                                    <m:csymbol cd="ambiguous" xml:id="XM24.1.2.1">subscript</m:csymbol>
                                                     <m:ci xml:id="m43.1.10" xref="m43.1.10.pmml">T</m:ci>
                                                     <m:apply xml:id="m43.1.11.1" xref="m43.1.11.1.pmml">
                                                         <m:times xml:id="m43.1.11.1.3" xref="m43.1.11.1.3.pmml"/>
@@ -2454,16 +2454,16 @@
                                                     </m:apply>
                                                 </m:apply>
                                             </m:apply>
-                                            <m:apply xml:id="XM22.2" xref="XM22.2.pmml">
-                                                <m:times xml:id="XM22.2.1" xref="XM22.2.1.pmml"/>
+                                            <m:apply xml:id="XM24.2" xref="XM24.2.pmml">
+                                                <m:times xml:id="XM24.2.1" xref="XM24.2.1.pmml"/>
                                                 <m:apply xml:id="m43.1.13" xref="m43.1.13.pmml">
                                                     <m:divide xml:id="m43.1.13.1"/>
                                                     <m:ci xml:id="m43.1.13.2" xref="m43.1.13.2.pmml">B</m:ci>
                                                     <m:cn type="integer" xml:id="m43.1.13.3" xref="m43.1.13.3.pmml">2</m:cn>
                                                 </m:apply>
                                                 <m:ci xml:id="m43.1.14" xref="m43.1.14.pmml">T</m:ci>
-                                                <m:apply xml:id="XM22.2.2" xref="XM22.2.2.pmml">
-                                                    <m:csymbol cd="ambiguous" xml:id="XM22.2.2.1">subscript</m:csymbol>
+                                                <m:apply xml:id="XM24.2.2" xref="XM24.2.2.pmml">
+                                                    <m:csymbol cd="ambiguous" xml:id="XM24.2.2.1">subscript</m:csymbol>
                                                     <m:ci xml:id="m43.1.15" xref="m43.1.15.pmml">η</m:ci>
                                                     <m:apply xml:id="m43.1.16.1" xref="m43.1.16.1.pmml">
                                                         <m:times xml:id="m43.1.16.1.3" xref="m43.1.16.1.3.pmml"/>
@@ -2473,26 +2473,26 @@
                                                 </m:apply>
                                             </m:apply>
                                         </m:apply>
-                                        <m:apply xml:id="XM23" xref="XM23.pmml">
+                                        <m:apply xml:id="XM25" xref="XM25.pmml">
                                             <m:plus xml:id="m43.1.22" xref="m43.1.22.pmml"/>
-                                            <m:apply xml:id="XM23.1" xref="XM23.1.pmml">
-                                                <m:csymbol cd="ambiguous" xml:id="XM23.1.1">superscript</m:csymbol>
-                                                <m:apply xml:id="XM23.1.2">
-                                                    <m:csymbol cd="ambiguous" xml:id="XM23.1.2.1">subscript</m:csymbol>
+                                            <m:apply xml:id="XM25.1" xref="XM25.1.pmml">
+                                                <m:csymbol cd="ambiguous" xml:id="XM25.1.1">superscript</m:csymbol>
+                                                <m:apply xml:id="XM25.1.2">
+                                                    <m:csymbol cd="ambiguous" xml:id="XM25.1.2.1">subscript</m:csymbol>
                                                     <m:ci xml:id="m43.1.19" xref="m43.1.19.pmml">δ</m:ci>
                                                     <m:ci xml:id="m43.1.20.1" xref="m43.1.20.1.pmml">ν</m:ci>
                                                 </m:apply>
                                                 <m:ci xml:id="m43.1.21.1" xref="m43.1.21.1.pmml">μ</m:ci>
                                             </m:apply>
-                                            <m:apply xml:id="XM23.2" xref="XM23.2.pmml">
-                                                <m:times xml:id="XM23.2.1" xref="XM23.2.1.pmml"/>
-                                                <m:apply xml:id="XM23.2.2" xref="XM23.2.2.pmml">
-                                                    <m:csymbol cd="ambiguous" xml:id="XM23.2.2.1">superscript</m:csymbol>
+                                            <m:apply xml:id="XM25.2" xref="XM25.2.pmml">
+                                                <m:times xml:id="XM25.2.1" xref="XM25.2.1.pmml"/>
+                                                <m:apply xml:id="XM25.2.2" xref="XM25.2.2.pmml">
+                                                    <m:csymbol cd="ambiguous" xml:id="XM25.2.2.1">superscript</m:csymbol>
                                                     <m:ci xml:id="m43.1.23" xref="m43.1.23.pmml">u</m:ci>
                                                     <m:ci xml:id="m43.1.24.1" xref="m43.1.24.1.pmml">μ</m:ci>
                                                 </m:apply>
-                                                <m:apply xml:id="XM23.2.3" xref="XM23.2.3.pmml">
-                                                    <m:csymbol cd="ambiguous" xml:id="XM23.2.3.1">subscript</m:csymbol>
+                                                <m:apply xml:id="XM25.2.3" xref="XM25.2.3.pmml">
+                                                    <m:csymbol cd="ambiguous" xml:id="XM25.2.3.1">subscript</m:csymbol>
                                                     <m:ci xml:id="m43.1.25" xref="m43.1.25.pmml">u</m:ci>
                                                     <m:ci xml:id="m43.1.26.1" xref="m43.1.26.1.pmml">ν</m:ci>
                                                 </m:apply>
@@ -2544,14 +2544,14 @@
                                             <m:mo xml:id="m43.1.34.2.1.1b.pmml" xref="m43.1.34.2.1.1">⁢</m:mo>
                                             <m:mrow xml:id="m43.1.34.2.1.2b.pmml">
                                                 <m:mo xml:id="m43.1.34.2.1.2.pmml">(</m:mo>
-                                                <m:mrow xml:id="XM22.pmml" xref="XM22">
-                                                    <m:mrow xml:id="XM22.1.pmml" xref="XM22.1">
+                                                <m:mrow xml:id="XM24.pmml" xref="XM24">
+                                                    <m:mrow xml:id="XM24.1.pmml" xref="XM24.1">
                                                         <m:mfrac xml:id="m43.1.9.pmml" xref="m43.1.9">
                                                             <m:mi xml:id="m43.1.9.2.pmml" xref="m43.1.9.2">A</m:mi>
                                                             <m:mn xml:id="m43.1.9.3.pmml" xref="m43.1.9.3">2</m:mn>
                                                         </m:mfrac>
-                                                        <m:mo xml:id="XM22.1.1.pmml" xref="XM22.1.1">⁢</m:mo>
-                                                        <m:msub xml:id="XM22.1.2.pmml" xref="XM22.1.2">
+                                                        <m:mo xml:id="XM24.1.1.pmml" xref="XM24.1.1">⁢</m:mo>
+                                                        <m:msub xml:id="XM24.1.2.pmml" xref="XM24.1.2">
                                                             <m:mi xml:id="m43.1.10.pmml" xref="m43.1.10">T</m:mi>
                                                             <m:mrow xml:id="m43.1.11.1.pmml" xref="m43.1.11.1">
                                                                 <m:mi xml:id="m43.1.11.1.1.pmml" xref="m43.1.11.1.1">α</m:mi>
@@ -2561,15 +2561,15 @@
                                                         </m:msub>
                                                     </m:mrow>
                                                     <m:mo xml:id="m43.1.12.pmml" xref="m43.1.12">+</m:mo>
-                                                    <m:mrow xml:id="XM22.2.pmml" xref="XM22.2">
+                                                    <m:mrow xml:id="XM24.2.pmml" xref="XM24.2">
                                                         <m:mfrac xml:id="m43.1.13.pmml" xref="m43.1.13">
                                                             <m:mi xml:id="m43.1.13.2.pmml" xref="m43.1.13.2">B</m:mi>
                                                             <m:mn xml:id="m43.1.13.3.pmml" xref="m43.1.13.3">2</m:mn>
                                                         </m:mfrac>
-                                                        <m:mo xml:id="XM22.2.1.pmml" xref="XM22.2.1">⁢</m:mo>
+                                                        <m:mo xml:id="XM24.2.1.pmml" xref="XM24.2.1">⁢</m:mo>
                                                         <m:mi xml:id="m43.1.14.pmml" xref="m43.1.14">T</m:mi>
-                                                        <m:mo xml:id="XM22.2.1a.pmml" xref="XM22.2.1">⁢</m:mo>
-                                                        <m:msub xml:id="XM22.2.2.pmml" xref="XM22.2.2">
+                                                        <m:mo xml:id="XM24.2.1a.pmml" xref="XM24.2.1">⁢</m:mo>
+                                                        <m:msub xml:id="XM24.2.2.pmml" xref="XM24.2.2">
                                                             <m:mi xml:id="m43.1.15.pmml" xref="m43.1.15">η</m:mi>
                                                             <m:mrow xml:id="m43.1.16.1.pmml" xref="m43.1.16.1">
                                                                 <m:mi xml:id="m43.1.16.1.1.pmml" xref="m43.1.16.1.1">α</m:mi>
@@ -2584,20 +2584,20 @@
                                             <m:mo xml:id="m43.1.34.2.1.1c.pmml" xref="m43.1.34.2.1.1">⁢</m:mo>
                                             <m:mrow xml:id="m43.1.34.2.1.3b.pmml">
                                                 <m:mo xml:id="m43.1.34.2.1.3.pmml">(</m:mo>
-                                                <m:mrow xml:id="XM23.pmml" xref="XM23">
-                                                    <m:msubsup xml:id="XM23.1.pmml" xref="XM23.1">
+                                                <m:mrow xml:id="XM25.pmml" xref="XM25">
+                                                    <m:msubsup xml:id="XM25.1.pmml" xref="XM25.1">
                                                         <m:mi xml:id="m43.1.19.pmml" xref="m43.1.19">δ</m:mi>
                                                         <m:mi xml:id="m43.1.20.1.pmml" xref="m43.1.20.1">ν</m:mi>
                                                         <m:mi xml:id="m43.1.21.1.pmml" xref="m43.1.21.1">μ</m:mi>
                                                     </m:msubsup>
                                                     <m:mo xml:id="m43.1.22.pmml" xref="m43.1.22">+</m:mo>
-                                                    <m:mrow xml:id="XM23.2.pmml" xref="XM23.2">
-                                                        <m:msup xml:id="XM23.2.2.pmml" xref="XM23.2.2">
+                                                    <m:mrow xml:id="XM25.2.pmml" xref="XM25.2">
+                                                        <m:msup xml:id="XM25.2.2.pmml" xref="XM25.2.2">
                                                             <m:mi xml:id="m43.1.23.pmml" xref="m43.1.23">u</m:mi>
                                                             <m:mi xml:id="m43.1.24.1.pmml" xref="m43.1.24.1">μ</m:mi>
                                                         </m:msup>
-                                                        <m:mo xml:id="XM23.2.1.pmml" xref="XM23.2.1">⁢</m:mo>
-                                                        <m:msub xml:id="XM23.2.3.pmml" xref="XM23.2.3">
+                                                        <m:mo xml:id="XM25.2.1.pmml" xref="XM25.2.1">⁢</m:mo>
+                                                        <m:msub xml:id="XM25.2.3.pmml" xref="XM25.2.3">
                                                             <m:mi xml:id="m43.1.25.pmml" xref="m43.1.25">u</m:mi>
                                                             <m:mi xml:id="m43.1.26.1.pmml" xref="m43.1.26.1">ν</m:mi>
                                                         </m:msub>
@@ -2909,101 +2909,93 @@
                 <formula id="f1.0">
                     <m:math>
                         <m:semantics xml:id="m49.1a">
-                            <m:apply xml:id="m49.1.20" xref="m49.1.20.pmml">
-                                <m:and xml:id="m49.1.20a" xref="m49.1.20.pmml"/>
-                                <m:apply xml:id="m49.1.20b" xref="m49.1.20.pmml">
-                                    <m:eq xml:id="m49.1.5" xref="m49.1.5.pmml"/>
-                                    <m:apply xml:id="m49.1.20.2" xref="m49.1.20.2.pmml">
-                                        <m:times xml:id="m49.1.20.2.1" xref="m49.1.20.2.1.pmml"/>
-                                        <m:ci xml:id="m49.1.1" xref="m49.1.1.pmml">μ</m:ci>
-                                        <m:ci xml:id="m49.1.3" xref="m49.1.3.pmml">A</m:ci>
-                                    </m:apply>
-                                    <m:apply xml:id="m49.1.20.3a" xref="m49.1.20.3.pmml">
-                                        <m:times xml:id="m49.1.20.3.1" xref="m49.1.20.3.1.pmml"/>
-                                        <m:apply xml:id="m49.1.8b" xref="m49.1.8.pmml">
-                                            <m:csymbol cd="latexml" xml:id="m49.1.8" xref="m49.1.8.pmml">cases</m:csymbol>
-                                            <m:cn type="integer" xml:id="m49.1.7.1" xref="m49.1.7.1.pmml">1</m:cn>
-                                            <m:mtext xml:id="m49.1.8a" xref="m49.1.8.pmml">otherwise</m:mtext>
+                            <m:apply xml:id="m49.1.9" xref="m49.1.9.pmml">
+                                <m:eq xml:id="m49.1.5" xref="m49.1.5.pmml"/>
+                                <m:apply xml:id="m49.1.9.1" xref="m49.1.9.1.pmml">
+                                    <m:times xml:id="m49.1.9.1.1" xref="m49.1.9.1.1.pmml"/>
+                                    <m:ci xml:id="m49.1.1" xref="m49.1.1.pmml">μ</m:ci>
+                                    <m:ci xml:id="m49.1.3" xref="m49.1.3.pmml">A</m:ci>
+                                </m:apply>
+                                <m:apply xml:id="m49.1.8a" xref="m49.1.8.pmml">
+                                    <m:csymbol cd="latexml" xml:id="m49.1.8" xref="m49.1.8.pmml">cases</m:csymbol>
+                                    <m:cn type="integer" xml:id="m49.1.7.1" xref="m49.1.7.1.pmml">1</m:cn>
+                                    <m:apply xml:id="m49.1.7.2" xref="m49.1.7.2.pmml">
+                                        <m:in xml:id="m49.1.7.2.3" xref="m49.1.7.2.3.pmml"/>
+                                        <m:apply xml:id="m49.1.7.2.5" xref="m49.1.7.2.5.pmml">
+                                            <m:times xml:id="m49.1.7.2.5.1" xref="m49.1.7.2.5.1.pmml"/>
+                                            <m:mtext xml:id="m49.1.7.2.1" xref="m49.1.7.2.1.pmml"> if </m:mtext>
+                                            <m:cn type="integer" xml:id="m49.1.7.2.2" xref="m49.1.7.2.2.pmml">0</m:cn>
                                         </m:apply>
-                                        <m:mtext xml:id="m49.1.20.3" xref="m49.1.20.3.pmml">Align</m:mtext>
-                                        <m:mtext xml:id="m49.1.9" xref="m49.1.9.pmml"> if </m:mtext>
-                                        <m:cn type="integer" xml:id="m49.1.10" xref="m49.1.10.pmml">0</m:cn>
+                                        <m:ci xml:id="m49.1.7.2.4" xref="m49.1.7.2.4.pmml">A</m:ci>
                                     </m:apply>
-                                </m:apply>
-                                <m:apply xml:id="m49.1.20c" xref="m49.1.20.pmml">
-                                    <m:in xml:id="m49.1.11" xref="m49.1.11.pmml"/>
-                                    <m:share href="#m49.1.20.3" xml:id="m49.1.20d" xref="m49.1.20.pmml"/>
-                                    <m:apply xml:id="m49.1.20.4a" xref="m49.1.20.4.pmml">
-                                        <m:times xml:id="m49.1.20.4.1" xref="m49.1.20.4.1.pmml"/>
-                                        <m:ci xml:id="m49.1.12" xref="m49.1.12.pmml">A</m:ci>
-                                        <m:cn type="integer" xml:id="m49.1.14" xref="m49.1.14.pmml">0</m:cn>
-                                        <m:mtext xml:id="m49.1.20.4" xref="m49.1.20.4.pmml">Align</m:mtext>
-                                        <m:mtext xml:id="m49.1.15" xref="m49.1.15.pmml"> if </m:mtext>
-                                        <m:cn type="integer" xml:id="m49.1.16" xref="m49.1.16.pmml">0</m:cn>
+                                    <m:cn type="integer" xml:id="m49.1.7.3" xref="m49.1.7.3.pmml">0</m:cn>
+                                    <m:apply xml:id="m49.1.7.4" xref="m49.1.7.4.pmml">
+                                        <m:notin xml:id="m49.1.7.4.3" xref="m49.1.7.4.3.pmml"/>
+                                        <m:apply xml:id="m49.1.7.4.6" xref="m49.1.7.4.6.pmml">
+                                            <m:times xml:id="m49.1.7.4.6.1" xref="m49.1.7.4.6.1.pmml"/>
+                                            <m:mtext xml:id="m49.1.7.4.1" xref="m49.1.7.4.1.pmml"> if </m:mtext>
+                                            <m:cn type="integer" xml:id="m49.1.7.4.2" xref="m49.1.7.4.2.pmml">0</m:cn>
+                                        </m:apply>
+                                        <m:ci xml:id="m49.1.7.4.4" xref="m49.1.7.4.4.pmml">A</m:ci>
                                     </m:apply>
-                                </m:apply>
-                                <m:apply xml:id="m49.1.20e" xref="m49.1.20.pmml">
-                                    <m:notin xml:id="m49.1.17" xref="m49.1.17.pmml"/>
-                                    <m:share href="#m49.1.20.4" xml:id="m49.1.20f" xref="m49.1.20.pmml"/>
-                                    <m:ci xml:id="m49.1.18" xref="m49.1.18.pmml">A</m:ci>
                                 </m:apply>
                             </m:apply>
                             <m:annotation-xml encoding="MathML-Presentation" xml:id="m49.1b">
-                                <m:mrow xml:id="m49.1.20.pmml" xref="m49.1.20">
-                                    <m:mrow xml:id="m49.1.20a.pmml" xref="m49.1.20">
-                                        <m:mrow xml:id="m49.1.20.2.pmml" xref="m49.1.20.2">
-                                            <m:mi xml:id="m49.1.1.pmml" xref="m49.1.1">μ</m:mi>
-                                            <m:mo xml:id="m49.1.20.2.1.pmml" xref="m49.1.20.2.1">⁢</m:mo>
-                                            <m:mrow xml:id="m49.1.20.2.2b.pmml">
-                                                <m:mo xml:id="m49.1.20.2.2.pmml">(</m:mo>
-                                                <m:mi xml:id="m49.1.3.pmml" xref="m49.1.3">A</m:mi>
-                                                <m:mo xml:id="m49.1.20.2.2a.pmml">)</m:mo>
-                                            </m:mrow>
+                                <m:mrow xml:id="m49.1.9.pmml" xref="m49.1.9">
+                                    <m:mrow xml:id="m49.1.9.1.pmml" xref="m49.1.9.1">
+                                        <m:mi xml:id="m49.1.1.pmml" xref="m49.1.1">μ</m:mi>
+                                        <m:mo xml:id="m49.1.9.1.1.pmml" xref="m49.1.9.1.1">⁢</m:mo>
+                                        <m:mrow xml:id="m49.1.9.1.2b.pmml">
+                                            <m:mo xml:id="m49.1.9.1.2.pmml">(</m:mo>
+                                            <m:mi xml:id="m49.1.3.pmml" xref="m49.1.3">A</m:mi>
+                                            <m:mo xml:id="m49.1.9.1.2a.pmml">)</m:mo>
                                         </m:mrow>
-                                        <m:mo xml:id="m49.1.5.pmml" xref="m49.1.5">=</m:mo>
-                                        <m:mrow xml:id="m49.1.20.3b.pmml" xref="m49.1.20.3">
-                                            <m:mrow xml:id="m49.1.8e.pmml" xref="m49.1.8">
-                                                <m:mo xml:id="m49.1.8.pmml" xref="m49.1.8">{</m:mo>
-                                                <m:mtable xml:id="m49.1.8a.pmml" xref="m49.1.8">
-                                                    <m:mtr xml:id="m49.1.8b.pmml" xref="m49.1.8">
-                                                        <m:mtd columnalign="left" xml:id="m49.1.8c.pmml" xref="m49.1.8">
-                                                            <m:mn xml:id="m49.1.7.1.pmml" xref="m49.1.7.1">1</m:mn>
-                                                        </m:mtd>
-                                                        <m:mtd xml:id="m49.1.8d.pmml" xref="m49.1.8"/>
-                                                    </m:mtr>
-                                                </m:mtable>
-                                            </m:mrow>
-                                            <m:mo xml:id="m49.1.20.3.1.pmml" xref="m49.1.20.3.1">⁢</m:mo>
-                                            <m:merror class="ltx_ERROR undefined undefined" xml:id="m49.1.20.3.pmml" xref="m49.1.20.3">
-                                                <m:mtext xml:id="m49.1.20.3a.pmml" xref="m49.1.20.3">Align</m:mtext>
-                                            </m:merror>
-                                            <m:mo xml:id="m49.1.20.3.1a.pmml" xref="m49.1.20.3.1">⁢</m:mo>
-                                            <m:mtext xml:id="m49.1.9.pmml" xref="m49.1.9"> if </m:mtext>
-                                            <m:mo xml:id="m49.1.20.3.1b.pmml" xref="m49.1.20.3.1">⁢</m:mo>
-                                            <m:mn xml:id="m49.1.10.pmml" xref="m49.1.10">0</m:mn>
-                                        </m:mrow>
-                                        <m:mo xml:id="m49.1.11.pmml" xref="m49.1.11">∈</m:mo>
-                                        <m:mrow xml:id="m49.1.20.4b.pmml" xref="m49.1.20.4">
-                                            <m:mi xml:id="m49.1.12.pmml" xref="m49.1.12">A</m:mi>
-                                            <m:mo xml:id="m49.1.20.4.1.pmml" xref="m49.1.20.4.1">⁢</m:mo>
-                                            <m:mn xml:id="m49.1.14.pmml" xref="m49.1.14">0</m:mn>
-                                            <m:mo xml:id="m49.1.20.4.1a.pmml" xref="m49.1.20.4.1">⁢</m:mo>
-                                            <m:merror class="ltx_ERROR undefined undefined" xml:id="m49.1.20.4.pmml" xref="m49.1.20.4">
-                                                <m:mtext xml:id="m49.1.20.4a.pmml" xref="m49.1.20.4">Align</m:mtext>
-                                            </m:merror>
-                                            <m:mo xml:id="m49.1.20.4.1b.pmml" xref="m49.1.20.4.1">⁢</m:mo>
-                                            <m:mtext xml:id="m49.1.15.pmml" xref="m49.1.15"> if </m:mtext>
-                                            <m:mo xml:id="m49.1.20.4.1c.pmml" xref="m49.1.20.4.1">⁢</m:mo>
-                                            <m:mn xml:id="m49.1.16.pmml" xref="m49.1.16">0</m:mn>
-                                        </m:mrow>
-                                        <m:mo xml:id="m49.1.17.pmml" xref="m49.1.17">∉</m:mo>
-                                        <m:mi xml:id="m49.1.18.pmml" xref="m49.1.18">A</m:mi>
                                     </m:mrow>
-                                    <m:mo xml:id="m49.1.20b.pmml" xref="m49.1.20">.</m:mo>
+                                    <m:mo xml:id="m49.1.5.pmml" xref="m49.1.5">=</m:mo>
+                                    <m:mrow xml:id="m49.1.8h.pmml" xref="m49.1.8">
+                                        <m:mo xml:id="m49.1.8.pmml" xref="m49.1.8">{</m:mo>
+                                        <m:mtable xml:id="m49.1.8a.pmml" xref="m49.1.8">
+                                            <m:mtr xml:id="m49.1.8b.pmml" xref="m49.1.8">
+                                                <m:mtd columnalign="left" xml:id="m49.1.8c.pmml" xref="m49.1.8">
+                                                    <m:mn xml:id="m49.1.7.1.pmml" xref="m49.1.7.1">1</m:mn>
+                                                </m:mtd>
+                                                <m:mtd columnalign="left" xml:id="m49.1.8d.pmml" xref="m49.1.8">
+                                                    <m:mrow xml:id="m49.1.7.2.pmml" xref="m49.1.7.2">
+                                                        <m:mrow xml:id="m49.1.7.2.5.pmml" xref="m49.1.7.2.5">
+                                                            <m:mtext xml:id="m49.1.7.2.1.pmml" xref="m49.1.7.2.1"> if </m:mtext>
+                                                            <m:mo xml:id="m49.1.7.2.5.1.pmml" xref="m49.1.7.2.5.1">⁢</m:mo>
+                                                            <m:mn xml:id="m49.1.7.2.2.pmml" xref="m49.1.7.2.2">0</m:mn>
+                                                        </m:mrow>
+                                                        <m:mo xml:id="m49.1.7.2.3.pmml" xref="m49.1.7.2.3">∈</m:mo>
+                                                        <m:mi xml:id="m49.1.7.2.4.pmml" xref="m49.1.7.2.4">A</m:mi>
+                                                    </m:mrow>
+                                                </m:mtd>
+                                            </m:mtr>
+                                            <m:mtr xml:id="m49.1.8e.pmml" xref="m49.1.8">
+                                                <m:mtd columnalign="left" xml:id="m49.1.8f.pmml" xref="m49.1.8">
+                                                    <m:mn xml:id="m49.1.7.3.pmml" xref="m49.1.7.3">0</m:mn>
+                                                </m:mtd>
+                                                <m:mtd columnalign="left" xml:id="m49.1.8g.pmml" xref="m49.1.8">
+                                                    <m:mrow xml:id="m49.1.7.4.pmml" xref="m49.1.7.4">
+                                                        <m:mrow xml:id="m49.1.7.4a.pmml" xref="m49.1.7.4">
+                                                            <m:mrow xml:id="m49.1.7.4.6.pmml" xref="m49.1.7.4.6">
+                                                                <m:mtext xml:id="m49.1.7.4.1.pmml" xref="m49.1.7.4.1"> if </m:mtext>
+                                                                <m:mo xml:id="m49.1.7.4.6.1.pmml" xref="m49.1.7.4.6.1">⁢</m:mo>
+                                                                <m:mn xml:id="m49.1.7.4.2.pmml" xref="m49.1.7.4.2">0</m:mn>
+                                                            </m:mrow>
+                                                            <m:mo xml:id="m49.1.7.4.3.pmml" xref="m49.1.7.4.3">∉</m:mo>
+                                                            <m:mi xml:id="m49.1.7.4.4.pmml" xref="m49.1.7.4.4">A</m:mi>
+                                                        </m:mrow>
+                                                        <m:mo xml:id="m49.1.7.4b.pmml" xref="m49.1.7.4">.</m:mo>
+                                                    </m:mrow>
+                                                </m:mtd>
+                                            </m:mtr>
+                                        </m:mtable>
+                                    </m:mrow>
                                 </m:mrow>
                             </m:annotation-xml>
-                            <m:annotation encoding="application/x-tex" xml:id="m49.1c">\mu(A)={\cases{1}&amp;{\mbox{ if }}0\in A\\
-                                0&amp;{\mbox{ if }}0\notin A.}</m:annotation>
+                            <m:annotation encoding="application/x-tex" xml:id="m49.1c">\mu(A)={\begin{cases}1&amp;{\mbox{ if }}0\in A\\
+                                0&amp;{\mbox{ if }}0\notin A.\end{cases}}</m:annotation>
                         </m:semantics>
                     </m:math>
                 </formula>
@@ -3097,8 +3089,8 @@
                                                 </m:apply>
                                                 <m:interval closure="open" xml:id="m52.1.1.2.15.3" xref="m52.1.1.2.15.3.pmml">
                                                     <mws:qvar xmlns:mws="http://search.mathweb.org/ns" name="x0"/>
-                                                    <m:apply xml:id="XM24" xref="XM24.pmml">
-                                                        <m:csymbol cd="ambiguous" xml:id="XM24.1">subscript</m:csymbol>
+                                                    <m:apply xml:id="XM26" xref="XM26.pmml">
+                                                        <m:csymbol cd="ambiguous" xml:id="XM26.1">subscript</m:csymbol>
                                                         <m:ci xml:id="m52.1.1.2.6" xref="m52.1.1.2.6.pmml">z</m:ci>
                                                         <m:cn type="integer" xml:id="m52.1.1.2.7.1" xref="m52.1.1.2.7.1.pmml">1</m:cn>
                                                     </m:apply>
@@ -3166,8 +3158,8 @@
                                                         <m:ci xml:id="m52.1.4.2.9" xref="m52.1.4.2.9.pmml">k</m:ci>
                                                         <m:cn type="integer" xml:id="m52.1.4.2.10.1" xref="m52.1.4.2.10.1.pmml">1</m:cn>
                                                     </m:apply>
-                                                    <m:apply xml:id="XM25" xref="XM25.pmml">
-                                                        <m:csymbol cd="ambiguous" xml:id="XM25.1">subscript</m:csymbol>
+                                                    <m:apply xml:id="XM27" xref="XM27.pmml">
+                                                        <m:csymbol cd="ambiguous" xml:id="XM27.1">subscript</m:csymbol>
                                                         <m:apply xml:id="m52.1.4.2.12" xref="m52.1.4.2.12.pmml">
                                                             <m:ci xml:id="m52.1.4.2.12.1" xref="m52.1.4.2.12.1.pmml">normal-⏟</m:ci>
                                                             <m:apply xml:id="m52.1.4.2.12.2" xref="m52.1.4.2.12.2.pmml">
@@ -3213,8 +3205,8 @@
                                                         <mws:qvar xmlns:mws="http://search.mathweb.org/ns" name="x6"/>
                                                     </m:apply>
                                                 </m:apply>
-                                                <m:apply xml:id="XM26" xref="XM26.pmml">
-                                                    <m:csymbol cd="ambiguous" xml:id="XM26.1">subscript</m:csymbol>
+                                                <m:apply xml:id="XM28" xref="XM28.pmml">
+                                                    <m:csymbol cd="ambiguous" xml:id="XM28.1">subscript</m:csymbol>
                                                     <m:apply xml:id="m52.1.9.2.3" xref="m52.1.9.2.3.pmml">
                                                         <m:ci xml:id="m52.1.9.2.3.1" xref="m52.1.9.2.3.1.pmml">normal-⏟</m:ci>
                                                         <m:apply xml:id="m52.1.9.2.3.2" xref="m52.1.9.2.3.2.pmml">
@@ -3250,15 +3242,11 @@
                                                         <m:mtext xml:id="m52.1.9.2.4.1.2" xref="m52.1.9.2.4.1.2.pmml"> (i.e., </m:mtext>
                                                         <m:apply xml:id="m52.1.9.2.4.1.3" xref="m52.1.9.2.4.1.3.pmml">
                                                             <m:divide xml:id="m52.1.9.2.4.1.3.1"/>
-                                                            <m:apply xml:id="m52.1.9.2.4.1.3.2a" xref="m52.1.9.2.4.1.3.2.pmml">
-                                                                <m:times xml:id="m52.1.9.2.4.1.3.2.3" xref="m52.1.9.2.4.1.3.2.3.pmml"/>
-                                                                <m:mtext xml:id="m52.1.9.2.4.1.3.2" xref="m52.1.9.2.4.1.3.2.pmml">\operatorname</m:mtext>
-                                                                <m:ci xml:id="m52.1.9.2.4.1.3.2.1" xref="m52.1.9.2.4.1.3.2.1.pmml">d</m:ci>
+                                                            <m:apply xml:id="m52.1.9.2.4.1.3.2" xref="m52.1.9.2.4.1.3.2.pmml">
+                                                                <m:ci xml:id="m52.1.9.2.4.1.3.2.1" xref="m52.1.9.2.4.1.3.2.1.pmml">normal-d</m:ci>
                                                                 <mws:qvar xmlns:mws="http://search.mathweb.org/ns" name="x11"/>
                                                             </m:apply>
-                                                            <m:apply xml:id="m52.1.9.2.4.1.3.3a" xref="m52.1.9.2.4.1.3.3.pmml">
-                                                                <m:times xml:id="m52.1.9.2.4.1.3.3.3" xref="m52.1.9.2.4.1.3.3.3.pmml"/>
-                                                                <m:mtext xml:id="m52.1.9.2.4.1.3.3" xref="m52.1.9.2.4.1.3.3.pmml">\operatorname</m:mtext>
+                                                            <m:apply xml:id="m52.1.9.2.4.1.3.3" xref="m52.1.9.2.4.1.3.3.pmml">
                                                                 <mws:qvar xmlns:mws="http://search.mathweb.org/ns" name="x12"/>
                                                                 <m:ci xml:id="m52.1.9.2.4.1.3.3.2" xref="m52.1.9.2.4.1.3.3.2.pmml">t</m:ci>
                                                             </m:apply>
@@ -3279,20 +3267,16 @@
                                             <m:mtext xml:id="m52.1.10.1.3" xref="m52.1.10.1.3.pmml"> (i.e., </m:mtext>
                                             <m:apply xml:id="m52.1.10.1.4" xref="m52.1.10.1.4.pmml">
                                                 <m:divide xml:id="m52.1.10.1.4.1"/>
-                                                <m:apply xml:id="m52.1.10.1.4.2a" xref="m52.1.10.1.4.2.pmml">
-                                                    <m:times xml:id="m52.1.10.1.4.2.4" xref="m52.1.10.1.4.2.4.pmml"/>
-                                                    <m:mtext xml:id="m52.1.10.1.4.2" xref="m52.1.10.1.4.2.pmml">\operatorname</m:mtext>
-                                                    <m:ci xml:id="m52.1.10.1.4.2.1" xref="m52.1.10.1.4.2.1.pmml">d</m:ci>
-                                                    <m:apply xml:id="m52.1.10.1.4.2.5" xref="m52.1.10.1.4.2.5.pmml">
-                                                        <m:csymbol cd="ambiguous" xml:id="m52.1.10.1.4.2.5.1">subscript</m:csymbol>
+                                                <m:apply xml:id="m52.1.10.1.4.2" xref="m52.1.10.1.4.2.pmml">
+                                                    <m:ci xml:id="m52.1.10.1.4.2.1" xref="m52.1.10.1.4.2.1.pmml">normal-d</m:ci>
+                                                    <m:apply xml:id="m52.1.10.1.4.2.4" xref="m52.1.10.1.4.2.4.pmml">
+                                                        <m:csymbol cd="ambiguous" xml:id="m52.1.10.1.4.2.4.1">subscript</m:csymbol>
                                                         <m:ci xml:id="m52.1.10.1.4.2.2" xref="m52.1.10.1.4.2.2.pmml">u</m:ci>
                                                         <mws:qvar xmlns:mws="http://search.mathweb.org/ns" name="x15"/>
                                                     </m:apply>
                                                 </m:apply>
-                                                <m:apply xml:id="m52.1.10.1.4.3a" xref="m52.1.10.1.4.3.pmml">
-                                                    <m:times xml:id="m52.1.10.1.4.3.3" xref="m52.1.10.1.4.3.3.pmml"/>
-                                                    <m:mtext xml:id="m52.1.10.1.4.3" xref="m52.1.10.1.4.3.pmml">\operatorname</m:mtext>
-                                                    <m:ci xml:id="m52.1.10.1.4.3.1" xref="m52.1.10.1.4.3.1.pmml">d</m:ci>
+                                                <m:apply xml:id="m52.1.10.1.4.3" xref="m52.1.10.1.4.3.pmml">
+                                                    <m:ci xml:id="m52.1.10.1.4.3.1" xref="m52.1.10.1.4.3.1.pmml">normal-d</m:ci>
                                                     <m:ci xml:id="m52.1.10.1.4.3.2" xref="m52.1.10.1.4.3.2.pmml">t</m:ci>
                                                 </m:apply>
                                             </m:apply>
@@ -3316,7 +3300,7 @@
                                                         <m:mo movablelimits="false" xml:id="m52.1.1.2.15.3.pmml" xref="m52.1.1.2.15.3">(</m:mo>
                                                         <mws:qvar xmlns:mws="http://search.mathweb.org/ns" name="𝐱𝟎"/>
                                                         <m:mo movablelimits="false" xml:id="m52.1.1.2.15.3a.pmml" xref="m52.1.1.2.15.3">,</m:mo>
-                                                        <m:msub xml:id="XM24.pmml" xref="XM24">
+                                                        <m:msub xml:id="XM26.pmml" xref="XM26">
                                                             <m:mi xml:id="m52.1.1.2.6.pmml" xref="m52.1.1.2.6">z</m:mi>
                                                             <m:mn xml:id="m52.1.1.2.7.1.pmml" xref="m52.1.1.2.7.1">1</m:mn>
                                                         </m:msub>
@@ -3388,7 +3372,7 @@
                                                         <m:mo movablelimits="false" xml:id="m52.1.4.2.16.1.pmml" xref="m52.1.4.2.16.1">⁢</m:mo>
                                                         <m:mrow xml:id="m52.1.4.2.16.3b.pmml">
                                                             <m:mo movablelimits="false" xml:id="m52.1.4.2.16.3.pmml">(</m:mo>
-                                                            <m:munder xml:id="XM25.pmml" xref="XM25">
+                                                            <m:munder xml:id="XM27.pmml" xref="XM27">
                                                                 <m:munder accentunder="true" xml:id="m52.1.4.2.12.pmml" xref="m52.1.4.2.12">
                                                                     <m:mrow xml:id="m52.1.4.2.12.2.pmml" xref="m52.1.4.2.12.2">
                                                                         <m:msub xml:id="m52.1.4.2.12.2.9.pmml" xref="m52.1.4.2.12.2.9">
@@ -3439,7 +3423,7 @@
                                                     <m:mo movablelimits="false" xml:id="m52.1.9.2.6.pmml" xref="m52.1.9.2.6">⁢</m:mo>
                                                     <m:mrow xml:id="m52.1.9.2.7b.pmml">
                                                         <m:mo movablelimits="false" xml:id="m52.1.9.2.7.pmml">(</m:mo>
-                                                        <m:munder xml:id="XM26.pmml" xref="XM26">
+                                                        <m:munder xml:id="XM28.pmml" xref="XM28">
                                                             <m:munder accentunder="true" xml:id="m52.1.9.2.3.pmml" xref="m52.1.9.2.3">
                                                                 <m:mrow xml:id="m52.1.9.2.3.2.pmml" xref="m52.1.9.2.3.2">
                                                                     <m:mrow xml:id="m52.1.9.2.3.2.14.pmml" xref="m52.1.9.2.3.2.14">
@@ -3481,22 +3465,14 @@
                                                                 <m:mtext xml:id="m52.1.9.2.4.1.2.pmml" xref="m52.1.9.2.4.1.2"> (i.e., </m:mtext>
                                                                 <m:mo movablelimits="false" xml:id="m52.1.9.2.4.1.5a.pmml" xref="m52.1.9.2.4.1.5">⁢</m:mo>
                                                                 <m:mfrac xml:id="m52.1.9.2.4.1.3.pmml" xref="m52.1.9.2.4.1.3">
-                                                                    <m:mrow xml:id="m52.1.9.2.4.1.3.2b.pmml" xref="m52.1.9.2.4.1.3.2">
-                                                                        <m:merror class="ltx_ERROR undefined undefined" xml:id="m52.1.9.2.4.1.3.2.pmml" xref="m52.1.9.2.4.1.3.2">
-                                                                            <m:mtext xml:id="m52.1.9.2.4.1.3.2a.pmml" xref="m52.1.9.2.4.1.3.2">\operatorname</m:mtext>
-                                                                        </m:merror>
-                                                                        <m:mo movablelimits="false" xml:id="m52.1.9.2.4.1.3.2.3.pmml" xref="m52.1.9.2.4.1.3.2.3">⁢</m:mo>
-                                                                        <m:mi xml:id="m52.1.9.2.4.1.3.2.1.pmml" xref="m52.1.9.2.4.1.3.2.1">d</m:mi>
-                                                                        <m:mo movablelimits="false" xml:id="m52.1.9.2.4.1.3.2.3a.pmml" xref="m52.1.9.2.4.1.3.2.3">⁢</m:mo>
+                                                                    <m:mrow xml:id="m52.1.9.2.4.1.3.2.pmml" xref="m52.1.9.2.4.1.3.2">
+                                                                        <m:mo movablelimits="false" xml:id="m52.1.9.2.4.1.3.2.1.pmml" xref="m52.1.9.2.4.1.3.2.1">d</m:mo>
+                                                                        <m:mo movablelimits="false" xml:id="m52.1.9.2.4.1.3.2a.pmml" xref="m52.1.9.2.4.1.3.2">⁡</m:mo>
                                                                         <mws:qvar xmlns:mws="http://search.mathweb.org/ns" name="𝐱𝟏𝟏"/>
                                                                     </m:mrow>
-                                                                    <m:mrow xml:id="m52.1.9.2.4.1.3.3b.pmml" xref="m52.1.9.2.4.1.3.3">
-                                                                        <m:merror class="ltx_ERROR undefined undefined" xml:id="m52.1.9.2.4.1.3.3.pmml" xref="m52.1.9.2.4.1.3.3">
-                                                                            <m:mtext xml:id="m52.1.9.2.4.1.3.3a.pmml" xref="m52.1.9.2.4.1.3.3">\operatorname</m:mtext>
-                                                                        </m:merror>
-                                                                        <m:mo movablelimits="false" xml:id="m52.1.9.2.4.1.3.3.3.pmml" xref="m52.1.9.2.4.1.3.3.3">⁢</m:mo>
-                                                                        <mws:qvar xmlns:mws="http://search.mathweb.org/ns" name="x12"/>
-                                                                        <m:mo movablelimits="false" xml:id="m52.1.9.2.4.1.3.3.3a.pmml" xref="m52.1.9.2.4.1.3.3.3">⁢</m:mo>
+                                                                    <m:mrow xml:id="m52.1.9.2.4.1.3.3.pmml" xref="m52.1.9.2.4.1.3.3">
+                                                                        <m:mo mathcolor="red" movablelimits="false" xml:id="m52.1.9.2.4.1.3.3.1.pmml" xref="m52.1.9.2.4.1.3.3.1">x12</m:mo>
+                                                                        <m:mo movablelimits="false" xml:id="m52.1.9.2.4.1.3.3a.pmml" xref="m52.1.9.2.4.1.3.3">⁡</m:mo>
                                                                         <m:mi xml:id="m52.1.9.2.4.1.3.3.2.pmml" xref="m52.1.9.2.4.1.3.3.2">t</m:mi>
                                                                     </m:mrow>
                                                                 </m:mfrac>
@@ -3519,25 +3495,17 @@
                                                 <m:mtext xml:id="m52.1.10.1.3.pmml" xref="m52.1.10.1.3"> (i.e., </m:mtext>
                                                 <m:mo xml:id="m52.1.10.1.6a.pmml" xref="m52.1.10.1.6">⁢</m:mo>
                                                 <m:mfrac xml:id="m52.1.10.1.4.pmml" xref="m52.1.10.1.4">
-                                                    <m:mrow xml:id="m52.1.10.1.4.2b.pmml" xref="m52.1.10.1.4.2">
-                                                        <m:merror class="ltx_ERROR undefined undefined" xml:id="m52.1.10.1.4.2.pmml" xref="m52.1.10.1.4.2">
-                                                            <m:mtext xml:id="m52.1.10.1.4.2a.pmml" xref="m52.1.10.1.4.2">\operatorname</m:mtext>
-                                                        </m:merror>
-                                                        <m:mo xml:id="m52.1.10.1.4.2.4.pmml" xref="m52.1.10.1.4.2.4">⁢</m:mo>
-                                                        <m:mi xml:id="m52.1.10.1.4.2.1.pmml" xref="m52.1.10.1.4.2.1">d</m:mi>
-                                                        <m:mo xml:id="m52.1.10.1.4.2.4a.pmml" xref="m52.1.10.1.4.2.4">⁢</m:mo>
-                                                        <m:msub xml:id="m52.1.10.1.4.2.5.pmml" xref="m52.1.10.1.4.2.5">
+                                                    <m:mrow xml:id="m52.1.10.1.4.2.pmml" xref="m52.1.10.1.4.2">
+                                                        <m:mo xml:id="m52.1.10.1.4.2.1.pmml" xref="m52.1.10.1.4.2.1">d</m:mo>
+                                                        <m:mo xml:id="m52.1.10.1.4.2a.pmml" xref="m52.1.10.1.4.2">⁡</m:mo>
+                                                        <m:msub xml:id="m52.1.10.1.4.2.4.pmml" xref="m52.1.10.1.4.2.4">
                                                             <m:mi xml:id="m52.1.10.1.4.2.2.pmml" xref="m52.1.10.1.4.2.2">u</m:mi>
                                                             <mws:qvar xmlns:mws="http://search.mathweb.org/ns" name="x15"/>
                                                         </m:msub>
                                                     </m:mrow>
-                                                    <m:mrow xml:id="m52.1.10.1.4.3b.pmml" xref="m52.1.10.1.4.3">
-                                                        <m:merror class="ltx_ERROR undefined undefined" xml:id="m52.1.10.1.4.3.pmml" xref="m52.1.10.1.4.3">
-                                                            <m:mtext xml:id="m52.1.10.1.4.3a.pmml" xref="m52.1.10.1.4.3">\operatorname</m:mtext>
-                                                        </m:merror>
-                                                        <m:mo xml:id="m52.1.10.1.4.3.3.pmml" xref="m52.1.10.1.4.3.3">⁢</m:mo>
-                                                        <m:mi xml:id="m52.1.10.1.4.3.1.pmml" xref="m52.1.10.1.4.3.1">d</m:mi>
-                                                        <m:mo xml:id="m52.1.10.1.4.3.3a.pmml" xref="m52.1.10.1.4.3.3">⁢</m:mo>
+                                                    <m:mrow xml:id="m52.1.10.1.4.3.pmml" xref="m52.1.10.1.4.3">
+                                                        <m:mo xml:id="m52.1.10.1.4.3.1.pmml" xref="m52.1.10.1.4.3.1">d</m:mo>
+                                                        <m:mo xml:id="m52.1.10.1.4.3a.pmml" xref="m52.1.10.1.4.3">⁡</m:mo>
                                                         <m:mi xml:id="m52.1.10.1.4.3.2.pmml" xref="m52.1.10.1.4.3.2">t</m:mi>
                                                     </m:mrow>
                                                 </m:mfrac>
@@ -3576,8 +3544,8 @@
                                     <m:ci xml:id="m53.1.1" xref="m53.1.1.pmml">E</m:ci>
                                     <m:apply xml:id="m53.1.10.1.2a" xref="m53.1.10.1.2.pmml">
                                         <m:csymbol cd="latexml" xml:id="m53.1.10.1.2" xref="m53.1.10.1.2.pmml">delimited-[]</m:csymbol>
-                                        <m:apply xml:id="XM27" xref="XM27.pmml">
-                                            <m:csymbol cd="ambiguous" xml:id="XM27.1">superscript</m:csymbol>
+                                        <m:apply xml:id="XM29" xref="XM29.pmml">
+                                            <m:csymbol cd="ambiguous" xml:id="XM29.1">superscript</m:csymbol>
                                             <m:apply xml:id="m53.1.3" xref="m53.1.3.pmml">
                                                 <m:ci xml:id="m53.1.3.1" xref="m53.1.3.1.pmml">normal-^</m:ci>
                                                 <m:ci xml:id="m53.1.3.2" xref="m53.1.3.2.pmml">σ</m:ci>
@@ -3611,7 +3579,7 @@
                                         <m:mo xml:id="m53.1.10.1.1.pmml" xref="m53.1.10.1.1">⁢</m:mo>
                                         <m:mrow xml:id="m53.1.10.1.2b.pmml" xref="m53.1.10.1.2">
                                             <m:mo xml:id="m53.1.10.1.2.pmml" xref="m53.1.10.1.2">[</m:mo>
-                                            <m:msup xml:id="XM27.pmml" xref="XM27">
+                                            <m:msup xml:id="XM29.pmml" xref="XM29">
                                                 <m:mover accent="true" xml:id="m53.1.3.pmml" xref="m53.1.3">
                                                     <m:mi xml:id="m53.1.3.2.pmml" xref="m53.1.3.2">σ</m:mi>
                                                     <m:mo xml:id="m53.1.3.1.pmml" xref="m53.1.3.1">^</m:mo>
@@ -3726,26 +3694,16 @@
                 <formula id="f1.0">
                     <m:math>
                         <m:semantics xml:id="m56.1a">
-                            <m:apply xml:id="m56.1.3a" xref="m56.1.3.pmml">
-                                <m:times xml:id="m56.1.3.1" xref="m56.1.3.1.pmml"/>
-                                <m:mtext xml:id="m56.1.3" xref="m56.1.3.pmml">\boldsymbol</m:mtext>
-                                <m:apply xml:id="m56.1.3.2" xref="m56.1.3.2.pmml">
-                                    <m:csymbol cd="ambiguous" xml:id="m56.1.3.2.1">subscript</m:csymbol>
-                                    <m:ci xml:id="m56.1.1" xref="m56.1.1.pmml">F</m:ci>
-                                    <m:ci xml:id="m56.1.2.1" xref="m56.1.2.1.pmml">r</m:ci>
-                                </m:apply>
+                            <m:apply xml:id="m56.1.3" xref="m56.1.3.pmml">
+                                <m:csymbol cd="ambiguous" xml:id="m56.1.3.1">subscript</m:csymbol>
+                                <m:ci xml:id="m56.1.1" xref="m56.1.1.pmml">𝑭</m:ci>
+                                <m:ci xml:id="m56.1.2.1" xref="m56.1.2.1.pmml">r</m:ci>
                             </m:apply>
                             <m:annotation-xml encoding="MathML-Presentation" xml:id="m56.1b">
-                                <m:mrow xml:id="m56.1.3b.pmml" xref="m56.1.3">
-                                    <m:merror class="ltx_ERROR undefined undefined" xml:id="m56.1.3.pmml" xref="m56.1.3">
-                                        <m:mtext xml:id="m56.1.3a.pmml" xref="m56.1.3">\boldsymbol</m:mtext>
-                                    </m:merror>
-                                    <m:mo xml:id="m56.1.3.1.pmml" xref="m56.1.3.1">⁢</m:mo>
-                                    <m:msub xml:id="m56.1.3.2.pmml" xref="m56.1.3.2">
-                                        <m:mi xml:id="m56.1.1.pmml" xref="m56.1.1">F</m:mi>
-                                        <m:mi xml:id="m56.1.2.1.pmml" xref="m56.1.2.1">r</m:mi>
-                                    </m:msub>
-                                </m:mrow>
+                                <m:msub xml:id="m56.1.3.pmml" xref="m56.1.3">
+                                    <m:mi xml:id="m56.1.1.pmml" xref="m56.1.1">𝑭</m:mi>
+                                    <m:mi xml:id="m56.1.2.1.pmml" xref="m56.1.2.1">r</m:mi>
+                                </m:msub>
                             </m:annotation-xml>
                             <m:annotation encoding="application/x-tex" xml:id="m56.1c">{\boldsymbol{F}}_{r}</m:annotation>
                         </m:semantics>
@@ -3819,33 +3777,33 @@
                                 <m:eq xml:id="m58.1.23" xref="m58.1.23.pmml"/>
                                 <m:apply xml:id="m58.1.45.1" xref="m58.1.45.1.pmml">
                                     <m:times xml:id="m58.1.45.1.1" xref="m58.1.45.1.1.pmml"/>
-                                    <m:apply xml:id="XM28" xref="XM28.pmml">
-                                        <m:apply xml:id="XM28.1" xref="XM28.1.pmml">
-                                            <m:csymbol cd="ambiguous" xml:id="XM28.1.1">subscript</m:csymbol>
+                                    <m:apply xml:id="XM30" xref="XM30.pmml">
+                                        <m:apply xml:id="XM30.1" xref="XM30.1.pmml">
+                                            <m:csymbol cd="ambiguous" xml:id="XM30.1.1">subscript</m:csymbol>
                                             <m:ci xml:id="m58.1.2" xref="m58.1.2.pmml">normal-∇</m:ci>
                                             <m:ci xml:id="m58.1.3.1" xref="m58.1.3.1.pmml">Y</m:ci>
                                         </m:apply>
                                         <m:ci xml:id="m58.1.4" xref="m58.1.4.pmml">T</m:ci>
                                     </m:apply>
                                     <m:vector xml:id="m58.1.45.1.3" xref="m58.1.45.1.3.pmml">
-                                        <m:apply xml:id="XM29" xref="XM29.pmml">
-                                            <m:csymbol cd="ambiguous" xml:id="XM29.1">subscript</m:csymbol>
+                                        <m:apply xml:id="XM31" xref="XM31.pmml">
+                                            <m:csymbol cd="ambiguous" xml:id="XM31.1">subscript</m:csymbol>
                                             <m:ci xml:id="m58.1.7" xref="m58.1.7.pmml">α</m:ci>
                                             <m:cn type="integer" xml:id="m58.1.8.1" xref="m58.1.8.1.pmml">1</m:cn>
                                         </m:apply>
-                                        <m:apply xml:id="XM30" xref="XM30.pmml">
-                                            <m:csymbol cd="ambiguous" xml:id="XM30.1">subscript</m:csymbol>
+                                        <m:apply xml:id="XM32" xref="XM32.pmml">
+                                            <m:csymbol cd="ambiguous" xml:id="XM32.1">subscript</m:csymbol>
                                             <m:ci xml:id="m58.1.10" xref="m58.1.10.pmml">α</m:ci>
                                             <m:cn type="integer" xml:id="m58.1.11.1" xref="m58.1.11.1.pmml">2</m:cn>
                                         </m:apply>
                                         <m:ci xml:id="m58.1.13" xref="m58.1.13.pmml">normal-…</m:ci>
-                                        <m:apply xml:id="XM31" xref="XM31.pmml">
-                                            <m:csymbol cd="ambiguous" xml:id="XM31.1">subscript</m:csymbol>
+                                        <m:apply xml:id="XM33" xref="XM33.pmml">
+                                            <m:csymbol cd="ambiguous" xml:id="XM33.1">subscript</m:csymbol>
                                             <m:ci xml:id="m58.1.15" xref="m58.1.15.pmml">X</m:ci>
                                             <m:cn type="integer" xml:id="m58.1.16.1" xref="m58.1.16.1.pmml">1</m:cn>
                                         </m:apply>
-                                        <m:apply xml:id="XM32" xref="XM32.pmml">
-                                            <m:csymbol cd="ambiguous" xml:id="XM32.1">subscript</m:csymbol>
+                                        <m:apply xml:id="XM34" xref="XM34.pmml">
+                                            <m:csymbol cd="ambiguous" xml:id="XM34.1">subscript</m:csymbol>
                                             <m:ci xml:id="m58.1.18" xref="m58.1.18.pmml">X</m:ci>
                                             <m:cn type="integer" xml:id="m58.1.19.1" xref="m58.1.19.1.pmml">2</m:cn>
                                         </m:apply>
@@ -3855,28 +3813,28 @@
                                 <m:apply xml:id="m58.1.45.2" xref="m58.1.45.2.pmml">
                                     <m:times xml:id="m58.1.45.2.1" xref="m58.1.45.2.1.pmml"/>
                                     <m:ci xml:id="m58.1.24" xref="m58.1.24.pmml">Y</m:ci>
-                                    <m:apply xml:id="XM45" xref="XM45.pmml">
-                                        <m:times xml:id="XM45.1" xref="XM45.1.pmml"/>
+                                    <m:apply xml:id="XM47" xref="XM47.pmml">
+                                        <m:times xml:id="XM47.1" xref="XM47.1.pmml"/>
                                         <m:ci xml:id="m58.1.26" xref="m58.1.26.pmml">T</m:ci>
-                                        <m:vector xml:id="XM45.2" xref="XM45.2.pmml">
-                                            <m:apply xml:id="XM41" xref="XM41.pmml">
-                                                <m:csymbol cd="ambiguous" xml:id="XM41.1">subscript</m:csymbol>
+                                        <m:vector xml:id="XM47.2" xref="XM47.2.pmml">
+                                            <m:apply xml:id="XM43" xref="XM43.pmml">
+                                                <m:csymbol cd="ambiguous" xml:id="XM43.1">subscript</m:csymbol>
                                                 <m:ci xml:id="m58.1.28" xref="m58.1.28.pmml">α</m:ci>
                                                 <m:cn type="integer" xml:id="m58.1.29.1" xref="m58.1.29.1.pmml">1</m:cn>
                                             </m:apply>
-                                            <m:apply xml:id="XM42" xref="XM42.pmml">
-                                                <m:csymbol cd="ambiguous" xml:id="XM42.1">subscript</m:csymbol>
+                                            <m:apply xml:id="XM44" xref="XM44.pmml">
+                                                <m:csymbol cd="ambiguous" xml:id="XM44.1">subscript</m:csymbol>
                                                 <m:ci xml:id="m58.1.31" xref="m58.1.31.pmml">α</m:ci>
                                                 <m:cn type="integer" xml:id="m58.1.32.1" xref="m58.1.32.1.pmml">2</m:cn>
                                             </m:apply>
                                             <m:ci xml:id="m58.1.34" xref="m58.1.34.pmml">normal-…</m:ci>
-                                            <m:apply xml:id="XM43" xref="XM43.pmml">
-                                                <m:csymbol cd="ambiguous" xml:id="XM43.1">subscript</m:csymbol>
+                                            <m:apply xml:id="XM45" xref="XM45.pmml">
+                                                <m:csymbol cd="ambiguous" xml:id="XM45.1">subscript</m:csymbol>
                                                 <m:ci xml:id="m58.1.36" xref="m58.1.36.pmml">X</m:ci>
                                                 <mws:qvar xmlns:mws="http://search.mathweb.org/ns" name="x0"/>
                                             </m:apply>
-                                            <m:apply xml:id="XM44" xref="XM44.pmml">
-                                                <m:csymbol cd="ambiguous" xml:id="XM44.1">subscript</m:csymbol>
+                                            <m:apply xml:id="XM46" xref="XM46.pmml">
+                                                <m:csymbol cd="ambiguous" xml:id="XM46.1">subscript</m:csymbol>
                                                 <m:ci xml:id="m58.1.39" xref="m58.1.39.pmml">X</m:ci>
                                                 <m:cn type="integer" xml:id="m58.1.40.1" xref="m58.1.40.1.pmml">2</m:cn>
                                             </m:apply>
@@ -3890,12 +3848,12 @@
                                     <m:mrow xml:id="m58.1.45.1.pmml" xref="m58.1.45.1">
                                         <m:mrow xml:id="m58.1.45.1.2b.pmml">
                                             <m:mo xml:id="m58.1.45.1.2.pmml">(</m:mo>
-                                            <m:mrow xml:id="XM28.pmml" xref="XM28">
-                                                <m:msub xml:id="XM28.1.pmml" xref="XM28.1">
+                                            <m:mrow xml:id="XM30.pmml" xref="XM30">
+                                                <m:msub xml:id="XM30.1.pmml" xref="XM30.1">
                                                     <m:mo xml:id="m58.1.2.pmml" xref="m58.1.2">∇</m:mo>
                                                     <m:mi xml:id="m58.1.3.1.pmml" xref="m58.1.3.1">Y</m:mi>
                                                 </m:msub>
-                                                <m:mo xml:id="XM28a.pmml" xref="XM28">⁡</m:mo>
+                                                <m:mo xml:id="XM30a.pmml" xref="XM30">⁡</m:mo>
                                                 <m:mi xml:id="m58.1.4.pmml" xref="m58.1.4">T</m:mi>
                                             </m:mrow>
                                             <m:mo xml:id="m58.1.45.1.2a.pmml">)</m:mo>
@@ -3903,24 +3861,24 @@
                                         <m:mo xml:id="m58.1.45.1.1.pmml" xref="m58.1.45.1.1">⁢</m:mo>
                                         <m:mrow xml:id="m58.1.45.1.3g.pmml" xref="m58.1.45.1.3">
                                             <m:mo xml:id="m58.1.45.1.3.pmml" xref="m58.1.45.1.3">(</m:mo>
-                                            <m:msub xml:id="XM29.pmml" xref="XM29">
+                                            <m:msub xml:id="XM31.pmml" xref="XM31">
                                                 <m:mi xml:id="m58.1.7.pmml" xref="m58.1.7">α</m:mi>
                                                 <m:mn xml:id="m58.1.8.1.pmml" xref="m58.1.8.1">1</m:mn>
                                             </m:msub>
                                             <m:mo xml:id="m58.1.45.1.3a.pmml" xref="m58.1.45.1.3">,</m:mo>
-                                            <m:msub xml:id="XM30.pmml" xref="XM30">
+                                            <m:msub xml:id="XM32.pmml" xref="XM32">
                                                 <m:mi xml:id="m58.1.10.pmml" xref="m58.1.10">α</m:mi>
                                                 <m:mn xml:id="m58.1.11.1.pmml" xref="m58.1.11.1">2</m:mn>
                                             </m:msub>
                                             <m:mo xml:id="m58.1.45.1.3b.pmml" xref="m58.1.45.1.3">,</m:mo>
                                             <m:mi mathvariant="normal" xml:id="m58.1.13.pmml" xref="m58.1.13">…</m:mi>
                                             <m:mo xml:id="m58.1.45.1.3c.pmml" xref="m58.1.45.1.3">,</m:mo>
-                                            <m:msub xml:id="XM31.pmml" xref="XM31">
+                                            <m:msub xml:id="XM33.pmml" xref="XM33">
                                                 <m:mi xml:id="m58.1.15.pmml" xref="m58.1.15">X</m:mi>
                                                 <m:mn xml:id="m58.1.16.1.pmml" xref="m58.1.16.1">1</m:mn>
                                             </m:msub>
                                             <m:mo xml:id="m58.1.45.1.3d.pmml" xref="m58.1.45.1.3">,</m:mo>
-                                            <m:msub xml:id="XM32.pmml" xref="XM32">
+                                            <m:msub xml:id="XM34.pmml" xref="XM34">
                                                 <m:mi xml:id="m58.1.18.pmml" xref="m58.1.18">X</m:mi>
                                                 <m:mn xml:id="m58.1.19.1.pmml" xref="m58.1.19.1">2</m:mn>
                                             </m:msub>
@@ -3935,35 +3893,35 @@
                                         <m:mo xml:id="m58.1.45.2.1.pmml" xref="m58.1.45.2.1">⁢</m:mo>
                                         <m:mrow xml:id="m58.1.45.2.2b.pmml">
                                             <m:mo xml:id="m58.1.45.2.2.pmml">(</m:mo>
-                                            <m:mrow xml:id="XM45.pmml" xref="XM45">
+                                            <m:mrow xml:id="XM47.pmml" xref="XM47">
                                                 <m:mi xml:id="m58.1.26.pmml" xref="m58.1.26">T</m:mi>
-                                                <m:mo xml:id="XM45.1.pmml" xref="XM45.1">⁢</m:mo>
-                                                <m:mrow xml:id="XM45.2g.pmml" xref="XM45.2">
-                                                    <m:mo xml:id="XM45.2.pmml" xref="XM45.2">(</m:mo>
-                                                    <m:msub xml:id="XM41.pmml" xref="XM41">
+                                                <m:mo xml:id="XM47.1.pmml" xref="XM47.1">⁢</m:mo>
+                                                <m:mrow xml:id="XM47.2g.pmml" xref="XM47.2">
+                                                    <m:mo xml:id="XM47.2.pmml" xref="XM47.2">(</m:mo>
+                                                    <m:msub xml:id="XM43.pmml" xref="XM43">
                                                         <m:mi xml:id="m58.1.28.pmml" xref="m58.1.28">α</m:mi>
                                                         <m:mn xml:id="m58.1.29.1.pmml" xref="m58.1.29.1">1</m:mn>
                                                     </m:msub>
-                                                    <m:mo xml:id="XM45.2a.pmml" xref="XM45.2">,</m:mo>
-                                                    <m:msub xml:id="XM42.pmml" xref="XM42">
+                                                    <m:mo xml:id="XM47.2a.pmml" xref="XM47.2">,</m:mo>
+                                                    <m:msub xml:id="XM44.pmml" xref="XM44">
                                                         <m:mi xml:id="m58.1.31.pmml" xref="m58.1.31">α</m:mi>
                                                         <m:mn xml:id="m58.1.32.1.pmml" xref="m58.1.32.1">2</m:mn>
                                                     </m:msub>
-                                                    <m:mo xml:id="XM45.2b.pmml" xref="XM45.2">,</m:mo>
+                                                    <m:mo xml:id="XM47.2b.pmml" xref="XM47.2">,</m:mo>
                                                     <m:mi mathvariant="normal" xml:id="m58.1.34.pmml" xref="m58.1.34">…</m:mi>
-                                                    <m:mo xml:id="XM45.2c.pmml" xref="XM45.2">,</m:mo>
-                                                    <m:msub xml:id="XM43.pmml" xref="XM43">
+                                                    <m:mo xml:id="XM47.2c.pmml" xref="XM47.2">,</m:mo>
+                                                    <m:msub xml:id="XM45.pmml" xref="XM45">
                                                         <m:mi xml:id="m58.1.36.pmml" xref="m58.1.36">X</m:mi>
                                                         <mws:qvar xmlns:mws="http://search.mathweb.org/ns" name="x0"/>
                                                     </m:msub>
-                                                    <m:mo xml:id="XM45.2d.pmml" xref="XM45.2">,</m:mo>
-                                                    <m:msub xml:id="XM44.pmml" xref="XM44">
+                                                    <m:mo xml:id="XM47.2d.pmml" xref="XM47.2">,</m:mo>
+                                                    <m:msub xml:id="XM46.pmml" xref="XM46">
                                                         <m:mi xml:id="m58.1.39.pmml" xref="m58.1.39">X</m:mi>
                                                         <m:mn xml:id="m58.1.40.1.pmml" xref="m58.1.40.1">2</m:mn>
                                                     </m:msub>
-                                                    <m:mo xml:id="XM45.2e.pmml" xref="XM45.2">,</m:mo>
+                                                    <m:mo xml:id="XM47.2e.pmml" xref="XM47.2">,</m:mo>
                                                     <m:mi mathvariant="normal" xml:id="m58.1.42.pmml" xref="m58.1.42">…</m:mi>
-                                                    <m:mo xml:id="XM45.2f.pmml" xref="XM45.2">)</m:mo>
+                                                    <m:mo xml:id="XM47.2f.pmml" xref="XM47.2">)</m:mo>
                                                 </m:mrow>
                                             </m:mrow>
                                             <m:mo xml:id="m58.1.45.2.2a.pmml">)</m:mo>
@@ -4006,10 +3964,10 @@
                                             <m:csymbol cd="ambiguous" xml:id="m59.1.17.1.2.2.1">superscript</m:csymbol>
                                             <m:apply xml:id="m59.1.17.1.2.2.2a" xref="m59.1.17.1.2.2.2.pmml">
                                                 <m:abs xml:id="m59.1.17.1.2.2.2" xref="m59.1.17.1.2.2.2.pmml"/>
-                                                <m:apply xml:id="XM46" xref="XM46.pmml">
-                                                    <m:times xml:id="XM46.1" xref="XM46.1.pmml"/>
+                                                <m:apply xml:id="XM48" xref="XM48.pmml">
+                                                    <m:times xml:id="XM48.1" xref="XM48.1.pmml"/>
                                                     <m:ci xml:id="m59.1.4" xref="m59.1.4.pmml">ψ</m:ci>
-                                                    <m:interval closure="open" xml:id="XM46.2" xref="XM46.2.pmml">
+                                                    <m:interval closure="open" xml:id="XM48.2" xref="XM48.2.pmml">
                                                         <m:ci xml:id="m59.1.6" xref="m59.1.6.pmml">t</m:ci>
                                                         <m:ci xml:id="m59.1.8" xref="m59.1.8.pmml">n</m:ci>
                                                     </m:interval>
@@ -4043,15 +4001,15 @@
                                             <m:msup xml:id="m59.1.17.1.2.2.pmml" xref="m59.1.17.1.2.2">
                                                 <m:mrow xml:id="m59.1.17.1.2.2.2b.pmml" xref="m59.1.17.1.2.2.2">
                                                     <m:mo xml:id="m59.1.17.1.2.2.2.pmml" xref="m59.1.17.1.2.2.2">|</m:mo>
-                                                    <m:mrow xml:id="XM46.pmml" xref="XM46">
+                                                    <m:mrow xml:id="XM48.pmml" xref="XM48">
                                                         <m:mi xml:id="m59.1.4.pmml" xref="m59.1.4">ψ</m:mi>
-                                                        <m:mo xml:id="XM46.1.pmml" xref="XM46.1">⁢</m:mo>
-                                                        <m:mrow xml:id="XM46.2c.pmml" xref="XM46.2">
-                                                            <m:mo xml:id="XM46.2.pmml" xref="XM46.2">(</m:mo>
+                                                        <m:mo xml:id="XM48.1.pmml" xref="XM48.1">⁢</m:mo>
+                                                        <m:mrow xml:id="XM48.2c.pmml" xref="XM48.2">
+                                                            <m:mo xml:id="XM48.2.pmml" xref="XM48.2">(</m:mo>
                                                             <m:mi xml:id="m59.1.6.pmml" xref="m59.1.6">t</m:mi>
-                                                            <m:mo xml:id="XM46.2a.pmml" xref="XM46.2">,</m:mo>
+                                                            <m:mo xml:id="XM48.2a.pmml" xref="XM48.2">,</m:mo>
                                                             <m:mi xml:id="m59.1.8.pmml" xref="m59.1.8">n</m:mi>
-                                                            <m:mo xml:id="XM46.2b.pmml" xref="XM46.2">)</m:mo>
+                                                            <m:mo xml:id="XM48.2b.pmml" xref="XM48.2">)</m:mo>
                                                         </m:mrow>
                                                     </m:mrow>
                                                     <m:mo xml:id="m59.1.17.1.2.2.2a.pmml" xref="m59.1.17.1.2.2.2">|</m:mo>
@@ -4106,7 +4064,7 @@
                                                     <m:times xml:id="m60.1.3.2.4.2.14.1" xref="m60.1.3.2.4.2.14.1.pmml"/>
                                                     <m:cn type="integer" xml:id="m60.1.3.2.4.2.4" xref="m60.1.3.2.4.2.4.pmml">4</m:cn>
                                                     <mws:qvar xmlns:mws="http://search.mathweb.org/ns" name="x1"/>
-                                                    <m:apply xml:id="XM47" xref="XM47.pmml">
+                                                    <m:apply xml:id="XM49" xref="XM49.pmml">
                                                         <m:minus xml:id="m60.1.3.2.4.2.10" xref="m60.1.3.2.4.2.10.pmml"/>
                                                         <m:apply xml:id="m60.1.3.2.4.2.9" xref="m60.1.3.2.4.2.9.pmml">
                                                             <m:divide xml:id="m60.1.3.2.4.2.9.1"/>
@@ -4170,7 +4128,7 @@
                                                         <m:mo xml:id="m60.1.3.2.4.2.14.1a.pmml" xref="m60.1.3.2.4.2.14.1">⁢</m:mo>
                                                         <m:mrow xml:id="m60.1.3.2.4.2.14.3b.pmml">
                                                             <m:mo xml:id="m60.1.3.2.4.2.14.3.pmml">(</m:mo>
-                                                            <m:mrow xml:id="XM47.pmml" xref="XM47">
+                                                            <m:mrow xml:id="XM49.pmml" xref="XM49">
                                                                 <m:mfrac xml:id="m60.1.3.2.4.2.9.pmml" xref="m60.1.3.2.4.2.9">
                                                                     <mws:qvar xmlns:mws="http://search.mathweb.org/ns" name="x2"/>
                                                                     <mws:qvar xmlns:mws="http://search.mathweb.org/ns" name="x3"/>
@@ -4225,27 +4183,27 @@
                         <m:semantics xml:id="m61.1a">
                             <m:apply xml:id="m61.1.24a" xref="m61.1.24.pmml">
                                 <m:csymbol cd="latexml" xml:id="m61.1.24" xref="m61.1.24.pmml">conditional-set</m:csymbol>
-                                <m:apply xml:id="XM51" xref="XM51.pmml">
+                                <m:apply xml:id="XM53" xref="XM53.pmml">
                                     <m:in xml:id="m61.1.3" xref="m61.1.3.pmml"/>
                                     <m:ci xml:id="m61.1.2" xref="m61.1.2.pmml">z</m:ci>
                                     <m:ci xml:id="m61.1.4" xref="m61.1.4.pmml">H</m:ci>
                                 </m:apply>
-                                <m:apply xml:id="XM52" xref="XM52.pmml">
-                                    <m:csymbol cd="ambiguous" xml:id="XM52a" xref="XM52.pmml">formulae-sequence</m:csymbol>
-                                    <m:apply xml:id="XM49" xref="XM49.pmml">
+                                <m:apply xml:id="XM54" xref="XM54.pmml">
+                                    <m:csymbol cd="ambiguous" xml:id="XM54a" xref="XM54.pmml">formulae-sequence</m:csymbol>
+                                    <m:apply xml:id="XM51" xref="XM51.pmml">
                                         <m:gt xml:id="m61.1.9" xref="m61.1.9.pmml"/>
-                                        <m:apply xml:id="XM49.1a" xref="XM49.1.pmml">
-                                            <m:abs xml:id="XM49.1" xref="XM49.1.pmml"/>
+                                        <m:apply xml:id="XM51.1a" xref="XM51.1.pmml">
+                                            <m:abs xml:id="XM51.1" xref="XM51.1.pmml"/>
                                             <m:ci xml:id="m61.1.7" xref="m61.1.7.pmml">z</m:ci>
                                         </m:apply>
                                         <m:cn type="integer" xml:id="m61.1.10" xref="m61.1.10.pmml">1</m:cn>
                                     </m:apply>
-                                    <m:apply xml:id="XM50" xref="XM50.pmml">
+                                    <m:apply xml:id="XM52" xref="XM52.pmml">
                                         <m:lt xml:id="m61.1.21" xref="m61.1.21.pmml"/>
-                                        <m:apply xml:id="XM50.1a" xref="XM50.1.pmml">
-                                            <m:abs xml:id="XM50.1" xref="XM50.1.pmml"/>
-                                            <m:apply xml:id="XM48" xref="XM48.pmml">
-                                                <m:times xml:id="XM48.1" xref="XM48.1.pmml"/>
+                                        <m:apply xml:id="XM52.1a" xref="XM52.1.pmml">
+                                            <m:abs xml:id="XM52.1" xref="XM52.1.pmml"/>
+                                            <m:apply xml:id="XM50" xref="XM50.pmml">
+                                                <m:times xml:id="XM50.1" xref="XM50.1.pmml"/>
                                                 <mws:qvar xmlns:mws="http://search.mathweb.org/ns" name="x0"/>
                                                 <m:ci xml:id="m61.1.17" xref="m61.1.17.pmml">z</m:ci>
                                             </m:apply>
@@ -4261,36 +4219,36 @@
                             <m:annotation-xml encoding="MathML-Presentation" xml:id="m61.1b">
                                 <m:mrow xml:id="m61.1.24c.pmml" xref="m61.1.24">
                                     <m:mo xml:id="m61.1.24.pmml" xref="m61.1.24">{</m:mo>
-                                    <m:mrow xml:id="XM51.pmml" xref="XM51">
+                                    <m:mrow xml:id="XM53.pmml" xref="XM53">
                                         <m:mi xml:id="m61.1.2.pmml" xref="m61.1.2">z</m:mi>
                                         <m:mo xml:id="m61.1.3.pmml" xref="m61.1.3">∈</m:mo>
                                         <m:mi xml:id="m61.1.4.pmml" xref="m61.1.4">H</m:mi>
                                     </m:mrow>
                                     <m:mo xml:id="m61.1.24a.pmml" xref="m61.1.24">:</m:mo>
-                                    <m:mrow xml:id="XM52a.pmml" xref="XM52">
-                                        <m:mrow xml:id="XM49.pmml" xref="XM49">
-                                            <m:mrow xml:id="XM49.1b.pmml" xref="XM49.1">
-                                                <m:mo xml:id="XM49.1.pmml" xref="XM49.1">|</m:mo>
+                                    <m:mrow xml:id="XM54a.pmml" xref="XM54">
+                                        <m:mrow xml:id="XM51.pmml" xref="XM51">
+                                            <m:mrow xml:id="XM51.1b.pmml" xref="XM51.1">
+                                                <m:mo xml:id="XM51.1.pmml" xref="XM51.1">|</m:mo>
                                                 <m:mi xml:id="m61.1.7.pmml" xref="m61.1.7">z</m:mi>
-                                                <m:mo xml:id="XM49.1a.pmml" xref="XM49.1">|</m:mo>
+                                                <m:mo xml:id="XM51.1a.pmml" xref="XM51.1">|</m:mo>
                                             </m:mrow>
                                             <m:mo xml:id="m61.1.9.pmml" xref="m61.1.9">&gt;</m:mo>
                                             <m:mn xml:id="m61.1.10.pmml" xref="m61.1.10">1</m:mn>
                                         </m:mrow>
-                                        <m:mo xml:id="XM52.pmml" xref="XM52">,</m:mo>
-                                        <m:mrow xml:id="XM50.pmml" xref="XM50">
-                                            <m:mrow xml:id="XM50.1b.pmml" xref="XM50.1">
-                                                <m:mo xml:id="XM50.1.pmml" xref="XM50.1">|</m:mo>
-                                                <m:mrow xml:id="XM48.pmml" xref="XM48">
+                                        <m:mo xml:id="XM54.pmml" xref="XM54">,</m:mo>
+                                        <m:mrow xml:id="XM52.pmml" xref="XM52">
+                                            <m:mrow xml:id="XM52.1b.pmml" xref="XM52.1">
+                                                <m:mo xml:id="XM52.1.pmml" xref="XM52.1">|</m:mo>
+                                                <m:mrow xml:id="XM50.pmml" xref="XM50">
                                                     <mws:qvar xmlns:mws="http://search.mathweb.org/ns" name="x0"/>
-                                                    <m:mo xml:id="XM48.1.pmml" xref="XM48.1">⁢</m:mo>
-                                                    <m:mrow xml:id="XM48.2b.pmml">
-                                                        <m:mo xml:id="XM48.2.pmml">(</m:mo>
+                                                    <m:mo xml:id="XM50.1.pmml" xref="XM50.1">⁢</m:mo>
+                                                    <m:mrow xml:id="XM50.2b.pmml">
+                                                        <m:mo xml:id="XM50.2.pmml">(</m:mo>
                                                         <m:mi xml:id="m61.1.17.pmml" xref="m61.1.17">z</m:mi>
-                                                        <m:mo xml:id="XM48.2a.pmml">)</m:mo>
+                                                        <m:mo xml:id="XM50.2a.pmml">)</m:mo>
                                                     </m:mrow>
                                                 </m:mrow>
-                                                <m:mo xml:id="XM50.1a.pmml" xref="XM50.1">|</m:mo>
+                                                <m:mo xml:id="XM52.1a.pmml" xref="XM52.1">|</m:mo>
                                             </m:mrow>
                                             <m:mo xml:id="m61.1.21.pmml" xref="m61.1.21">&lt;</m:mo>
                                             <m:mfrac xml:id="m61.1.22.pmml" xref="m61.1.22">
@@ -4366,7 +4324,7 @@
                                                 <mws:qvar xmlns:mws="http://search.mathweb.org/ns" name="x1"/>
                                                 <mws:qvar xmlns:mws="http://search.mathweb.org/ns" name="x2"/>
                                             </m:apply>
-                                            <m:apply xml:id="XM53" xref="XM53.pmml">
+                                            <m:apply xml:id="XM55" xref="XM55.pmml">
                                                 <m:minus xml:id="m63.1.13" xref="m63.1.13.pmml"/>
                                                 <m:ci xml:id="m63.1.12" xref="m63.1.12.pmml">x</m:ci>
                                                 <mws:qvar xmlns:mws="http://search.mathweb.org/ns" name="x3"/>
@@ -4410,7 +4368,7 @@
                                                     <m:mo xml:id="m63.1.20.2.1.1.1a.pmml" xref="m63.1.20.2.1.1.1">⁢</m:mo>
                                                     <m:mrow xml:id="m63.1.20.2.1.1.3b.pmml">
                                                         <m:mo xml:id="m63.1.20.2.1.1.3.pmml">(</m:mo>
-                                                        <m:mrow xml:id="XM53.pmml" xref="XM53">
+                                                        <m:mrow xml:id="XM55.pmml" xref="XM55">
                                                             <m:mi xml:id="m63.1.12.pmml" xref="m63.1.12">x</m:mi>
                                                             <m:mo xml:id="m63.1.13.pmml" xref="m63.1.13">-</m:mo>
                                                             <mws:qvar xmlns:mws="http://search.mathweb.org/ns" name="x3"/>
@@ -4523,15 +4481,15 @@
                                         <m:times xml:id="m66.1.18.2.1.1" xref="m66.1.18.2.1.1.pmml"/>
                                         <mws:qvar xmlns:mws="http://search.mathweb.org/ns" name="x1"/>
                                         <m:interval closure="open" xml:id="m66.1.18.2.1.2" xref="m66.1.18.2.1.2.pmml">
-                                            <m:apply xml:id="XM55" xref="XM55.pmml">
-                                                <m:times xml:id="XM55.1" xref="XM55.1.pmml"/>
-                                                <m:apply xml:id="XM55.2" xref="XM55.2.pmml">
-                                                    <m:csymbol cd="ambiguous" xml:id="XM55.2.1">subscript</m:csymbol>
+                                            <m:apply xml:id="XM57" xref="XM57.pmml">
+                                                <m:times xml:id="XM57.1" xref="XM57.1.pmml"/>
+                                                <m:apply xml:id="XM57.2" xref="XM57.2.pmml">
+                                                    <m:csymbol cd="ambiguous" xml:id="XM57.2.1">subscript</m:csymbol>
                                                     <m:ci xml:id="m66.1.6" xref="m66.1.6.pmml">E</m:ci>
                                                     <m:ci xml:id="m66.1.7.1" xref="m66.1.7.1.pmml">K</m:ci>
                                                 </m:apply>
-                                                <m:apply xml:id="XM54" xref="XM54.pmml">
-                                                    <m:csymbol cd="ambiguous" xml:id="XM54.1">subscript</m:csymbol>
+                                                <m:apply xml:id="XM56" xref="XM56.pmml">
+                                                    <m:csymbol cd="ambiguous" xml:id="XM56.1">subscript</m:csymbol>
                                                     <m:ci xml:id="m66.1.9" xref="m66.1.9.pmml">S</m:ci>
                                                     <m:apply xml:id="m66.1.10.1" xref="m66.1.10.1.pmml">
                                                         <m:minus xml:id="m66.1.10.1.2" xref="m66.1.10.1.2.pmml"/>
@@ -4563,15 +4521,15 @@
                                             <m:mo xml:id="m66.1.18.2.1.1.pmml" xref="m66.1.18.2.1.1">⁢</m:mo>
                                             <m:mrow xml:id="m66.1.18.2.1.2c.pmml" xref="m66.1.18.2.1.2">
                                                 <m:mo xml:id="m66.1.18.2.1.2.pmml" xref="m66.1.18.2.1.2">(</m:mo>
-                                                <m:mrow xml:id="XM55.pmml" xref="XM55">
-                                                    <m:msub xml:id="XM55.2.pmml" xref="XM55.2">
+                                                <m:mrow xml:id="XM57.pmml" xref="XM57">
+                                                    <m:msub xml:id="XM57.2.pmml" xref="XM57.2">
                                                         <m:mi xml:id="m66.1.6.pmml" xref="m66.1.6">E</m:mi>
                                                         <m:mi xml:id="m66.1.7.1.pmml" xref="m66.1.7.1">K</m:mi>
                                                     </m:msub>
-                                                    <m:mo xml:id="XM55.1.pmml" xref="XM55.1">⁢</m:mo>
-                                                    <m:mrow xml:id="XM55.3b.pmml">
-                                                        <m:mo xml:id="XM55.3.pmml">(</m:mo>
-                                                        <m:msub xml:id="XM54.pmml" xref="XM54">
+                                                    <m:mo xml:id="XM57.1.pmml" xref="XM57.1">⁢</m:mo>
+                                                    <m:mrow xml:id="XM57.3b.pmml">
+                                                        <m:mo xml:id="XM57.3.pmml">(</m:mo>
+                                                        <m:msub xml:id="XM56.pmml" xref="XM56">
                                                             <m:mi xml:id="m66.1.9.pmml" xref="m66.1.9">S</m:mi>
                                                             <m:mrow xml:id="m66.1.10.1.pmml" xref="m66.1.10.1">
                                                                 <m:mi xml:id="m66.1.10.1.1.pmml" xref="m66.1.10.1.1">i</m:mi>
@@ -4579,7 +4537,7 @@
                                                                 <m:mn xml:id="m66.1.10.1.3.pmml" xref="m66.1.10.1.3">1</m:mn>
                                                             </m:mrow>
                                                         </m:msub>
-                                                        <m:mo xml:id="XM55.3a.pmml">)</m:mo>
+                                                        <m:mo xml:id="XM57.3a.pmml">)</m:mo>
                                                     </m:mrow>
                                                 </m:mrow>
                                                 <m:mo xml:id="m66.1.18.2.1.2a.pmml" xref="m66.1.18.2.1.2">,</m:mo>
@@ -4699,7 +4657,7 @@
                                     <m:apply xml:id="m68.1.13.2.1a" xref="m68.1.13.2.1.pmml">
                                         <m:csymbol cd="latexml" xml:id="m68.1.13.2.1" xref="m68.1.13.2.1.pmml">conditional-set</m:csymbol>
                                         <m:ci xml:id="m68.1.7" xref="m68.1.7.pmml">a</m:ci>
-                                        <m:apply xml:id="XM56" xref="XM56.pmml">
+                                        <m:apply xml:id="XM58" xref="XM58.pmml">
                                             <m:geq xml:id="m68.1.10" xref="m68.1.10.pmml"/>
                                             <m:ci xml:id="m68.1.9" xref="m68.1.9.pmml">a</m:ci>
                                             <m:ci xml:id="m68.1.11" xref="m68.1.11.pmml">x</m:ci>
@@ -4721,7 +4679,7 @@
                                             <m:mo xml:id="m68.1.13.2.1.pmml" xref="m68.1.13.2.1">{</m:mo>
                                             <m:mi xml:id="m68.1.7.pmml" xref="m68.1.7">a</m:mi>
                                             <m:mo xml:id="m68.1.13.2.1a.pmml" xref="m68.1.13.2.1">∣</m:mo>
-                                            <m:mrow xml:id="XM56.pmml" xref="XM56">
+                                            <m:mrow xml:id="XM58.pmml" xref="XM58">
                                                 <m:mi xml:id="m68.1.9.pmml" xref="m68.1.9">a</m:mi>
                                                 <m:mo xml:id="m68.1.10.pmml" xref="m68.1.10">≥</m:mo>
                                                 <m:mi xml:id="m68.1.11.pmml" xref="m68.1.11">x</m:mi>
@@ -5078,16 +5036,16 @@
                                             <m:ci xml:id="m72.1.9" xref="m72.1.9.pmml">T</m:ci>
                                             <m:times xml:id="m72.1.10.1" xref="m72.1.10.1.pmml"/>
                                         </m:apply>
-                                        <m:apply xml:id="XM57" xref="XM57.pmml">
-                                            <m:csymbol cd="ambiguous" xml:id="XM57.1">superscript</m:csymbol>
+                                        <m:apply xml:id="XM59" xref="XM59.pmml">
+                                            <m:csymbol cd="ambiguous" xml:id="XM59.1">superscript</m:csymbol>
                                             <m:ci xml:id="m72.1.12" xref="m72.1.12.pmml">k</m:ci>
                                             <m:times xml:id="m72.1.13.1" xref="m72.1.13.1.pmml"/>
                                         </m:apply>
                                     </m:apply>
-                                    <m:apply xml:id="XM59" xref="XM59.pmml">
+                                    <m:apply xml:id="XM61" xref="XM61.pmml">
                                         <m:csymbol cd="latexml" xml:id="m72.1.18" xref="m72.1.18.pmml">tensor-product</m:csymbol>
                                         <m:ci xml:id="m72.1.17" xref="m72.1.17.pmml">a</m:ci>
-                                        <m:apply xml:id="XM58" xref="XM58.pmml">
+                                        <m:apply xml:id="XM60" xref="XM60.pmml">
                                             <m:minus xml:id="m72.1.21" xref="m72.1.21.pmml"/>
                                             <m:cn type="integer" xml:id="m72.1.20" xref="m72.1.20.pmml">1</m:cn>
                                             <m:ci xml:id="m72.1.22" xref="m72.1.22.pmml">a</m:ci>
@@ -5120,7 +5078,7 @@
                                             <m:mo xml:id="m72.1.25.2.1.1.pmml" xref="m72.1.25.2.1.1">⁢</m:mo>
                                             <m:mrow xml:id="m72.1.25.2.1.3b.pmml">
                                                 <m:mo xml:id="m72.1.25.2.1.3.pmml">(</m:mo>
-                                                <m:msup xml:id="XM57.pmml" xref="XM57">
+                                                <m:msup xml:id="XM59.pmml" xref="XM59">
                                                     <m:mi xml:id="m72.1.12.pmml" xref="m72.1.12">k</m:mi>
                                                     <m:mo xml:id="m72.1.13.1.pmml" xref="m72.1.13.1">×</m:mo>
                                                 </m:msup>
@@ -5130,17 +5088,17 @@
                                         <m:mo xml:id="m72.1.15.pmml" xref="m72.1.15">/</m:mo>
                                         <m:mrow xml:id="m72.1.25.2.2b.pmml">
                                             <m:mo xml:id="m72.1.25.2.2.pmml">(</m:mo>
-                                            <m:mrow xml:id="XM59.pmml" xref="XM59">
+                                            <m:mrow xml:id="XM61.pmml" xref="XM61">
                                                 <m:mi xml:id="m72.1.17.pmml" xref="m72.1.17">a</m:mi>
                                                 <m:mo xml:id="m72.1.18.pmml" xref="m72.1.18">⊗</m:mo>
-                                                <m:mrow xml:id="XM59.1b.pmml">
-                                                    <m:mo xml:id="XM59.1.pmml">(</m:mo>
-                                                    <m:mrow xml:id="XM58.pmml" xref="XM58">
+                                                <m:mrow xml:id="XM61.1b.pmml">
+                                                    <m:mo xml:id="XM61.1.pmml">(</m:mo>
+                                                    <m:mrow xml:id="XM60.pmml" xref="XM60">
                                                         <m:mn xml:id="m72.1.20.pmml" xref="m72.1.20">1</m:mn>
                                                         <m:mo xml:id="m72.1.21.pmml" xref="m72.1.21">-</m:mo>
                                                         <m:mi xml:id="m72.1.22.pmml" xref="m72.1.22">a</m:mi>
                                                     </m:mrow>
-                                                    <m:mo xml:id="XM59.1a.pmml">)</m:mo>
+                                                    <m:mo xml:id="XM61.1a.pmml">)</m:mo>
                                                 </m:mrow>
                                             </m:mrow>
                                             <m:mo xml:id="m72.1.25.2.2a.pmml">)</m:mo>
@@ -5164,12 +5122,12 @@
                             <m:apply xml:id="m73.1.11a" xref="m73.1.11.pmml">
                                 <m:csymbol cd="latexml" xml:id="m73.1.11" xref="m73.1.11.pmml">conditional-set</m:csymbol>
                                 <m:ci xml:id="m73.1.2" xref="m73.1.2.pmml">C</m:ci>
-                                <m:apply xml:id="XM60" xref="XM60.pmml">
+                                <m:apply xml:id="XM62" xref="XM62.pmml">
                                     <m:eq xml:id="m73.1.8" xref="m73.1.8.pmml"/>
-                                    <m:apply xml:id="XM60.1" xref="XM60.1.pmml">
+                                    <m:apply xml:id="XM62.1" xref="XM62.1.pmml">
                                         <m:ci xml:id="m73.1.6" xref="m73.1.6.pmml">normal-⋅</m:ci>
-                                        <m:apply xml:id="XM60.1.1" xref="XM60.1.1.pmml">
-                                            <m:csymbol cd="ambiguous" xml:id="XM60.1.1.1">subscript</m:csymbol>
+                                        <m:apply xml:id="XM62.1.1" xref="XM62.1.1.pmml">
+                                            <m:csymbol cd="ambiguous" xml:id="XM62.1.1.1">subscript</m:csymbol>
                                             <m:ci xml:id="m73.1.4" xref="m73.1.4.pmml">K</m:ci>
                                             <m:ci xml:id="m73.1.5.1" xref="m73.1.5.1.pmml">X</m:ci>
                                         </m:apply>
@@ -5183,9 +5141,9 @@
                                     <m:mo xml:id="m73.1.11.pmml" xref="m73.1.11">{</m:mo>
                                     <m:mi xml:id="m73.1.2.pmml" xref="m73.1.2">C</m:mi>
                                     <m:mo xml:id="m73.1.11a.pmml" xref="m73.1.11">:</m:mo>
-                                    <m:mrow xml:id="XM60.pmml" xref="XM60">
-                                        <m:mrow xml:id="XM60.1.pmml" xref="XM60.1">
-                                            <m:msub xml:id="XM60.1.1.pmml" xref="XM60.1.1">
+                                    <m:mrow xml:id="XM62.pmml" xref="XM62">
+                                        <m:mrow xml:id="XM62.1.pmml" xref="XM62.1">
+                                            <m:msub xml:id="XM62.1.1.pmml" xref="XM62.1.1">
                                                 <m:mi xml:id="m73.1.4.pmml" xref="m73.1.4">K</m:mi>
                                                 <m:mi xml:id="m73.1.5.1.pmml" xref="m73.1.5.1">X</m:mi>
                                             </m:msub>
@@ -5217,8 +5175,8 @@
                                     <m:ci xml:id="m74.1.1" xref="m74.1.1.pmml">normal-Θ</m:ci>
                                     <m:apply xml:id="m74.1.10.1.1" xref="m74.1.10.1.1.pmml">
                                         <m:csymbol cd="ambiguous" xml:id="m74.1.10.1.1.1">superscript</m:csymbol>
-                                        <m:apply xml:id="XM61" xref="XM61.pmml">
-                                            <m:times xml:id="XM61.1" xref="XM61.1.pmml"/>
+                                        <m:apply xml:id="XM63" xref="XM63.pmml">
+                                            <m:times xml:id="XM63.1" xref="XM63.1.pmml"/>
                                             <m:ci xml:id="m74.1.4" xref="m74.1.4.pmml">d</m:ci>
                                             <m:ci xml:id="m74.1.5" xref="m74.1.5.pmml">normal-Θ</m:ci>
                                         </m:apply>
@@ -5235,9 +5193,9 @@
                                         <m:msup xml:id="m74.1.10.1.1.pmml" xref="m74.1.10.1.1">
                                             <m:mrow xml:id="m74.1.10.1.1.2b.pmml">
                                                 <m:mo xml:id="m74.1.10.1.1.2.pmml">(</m:mo>
-                                                <m:mrow xml:id="XM61.pmml" xref="XM61">
+                                                <m:mrow xml:id="XM63.pmml" xref="XM63">
                                                     <m:mi xml:id="m74.1.4.pmml" xref="m74.1.4">d</m:mi>
-                                                    <m:mo xml:id="XM61.1.pmml" xref="XM61.1">⁢</m:mo>
+                                                    <m:mo xml:id="XM63.1.pmml" xref="XM63.1">⁢</m:mo>
                                                     <m:mi mathvariant="normal" xml:id="m74.1.5.pmml" xref="m74.1.5">Θ</m:mi>
                                                 </m:mrow>
                                                 <m:mo xml:id="m74.1.10.1.1.2a.pmml">)</m:mo>
@@ -5270,11 +5228,11 @@
                                         <m:apply xml:id="m75.1.12.1.2.1" xref="m75.1.12.1.2.1.pmml">
                                             <m:times xml:id="m75.1.12.1.2.1.1" xref="m75.1.12.1.2.1.1.pmml"/>
                                             <m:ci xml:id="m75.1.1" xref="m75.1.1.pmml">D</m:ci>
-                                            <m:apply xml:id="XM62" xref="XM62.pmml">
-                                                <m:times xml:id="XM62.1" xref="XM62.1.pmml"/>
+                                            <m:apply xml:id="XM64" xref="XM64.pmml">
+                                                <m:times xml:id="XM64.1" xref="XM64.1.pmml"/>
                                                 <m:ci xml:id="m75.1.3" xref="m75.1.3.pmml">ρ</m:ci>
-                                                <m:apply xml:id="XM62.2" xref="XM62.2.pmml">
-                                                    <m:csymbol cd="ambiguous" xml:id="XM62.2.1">subscript</m:csymbol>
+                                                <m:apply xml:id="XM64.2" xref="XM64.2.pmml">
+                                                    <m:csymbol cd="ambiguous" xml:id="XM64.2.1">subscript</m:csymbol>
                                                     <m:ci xml:id="m75.1.4" xref="m75.1.4.pmml">u</m:ci>
                                                     <m:ci xml:id="m75.1.5.1" xref="m75.1.5.1.pmml">i</m:ci>
                                                 </m:apply>
@@ -5295,10 +5253,10 @@
                                                 <m:mo xml:id="m75.1.12.1.2.1.1.pmml" xref="m75.1.12.1.2.1.1">⁢</m:mo>
                                                 <m:mrow xml:id="m75.1.12.1.2.1.2b.pmml">
                                                     <m:mo xml:id="m75.1.12.1.2.1.2.pmml">(</m:mo>
-                                                    <m:mrow xml:id="XM62.pmml" xref="XM62">
+                                                    <m:mrow xml:id="XM64.pmml" xref="XM64">
                                                         <m:mi xml:id="m75.1.3.pmml" xref="m75.1.3">ρ</m:mi>
-                                                        <m:mo xml:id="XM62.1.pmml" xref="XM62.1">⁢</m:mo>
-                                                        <m:msub xml:id="XM62.2.pmml" xref="XM62.2">
+                                                        <m:mo xml:id="XM64.1.pmml" xref="XM64.1">⁢</m:mo>
+                                                        <m:msub xml:id="XM64.2.pmml" xref="XM64.2">
                                                             <m:mi xml:id="m75.1.4.pmml" xref="m75.1.4">u</m:mi>
                                                             <m:mi xml:id="m75.1.5.1.pmml" xref="m75.1.5.1">i</m:mi>
                                                         </m:msub>
@@ -6030,14 +5988,14 @@
                                     <m:apply xml:id="m90.1.23.2.2" xref="m90.1.23.2.2.pmml">
                                         <m:times xml:id="m90.1.23.2.2.1" xref="m90.1.23.2.2.1.pmml"/>
                                         <m:set xml:id="m90.1.23.2.2.2" xref="m90.1.23.2.2.2.pmml">
-                                            <m:apply xml:id="XM63" xref="XM63.pmml">
-                                                <m:apply xml:id="XM63.1" xref="XM63.1.pmml">
-                                                    <m:csymbol cd="ambiguous" xml:id="XM63.1.1">subscript</m:csymbol>
+                                            <m:apply xml:id="XM65" xref="XM65.pmml">
+                                                <m:apply xml:id="XM65.1" xref="XM65.1.pmml">
+                                                    <m:csymbol cd="ambiguous" xml:id="XM65.1.1">subscript</m:csymbol>
                                                     <m:int xml:id="m90.1.12" xref="m90.1.12.pmml"/>
                                                     <mws:qvar xmlns:mws="http://search.mathweb.org/ns" name="x&#10;0"/>
                                                 </m:apply>
-                                                <m:apply xml:id="XM63.2" xref="XM63.2.pmml">
-                                                    <m:times xml:id="XM63.2.1" xref="XM63.2.1.pmml"/>
+                                                <m:apply xml:id="XM65.2" xref="XM65.2.pmml">
+                                                    <m:times xml:id="XM65.2.1" xref="XM65.2.1.pmml"/>
                                                     <m:ci xml:id="m90.1.14" xref="m90.1.14.pmml">f</m:ci>
                                                     <m:ci xml:id="m90.1.16" xref="m90.1.16.pmml">d</m:ci>
                                                     <m:ci xml:id="m90.1.17" xref="m90.1.17.pmml">S</m:ci>
@@ -6078,16 +6036,16 @@
                                             <m:mrow xml:id="m90.1.23.2.2.pmml" xref="m90.1.23.2.2">
                                                 <m:mrow xml:id="m90.1.23.2.2.2b.pmml" xref="m90.1.23.2.2.2">
                                                     <m:mo xml:id="m90.1.23.2.2.2.pmml" xref="m90.1.23.2.2.2">{</m:mo>
-                                                    <m:mrow xml:id="XM63.pmml" xref="XM63">
-                                                        <m:msub xml:id="XM63.1.pmml" xref="XM63.1">
+                                                    <m:mrow xml:id="XM65.pmml" xref="XM65">
+                                                        <m:msub xml:id="XM65.1.pmml" xref="XM65.1">
                                                             <m:mo largeop="true" symmetric="true" xml:id="m90.1.12.pmml" xref="m90.1.12">∫</m:mo>
                                                             <mws:qvar xmlns:mws="http://search.mathweb.org/ns" name="x&#10;0"/>
                                                         </m:msub>
-                                                        <m:mrow xml:id="XM63.2.pmml" xref="XM63.2">
+                                                        <m:mrow xml:id="XM65.2.pmml" xref="XM65.2">
                                                             <m:mi xml:id="m90.1.14.pmml" xref="m90.1.14">f</m:mi>
-                                                            <m:mo xml:id="XM63.2.1.pmml" xref="XM63.2.1">⁢</m:mo>
+                                                            <m:mo xml:id="XM65.2.1.pmml" xref="XM65.2.1">⁢</m:mo>
                                                             <m:mi xml:id="m90.1.16.pmml" xref="m90.1.16">d</m:mi>
-                                                            <m:mo xml:id="XM63.2.1a.pmml" xref="XM63.2.1">⁢</m:mo>
+                                                            <m:mo xml:id="XM65.2.1a.pmml" xref="XM65.2.1">⁢</m:mo>
                                                             <m:mi xml:id="m90.1.17.pmml" xref="m90.1.17">S</m:mi>
                                                         </m:mrow>
                                                     </m:mrow>
@@ -6124,8 +6082,8 @@
                                         <m:csymbol cd="ambiguous" xml:id="m91.1.18.2.1">subscript</m:csymbol>
                                         <m:set xml:id="m91.1.18.2.2" xref="m91.1.18.2.2.pmml">
                                             <m:ci xml:id="m91.1.2" xref="m91.1.2.pmml">x</m:ci>
-                                            <m:apply xml:id="XM65" xref="XM65.pmml">
-                                                <m:csymbol cd="ambiguous" xml:id="XM65.1">subscript</m:csymbol>
+                                            <m:apply xml:id="XM67" xref="XM67.pmml">
+                                                <m:csymbol cd="ambiguous" xml:id="XM67.1">subscript</m:csymbol>
                                                 <m:ci xml:id="m91.1.4" xref="m91.1.4.pmml">p</m:ci>
                                                 <m:ci xml:id="m91.1.5.1" xref="m91.1.5.1.pmml">x</m:ci>
                                             </m:apply>
@@ -6140,8 +6098,8 @@
                                         <m:csymbol cd="ambiguous" xml:id="m91.1.18.3.1">subscript</m:csymbol>
                                         <m:set xml:id="m91.1.18.3.2" xref="m91.1.18.3.2.pmml">
                                             <m:ci xml:id="m91.1.10" xref="m91.1.10.pmml">y</m:ci>
-                                            <m:apply xml:id="XM67" xref="XM67.pmml">
-                                                <m:csymbol cd="ambiguous" xml:id="XM67.1">subscript</m:csymbol>
+                                            <m:apply xml:id="XM69" xref="XM69.pmml">
+                                                <m:csymbol cd="ambiguous" xml:id="XM69.1">subscript</m:csymbol>
                                                 <m:ci xml:id="m91.1.12" xref="m91.1.12.pmml">p</m:ci>
                                                 <m:ci xml:id="m91.1.13.1" xref="m91.1.13.1.pmml">y</m:ci>
                                             </m:apply>
@@ -6170,7 +6128,7 @@
                                             <m:mo xml:id="m91.1.18.2.2.pmml" xref="m91.1.18.2.2">{</m:mo>
                                             <m:mi xml:id="m91.1.2.pmml" xref="m91.1.2">x</m:mi>
                                             <m:mo xml:id="m91.1.18.2.2a.pmml" xref="m91.1.18.2.2">,</m:mo>
-                                            <m:msub xml:id="XM65.pmml" xref="XM65">
+                                            <m:msub xml:id="XM67.pmml" xref="XM67">
                                                 <m:mi xml:id="m91.1.4.pmml" xref="m91.1.4">p</m:mi>
                                                 <m:mi xml:id="m91.1.5.1.pmml" xref="m91.1.5.1">x</m:mi>
                                             </m:msub>
@@ -6188,7 +6146,7 @@
                                             <m:mo xml:id="m91.1.18.3.2.pmml" xref="m91.1.18.3.2">{</m:mo>
                                             <m:mi xml:id="m91.1.10.pmml" xref="m91.1.10">y</m:mi>
                                             <m:mo xml:id="m91.1.18.3.2a.pmml" xref="m91.1.18.3.2">,</m:mo>
-                                            <m:msub xml:id="XM67.pmml" xref="XM67">
+                                            <m:msub xml:id="XM69.pmml" xref="XM69">
                                                 <m:mi xml:id="m91.1.12.pmml" xref="m91.1.12">p</m:mi>
                                                 <m:mi xml:id="m91.1.13.1.pmml" xref="m91.1.13.1">y</m:mi>
                                             </m:msub>
@@ -6238,13 +6196,13 @@
                                     <m:cn type="integer" xml:id="m92.1.7" xref="m92.1.7.pmml">1</m:cn>
                                     <m:apply xml:id="m92.1.18.2.1" xref="m92.1.18.2.1.pmml">
                                         <m:csymbol cd="ambiguous" xml:id="m92.1.18.2.1.1">superscript</m:csymbol>
-                                        <m:apply xml:id="XM68" xref="XM68.pmml">
+                                        <m:apply xml:id="XM70" xref="XM70.pmml">
                                             <m:plus xml:id="m92.1.11" xref="m92.1.11.pmml"/>
                                             <m:cn type="integer" xml:id="m92.1.10" xref="m92.1.10.pmml">1</m:cn>
-                                            <m:apply xml:id="XM68.1" xref="XM68.1.pmml">
+                                            <m:apply xml:id="XM70.1" xref="XM70.1.pmml">
                                                 <m:divide xml:id="m92.1.14" xref="m92.1.14.pmml"/>
-                                                <m:apply xml:id="XM68.1.1" xref="XM68.1.1.pmml">
-                                                    <m:times xml:id="XM68.1.1.1" xref="XM68.1.1.1.pmml"/>
+                                                <m:apply xml:id="XM70.1.1" xref="XM70.1.1.pmml">
+                                                    <m:times xml:id="XM70.1.1.1" xref="XM70.1.1.1.pmml"/>
                                                     <m:ci xml:id="m92.1.12" xref="m92.1.12.pmml">k</m:ci>
                                                     <m:ci xml:id="m92.1.13" xref="m92.1.13.pmml">y</m:ci>
                                                 </m:apply>
@@ -6287,13 +6245,13 @@
                                         <m:msup xml:id="m92.1.18.2.1.pmml" xref="m92.1.18.2.1">
                                             <m:mrow xml:id="m92.1.18.2.1.2b.pmml">
                                                 <m:mo xml:id="m92.1.18.2.1.2.pmml">(</m:mo>
-                                                <m:mrow xml:id="XM68.pmml" xref="XM68">
+                                                <m:mrow xml:id="XM70.pmml" xref="XM70">
                                                     <m:mn xml:id="m92.1.10.pmml" xref="m92.1.10">1</m:mn>
                                                     <m:mo xml:id="m92.1.11.pmml" xref="m92.1.11">+</m:mo>
-                                                    <m:mrow xml:id="XM68.1.pmml" xref="XM68.1">
-                                                        <m:mrow xml:id="XM68.1.1.pmml" xref="XM68.1.1">
+                                                    <m:mrow xml:id="XM70.1.pmml" xref="XM70.1">
+                                                        <m:mrow xml:id="XM70.1.1.pmml" xref="XM70.1.1">
                                                             <m:mi xml:id="m92.1.12.pmml" xref="m92.1.12">k</m:mi>
-                                                            <m:mo xml:id="XM68.1.1.1.pmml" xref="XM68.1.1.1">⁢</m:mo>
+                                                            <m:mo xml:id="XM70.1.1.1.pmml" xref="XM70.1.1.1">⁢</m:mo>
                                                             <m:mi xml:id="m92.1.13.pmml" xref="m92.1.13">y</m:mi>
                                                         </m:mrow>
                                                         <m:mo xml:id="m92.1.14.pmml" xref="m92.1.14">/</m:mo>
@@ -6333,8 +6291,8 @@
                                     <m:apply xml:id="m93.1.11.2.1" xref="m93.1.11.2.1.pmml">
                                         <m:times xml:id="m93.1.11.2.1.1" xref="m93.1.11.2.1.1.pmml"/>
                                         <m:ci xml:id="m93.1.1" xref="m93.1.1.pmml">L</m:ci>
-                                        <m:apply xml:id="XM69" xref="XM69.pmml">
-                                            <m:csymbol cd="ambiguous" xml:id="XM69.1">subscript</m:csymbol>
+                                        <m:apply xml:id="XM71" xref="XM71.pmml">
+                                            <m:csymbol cd="ambiguous" xml:id="XM71.1">subscript</m:csymbol>
                                             <m:ci xml:id="m93.1.3" xref="m93.1.3.pmml">H</m:ci>
                                             <m:ci xml:id="m93.1.4.1" xref="m93.1.4.1.pmml">B</m:ci>
                                         </m:apply>
@@ -6351,7 +6309,7 @@
                                             <m:mo xml:id="m93.1.11.2.1.1.pmml" xref="m93.1.11.2.1.1">⁢</m:mo>
                                             <m:mrow xml:id="m93.1.11.2.1.2b.pmml">
                                                 <m:mo xml:id="m93.1.11.2.1.2.pmml">(</m:mo>
-                                                <m:msub xml:id="XM69.pmml" xref="XM69">
+                                                <m:msub xml:id="XM71.pmml" xref="XM71">
                                                     <m:mi xml:id="m93.1.3.pmml" xref="m93.1.3">H</m:mi>
                                                     <m:mi xml:id="m93.1.4.1.pmml" xref="m93.1.4.1">B</m:mi>
                                                 </m:msub>
@@ -6381,49 +6339,62 @@
                 <formula id="f1.0">
                     <m:math>
                         <m:semantics xml:id="m94.1a">
-                            <m:apply xml:id="m94.1.8" xref="m94.1.8.pmml">
+                            <m:apply xml:id="m94.1.7" xref="m94.1.7.pmml">
                                 <m:eq xml:id="m94.1.3" xref="m94.1.3.pmml"/>
-                                <m:apply xml:id="m94.1.8.1" xref="m94.1.8.1.pmml">
-                                    <m:csymbol cd="ambiguous" xml:id="m94.1.8.1.1">subscript</m:csymbol>
+                                <m:apply xml:id="m94.1.7.1" xref="m94.1.7.1.pmml">
+                                    <m:csymbol cd="ambiguous" xml:id="m94.1.7.1.1">subscript</m:csymbol>
                                     <m:ci xml:id="m94.1.1" xref="m94.1.1.pmml">π</m:ci>
                                     <m:ci xml:id="m94.1.2.1" xref="m94.1.2.1.pmml">i</m:ci>
                                 </m:apply>
-                                <m:apply xml:id="m94.1.8.2a" xref="m94.1.8.2.pmml">
-                                    <m:times xml:id="m94.1.8.2.1" xref="m94.1.8.2.1.pmml"/>
-                                    <m:apply xml:id="m94.1.8.2.2" xref="m94.1.8.2.2.pmml">
-                                        <m:csymbol cd="ambiguous" xml:id="m94.1.8.2.2.1">superscript</m:csymbol>
+                                <m:apply xml:id="m94.1.7.2" xref="m94.1.7.2.pmml">
+                                    <m:times xml:id="m94.1.7.2.1" xref="m94.1.7.2.1.pmml"/>
+                                    <m:apply xml:id="m94.1.7.2.2" xref="m94.1.7.2.2.pmml">
+                                        <m:csymbol cd="ambiguous" xml:id="m94.1.7.2.2.1">superscript</m:csymbol>
                                         <m:cn type="integer" xml:id="m94.1.4" xref="m94.1.4.pmml">2</m:cn>
                                         <mws:qvar xmlns:mws="http://search.mathweb.org/ns" name="x0"/>
                                     </m:apply>
-                                    <m:mtext xml:id="m94.1.8.2" xref="m94.1.8.2.pmml">\tbinom</m:mtext>
-                                    <m:ci xml:id="m94.1.6" xref="m94.1.6.pmml">N</m:ci>
-                                    <m:ci xml:id="m94.1.7" xref="m94.1.7.pmml">i</m:ci>
+                                    <m:apply xml:id="m94.1.6a" xref="m94.1.6.pmml">
+                                        <m:csymbol cd="latexml" xml:id="m94.1.6" xref="m94.1.6.pmml">binomial</m:csymbol>
+                                        <m:ci xml:id="m94.1.6.3.2" xref="m94.1.6.3.2.pmml">N</m:ci>
+                                        <m:ci xml:id="m94.1.6.3.3" xref="m94.1.6.3.3.pmml">i</m:ci>
+                                    </m:apply>
                                 </m:apply>
                             </m:apply>
                             <m:annotation-xml encoding="MathML-Presentation" xml:id="m94.1b">
-                                <m:mrow xml:id="m94.1.8.pmml" xref="m94.1.8">
-                                    <m:msub xml:id="m94.1.8.1.pmml" xref="m94.1.8.1">
+                                <m:mrow xml:id="m94.1.7.pmml" xref="m94.1.7">
+                                    <m:msub xml:id="m94.1.7.1.pmml" xref="m94.1.7.1">
                                         <m:mi xml:id="m94.1.1.pmml" xref="m94.1.1">π</m:mi>
                                         <m:mi xml:id="m94.1.2.1.pmml" xref="m94.1.2.1">i</m:mi>
                                     </m:msub>
                                     <m:mo xml:id="m94.1.3.pmml" xref="m94.1.3">=</m:mo>
-                                    <m:mrow xml:id="m94.1.8.2b.pmml" xref="m94.1.8.2">
-                                        <m:msup xml:id="m94.1.8.2.2.pmml" xref="m94.1.8.2.2">
+                                    <m:mrow xml:id="m94.1.7.2.pmml" xref="m94.1.7.2">
+                                        <m:msup xml:id="m94.1.7.2.2.pmml" xref="m94.1.7.2.2">
                                             <m:mn xml:id="m94.1.4.pmml" xref="m94.1.4">2</m:mn>
                                             <mws:qvar xmlns:mws="http://search.mathweb.org/ns" name="x0"/>
                                         </m:msup>
-                                        <m:mo xml:id="m94.1.8.2.1.pmml" xref="m94.1.8.2.1">⁢</m:mo>
-                                        <m:merror class="ltx_ERROR undefined undefined" xml:id="m94.1.8.2.pmml" xref="m94.1.8.2">
-                                            <m:mtext xml:id="m94.1.8.2a.pmml" xref="m94.1.8.2">\tbinom</m:mtext>
-                                        </m:merror>
-                                        <m:mo xml:id="m94.1.8.2.1a.pmml" xref="m94.1.8.2.1">⁢</m:mo>
-                                        <m:mi xml:id="m94.1.6.pmml" xref="m94.1.6">N</m:mi>
-                                        <m:mo xml:id="m94.1.8.2.1b.pmml" xref="m94.1.8.2.1">⁢</m:mo>
-                                        <m:mi xml:id="m94.1.7.pmml" xref="m94.1.7">i</m:mi>
+                                        <m:mo xml:id="m94.1.7.2.1.pmml" xref="m94.1.7.2.1">⁢</m:mo>
+                                        <m:mrow xml:id="m94.1.6h.pmml" xref="m94.1.6">
+                                            <m:mo xml:id="m94.1.6.pmml" xref="m94.1.6">(</m:mo>
+                                            <m:mstyle scriptlevel="+1" xml:id="m94.1.6a.pmml" xref="m94.1.6">
+                                                <m:mtable columnspacing="0.4em" rowspacing="0.2ex" xml:id="m94.1.6b.pmml" xref="m94.1.6">
+                                                    <m:mtr xml:id="m94.1.6c.pmml" xref="m94.1.6">
+                                                        <m:mtd xml:id="m94.1.6d.pmml" xref="m94.1.6">
+                                                            <m:mi xml:id="m94.1.6.3.2.pmml" xref="m94.1.6.3.2">N</m:mi>
+                                                        </m:mtd>
+                                                    </m:mtr>
+                                                    <m:mtr xml:id="m94.1.6e.pmml" xref="m94.1.6">
+                                                        <m:mtd xml:id="m94.1.6f.pmml" xref="m94.1.6">
+                                                            <m:mi xml:id="m94.1.6.3.3.pmml" xref="m94.1.6.3.3">i</m:mi>
+                                                        </m:mtd>
+                                                    </m:mtr>
+                                                </m:mtable>
+                                            </m:mstyle>
+                                            <m:mo xml:id="m94.1.6g.pmml" xref="m94.1.6">)</m:mo>
+                                        </m:mrow>
                                     </m:mrow>
                                 </m:mrow>
                             </m:annotation-xml>
-                            <m:annotation encoding="application/x-tex" xml:id="m94.1c">\pi_{i}=2^{\qvar@construct{x0}}{\tbinom{N}{i}}</m:annotation>
+                            <m:annotation encoding="application/x-tex" xml:id="m94.1c">\pi_{i}=2^{\qvar@construct{x0}}{{\textstyle\left({{N}\atop{i}}\right)}}</m:annotation>
                         </m:semantics>
                     </m:math>
                 </formula>
@@ -6487,19 +6458,9 @@
                 <formula id="f1.0">
                     <m:math>
                         <m:semantics xml:id="m96.1a">
-                            <m:apply xml:id="m96.1.2a" xref="m96.1.2.pmml">
-                                <m:times xml:id="m96.1.2.1" xref="m96.1.2.1.pmml"/>
-                                <m:mtext xml:id="m96.1.2" xref="m96.1.2.pmml">\boldsymbol</m:mtext>
-                                <m:ci xml:id="m96.1.1" xref="m96.1.1.pmml">s</m:ci>
-                            </m:apply>
+                            <m:ci xml:id="m96.1.1" xref="m96.1.1.pmml">𝒔</m:ci>
                             <m:annotation-xml encoding="MathML-Presentation" xml:id="m96.1b">
-                                <m:mrow xml:id="m96.1.2b.pmml" xref="m96.1.2">
-                                    <m:merror class="ltx_ERROR undefined undefined" xml:id="m96.1.2.pmml" xref="m96.1.2">
-                                        <m:mtext xml:id="m96.1.2a.pmml" xref="m96.1.2">\boldsymbol</m:mtext>
-                                    </m:merror>
-                                    <m:mo xml:id="m96.1.2.1.pmml" xref="m96.1.2.1">⁢</m:mo>
-                                    <m:mi xml:id="m96.1.1.pmml" xref="m96.1.1">s</m:mi>
-                                </m:mrow>
+                                <m:mi xml:id="m96.1.1.pmml" xref="m96.1.1">𝒔</m:mi>
                             </m:annotation-xml>
                             <m:annotation encoding="application/x-tex" xml:id="m96.1c">{\boldsymbol{s}}</m:annotation>
                         </m:semantics>
