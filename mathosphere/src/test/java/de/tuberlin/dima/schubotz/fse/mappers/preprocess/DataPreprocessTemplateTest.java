@@ -1,15 +1,16 @@
 package de.tuberlin.dima.schubotz.fse.mappers.preprocess;
 
-import de.tuberlin.dima.schubotz.fse.mappers.DataPreprocessTemplate;
 import de.tuberlin.dima.schubotz.fse.types.DataTuple;
 import de.tuberlin.dima.schubotz.utils.TestUtils;
 import junit.framework.TestCase;
 import org.apache.flink.api.java.tuple.Tuple1;
 import org.apache.flink.util.Collector;
+import org.junit.Test;
 
-public class DataPreprocessTemplateTest extends TestCase {
+public class DataPreprocessTemplateTest {
 
 
+    @Test
     public void testSetDoc() throws Exception {
     final String testdata= TestUtils.getFileContents("de/tuberlin/dima/schubotz/utils/xmlFailTestEq.xml");
         DataPreprocessTemplate<DataTuple,Tuple1<String>> dp = new DataPreprocessTemplate<DataTuple, Tuple1<String>>() {
@@ -24,6 +25,7 @@ public class DataPreprocessTemplateTest extends TestCase {
         System.out.println(dp.mathElements.toString());
     }
 
+    @Test
     public void testSetMath() throws Exception {
 
     }

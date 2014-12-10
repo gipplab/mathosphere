@@ -5,6 +5,7 @@ import de.tuberlin.dima.schubotz.fse.utils.XMLHelper;
 import junit.framework.TestCase;
 import org.apache.flink.api.java.tuple.Tuple2;
 import org.junit.Ignore;
+import org.junit.Test;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
@@ -12,10 +13,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import static de.tuberlin.dima.schubotz.fse.utils.XMLHelper.getIdentifiersFromCmml;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 @Ignore
-public class XMLHelperTest extends TestCase {
-
-
+public class XMLHelperTest {
+    @Test
     public void testCompactForm() throws Exception {
 
     }
@@ -34,6 +38,7 @@ public class XMLHelperTest extends TestCase {
 		}
 	}
 
+    @Test
     public void testCompareNode() throws Exception {
 		String testFile1 = TestUtils.getTestQueryString();
 		//Get nodelist of all <math> descendants of <root><topic>
@@ -55,6 +60,7 @@ public class XMLHelperTest extends TestCase {
 		}
 	}
 
+    @Test
     public void testGetMMLLeaves() throws Exception {
         String testFile1 = TestUtils.getTestQueryString();
         NodeList MathMLElements = XMLHelper.String2NodeList(testFile1, "/topics//math");//"/topics/topic/query/formula/math" topic/query/formula
@@ -68,6 +74,7 @@ public class XMLHelperTest extends TestCase {
 
     }
 
+    @Test
     public void testGetIdentifiersFromCmml() throws Exception {
         String testFile1 = TestUtils.getTestQueryString();
         NodeList MathMLElements = XMLHelper.String2NodeList(testFile1, "/topics//math/semantics/*[1]");//"/topics/topic/query/formula/math" topic/query/formula
@@ -81,42 +88,52 @@ public class XMLHelperTest extends TestCase {
         }
     }
 
+    @Test
     public void testString2NodeList() throws Exception {
 
     }
 
+    @Test
     public void testGetElementB() throws Exception {
 
     }
 
+    @Test
     public void testGetElementB1() throws Exception {
 
     }
 
+    @Test
     public void testGetElementsB() throws Exception {
 
     }
 
+    @Test
     public void testGetElementsB1() throws Exception {
 
     }
 
+    @Test
     public void testString2Doc() throws Exception {
 
     }
 
+    @Test
     public void testGetIdentifiersFrom() throws Exception {
 
     }
 
+    @Test
     public void testGetIdentifiersFromQuery() throws Exception {
 
     }
 
+    @Test
     public void testPrintDocument() throws Exception {
 
     }
 
+    @Test
     public void testCompileX() throws Exception {
 
     }
