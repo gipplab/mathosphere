@@ -1,7 +1,6 @@
 package de.tuberlin.dima.schubotz.fse.mappers.preprocess;
 
 import de.tuberlin.dima.schubotz.fse.MainProgram;
-import de.tuberlin.dima.schubotz.fse.mappers.DataPreprocessTemplate;
 import de.tuberlin.dima.schubotz.fse.types.DataTuple;
 import de.tuberlin.dima.schubotz.fse.types.RawDataTuple;
 import de.tuberlin.dima.schubotz.fse.utils.ExtractHelper;
@@ -33,6 +32,7 @@ public class DataPreprocess extends DataPreprocessTemplate<RawDataTuple,DataTupl
      * @param in RawDataTuple
      * @param out DataTuple of document
      */
+    @Override
 	public void flatMap(RawDataTuple in, Collector<DataTuple> out) {
         docID = in.getNamedField(RawDataTuple.fields.ID);
         data = in.getNamedField(RawDataTuple.fields.rawData);
