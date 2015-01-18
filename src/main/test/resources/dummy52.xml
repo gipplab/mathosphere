@@ -1,0 +1,214 @@
+<apply>
+    <eq/>
+    <apply>
+        <csymbol cd="ambiguous">subscript</csymbol>
+        <apply>
+            <ci>normal-⏟</ci>
+            <apply>
+                <eq/>
+                <apply>
+                    <times/>
+                    <apply>
+                        <csymbol cd="ambiguous">subscript</csymbol>
+                        <ci>u</ci>
+                        <cn type="integer">1</cn>
+                    </apply>
+                    <interval closure="open">
+                        <mws:qvar xmlns:mws="http://search.mathweb.org/ns" name="x0"/>
+                        <apply>
+                            <csymbol cd="ambiguous">subscript</csymbol>
+                            <ci>z</ci>
+                            <cn type="integer">1</cn>
+                        </apply>
+                    </interval>
+                </apply>
+                <apply>
+                    <plus/>
+                    <apply>
+                        <csymbol cd="ambiguous">subscript</csymbol>
+                        <ci>v</ci>
+                        <cn type="integer">1</cn>
+                    </apply>
+                    <apply>
+                        <csymbol cd="ambiguous">subscript</csymbol>
+                        <apply>
+                            <ci>normal-˙</ci>
+                            <ci>u</ci>
+                        </apply>
+                        <ci>x</ci>
+                    </apply>
+                </apply>
+            </apply>
+        </apply>
+        <mws:qvar xmlns:mws="http://search.mathweb.org/ns" name="x1"/>
+    </apply>
+    <apply>
+        <plus/>
+        <apply>
+            <csymbol cd="ambiguous">superscript</csymbol>
+            <apply>
+                <ci>normal-⏞</ci>
+                <apply>
+                    <minus/>
+                    <apply>
+                        <minus/>
+                        <apply>
+                            <times/>
+                            <apply>
+                                <divide/>
+                                <apply>
+                                    <partialdiff/>
+                                    <apply>
+                                        <csymbol cd="ambiguous">subscript</csymbol>
+                                        <ci>V</ci>
+                                        <ci>x</ci>
+                                    </apply>
+                                </apply>
+                                <apply>
+                                    <partialdiff/>
+                                    <mws:qvar xmlns:mws="http://search.mathweb.org/ns" name="x2"/>
+                                </apply>
+                            </apply>
+                            <apply>
+                                <csymbol cd="ambiguous">subscript</csymbol>
+                                <ci>g</ci>
+                                <ci>x</ci>
+                            </apply>
+                            <mws:qvar xmlns:mws="http://search.mathweb.org/ns" name="x3"/>
+                        </apply>
+                    </apply>
+                    <apply>
+                        <times/>
+                        <apply>
+                            <csymbol cd="ambiguous">subscript</csymbol>
+                            <ci>k</ci>
+                            <cn type="integer">1</cn>
+                        </apply>
+                        <apply>
+                            <csymbol cd="ambiguous">subscript</csymbol>
+                            <apply>
+                                <ci>normal-⏟</ci>
+                                <apply>
+                                    <minus/>
+                                    <apply>
+                                        <csymbol cd="ambiguous">subscript</csymbol>
+                                        <ci>z</ci>
+                                        <cn type="integer">1</cn>
+                                    </apply>
+                                    <apply>
+                                        <times/>
+                                        <apply>
+                                            <csymbol cd="ambiguous">subscript</csymbol>
+                                            <ci>u</ci>
+                                            <ci>x</ci>
+                                        </apply>
+                                        <ci>𝐱</ci>
+                                    </apply>
+                                </apply>
+                            </apply>
+                            <mws:qvar xmlns:mws="http://search.mathweb.org/ns" name="x4"/>
+                        </apply>
+                    </apply>
+                </apply>
+            </apply>
+            <apply>
+                <csymbol cd="ambiguous">subscript</csymbol>
+                <ci>v</ci>
+                <cn type="integer">1</cn>
+            </apply>
+        </apply>
+        <apply>
+            <csymbol cd="ambiguous">superscript</csymbol>
+            <apply>
+                <ci>normal-⏞</ci>
+                <apply>
+                    <times/>
+                    <apply>
+                        <divide/>
+                        <mws:qvar xmlns:mws="http://search.mathweb.org/ns" name="x5"/>
+                        <apply>
+                            <partialdiff/>
+                            <mws:qvar xmlns:mws="http://search.mathweb.org/ns" name="x6"/>
+                        </apply>
+                    </apply>
+                    <apply>
+                        <csymbol cd="ambiguous">subscript</csymbol>
+                        <apply>
+                            <ci>normal-⏟</ci>
+                            <apply>
+                                <plus/>
+                                <apply>
+                                    <times/>
+                                    <apply>
+                                        <csymbol cd="ambiguous">subscript</csymbol>
+                                        <ci>f</ci>
+                                        <mws:qvar xmlns:mws="http://search.mathweb.org/ns" name="x7"/>
+                                    </apply>
+                                    <mws:qvar xmlns:mws="http://search.mathweb.org/ns" name="x8"/>
+                                </apply>
+                                <apply>
+                                    <times/>
+                                    <apply>
+                                        <csymbol cd="ambiguous">subscript</csymbol>
+                                        <ci>g</ci>
+                                        <ci>x</ci>
+                                    </apply>
+                                    <mws:qvar xmlns:mws="http://search.mathweb.org/ns" name="x9"/>
+                                    <apply>
+                                        <csymbol cd="ambiguous">subscript</csymbol>
+                                        <ci>z</ci>
+                                        <cn type="integer">1</cn>
+                                    </apply>
+                                </apply>
+                            </apply>
+                        </apply>
+                        <apply>
+                            <times/>
+                            <mws:qvar xmlns:mws="http://search.mathweb.org/ns" name="x10"/>
+                            <mtext>(i.e.,</mtext>
+                            <apply>
+                                <divide/>
+                                <apply>
+                                    <ci>normal-d</ci>
+                                    <mws:qvar xmlns:mws="http://search.mathweb.org/ns" name="x11"/>
+                                </apply>
+                                <apply>
+                                    <mws:qvar xmlns:mws="http://search.mathweb.org/ns" name="x12"/>
+                                    <ci>t</ci>
+                                </apply>
+                            </apply>
+                            <mtext>?
+                                x13
+                            </mtext>
+                        </apply>
+                    </apply>
+                </apply>
+            </apply>
+            <apply>
+                <times/>
+                <apply>
+                    <csymbol cd="ambiguous">subscript</csymbol>
+                    <mws:qvar xmlns:mws="http://search.mathweb.org/ns" name="x14"/>
+                    <ci>x</ci>
+                </apply>
+                <mtext>(i.e.,</mtext>
+                <apply>
+                    <divide/>
+                    <apply>
+                        <ci>normal-d</ci>
+                        <apply>
+                            <csymbol cd="ambiguous">subscript</csymbol>
+                            <ci>u</ci>
+                            <mws:qvar xmlns:mws="http://search.mathweb.org/ns" name="x15"/>
+                        </apply>
+                    </apply>
+                    <apply>
+                        <ci>normal-d</ci>
+                        <ci>t</ci>
+                    </apply>
+                </apply>
+                <mtext>)</mtext>
+            </apply>
+        </apply>
+    </apply>
+</apply>
