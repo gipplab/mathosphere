@@ -1,16 +1,8 @@
-            <apply >
-                <ci >normal-:</ci>
-                <apply >
-                    <csymbol cd="ambiguous" >subscript</csymbol>
-                    <ci >h</ci>
-                    <ci >i</ci>
-                </apply>
-                <apply >
-                    <ci >normal-→</ci>
-                    <ci >X</ci>
-                    <apply >
-                        <set />
-                        <mws:qvar xmlns:mws="http://search.mathweb.org/ns" name="x0"/>
-                    </apply>
-                </apply>
-            </apply>
+<apply  >
+    <eq  />
+    <ci  >F</ci>
+    <set  >
+        <mws:qvar xmlns:mws="http://search.mathweb.org/ns" name="x0"/>
+    </set>
+</apply>
+ 

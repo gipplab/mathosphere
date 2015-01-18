@@ -4348,60 +4348,57 @@ _{{j=0}}^{{i}}K_{j}}\over{\displaystyle\sum_{{i=0}}^{n}{\Big[}[H^{+}]^{{n-i}}%
         </math>
     </mws:expr>
     <mws:expr url="dummy82">
-        <math xmlns="http://www.w3.org/1998/Math/MathML" id="math.17232.32" class="ltx_Math" alttext="{\displaystyle h_{i}:X\to\{-1,+1\}}"  xml:id="math.17232.32.1" xref="math.17232.32.1.cmml">
-            <semantics xml:id="math.17232.32.1a" xref="math.17232.32.1.cmml">
-                <mrow xml:id="math.17232.32.1.13" xref="math.17232.32.1.13.cmml">
-                    <msub xml:id="math.17232.32.1.13.1" xref="math.17232.32.1.13.1.cmml">
-                        <mi xml:id="math.17232.32.1.1" xref="math.17232.32.1.1.cmml">h</mi>
-                        <mi xml:id="math.17232.32.1.2.1" xref="math.17232.32.1.2.1.cmml">i</mi>
+        <math xmlns="http://www.w3.org/1998/Math/MathML" id="p1.1.m1.1" class="ltx_Math" alttext="{\displaystyle h_{i}:X\to\{-1,+1\}}" display="inline">
+            <semantics id="p1.1.m1.1a">
+                <mrow id="p1.1.m1.1.13" xref="p1.1.m1.1.13.cmml">
+                    <msub id="p1.1.m1.1.13.1" xref="p1.1.m1.1.13.1.cmml">
+                        <mi id="p1.1.m1.1.1" xref="p1.1.m1.1.1.cmml">h</mi>
+                        <mi id="p1.1.m1.1.2.1" xref="p1.1.m1.1.2.1.cmml">i</mi>
                     </msub>
-                    <mo xml:id="math.17232.32.1.3" xref="math.17232.32.1.3.cmml">:</mo>
-                    <mrow xml:id="math.17232.32.1.13.2" xref="math.17232.32.1.13.2.cmml">
-                        <mi xml:id="math.17232.32.1.4" xref="math.17232.32.1.4.cmml">X</mi>
-                        <mo xml:id="math.17232.32.1.5" xref="math.17232.32.1.5.cmml">→</mo>
-                        <mrow xml:id="math.17232.32.1.13.2.1" xref="math.17232.32.1.13.2.1.cmml">
-                            <mo xml:id="math.17232.32.1.13.2.1a" xref="math.17232.32.1.13.2.1.cmml">{</mo>
-                            <mrow xml:id="math.17232.32.1.13.2.1b" xref="math.17232.32.1.13.2.1.cmml">
-                                <mrow xml:id="math.17232.32.1.13.2.1.2" xref="math.17232.32.1.13.2.1.2.cmml">
-                                    <mo xml:id="math.17232.32.1.7" xref="math.17232.32.1.7.cmml">-</mo>
-                                    <mn xml:id="math.17232.32.1.8" xref="math.17232.32.1.8.cmml">1</mn>
-                                </mrow>
-                                <mo xml:id="math.17232.32.1.13.2.1c" xref="math.17232.32.1.13.2.1.cmml">,</mo>
-                                <mrow xml:id="math.17232.32.1.13.2.1.3" xref="math.17232.32.1.13.2.1.3.cmml">
-                                    <mo xml:id="math.17232.32.1.10" xref="math.17232.32.1.10.cmml">+</mo>
-                                    <mn xml:id="math.17232.32.1.11" xref="math.17232.32.1.11.cmml">1</mn>
-                                </mrow>
+                    <mo id="p1.1.m1.1.3" xref="p1.1.m1.1.3.cmml">:</mo>
+                    <mrow id="p1.1.m1.1.13.2" xref="p1.1.m1.1.13.2.cmml">
+                        <mi id="p1.1.m1.1.4" xref="p1.1.m1.1.4.cmml">X</mi>
+                        <mo id="p1.1.m1.1.5" xref="p1.1.m1.1.5.cmml">→</mo>
+                        <mrow id="p1.1.m1.1.13.2.1c" xref="p1.1.m1.1.13.2.1.cmml">
+                            <mo stretchy="false" id="p1.1.m1.1.13.2.1" xref="p1.1.m1.1.13.2.1.cmml">{</mo>
+                            <mrow id="XM3" xref="XM3.cmml">
+                                <mo id="p1.1.m1.1.7" xref="p1.1.m1.1.7.cmml">-</mo>
+                                <mn id="p1.1.m1.1.8" xref="p1.1.m1.1.8.cmml">1</mn>
                             </mrow>
-                            <mo xml:id="math.17232.32.1.13.2.1d" xref="math.17232.32.1.13.2.1.cmml">}</mo>
+                            <mo id="p1.1.m1.1.13.2.1a" xref="p1.1.m1.1.13.2.1.cmml">,</mo>
+                            <mrow id="XM4" xref="XM4.cmml">
+                                <mo id="p1.1.m1.1.10" xref="p1.1.m1.1.10.cmml">+</mo>
+                                <mn id="p1.1.m1.1.11" xref="p1.1.m1.1.11.cmml">1</mn>
+                            </mrow>
+                            <mo stretchy="false" id="p1.1.m1.1.13.2.1b" xref="p1.1.m1.1.13.2.1.cmml">}</mo>
                         </mrow>
                     </mrow>
                 </mrow>
-                <annotation-xml encoding="MathML-Content" xml:id="math.17232.32.1.cmml" xref="math.17232.32.1">
-                    <apply xml:id="math.17232.32.1.13.cmml" xref="math.17232.32.1.13">
-                        <ci xml:id="math.17232.32.1.3.cmml" xref="math.17232.32.1.3">normal-:</ci>
-                        <apply xml:id="math.17232.32.1.13.1.cmml" xref="math.17232.32.1.13.1">
-                            <csymbol cd="ambiguous" xml:id="math.17232.32.1.13.1.1.cmml">subscript</csymbol>
-                            <ci xml:id="math.17232.32.1.1.cmml" xref="math.17232.32.1.1">h</ci>
-                            <ci xml:id="math.17232.32.1.2.1.cmml" xref="math.17232.32.1.2.1">i</ci>
+                <annotation-xml encoding="MathML-Content" id="p1.1.m1.1b">
+                    <apply id="p1.1.m1.1.13.cmml" xref="p1.1.m1.1.13">
+                        <ci id="p1.1.m1.1.3.cmml" xref="p1.1.m1.1.3">normal-:</ci>
+                        <apply id="p1.1.m1.1.13.1.cmml" xref="p1.1.m1.1.13.1">
+                            <csymbol cd="ambiguous" id="p1.1.m1.1.13.1.1.cmml">subscript</csymbol>
+                            <ci id="p1.1.m1.1.1.cmml" xref="p1.1.m1.1.1">h</ci>
+                            <ci id="p1.1.m1.1.2.1.cmml" xref="p1.1.m1.1.2.1">i</ci>
                         </apply>
-                        <apply xml:id="math.17232.32.1.13.2.cmml" xref="math.17232.32.1.13.2">
-                            <ci xml:id="math.17232.32.1.5.cmml" xref="math.17232.32.1.5">normal-→</ci>
-                            <ci xml:id="math.17232.32.1.4.cmml" xref="math.17232.32.1.4">X</ci>
-                            <apply xml:id="math.17232.32.1.13.2.1.cmml" xref="math.17232.32.1.13.2.1">
-                                <set xml:id="math.17232.32.1.13.2.1.1.cmml"/>
-                                <apply xml:id="math.17232.32.1.13.2.1.2.cmml" xref="math.17232.32.1.13.2.1.2">
-                                    <minus xml:id="math.17232.32.1.7.cmml" xref="math.17232.32.1.7"/>
-                                    <cn type="integer" xml:id="math.17232.32.1.8.cmml" xref="math.17232.32.1.8">1</cn>
+                        <apply id="p1.1.m1.1.13.2.cmml" xref="p1.1.m1.1.13.2">
+                            <ci id="p1.1.m1.1.5.cmml" xref="p1.1.m1.1.5">normal-→</ci>
+                            <ci id="p1.1.m1.1.4.cmml" xref="p1.1.m1.1.4">X</ci>
+                            <set id="p1.1.m1.1.13.2.1.cmml" xref="p1.1.m1.1.13.2.1">
+                                <apply id="XM3.cmml" xref="XM3">
+                                    <minus id="p1.1.m1.1.7.cmml" xref="p1.1.m1.1.7"/>
+                                    <cn type="integer" id="p1.1.m1.1.8.cmml" xref="p1.1.m1.1.8">1</cn>
                                 </apply>
-                                <apply xml:id="math.17232.32.1.13.2.1.3.cmml" xref="math.17232.32.1.13.2.1.3">
-                                    <plus xml:id="math.17232.32.1.10.cmml" xref="math.17232.32.1.10"/>
-                                    <cn type="integer" xml:id="math.17232.32.1.11.cmml" xref="math.17232.32.1.11">1</cn>
+                                <apply id="XM4.cmml" xref="XM4">
+                                    <plus id="p1.1.m1.1.10.cmml" xref="p1.1.m1.1.10"/>
+                                    <cn type="integer" id="p1.1.m1.1.11.cmml" xref="p1.1.m1.1.11">1</cn>
                                 </apply>
-                            </apply>
+                            </set>
                         </apply>
                     </apply>
                 </annotation-xml>
-                <annotation encoding="application/x-tex" xml:id="math.17232.32.1b" xref="math.17232.32.1.cmml">{\displaystyle h_{i}:X\to\{-1,+1\}}</annotation>
+                <annotation encoding="application/x-tex" id="p1.1.m1.1c">{\displaystyle h_{i}:X\to\{-1,+1\}}</annotation>
             </semantics>
         </math>
     </mws:expr>
