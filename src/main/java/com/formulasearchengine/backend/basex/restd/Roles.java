@@ -1,4 +1,4 @@
-package com.formulasearchengine.backend;
+package com.formulasearchengine.backend.basex.restd;
 
 /**
  * A list of roles for the application.

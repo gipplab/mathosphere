@@ -1,17 +1,15 @@
-package com.formulasearchengine.backend;
-
-import restx.config.ConfigLoader;
-import restx.config.ConfigSupplier;
-import restx.factory.Provides;
+package com.formulasearchengine.backend.basex.restd;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Charsets;
 import com.google.common.collect.ImmutableSet;
-import restx.security.*;
+import restx.config.ConfigLoader;
+import restx.config.ConfigSupplier;
 import restx.factory.Module;
 import restx.factory.Provides;
-import javax.inject.Named;
+import restx.security.*;
 
+import javax.inject.Named;
 import java.nio.file.Paths;
 
 @Module
@@ -29,7 +27,7 @@ public class AppModule {
 
     @Provides
     public ConfigSupplier appConfigSupplier(ConfigLoader configLoader) {
-        // Load settings.properties in com.formulasearchengine.backend package as a set of config entries
+        // Load settings.properties in com.formulasearchengine.backend.basex package as a set of config entries
         return configLoader.fromResource("com/formulasearchengine/backend/settings");
     }
 

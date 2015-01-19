@@ -1,13 +1,14 @@
-package com.formulasearchengine.backend.rest;
+package com.formulasearchengine.backend.basex.restd.rest;
 
-import com.formulasearchengine.backend.AppServer;
+import org.junit.Ignore;
 import org.junit.runner.RunWith;
 import restx.tests.RestxSpecTestsRunner;
 import restx.tests.FindSpecsIn;
 
 @RunWith(RestxSpecTestsRunner.class)
 @FindSpecsIn("specs/hello")
-public class HelloResourceSpecTest {
+@Ignore
+public class BaseXResourceSpecTest {
 
     /**
      * Useless, thanks to both @RunWith(RestxSpecTestsRunner.class) & @FindSpecsIn()

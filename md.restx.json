@@ -1,5 +1,5 @@
 {
-    "module": "com.formulasearchengine.backend:restd:0.1-SNAPSHOT",
+    "module": "com.formulasearchengine.backend.basex:restd:0.1-SNAPSHOT",
     "packaging": "war",
 
     "properties": {
