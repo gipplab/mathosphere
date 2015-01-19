@@ -2,10 +2,9 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.formulasearchengine</groupId>
-    <artifactId>basex-backend</artifactId>
+    <groupId>com.formulasearchengine.backend</groupId>
+    <artifactId>basex</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-
     <name>BaseX backend for MathSearch</name>
     <description>Answers MathSearch patterns with a BaseX backend.</description>
     <url>http://www.formulasearchengine.com/BaseXBackend</url>

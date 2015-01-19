@@ -106,7 +106,9 @@ public class Results {
 				this.ms = ms;
 				this.num = num;
 			}
-
+			public int size(){
+				return hits.size();
+			}
 			public Result(String num) {
 				this.num = num;
 			}
@@ -150,6 +152,10 @@ public class Results {
 					}
 				}
 				return  CSV;
+			}
+
+			public  void addHit (String item, String filename, int score, int rank) {
+				addHit( item, filename, Integer.toString( score ), Integer.toString( rank ) );
 			}
 
 			public class Hit {
