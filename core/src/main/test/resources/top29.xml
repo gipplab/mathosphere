@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<topics xmlns="http://ntcir-math.nii.ac.jp/" xmlns:m="http://www.w3.org/1998/Math/MathML">
+    <topic>
+        <num>NTCIR11-Math-29</num>
+        <query>
+            <formula id="f1.0">
+                <math>
+                    <semantics >
+                        <apply >
+                            <eq />
+                            <apply >
+                                <csymbol cd="ambiguous" >subscript</csymbol>
+                                <ci >R</ci>
+                                <apply >
+                                    <times />
+                                    <ci >s</ci>
+                                    <ci >n</ci>
+                                    <ci >o</ci>
+                                    <ci >r</ci>
+                                    <ci >m</ci>
+                                    <ci >a</ci>
+                                    <ci >l</ci>
+                                </apply>
+                            </apply>
+                            <apply >
+                                <root />
+                                <mws:qvar xmlns:mws="http://search.mathweb.org/ns" name="x0"/>
+                            </apply>
+                        </apply>
+                        <annotation-xml encoding="MathML-Presentation" >
+                            <mrow >
+                                <msub >
+                                    <mi >R</mi>
+                                    <mrow >
+                                        <mpadded width="+5.0pt" >
+                                            <mi >s</mi>
+                                        </mpadded>
+                                        <mo >⁢</mo>
+                                        <mi >n</mi>
+                                        <mo >⁢</mo>
+                                        <mi >o</mi>
+                                        <mo >⁢</mo>
+                                        <mi >r</mi>
+                                        <mo >⁢</mo>
+                                        <mi >m</mi>
+                                        <mo >⁢</mo>
+                                        <mi >a</mi>
+                                        <mo >⁢</mo>
+                                        <mi >l</mi>
+                                    </mrow>
+                                </msub>
+                                <mo >=</mo>
+                                <msqrt >
+                                    <mws:qvar xmlns:mws="http://search.mathweb.org/ns" name="x0"/>
+                                </msqrt>
+                            </mrow>
+                        </annotation-xml>
+                        <annotation encoding="application/x-tex" >R_{{s\ normal}}={\sqrt{\qvar{x0}}}</annotation>
+                    </semantics>
+                </math>
+            </formula>
+        </query>
+    </topic>
+</topics>

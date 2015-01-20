@@ -1,0 +1,8 @@
+<apply  >
+    <eq  />
+    <ci  >F</ci>
+    <set  >
+        <mws:qvar xmlns:mws="http://search.mathweb.org/ns" name="x0"/>
+    </set>
+</apply>
+ 

@@ -1,0 +1,40 @@
+<apply  >
+    <eq  />
+    <ci  >F</ci>
+    <apply  >
+        <csymbol cd="latexml"  >conditional-set</csymbol>
+        <interval closure="open"  >
+            <ci  >x</ci>
+            <ci  >y</ci>
+        </interval>
+        <apply  >
+            <csymbol cd="ambiguous"  >formulae-sequence</csymbol>
+            <apply  >
+                <in  />
+                <ci  >x</ci>
+                <apply  >
+                    <csymbol cd="ambiguous" >superscript</csymbol>
+                    <ci  >ℛ</ci>
+                    <ci  >b</ci>
+                </apply>
+            </apply>
+            <apply  >
+                <csymbol cd="ambiguous"  >formulae-sequence</csymbol>
+                <apply  >
+                    <in  />
+                    <ci  >y</ci>
+                    <apply  >
+                        <csymbol cd="ambiguous" >superscript</csymbol>
+                        <ci  >ℛ</ci>
+                        <ci  >n</ci>
+                    </apply>
+                </apply>
+                <apply  >
+                    <eq  />
+                    <ci  >x</ci>
+                    <ci  >y</ci>
+                </apply>
+            </apply>
+        </apply>
+    </apply>
+</apply>
