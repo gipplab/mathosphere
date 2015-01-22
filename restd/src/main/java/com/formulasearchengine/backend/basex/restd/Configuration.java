@@ -15,7 +15,6 @@
  */
 package com.formulasearchengine.backend.basex.restd;
 
-import com.formulasearchengine.backend.basex.restd.rest.BasexController;
 import org.restexpress.RestExpress;
 import org.restexpress.util.Environment;
 
@@ -36,7 +35,6 @@ public class Configuration
 
 	private String password;
 
-	private BasexController basexController = new BasexController();
 
 	@Override
 	protected void fillValues (Properties p) {
@@ -54,8 +52,5 @@ public class Configuration
 		return path;
 	}
 
-	public BasexController getBasexController () {
-		return basexController;
-	}
 
 }

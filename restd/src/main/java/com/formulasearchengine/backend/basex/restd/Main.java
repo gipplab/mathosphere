@@ -1,6 +1,7 @@
 package com.formulasearchengine.backend.basex.restd;
 
 import com.formulasearchengine.backend.basex.Server;
+import com.formulasearchengine.backend.basex.restd.rest.BasexController;
 import org.restexpress.RestExpress;
 import org.restexpress.util.Environment;
 
@@ -36,7 +37,7 @@ public class Main {
 
 
 
-		server.uri( "/xquery", config.getBasexController() ).noSerialization();
+		server.uri( "/xquery", new BasexController() ).noSerialization();
 
 		server.bind();
 		server.awaitShutdown();
