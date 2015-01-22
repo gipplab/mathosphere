@@ -74,7 +74,7 @@
                         <manifest>
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>./lib/</classpathPrefix>
-                            <mainClass>com.echo.Main</mainClass>
+                            <mainClass>com.formulasearchengine.backend.basex.restd.Main</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
