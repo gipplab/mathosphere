@@ -16,7 +16,7 @@ public class BaseXResource {
      *
      * @return a Message to say hello
      */
-    @GET("/startup")
+    @GET("/xquery")
     @PermitAll
     public String query(String query) {
         Client client = new Client();
