@@ -74,7 +74,7 @@
         </dependency>
         <dependency>
             <groupId>io.restx</groupId>
-            <artifactId>restx-server-jetty</artifactId>
+            <artifactId>restx-server-simple</artifactId>
             <version>${restx.version}</version>
         </dependency>
         <dependency>
@@ -167,5 +167,13 @@
                 </executions>
             </plugin>
         </plugins>
+        <resources>
+            <resource>
+                <directory>src/main/webapp</directory>
+                <includes>
+                    <include>**</include>
+                </includes>
+            </resource>
+        </resources>
     </build>
 </project>
