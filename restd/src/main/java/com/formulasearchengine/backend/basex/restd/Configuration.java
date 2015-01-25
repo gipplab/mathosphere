@@ -24,23 +24,18 @@ public class Configuration
 	extends Environment {
 	private static final String PATH_PROPERTY = "path";
 	private static final String PORT_PROPERTY = "port";
-	private static final String PASSWORD_PROPERTY = "password";
 
 	private int port;
 	private String path;
 
-	public String getPassword () {
-		return password;
-	}
-
-	private String password;
 
 
 	@Override
 	protected void fillValues (Properties p) {
 		this.path = p.getProperty( PATH_PROPERTY, "/tmp" );
-		this.password = p.getProperty( PASSWORD_PROPERTY, "2015" );
-		this.port = Integer.parseInt( p.getProperty( PORT_PROPERTY, String.valueOf( RestExpress.DEFAULT_PORT ) ) );
+		String portString = p.getProperty( PORT_PROPERTY, String.valueOf( RestExpress.DEFAULT_PORT ) );
+		this.path = System.getProperty( PATH_PROPERTY, this.path );
+		this.port = Integer.parseInt(  System.getProperty( PORT_PROPERTY, portString ) );
 	}
 
 
