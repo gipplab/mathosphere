@@ -2,6 +2,7 @@ package com.formulasearchengine.backend.basex;
 
 import junit.framework.TestCase;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.w3c.dom.Document;
 
@@ -11,17 +12,16 @@ import java.util.Scanner;
 
 public class ClientTest extends TestCase {
 	@BeforeClass
-	public static void setup() throws Exception {
+	private static void setup () throws Exception {
 		Client c = new Client();
 		String res =c.execute( "let $message := 'Hello World!'\n" +
 				"return\n" +
 				"<results>\n" +
 				"   <message>{$message}</message>\n" +
 				"</results>" );
-		if (res.matches( "failed XQJNC001 - Connection refused: connect" )) {
+		if ( res.contains( "failed XQJNC001 - Connection refused: connect" ) ) {
 			System.out.println( res );
 			(new ServerTest()).testImportData();
-			Thread.sleep( 3000 );
 		}
 	}
 	@SuppressWarnings("SameParameterValue")
@@ -33,8 +33,8 @@ public class ClientTest extends TestCase {
 			return s.hasNext() ? s.next() : "";
 		}
 	}
-	@Test
-	public void testbasicTest() throws Exception {
+	@Ignore
+	public void basicTest () throws Exception {
 		setup();
 		Client c = new Client();
 		String res = c.execute( "declare default element namespace \"http://www.w3.org/1998/Math/MathML\";\n" +
@@ -85,8 +85,9 @@ public class ClientTest extends TestCase {
 			"      <hit id=\"<result xmlns=\"http://www.w3.org/1998/Math/MathML\" url=\"dummy29\"/>\" xref=\"math000000000000.xml\" score=\"10\" rank=\"37\"/>\n" +
 			"    </result>\n" );
 	}
-	@Test
-	public void testMWSQuery() throws Exception {
+	@Ignore
+	public void MWSQuery () throws Exception {
+		setup();
 		final String testInput = getFileContents( "dummy29.xml" );
 		final String expectedOutput = "    <result for=\"NTCIR11-Math-\" >\n" +
 			"      <hit id=\"dummy29\" xref=\"math000000000000.xml\" score=\"10\" rank=\"1\"/>\n" +
@@ -97,4 +98,29 @@ public class ClientTest extends TestCase {
 		assertEquals( expectedOutput, res.replaceAll( "runtime=\"\\d+\"" , "" ) );
 	}
 
+	@Ignore
+	public void MWS2 () throws  Exception{
+		setup();
+		final String testInput = getFileContents( "mws.xml" );
+		final String expectedOutput = "    <result for=\"NTCIR11-Math-\" >\n" +
+			"      <hit id=\"math.8.13\" xref=\"math000000000000.xml\" score=\"10\" rank=\"1\"/>\n" +
+			"      <hit id=\"math.8.22\" xref=\"math000000000000.xml\" score=\"10\" rank=\"2\"/>\n" +
+			"      <hit id=\"math.8.23\" xref=\"math000000000000.xml\" score=\"10\" rank=\"3\"/>\n" +
+			"      <hit id=\"math.8.25\" xref=\"math000000000000.xml\" score=\"10\" rank=\"4\"/>\n" +
+			"      <hit id=\"math.8.25\" xref=\"math000000000000.xml\" score=\"10\" rank=\"5\"/>\n" +
+			"      <hit id=\"math.8.30\" xref=\"math000000000000.xml\" score=\"10\" rank=\"6\"/>\n" +
+			"      <hit id=\"math.8.32\" xref=\"math000000000000.xml\" score=\"10\" rank=\"7\"/>\n" +
+			"    </result>\n";
+		Document query = XMLHelper.String2Doc( testInput );
+		Client c = new Client();
+		String res = c.runMWSQuery( query );
+		assertEquals( expectedOutput, res.replaceAll( "runtime=\"\\d+\"" , "" ) );
+	}
+	@Test
+	public void testSequential() throws  Exception{
+		setup();
+		basicTest();
+		MWSQuery();
+		MWS2();
+	}
 }
