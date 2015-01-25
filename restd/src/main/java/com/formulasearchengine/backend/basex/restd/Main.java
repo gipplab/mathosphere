@@ -2,6 +2,7 @@ package com.formulasearchengine.backend.basex.restd;
 
 import com.formulasearchengine.backend.basex.Server;
 import com.formulasearchengine.backend.basex.restd.rest.BasexController;
+import com.formulasearchengine.backend.basex.restd.rest.MWSController;
 import org.restexpress.RestExpress;
 import org.restexpress.util.Environment;
 
@@ -30,6 +31,7 @@ public class Main {
 		Server srv = null;
 		try {
 			srv = new Server();
+			System.out.println( "importing data from " + config.getPath() );
 			srv.importData( config.getPath() );
 		} catch ( IOException e ) {
 			e.printStackTrace();
@@ -38,7 +40,7 @@ public class Main {
 
 
 		server.uri( "/xquery", new BasexController() ).noSerialization();
-
+		server.uri( "/mwsquery" , new MWSController() ).noSerialization();
 		server.bind();
 		server.awaitShutdown();
 	}

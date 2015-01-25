@@ -7,8 +7,17 @@ import org.restexpress.Response;
 public class BasexController {
 
 	private String query (String query) {
-		Client client = new Client();
-		return client.execute( query );
+		String result = "";
+		try {
+			Client client = new Client();
+			result = client.execute( query );
+		} catch ( Exception e ){
+
+		}
+		if ( result.length() == 0 ){
+			result = "no data retrieved";
+		}
+		return result+result.length();
 	}
 
 	public String read (Request req, Response res) {
@@ -19,8 +28,14 @@ public class BasexController {
 
 	public String create (Request request, Response response) {
 		response.setResponseCreated();
-		String query = request.getBodyAs( String.class );
-		return query(query);
+		try{
+			String query = request.getBodyAs( String.class );
+			return query(query);
+		} catch ( Exception e ){
+			e.printStackTrace();
+			return "No valid post data received.";
+		}
+
 	}
 
 	public String delete (Request request, Response response) {
