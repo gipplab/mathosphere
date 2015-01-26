@@ -88,7 +88,8 @@ public class Client {
 					+ "<results xmlns=\"http://ntcir-math.nii.ac.jp/\" total=\""+ currentResult.size() +"\">\n"
 					+ currentResult.toXML() + "</results>\n";
 			} else {
-				return "Query executed successful, but result set was empty.";
+				return "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
+					+ "<results xmlns=\"http://ntcir-math.nii.ac.jp/\" total=\"0\" />\n";
 			}
 
 		} catch ( Exception e ) {
