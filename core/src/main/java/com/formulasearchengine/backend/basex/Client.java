@@ -84,7 +84,9 @@ public class Client {
 		try {
 			runQuery( query );
 			if ( currentResult.size() > 0 ) {
-				return currentResult.toXML();
+				return "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
+					+ "<results xmlns=\"http://ntcir-math.nii.ac.jp/\" total=\""+ currentResult.size() +"\">\n"
+					+ currentResult.toXML() + "</results>\n";
 			} else {
 				return "Query executed successful, but result set was empty.";
 			}
