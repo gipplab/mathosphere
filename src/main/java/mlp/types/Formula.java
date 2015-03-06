@@ -14,99 +14,62 @@
  * this stuff is worth it, you can buy me a beer in return.
  * ----------------------------------------------------------------------------
  */
-package cc.clabs.stratosphere.mlp.types;
+package mlp.types;
 
-import eu.stratosphere.types.StringValue;
-import eu.stratosphere.types.Value;
-
-import java.io.DataInput;
-import java.io.DataOutput;
 import java.io.IOException;
 
+import org.apache.flink.core.memory.DataInputView;
+import org.apache.flink.core.memory.DataOutputView;
+import org.apache.flink.types.StringValue;
+import org.apache.flink.types.Value;
+
 /**
- *
  * @author rob
  */
 public class Formula implements Value {
-    
-    
-    /*
-     * 
-     */
+
     private StringValue hash = new StringValue();
-    
-    /*
-     * 
-     */
     private StringValue src = new StringValue();
-    
-    /**
-     * default constructor
-     */
-    public Formula() { }
-    
-    
-    /**
-     * 
-     * @param hash
-     * @param src 
-     */
-    public Formula( final String hash, final String src ) {
-        this.hash.setValue( hash );
-        this.hash.setValue( src );
+
+    public Formula() {
     }
-    
-    /**
-     * Returns the string representation of the hash.
-     * 
-     * @return the string representation of the hash
-     */
+
+    public Formula(String hash, String src) {
+        this.hash.setValue(hash);
+        this.hash.setValue(src);
+    }
+
     public String getHash() {
         return hash.getValue();
     }
-    
-    /**
-     * Sets the value of the hash.
-     * 
-     * @param string the string representation of the hash
-     */
-    public final void setHash( final String string ) {
-        hash.setValue( string );
+
+    public void setHash(final String string) {
+        hash.setValue(string);
     }
-    
-    /**
-     * Returns the source of the formula.
-     * 
-     * @return source of the formula (e.g. latex)
-     */
+
     public String getSrc() {
         return src.getValue();
     }
-    
-    /**
-     * Sets the source to a given string value.
-     * 
-     * @param string a given string value
-     */
-    public final void setSrc( final String string ) {
-        src.setValue( string );
+
+    public void setSrc(final String string) {
+        src.setValue(string);
     }
 
-    @Override
-    public void write( final DataOutput out ) throws IOException {
-        hash.write( out );
-        src.write( out );
-    }
-
-    @Override
-    public void read( final DataInput in ) throws IOException {
-        hash.read( in );
-        src.read( in );
-    }
-    
     @Override
     public String toString() {
         return this.getHash();
+    }
+
+    @Override
+    public void write(DataOutputView out) throws IOException {
+        hash.write(out);
+        src.write(out);
+    }
+
+    @Override
+    public void read(DataInputView in) throws IOException {
+        hash.read(in);
+        src.read(in);
     }
 
 }

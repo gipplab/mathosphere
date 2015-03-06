@@ -14,95 +14,72 @@
  * this stuff is worth it, you can buy me a beer in return.
  * ----------------------------------------------------------------------------
  */
-package cc.clabs.stratosphere.mlp.types;
-
-import eu.stratosphere.types.ListValue;
-import eu.stratosphere.types.StringValue;
+package mlp.types;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
+
+import org.apache.flink.types.ListValue;
+import org.apache.flink.types.StringValue;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**
- *
  * @author rob
  */
 public class Sentence extends ListValue<Word> implements Cloneable {
-    
-    /**
-     * 
-     * @param word
-     * @return 
-     */
-    public ArrayList<Integer> getWordPosition( String word ) {
-        ArrayList<Integer> positions = new ArrayList<>();
+
+    public List<Integer> getWordPosition(String word) {
+        List<Integer> positions = new ArrayList<>();
         String token;
         Integer pos = -1;
         Iterator<Word> it = this.iterator();
-        while ( it.hasNext() ) {
+        while (it.hasNext()) {
             pos += 1;
             token = it.next().getWord();
-            if ( token.equals( word ) )
-                positions.add( pos );
+            if (token.equals(word)) {
+                positions.add(pos);
+            }
         }
-        return positions;        
-    }
-    
-    
-    /**
-     *
-     * @return 
-     */
-    public boolean containsWord( String word ) {
-        return !getWordPosition( word ).isEmpty();
+        return positions;
     }
 
-    /**
-     * 
-     * @param word
-     * @return 
-     */
-    public boolean containsWord( StringValue word ) {
-        return containsWord( word.getValue() );
+    public boolean containsWord(String word) {
+        return !getWordPosition(word).isEmpty();
     }
-    
-    /**
-     * 
-     * @param word
-     * @return 
-     */
-    public boolean containsWord( Word word ) {
-        return containsWord( word.getWord() );
+
+    public boolean containsWord(StringValue word) {
+        return containsWord(word.getValue());
     }
-    
-  
-    
+
+    public boolean containsWord(Word word) {
+        return containsWord(word.getWord());
+    }
+
     @Override
-    public Object clone() {
+    public Sentence clone() {
         Sentence obj = new Sentence();
-        obj.addAll( this );
+        obj.addAll(this);
         return obj;
     }
-    
+
     @Override
     public String toString() {
         return toJSON().toString();
-        // String buffer = "";
-        // Iterator<PactWord> it = this.iterator();
-        // while ( it.hasNext() ) buffer += it.next().toString() + " ";
-        // return buffer;
     }
-    
-    public JSONObject toJSON () {
+
+    public JSONObject toJSON() {
         JSONArray words = new JSONArray();
         Iterator<Word> it = this.iterator();
-        while ( it.hasNext() ) words.put( it.next().toJSON() );
-        Map<String,Object> json = new HashMap<>();
-        json.put( "words", words );
-        return new JSONObject( json );
+        while (it.hasNext()) {
+            words.put(it.next().toJSON());
+        }
+        Map<String, Object> json = new HashMap<>();
+        json.put("words", words);
+        return new JSONObject(json);
     }
-    
+
 }

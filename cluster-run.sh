@@ -93,5 +93,5 @@ clear
 colorcodes
 drawlogo
 
-log INFO "sending mlp job to stratosphere"
-($CLIENT run -v -j $MLP -c cc.clabs.stratosphere.mlp.RelationFinder -a file://$DATASET file://$OUTPUTDIR $MODEL $ALPHA $BETA $GAMMA $THRESHOLD & tail -f -n 0 $LOGFILE) || die
+log INFO "sending mlp job to flink"
+($CLIENT run -v -j $MLP -c mlp.RelationFinder -a file://$DATASET file://$OUTPUTDIR $MODEL $ALPHA $BETA $GAMMA $THRESHOLD & tail -f -n 0 $LOGFILE) || die

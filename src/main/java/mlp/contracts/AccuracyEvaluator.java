@@ -14,140 +14,147 @@
  * this stuff is worth it, you can buy me a beer in return.
  * ----------------------------------------------------------------------------
  */
-package cc.clabs.stratosphere.mlp.contracts;
+package mlp.contracts;
 
-import cc.clabs.stratosphere.mlp.types.Relation;
-import eu.stratosphere.api.java.record.functions.CoGroupFunction;
-import eu.stratosphere.types.DoubleValue;
-
-import eu.stratosphere.types.Record;
-import eu.stratosphere.types.StringValue;
-import eu.stratosphere.util.Collector;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+
+import mlp.types.Relation;
+
+import org.apache.flink.api.common.functions.CoGroupFunction;
+import org.apache.flink.api.java.tuple.Tuple2;
+import org.apache.flink.types.DoubleValue;
+import org.apache.flink.types.Record;
+import org.apache.flink.types.StringValue;
+import org.apache.flink.util.Collector;
 
 /**
- *
  * @author rob
  */
-public class AccuracyEvaluator extends CoGroupFunction{
-
-    private static final Log LOG = LogFactory.getLog( AccuracyEvaluator.class );
+public class AccuracyEvaluator implements
+        CoGroupFunction<Tuple2<String, Relation>, Tuple2<String, Relation>, Record> {
 
     @Override
-    public void coGroup(Iterator<Record> left, Iterator<Record> right, Collector<Record> collector) throws Exception {
-        StringValue title = new StringValue();
-        
+    public void coGroup(Iterable<Tuple2<String, Relation>> left, Iterable<Tuple2<String, Relation>> right,
+            Collector<Record> out) throws Exception {
         // Relations from PatternMatcher
-        HashMap<String,ArrayList<Relation>> PM = new HashMap<>();
-        while ( left.hasNext() ) {
-            Record next = left.next();
-            // will always be the same
-            title = next.getField( 0, StringValue.class );
+        Map<String, List<Relation>> PM = new HashMap<>();
+        String title = "";
+
+        for (Tuple2<String, Relation> patternRel : left) {
+            title = patternRel.f0;
+
             // we need to clone the sentence objects, because of reused objects
-            Relation relation = (Relation) next.getField( 1, Relation.class ).clone();
+            Relation relation = patternRel.f1.clone();
+
             String identifier = relation.getIdentifier().getValue();
-            if ( !PM.containsKey( identifier ) ) {
-                PM.put( identifier, new ArrayList<Relation>() );
+            if (!PM.containsKey(identifier)) {
+                PM.put(identifier, new ArrayList<Relation>());
             }
-            PM.get( identifier ).add( relation );
+            PM.get(identifier).add(relation);
         }
+
         // right: Relations from CandidateEmitter
-        HashMap<String,ArrayList<Relation>> MLP = new HashMap<>();
-        while ( right.hasNext() ) {
-            Record next = right.next();
+        Map<String, List<Relation>> MLP = new HashMap<>();
+        for (Tuple2<String, Relation> mlpRel : right) {
+            title = mlpRel.f0;
+
             // we need to clone the sentence objects, because of reused objects
-            Relation relation = (Relation) next.getField( 1, Relation.class ).clone();
+            Relation relation = mlpRel.f1.clone();
+
             String identifier = relation.getIdentifier().getValue();
-            if ( !MLP.containsKey( identifier ) ) {
-                MLP.put( identifier, new ArrayList<Relation>() );
+            if (!MLP.containsKey(identifier)) {
+                MLP.put(identifier, new ArrayList<Relation>());
             }
-            MLP.get( identifier ).add( relation );
+            MLP.get(identifier).add(relation);
         }
-        
-        Double numRelationsPM = 0d;
-        Double numRelationsMLP = 0d;
-        Double numBest = 0d;
-        Double above90 = 0d;
-        Double above80 = 0d;
-        Double above70 = 0d;
-        Double above60 = 0d;
-        
-        for ( Entry<String,ArrayList<Relation>> set : PM.entrySet() ) {
+
+        int numRelationsPM = 0;
+        int numRelationsMLP = 0;
+        int numBest = 0;
+        int above90 = 0;
+        int above80 = 0;
+        int above70 = 0;
+        int above60 = 0;
+
+        for (Entry<String, List<Relation>> set : MLP.entrySet()) {
             String id = set.getKey();
-            ArrayList<Relation> relationsPM = set.getValue();
+            List<Relation> relationsPM = set.getValue();
+
             // add number of relations found by PM
-            numRelationsPM += (double) relationsPM.size();
+            numRelationsPM += relationsPM.size();
+
             // has the identifier been found in MLP?
-            if ( MLP.containsKey( id ) ) {
-                ArrayList<Relation> relationsMLP = MLP.get( id );
-                // sort by score
-                Collections.sort( relationsMLP, new RelationComparator() );
-                // descending
-                Collections.reverse( relationsMLP );
-                // for each relation from PM
-                for ( Relation rPM : relationsPM ) {
-                    String word = rPM.getDefinitionWord();
+            if (MLP.containsKey(id)) {
+                List<Relation> relationsMLP = MLP.get(id);
+                Collections.sort(relationsMLP, new RelationComparator());
+                Collections.reverse(relationsMLP);
+
+                for (Relation rPM : relationsPM) {
                     // best matches are equal?
-                    if ( relationsMLP.get( 0 ).getDefinitionWord().equals( rPM.getDefinitionWord() ) ) {
-                        numBest += 1d;
+                    if (relationsMLP.get(0).getDefinitionWord().equals(rPM.getDefinitionWord())) {
+                        numBest++;
                     }
+
                     // iterate through the MLP relation
-                    for ( Relation rMLP : relationsMLP ) {
+                    for (Relation rMLP : relationsMLP) {
                         // only match equal definitions
-                        if ( !rMLP.getDefinitionWord().equals( rPM.getDefinitionWord() ) )
+                        if (!rMLP.getDefinitionWord().equals(rPM.getDefinitionWord())) {
                             // GOTO FAIL!
                             continue;
-                        numRelationsMLP += 1d;
+                        }
+
+                        numRelationsMLP++;
+
                         // and gather some statistics
-                        Double score = rMLP.getScore().getValue();
-                        if ( score >= 0.9d ) above90 += 1d;
-                        if ( score >= 0.8d ) above80 += 1d;
-                        if ( score >= 0.7d ) above70 += 1d;
-                        if ( score >= 0.6d ) above60 += 1d;
+                        double score = rMLP.getScore();
+                        if (score >= 0.9d) {
+                            above90++;
+                        }
+                        if (score >= 0.8d) {
+                            above80++;
+                        }
+                        if (score >= 0.7d) {
+                            above70++;
+                        }
+                        if (score >= 0.6d) {
+                            above60++;
+                        }
+
                         // thus we're only interested in the best matches
                         // we can break the iteration
                         break;
                     }
                 }
-                
             } else {
                 // MLP did not find this one :(
             }
         }
-        
+
         Record record = new Record();
-        // detection rate (overall)
-        record.setField( 0, new DoubleValue( numRelationsMLP / numRelationsPM ) );
-        // detection rate (best)
-        record.setField( 1, new DoubleValue( numBest / numRelationsPM ) );
-        // detection rate (90)
-        record.setField( 2, new DoubleValue( above90 / numRelationsPM ) );
-        // detection rate (80)
-        record.setField( 3, new DoubleValue( above80 / numRelationsPM ) );
-        // detection rate (70)
-        record.setField( 4, new DoubleValue( above70 / numRelationsPM ) );
-        // detection rate (60)
-        record.setField( 5, new DoubleValue( above60 / numRelationsPM ) );
-        // title
-        record.setField( 6, title );
-        collector.collect( record );
-        
+
+        // detection rate (overall, best, 90, 80, 70, ...)
+        record.setField(0, new DoubleValue(numRelationsMLP * 1.0 / numRelationsPM));
+        record.setField(1, new DoubleValue(numBest * 1.0 / numRelationsPM));
+        record.setField(2, new DoubleValue(above90 * 1.0 / numRelationsPM));
+        record.setField(3, new DoubleValue(above80 * 1.0 / numRelationsPM));
+        record.setField(4, new DoubleValue(above70 * 1.0 / numRelationsPM));
+        record.setField(5, new DoubleValue(above60 * 1.0 / numRelationsPM));
+
+        record.setField(6, new StringValue(title));
+
+        out.collect(record);
     }
-    
-    
-    public class RelationComparator implements Comparator<Relation> {
+
+    public static class RelationComparator implements Comparator<Relation> {
         @Override
         public int compare(Relation r1, Relation r2) {
-            return r1.getScore().compareTo( r2.getScore() );
+            return Double.compare(r1.getScore(), r2.getScore());
         }
     }
-
-
 }

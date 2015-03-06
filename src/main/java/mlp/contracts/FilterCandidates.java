@@ -14,59 +14,27 @@
  * this stuff is worth it, you can buy me a beer in return.
  * ----------------------------------------------------------------------------
  */
-package cc.clabs.stratosphere.mlp.contracts;
+package mlp.contracts;
 
-import cc.clabs.stratosphere.mlp.types.Relation;
-import eu.stratosphere.api.java.record.functions.ReduceFunction;
-import eu.stratosphere.configuration.Configuration;
-import eu.stratosphere.types.Record;
-import eu.stratosphere.util.Collector;
+import mlp.types.Relation;
 
-import java.util.Iterator;
+import org.apache.flink.api.common.functions.FilterFunction;
+import org.apache.flink.api.java.tuple.Tuple2;
 
 /**
- *
  * @author rob
  */
-public class FilterCandidates extends ReduceFunction {
-        
-    
-    /**
-     * 
-     */
-    private Double threshold;
-    
-    /**
-     * 
-     */
-    private final Record target = new Record();
+public class FilterCandidates implements FilterFunction<Tuple2<String, Relation>> {
 
-    
-    @Override
-    public void open(Configuration parameter) throws Exception {
-        super.open( parameter );
-        threshold = Double.parseDouble( parameter.getString( "THRESHOLD", "0.8" ) );
+    private double threshold;
+
+    public FilterCandidates(double threshold) {
+        this.threshold = threshold;
     }
-    
-    
+
     @Override
-    public void reduce( Iterator<Record> iterator, Collector<Record> collector ) throws Exception {
-        Relation relation;
-        Record record;
-        
-        while ( iterator.hasNext() ) {
-            record = iterator.next();
-            relation = record.getField( 1, Relation.class );
-            
-            // if the score is lesser than our minimum threshold
-            // we'll continue with the next word
-            if ( relation.getScore().getValue() < threshold ) continue;
-            
-            // emit
-            target.clear();
-            target.setField( 0, relation );
-            collector.collect( target );
-        }
+    public boolean filter(Tuple2<String, Relation> value) throws Exception {
+        return value.f1.getScore() >= threshold;
     }
 
 }

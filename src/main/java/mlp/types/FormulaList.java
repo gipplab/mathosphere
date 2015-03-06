@@ -14,13 +14,12 @@
  * this stuff is worth it, you can buy me a beer in return.
  * ----------------------------------------------------------------------------
  */
-package cc.clabs.stratosphere.mlp.types;
+package mlp.types;
 
-
-import eu.stratosphere.types.ListValue;
+import org.apache.flink.types.ListValue;
 
 /**
- *
  * @author rob
  */
-public class FormulaList extends ListValue<Formula> { }
+public class FormulaList extends ListValue<Formula> {
+}

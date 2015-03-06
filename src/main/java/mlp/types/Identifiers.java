@@ -14,21 +14,22 @@
  * this stuff is worth it, you can buy me a beer in return.
  * ----------------------------------------------------------------------------
  */
-package cc.clabs.stratosphere.mlp.types;
+package mlp.types;
 
-import eu.stratosphere.types.ListValue;
-import eu.stratosphere.types.StringValue;
+import org.apache.flink.types.ListValue;
+import org.apache.flink.types.StringValue;
 
 /**
- *
  * @author rob
  */
-public final class Identifiers extends ListValue<StringValue> {
+public class Identifiers extends ListValue<StringValue> {
 
-    public Boolean containsIdentifier ( String identifier ) {
-        Boolean found = false;
-        for ( StringValue i : this )
-            found = found || i.getValue().equals( identifier );
-        return found;
+    public boolean containsIdentifier(String identifier) {
+        for (StringValue i : this) {
+            if (identifier.equals(i.getValue())) {
+                return true;
+            }
+        }
+        return false;
     }
 }

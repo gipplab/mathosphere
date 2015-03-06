@@ -14,23 +14,26 @@
  * this stuff is worth it, you can buy me a beer in return.
  * ----------------------------------------------------------------------------
  */
-package cc.clabs.stratosphere.mlp.io;
+package mlp.io;
 
-import eu.stratosphere.api.java.record.io.TextInputFormat;
-import eu.stratosphere.configuration.Configuration;
+import org.apache.flink.api.java.io.TextInputFormat;
+import org.apache.flink.configuration.Configuration;
+import org.apache.flink.core.fs.Path;
 
 /**
- *
  * @author rob
  */
+//TODO: remove it
 public class WikiDocumentEmitter extends TextInputFormat {
 
-
-    @Override
-    public void configure(Configuration parameter) {
-        parameter.setString(DEFAULT_CHARSET_NAME, "UTF-8");
-        super.configure(parameter);
-        this.setDelimiter("</page>");
+    public WikiDocumentEmitter(Path filePath) {
+        super(filePath);
     }
 
+    @Override
+    public void configure(Configuration parameters) {
+        setCharsetName("UTF-8");
+        super.configure(parameters);
+        setDelimiter("</page>");
+    }
 }

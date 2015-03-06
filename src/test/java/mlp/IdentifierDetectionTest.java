@@ -14,31 +14,33 @@
  * this stuff is worth it, you can buy me a beer in return.
  * ----------------------------------------------------------------------------
  */
-package cc.clabs.stratosphere.mlp.tests;
+package mlp;
 
-import cc.clabs.stratosphere.mlp.utils.TexIdentifierExtractor;
-import java.util.ArrayList;
+import static org.junit.Assert.assertEquals;
+
+import java.util.List;
+
+import mlp.utils.TexIdentifierExtractor;
+
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 /**
- *
  * @author rob
  */
 public class IdentifierDetectionTest {
-    
+
     @Test
-    public void singleIdentifiers () {
-        ArrayList<String> detected;
-        
+    public void singleIdentifiers() {
+        List<String> detected;
+
         String x = "x";
-        detected = TexIdentifierExtractor.getAllfromTex( x );
-        assertEquals( "Number of identifiers mismatch (should be 1)", 1, detected.size() );
-        assertEquals( "Extracted identifier did not match", x, detected.get( 0 ) );
-        
+        detected = TexIdentifierExtractor.getAllfromTex(x);
+        assertEquals("Number of identifiers mismatch (should be 1)", 1, detected.size());
+        assertEquals("Extracted identifier did not match", x, detected.get(0));
+
         String xx = "x + x^{2}";
-        detected = TexIdentifierExtractor.getAllfromTex( xx );
-        assertEquals( "Number of identifiers mismatch (should be 1)", 1, detected.size() );
-        assertEquals( "Extracted identifier did not match", x, detected.get( 0 ) );
+        detected = TexIdentifierExtractor.getAllfromTex(xx);
+        assertEquals("Number of identifiers mismatch (should be 1)", 1, detected.size());
+        assertEquals("Extracted identifier did not match", x, detected.get(0));
     }
 }

@@ -14,116 +14,108 @@
  * this stuff is worth it, you can buy me a beer in return.
  * ----------------------------------------------------------------------------
  */
-package cc.clabs.stratosphere.mlp.contracts;
+package mlp.contracts;
 
-import cc.clabs.stratosphere.mlp.types.Identifiers;
-import cc.clabs.stratosphere.mlp.types.Relation;
-import cc.clabs.stratosphere.mlp.types.Sentence;
-import cc.clabs.stratosphere.mlp.types.WikiDocument;
-import cc.clabs.stratosphere.mlp.utils.SentenceUtils;
-import cc.clabs.stratosphere.mlp.utils.SentenceUtils.Tuple;
-import eu.stratosphere.api.java.record.functions.CoGroupFunction;
-
-import eu.stratosphere.types.Record;
-import eu.stratosphere.types.StringValue;
-import eu.stratosphere.util.Collector;
 import java.util.ArrayList;
-import java.util.Iterator;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import java.util.List;
+
+import mlp.types.Identifiers;
+import mlp.types.Relation;
+import mlp.types.Sentence;
+import mlp.types.WikiDocument;
+import mlp.utils.SentenceUtils;
+import mlp.utils.SentenceUtils.Tuple;
+
+import org.apache.flink.api.common.functions.CoGroupFunction;
+import org.apache.flink.api.java.tuple.Tuple2;
+import org.apache.flink.api.java.tuple.Tuple3;
+import org.apache.flink.types.StringValue;
+import org.apache.flink.util.Collector;
+
+import com.google.common.collect.Iterables;
 
 /**
- *
  * @author rob
  */
-public class PatternMatcher extends CoGroupFunction{
+public class PatternMatcher implements 
+        CoGroupFunction<Tuple2<String, WikiDocument>, 
+                        Tuple3<String, Sentence, Double>, 
+                        Tuple2<String, Relation>> {
 
-    private static final Log LOG = LogFactory.getLog( PatternMatcher.class );
-    private StringValue title = null;
-    
+    private String title = null;
+
     @Override
-    public void coGroup(Iterator<Record> left, Iterator<Record> right, Collector<Record> collector) throws Exception {
+    public void coGroup(Iterable<Tuple2<String, WikiDocument>> left,
+            Iterable<Tuple3<String, Sentence, Double>> right, Collector<Tuple2<String, Relation>> out)
+            throws Exception {
         // left: Doc
         // right: Sentences
-        // populating identifier list
-        // we'll allways get one record from the left,
-        // therefore, we don't need to iterate through
-        // left
-        Identifiers identifiers = left.next().getField( 1, WikiDocument.class ).getKnownIdentifiers();
-        // populating sentences list
-        ArrayList<Sentence> sentences =  new ArrayList<>();
-        while ( right.hasNext() ) {
-            Record next = right.next();
-            // title should always be the same
-            title = next.getField( 0, StringValue.class );
-            // we need to clone the sentence objects, because of reused objects
-            sentences.add( (Sentence) next.getField( 1, Sentence.class ).clone() );
-        }
-        
-        for ( StringValue identifier : identifiers ) {
-            String id = identifier.getValue();
-            ArrayList<Tuple<String,Tuple<Integer,Integer>>> patterns = new ArrayList<>();
-            
-            // is
-            patterns.add( createPattern( "%identifier%	is	%definition%", id, 0, 2 ) );
-            // is the
-            patterns.add( createPattern( "%identifier%	is	the	%definition%", id, 0, 3 ) );
-            // let be
-            patterns.add( createPattern( "let	%identifier%	be	the	%definition%", id, 1, 4 ) );
-            // denoted by
-            patterns.add( createPattern( "%definition%	is|are	denoted	by	%identifier%", id, 4, 0 ) );
-            // denotes
-            patterns.add( createPattern( "%identifier%	denotes	(DT)	%identifier%", id, 0, 3 ) );
-            // zero
-            patterns.add( createPattern( "%definition%	%identifier%", id, 1, 0 ) );
 
-            for ( Sentence sentence : sentences ) {
+        // populating identifier list we'll allways get one record from the left, therefore, we don't
+        // need to iterate through left
+
+        WikiDocument doc = Iterables.get(left, 0).f1;
+        title = doc.getTitle();
+        Identifiers identifiers = doc.getKnownIdentifiers();
+
+        List<Sentence> sentences = new ArrayList<>();
+        for (Tuple3<String, Sentence, Double> sentence : right) {
+            sentences.add(sentence.f1.clone());
+        }
+
+        for (StringValue identifier : identifiers) {
+            String id = identifier.getValue();
+            ArrayList<Tuple<String, Tuple<Integer, Integer>>> patterns = new ArrayList<>();
+
+            // is
+            patterns.add(createPattern("%identifier%	is	%definition%", id, 0, 2));
+            // is the
+            patterns.add(createPattern("%identifier%	is	the	%definition%", id, 0, 3));
+            // let be
+            patterns.add(createPattern("let	%identifier%	be	the	%definition%", id, 1, 4));
+            // denoted by
+            patterns.add(createPattern("%definition%	is|are	denoted	by	%identifier%", id, 4, 0));
+            // denotes
+            patterns.add(createPattern("%identifier%	denotes	(DT)	%identifier%", id, 0, 3));
+            // zero
+            patterns.add(createPattern("%definition%	%identifier%", id, 1, 0));
+
+            for (Sentence sentence : sentences) {
                 // only care about sentences the identifier is contained in
-                if ( !sentence.containsWord( identifier ) ) continue;
+                if (!sentence.containsWord(identifier))
+                    continue;
                 // search for each pattern
-                for ( Tuple<String,Tuple<Integer,Integer>> pattern : patterns ) {
+                for (Tuple<String, Tuple<Integer, Integer>> pattern : patterns) {
                     String patternstring = pattern.first;
                     Integer iOffset = pattern.second.first;
                     Integer dOffset = pattern.second.second;
-                    Integer index = SentenceUtils.findByPattern( sentence, patternstring );
-                    if ( index >= 0 ) {
+                    Integer index = SentenceUtils.findByPattern(sentence, patternstring);
+                    if (index >= 0) {
                         // pattern found
                         Relation relation = new Relation();
-                        System.out.println( sentence);
-                        relation.setIdentifier( identifier );
-                        relation.setIdentifierPosition( index + iOffset );
-                        relation.setWordPosition( index + dOffset );
-                        relation.setScore( 1d );
-                        relation.setSentence( sentence );
-                        relation.setTitle( title );
-                        // emit relation
-                        Record record = new Record();
-                        record.setField( 0, title );
-                        record.setField( 1, relation );
-                        collector.collect( record );
+
+                        relation.setIdentifier(identifier);
+                        relation.setIdentifierPosition(index + iOffset);
+                        relation.setWordPosition(index + dOffset);
+                        relation.setScore(1.0d);
+                        relation.setSentence(sentence);
+                        relation.setTitle(title);
+
+                        out.collect(new Tuple2<>(title, relation));
                     }
                 }
-                
-                
+
             }
         }
-   
-    }
-    
-    /**
-     * 
-     * @param pattern
-     * @param identifier
-     * @param iOffset
-     * @param dOffset
-     * @return 
-     */
-    private Tuple<String,Tuple<Integer,Integer>> createPattern( String pattern, String identifier, Integer iOffset, Integer dOffset ) {
-        String definition = "(NN[PS]{0,2}|NP\\+?|NN\\+|LNK)";
-        pattern = pattern.replaceAll( "%identifier%", identifier );
-        pattern = pattern.replaceAll( "%definition%", definition );
-        return new Tuple( pattern, new Tuple( iOffset, dOffset ) );
+
     }
 
+    private Tuple<String, Tuple<Integer, Integer>> createPattern(String pattern, String identifier,
+            Integer iOffset, Integer dOffset) {
+        String definition = "(NN[PS]{0,2}|NP\\+?|NN\\+|LNK)";
+        pattern = pattern.replaceAll("%identifier%", identifier);
+        pattern = pattern.replaceAll("%definition%", definition);
+        return new Tuple<>(pattern, new Tuple<>(iOffset, dOffset));
+    }
 
 }
