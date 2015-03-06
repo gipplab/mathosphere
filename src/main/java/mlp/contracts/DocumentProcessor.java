@@ -19,13 +19,11 @@ package mlp.contracts;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import mlp.types.Identifiers;
 import mlp.types.WikiDocument;
 import mlp.utils.StringUtils;
 
 import org.apache.flink.api.common.functions.FlatMapFunction;
 import org.apache.flink.api.java.tuple.Tuple2;
-import org.apache.flink.types.StringValue;
 import org.apache.flink.util.Collector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,9 +39,6 @@ public class DocumentProcessor implements FlatMapFunction<String, Tuple2<String,
     private final Pattern nsRegexp = Pattern.compile("(?:<ns>)(.*?)(?:</ns>)");
     private final Pattern idRegexp = Pattern.compile("(?:<revision>.*?<id>)(\\d+)(?:</id>)", Pattern.DOTALL);
     private final Pattern textRegexp = Pattern.compile("(?:<text.*?>)(.*?)(?:</text>)", Pattern.DOTALL);
-
-    private final StringValue plaintext = new StringValue();
-    private final Identifiers list = new Identifiers();
 
     @Override
     public void flatMap(String content, Collector<Tuple2<String, WikiDocument>> out) throws Exception {
@@ -63,6 +58,10 @@ public class DocumentProcessor implements FlatMapFunction<String, Tuple2<String,
         }
 
         int ns = Integer.parseInt(namespaceMatcher.group(1));
+        // skip docs from namespaces other than 0
+        if (ns != 0) {
+            return;
+        }
 
         // parse revision id
         Matcher idMatcher = idRegexp.matcher(content);
@@ -81,29 +80,14 @@ public class DocumentProcessor implements FlatMapFunction<String, Tuple2<String,
         String rawText = textMatcher.group(1);
         String text = StringUtils.unescapeEntities(rawText);
 
-        // otherwise create a WikiDocument object from the xml
         WikiDocument doc = new WikiDocument();
         doc.setId(id);
         doc.setTitle(title);
         doc.setNS(ns);
         doc.setText(text);
 
-        // skip docs from namespaces other than 0
-        if (doc.getNS() != 0) {
-            return;
-        }
-
-        // populate the list of known identifiers
-        list.clear();
-        for (StringValue var : doc.getKnownIdentifiers()) {
-            list.add(var);
-        }
-
-        // generate a plaintext version of the document
-        plaintext.setValue(doc.getPlainText());
-
         LOGGER.info("Analyzed Page '{}' (id: {}), found identifiers: {}", doc.getTitle(), doc.getId(),
-                list.toString());
+                doc.getKnownIdentifiers());
 
         out.collect(new Tuple2<>(doc.getTitle(), doc));
     }
