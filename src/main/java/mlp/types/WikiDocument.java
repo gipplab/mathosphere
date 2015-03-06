@@ -19,14 +19,17 @@ package mlp.types;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.Set;
 
+import mlp.utils.MathIdentifierExtractor;
+import mlp.utils.MathUtils;
+import mlp.utils.MathUtils.MathTag;
 import mlp.utils.PlaintextDocumentBuilder;
-import mlp.utils.TexIdentifierExtractor;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.flink.core.memory.DataInputView;
 import org.apache.flink.core.memory.DataOutputView;
 import org.apache.flink.types.IntValue;
@@ -68,28 +71,6 @@ public class WikiDocument implements Value {
      * Stores all unique identifiers found in this document
      */
     private Identifiers knownIdentifiers = new Identifiers();
-
-    @Override
-    public void write(DataOutputView out) throws IOException {
-        id.write(out);
-        ns.write(out);
-        title.write(out);
-        raw.write(out);
-        plaintext.write(out);
-        formulas.write(out);
-        knownIdentifiers.write(out);
-    }
-
-    @Override
-    public void read(DataInputView in) throws IOException {
-        id.read(in);
-        ns.read(in);
-        title.read(in);
-        raw.read(in);
-        plaintext.read(in);
-        formulas.read(in);
-        knownIdentifiers.read(in);
-    }
 
     public String getPlainText() {
         if (plaintext.getValue().isEmpty()) {
@@ -137,79 +118,54 @@ public class WikiDocument implements Value {
         this.replaceMathTags();
     }
 
-    Pattern p = Pattern.compile("<math(.*?)>(.*?)</math>(\n{2}?)", Pattern.DOTALL);
-
     /**
      * Helper that replaces all math tags from the document and stores them in a list. Math tags that contain
      * exactly on identifier will be replaced in line with the identifier.
      */
     private void replaceMathTags() {
-        String key, formula;
         String text = raw.getValue();
-        boolean augmention, period;
+        StringBuilder newText = new StringBuilder(text.length());
 
-        Matcher m = p.matcher(text);
+        Set<String> allIdentifiers = new LinkedHashSet<>();
+        List<MathTag> mathTags = MathUtils.findMathTags(text);
 
-        while (m.find()) {
-            formula = m.group(2).trim();
-            augmention = !m.group(1).isEmpty();
-            // check if the formular terminates a sentence
-            period = formula.endsWith(".") || !m.group(3).isEmpty();
-            key = " FORMULA" + (period ? ". " : " ");
-            List<String> identifiers = augmention ? TexIdentifierExtractor.getAllfromMathML(formula)
-                    : TexIdentifierExtractor.getAllfromTex(formula);
-            if (identifiers.isEmpty()) {
-                text = m.replaceFirst(key);
-            } else if (identifiers.size() == 1) {
-                try {
-                    text = m.replaceFirst(identifiers.get(0));
-                } catch (Exception e) {
-                    formulas.add(new Formula(key, formula));
-                    text = m.replaceFirst(key);
-                }
-            } else {
-                formulas.add(new Formula(key, formula));
-                text = m.replaceFirst(key);
-            }
+        int offset = 0;
+        for (MathTag tag : mathTags) {
+            newText.append(text.substring(offset, tag.getPosition()));
 
-            // add found identifers to the page wide list
-            for (String identifier : identifiers) {
-                if (knownIdentifiers.containsIdentifier(identifier)) {
-                    continue;
-                }
-                knownIdentifiers.add(new StringValue(identifier));
-            }
+            Set<String> identifiers = MathIdentifierExtractor.extractIdentifiersFrom(tag);
+            allIdentifiers.addAll(identifiers);
+
+            String key = "FORMULA_" + tag.getContentHash();
+            formulas.add(new Formula(key, tag.getContent()));
+
+            newText.append(key);
+            offset = tag.getPosition() + tag.getContent().length();
         }
 
-        raw.setValue(text);
+        newText.append(text.substring(offset, text.length()));
+        raw.setValue(newText.toString());
+
+        for (String identifier : allIdentifiers) {
+            knownIdentifiers.add(new StringValue(identifier));
+        }
     }
 
-    /**
-     * Returns the formula list of all found and replaced formulas.
-     * 
-     * @return a list of all formulas
-     */
     public FormulaList getFormulas() {
         return formulas;
     }
 
-    /**
-     * Returns a list of all found unique identifiers within this document.
-     * 
-     * @return a list of unique identifiers
-     */
     public Identifiers getKnownIdentifiers() {
         return knownIdentifiers;
     }
 
+    public boolean containsIndetifier(String identifier) {
+        return knownIdentifiers.containsIdentifier(identifier);
+    }
+    
     @Override
     public String toString() {
-        String s = toJSON().toString();
-        if (s == null) {
-            return "";
-        } else {
-            return s;
-        }
+        return StringUtils.defaultString(toJSON().toString(), "");
     }
 
     public JSONObject toJSON() {
@@ -218,6 +174,28 @@ public class WikiDocument implements Value {
         json.put("identifiers", knownIdentifiers.toString());
         json.put("id", id.getValue());
         return new JSONObject(json);
+    }
+
+    @Override
+    public void write(DataOutputView out) throws IOException {
+        id.write(out);
+        ns.write(out);
+        title.write(out);
+        raw.write(out);
+        plaintext.write(out);
+        formulas.write(out);
+        knownIdentifiers.write(out);
+    }
+
+    @Override
+    public void read(DataInputView in) throws IOException {
+        id.read(in);
+        ns.read(in);
+        title.read(in);
+        raw.read(in);
+        plaintext.read(in);
+        formulas.read(in);
+        knownIdentifiers.read(in);
     }
 
 }

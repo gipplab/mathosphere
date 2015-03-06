@@ -1,6 +1,7 @@
 package mlp.contracts;
 
 import java.io.InputStream;
+import java.util.List;
 
 import mlp.RelationFinder;
 import mlp.types.WikiDocument;
@@ -8,6 +9,8 @@ import mlp.types.WikiDocument;
 import org.apache.commons.io.IOUtils;
 import org.apache.flink.api.java.tuple.Tuple2;
 import org.junit.Test;
+
+import static org.junit.Assert.*;
 
 public class DocumentProcessorTest {
 
@@ -24,7 +27,17 @@ public class DocumentProcessorTest {
             documentProcessor.flatMap(page, out);
         }
 
-        System.out.println(out.getList());
-    }
+        List<Tuple2<String, WikiDocument>> output = out.getList();
+        assertEquals(2, output.size());
 
+        Tuple2<String, WikiDocument> doc1 = output.get(0);
+        assertEquals(doc1.f0, "Schrödinger equation");
+        assertTrue(doc1.f1.containsIndetifier("Ψ"));
+        assertTrue(doc1.f1.containsIndetifier("H"));
+
+        Tuple2<String, WikiDocument> doc2 = output.get(1);
+        assertEquals(doc2.f0, "Gas constant");
+        assertTrue(doc2.f1.containsIndetifier("R"));
+        assertTrue(doc2.f1.containsIndetifier("J"));
+    }
 }

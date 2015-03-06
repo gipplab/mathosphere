@@ -55,8 +55,6 @@ public class SentenceEmitter extends
 
     @Override
     public void open(Configuration cfg) throws Exception {
-        super.open(cfg);
-
         Properties props = new Properties();
         props.put("annotators", "tokenize, ssplit, pos");
         props.put("pos.model", posModel);
@@ -80,20 +78,25 @@ public class SentenceEmitter extends
         pipeline.annotate(document);
         List<CoreMap> sentences = document.get(SentencesAnnotation.class);
 
-        int position = -1;
+        int position = 0;
         for (CoreMap sentence : sentences) {
-            position += 1;
             Sentence ps = new Sentence();
+
             for (CoreLabel token : sentence.get(TokensAnnotation.class)) {
                 String word = token.get(TextAnnotation.class);
-                String pos = (identifiers.containsIdentifier(word)) ? "ID" : token
-                        .get(PartOfSpeechAnnotation.class);
-                ps.add(new Word(word, pos));
+                if (identifiers.containsIdentifier(word)) {
+                    ps.add(new Word(word, "ID"));
+                } else {
+                    String pos = token.get(PartOfSpeechAnnotation.class);
+                    ps.add(new Word(word, pos));
+                }
             }
 
             ps = postprocessSentence(ps);
             double val = (double) position / sentences.size();
             out.collect(new Tuple3<>(value.f0, ps, val));
+
+            position += 1;
         }
     }
 

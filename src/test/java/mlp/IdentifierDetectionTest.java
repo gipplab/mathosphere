@@ -18,11 +18,13 @@ package mlp;
 
 import static org.junit.Assert.assertEquals;
 
-import java.util.List;
+import java.util.Set;
 
-import mlp.utils.TexIdentifierExtractor;
+import mlp.utils.MathIdentifierExtractor;
 
 import org.junit.Test;
+
+import com.google.common.collect.Iterables;
 
 /**
  * @author rob
@@ -31,16 +33,16 @@ public class IdentifierDetectionTest {
 
     @Test
     public void singleIdentifiers() {
-        List<String> detected;
+        Set<String> detected;
 
         String x = "x";
-        detected = TexIdentifierExtractor.getAllfromTex(x);
+        detected = MathIdentifierExtractor.getAllfromTex(x);
         assertEquals("Number of identifiers mismatch (should be 1)", 1, detected.size());
-        assertEquals("Extracted identifier did not match", x, detected.get(0));
+        assertEquals("Extracted identifier did not match", x, Iterables.get(detected, 0));
 
         String xx = "x + x^{2}";
-        detected = TexIdentifierExtractor.getAllfromTex(xx);
+        detected = MathIdentifierExtractor.getAllfromTex(xx);
         assertEquals("Number of identifiers mismatch (should be 1)", 1, detected.size());
-        assertEquals("Extracted identifier did not match", x, detected.get(0));
+        assertEquals("Extracted identifier did not match", x, Iterables.get(detected, 0));
     }
 }

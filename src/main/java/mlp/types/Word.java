@@ -33,118 +33,113 @@ import java.util.Map;
  */
 public class Word implements Key<Word> {
 
-	private StringValue word = new StringValue();
-	private StringValue tag = new StringValue();
+    private StringValue word = new StringValue();
+    private StringValue tag = new StringValue();
 
-	public Word() {
-	}
+    public Word() {
+    }
 
-	public Word(final String word, final String tag) {
-		setWord(word);
-		setTag(tag);
-	}
+    public Word(String word, String tag) {
+        setWord(word);
+        setTag(tag);
+    }
 
-	/**
-	 * Constructor for Word. Replaces some odd conversions from the Stanford Tagger.
-	 * 
-	 * @param word a TaggedWord (@see edu.stanford.nlp.ling.TaggedWord)
-	 */
-	public Word(TaggedWord word) {
-		setWord(word.value());
-		setTag(word.tag());
-	}
+    public Word(TaggedWord word) {
+        setWord(word.value());
+        setTag(word.tag());
+    }
 
-	/**
-	 * Returns this Word as a TaggedWord from the Stanford NLP Project (@see
-	 * edu.stanford.nlp.ling.TaggedWord).
-	 * 
-	 * @return a TaggedWord
-	 */
-	public TaggedWord getTaggedWord() {
-		return new TaggedWord(word.getValue(), tag.getValue());
-	}
+    /**
+     * Returns this Word as a TaggedWord from the Stanford NLP Project (@see
+     * edu.stanford.nlp.ling.TaggedWord).
+     * 
+     * @return a TaggedWord
+     */
+    public TaggedWord getTaggedWord() {
+        return new TaggedWord(word.getValue(), tag.getValue());
+    }
 
-	public String getWord() {
-		return word.getValue();
-	}
+    public String getWord() {
+        return word.getValue();
+    }
 
-	public final void setWord(final String string) {
-		String v = string;
-		switch (v) {
-		case "-LRB-":
-			v = "(";
-			break;
-		case "-RRB-":
-			v = ")";
-			break;
-		case "-LCB-":
-			v = "{";
-			break;
-		case "-RCB-":
-			v = "}";
-			break;
-		case "-LSB-":
-			v = "[";
-			break;
-		case "-RSB-":
-			v = "]";
-			break;
-		case "``":
-			v = "\"";
-			break;
-		case "''":
-			v = "\"";
-			break;
-		case "--":
-			v = "-";
-			break;
-		}
-		word.setValue(v);
-	}
+    public void setWord(String string) {
+        String w = string;
+        switch (w) {
+        case "-LRB-":
+            w = "(";
+            break;
+        case "-RRB-":
+            w = ")";
+            break;
+        case "-LCB-":
+            w = "{";
+            break;
+        case "-RCB-":
+            w = "}";
+            break;
+        case "-LSB-":
+            w = "[";
+            break;
+        case "-RSB-":
+            w = "]";
+            break;
+        case "``":
+            w = "\"";
+            break;
+        case "''":
+            w = "\"";
+            break;
+        case "--":
+            w = "-";
+            break;
+        }
+        word.setValue(w);
+    }
 
-	public String getTag() {
-		return tag.getValue();
-	}
+    public String getTag() {
+        return tag.getValue();
+    }
 
-	public void setTag(String string) {
-		String t = string;
-		switch (t) {
-		case "``":
-			t = "\"";
-			break;
-		case "''":
-			t = "\"";
-			break;
-		}
-		tag.setValue(string);
-	}
+    public void setTag(String string) {
+        String t = string;
+        switch (t) {
+        case "``":
+            t = "\"";
+            break;
+        case "''":
+            t = "\"";
+            break;
+        }
+        tag.setValue(string);
+    }
 
-	@Override
-	public int compareTo(Word other) {
-		return this.word.compareTo(other.word);
-	}
+    @Override
+    public int compareTo(Word other) {
+        return this.word.compareTo(other.word);
+    }
 
-	@Override
-	public String toString() {
-		return toJSON().toString();
-	}
+    @Override
+    public String toString() {
+        return word + " (" + tag + ")";
+    }
 
-	public JSONObject toJSON() {
-		Map<String, Object> json = new HashMap<>();
-		json.put("word", getWord());
-		json.put("tag", getTag());
-		return new JSONObject(json);
-	}
+    public JSONObject toJSON() {
+        Map<String, Object> json = new HashMap<>();
+        json.put("word", getWord());
+        json.put("tag", getTag());
+        return new JSONObject(json);
+    }
 
-	@Override
-	public void write(DataOutputView out) throws IOException {
-		word.write(out);
-		tag.write(out);		
-	}
+    @Override
+    public void write(DataOutputView out) throws IOException {
+        word.write(out);
+        tag.write(out);
+    }
 
-	@Override
-	public void read(DataInputView in) throws IOException {
-		word.read(in);
-		tag.read(in);
-	}
+    @Override
+    public void read(DataInputView in) throws IOException {
+        word.read(in);
+        tag.read(in);
+    }
 }

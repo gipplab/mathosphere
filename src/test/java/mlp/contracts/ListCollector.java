@@ -5,6 +5,9 @@ import java.util.List;
 
 import org.apache.flink.util.Collector;
 
+/**
+ * Collector implementation for testing
+ */
 public class ListCollector<T> implements Collector<T> {
 
     private final List<T> list = new ArrayList<>();

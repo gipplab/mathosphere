@@ -34,14 +34,10 @@ public class Sentence extends ListValue<Word> implements Cloneable {
 
     public List<Integer> getWordPosition(String word) {
         List<Integer> positions = new ArrayList<>();
-        String token;
-        Integer pos = -1;
-        Iterator<Word> it = this.iterator();
-        while (it.hasNext()) {
-            pos += 1;
-            token = it.next().getWord();
+        for (int i = 0; i < this.size(); i++) {
+            String token = this.get(i).getWord();
             if (token.equals(word)) {
-                positions.add(pos);
+                positions.add(i);
             }
         }
         return positions;
@@ -64,11 +60,6 @@ public class Sentence extends ListValue<Word> implements Cloneable {
         Sentence obj = new Sentence();
         obj.addAll(this);
         return obj;
-    }
-
-    @Override
-    public String toString() {
-        return toJSON().toString();
     }
 
     public JSONObject toJSON() {

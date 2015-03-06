@@ -28,22 +28,22 @@ import org.apache.flink.types.Value;
  */
 public class Formula implements Value {
 
-    private StringValue hash = new StringValue();
-    private StringValue src = new StringValue();
+    private final StringValue hash = new StringValue();
+    private final StringValue src = new StringValue();
 
     public Formula() {
     }
 
     public Formula(String hash, String src) {
         this.hash.setValue(hash);
-        this.hash.setValue(src);
+        this.src.setValue(src);
     }
 
     public String getHash() {
         return hash.getValue();
     }
 
-    public void setHash(final String string) {
+    public void setHash(String string) {
         hash.setValue(string);
     }
 
@@ -51,7 +51,7 @@ public class Formula implements Value {
         return src.getValue();
     }
 
-    public void setSrc(final String string) {
+    public void setSrc(String string) {
         src.setValue(string);
     }
 

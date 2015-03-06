@@ -16,37 +16,41 @@
  */
 package mlp.utils;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.io.IOException;
+import java.util.Collections;
+import java.util.LinkedHashSet;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import mlp.utils.MathUtils.MathMarkUpType;
 import uk.ac.ed.ph.snuggletex.SnuggleEngine;
 import uk.ac.ed.ph.snuggletex.SnuggleInput;
 import uk.ac.ed.ph.snuggletex.SnuggleSession;
 
+import com.google.common.collect.ImmutableSet;
+
 /**
  * @author rob
  */
-public class TexIdentifierExtractor {
+public class MathIdentifierExtractor {
+
+    private static final SnuggleEngine SNUGGLE_ENGINE = new SnuggleEngine();
 
     /**
      * list of false positive identifiers
      */
-    private final static List<String> blacklist = Arrays.asList("sin", "cos", "tan", "min", "max", "inf",
+    private final static Set<String> BLACKLIST = ImmutableSet.of("sin", "cos", "tan", "min", "max", "inf",
             "lim", "log", "exp", "sup", "lim sup", "lim inf", "arg", "dim", "cosh", "arccos", "arcsin",
             "arctan", "rank", "ln", "det", "ker", "sec", "cot", "csc", "tanh", "sinh", "coth", "cot", "⋯",
-            ":", "'", "′", "…", "∞", "Λ", "⋮", " ", " ", "~", ";", "#", "e", "⋱", "{", "}", "%", "?", "°",
-            "′", "−", "★", "\"",
+            ":", "'", "′", "…", "∞", "⋮", " ", " ", "~", ";", "#", "e", "⋱", "{", "}", "%", "?", "°",
+            "′", "−", "★", "\"", "!",
 
-            // ignore identifier that are also english (stop-)words
+            // ignore identifier that are also English (stop-)words
             "a", "A", "i", "I",
 
             // ignore special chars
             "$", "\\");
-
-    private static SnuggleSession session = (new SnuggleEngine()).createSession();
 
     /**
      * Returns a list of all identifers within a given formula. The formula is coded in TeX.
@@ -55,20 +59,31 @@ public class TexIdentifierExtractor {
      * @param augmention
      * @return list of identifiers
      */
-    public static List<String> getAllfromTex(String formula) {
-        // create vanilla SnuggleEngine and new SnuggleSession
-        String mathml;
+    public static Set<String> getAllfromTex(String formula) {
         try {
-            SnuggleInput input = new SnuggleInput("$$ " + cleanupTexString(formula) + " $$");
-            session.parseInput(input);
-            mathml = session.buildXMLString();
+            String mathml = convertLatexToMathML(formula);
+            return getIdentifiersFrom(mathml);
         } catch (Exception e) {
-            return new ArrayList<>();
+            return Collections.emptySet();
         }
-        return getIdentifiersFrom(mathml);
     }
 
-    public static ArrayList<String> getAllfromMathML(String mathml) {
+    public static String convertLatexToMathML(String formula) throws IOException {
+        SnuggleSession session = SNUGGLE_ENGINE.createSession();
+        SnuggleInput input = new SnuggleInput("$$ " + cleanupTexString(formula) + " $$");
+        session.parseInput(input);
+        return session.buildXMLString();
+    }
+
+    public static Set<String> extractIdentifiersFrom(MathUtils.MathTag tag) {
+        if (tag.getMarkUpType() == MathMarkUpType.LATEX) {
+            return getAllfromTex(tag.getTagContent());
+        } else {
+            return getAllfromMathML(tag.getContent());
+        }
+    }
+
+    public static Set<String> getAllfromMathML(String mathml) {
         return getIdentifiersFrom(mathml);
     }
 
@@ -79,42 +94,45 @@ public class TexIdentifierExtractor {
      * @param mathml
      * @return a list of unique identifiers. When no identifiers were found, an empty list will be returned.
      */
-    private static ArrayList<String> getIdentifiersFrom(String mathml) {
-        ArrayList<String> list = new ArrayList<>();
+    private static Set<String> getIdentifiersFrom(String mathml) {
+        Set<String> foundIdentifiers = new LinkedHashSet<>();
+
         Pattern subsuper = Pattern.compile("<m(sub|sup)><mi>(.)</mi><m(n|i)>(.)</m\\3></m\\1>");
-        Pattern mi = Pattern.compile("<(mi)(.*?)>(.{1,10})</mi>", Pattern.DOTALL);
-        Matcher m;
+
+        Matcher m = subsuper.matcher(mathml);
         // check for single sub-/superscripts
-        while ((m = subsuper.matcher(mathml)).find()) {
+        while (m.find()) {
             String identifier = m.group(2);
             String where = m.group(1);
-            String what = m.group(4);
+            String script = m.group(4);
             // superscript number aren't identifiers at all
-            if (where.equals("sup") && what.matches("\\d")) {
-                what = "";
+            if (where.equals("sup") && script.matches("\\d")) {
+                script = "";
             }
-            if (!blacklist.contains(identifier)) {
+            if (!BLACKLIST.contains(identifier)) {
                 if (where.equals("sub")) {
-                    what = StringUtils.getSubscriptChar(what);
+                    script = StringUtils.getSubscriptChar(script);
                 } else {
-                    what = StringUtils.getSuperscriptChar(what);
+                    script = StringUtils.getSuperscriptChar(script);
                 }
-                list.add(identifier + what);
+                foundIdentifiers.add(identifier + script);
             }
             // remove matched substring from mathml
             mathml = m.replaceFirst("");
         }
+
         // deal with all remaining identifiers
+        Pattern mi = Pattern.compile("<(mi)(.*?)>(.{1,10})</mi>", Pattern.DOTALL);
         m = mi.matcher(mathml);
         while (m.find()) {
             String identifier = m.group(3);
-            if (blacklist.contains(identifier))
+            if (BLACKLIST.contains(identifier)) {
                 continue;
-            if (list.contains(identifier))
-                continue;
-            list.add(identifier);
+            }
+            foundIdentifiers.add(identifier);
         }
-        return list;
+
+        return foundIdentifiers;
     }
 
     /**
