@@ -29,21 +29,20 @@ public class Configuration
 	private String path;
 
 
-
 	@Override
-	protected void fillValues (Properties p) {
+	protected void fillValues( Properties p ) {
 		this.path = p.getProperty( PATH_PROPERTY, "/tmp" );
 		String portString = p.getProperty( PORT_PROPERTY, String.valueOf( RestExpress.DEFAULT_PORT ) );
 		this.path = System.getProperty( PATH_PROPERTY, this.path );
-		this.port = Integer.parseInt(  System.getProperty( PORT_PROPERTY, portString ) );
+		this.port = Integer.parseInt( System.getProperty( PORT_PROPERTY, portString ) );
 	}
 
 
-	public int getPort () {
+	public int getPort() {
 		return port;
 	}
 
-	public String getPath () {
+	public String getPath() {
 		return path;
 	}
 

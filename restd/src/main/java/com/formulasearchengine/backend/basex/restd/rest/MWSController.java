@@ -13,7 +13,13 @@ import java.io.InputStream;
 
 public class MWSController {
 
-	private String query (String query) {
+	public String read( Request req, Response res ) {
+		String query = req.getHeader( "query" );
+		res.setContentType( "text/xml" );
+		return query( query );
+	}
+
+	private String query( String query ) {
 		Client client = new Client();
 		try {
 			Document doc = XMLHelper.String2Doc( query );
@@ -26,30 +32,24 @@ public class MWSController {
 		return "No valid XML Document retrieved.";
 	}
 
-	public String read (Request req, Response res) {
-		String query = req.getHeader( "query" );
-		res.setContentType( "text/xml" );
-		return query( query );
-	}
-
-	public String create (Request request, Response response) {
+	public String create( Request request, Response response ) {
 		response.setResponseCreated();
 		InputStream is = request.getBodyAsStream();
 		String query = null;
 		try {
 			query = IOUtils.toString( is );
 		} catch ( IOException e ) {
-			query = "Input can not be understood"+e.getLocalizedMessage();
+			query = "Input can not be understood" + e.getLocalizedMessage();
 		}
 		return query( query );
 	}
 
-	public String delete (Request request, Response response) {
+	public String delete( Request request, Response response ) {
 		return "not supported request type";
 	}
 
 
-	public String update (Request request, Response response) {
+	public String update( Request request, Response response ) {
 		return "not supported request type";
 	}
 }

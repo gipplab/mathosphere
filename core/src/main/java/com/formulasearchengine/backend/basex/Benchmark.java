@@ -14,7 +14,7 @@ import java.util.List;
 
 /**
  * Parses user input and starts benchmark. This class contains the main method
- * 
+ *
  * @author Tobias Uhlich
  * @author Thanh Phuong Luu
  * @author Moritz Schubotz
@@ -27,14 +27,14 @@ public class Benchmark {
 
 	private final CommandLine line;
 
-	public Benchmark (CommandLine line) {
+	public Benchmark( CommandLine line ) {
 		this.line = line;
 	}
 
 	/**
 	 * Program entry point
 	 */
-	public static void main(String[] args) {
+	public static void main( String[] args ) {
 		Options options = new Options();
 		Option help = new Option( "help", "print this message" );
 		//Option projecthelp = new Option( "projecthelp", "print project help information" );
@@ -42,19 +42,19 @@ public class Benchmark {
 		//Option quiet = new Option( "quiet", "be extra quiet" );
 		//Option verbose = new Option( "verbose", "be extra verbose" );
 		//Option debug = new Option( "debug", "print debugging information" );
-		Option dataSource   = OptionBuilder.withArgName( "file" )
+		Option dataSource = OptionBuilder.withArgName( "file" )
 			.hasArg()
 			.isRequired()
 			.withDescription( "use given file for data source" )
 			.withLongOpt( "datasource" )
 			.create( "d" );
-		Option querySource   = OptionBuilder.withArgName( "file" )
+		Option querySource = OptionBuilder.withArgName( "file" )
 			.hasArg()
 			.isRequired()
 			.withDescription( "use given file for query source" )
 			.withLongOpt( "querysource" )
 			.create( "q" );
-		Option resultSink   = OptionBuilder.withArgName( "file" )
+		Option resultSink = OptionBuilder.withArgName( "file" )
 			.hasArg()
 			.withDescription( "specify file for the output" )
 			.withLongOpt( "output" )
@@ -65,18 +65,18 @@ public class Benchmark {
 			.addOption( help )
 			.addOption( "c", "CSV", false, "Print CSV instead of XML output" )
 			.addOption( "i", "ignoreLength", false, "Includes matches were the matching is tree is longer" +
-				"than the search pattern. For example $x+y+z$ for the pattern $x+y$."  );
+				"than the search pattern. For example $x+y+z$ for the pattern $x+y$." );
 		CommandLineParser parser = new GnuParser();
 		try {
 			CommandLine line = parser.parse( options, args );
-			if (line.hasOption( "help" )){
+			if ( line.hasOption( "help" ) ) {
 				HelpFormatter formatter = new HelpFormatter();
 				formatter.printHelp( "java -jar FILENAME.jar", options );
 			} else {
 				(new Benchmark( line )).run();
 			}
-			
-		} catch( ParseException exp ) {
+
+		} catch ( ParseException exp ) {
 			System.err.println( "Parsing failed.  Reason: " + exp.getMessage() );
 			return;
 		} catch ( IOException e ) {
@@ -94,7 +94,7 @@ public class Benchmark {
 		}
 	}
 
-	private void run () throws IOException, ParserConfigurationException, SAXException, XPathExpressionException {
+	private void run() throws IOException, ParserConfigurationException, SAXException, XPathExpressionException {
 
 		Server srv = new Server();
 		srv.importData( line.getOptionValue( "datasource" ) );
@@ -102,28 +102,29 @@ public class Benchmark {
 		final NtcirTopicReader ntcirTopicReader = new NtcirTopicReader( queries );
 		ntcirTopicReader.setFooter( BASEX_FOOTER );
 		ntcirTopicReader.setHeader( BASEX_HEADER );
-		ntcirTopicReader.setRestricLength( ! line.hasOption("i") );
+		ntcirTopicReader.setRestricLength( !line.hasOption( "i" ) );
 		List<NtcirPattern> patterns = ntcirTopicReader.extractPatterns();
 		final Client client = new Client( patterns );
-		srv.shutdown(); srv = null;
+		srv.shutdown();
+		srv = null;
 		String result;
-		if (line.hasOption( "c" )){
+		if ( line.hasOption( "c" ) ) {
 			result = client.getCSV();
 		} else {
-			result = client.getXML() ;
+			result = client.getXML();
 		}
 		boolean written = false;
-		if(line.hasOption( "output" )){
+		if ( line.hasOption( "output" ) ) {
 			try {
 				File dest = new File( line.getOptionValue( "output" ) );
 				org.apache.commons.io.FileUtils.writeStringToFile( dest, result );
 				written = true;
-			}catch ( Exception e ){
-				System.out.println("Could not print to file" + e.getMessage());
+			} catch ( Exception e ) {
+				System.out.println( "Could not print to file" + e.getMessage() );
 			}
 		}
-		if (!written){
-			System.out.println(result);
+		if ( !written ) {
+			System.out.println( result );
 		}
 	}
 

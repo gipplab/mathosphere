@@ -11,16 +11,16 @@ import java.io.IOException;
 
 public class Main {
 
-	public static void main (String[] args) {
+	public static void main( String[] args ) {
 		//RestExpress.setSerializationProvider(new SerializationProvider());
 		Configuration config;
 		try {
-		if ( args.length > 0 ) {
-			config =  Environment.from( args[0], Configuration.class );
-		} else {
+			if ( args.length > 0 ) {
+				config = Environment.from( args[ 0 ], Configuration.class );
+			} else {
 
 				config = Environment.fromDefault( Configuration.class );
-		}
+			}
 		} catch ( IOException e ) {
 			e.printStackTrace();
 			return;
@@ -38,9 +38,8 @@ public class Main {
 		}
 
 
-
 		server.uri( "/xquery", new BasexController() ).noSerialization();
-		server.uri( "/mwsquery" , new MWSController() ).noSerialization();
+		server.uri( "/mwsquery", new MWSController() ).noSerialization();
 		server.bind();
 		server.awaitShutdown();
 	}

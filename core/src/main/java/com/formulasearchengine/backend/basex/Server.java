@@ -17,37 +17,38 @@ import java.io.PrintStream;
 public class Server {
 	private final BaseXServer server;
 	private final ClientSession session;
+
+	public Server() throws IOException {
+		server = new BaseXServer();
+		session = new ClientSession( "localhost", 1984, "admin", "admin" );
+
+	}
+
 	public void shutdown() throws IOException {
 		server.stop();
 	}
-	public Server () throws IOException {
-		server = new BaseXServer();
-		session = new ClientSession("localhost", 1984, "admin", "admin");
 
-	}
-
-	public void importData(String path) throws IOException {
+	public void importData( String path ) throws IOException {
 		session.execute( "SET mainmem true" );
-		try{
+		try {
 			File f = new File( path );
-			if(f.isFile()){
-				path = Files.toString(f, Charsets.UTF_8);
+			if ( f.isFile() ) {
+				path = Files.toString( f, Charsets.UTF_8 );
 			}
-		} catch ( Exception e ){}
-		session.execute(new CreateDB("math", path));
+		} catch ( Exception e ) {
+		}
+		session.execute( new CreateDB( "math", path ) );
 	}
 
-	public void runQuery(String queryString, PrintStream output) throws IOException {
-		session.setOutputStream(output);
+	public void runQuery( String queryString, PrintStream output ) throws IOException {
+		session.setOutputStream( output );
 		ClientQuery query = session.query( queryString );
 		query.execute();
 	}
 
-	public ClientQuery getQuery(String queryString) throws IOException {
+	public ClientQuery getQuery( String queryString ) throws IOException {
 		return session.query( queryString );
 	}
-
-
 
 
 }
