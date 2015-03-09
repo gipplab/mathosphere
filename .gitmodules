@@ -1,0 +1,10 @@
+[submodule "lib/MathMLQueryGenerator"]
+	path = lib/MathMLQueryGenerator
+	url = https://github.com/physikerwelt/MathMLQueryGenerator.git
+
+[submodule "lib/MathMLCan"]
+	path = lib/MathMLCan
+	url = https://github.com/TU-Berlin/MathMLCan.git
+[submodule "lib/RTED"]
+	path = lib/RTED
+	url = https://github.com/TU-Berlin/RTED.git
