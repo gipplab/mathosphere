@@ -34,7 +34,9 @@
       <module name="mathml-canonicalizer" target="1.6" />
       <module name="mathmlquerygenerator" target="1.7" />
       <module name="mathosphere" target="1.7" />
+      <module name="mathosphere-parent" target="1.7" />
       <module name="mathosphere2" target="1.7" />
+      <module name="RTED" target="1.7" />
     </bytecodeTargetLevel>
   </component>
 </project>
