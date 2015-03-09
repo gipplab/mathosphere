@@ -1,0 +1,44 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+
+    <parent>
+        <groupId>com.formulasearchengine.mathosphere</groupId>
+        <artifactId>mathosphere-parent</artifactId>
+        <version>2.1.0-SNAPSHOT</version>
+        <relativePath>..</relativePath>
+    </parent>
+    <artifactId>mathosphere-core</artifactId>
+    <packaging>jar</packaging>
+    <name>Mathosphere 2</name>
+    <description>Batch processing and evaluation of Math queries</description>
+    <url>http://www.formulasearchengine.com/Mathosphere</url>
+    <licenses>
+        <license>
+            <name>The Apache License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+        </license>
+    </licenses>
+    <dependencies>
+    <dependency>
+        <groupId>junit</groupId>
+        <artifactId>junit</artifactId>
+        <version>4.11</version>
+        <scope>test</scope>
+    </dependency>
+    </dependencies>
+    <developers>
+        <developer>
+            <name>Moritz Schubotz</name>
+            <email>wiki@physikerwelt.de</email>
+            <organization>TU Berlin</organization>
+            <organizationUrl>http://www.tu-berlin.de</organizationUrl>
+        </developer>
+        <developer>
+            <name>Jimmy Li</name>
+            <email>jimmy.jiajian.li@gmail.com</email>
+            <!-- TODO: @jimmyli97 complete info -->
+        </developer>
+    </developers>
+</project>

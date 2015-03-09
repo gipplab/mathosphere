@@ -1,4 +1,4 @@
-package com.formulasearchengine;
+package com.formulasearchengine.mathosphere;
 
 /**
  * Hello world!
