@@ -85,10 +85,10 @@ public class Client {
 		XQueryGenerator generator = new XQueryGenerator( mwsQuery );
 		generator.setHeader( Benchmark.BASEX_HEADER );
 		generator.setFooter( Benchmark.BASEX_FOOTER );
-		return execute( generator.toString() );
+		return runXQuery( generator.toString() );
 	}
 
-	public String execute( String query ) {
+	public String runXQuery (String query) {
 		currentResult = currentRun.new Result( "" );
 		try {
 			runQuery( query );

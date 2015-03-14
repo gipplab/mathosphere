@@ -21,7 +21,7 @@ public class ClientTest extends TestCase {
 	@BeforeClass
 	private static void setup() throws Exception {
 		Client c = new Client();
-		String res = c.execute( "let $message := 'Hello World!'\n" +
+		String res = c.runXQuery( "let $message := 'Hello World!'\n" +
 			"return\n" +
 			"<results>\n" +
 			"   <message>{$message}</message>\n" +
@@ -36,7 +36,7 @@ public class ClientTest extends TestCase {
 	public void basicTest() throws Exception {
 		setup();
 		Client c = new Client();
-		String res = c.execute( "declare default element namespace \"http://www.w3.org/1998/Math/MathML\";\n" +
+		String res = c.runXQuery( "declare default element namespace \"http://www.w3.org/1998/Math/MathML\";\n" +
 			"for $m in //*:expr return \n" +
 			"for $x in $m//*:apply\n" +
 			"[*[1]/name() = 'divide']\n" +
