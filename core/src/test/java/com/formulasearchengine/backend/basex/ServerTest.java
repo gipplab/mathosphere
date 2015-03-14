@@ -3,47 +3,35 @@ package com.formulasearchengine.backend.basex;
 import org.junit.After;
 import org.junit.Test;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.util.Scanner;
+import java.io.PrintStream;
+
+import static org.junit.Assert.assertEquals;
 
 public class ServerTest {
 	private Server srv;
+	private static boolean running = false;
 
 	public ServerTest() throws IOException {
 		srv = new Server();
 	}
 
 	@After
-	public void shutDown() throws IOException {
+	public void shutDown() throws IOException, InterruptedException {
 		srv.shutdown();
 	}
 
 	@Test
 	public void testImportData() throws Exception {
-		final String file = this.getClass().getClassLoader().getResource( "sampleHarvest.xml" ).getPath();
-		String fcontent = getFileContents( "sampleHarvest.xml" );
-
-		srv.importData( fcontent );
-		System.out.println( file );
-
-	}
-
-	static public String getFileContents( String fname ) throws IOException {
-		try ( InputStream is = ServerTest.class.getClassLoader().getResourceAsStream( fname ) ) {
-			final Scanner s = new Scanner( is, "UTF-8" );
-			//Stupid scanner tricks to read the entire file as one token
-			s.useDelimiter( "\\A" );
-			return s.hasNext() ? s.next() : "";
-		}
-	}
-
-	//Depends on testImportData
-	@Test
-	public void testQuery() throws Exception {
-		String fcontent = getFileContents( "sampleHarvest.xml" );
-		srv.importData( fcontent );
-		srv.runQuery( "count(./*/*)", System.out );
+		//noinspection ConstantConditions
+		final String file = getClass().getClassLoader().getResource( "sampleHarvest.xml" ).getFile();
+		srv.importData( file );
+		System.out.println( "Imported" + file );
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		PrintStream ps = new PrintStream(baos);
+		srv.runQuery( "count(./*/*)", ps );
+		assertEquals("104",baos.toString("UTF-8"));
 	}
 
 }

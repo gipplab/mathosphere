@@ -15,17 +15,21 @@ import java.io.PrintStream;
  * Created by Moritz on 08.11.2014.
  */
 public class Server {
-	private final BaseXServer server;
-	private final ClientSession session;
+	//Do not allow for multiple server instances
+	private static BaseXServer server = null;
+	private static ClientSession session;
 
 	public Server() throws IOException {
-		server = new BaseXServer();
-		session = new ClientSession( "localhost", 1984, "admin", "admin" );
-
+		if ( server == null ){
+			server = new BaseXServer();
+			session = new ClientSession( "localhost", 1984, "admin", "admin" );
+		}
 	}
 
 	public void shutdown() throws IOException {
 		server.stop();
+		server = null;
+		session = null;
 	}
 
 	public void importData( String path ) throws IOException {
@@ -44,10 +48,6 @@ public class Server {
 		session.setOutputStream( output );
 		ClientQuery query = session.query( queryString );
 		query.execute();
-	}
-
-	public ClientQuery getQuery( String queryString ) throws IOException {
-		return session.query( queryString );
 	}
 
 
