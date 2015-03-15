@@ -151,6 +151,32 @@
                 <artifactId>maven-war-plugin</artifactId>
                 <version>2.4</version>
             </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>1.2.1</version>
+                <executions>
+                    <execution>
+                        <id>default-cli</id>
+                        <goals>
+                            <goal>java</goal>
+                        </goals>
+                        <configuration>
+                            <mainClass>com.formulasearchengine.backend.basex.AppServer</mainClass>
+                            <systemProperties>
+                                <systemProperty>
+                                    <key>path</key>
+                                    <value>${basedir}/src/test/resources/sampleHarvest.xml</value>
+                                </systemProperty>
+                                <systemProperty>
+                                    <key>restx.mode</key>
+                                    <value>prod</value>
+                                </systemProperty>
+                            </systemProperties>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
 </project>
