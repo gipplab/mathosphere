@@ -14,7 +14,9 @@ public class ClientTest {
 
 	@BeforeClass
 	public static void setup() throws Exception {
-		(new ServerTest()).testImportData();
+		if ( Server.isEmpty() ){
+			( new ServerTest() ).testImportData();
+		}
 	}
 
 	@Test

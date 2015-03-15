@@ -3,7 +3,11 @@ package com.formulasearchengine.backend.basex;
 import com.formulasearchengine.mathmlquerygenerator.NtcirPattern;
 import com.formulasearchengine.mathmlquerygenerator.XQueryGenerator;
 import net.xqj.basex.BaseXXQDataSource;
-import org.basex.server.ClientQuery;
+import org.basex.core.cmd.Open;
+import org.basex.query.QueryException;
+import org.basex.query.QueryProcessor;
+import org.basex.query.iter.Iter;
+import org.basex.query.value.item.Item;
 import org.w3c.dom.Document;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -41,14 +45,14 @@ public class Client {
 	public Long basex( String query ) {
 		try {
 			runQuery( query );
-		} catch ( XQException | IOException e ) {
+		} catch ( XQException | IOException | QueryException e ) {
 			e.printStackTrace();
 			return -1L;
 		}
 		return measurement;
 	}
 
-	private int runQuery( String query ) throws XQException, IOException {
+	private int runQuery( String query ) throws XQException, IOException, QueryException {
 		int score = 10;
 		int rank = 1;
 		if ( useXQ ) {
@@ -59,17 +63,26 @@ public class Client {
 			measurement = System.nanoTime() - measurement;
 			currentResult.setTime( measurement );
 			while (rs.next()) {
-				currentResult.addHit( rs.getItemAsString( null ), "", score, rank );
+				currentResult.addHit( rs.getItemAsString( null ).replaceAll( "\r", "" ), "", score, rank );
 				rank++;
 			}
 			conn.close();
 		} else {
 			measurement = System.nanoTime();
-			ClientQuery q = Server.getQuery(query);
 			measurement = System.nanoTime() - measurement;
 			currentResult.setTime( measurement );
-			while ( q.more() ){
-				currentResult.addHit( q.next(), "", score, rank );
+			new Open("math").execute( Server.context );
+			QueryProcessor proc = new QueryProcessor(query, Server.context );
+			Iter iter = proc.iter();
+			for(Item item; (item = iter.next()) != null;) {
+				Object o = item.toJava();
+				String s;
+				if(o instanceof String){
+					s = (String) o;
+				} else {
+					s = item.toString();
+				}
+				currentResult.addHit( s, "", score, rank );
 				rank++;
 			}
 		}
