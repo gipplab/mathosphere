@@ -63,7 +63,12 @@ public class MathRequest {
 			type = "mws";
 		}
 		Client client = new Client();
+		client.setShowTime( false ); //for testing
 		switch ( type ){
+			case "tex" :
+				response = client.runTexQuery( query );
+				success = true;
+				break;
 			case "xquery" :
 				response = client.runXQuery( query );
 				success =true;

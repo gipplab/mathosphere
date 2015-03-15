@@ -10,6 +10,19 @@ import restx.security.PermitAll;
 @Component
 @RestxResource
 public class BaseXResource {
+	@GET("/texquery")
+	@PermitAll
+	public MathRequest texquery( String query ) {
+		return new MathRequest( query ).setType( "tex" ).run();
+	}
+	@POST("/texquery")
+	@PermitAll
+	public MathRequest texquery( MathRequest q ) {
+		if( q.getType() == null ||  "".equals( q.getType()) ){
+			q.setType( "tex" );
+		}
+		return q.run();
+	}
 	@GET("/xquery")
 	@PermitAll
 	public MathRequest xquery( String query ) {

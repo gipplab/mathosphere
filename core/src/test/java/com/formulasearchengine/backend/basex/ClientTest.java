@@ -20,22 +20,14 @@ public class ClientTest extends TestCase {
 
 	@BeforeClass
 	private static void setup() throws Exception {
-		Client c = new Client();
-		String res = c.runXQuery( "let $message := 'Hello World!'\n" +
-			"return\n" +
-			"<results>\n" +
-			"   <message>{$message}</message>\n" +
-			"</results>" );
-		if ( res.contains( "failed XQJNC001 - Connection refused: connect" ) ) {
-			System.out.println( res );
-			(new ServerTest()).testImportData();
-		}
+		(new ServerTest()).testImportData();
 	}
 
 	@Ignore
 	public void basicTest() throws Exception {
 		setup();
 		Client c = new Client();
+		c.setShowTime( false );
 		String res = c.runXQuery( "declare default element namespace \"http://www.w3.org/1998/Math/MathML\";\n" +
 			"for $m in //*:expr return \n" +
 			"for $x in $m//*:apply\n" +
@@ -44,10 +36,9 @@ public class ClientTest extends TestCase {
 			"fn:count($x/*) = 3\n" +
 			"return\n" +
 			"<result>{$m/@url}</result>" );
-		res = res.replaceFirst( "runtime=\"\\d+\"", "" );
 		assertEquals( "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n" +
 			"<results xmlns=\"http://ntcir-math.nii.ac.jp/\" total=\"37\">\n" +
-			"    <result for=\"NTCIR11-Math-\" >\n" +
+			"    <result for=\"NTCIR11-Math-\">\n" +
 			"      <hit id=\"<result xmlns=\"http://www.w3.org/1998/Math/MathML\" url=\"math.4.5\"/>\" xref=\"math000000000000.xml\" score=\"10\" rank=\"1\"/>\n" +
 			"      <hit id=\"<result xmlns=\"http://www.w3.org/1998/Math/MathML\" url=\"math.4.5\"/>\" xref=\"math000000000000.xml\" score=\"10\" rank=\"2\"/>\n" +
 			"      <hit id=\"<result xmlns=\"http://www.w3.org/1998/Math/MathML\" url=\"math.5.2\"/>\" xref=\"math000000000000.xml\" score=\"10\" rank=\"3\"/>\n" +
@@ -101,6 +92,7 @@ public class ClientTest extends TestCase {
 			"</results>\n";
 		Document query = XMLHelper.String2Doc( testInput );
 		Client c = new Client();
+		c.setShowTime( true );
 		String res = c.runMWSQuery( query );
 		assertEquals( expectedOutput, res.replaceAll( "runtime=\"\\d+\"", "" ) );
 	}

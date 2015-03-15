@@ -5,7 +5,9 @@ import com.formulasearchengine.mathmlquerygenerator.XQueryGenerator;
 import net.xqj.basex.BaseXXQDataSource;
 import org.w3c.dom.Document;
 
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xquery.*;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -80,6 +82,17 @@ public class Client {
 	public String getCSV() {
 		return results.toCSV();
 	}
+	
+	public String runTexQuery( String tex ){
+		TexQueryGenerator t = new TexQueryGenerator();
+		String mmlString = t.request( tex );
+		try {
+			Document doc = XMLHelper.String2Doc( mmlString );
+			return runMWSQuery( doc );
+		} catch ( ParserConfigurationException | IOException e ) {
+			return "Can not parse tex";
+		}
+	}
 
 	public String runMWSQuery( Document mwsQuery ) {
 		XQueryGenerator generator = new XQueryGenerator( mwsQuery );
@@ -104,5 +117,9 @@ public class Client {
 		} catch ( Exception e ) {
 			return "Query :\n" + query + "\n\n failed " + e.getLocalizedMessage();
 		}
+	}
+
+	public void setShowTime (boolean showTime) {
+		this.results.setShowTime(showTime);
 	}
 }

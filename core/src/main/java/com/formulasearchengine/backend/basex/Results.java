@@ -11,6 +11,7 @@ import java.util.LinkedList;
 public class Results {
 
 	private LinkedList<Run> runs = new LinkedList<Run>();
+	private boolean showTime = true;
 
 	public void addRun( String runtag, Long ms, String type ) {
 		runs.add( new Run( runtag, ms, type ) );
@@ -46,6 +47,10 @@ public class Results {
 
 	}
 
+	public void setShowTime (boolean showTime) {
+		this.showTime = showTime;
+	}
+
 	public class Run {
 
 		private String runtag;
@@ -77,15 +82,19 @@ public class Results {
 			results.add( result );
 		}
 
-		public String toXML() {
+		public String toXML () {
 			String resultXML = "";
 			for ( Result result : results ) {
 				resultXML += result.toXML();
 			}
 
-			return "  <run runtag=\"" + runtag + "\" runtime=\"" + ms
-				+ "\" runtype=\"" + type + "\">\n" + resultXML
-				+ "  </run>\n";
+			StringBuilder s = new StringBuilder().append( "  <run runtag=\"" ).append( runtag );
+			if ( showTime ) {
+				s.append( "\" runtime=\"" ).append( ms );
+			}
+			s.append( "\" runtype=\"" ).append( type ).append( "\">\n" ).
+				append( resultXML ).append( "  </run>\n" );
+			return s.toString();
 		}
 
 		public String toCSV() {
@@ -95,6 +104,7 @@ public class Results {
 			}
 			return CSV;
 		}
+		
 
 		public class Result {
 
@@ -134,9 +144,12 @@ public class Results {
 					hitXML += hit.toXML();
 				}
 
-				return "    <result for=\"NTCIR11-Math-" + num
-					+ "\" runtime=\"" + ms + "\">\n" + hitXML
-					+ "    </result>\n";
+				StringBuilder s = new StringBuilder().append( "    <result for=\"NTCIR11-Math-" ).append( num );
+				if ( showTime ){
+					s.append( "\" runtime=\"" ).append( ms );
+				}
+				s.append( "\">\n" ).append( hitXML ).append( "    </result>\n" ).toString();
+			return s.toString();
 			}
 
 			public String toCSV() {

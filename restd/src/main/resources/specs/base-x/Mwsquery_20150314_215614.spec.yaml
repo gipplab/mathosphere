@@ -1,0 +1,19 @@
+title: Mwsquery 20150314 215614
+given:
+  - time: 2015-03-14T21:56:14.538-04:00
+wts:
+  - when: |
+       POST mwsquery
+       Cookie: RestxSession-BaseXMathSearch={"_expires":"2015-04-13T21:56:14.538-04:00","principal":"admin","sessionKey":"ee1ff58c-42ba-4f29-9576-a1cb3d0c9e48"}; RestxSessionSignature-BaseXMathSearch=48uaRyOdRBgU5PcwVjwrC1Q9N0o=
+
+        {
+          "type": "mws",
+          "query": "<?xml version=\"1.0\"?> <mws:query xmlns:mws=\"http://search.mathweb.org/ns\" xmlns:m=\"http://www.w3.org/1998/Math/MathML\" limitmin=\"0\" answsize=\"30\">     <mws:expr>         <m:apply xml:id=\"p1.1.m1.1.5.cmml\">             <m:sin xml:id=\"p1.1.m1.1.1.cmml\"/>             <mws:qvar>x</mws:qvar>         </m:apply>     </mws:expr> </mws:query>"
+        }
+    then: |
+        {
+          "type" : "mws",
+          "query" : "<?xml version=\"1.0\"?> <mws:query xmlns:mws=\"http://search.mathweb.org/ns\" xmlns:m=\"http://www.w3.org/1998/Math/MathML\" limitmin=\"0\" answsize=\"30\">     <mws:expr>         <m:apply xml:id=\"p1.1.m1.1.5.cmml\">             <m:sin xml:id=\"p1.1.m1.1.1.cmml\"/>             <mws:qvar>x</mws:qvar>         </m:apply>     </mws:expr> </mws:query>",
+          "response" : "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<results xmlns=\"http://ntcir-math.nii.ac.jp/\" total=\"7\">\n    <result for=\"NTCIR11-Math-\">\n      <hit id=\"math.8.13\" xref=\"math000000000000.xml\" score=\"10\" rank=\"1\"/>\n      <hit id=\"math.8.22\" xref=\"math000000000000.xml\" score=\"10\" rank=\"2\"/>\n      <hit id=\"math.8.23\" xref=\"math000000000000.xml\" score=\"10\" rank=\"3\"/>\n      <hit id=\"math.8.25\" xref=\"math000000000000.xml\" score=\"10\" rank=\"4\"/>\n      <hit id=\"math.8.25\" xref=\"math000000000000.xml\" score=\"10\" rank=\"5\"/>\n      <hit id=\"math.8.30\" xref=\"math000000000000.xml\" score=\"10\" rank=\"6\"/>\n      <hit id=\"math.8.32\" xref=\"math000000000000.xml\" score=\"10\" rank=\"7\"/>\n    </result>\n</results>\n",
+          "success" : true
+        }
