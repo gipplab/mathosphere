@@ -78,13 +78,13 @@ public class TexQueryGenerator {
 
 	public String request (String tex) {
 		HttpPost httppost = new HttpPost( LaTeXMLURL );
-		CloseableHttpClient httpclient = HttpClients.createDefault();
+		CloseableHttpClient httpClient = HttpClients.createDefault();
 		List<NameValuePair> p = getParams();
 		p.add( new BasicNameValuePair( "tex", tex.trim() ) );
-		HttpResponse response = null;
+		HttpResponse response;
 		try {
 			httppost.setEntity( new UrlEncodedFormEntity( p, "UTF-8" ) );
-			response = httpclient.execute( httppost );
+			response = httpClient.execute( httppost );
 		} catch ( IOException e ) {
 			lastException = e;
 			fail( e.getLocalizedMessage() );

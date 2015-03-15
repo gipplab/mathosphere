@@ -1,6 +1,5 @@
 package com.formulasearchengine.backend.basex;
 
-import org.junit.After;
 import org.junit.Test;
 
 import java.io.ByteArrayOutputStream;
@@ -11,15 +10,9 @@ import static org.junit.Assert.assertEquals;
 
 public class ServerTest {
 	private Server srv;
-	private static boolean running = false;
 
 	public ServerTest() throws IOException {
 		srv = new Server();
-	}
-
-	@After
-	public void shutDown() throws IOException, InterruptedException {
-		srv.shutdown();
 	}
 
 	@Test

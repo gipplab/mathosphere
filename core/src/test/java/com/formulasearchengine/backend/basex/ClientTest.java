@@ -1,8 +1,6 @@
 package com.formulasearchengine.backend.basex;
 
-import junit.framework.TestCase;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.w3c.dom.Document;
 
@@ -10,22 +8,17 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Scanner;
 
-public class ClientTest extends TestCase {
-	@Test
-	public void testSequential() throws Exception {
-		basicTest();
-		MWSQuery();
-		MWS2();
-	}
+import static org.junit.Assert.assertEquals;
+
+public class ClientTest {
 
 	@BeforeClass
-	private static void setup() throws Exception {
+	public static void setup() throws Exception {
 		(new ServerTest()).testImportData();
 	}
 
-	@Ignore
+	@Test
 	public void basicTest() throws Exception {
-		setup();
 		Client c = new Client();
 		c.setShowTime( false );
 		String res = c.runXQuery( "declare default element namespace \"http://www.w3.org/1998/Math/MathML\";\n" +
@@ -80,9 +73,8 @@ public class ClientTest extends TestCase {
 			"</results>\n", res );
 	}
 
-	@Ignore
+	@Test
 	public void MWSQuery() throws Exception {
-		setup();
 		final String testInput = getFileContents( "dummy29.xml" );
 		final String expectedOutput = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n" +
 			"<results xmlns=\"http://ntcir-math.nii.ac.jp/\" total=\"1\">\n" +
@@ -97,9 +89,8 @@ public class ClientTest extends TestCase {
 		assertEquals( expectedOutput, res.replaceAll( "runtime=\"\\d+\"", "" ) );
 	}
 
-	@Ignore
+	@Test
 	public void MWS2() throws Exception {
-		setup();
 		final String testInput = getFileContents( "mws.xml" );
 		final String expectedOutput = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n" +
 			"<results xmlns=\"http://ntcir-math.nii.ac.jp/\" total=\"7\">\n" +
