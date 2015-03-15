@@ -34,6 +34,8 @@ public class Server {
 
 	public void importData( String path ) throws IOException {
 		session.execute( "SET mainmem true" );
+		session.execute( "SET SERIALIZER newline=\"\\n\"" );
+		session.execute( "SET SERIALIZER item-separator=\"\\n\"" );
 		try {
 			File f = new File( path );
 			if ( f.isFile() ) {
@@ -50,5 +52,8 @@ public class Server {
 		query.execute();
 	}
 
+	public static ClientQuery getQuery( String queryString ) throws IOException {
+		return session.query( queryString );
+	}
 
 }

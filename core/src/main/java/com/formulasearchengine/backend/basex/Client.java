@@ -3,6 +3,7 @@ package com.formulasearchengine.backend.basex;
 import com.formulasearchengine.mathmlquerygenerator.NtcirPattern;
 import com.formulasearchengine.mathmlquerygenerator.XQueryGenerator;
 import net.xqj.basex.BaseXXQDataSource;
+import org.basex.server.ClientQuery;
 import org.w3c.dom.Document;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -18,6 +19,7 @@ public class Client {
 	private Results.Run currentRun = results.new Run( "baseX" + System.currentTimeMillis(), "automated" );
 	private Results.Run.Result currentResult;
 	private Long measurement;
+	private boolean useXQ = true;
 
 	public Client( List<NtcirPattern> patterns ) {
 		for ( NtcirPattern pattern : patterns ) {
@@ -39,27 +41,38 @@ public class Client {
 	public Long basex( String query ) {
 		try {
 			runQuery( query );
-		} catch ( XQException e ) {
+		} catch ( XQException | IOException e ) {
 			e.printStackTrace();
 			return -1L;
 		}
 		return measurement;
 	}
 
-	private int runQuery( String query ) throws XQException {
+	private int runQuery( String query ) throws XQException, IOException {
 		int score = 10;
 		int rank = 1;
-		XQConnection conn = getXqConnection();
-		XQPreparedExpression xqpe = conn.prepareExpression( query );
-		measurement = System.nanoTime();
-		XQResultSequence rs = xqpe.executeQuery();
-		measurement = System.nanoTime() - measurement;
-		currentResult.setTime( measurement );
-		while (rs.next()) {
-			currentResult.addHit( rs.getItemAsString( null ), "", score, rank );
-			rank++;
+		if ( useXQ ) {
+			XQConnection conn = getXqConnection();
+			XQPreparedExpression xqpe = conn.prepareExpression( query );
+			measurement = System.nanoTime();
+			XQResultSequence rs = xqpe.executeQuery();
+			measurement = System.nanoTime() - measurement;
+			currentResult.setTime( measurement );
+			while (rs.next()) {
+				currentResult.addHit( rs.getItemAsString( null ), "", score, rank );
+				rank++;
+			}
+			conn.close();
+		} else {
+			measurement = System.nanoTime();
+			ClientQuery q = Server.getQuery(query);
+			measurement = System.nanoTime() - measurement;
+			currentResult.setTime( measurement );
+			while ( q.more() ){
+				currentResult.addHit( q.next(), "", score, rank );
+				rank++;
+			}
 		}
-		conn.close();
 		return rank--;
 	}
 

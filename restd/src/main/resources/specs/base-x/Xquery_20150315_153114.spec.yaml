@@ -1,0 +1,19 @@
+title: Xquery 20150315 153114
+given:
+  - time: 2015-03-15T15:31:14.174-04:00
+wts:
+  - when: |
+       POST xquery
+       Cookie: RestxSession-BaseXMathSearch={"_expires":"2015-04-14T15:31:14.174-04:00","principal":"admin","sessionKey":"621cd389-8f16-4d1e-ac53-d1edee5ae001"}; RestxSessionSignature-BaseXMathSearch=LgjUIS5AYej8/qdCuacew3g5sI4=
+
+        {
+           "type": "xquery",
+           "query": "declare namespace output = \"http://www.w3.org/2010/xslt-xquery-serialization\";\ndeclare option output:newline \"\\n\"; let $message := 'Hello World!' return <results><message>{$message}</message></results>"
+         }
+    then: |
+        {
+          "type" : "xquery",
+          "query" : "declare namespace output = \"http://www.w3.org/2010/xslt-xquery-serialization\";\ndeclare option output:newline \"\\n\"; let $message := 'Hello World!' return <results><message>{$message}</message></results>",
+          "response" : "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<results xmlns=\"http://ntcir-math.nii.ac.jp/\" total=\"1\">\n    <result for=\"NTCIR11-Math-\">\n      <hit id=\"<results>\n  <message>Hello World!</message>\n</results>\" xref=\"math000000000000.xml\" score=\"10\" rank=\"1\"/>\n    </result>\n</results>\n",
+          "success" : true
+        }
