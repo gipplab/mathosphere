@@ -5,11 +5,10 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.7</maven.compiler.source>
         <maven.compiler.target>1.7</maven.compiler.target>
-        <parent.version>0.0.1-SNAPSHOT</parent.version>
     </properties>
     <groupId>com.formulasearchengine.backend</groupId>
     <artifactId>basex</artifactId>
-    <version>${parent.version}</version>
+    <version>0.0.1-SNAPSHOT</version>
     <name>BaseX backend for MathSearch</name>
     <description>Answers MathSearch patterns with a BaseX backend.</description>
     <url>http://www.formulasearchengine.com/BaseXBackend</url>

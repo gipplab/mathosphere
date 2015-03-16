@@ -13,7 +13,7 @@
         <groupId>com.formulasearchengine.backend</groupId>
         <artifactId>basex</artifactId>
         <relativePath>../</relativePath>
-        <version>${parent.version}</version>
+        <version>0.0.1-SNAPSHOT</version>
     </parent>
 
 
