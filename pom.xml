@@ -1,10 +1,15 @@
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>1.7</maven.compiler.source>
+        <maven.compiler.target>1.7</maven.compiler.target>
+        <parent.version>0.0.1-SNAPSHOT</parent.version>
+    </properties>
     <groupId>com.formulasearchengine.backend</groupId>
     <artifactId>basex</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>${parent.version}</version>
     <name>BaseX backend for MathSearch</name>
     <description>Answers MathSearch patterns with a BaseX backend.</description>
     <url>http://www.formulasearchengine.com/BaseXBackend</url>
@@ -28,11 +33,6 @@
         <developerConnection>scm:git:git@github.com:physikerwelt/mathsearch-backend-basex.git</developerConnection>
         <url>git@github.com:physikerwelt/mathsearch-backend-basex.git</url>
     </scm>
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.source>1.7</maven.compiler.source>
-        <maven.compiler.target>1.7</maven.compiler.target>
-    </properties>
     <distributionManagement>
         <snapshotRepository>
             <id>ossrh</id>
@@ -119,7 +119,28 @@
                     <maxmem>256m</maxmem>
                     <!-- aggregated reports for multi-module projects -->
                     <aggregate>true</aggregate>
+                    <!-- ignore generated sources -->
+                    <instrumentation>
+                        <ignores>
+                            <ignore>com.formulasearchengine.backend.basex.rest.BaseXResourceFactoryMachine</ignore>
+                            <ignore>com.formulasearchengine.backend.basex.rest.BaseXResourceRouter</ignore>
+                            <ignore>com.formulasearchengine.backend.basex.rest.BaseXResourceRouterFactoryMachine</ignore>
+                            <ignore>com.formulasearchengine.backend.basex.AppModuleFactoryMachine</ignore>
+                        </ignores>
+                        <excludes>
+                            <exclude>com/formulasearchengine/**/*BaseXResource*.class</exclude>
+                            <exclude>com/formulasearchengine/**/*FactoryMachine*.class</exclude>
+                            <!--<exclude>com/example/**/*Test.class</exclude>-->
+                        </excludes>
+                    </instrumentation>
                 </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>clean</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
             <plugin>
                 <groupId>org.eluder.coveralls</groupId>

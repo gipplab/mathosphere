@@ -46,4 +46,10 @@ public class BaseXResource {
 	public MathRequest mwsquery( MathRequest q ) {
 		return q.run();
 	}
+	@POST("/")
+	@PermitAll
+	public MathRequest query( MathRequest q ) {
+		return q.run();
+	}
+
 }
