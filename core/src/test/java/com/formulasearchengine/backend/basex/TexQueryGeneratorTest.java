@@ -76,12 +76,12 @@ public class TexQueryGeneratorTest {
 		final TexQueryGenerator t = new TexQueryGenerator();
 		t.setLaTeXMLURL( "http://example.com" );
 		assertEquals( "http://example.com", t.getLaTeXMLURL() );
-		assertEquals( "", t.request( "E=mc^2" ) );
+		assertNull( t.request( "E=mc^2" ) );
 		assertEquals( 4, t.getOb().get( "status_code" ) );
 		assertEquals( "com.fasterxml.jackson.core.JsonParseException",
 			t.getLastException().getClass().getCanonicalName() );
 		t.setLaTeXMLURL( "invalid" );
-		assertEquals( "", t.request( "E=mc^2" ) );
+		assertNull( t.request( "E=mc^2" ) );
 		assertEquals( "org.apache.http.client.ClientProtocolException",
 			t.getLastException().getClass().getCanonicalName() );
 	}

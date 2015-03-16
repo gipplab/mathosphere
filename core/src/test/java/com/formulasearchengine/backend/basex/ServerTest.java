@@ -26,5 +26,9 @@ public class ServerTest {
 		srv.runQuery( "count(./*/*)", ps );
 		assertEquals("104",baos.toString("UTF-8"));
 	}
+	@Test(expected = IOException.class)
+	public void testInvaildData()  throws Exception {
+		srv.importData( ">invalid<" );
+	}
 
 }

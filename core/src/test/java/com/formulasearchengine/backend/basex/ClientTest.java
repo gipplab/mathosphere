@@ -9,6 +9,8 @@ import java.io.InputStream;
 import java.util.Scanner;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class ClientTest {
 
@@ -96,7 +98,7 @@ public class ClientTest {
 		final String testInput = getFileContents( "mws.xml" );
 		final String expectedOutput = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n" +
 			"<results xmlns=\"http://ntcir-math.nii.ac.jp/\" total=\"7\">\n" +
-			"    <result for=\"NTCIR11-Math-\" >\n" +
+			"    <result for=\"NTCIR11-Math-\">\n" +
 			"      <hit id=\"math.8.13\" xref=\"math000000000000.xml\" score=\"10\" rank=\"1\"/>\n" +
 			"      <hit id=\"math.8.22\" xref=\"math000000000000.xml\" score=\"10\" rank=\"2\"/>\n" +
 			"      <hit id=\"math.8.23\" xref=\"math000000000000.xml\" score=\"10\" rank=\"3\"/>\n" +
@@ -108,8 +110,60 @@ public class ClientTest {
 			"</results>\n";
 		Document query = XMLHelper.String2Doc( testInput );
 		Client c = new Client();
+		c.setShowTime( false );
+		c.setUseXQ( true );
 		String res = c.runMWSQuery( query );
-		assertEquals( expectedOutput, res.replaceAll( "runtime=\"\\d+\"", "" ) );
+		assertEquals( expectedOutput, res );
+		c.setUseXQ( false );
+		c.runMWSQuery( query );
+		assertEquals( expectedOutput, res );
+	}
+	@Test
+	public void testEmpty(){
+		String empty = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n" +
+			"<results xmlns=\"http://ntcir-math.nii.ac.jp/\" total=\"0\" />\n";
+		Client c = new Client();
+		String res = c.runTexQuery( "\\sin(\\cos(x^5))" );
+		assertEquals( empty,res );
+	}
+
+	@Test
+	public void testEmptyTex(){
+		Client c = new Client();
+		String res = c.runTexQuery( "" );
+		assertEquals( "TeX query was empty.",res );
+		assertFalse( c.isSuccess() );
+	}
+
+	@Test
+		 public void testBadTex(){
+		Client c = new Client();
+		String res = c.runTexQuery( "++23424'ä#öä#ö\\exit" );
+		assertTrue( res.startsWith( "Problem during TeX to MathML conversion" ) );
+		assertFalse( c.isSuccess() );
+	}
+
+	@Test
+	public void tesBadTex2(){
+		Client c = new Client();
+		String res = c.runTexQuery( "\\frac" );
+		assertTrue( res.startsWith( "Problem during TeX to MathML conversion" ) );
+		assertFalse( c.isSuccess() );
+	}
+	@Test
+	public void testEmptyMML(){
+		Client c = new Client();
+		String res = c.runMWSQuery( null );
+		assertEquals( "got empty MathML document",res );
+		assertFalse( c.isSuccess() );
+	}
+
+	@Test
+	public void MeasureBadXQuery(){
+		Client c = new Client(  );
+		assertEquals( Long.valueOf( -1 ), c.basex( ">invalid<" ) );
+		assertTrue( c.runXQuery( ">invalid<" ).startsWith( "Query" ) );
+		assertFalse( c.isSuccess() );
 	}
 
 	@SuppressWarnings("SameParameterValue")

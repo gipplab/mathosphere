@@ -2,15 +2,13 @@ package com.formulasearchengine.backend.basex;
 
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import java.io.IOException;
 import java.io.StringReader;
 
-public class XMLHelper {
+public final class XMLHelper {
 	/**
 	 * Helper program: Transforms a String to a XML Document.
 	 *
@@ -19,19 +17,17 @@ public class XMLHelper {
 	 * @throws javax.xml.parsers.ParserConfigurationException the parser configuration exception
 	 * @throws java.io.IOException                            Signals that an I/O exception has occurred.
 	 */
-	public static Document String2Doc( String InputXMLString )
-		throws ParserConfigurationException, IOException {
-		DocumentBuilder builder = getDocumentBuilder();
-		InputSource is = new InputSource( new StringReader( InputXMLString ) );
-		is.setEncoding( "UTF-8" );
+	public static Document String2Doc( String InputXMLString ) {
 		try {
+			DocumentBuilder builder = getDocumentBuilder();
+			InputSource is = new InputSource( new StringReader( InputXMLString ) );
+			is.setEncoding( "UTF-8" );
 			return builder.parse( is );
-		} catch ( SAXException e ) {
+		} catch ( Exception e ) {
 			System.out.println( "cannot parse following content\\n\\n" + InputXMLString );
 			e.printStackTrace();
 			return null;
 		}
-
 	}
 
 	private static DocumentBuilder getDocumentBuilder() throws ParserConfigurationException {

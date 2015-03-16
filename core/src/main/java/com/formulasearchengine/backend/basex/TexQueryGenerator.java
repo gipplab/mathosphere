@@ -1,6 +1,7 @@
 package com.formulasearchengine.backend.basex;
 
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -88,25 +89,22 @@ public class TexQueryGenerator {
 		} catch ( IOException e ) {
 			lastException = e;
 			fail( e.getLocalizedMessage() );
-			return "";
+			return null;
 		}
 
 		HttpEntity entity = response.getEntity();
-
-		if ( entity != null ) {
-			try{
-				InputStream instream = entity.getContent();
-				ob = new ObjectMapper().readValue( instream, Map.class );
-				if ( Integer.parseInt(  ob.get( "status_code" ).toString() ) < 2 ) {
-					success = true;
-				}
-				return ob.get( "result" ).toString();
-			} catch ( Exception e ){
-				lastException = e;
+		try{
+			InputStream instream = entity.getContent();
+			ob = new ObjectMapper().readValue( instream, Map.class );
+			if ( Integer.parseInt(  ob.get( "status_code" ).toString() ) < 2 ) {
+				success = true;
 			}
+			return ob.get( "result" ).toString();
+		} catch (  IOException | NullPointerException e ){
+			lastException = e;
 		}
 		fail( "LaTeXML crashed" );
-		return "";
+		return null;
 	}
 
 	private void fail (String message) {
@@ -116,5 +114,14 @@ public class TexQueryGenerator {
 		ob.put( "status", message );
 	}
 
+	public String getErrorMessage() throws JsonProcessingException {
+		String out = "Problem during TeX to MathML conversion:\n";
+		if (lastException != null){
+			out += "Exception:" + lastException.getLocalizedMessage() +"\n";
+		}
+		ObjectMapper mapper = new ObjectMapper();
+		out +=  mapper.writeValueAsString( ob );
+		return out;
+	}
 
 }

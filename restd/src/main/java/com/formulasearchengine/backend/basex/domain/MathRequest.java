@@ -5,9 +5,6 @@ import com.formulasearchengine.backend.basex.Client;
 import com.formulasearchengine.backend.basex.XMLHelper;
 import org.w3c.dom.Document;
 
-import javax.xml.parsers.ParserConfigurationException;
-import java.io.IOException;
-
 /**
  * Created by Moritz on 14.03.2015.
  */
@@ -64,26 +61,24 @@ public class MathRequest {
 		}
 		Client client = new Client();
 		client.setShowTime( false ); //for testing
-		switch ( type ){
-			case "tex" :
+		switch ( type ) {
+			case "tex":
 				response = client.runTexQuery( query );
 				success = true;
 				break;
-			case "xquery" :
+			case "xquery":
 				response = client.runXQuery( query );
-				success =true;
+				success = true;
 				break;
 			default:
-				try {
-					Document doc = XMLHelper.String2Doc( query );
+				Document doc = XMLHelper.String2Doc( query );
+				if ( doc != null ) {
 					response = client.runMWSQuery( doc );
-					success =true;
-				} catch ( ParserConfigurationException | NullPointerException | IOException e ) {
-					e.printStackTrace();
+					success = true;
+				} else {
 					response = "No valid XML Document retrieved.";
 					success = false;
 				}
-
 		}
 		return this;
 	}

@@ -1,5 +1,6 @@
 package com.formulasearchengine.backend.basex;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.formulasearchengine.mathmlquerygenerator.NtcirPattern;
 import com.formulasearchengine.mathmlquerygenerator.XQueryGenerator;
 import net.xqj.basex.BaseXXQDataSource;
@@ -10,7 +11,6 @@ import org.basex.query.iter.Iter;
 import org.basex.query.value.item.Item;
 import org.w3c.dom.Document;
 
-import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xquery.*;
 import java.io.IOException;
 import java.util.List;
@@ -24,6 +24,9 @@ public class Client {
 	private Results.Run.Result currentResult;
 	private Long measurement;
 	private boolean useXQ = true;
+	private boolean success = false;
+
+	public Client() {}
 
 	public Client( List<NtcirPattern> patterns ) {
 		for ( NtcirPattern pattern : patterns ) {
@@ -98,9 +101,6 @@ public class Client {
 		return xqs.getConnection( "admin", "admin" );
 	}
 
-	public Client() {
-	}
-
 	public String getXML() {
 		return results.toXML();
 	}
@@ -110,17 +110,29 @@ public class Client {
 	}
 	
 	public String runTexQuery( String tex ){
+		if (tex == null || tex.equals( "" )){
+			success = false;
+			return "TeX query was empty.";
+		}
 		TexQueryGenerator t = new TexQueryGenerator();
 		String mmlString = t.request( tex );
-		try {
+		if ( mmlString != null ){
 			Document doc = XMLHelper.String2Doc( mmlString );
 			return runMWSQuery( doc );
-		} catch ( ParserConfigurationException | IOException e ) {
-			return "Can not parse tex";
+		}
+		success = false;
+		try {
+			return t.getErrorMessage() ;
+		} catch ( JsonProcessingException ignore ) {
+			return "Tex parsing failed. Can not parse error message.";
 		}
 	}
 
 	public String runMWSQuery( Document mwsQuery ) {
+		if ( mwsQuery == null ){
+			success = false;
+			return "got empty MathML document";
+		}
 		XQueryGenerator generator = new XQueryGenerator( mwsQuery );
 		generator.setHeader( Benchmark.BASEX_HEADER );
 		generator.setFooter( Benchmark.BASEX_FOOTER );
@@ -131,6 +143,7 @@ public class Client {
 		currentResult = currentRun.new Result( "" );
 		try {
 			runQuery( query );
+			success = true;
 			if ( currentResult.size() > 0 ) {
 				return "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
 					+ "<results xmlns=\"http://ntcir-math.nii.ac.jp/\" total=\"" + currentResult.size() + "\">\n"
@@ -139,13 +152,20 @@ public class Client {
 				return "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
 					+ "<results xmlns=\"http://ntcir-math.nii.ac.jp/\" total=\"0\" />\n";
 			}
-
 		} catch ( Exception e ) {
+			success = false;
 			return "Query :\n" + query + "\n\n failed " + e.getLocalizedMessage();
 		}
 	}
 
 	public void setShowTime (boolean showTime) {
 		this.results.setShowTime(showTime);
+	}
+	public void setUseXQ (boolean useXQ) {
+		this.useXQ = useXQ;
+	}
+
+	public boolean isSuccess () {
+		return success;
 	}
 }

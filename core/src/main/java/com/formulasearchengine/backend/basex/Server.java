@@ -51,8 +51,7 @@ public class Server {
 			if ( f.isFile() ) {
 				path = Files.toString( f, Charsets.UTF_8 );
 			}
-		} catch ( Exception e ) {
-		}
+		} catch ( Exception ignored ) {	}
 		CreateDB db = new CreateDB( "math", path );
 		//db.execute( context );
 		session.execute( db );
@@ -63,10 +62,6 @@ public class Server {
 		session.setOutputStream( output );
 		Query query = session.query( queryString );
 		query.execute();
-	}
-
-	public static Query getQuery( String queryString ) throws IOException {
-		return session.query( queryString );
 	}
 
 }
