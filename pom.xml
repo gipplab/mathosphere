@@ -1,17 +1,13 @@
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.source>1.7</maven.compiler.source>
-        <maven.compiler.target>1.7</maven.compiler.target>
-    </properties>
+
     <groupId>com.formulasearchengine.mathosphere</groupId>
     <artifactId>mathosphere-parent</artifactId>
     <version>3.0.0-SNAPSHOT</version>
-    <name>BaseX backend for MathSearch</name>
-    <description>Answers MathSearch patterns with a BaseX backend.</description>
-    <url>http://www.formulasearchengine.com/BaseXBackend</url>
+    <name>Mathosphere 2 (Parent)</name>
+    <description>Batch processing and evaluation of Math queries</description>
+    <url>http://www.formulasearchengine.com/Mathosphere</url>
     <packaging>pom</packaging>
     <licenses>
         <license>
@@ -28,10 +24,15 @@
         </developer>
     </developers>
     <scm>
-        <connection>scm:git:git@github.com:phyikerwelt/fse-ntcir11-wmc-basex.git</connection>
-        <developerConnection>scm:git:git@github.com:physikerwelt/mathsearch-backend-basex.git</developerConnection>
-        <url>git@github.com:physikerwelt/mathsearch-backend-basex.git</url>
+        <connection>scm:git:git@github.com:TU-Berlin/mathosphere2.git</connection>
+        <developerConnection>scm:git:git@github.com:physikerwelt/mathosphere2.git</developerConnection>
+        <url>git@github.com:physikerwelt/mathosphere2.git</url>
     </scm>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>1.7</maven.compiler.source>
+        <maven.compiler.target>1.7</maven.compiler.target>
+    </properties>
     <distributionManagement>
         <snapshotRepository>
             <id>ossrh</id>
@@ -44,6 +45,10 @@
     </distributionManagement>
 
     <modules>
+        <module>mathosphere-core</module>
+        <module>lib/MathMLCan</module>
+        <module>lib/MathMLQueryGenerator</module>
+        <module>lib/RTED</module>
         <module>basex</module>
         <module>restd</module>
     </modules>
@@ -101,8 +106,10 @@
                 </configuration>
                 <executions>
                     <execution>
-                        <id>make-assembly</id> <!-- this is used for inheritance merges -->
-                        <phase>package</phase> <!-- bind to the packaging phase -->
+                        <id>make-assembly</id>
+                        <!-- this is used for inheritance merges -->
+                        <phase>package</phase>
+                        <!-- bind to the packaging phase -->
                         <goals>
                             <goal>single</goal>
                         </goals>
@@ -178,3 +185,4 @@
         </profile>
     </profiles>
 </project>
+

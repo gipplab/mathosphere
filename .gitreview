@@ -1,6 +1,6 @@
 [gerrit]
 host=review.gerrithub.io
 port=29418
-project=physikerwelt/fse-basex-restd.git
+project=TU-Berlin/mathosphere
 defaultbranch=master
 defaultrebase=0
