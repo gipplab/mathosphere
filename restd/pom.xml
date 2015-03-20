@@ -4,23 +4,23 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.formulasearchengine.backend.basex</groupId>
+    <groupId>com.formulasearchengine.mathosphere</groupId>
     <artifactId>restd</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>war</packaging>
     <name>restd</name>
     <parent>
-        <groupId>com.formulasearchengine.backend</groupId>
-        <artifactId>basex</artifactId>
+        <groupId>com.formulasearchengine.mathosphere</groupId>
+        <artifactId>mathosphere-parent</artifactId>
         <relativePath>../</relativePath>
-        <version>0.0.1-SNAPSHOT</version>
+        <version>3.0.0-SNAPSHOT</version>
     </parent>
 
 
     <properties>
         <restx.version>0.34</restx.version>
-        <project.war.overlay.groupId>com.formulasearchengine.backend.basex</project.war.overlay.groupId>
-        <project.war.overlay.artifactId>restd</project.war.overlay.artifactId>
+        <project.war.overlay.groupId>com.formulasearchengine.mathosphere</project.war.overlay.groupId>
+        <project.war.overlay.artifactId>basex</project.war.overlay.artifactId>
     </properties>
 
     <dependencies>
@@ -105,8 +105,8 @@
             <version>1.0.13</version>
         </dependency>
         <dependency>
-            <groupId>com.formulasearchengine.backend.basex</groupId>
-            <artifactId>core</artifactId>
+            <groupId>com.formulasearchengine.mathosphere</groupId>
+            <artifactId>basex</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
@@ -167,7 +167,7 @@
                             <goal>java</goal>
                         </goals>
                         <configuration>
-                            <mainClass>com.formulasearchengine.backend.basex.AppServer</mainClass>
+                            <mainClass>com.formulasearchengine.mathosphere.restx.AppServer</mainClass>
                             <systemProperties>
                                 <systemProperty>
                                     <key>path</key>
