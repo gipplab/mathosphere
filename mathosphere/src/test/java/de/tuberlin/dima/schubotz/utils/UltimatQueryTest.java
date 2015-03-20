@@ -9,7 +9,6 @@ import de.tuberlin.dima.schubotz.fse.utils.XMLHelper.NdLst;
 import junit.framework.TestCase;
 import net.sf.saxon.s9api.XQueryExecutable;
 import org.apache.flink.api.java.tuple.Tuple5;
-import org.junit.Ignore;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
@@ -109,7 +108,7 @@ public class UltimatQueryTest extends TestCase {
 		Multiset<String> queryTokes = p.getNamedField( SearchPattern.fields.tokens );
 		 String SQL = "INSERT INTO `results` (" +
 			 "`queryNum`," + //1
-			 " `formula_name`," + //2
+			 " `patternName`," + //2
 			 " `queryFormulaId`, " + //3
 			 "`cdMatch`, " + //4
 			 "`dataMatch`, " + //5
@@ -164,7 +163,6 @@ public class UltimatQueryTest extends TestCase {
         return processSearchPatterns(getNamedPatterns());
     }
 
-	@Ignore
 	public void testCMMLGen2() throws Exception{
 		Statement statement = getConnection().createStatement();
 		statement.execute( "TRUNCATE TABLE results;" );
@@ -281,24 +279,33 @@ public class UltimatQueryTest extends TestCase {
 	public void testPrintLaTeXTrees() throws Exception{
 		getTableStart();
 		Integer i =0;
+		String s = "";
 		for (RawSearchPattern p : getNamedPatterns()) {
 			String fId = p.getNamedField(  RawSearchPattern.fields.formulaID );
 			Integer qId = p.getNamedField( RawSearchPattern.fields.queryNumber );
 			CMMLInfo cmml = new CMMLInfo(XMLHelper.printDocument(p.getMath()));
-			System.out.println(tblHeight.get( i ));
-			System.out.println( "Info for " + qId+fId);
-			System.out.println( texStart.get( i )  );
-			System.out.println(cmml.getElements());
-			System.out.println( cmml.isEquation());
-			TestUtils.dPring( cmml );
-			TestUtils.dPring( cmml.toStrictCmml() );
-			TestUtils.dPring( cmml.abstract2CDs() );
+			s += "\\subsection{Info for pattern" + qId+fId + "}";
+			s +="\n";
+			s += "Rendering:"+texStart.get( i )  ;
+			s +="\n";
+			s +="Elements:\\begin{verbatim}\n"+cmml.getElements()+"\n\\end{verbatim}";
+			s +="\n";
+			s += "Is equation:"+cmml.isEquation();
+			s +="\n";
+			s +=TestUtils.dPring( cmml );
+			s +="\n";
+			s +=TestUtils.dPring( cmml.toStrictCmml() );
+			s +="\n";
+			s +=TestUtils.dPring( cmml.abstract2CDs() );
+			s +="\n";
 			cmml = new CMMLInfo(XMLHelper.printDocument(p.getMath()));
-			TestUtils.dPring( cmml.abstract2DTs() );
+			s +=TestUtils.dPring( cmml.abstract2DTs() );
 
-			System.out.println("\n");
-			//System.out.println(cmml.toStrictCmml().getXQueryString());
+			s +="\n";
+			//s +=cmml.toStrictCmml().getXQueryString());
 			i++;
+			if ( i > 100) break;
 	}
+		System.out.println(s);
 }
 }

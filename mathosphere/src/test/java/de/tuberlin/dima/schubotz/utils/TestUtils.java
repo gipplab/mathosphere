@@ -106,12 +106,13 @@ public class TestUtils {
 		return TestUtils.class.getClassLoader();
 	}
 
-	static void dPring (Node n){
-		String s = XMLHelper.CompactForm( n );
-		s=s.replace( "#document[math[semantics[", "\\Tree[ " );
-		s=s.replace( ";", " " );
-		s=s.substring( 0,s.length()-2 );
-		System.out.println( StringAugmentTree(s) );
+	static String dPring (Node n){
+		String s = "\n\\begin{adjustbox}{max width=\\linewidth}\n"
+			+ XMLHelper.CompactForm( n );
+		s=s.replace( "#document[math[semantics[", "\\Tree " )
+		   .replace( ";", " " );
+		s=s.substring( 0,s.length()-3 )+"\n\\end{adjustbox}\n";
+		return StringAugmentTree(s) ;
 	}
 	private static String StringAugmentTree(String t){
 		return t.replace( "apply[times" , "[.$*$" )
@@ -120,10 +121,20 @@ public class TestUtils {
 			.replace( "apply[eq" , "[.$=$" )
 			.replace( "apply[divide" , "[.$/$" )
 			.replace( "apply[leq" , "[.$\\leq$" )
-			.replaceAll( "ci\\[(\\w)\\]","\\$$1\\$" )
-			.replaceAll( "cn\\[(\\d+)\\]","\\$$1\\$" )
-			.replaceAll( "apply\\[(\\w+)","[.@ $1")
-			.replaceAll( "(\\w+\\d?)\\[(\\w+)","[.$1 $2")
+			.replace( "apply[neq", "[.$\\neq$" )
+			.replace( "apply[in", "[.$\\in$" )
+			.replace( "apply[lt" , "[.$<$" )
+			.replace( "apply[gt" , "[.$>$" )
+			.replace( "apply[root" , "[.$\\sqrt{}$" )
+			.replace( "apply[csymbol[subscript]","[.@ $\\downarrow$" )
+			.replace( "apply[csymbol[superscript]","[.@ $\\uparrow$" )
+			.replace( "unary_minus","unary\\_minus" )
+			.replaceAll( "ci\\[(\\w)\\]", "\\$$1\\$" )
+			.replaceAll( "ci\\[([^\\s])\\]", "\\$$1\\$" )
+			.replaceAll( "cn\\[(\\d+)\\]", "\\$$1\\$" )
+			.replaceAll( "apply\\[(\\w+)", "[.@ $1" )
+			.replaceAll( "(\\w+\\d?)\\[(\\w+)", "[.$1 $2" )
+			.replaceAll( "(\\w+\\d?)\\[(\\w+)", "[.$1 $2" )
 			.replace( "]"," ] " );
 	}
 

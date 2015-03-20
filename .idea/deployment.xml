@@ -1,7 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="PublishConfigData" autoUpload="Always" serverName="mlp">
+  <component name="PublishConfigData" autoUpload="Always" serverName="dopa-1">
     <serverData>
+      <paths name="dopa-1">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/" local="$PROJECT_DIR$" web="/" />
+            <mapping local="$PROJECT_DIR$/lib/incubator-flink/flink-examples/flink-java-examples" />
+            <mapping local="$PROJECT_DIR$/lib/incubator-flink/flink-examples/flink-scala-examples" />
+            <mapping local="$PROJECT_DIR$/lib/incubator-flink/flink-addons/flink-streaming/flink-streaming-connectors" />
+            <mapping local="$PROJECT_DIR$/lib/incubator-flink/flink-quickstart/flink-quickstart-java" />
+            <mapping local="$PROJECT_DIR$/lib/incubator-flink/flink-addons/flink-streaming/flink-streaming-core" />
+            <mapping local="$PROJECT_DIR$/lib/incubator-flink" />
+            <mapping local="$PROJECT_DIR$/lib/incubator-flink/flink-runtime" />
+            <mapping local="$PROJECT_DIR$/lib/incubator-flink/flink-quickstart/flink-quickstart-scala" />
+            <mapping local="$PROJECT_DIR$/lib/MathMLQueryGenerator" />
+            <mapping deploy="" local="$PROJECT_DIR$/lib/incubator-flink/flink-tests" />
+            <mapping local="$PROJECT_DIR$/lib/incubator-flink/flink-addons" />
+            <mapping local="$PROJECT_DIR$/lib/incubator-flink/flink-java" />
+            <mapping local="$PROJECT_DIR$/lib/incubator-flink/flink-clients" />
+            <mapping local="$PROJECT_DIR$/lib/incubator-flink/flink-addons/flink-streaming/flink-streaming-examples" />
+            <mapping local="$PROJECT_DIR$/lib/incubator-flink/flink-addons/flink-streaming" />
+            <mapping local="$PROJECT_DIR$/lib/incubator-flink/flink-core" />
+            <mapping local="$PROJECT_DIR$/lib/incubator-flink/flink-addons/flink-jdbc" />
+            <mapping local="$PROJECT_DIR$/lib/MathMLCan" />
+            <mapping local="$PROJECT_DIR$/lib/incubator-flink/flink-scala" />
+            <mapping local="$PROJECT_DIR$/lib/incubator-flink/flink-addons/flink-avro" />
+            <mapping local="$PROJECT_DIR$/lib/incubator-flink/flink-quickstart" />
+            <mapping local="$PROJECT_DIR$/lib/incubator-flink/flink-test-utils" />
+            <mapping local="$PROJECT_DIR$/lib/incubator-flink/flink-examples" />
+            <mapping local="$PROJECT_DIR$/lib/incubator-flink/flink-addons/flink-spargel" />
+            <mapping local="$PROJECT_DIR$/mathosphere" />
+            <mapping local="$PROJECT_DIR$/lib/incubator-flink/flink-addons/flink-hadoop-compatibility" />
+            <mapping local="$PROJECT_DIR$/lib/incubator-flink/flink-dist" />
+            <mapping local="$PROJECT_DIR$/lib/incubator-flink/flink-compiler" />
+          </mappings>
+        </serverdata>
+      </paths>
       <paths name="mlp">
         <serverdata>
           <mappings>

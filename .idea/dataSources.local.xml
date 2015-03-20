@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="dataSourceStorageLocal">
+    <data-source name="MySQL - @localhost" uuid="22c4e8ac-7e9f-4f29-a3e7-0b6ec3bd31cb">
+      <user-name>root</user-name>
+      <user-password>dfc7dfdddfd9df98df9adf9bdf98dfe8dfcfdfd8dfc6dfc3dfc4df9bdf99df99df9fdf93</user-password>
+    </data-source>
+    <data-source name="DB2 - DBPRA@gnu.dima.tu-berlin.de" uuid="623c97f9-1a0d-49e3-aae8-3d52046df87b">
+      <user-name>grp40</user-name>
+      <user-password>dfcedfc8dfdadfd8dfcbdf9edf9adf9a</user-password>
+    </data-source>
+  </component>
+</project>
