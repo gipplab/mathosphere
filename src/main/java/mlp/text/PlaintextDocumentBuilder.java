@@ -14,83 +14,85 @@
  * this stuff is worth it, you can buy me a beer in return.
  * ----------------------------------------------------------------------------
  */
-package mlp.utils;
+package mlp.text;
 
-import java.io.StringWriter;
+import java.util.Deque;
 import java.util.LinkedList;
 import java.util.regex.Pattern;
+
+import org.apache.commons.lang3.text.translate.AggregateTranslator;
+import org.apache.commons.lang3.text.translate.CharSequenceTranslator;
+import org.apache.commons.lang3.text.translate.EntityArrays;
+import org.apache.commons.lang3.text.translate.LookupTranslator;
 import org.eclipse.mylyn.wikitext.core.parser.Attributes;
-import org.eclipse.mylyn.wikitext.core.parser.DocumentBuilder;
+import org.eclipse.mylyn.wikitext.core.parser.builder.NoOpDocumentBuilder;
 
 /**
  * A DocumentBuilder for the mylyn wikitext parser. It converts a document written in MediaWiki-Markup into
- * plaintext. Most of the structure of the document will ne stripped, including linebreaks, headings, etc.
+ * plaintext. Most of the structure of the document will be stripped, including linebreaks, headings, etc.
  *
  * @author rob
  */
-public class PlaintextDocumentBuilder extends DocumentBuilder {
+public class PlaintextDocumentBuilder extends NoOpDocumentBuilder {
 
-    private StringWriter writer = new StringWriter();
-    private StringWriter stream = null;
+    private StringBuilder writer = new StringBuilder();
 
     /**
      * These lists store all blocks within a block/span that will not be rendered.
      */
-    private LinkedList<BlockType> skipBlocks = new LinkedList<>();
-    private LinkedList<SpanType> skipSpans = new LinkedList<>();
+    private Deque<BlockType> skipBlocks = new LinkedList<>();
+    private Deque<SpanType> skipSpans = new LinkedList<>();
+
     /**
      * store all spans that will be rendered
      */
     private LinkedList<SpanType> passingSpans = new LinkedList<>();
 
-    public PlaintextDocumentBuilder(StringWriter stream) {
-        this.stream = stream;
-    }
+    private String result = "";
 
-    @Override
-    public void beginDocument() {
-    }
 
     @Override
     public void endDocument() {
-        String doc = StringUtils.unescapeEntities(writer.toString());
+        String doc = WikiTextUtils.subsup(writer.toString());
 
         // remove remaining/undetected templates
         doc = Pattern.compile("\\{\\{[^\\{]*?\\}\\}").matcher(doc).replaceAll("");
-        doc = Pattern.compile("\\{\\{[^\\{]*?\\}\\}").matcher(doc).replaceAll("");
-        doc = Pattern.compile("\\{\\{[^\\{]*?\\}\\}").matcher(doc).replaceAll("");
         doc = Pattern.compile("\\u2016[^\\u2016]*?\\u2016").matcher(doc).replaceAll("");
+
         // remove dangling lines
         doc = Pattern.compile("(:?\\A|\\n)\\s*[\\*\\|:].*").matcher(doc).replaceAll("");
         doc = Pattern.compile("\\}\\}\\s*").matcher(doc).replaceAll("");
+
         // remove undetected emphasis tags
         doc = Pattern.compile("'{2,}").matcher(doc).replaceAll("");
+
         // comments
         doc = Pattern.compile("<!--.*?-->", Pattern.DOTALL).matcher(doc).replaceAll("");
+
         // headings
         doc = Pattern.compile("([=]{2,4})[^\\n]*?\\1", Pattern.DOTALL).matcher(doc).replaceAll("");
+
         // references
         doc = Pattern.compile("<references>.*?</references>", Pattern.DOTALL).matcher(doc).replaceAll("");
         doc = Pattern.compile("<ref[^>/]*>.*?</ref>", Pattern.DOTALL).matcher(doc).replaceAll("");
         doc = Pattern.compile("<ref[^>]*>").matcher(doc).replaceAll("");
         doc = Pattern.compile("</ref[^>]*>").matcher(doc).replaceAll("");
-        // empty/unknown inline tags
+
+        // empty/unknown inline tags and non inline tags
         doc = Pattern.compile("<([^ >]+)[^>]*>(.*?)</\\1>").matcher(doc).replaceAll("$2");
-        // non inline tags
         doc = Pattern.compile("<([^ >]+)[^>]*/?>").matcher(doc).replaceAll(" ");
+
         // fix for undetected links
         doc = Pattern.compile("\\[\\[([^\\|]*)|([^\\]]*)]]").matcher(doc).replaceAll("$2");
         doc = Pattern.compile("\\[\\[[^\\[\\]]*]]").matcher(doc).replaceAll("");
+
         // strip unneeded linebreaks, etc.
         doc = Pattern.compile("\\n+").matcher(doc).replaceAll(" ");
         doc = Pattern.compile("\\s+").matcher(doc).replaceAll(" ");
-        // fix punctuation
-        // doc = Pattern.compile( "([\\w])[ ]+([:;,\\.\\)])", Pattern.DOTALL ).matcher( doc ).replaceAll(
-        // "$1$2" );
-        // and strip parentheses from the plaintext
-        // doc = Pattern.compile( "\\([^\\)]*\\)" ).matcher( doc ).replaceAll( "" );
+
         // remove language links
         doc = Pattern.compile("“[a-z]{2,3}:.*?”").matcher(doc).replaceAll("");
+
         // remove misc quotation symbols
         doc = Pattern.compile("'|\\\"").matcher(doc).replaceAll("");
         // reposition plurals into links
@@ -99,7 +101,11 @@ public class PlaintextDocumentBuilder extends DocumentBuilder {
         // good hackers trim!
         doc = doc.trim();
 
-        stream.write(doc);
+        this.result = doc;
+    }
+
+    public String getResult() {
+        return result;
     }
 
     @Override
@@ -112,8 +118,9 @@ public class PlaintextDocumentBuilder extends DocumentBuilder {
         case NUMERIC_LIST:
         case DEFINITION_LIST:
         case BULLETED_LIST:
-            if (skipBlocks.size() > 0)
+            if (skipBlocks.size() > 0) {
                 skipBlocks.add(type);
+            }
             break;
         // blocks that will be skipped
         case TIP:
@@ -142,7 +149,7 @@ public class PlaintextDocumentBuilder extends DocumentBuilder {
         if (!skipBlocks.isEmpty()) {
             skipBlocks.removeLast();
         } else {
-            writer.write(" ");
+            writer.append(" ");
         }
     }
 
@@ -159,10 +166,11 @@ public class PlaintextDocumentBuilder extends DocumentBuilder {
         case SUPERSCRIPT:
         case UNDERLINED:
         case CITATION:
-            if (skipSpans.size() > 0)
+            if (skipSpans.size() > 0) {
                 skipSpans.add(type);
-            else
+            } else {
                 passingSpans.add(type);
+            }
             break;
         // span that will be skipped
         case INSERTED:
@@ -209,34 +217,34 @@ public class PlaintextDocumentBuilder extends DocumentBuilder {
             SpanType type = passingSpans.getLast();
             switch (type) {
             case SUBSCRIPT:
-                text = StringUtils.getSubscriptChar(text);
+                text = "_" + text;
                 break;
             case SUPERSCRIPT:
-                text = StringUtils.getSuperscriptChar(text);
+                text = "^" + text;
                 break;
             default:
                 break;
             }
         }
-        writer.write(text);
+        writer.append(text);
     }
+
+    private static final CharSequenceTranslator TRANSLATOR = new AggregateTranslator(
+            new LookupTranslator(EntityArrays.ISO8859_1_UNESCAPE()), 
+            new LookupTranslator(EntityArrays.BASIC_UNESCAPE()),
+            new LookupTranslator(EntityArrays.HTML40_EXTENDED_UNESCAPE()));
 
     @Override
     public void entityReference(String entity) {
-        writer.write('&' + entity + ';');
-    }
-
-    @Override
-    public void image(Attributes attributes, String url) {
+        String translatedEntity = TRANSLATOR.translate('&' + entity + ';');
+        writer.append(translatedEntity);
     }
 
     @Override
     public void link(Attributes attributes, String link, String text) {
-        // nothing to do
         if (link.isEmpty() && text.isEmpty()) {
             return;
         }
-        String full = (link + text).toLowerCase();
         // skip
         if (skipBlocks.size() > 0) {
             return;
@@ -244,6 +252,8 @@ public class PlaintextDocumentBuilder extends DocumentBuilder {
         if (skipSpans.size() > 0) {
             return;
         }
+
+        String full = (link + text).toLowerCase();
         // special link types
         if (full.contains("category:")) {
             return;
@@ -262,12 +272,12 @@ public class PlaintextDocumentBuilder extends DocumentBuilder {
         }
 
         // urls, beacause the parse also detects raw links
-        if (Pattern.compile("https?:").matcher(full).matches()) {
+        if (full.matches("https?:")) {
             return;
         }
 
         // language links
-        if (Pattern.compile("\\w{2}:").matcher(text).matches()) {
+        if (text.matches("\\w{2}:")) {
             return;
         }
 
@@ -276,26 +286,23 @@ public class PlaintextDocumentBuilder extends DocumentBuilder {
         if (text.isEmpty()) {
             text = link.replaceAll("\\(.*?\\)", "");
         }
-        writer.write('\u201c' + text + '\u201d');
-    }
 
-    @Override
-    public void imageLink(Attributes linkAttributes, Attributes imageAttributes, String href, String imageUrl) {
+        writer.append('\u201c' + text + '\u201d');
     }
 
     @Override
     public void acronym(String text, String definition) {
-        writer.write(text);
+        writer.append(text);
     }
 
     @Override
     public void lineBreak() {
-        writer.write("\n");
+        writer.append("\n");
     }
 
     @Override
     public void charactersUnescaped(String literal) {
-        writer.write(literal);
+        writer.append(literal);
     }
 
 }

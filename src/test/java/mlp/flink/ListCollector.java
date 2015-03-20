@@ -1,4 +1,4 @@
-package mlp.contracts;
+package mlp.flink;
 
 import java.util.ArrayList;
 import java.util.List;
