@@ -3,11 +3,10 @@ package com.formulasearchengine.mathosphere.basex;
 import com.google.common.base.Charsets;
 import com.google.common.io.Files;
 import org.basex.BaseXServer;
+import org.basex.api.client.ClientQuery;
+import org.basex.api.client.ClientSession;
 import org.basex.core.Context;
 import org.basex.core.cmd.CreateDB;
-import org.basex.server.ClientSession;
-import org.basex.server.Query;
-import org.basex.server.Session;
 
 import java.io.File;
 import java.io.IOException;
@@ -18,8 +17,8 @@ import java.io.PrintStream;
  */
 public class Server {
 	//Do not allow for multiple server instances
-	private static BaseXServer server = null;
-	private static Session session;
+	public static BaseXServer server = null;
+	public static ClientSession session;
 	public static Context context;
 	public static boolean empty = true;
 
@@ -60,7 +59,7 @@ public class Server {
 
 	public void runQuery( String queryString, PrintStream output ) throws IOException {
 		session.setOutputStream( output );
-		Query query = session.query( queryString );
+		ClientQuery query = session.query( queryString );
 		query.execute();
 	}
 

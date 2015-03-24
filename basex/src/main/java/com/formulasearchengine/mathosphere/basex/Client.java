@@ -9,8 +9,11 @@ import org.basex.query.QueryException;
 import org.basex.query.QueryProcessor;
 import org.basex.query.iter.Iter;
 import org.basex.query.value.item.Item;
+import org.intellij.lang.annotations.Language;
 import org.w3c.dom.Document;
+import org.w3c.dom.Node;
 
+import javax.xml.namespace.QName;
 import javax.xml.xquery.*;
 import java.io.IOException;
 import java.util.List;
@@ -55,7 +58,7 @@ public class Client {
 		return measurement;
 	}
 
-	private int runQuery( String query ) throws XQException, IOException, QueryException {
+	protected int runQuery( String query ) throws XQException, IOException, QueryException {
 		int score = 10;
 		int rank = 1;
 		if ( useXQ ) {
@@ -71,9 +74,8 @@ public class Client {
 			}
 			conn.close();
 		} else {
+			//TODO: This does not yet work
 			measurement = System.nanoTime();
-			measurement = System.nanoTime() - measurement;
-			currentResult.setTime( measurement );
 			new Open("math").execute( Server.context );
 			QueryProcessor proc = new QueryProcessor(query, Server.context );
 			Iter iter = proc.iter();
@@ -167,5 +169,55 @@ public class Client {
 
 	public boolean isSuccess () {
 		return success;
+	}
+
+	String directXQuery(String query) throws IOException, QueryException, XQException {
+		String out = "";
+		XQConnection conn = getXqConnection();
+		XQPreparedExpression xqpe = conn.prepareExpression( query );
+		XQResultSequence rs = xqpe.executeQuery();
+		while (rs.next()) {
+			out +=  rs.getItemAsString( null ).replaceAll( "\r", "" );
+		}
+		conn.close();
+		return out;
+	}
+
+	public int countRevisionFormula(int rev){
+		try {
+			return Integer.parseInt( directXQuery( "count(//*:expr[matches(@url, 'math\\." + rev + "\\.*')])" ) );
+		} catch ( XQException | IOException | QueryException e ) {
+			e.printStackTrace();
+			return 0;
+		}
+	}
+	public boolean deleteRevisionFormula(int rev){
+		try {
+			directXQuery( "delete node //*:expr[matches(@url, 'math\\." + rev + "\\.*')]" );
+			if (countRevisionFormula( rev ) == 0 ){
+				return true;
+			} else {
+				return false;
+			}
+		} catch ( XQException | IOException | QueryException e ) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+	public boolean updateFormula(Node n){
+		@Language("XQuery") final String xUpdate = "declare namespace mws=\"http://search.mathweb.org/ns\";\n" +
+			"declare variable $input external;\n" +
+			"for $e in $input/mws:expr\n" +
+			"return ( delete node //*[@url=$e/@url], insert node $e into /mws:harvest[1])";
+		try {
+			XQConnection conn = getXqConnection();
+			XQPreparedExpression xqpe = conn.prepareExpression( xUpdate );
+			xqpe.bindNode( new QName( "input" ), n, null );
+			xqpe.executeQuery();
+				return true;
+		} catch ( XQException e ) {
+			e.printStackTrace();
+			return false;
+		}
 	}
 }
