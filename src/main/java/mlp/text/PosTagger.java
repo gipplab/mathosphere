@@ -2,7 +2,6 @@ package mlp.text;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Properties;
 import java.util.Set;
 
@@ -20,6 +19,11 @@ import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
+import com.itshared.rseq.BeanMatchers;
+import com.itshared.rseq.EnhancedMatcher;
+import com.itshared.rseq.Transformer;
+import com.itshared.rseq.Matchers;
+import com.itshared.rseq.Pattern;
 
 import edu.stanford.nlp.ling.CoreAnnotations.PartOfSpeechAnnotation;
 import edu.stanford.nlp.ling.CoreAnnotations.SentencesAnnotation;
@@ -33,17 +37,12 @@ import edu.stanford.nlp.util.CoreMap;
 public class PosTagger {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PosTagger.class);
-    
+
     private static final Set<String> SYMBOLS = ImmutableSet.of("<", "=", ">", "≥", "≤", "|", "/", "\\", "[",
-            "]");
+            "]", "*");
     private static final Map<String, String> BRACKET_CODES = ImmutableMap.<String, String> builder()
             .put("-LRB-", "(").put("-RRB-", ")").put("-LCB-", "{").put("-RCB-", "}").put("-LSB-", "[")
             .put("-RSB-", "]").build();
-
-    private static final String LINK_START = "``";
-    private static final String LINK_END = "''";
-
-
 
     public static PosTagger create(String posModelName) {
         Properties props = new Properties();
@@ -63,106 +62,104 @@ public class PosTagger {
 
     public List<Sentence> process(String cleanText, List<Formula> formulas) {
         Map<String, Formula> formulaIndex = Maps.newHashMap();
-        formulas.forEach(f -> formulaIndex.put(f.getKey(), f));
+        Set<String> allIdentifiers = Sets.newHashSet();
 
-        List<List<Word>> annotated = annotate(cleanText, formulaIndex);
-        List<List<Word>> processed = postprocess(annotated);
-        return toSentences(processed, formulaIndex);
+        formulas.forEach(f -> formulaIndex.put(f.getKey(), f));
+        formulas.forEach(f -> allIdentifiers.addAll(f.getIndentifiers()));
+
+        List<List<Word>> annotated = annotate(cleanText, formulaIndex, allIdentifiers);
+        List<List<Word>> concatenated = concatenateTags(annotated);
+        return postprocess(concatenated, formulaIndex, allIdentifiers);
     }
 
-    public List<List<Word>> annotate(String cleanText, Map<String, Formula> formulas) {
+    public List<List<Word>> annotate(String cleanText, Map<String, Formula> formulas,
+            Set<String> allIdentifiers) {
         Annotation document = new Annotation(cleanText);
         nlpPipeline.annotate(document);
 
         List<List<Word>> result = Lists.newArrayList();
-        for (CoreMap sentenceAnnotation : document.get(SentencesAnnotation.class)) {
-            List<Word> sentence = processSentence(sentenceAnnotation);
-            result.add(sentence);
+        for (CoreMap sentence : document.get(SentencesAnnotation.class)) {
+            List<Word> words = Lists.newArrayList();
+
+            for (CoreLabel token : sentence.get(TokensAnnotation.class)) {
+                String textToken = token.get(TextAnnotation.class);
+                String pos = token.get(PartOfSpeechAnnotation.class);
+                if (textToken.startsWith("FORMULA_")) {
+                    words.add(new Word(textToken, PosTag.MATH));
+                } else if (allIdentifiers.contains(textToken)) {
+                    words.add(new Word(textToken, PosTag.SYMBOL));
+                } else if (SYMBOLS.contains(textToken)) {
+                    words.add(new Word(textToken, PosTag.SYMBOL));
+                } else if (BRACKET_CODES.containsKey(textToken)) {
+                    words.add(new Word(BRACKET_CODES.get(textToken), pos));
+                } else {
+                    words.add(new Word(textToken, pos));
+                }
+            }
+
+            result.add(words);
         }
 
         return result;
     }
 
-    public List<Word> processSentence(CoreMap sentence) {
-        List<Word> words = Lists.newArrayList();
-
-        for (CoreLabel token : sentence.get(TokensAnnotation.class)) {
-            String textToken = token.get(TextAnnotation.class);
-            String pos = token.get(PartOfSpeechAnnotation.class);
-            Word word = reAnnotateWord(textToken, pos);
-            words.add(word);
-        }
-
-        return words;
-    }
-
-    private static Word reAnnotateWord(String word, String pos) {
-        if (word.startsWith("FORMULA_")) {
-            return new Word(word, PosTag.MATH);
-        }
-
-        // some signs (<, >, etc) are tagged JJ or NN, need to fix this
-        if (SYMBOLS.contains(word)) {
-            return new Word(word, PosTag.SYMBOL);
-        }
-
-        if (BRACKET_CODES.containsKey(word)) {
-            return new Word(BRACKET_CODES.get(word), pos);
-        }
-
-        return new Word(word, pos);
-    }
-
-    public static List<Sentence> toSentences(List<List<Word>> input, Map<String, Formula> formulaIndex) {
+    public static List<Sentence> postprocess(List<List<Word>> input, Map<String, Formula> formulaIndex,
+            Set<String> allIdentifiers) {
         List<Sentence> result = Lists.newArrayListWithCapacity(input.size());
 
-        Set<String> allIdentifiers = Sets.newHashSet();
-        formulaIndex.forEach((k, v) -> allIdentifiers.addAll(v.getIndentifiers()));
-        
         for (List<Word> words : input) {
             Sentence sentence = toSentence(words, formulaIndex, allIdentifiers);
             result.add(sentence);
         }
+
         return result;
     }
 
-    public static Sentence toSentence(List<Word> input, Map<String, Formula> formulaIndex, Set<String> allIdentifiers) {
+    public static Sentence toSentence(List<Word> input, Map<String, Formula> formulaIndex,
+            Set<String> allIdentifiers) {
         List<Word> words = Lists.newArrayListWithCapacity(input.size());
         Set<String> sentenceIdentifiers = Sets.newHashSet();
         List<Formula> formulas = Lists.newArrayList();
 
-        for (Word word : input) {
-            if (allIdentifiers.contains(word.word)) {
-                words.add(new Word(word.word, PosTag.IDENTIFIER));
-                sentenceIdentifiers.add(word.word);
+        for (Word w : input) {
+            String word = w.getWord();
+            String pos = w.getPosTag();
+
+            if (allIdentifiers.contains(word) && !PosTag.IDENTIFIER.equals(pos)) {
+                words.add(new Word(word, PosTag.IDENTIFIER));
+                sentenceIdentifiers.add(word);
                 continue;
             }
 
-            if (PosTag.MATH.equals(word.posTag)) {
-                Formula formula = formulaIndex.get(word.word);
+            if (PosTag.MATH.equals(pos)) {
+                Formula formula = formulaIndex.get(word);
+                if (formula == null) {
+                    LOGGER.warn("formula {} does not exist", word);
+                    words.add(w);
+                    continue;
+                }
+
                 formulas.add(formula);
 
                 Set<String> formulaIdentifiers = formula.getIndentifiers();
-                sentenceIdentifiers.addAll(formulaIdentifiers);
-
-                // maybe better to do it in preprocessing
                 if (formulaIdentifiers.size() == 1) {
                     String id = Iterables.get(formulaIdentifiers, 0);
                     LOGGER.debug("convering formula {} to idenfier {}", formula.getKey(), id);
                     words.add(new Word(id, PosTag.IDENTIFIER));
+                    sentenceIdentifiers.add(id);
                 } else {
-                    words.add(word);
+                    words.add(w);
                 }
                 continue;
             }
 
-            words.add(word);
+            words.add(w);
         }
 
         return new Sentence(words, sentenceIdentifiers, formulas);
     }
 
-    public static List<List<Word>> postprocess(List<List<Word>> sentences) {
+    public static List<List<Word>> concatenateTags(List<List<Word>> sentences) {
         List<List<Word>> results = Lists.newArrayListWithCapacity(sentences.size());
 
         for (List<Word> sentence : sentences) {
@@ -175,101 +172,69 @@ public class PosTagger {
 
     private static List<Word> postprocessSentence(List<Word> sentence) {
         // links
-        List<Word> result = concatenateLinks(sentence, PosTag.LINK);
+        List<Word> result = concatenateLinks(sentence);
 
-        // aggregate noun phrases
-        result = concatenateSuccessive(result, PosTag.NOUN, PosTag.NOUN_SEQUENCE);
-        result = contatenateSuccessiveBy2Tags(result, PosTag.ADJECTIVE, PosTag.NOUN, PosTag.NOUN_PHRASE);
-        result = contatenateSuccessiveBy2Tags(result, PosTag.ADJECTIVE, PosTag.NOUN_SEQUENCE,
+        // noun phrases
+        result = concatenateSuccessiveNounsToNounSequence(result);
+
+        result = contatenateSuccessive2Tags(result, PosTag.ADJECTIVE, PosTag.NOUN, PosTag.NOUN_PHRASE);
+        result = contatenateSuccessive2Tags(result, PosTag.ADJECTIVE, PosTag.NOUN_SEQUENCE,
                 PosTag.NOUN_SEQUENCE_PHRASE);
 
         return result;
     }
 
-    public static List<Word> concatenateLinks(List<Word> in, String tag) {
-        List<Word> result = Lists.newArrayList();
-        List<String> accumulator = Lists.newArrayList();
-        boolean insideLink = false;
+    public static List<Word> concatenateLinks(List<Word> in) {
+        Pattern<Word> linksPattern = Pattern.create(pos(PosTag.QUOTE), anyWord().oneOrMore(),
+                pos(PosTag.UNQUOTE));
 
-        for (Word word : in) {
-            if (insideLink) {
-                if (LINK_END.equals(word.posTag)) {
-                    String joined = StringUtils.join(accumulator, " ");
-                    result.add(new Word(joined, tag));
-                    accumulator.clear();
-                    insideLink = false;
-                } else {
-                    accumulator.add(word.word);
-                }
-            } else {
-                if (LINK_START.equals(word.posTag)) {
-                    insideLink = true;
-                } else {
-                    result.add(word);
-                }
+        return linksPattern.replace(in, new Transformer<Word>() {
+            @Override
+            public Word transform(List<Word> words) {
+                List<Word> list = words.subList(1, words.size() - 1);
+                return new Word(joinWords(list), PosTag.LINK);
             }
-        }
-
-        if (!accumulator.isEmpty()) {
-            throw new IllegalArgumentException("There is no closing quote");
-        }
-
-        return result;
+        });
     }
 
-    public static List<Word> concatenateSuccessive(List<Word> in, String tagIn, String tagOut) {
-        List<Word> result = Lists.newArrayList();
-        List<String> accumulator = Lists.newArrayList();
+    public static List<Word> concatenateSuccessiveNounsToNounSequence(List<Word> in) {
+        EnhancedMatcher<Word> noun = posIn(PosTag.NOUN, PosTag.NOUN_PLURAL);
+        Pattern<Word> nounPattern = Pattern.create(noun.oneOrMore());
 
-        boolean accumulate = false;
+        return nounPattern.replace(in, new Transformer<Word>() {
+            @Override
+            public Word transform(List<Word> words) {
+                if (words.size() == 1) {
+                    return words.get(0);
+                }
 
-        for (Word word : in) {
-            if (accumulate) {
-                if (Objects.equals(word.posTag, tagIn)) {
-                    accumulator.add(word.word);
-                } else {
-                    if (accumulator.size() == 1) {
-                        result.add(new Word(accumulator.get(0), tagIn));
-                    } else {
-                        String joined = StringUtils.join(accumulator, " ");
-                        result.add(new Word(joined, tagOut));
-                    }
-                    accumulator.clear();
-                    accumulate = false;
-                    result.add(word);
-                }
-            } else {
-                if (Objects.equals(word.posTag, tagIn)) {
-                    accumulator.add(word.word);
-                    accumulate = true;
-                } else {
-                    result.add(word);
-                }
+                return new Word(joinWords(words), PosTag.NOUN_SEQUENCE);
             }
-        }
+        });
 
-        return result;
     }
 
-    public static List<Word> contatenateSuccessiveBy2Tags(List<Word> in, String tag1, String tag2,
+    public static List<Word> contatenateSuccessive2Tags(List<Word> in, String tag1, String tag2,
             String outputTag) {
-        List<Word> result = Lists.newArrayList();
-
-        int len = in.size();
-        for (int i = 0; i < len; i++) {
-            Word word = in.get(i);
-            if (word.posTag.equals(tag1) && i < len - 1) {
-                Word next = in.get(i + 1);
-                if (next.posTag.equals(tag2)) {
-                    result.add(new Word(word.word + " " + next.word, outputTag));
-                    i++;
-                    continue;
-                }
-            }
-            result.add(word);
-        }
-
-        return result;
+        Pattern<Word> pattern = Pattern.create(pos(tag1), pos(tag2));
+        return pattern.replace(in, list -> new Word(joinWords(list), outputTag));
     }
 
+    public static String joinWords(List<Word> list) {
+        List<String> toJoin = Lists.newArrayList();
+        list.forEach(w -> toJoin.add(w.getWord()));
+        return StringUtils.join(toJoin, " ");
+    }
+    
+    public static EnhancedMatcher<Word> pos(String tag) {
+        return BeanMatchers.eq(Word.class, "posTag", tag);
+    }
+  
+    public static EnhancedMatcher<Word> posIn(String... tags) {
+        return BeanMatchers.in(Word.class, "posTag", ImmutableSet.copyOf(tags));
+    }
+  
+    public static EnhancedMatcher<Word> anyWord() {
+        return Matchers.anything();
+    }
 }

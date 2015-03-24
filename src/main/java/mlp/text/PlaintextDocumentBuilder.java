@@ -35,6 +35,9 @@ import org.eclipse.mylyn.wikitext.core.parser.builder.NoOpDocumentBuilder;
  */
 public class PlaintextDocumentBuilder extends NoOpDocumentBuilder {
 
+    private static final char LEFT_DOUBLE_QUOTE = '\u201c';
+    private static final char RIGHT_DOUBLE_QUOTE = '\u201d';
+
     private StringBuilder writer = new StringBuilder();
 
     /**
@@ -287,7 +290,7 @@ public class PlaintextDocumentBuilder extends NoOpDocumentBuilder {
             text = link.replaceAll("\\(.*?\\)", "");
         }
 
-        writer.append('\u201c' + text + '\u201d');
+        writer.append(LEFT_DOUBLE_QUOTE + text + RIGHT_DOUBLE_QUOTE);
     }
 
     @Override

@@ -37,7 +37,7 @@ public class Sentence {
 
     @Override
     public String toString() {
-        return "Sentence [words=" + words + ", identifiers=" + identifiers + ", formulas=" + formulas + "]";
+        return "Sentence [words=" + words + ", identifiers=" + identifiers + "]";
     }
 
 }

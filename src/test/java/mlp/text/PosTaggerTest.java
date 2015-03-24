@@ -38,7 +38,7 @@ public class PosTaggerTest {
 
         List<Sentence> result = nlpProcessor.process(cleanText, formulas);
 
-        List<Word> expected = Arrays.asList(w("where", "WRB"), w("Ψ", "LNK"), w("is", "VBZ"), w("the", "DT"),
+        List<Word> expected = Arrays.asList(w("where", "WRB"), w("Ψ", "ID"), w("is", "VBZ"), w("the", "DT"),
                 w("wave function", "LNK"), w("of", "IN"), w("the", "DT"), w("quantum system", "NN+"),
                 w(",", ","), w("i", "FW"), w("is", "VBZ"), w("the", "DT"), w("imaginary unit", "LNK"),
                 w(",", ","), w("ħ", "NN"), w("is", "VBZ"), w("the", "DT"),
@@ -55,19 +55,11 @@ public class PosTaggerTest {
                 w("and", "CC"), w("``", "``"), w("momentum", "NN"), w("''", "''"), w("are", "VBP"),
                 w("related", "VBN"));
 
-        String tag = "LNK";
-        List<Word> expected = Arrays.asList(w("Since", "IN"), w("energy", tag), w("and", "CC"),
-                w("momentum", tag), w("are", "VBP"), w("related", "VBN"));
+        List<Word> expected = Arrays.asList(w("Since", "IN"), w("energy", PosTag.LINK), w("and", "CC"),
+                w("momentum", PosTag.LINK), w("are", "VBP"), w("related", "VBN"));
 
-        List<Word> actual = PosTagger.concatenateLinks(in, tag);
+        List<Word> actual = PosTagger.concatenateLinks(in);
         assertEquals(expected, actual);
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void joinLinks_noClosingLink_exception() {
-        List<Word> in = Arrays.asList(w("Since", "IN"), w("``", "``"), w("energy", "NN"), w("''", "''"),
-                w("and", "CC"), w("``", "``"), w("momentum", "NN"), w("are", "VBP"), w("related", "VBN"));
-        PosTagger.concatenateLinks(in, "LNK");
     }
 
     @Test
@@ -75,7 +67,7 @@ public class PosTaggerTest {
         List<Word> in = Arrays.asList(w("Since", "IN"), w("energy", "NN"), w("and", "CC"),
                 w("momentum", "NN"), w("are", "VBP"), w("related", "VBN"));
         List<Word> expected = in;
-        List<Word> actual = PosTagger.concatenateLinks(in, "LNK");
+        List<Word> actual = PosTagger.concatenateLinks(in);
         assertEquals(expected, actual);
     }
 
@@ -85,7 +77,7 @@ public class PosTaggerTest {
                 w("related", "VBN"));
         List<Word> expected = Arrays.asList(w("Since", "IN"), w("energy momentum", "NN+"),
                 w("related", "VBN"));
-        List<Word> actual = PosTagger.concatenateSuccessive(in, "NN", "NN+");
+        List<Word> actual = PosTagger.concatenateSuccessiveNounsToNounSequence(in);
         assertEquals(expected, actual);
     }
 
@@ -94,7 +86,7 @@ public class PosTaggerTest {
         List<Word> in = Arrays.asList(w("Since", "IN"), w("energy", "NN"), w("and", "CC"),
                 w("momentum", "NN"), w("are", "VBP"), w("related", "VBN"));
         List<Word> expected = in;
-        List<Word> actual = PosTagger.concatenateSuccessive(in, "NN", "NN+");
+        List<Word> actual = PosTagger.concatenateSuccessiveNounsToNounSequence(in);
         assertEquals(expected, actual);
     }
 
@@ -104,7 +96,7 @@ public class PosTaggerTest {
                 w("type", "NN"));
         List<Word> expected = Arrays.asList(w("to", "TO"), w("be", "VB"), w("the", "DT"),
                 w("same type", "NP"));
-        List<Word> actual = PosTagger.contatenateSuccessiveBy2Tags(in, "JJ", "NN", "NP");
+        List<Word> actual = PosTagger.contatenateSuccessive2Tags(in, "JJ", "NN", "NP");
         assertEquals(expected, actual);
     }
 
@@ -112,7 +104,7 @@ public class PosTaggerTest {
     public void concatenateJJtoNP_notFollowed() {
         List<Word> in = Arrays.asList(w("be", "VB"), w("the", "DT"), w("same", "JJ"), w("to", "TO"));
         List<Word> expected = in;
-        List<Word> actual = PosTagger.contatenateSuccessiveBy2Tags(in, "JJ", "NN", "NP");
+        List<Word> actual = PosTagger.contatenateSuccessive2Tags(in, "JJ", "NN", "NP");
         assertEquals(expected, actual);
     }
 
@@ -120,7 +112,7 @@ public class PosTaggerTest {
     public void concatenateJJtoNP_JPLast() {
         List<Word> in = Arrays.asList(w("to", "TO"), w("be", "VB"), w("the", "DT"), w("same", "JJ"));
         List<Word> expected = in;
-        List<Word> actual = PosTagger.contatenateSuccessiveBy2Tags(in, "JJ", "NN", "NP");
+        List<Word> actual = PosTagger.contatenateSuccessive2Tags(in, "JJ", "NN", "NP");
         assertEquals(expected, actual);
     }
 

@@ -60,7 +60,7 @@ public class TextAnnotatorMapper extends RichMapFunction<WikiDocumentText, WikiD
         List<Formula> formulas = Lists.newArrayList();
         for (MathTag math : mathTags) {
             Set<String> identifiers = MathMLUtils.extractIdentifiers(math);
-            formulas.add(new Formula(math.calculatePlaceholder(), math.getContent(), identifiers));
+            formulas.add(new Formula(math.placeholder(), math.getContent(), identifiers));
         }
         return formulas;
     }

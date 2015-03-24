@@ -4,6 +4,9 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.Validate;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.eclipse.mylyn.wikitext.core.parser.MarkupParser;
 import org.eclipse.mylyn.wikitext.mediawiki.core.MediaWikiLanguage;
 
@@ -48,12 +51,27 @@ public class WikiTextUtils {
             return HASHER.hashString(content, StandardCharsets.UTF_8).toString();
         }
 
-        public String calculatePlaceholder() {
+        public String placeholder() {
             return "FORMULA_" + getContentHash();
         }
 
         public MathMarkUpType getMarkUpType() {
             return markUpType;
+        }
+
+        @Override
+        public String toString() {
+            return "MathTag [position=" + position + ", content=" + content + "]";
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            return EqualsBuilder.reflectionEquals(this, obj);
+        }
+
+        @Override
+        public int hashCode() {
+            return HashCodeBuilder.reflectionHashCode(this);
         }
     }
 
@@ -68,9 +86,7 @@ public class WikiTextUtils {
             }
 
             int end = text.indexOf(MATH_TAG_CLOSE, start);
-            if (end < 0) {
-                break;
-            }
+            Validate.isTrue(end >= 0, "no closing tag for <math>");
             current = end + MATH_TAG_CLOSE.length();
 
             String math = text.substring(start, end + MATH_TAG_CLOSE.length());
@@ -95,7 +111,7 @@ public class WikiTextUtils {
         int offset = 0;
         for (MathTag tag : mathTags) {
             newText.append(text.substring(offset, tag.getPosition()));
-            newText.append(tag.calculatePlaceholder());
+            newText.append(tag.placeholder());
             offset = tag.getPosition() + tag.getContent().length();
         }
 

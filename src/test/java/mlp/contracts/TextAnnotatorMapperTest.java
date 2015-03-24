@@ -16,6 +16,7 @@ import mlp.pojos.Sentence;
 import mlp.pojos.WikiDocument;
 import mlp.pojos.WikiDocumentText;
 import mlp.pojos.Word;
+import mlp.text.PosTag;
 
 import org.apache.commons.io.IOUtils;
 import org.junit.Test;
@@ -28,7 +29,7 @@ public class TextAnnotatorMapperTest {
     private static final Random RND = new Random();
 
     public static final TextAnnotatorMapper TEST_INSTANCE = createTestInstance();
-    
+
     @Test
     public void test() throws Exception {
         List<WikiDocumentText> docs = readWikiTextDocuments("augmentendwikitext.xml");
@@ -44,7 +45,7 @@ public class TextAnnotatorMapperTest {
     }
 
     private static boolean contains(Formula formula, List<Sentence> sentences) {
-        Word mathWord = new Word(formula.getKey(), "MATH");
+        Word mathWord = new Word(formula.getKey(), PosTag.MATH);
         for (Sentence sentence : sentences) {
             List<Word> words = sentence.getWords();
             if (words.contains(mathWord)) {

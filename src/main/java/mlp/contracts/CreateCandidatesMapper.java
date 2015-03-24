@@ -75,7 +75,7 @@ public class CreateCandidatesMapper implements FlatMapFunction<WikiDocument, Rel
                 int identifierPosition = closestIdentifierPosition(positions, wordIdx);
                 int distance = Math.abs(identifierPosition - wordIdx);
 
-                int freq = frequencies.count(word.word.toLowerCase());
+                int freq = frequencies.count(word.toLowerCase());
                 double score = calculateScore(distance, freq, maxFrequency, sentenceIdx);
 
                 Relation relation = new Relation();
@@ -114,7 +114,7 @@ public class CreateCandidatesMapper implements FlatMapFunction<WikiDocument, Rel
 
         for (int wordIdx = 0; wordIdx < sentence.size(); wordIdx++) {
             Word word = sentence.get(wordIdx);
-            if (Objects.equals(identifier, word.word)) {
+            if (Objects.equals(identifier, word.getWord())) {
                 result.add(wordIdx);
             }
         }
@@ -123,6 +123,9 @@ public class CreateCandidatesMapper implements FlatMapFunction<WikiDocument, Rel
     }
 
     public static int closestIdentifierPosition(List<Integer> positions, int wordIdx) {
+        if (positions.isEmpty()) {
+            return -1;
+        }
         Iterator<Integer> it = positions.iterator();
         int bestPos = it.next();
         int bestDist = Math.abs(wordIdx - bestPos);
@@ -151,7 +154,7 @@ public class CreateCandidatesMapper implements FlatMapFunction<WikiDocument, Rel
         for (Sentence sentence : sentences) {
             for (Word word : sentence.getWords()) {
                 if (isGood(word)) {
-                    counts.add(word.word.toLowerCase());
+                    counts.add(word.getWord().toLowerCase());
                 }
             }
         }
@@ -160,8 +163,8 @@ public class CreateCandidatesMapper implements FlatMapFunction<WikiDocument, Rel
     }
 
     private boolean isGood(Word in) {
-        String word = in.word;
-        String posTag = in.posTag;
+        String word = in.getWord();
+        String posTag = in.getPosTag();
 
         if (BLACKLIST.contains(word.toLowerCase())) {
             return false;

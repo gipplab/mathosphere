@@ -1,20 +1,12 @@
 package mlp.contracts;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-
 import java.io.InputStream;
-import java.util.Arrays;
-import java.util.List;
 
 import mlp.RelationFinder;
-import mlp.contracts.PatternMatcherMapper.Match;
-import mlp.contracts.PatternMatcherMapper.Pattern;
 import mlp.flink.ListCollector;
 import mlp.pojos.Relation;
 import mlp.pojos.WikiDocument;
 import mlp.pojos.WikiDocumentText;
-import mlp.pojos.Word;
 
 import org.apache.commons.io.IOUtils;
 import org.junit.Test;
@@ -38,7 +30,6 @@ public class PatternMatcherMapperTest {
         }
     }
 
-
     @Test
     public void testShrodingerPart() throws Exception {
         InputStream input = RelationFinder.class.getResourceAsStream("escaped.txt");
@@ -53,50 +44,8 @@ public class PatternMatcherMapperTest {
         patternMatcher.flatMap(doc, out);
 
         for (Relation relation : out.getList()) {
-            LOGGER.debug("relation: {}", relation);
+            LOGGER.debug("relation: {}, sentence: {}", relation, relation.getSentence());
         }
-    }
-
-
-    @Test
-    public void findPattern_first() {
-        String identifier = "p";
-        List<Word> sentence = Arrays.asList(w("p", "LNK"), w("is", "VBZ"), w("the", "DT"),
-                w("wave function", "LNK"), w(",", ","), w("i", "FW"), w("is", "VBZ"), w("the", "DT"),
-                w("imaginary unit", "LNK"), w(",", ","), w("ħ", "NN"), w("is", "VBZ"), w("the", "DT"),
-                w("reduced Planck constant", "LNK"));
-        Pattern input = Pattern.of(identifier, "is", "the", Pattern.DEFINITION);
-        Match actualMatch = PatternMatcherMapper.findPattern(sentence, input);
-        Match expectedMatch = new Match(w("wave function", "LNK"), 0, 3);
-        assertEquals(expectedMatch, actualMatch);
-    }
-
-    @Test
-    public void findPattern_last() {
-        String identifier = "ħ";
-        List<Word> sentence = Arrays.asList(w("p", "LNK"), w("is", "VBZ"), w("the", "DT"),
-                w("wave function", "LNK"), w(",", ","), w("ħ", "NN"), w("is", "VBZ"), w("the", "DT"),
-                w("reduced Planck constant", "LNK"));
-        Pattern input = Pattern.of(identifier, "is", "the", Pattern.DEFINITION);
-        Match actualMatch = PatternMatcherMapper.findPattern(sentence, input);
-        Match expectedMatch = new Match(w("reduced Planck constant", "LNK"), 5, 8);
-        assertEquals(expectedMatch, actualMatch);
-    }
-
-    @Test
-    public void findPattern_noMatch() {
-        String identifier = "h";
-        List<Word> sentence = Arrays.asList(w("p", "LNK"), w("is", "VBZ"), w("the", "DT"),
-                w("wave function", "LNK"), w(",", ","), w("ħ", "NN"), w("is", "VBZ"), w("the", "DT"),
-                w("reduced Planck constant", "LNK"));
-        Pattern input = Pattern.of(identifier, "is", "the", Pattern.DEFINITION);
-        Match actualMatch = PatternMatcherMapper.findPattern(sentence, input);
-
-        assertNull(actualMatch);
-    }
-
-    public static Word w(String word, String tag) {
-        return new Word(word, tag);
     }
 
 }

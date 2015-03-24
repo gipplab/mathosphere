@@ -53,7 +53,7 @@ public class MathMLUtilsTest {
         Set<String> expected = ImmutableSet.of("r");
         assertTrue(identifiers.containsAll(expected));
     }
-    
+
     @Test
     public void extractFromTex_complextMsub_noSubCaptured() throws Exception {
         InputStream inputStream = RelationFinder.class.getResourceAsStream("complex_msub.xml");
@@ -61,5 +61,6 @@ public class MathMLUtilsTest {
         Set<String> identifiers = MathMLUtils.extractIdentifiersFromMathML(mathML);
         identifiers.forEach(id -> assertFalse(id.contains("_")));
     }
+    
 
 }

@@ -8,8 +8,8 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 
 public class Word {
 
-    public String word;
-    public String posTag;
+    private String word;
+    private String posTag;
 
     public Word() {
     }
@@ -24,6 +24,14 @@ public class Word {
         return "'" + word + "':" + posTag;
     }
 
+    public String getWord() {
+        return word;
+    }
+
+    public String getPosTag() {
+        return posTag;
+    }
+
     @Override
     public boolean equals(Object obj) {
         return EqualsBuilder.reflectionEquals(this, obj);
@@ -31,7 +39,7 @@ public class Word {
 
     @Override
     public int hashCode() {
-        return Objects.hash(word, posTag);
+        return Objects.hash(getWord(), posTag);
     }
 
     public String toLowerCase() {
@@ -41,4 +49,5 @@ public class Word {
             return word.toLowerCase();
         }
     }
+
 }
