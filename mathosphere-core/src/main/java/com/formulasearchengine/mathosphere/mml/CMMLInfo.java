@@ -65,19 +65,11 @@ public class CMMLInfo implements Document {
 	}
 
 
-    /**
-     * @param s
-     * @throws IOException
-     * @throws ParserConfigurationException
-     */
 	public CMMLInfo(String s) throws IOException, ParserConfigurationException {
 		Document cmml = XMLHelper.String2Doc(s, true);
 		constructor( cmml, true, false );
 	}
 
-    /**
-     * @param other
-     */
 	public CMMLInfo(CMMLInfo other) {
         cmmlDoc = (Document) other.cmmlDoc.cloneNode( true );
 	}

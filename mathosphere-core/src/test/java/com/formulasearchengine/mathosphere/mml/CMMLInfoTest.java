@@ -2,6 +2,8 @@ package com.formulasearchengine.mathosphere.mml;
 
 import com.formulasearchengine.mathosphere.TestUtils;
 import com.formulasearchengine.mathosphere.utils.XMLHelper;
+import com.google.common.collect.ImmutableMultiset;
+import com.google.common.collect.Multiset;
 import net.sf.saxon.s9api.XQueryExecutable;
 import org.custommonkey.xmlunit.XMLUnit;
 import org.junit.BeforeClass;
@@ -208,17 +210,23 @@ public class CMMLInfoTest {
             i++;
         }
     }
-    @Test
-    public final void testIdentifier() throws Exception {
-        final String[] identifiers = {"[2, 1, I x 2]", "[2, 1, I x 2]", "[2, 1, 0, 𝒜 x 2, I x 2]" };
-        int i = 0;
-        for (final String rawTest : rawTests) {
-            final CMMLInfo cmmlElement = CMMLInfo.newFromSnippet(rawTest);
-            assertEquals("Test " + i + " failed", identifiers[i], cmmlElement.getElements().toString());
-            i++;
-        }
-    }
-    @Test
+
+	@Test
+	public final void testIdentifier() throws Exception {
+
+		final Multiset[] identifiers = { ImmutableMultiset.of( "1", "2", "I", "I" ),
+		                                 ImmutableMultiset.of( "1", "2", "I", "I" ),
+		                                 ImmutableMultiset.of( "0", "1", "2", "I", "I", "\uD835\uDC9C", "\uD835\uDC9C" ) };
+
+		int i = 0;
+		for ( final String rawTest : rawTests ) {
+			final CMMLInfo cmmlElement = CMMLInfo.newFromSnippet( rawTest );
+			assertEquals( "Test " + i + " failed", identifiers[ i ], cmmlElement.getElements() );
+			i++;
+		}
+	}
+
+	@Test
     public final void testToString() throws Exception {
         int i =0;
         for (final String rawTest : rawTests) {
