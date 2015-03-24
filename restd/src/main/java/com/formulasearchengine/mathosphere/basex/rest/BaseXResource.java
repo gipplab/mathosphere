@@ -1,6 +1,7 @@
 package com.formulasearchengine.mathosphere.basex.rest;
 
 import com.formulasearchengine.mathosphere.basex.domain.MathRequest;
+import com.formulasearchengine.mathosphere.basex.domain.MathUpdate;
 import restx.annotations.GET;
 import restx.annotations.POST;
 import restx.annotations.RestxResource;
@@ -51,5 +52,9 @@ public class BaseXResource {
 	public MathRequest query( MathRequest q ) {
 		return q.run();
 	}
-
+	@POST("/update")
+	@PermitAll
+	public MathUpdate update( MathUpdate u ) {
+		return u.run();
+	}
 }

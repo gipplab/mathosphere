@@ -1,0 +1,16 @@
+title: Update 20150325 234412
+given:
+  - time: 2015-03-25T23:44:12.425-04:00
+wts:
+  - when: |
+       POST update
+       Cookie: RestxSession={"_expires":"2015-04-24T23:44:12.425-04:00","principal":"admin","sessionKey":"66fbdd4b-1009-4797-89ec-649655c4cce9"}; RestxSessionSignature=qqfnmAOcDYuO33gYzpQ1ihPKTCU=
+
+        {"harvest":"<?xml version=\"1.0\"?>\n<mws:harvest xmlns:mws=\"http://search.mathweb.org/ns\">\n    <mws:expr url=\"math.800.3\">\n        <math xmlns=\"http://www.w3.org/1998/Math/MathML\" id=\"p1.1.m1\" class=\"ltx_Math\" alttext=\"{\\displaystyle{\\alpha}}\"\n              display=\"inline\" xml:id=\"p1.1.m1.1\" xref=\"p1.1.m1.1.cmml\">\n            <semantics xml:id=\"p1.1.m1.1a\" xref=\"p1.1.m1.1.cmml\">\n                <mi xml:id=\"p1.1.m1.1.1\" xref=\"p1.1.m1.1.1.cmml\">α</mi>\n                <annotation-xml encoding=\"MathML-Content\" xml:id=\"p1.1.m1.1.cmml\" xref=\"p1.1.m1.1\">\n                    <ci xml:id=\"p1.1.m1.1.1.cmml\" xref=\"p1.1.m1.1.1\">α</ci>\n                </annotation-xml>\n                <annotation encoding=\"application/x-tex\" xml:id=\"p1.1.m1.1b\" xref=\"p1.1.m1.1.cmml\">\n                    {\\displaystyle{\\alpha}}\n                </annotation>\n            </semantics>\n        </math>\n    </mws:expr>\n</mws:harvest>"}
+    then: |
+        {
+          "delete" : [ ],
+          "harvest" : "<?xml version=\"1.0\"?>\n<mws:harvest xmlns:mws=\"http://search.mathweb.org/ns\">\n    <mws:expr url=\"math.800.3\">\n        <math xmlns=\"http://www.w3.org/1998/Math/MathML\" id=\"p1.1.m1\" class=\"ltx_Math\" alttext=\"{\\displaystyle{\\alpha}}\"\n              display=\"inline\" xml:id=\"p1.1.m1.1\" xref=\"p1.1.m1.1.cmml\">\n            <semantics xml:id=\"p1.1.m1.1a\" xref=\"p1.1.m1.1.cmml\">\n                <mi xml:id=\"p1.1.m1.1.1\" xref=\"p1.1.m1.1.1.cmml\">α</mi>\n                <annotation-xml encoding=\"MathML-Content\" xml:id=\"p1.1.m1.1.cmml\" xref=\"p1.1.m1.1\">\n                    <ci xml:id=\"p1.1.m1.1.1.cmml\" xref=\"p1.1.m1.1.1\">α</ci>\n                </annotation-xml>\n                <annotation encoding=\"application/x-tex\" xml:id=\"p1.1.m1.1b\" xref=\"p1.1.m1.1.cmml\">\n                    {\\displaystyle{\\alpha}}\n                </annotation>\n            </semantics>\n        </math>\n    </mws:expr>\n</mws:harvest>",
+          "response" : "updated",
+          "success" : true
+        }
