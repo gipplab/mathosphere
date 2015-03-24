@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.formulasearchengine.mathmlquerygenerator.NtcirPattern;
 import com.formulasearchengine.mathmlquerygenerator.XQueryGenerator;
 import net.xqj.basex.BaseXXQDataSource;
+import org.basex.core.BaseXException;
 import org.basex.core.cmd.Open;
 import org.basex.query.QueryException;
 import org.basex.query.QueryProcessor;
@@ -23,7 +24,7 @@ public class Client {
 	private Results.Run currentRun = results.new Run( "baseX" + System.currentTimeMillis(), "automated" );
 	private Results.Run.Result currentResult;
 	private Long measurement;
-	private boolean useXQ = true;
+	private boolean useXQ = false;
 	private boolean success = false;
 
 	public Client() {}
@@ -55,7 +56,7 @@ public class Client {
 		return measurement;
 	}
 
-	private int runQuery( String query ) throws XQException, IOException, QueryException {
+	protected int runQuery( String query ) throws XQException, IOException, QueryException {
 		int score = 10;
 		int rank = 1;
 		if ( useXQ ) {
@@ -167,5 +168,22 @@ public class Client {
 
 	public boolean isSuccess () {
 		return success;
+	}
+
+	public String directXQuery(String query) throws BaseXException, QueryException {
+		String out = "";
+		new Open("math").execute( Server.context );
+		QueryProcessor proc = new QueryProcessor(query, Server.context );
+		Iter iter = proc.iter();
+		for(Item item; (item = iter.next()) != null;) {
+			Object o = item.toJava();
+			String s;
+			if(o instanceof String){
+				out += (String) o;
+			} else {
+				out += item.toString();
+			}
+		}
+		return out;
 	}
 }

@@ -166,6 +166,14 @@ public class ClientTest {
 		assertFalse( c.isSuccess() );
 	}
 
+	@Test
+	public void testDelete() throws Exception{
+		Client c = new Client(  );
+		String query ="count(//*:expr[matches(@url, 'math\\.4\\.*')])";
+		String s = c.directXQuery( "count(//*:expr)" );
+		System.out.println( s );
+	}
+
 	@SuppressWarnings("SameParameterValue")
 	static public String getFileContents( String fname ) throws IOException {
 		try ( InputStream is = ClientTest.class.getClassLoader().getResourceAsStream( fname ) ) {
