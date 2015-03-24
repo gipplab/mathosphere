@@ -8,9 +8,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Scanner;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class ClientTest {
 
@@ -164,6 +162,21 @@ public class ClientTest {
 		assertEquals( Long.valueOf( -1 ), c.basex( ">invalid<" ) );
 		assertTrue( c.runXQuery( ">invalid<" ).startsWith( "Query" ) );
 		assertFalse( c.isSuccess() );
+	}
+
+	@Test
+	public void testDelete() throws Exception{
+		String cnt4 ="count(//*:expr[matches(@url, 'math\\.4\\.*')])";
+		Client c = new Client(  );
+		assertEquals( 9, c.countRevisionFormula( 4 ) );
+		assertTrue( c.deleteRevisionFormula( 4 ) );
+	}
+	@Test
+	public void testInsert() throws Exception{
+		Document doc = XMLHelper.String2Doc( getFileContents( "math.4.3.xml" ) );
+		Client c = new Client(  );
+		c.updateFormula( doc.getDocumentElement() );
+		assertEquals( 1, c.countRevisionFormula( 800 ) );
 	}
 
 	@SuppressWarnings("SameParameterValue")
