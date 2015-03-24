@@ -105,7 +105,6 @@ public final class XMLHelper {
      * @param XPath          the x path
      * @return NodeList
      * @throws javax.xml.parsers.ParserConfigurationException the parser configuration exception
-     * @throws org.xml.sax.SAXException                 the sAX exception
      * @throws java.io.IOException                  Signals that an I/O exception has occurred.
      * @throws javax.xml.xpath.XPathExpressionException     the x path expression exception
      */
@@ -130,9 +129,6 @@ public final class XMLHelper {
      * @param node  the node
      * @param XPath the x path
      * @return NodeList
-     * @throws javax.xml.parsers.ParserConfigurationException the parser configuration exception
-     * @throws org.xml.sax.SAXException                 the sAX exception
-     * @throws java.io.IOException                  Signals that an I/O exception has occurred.
      * @throws javax.xml.xpath.XPathExpressionException     the x path expression exception
      */
     public static Node getElementB(Node node, String XPath) throws XPathExpressionException {
@@ -150,9 +146,6 @@ public final class XMLHelper {
      * @param node  the node
      * @param XPath the x path
      * @return NodeList
-     * @throws javax.xml.parsers.ParserConfigurationException the parser configuration exception
-     * @throws org.xml.sax.SAXException                 the sAX exception
-     * @throws java.io.IOException                  Signals that an I/O exception has occurred.
      * @throws javax.xml.xpath.XPathExpressionException     the x path expression exception
      */
     public static Node getElementB(Node node, XPathExpression XPath) throws XPathExpressionException {
@@ -168,9 +161,6 @@ public final class XMLHelper {
      * @param node  the node
      * @param XPath the x path
      * @return NodeList
-     * @throws javax.xml.parsers.ParserConfigurationException the parser configuration exception
-     * @throws org.xml.sax.SAXException                 the sAX exception
-     * @throws java.io.IOException                  Signals that an I/O exception has occurred.
      * @throws javax.xml.xpath.XPathExpressionException     the x path expression exception
      */
     public static NodeList getElementsB(Node node, XPathExpression XPath)
@@ -187,9 +177,6 @@ public final class XMLHelper {
      * @param node    the node
      * @param xString the x path
      * @return NodeList
-     * @throws javax.xml.parsers.ParserConfigurationException the parser configuration exception
-     * @throws org.xml.sax.SAXException                 the sAX exception
-     * @throws java.io.IOException                  Signals that an I/O exception has occurred.
      * @throws javax.xml.xpath.XPathExpressionException     the x path expression exception
      */
     public static NodeList getElementsB(Node node, String xString) throws XPathExpressionException {
@@ -247,7 +234,7 @@ public final class XMLHelper {
 
     /**
      * Returns a list of unique identifiers from a MathML string.
-     * This function searches for all <mi/> or <ci/> tags within
+     * This function searches for all mi- or ci-tags within
      * the string.
      *
      * @param mathml
@@ -268,7 +255,7 @@ public final class XMLHelper {
 
     /**
      * Returns a list of unique identifiers from a MathML string.
-     * This function searches for all <mi/> or <ci/> tags within
+     * This function searches for all mi or ci tags within
      * the string.
      *
      * @param mathml
@@ -289,11 +276,8 @@ public final class XMLHelper {
 
     /**
      * @param cmml the input node
-     * @return Multiset<String>
-     * @throws javax.xml.parsers.ParserConfigurationException
-     * @throws org.xml.sax.SAXException
+     * @return
      * @throws javax.xml.xpath.XPathExpressionException
-     * @throws java.io.IOException
      */
     public static Multiset<String> getIdentifiersFromCmml(Node cmml) throws XPathExpressionException {
         Multiset<String> list = HashMultiset.create();
