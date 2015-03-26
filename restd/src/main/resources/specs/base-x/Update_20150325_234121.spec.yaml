@@ -1,0 +1,16 @@
+title: Update 20150325 234121
+given:
+  - time: 2015-03-25T23:41:21.584-04:00
+wts:
+  - when: |
+       POST update
+       Cookie: RestxSession={"_expires":"2015-04-24T23:41:21.584-04:00","principal":"admin","sessionKey":"66fbdd4b-1009-4797-89ec-649655c4cce9"}; RestxSessionSignature=FRoSNDEKPqwyRP9eH1HTz471FLY=
+
+        {"harvest":"fail"}
+    then: |
+        {
+          "delete" : [ ],
+          "harvest" : "fail",
+          "response" : "update failed",
+          "success" : false
+        }
