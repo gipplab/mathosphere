@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <mws:harvest xmlns:mws="http://search.mathweb.org/ns" xmlns:m="http://www.w3.org/1998/Math/MathML">
-<mws:expr url="math.3.0">
+<mws:expr url="3#math.3.0">
 	<math xmlns="http://www.w3.org/1998/Math/MathML" id="p1.1.m1" class="ltx_Math" alttext="{\displaystyle a}" display="inline" xml:id="p1.1.m1.1" xref="p1.1.m1.1.cmml">
   <semantics xml:id="p1.1.m1.1a" xref="p1.1.m1.1.cmml">
     <mi xml:id="p1.1.m1.1.1" xref="p1.1.m1.1.1.cmml">a</mi>
@@ -12,7 +12,7 @@
 </math>
 </mws:expr>
 
-<mws:expr url="math.4.0">
+<mws:expr url="4#math.4.0">
 	<math xmlns="http://www.w3.org/1998/Math/MathML" id="p1.1.m1" class="ltx_Math" alttext="{\displaystyle{{\bar{\alpha}}(\theta_{i})}}" display="inline" xml:id="p1.1.m1.1" xref="p1.1.m1.1.cmml">
   <semantics xml:id="p1.1.m1.1a" xref="p1.1.m1.1.cmml">
     <mrow xml:id="p1.1.m1.1.6" xref="p1.1.m1.1.6.cmml">
@@ -49,7 +49,7 @@
 </math>
 </mws:expr>
 
-<mws:expr url="math.4.1">
+<mws:expr url="4#math.4.1">
 	<math xmlns="http://www.w3.org/1998/Math/MathML" id="p1.1.m1" class="ltx_Math" alttext="{\displaystyle{\bar{{\bar{\alpha}}}}}" display="inline" xml:id="p1.1.m1.1" xref="p1.1.m1.1.cmml">
   <semantics xml:id="p1.1.m1.1a" xref="p1.1.m1.1.cmml">
     <mover accent="true" xml:id="p1.1.m1.1.1" xref="p1.1.m1.1.1.cmml">
@@ -73,7 +73,7 @@
 </math>
 </mws:expr>
 
-<mws:expr url="math.4.2">
+<mws:expr url="4#math.4.2">
 	<math xmlns="http://www.w3.org/1998/Math/MathML" id="p1.1.m1" class="ltx_Math" alttext="{\displaystyle{D}}" display="inline" xml:id="p1.1.m1.1" xref="p1.1.m1.1.cmml">
   <semantics xml:id="p1.1.m1.1a" xref="p1.1.m1.1.cmml">
     <mi xml:id="p1.1.m1.1.1" xref="p1.1.m1.1.1.cmml">D</mi>
@@ -85,7 +85,7 @@
 </math>
 </mws:expr>
 
-<mws:expr url="math.4.3">
+<mws:expr url="4#math.4.3">
 	<math xmlns="http://www.w3.org/1998/Math/MathML" id="p1.1.m1" class="ltx_Math" alttext="{\displaystyle{\alpha}}" display="inline" xml:id="p1.1.m1.1" xref="p1.1.m1.1.cmml">
   <semantics xml:id="p1.1.m1.1a" xref="p1.1.m1.1.cmml">
     <mi xml:id="p1.1.m1.1.1" xref="p1.1.m1.1.1.cmml">α</mi>
@@ -97,7 +97,7 @@
 </math>
 </mws:expr>
 
-<mws:expr url="math.4.4">
+<mws:expr url="4#math.4.4">
 	<math xmlns="http://www.w3.org/1998/Math/MathML" id="p1.1.m1" class="ltx_Math" alttext="{\displaystyle{\alpha}=(1-D){\bar{\alpha}}(\theta_{i})+D{\bar{{\bar{\alpha}}}}.}" display="inline" xml:id="p1.1.m1.1" xref="p1.1.m1.1.cmml">
   <semantics xml:id="p1.1.m1.1a" xref="p1.1.m1.1.cmml">
     <mrow xml:id="p1.1.m1.1.17" xref="p1.1.m1.1.17.cmml">
@@ -188,7 +188,7 @@
 </math>
 </mws:expr>
 
-<mws:expr url="math.4.5">
+<mws:expr url="4#math.4.5">
 	<math xmlns="http://www.w3.org/1998/Math/MathML" id="p1.1.m1" class="ltx_Math" alttext="{\displaystyle A=\left({\frac{1329\times 10^{{-H/5}}}{D}}\right)^{2}}" display="inline" xml:id="p1.1.m1.1" xref="p1.1.m1.1.cmml">
   <semantics xml:id="p1.1.m1.1a" xref="p1.1.m1.1.cmml">
     <mrow xml:id="p1.1.m1.1.7" xref="p1.1.m1.1.7.cmml">
@@ -257,7 +257,7 @@
 </math>
 </mws:expr>
 
-<mws:expr url="math.4.6">
+<mws:expr url="4#math.4.6">
 	<math xmlns="http://www.w3.org/1998/Math/MathML" id="p1.1.m1" class="ltx_Math" alttext="{\displaystyle A}" display="inline" xml:id="p1.1.m1.1" xref="p1.1.m1.1.cmml">
   <semantics xml:id="p1.1.m1.1a" xref="p1.1.m1.1.cmml">
     <mi xml:id="p1.1.m1.1.1" xref="p1.1.m1.1.1.cmml">A</mi>
@@ -269,7 +269,7 @@
 </math>
 </mws:expr>
 
-<mws:expr url="math.4.7">
+<mws:expr url="4#math.4.7">
 	<math xmlns="http://www.w3.org/1998/Math/MathML" id="p1.1.m1" class="ltx_Math" alttext="{\displaystyle D}" display="inline" xml:id="p1.1.m1.1" xref="p1.1.m1.1.cmml">
   <semantics xml:id="p1.1.m1.1a" xref="p1.1.m1.1.cmml">
     <mi xml:id="p1.1.m1.1.1" xref="p1.1.m1.1.1.cmml">D</mi>
@@ -281,7 +281,7 @@
 </math>
 </mws:expr>
 
-<mws:expr url="math.4.8">
+<mws:expr url="4#math.4.8">
 	<math xmlns="http://www.w3.org/1998/Math/MathML" id="p1.1.m1" class="ltx_Math" alttext="{\displaystyle H}" display="inline" xml:id="p1.1.m1.1" xref="p1.1.m1.1.cmml">
   <semantics xml:id="p1.1.m1.1a" xref="p1.1.m1.1.cmml">
     <mi xml:id="p1.1.m1.1.1" xref="p1.1.m1.1.1.cmml">H</mi>
@@ -293,7 +293,7 @@
 </math>
 </mws:expr>
 
-<mws:expr url="math.5.0">
+<mws:expr url="5#math.5.0">
 	<math xmlns="http://www.w3.org/1998/Math/MathML" id="p1.1.m1" class="ltx_Math" alttext="{\displaystyle a_{1},\ldots,a_{n}.}" display="inline" xml:id="p1.1.m1.1" xref="p1.1.m1.1.cmml">
   <semantics xml:id="p1.1.m1.1a" xref="p1.1.m1.1.cmml">
     <mrow xml:id="p1.1.m1.1.9" xref="p1.1.m1.1.9.cmml">
@@ -333,7 +333,7 @@
 </math>
 </mws:expr>
 
-<mws:expr url="math.5.1">
+<mws:expr url="5#math.5.1">
 	<math xmlns="http://www.w3.org/1998/Math/MathML" id="p1.1.m1" class="ltx_Math" alttext="{\displaystyle A}" display="inline" xml:id="p1.1.m1.1" xref="p1.1.m1.1.cmml">
   <semantics xml:id="p1.1.m1.1a" xref="p1.1.m1.1.cmml">
     <mi xml:id="p1.1.m1.1.1" xref="p1.1.m1.1.1.cmml">A</mi>
@@ -345,7 +345,7 @@
 </math>
 </mws:expr>
 
-<mws:expr url="math.5.2">
+<mws:expr url="5#math.5.2">
 	<math xmlns="http://www.w3.org/1998/Math/MathML" id="p1.1.m1" class="ltx_Math" alttext="{\displaystyle A={\frac{1}{n}}\sum_{{i=1}}^{{n}}a_{i}}" display="inline" xml:id="p1.1.m1.1" xref="p1.1.m1.1.cmml">
   <semantics xml:id="p1.1.m1.1a" xref="p1.1.m1.1.cmml">
     <mrow xml:id="p1.1.m1.1.9" xref="p1.1.m1.1.9.cmml">
@@ -417,7 +417,7 @@
 </math>
 </mws:expr>
 
-<mws:expr url="math.5.3">
+<mws:expr url="5#math.5.3">
 	<math xmlns="http://www.w3.org/1998/Math/MathML" id="p1.1.m1" class="ltx_Math" alttext="{\displaystyle{\bar{x}}}" display="inline" xml:id="p1.1.m1.1" xref="p1.1.m1.1.cmml">
   <semantics xml:id="p1.1.m1.1a" xref="p1.1.m1.1.cmml">
     <mover accent="true" xml:id="p1.1.m1.1.1" xref="p1.1.m1.1.1.cmml">
@@ -435,7 +435,7 @@
 </math>
 </mws:expr>
 
-<mws:expr url="math.5.4">
+<mws:expr url="5#math.5.4">
 	<math xmlns="http://www.w3.org/1998/Math/MathML" id="p1.1.m1" class="ltx_Math" alttext="{\displaystyle n}" display="inline" xml:id="p1.1.m1.1" xref="p1.1.m1.1.cmml">
   <semantics xml:id="p1.1.m1.1a" xref="p1.1.m1.1.cmml">
     <mi xml:id="p1.1.m1.1.1" xref="p1.1.m1.1.1.cmml">n</mi>
@@ -447,7 +447,7 @@
 </math>
 </mws:expr>
 
-<mws:expr url="math.5.5">
+<mws:expr url="5#math.5.5">
 	<math xmlns="http://www.w3.org/1998/Math/MathML" id="p1.1.m1" class="ltx_Math" alttext="{\displaystyle x_{1},x_{2},\ldots,x_{n}}" display="inline" xml:id="p1.1.m1.1" xref="p1.1.m1.1.cmml">
   <semantics xml:id="p1.1.m1.1a" xref="p1.1.m1.1.cmml">
     <mrow xml:id="p1.1.m1.1.11" xref="p1.1.m1.1.11.cmml">
@@ -494,7 +494,7 @@
 </math>
 </mws:expr>
 
-<mws:expr url="math.5.6">
+<mws:expr url="5#math.5.6">
 	<math xmlns="http://www.w3.org/1998/Math/MathML" id="p1.1.m1" class="ltx_Math" alttext="{\displaystyle x_{1},\ldots,x_{n}}" display="inline" xml:id="p1.1.m1.1" xref="p1.1.m1.1.cmml">
   <semantics xml:id="p1.1.m1.1a" xref="p1.1.m1.1.cmml">
     <mrow xml:id="p1.1.m1.1.8" xref="p1.1.m1.1.8.cmml">
@@ -531,7 +531,7 @@
 </math>
 </mws:expr>
 
-<mws:expr url="math.5.7">
+<mws:expr url="5#math.5.7">
 	<math xmlns="http://www.w3.org/1998/Math/MathML" id="p1.1.m1" class="ltx_Math" alttext="{\displaystyle{\bar{x}}}" display="inline" xml:id="p1.1.m1.1" xref="p1.1.m1.1.cmml">
   <semantics xml:id="p1.1.m1.1a" xref="p1.1.m1.1.cmml">
     <mover accent="true" xml:id="p1.1.m1.1.1" xref="p1.1.m1.1.1.cmml">
@@ -549,7 +549,7 @@
 </math>
 </mws:expr>
 
-<mws:expr url="math.5.8">
+<mws:expr url="5#math.5.8">
 	<math xmlns="http://www.w3.org/1998/Math/MathML" id="p1.1.m1" class="ltx_Math" alttext="{\displaystyle(x_{1}-{\bar{x}})+\cdots+(x_{n}-{\bar{x}})=0}" display="inline" xml:id="p1.1.m1.1" xref="p1.1.m1.1.cmml">
   <semantics xml:id="p1.1.m1.1a" xref="p1.1.m1.1.cmml">
     <mrow xml:id="p1.1.m1.1.18" xref="p1.1.m1.1.18.cmml">
@@ -630,7 +630,7 @@
 </math>
 </mws:expr>
 
-<mws:expr url="math.5.9">
+<mws:expr url="5#math.5.9">
 	<math xmlns="http://www.w3.org/1998/Math/MathML" id="p1.1.m1" class="ltx_Math" alttext="{\displaystyle x_{i}-{\bar{x}}}" display="inline" xml:id="p1.1.m1.1" xref="p1.1.m1.1.cmml">
   <semantics xml:id="p1.1.m1.1a" xref="p1.1.m1.1.cmml">
     <mrow xml:id="p1.1.m1.1.5" xref="p1.1.m1.1.5.cmml">
@@ -663,7 +663,7 @@
 </math>
 </mws:expr>
 
-<mws:expr url="math.5.10">
+<mws:expr url="5#math.5.10">
 	<math xmlns="http://www.w3.org/1998/Math/MathML" id="p1.1.m1" class="ltx_Math" alttext="{\displaystyle x_{1},\ldots,x_{n}}" display="inline" xml:id="p1.1.m1.1" xref="p1.1.m1.1.cmml">
   <semantics xml:id="p1.1.m1.1a" xref="p1.1.m1.1.cmml">
     <mrow xml:id="p1.1.m1.1.8" xref="p1.1.m1.1.8.cmml">
@@ -700,7 +700,7 @@
 </math>
 </mws:expr>
 
-<mws:expr url="math.5.11">
+<mws:expr url="5#math.5.11">
 	<math xmlns="http://www.w3.org/1998/Math/MathML" id="p1.1.m1" class="ltx_Math" alttext="{\displaystyle(x_{i}-{\bar{x}})^{2}}" display="inline" xml:id="p1.1.m1.1" xref="p1.1.m1.1.cmml">
   <semantics xml:id="p1.1.m1.1a" xref="p1.1.m1.1.cmml">
     <msup xml:id="p1.1.m1.1.8" xref="p1.1.m1.1.8.cmml">
@@ -744,7 +744,7 @@
 </math>
 </mws:expr>
 
-<mws:expr url="math.5.12">
+<mws:expr url="5#math.5.12">
 	<math xmlns="http://www.w3.org/1998/Math/MathML" id="p1.1.m1" class="ltx_Math" alttext="{\displaystyle{1,2,3,4}}" display="inline" xml:id="p1.1.m1.1" xref="p1.1.m1.1.cmml">
   <semantics xml:id="p1.1.m1.1a" xref="p1.1.m1.1.cmml">
     <mrow xml:id="p1.1.m1.1.8" xref="p1.1.m1.1.8.cmml">
@@ -770,7 +770,7 @@
 </math>
 </mws:expr>
 
-<mws:expr url="math.5.13">
+<mws:expr url="5#math.5.13">
 	<math xmlns="http://www.w3.org/1998/Math/MathML" id="p1.1.m1" class="ltx_Math" alttext="{\displaystyle 2.5}" display="inline" xml:id="p1.1.m1.1" xref="p1.1.m1.1.cmml">
   <semantics xml:id="p1.1.m1.1a" xref="p1.1.m1.1.cmml">
     <mn xml:id="p1.1.m1.1.3" xref="p1.1.m1.1.3.cmml">2.5</mn>
@@ -782,7 +782,7 @@
 </math>
 </mws:expr>
 
-<mws:expr url="math.5.14">
+<mws:expr url="5#math.5.14">
 	<math xmlns="http://www.w3.org/1998/Math/MathML" id="p1.1.m1" class="ltx_Math" alttext="{\displaystyle{1,2,4,8,16}}" display="inline" xml:id="p1.1.m1.1" xref="p1.1.m1.1.cmml">
   <semantics xml:id="p1.1.m1.1a" xref="p1.1.m1.1.cmml">
     <mrow xml:id="p1.1.m1.1.11" xref="p1.1.m1.1.11.cmml">
@@ -811,7 +811,7 @@
 </math>
 </mws:expr>
 
-<mws:expr url="math.5.15">
+<mws:expr url="5#math.5.15">
 	<math xmlns="http://www.w3.org/1998/Math/MathML" id="p1.1.m1" class="ltx_Math" alttext="{\displaystyle 3}" display="inline" xml:id="p1.1.m1.1" xref="p1.1.m1.1.cmml">
   <semantics xml:id="p1.1.m1.1a" xref="p1.1.m1.1.cmml">
     <mn xml:id="p1.1.m1.1.1" xref="p1.1.m1.1.1.cmml">3</mn>
@@ -823,7 +823,7 @@
 </math>
 </mws:expr>
 
-<mws:expr url="math.5.16">
+<mws:expr url="5#math.5.16">
 	<math xmlns="http://www.w3.org/1998/Math/MathML" id="p1.1.m1" class="ltx_Math" alttext="{\displaystyle 5}" display="inline" xml:id="p1.1.m1.1" xref="p1.1.m1.1.cmml">
   <semantics xml:id="p1.1.m1.1a" xref="p1.1.m1.1.cmml">
     <mn xml:id="p1.1.m1.1.1" xref="p1.1.m1.1.1.cmml">5</mn>
@@ -835,7 +835,7 @@
 </math>
 </mws:expr>
 
-<mws:expr url="math.5.17">
+<mws:expr url="5#math.5.17">
 	<math xmlns="http://www.w3.org/1998/Math/MathML" id="p1.1.m1" class="ltx_Math" alttext="{\displaystyle{\frac{(3+5)}{2}}=4}" display="inline" xml:id="p1.1.m1.1" xref="p1.1.m1.1.cmml">
   <semantics xml:id="p1.1.m1.1a" xref="p1.1.m1.1.cmml">
     <mrow xml:id="p1.1.m1.1.4" xref="p1.1.m1.1.4.cmml">
@@ -876,7 +876,7 @@
 </math>
 </mws:expr>
 
-<mws:expr url="math.5.18">
+<mws:expr url="5#math.5.18">
 	<math xmlns="http://www.w3.org/1998/Math/MathML" id="p1.1.m1" class="ltx_Math" alttext="{\displaystyle\left({\frac{1}{2}}\cdot 3\right)+\left({\frac{1}{2}}\cdot 5%&#10;\right)=4}" display="inline" xml:id="p1.1.m1.1" xref="p1.1.m1.1.cmml">
   <semantics xml:id="p1.1.m1.1a" xref="p1.1.m1.1.cmml">
     <mrow xml:id="p1.1.m1.1.14" xref="p1.1.m1.1.14.cmml">
@@ -947,7 +947,7 @@
 </math>
 </mws:expr>
 
-<mws:expr url="math.5.19">
+<mws:expr url="5#math.5.19">
 	<math xmlns="http://www.w3.org/1998/Math/MathML" id="p1.1.m1" class="ltx_Math" alttext="{\displaystyle\left({\frac{2}{3}}\cdot 3\right)+\left({\frac{1}{3}}\cdot 5%&#10;\right)={\frac{11}{3}}}" display="inline" xml:id="p1.1.m1.1" xref="p1.1.m1.1.cmml">
   <semantics xml:id="p1.1.m1.1a" xref="p1.1.m1.1.cmml">
     <mrow xml:id="p1.1.m1.1.14" xref="p1.1.m1.1.14.cmml">
@@ -1027,7 +1027,7 @@
 </math>
 </mws:expr>
 
-<mws:expr url="math.5.20">
+<mws:expr url="5#math.5.20">
 	<math xmlns="http://www.w3.org/1998/Math/MathML" id="p1.1.m1" class="ltx_Math" alttext="{\displaystyle(2/3)}" display="inline" xml:id="p1.1.m1.1" xref="p1.1.m1.1.cmml">
   <semantics xml:id="p1.1.m1.1a" xref="p1.1.m1.1.cmml">
     <mrow xml:id="p1.1.m1.1.6" xref="p1.1.m1.1.6.cmml">
@@ -1051,7 +1051,7 @@
 </math>
 </mws:expr>
 
-<mws:expr url="math.5.21">
+<mws:expr url="5#math.5.21">
 	<math xmlns="http://www.w3.org/1998/Math/MathML" id="p1.1.m1" class="ltx_Math" alttext="{\displaystyle(1/3)}" display="inline" xml:id="p1.1.m1.1" xref="p1.1.m1.1.cmml">
   <semantics xml:id="p1.1.m1.1a" xref="p1.1.m1.1.cmml">
     <mrow xml:id="p1.1.m1.1.6" xref="p1.1.m1.1.6.cmml">
@@ -1075,7 +1075,7 @@
 </math>
 </mws:expr>
 
-<mws:expr url="math.5.22">
+<mws:expr url="5#math.5.22">
 	<math xmlns="http://www.w3.org/1998/Math/MathML" id="p1.1.m1" class="ltx_Math" alttext="{\displaystyle{\frac{1}{2}}}" display="inline" xml:id="p1.1.m1.1" xref="p1.1.m1.1.cmml">
   <semantics xml:id="p1.1.m1.1a" xref="p1.1.m1.1.cmml">
     <mstyle displaystyle="true" xml:id="p1.1.m1.1.1" xref="p1.1.m1.1.1.cmml">
@@ -1096,7 +1096,7 @@
 </math>
 </mws:expr>
 
-<mws:expr url="math.5.23">
+<mws:expr url="5#math.5.23">
 	<math xmlns="http://www.w3.org/1998/Math/MathML" id="p1.1.m1" class="ltx_Math" alttext="{\displaystyle{\frac{1}{n}}}" display="inline" xml:id="p1.1.m1.1" xref="p1.1.m1.1.cmml">
   <semantics xml:id="p1.1.m1.1a" xref="p1.1.m1.1.cmml">
     <mstyle displaystyle="true" xml:id="p1.1.m1.1.1" xref="p1.1.m1.1.1.cmml">
@@ -1117,7 +1117,7 @@
 </math>
 </mws:expr>
 
-<mws:expr url="math.5.24">
+<mws:expr url="5#math.5.24">
 	<math xmlns="http://www.w3.org/1998/Math/MathML" id="p1.1.m1" class="ltx_Math" alttext="{\displaystyle n}" display="inline" xml:id="p1.1.m1.1" xref="p1.1.m1.1.cmml">
   <semantics xml:id="p1.1.m1.1a" xref="p1.1.m1.1.cmml">
     <mi xml:id="p1.1.m1.1.1" xref="p1.1.m1.1.1.cmml">n</mi>
@@ -1129,7 +1129,7 @@
 </math>
 </mws:expr>
 
-<mws:expr url="math.6.0">
+<mws:expr url="6#math.6.0">
 	<math xmlns="http://www.w3.org/1998/Math/MathML" id="p1.1.m1" class="ltx_Math" alttext="{\displaystyle\varepsilon}" display="inline" xml:id="p1.1.m1.1" xref="p1.1.m1.1.cmml">
   <semantics xml:id="p1.1.m1.1a" xref="p1.1.m1.1.cmml">
     <mi xml:id="p1.1.m1.1.1" xref="p1.1.m1.1.1.cmml">ε</mi>
@@ -1141,7 +1141,7 @@
 </math>
 </mws:expr>
 
-<mws:expr url="math.6.1">
+<mws:expr url="6#math.6.1">
 	<math xmlns="http://www.w3.org/1998/Math/MathML" id="p1.1.m1" class="ltx_Math" alttext="{\displaystyle\varepsilon\thicksim N(0,\sigma^{2}).\,}" display="inline" xml:id="p1.1.m1.1" xref="p1.1.m1.1.cmml">
   <semantics xml:id="p1.1.m1.1a" xref="p1.1.m1.1.cmml">
     <mrow xml:id="p1.1.m1.1.12" xref="p1.1.m1.1.12.cmml">
@@ -1191,7 +1191,7 @@
 </math>
 </mws:expr>
 
-<mws:expr url="math.6.2">
+<mws:expr url="6#math.6.2">
 	<math xmlns="http://www.w3.org/1998/Math/MathML" id="p1.1.m1" class="ltx_Math" alttext="{\displaystyle y_{{i,j}}}" display="inline" xml:id="p1.1.m1.1" xref="p1.1.m1.1.cmml">
   <semantics xml:id="p1.1.m1.1a" xref="p1.1.m1.1.cmml">
     <msub xml:id="p1.1.m1.1.3" xref="p1.1.m1.1.3.cmml">
@@ -1218,7 +1218,7 @@
 </math>
 </mws:expr>
 
-<mws:expr url="math.6.3">
+<mws:expr url="6#math.6.3">
 	<math xmlns="http://www.w3.org/1998/Math/MathML" id="p1.1.m1" class="ltx_Math" alttext="{\displaystyle i}" display="inline" xml:id="p1.1.m1.1" xref="p1.1.m1.1.cmml">
   <semantics xml:id="p1.1.m1.1a" xref="p1.1.m1.1.cmml">
     <mi xml:id="p1.1.m1.1.1" xref="p1.1.m1.1.1.cmml">i</mi>
@@ -1230,7 +1230,7 @@
 </math>
 </mws:expr>
 
-<mws:expr url="math.6.4">
+<mws:expr url="6#math.6.4">
 	<math xmlns="http://www.w3.org/1998/Math/MathML" id="p1.1.m1" class="ltx_Math" alttext="{\displaystyle j}" display="inline" xml:id="p1.1.m1.1" xref="p1.1.m1.1.cmml">
   <semantics xml:id="p1.1.m1.1a" xref="p1.1.m1.1.cmml">
     <mi xml:id="p1.1.m1.1.1" xref="p1.1.m1.1.1.cmml">j</mi>
@@ -1242,7 +1242,7 @@
 </math>
 </mws:expr>
 
-<mws:expr url="math.6.5">
+<mws:expr url="6#math.6.5">
 	<math xmlns="http://www.w3.org/1998/Math/MathML" id="p1.1.m1" class="ltx_Math" alttext="{\displaystyle y_{i}}" display="inline" xml:id="p1.1.m1.1" xref="p1.1.m1.1.cmml">
   <semantics xml:id="p1.1.m1.1a" xref="p1.1.m1.1.cmml">
     <msub xml:id="p1.1.m1.1.3" xref="p1.1.m1.1.3.cmml">
@@ -1261,7 +1261,7 @@
 </math>
 </mws:expr>
 
-<mws:expr url="math.6.6">
+<mws:expr url="6#math.6.6">
 	<math xmlns="http://www.w3.org/1998/Math/MathML" id="p1.1.m1" class="ltx_Math" alttext="{\displaystyle t_{j}}" display="inline" xml:id="p1.1.m1.1" xref="p1.1.m1.1.cmml">
   <semantics xml:id="p1.1.m1.1a" xref="p1.1.m1.1.cmml">
     <msub xml:id="p1.1.m1.1.3" xref="p1.1.m1.1.3.cmml">
@@ -1280,7 +1280,7 @@
 </math>
 </mws:expr>
 
-<mws:expr url="math.6.7">
+<mws:expr url="6#math.6.7">
 	<math xmlns="http://www.w3.org/1998/Math/MathML" id="p1.1.m1" class="ltx_Math" alttext="{\displaystyle y_{{i,j}}=y_{i}+t_{j}.}" display="inline" xml:id="p1.1.m1.1" xref="p1.1.m1.1.cmml">
   <semantics xml:id="p1.1.m1.1a" xref="p1.1.m1.1.cmml">
     <mrow xml:id="p1.1.m1.1.10" xref="p1.1.m1.1.10.cmml">
@@ -1340,7 +1340,7 @@
 </math>
 </mws:expr>
 
-<mws:expr url="math.6.8">
+<mws:expr url="6#math.6.8">
 	<math xmlns="http://www.w3.org/1998/Math/MathML" id="p1.1.m1" class="ltx_Math" alttext="{\displaystyle j}" display="inline" xml:id="p1.1.m1.1" xref="p1.1.m1.1.cmml">
   <semantics xml:id="p1.1.m1.1a" xref="p1.1.m1.1.cmml">
     <mi xml:id="p1.1.m1.1.1" xref="p1.1.m1.1.1.cmml">j</mi>
@@ -1352,7 +1352,7 @@
 </math>
 </mws:expr>
 
-<mws:expr url="math.6.9">
+<mws:expr url="6#math.6.9">
 	<math xmlns="http://www.w3.org/1998/Math/MathML" id="p1.1.m1" class="ltx_Math" alttext="{\displaystyle j}" display="inline" xml:id="p1.1.m1.1" xref="p1.1.m1.1.cmml">
   <semantics xml:id="p1.1.m1.1a" xref="p1.1.m1.1.cmml">
     <mi xml:id="p1.1.m1.1.1" xref="p1.1.m1.1.1.cmml">j</mi>
@@ -1364,7 +1364,7 @@
 </math>
 </mws:expr>
 
-<mws:expr url="math.6.10">
+<mws:expr url="6#math.6.10">
 	<math xmlns="http://www.w3.org/1998/Math/MathML" id="p1.1.m1" class="ltx_Math" alttext="{\displaystyle t_{j}}" display="inline" xml:id="p1.1.m1.1" xref="p1.1.m1.1.cmml">
   <semantics xml:id="p1.1.m1.1a" xref="p1.1.m1.1.cmml">
     <msub xml:id="p1.1.m1.1.3" xref="p1.1.m1.1.3.cmml">
@@ -1383,7 +1383,7 @@
 </math>
 </mws:expr>
 
-<mws:expr url="math.6.11">
+<mws:expr url="6#math.6.11">
 	<math xmlns="http://www.w3.org/1998/Math/MathML" id="p1.1.m1" class="ltx_Math" alttext="{\displaystyle s^{2}=\textstyle{\frac{1}{n-1}}\sum(y_{i}-{\bar{y}})^{2}}" display="inline" xml:id="p1.1.m1.1" xref="p1.1.m1.1.cmml">
   <semantics xml:id="p1.1.m1.1a" xref="p1.1.m1.1.cmml">
     <mrow xml:id="p1.1.m1.1.13" xref="p1.1.m1.1.13.cmml">
@@ -1471,7 +1471,7 @@
 </math>
 </mws:expr>
 
-<mws:expr url="math.6.12">
+<mws:expr url="6#math.6.12">
 	<math xmlns="http://www.w3.org/1998/Math/MathML" id="p1.1.m1" class="ltx_Math" alttext="{\displaystyle SS_{{\text{Total}}}=SS_{{\text{Error}}}+SS_{{\text{Treatments}}}}" display="inline" xml:id="p1.1.m1.1" xref="p1.1.m1.1.cmml">
   <semantics xml:id="p1.1.m1.1a" xref="p1.1.m1.1.cmml">
     <mrow xml:id="p1.1.m1.1.12" xref="p1.1.m1.1.12.cmml">
@@ -1544,7 +1544,7 @@
 </math>
 </mws:expr>
 
-<mws:expr url="math.6.13">
+<mws:expr url="6#math.6.13">
 	<math xmlns="http://www.w3.org/1998/Math/MathML" id="p1.1.m1" class="ltx_Math" alttext="{\displaystyle DF_{{\text{Total}}}=DF_{{\text{Error}}}+DF_{{\text{Treatments}}}}" display="inline" xml:id="p1.1.m1.1" xref="p1.1.m1.1.cmml">
   <semantics xml:id="p1.1.m1.1a" xref="p1.1.m1.1.cmml">
     <mrow xml:id="p1.1.m1.1.12" xref="p1.1.m1.1.12.cmml">
@@ -1617,7 +1617,7 @@
 </math>
 </mws:expr>
 
-<mws:expr url="math.6.14">
+<mws:expr url="6#math.6.14">
 	<math xmlns="http://www.w3.org/1998/Math/MathML" id="p1.1.m1" class="ltx_Math" alttext="{\displaystyle F={\frac{{\text{variance between treatments}}}{{\text{variance %&#10;within treatments}}}}}" display="inline" xml:id="p1.1.m1.1" xref="p1.1.m1.1.cmml">
   <semantics xml:id="p1.1.m1.1a" xref="p1.1.m1.1.cmml">
     <mrow xml:id="p1.1.m1.1.4" xref="p1.1.m1.1.4.cmml">
@@ -1647,7 +1647,7 @@ within treatments}}}}}</annotation>
 </math>
 </mws:expr>
 
-<mws:expr url="math.6.15">
+<mws:expr url="6#math.6.15">
 	<math xmlns="http://www.w3.org/1998/Math/MathML" id="p1.1.m1" class="ltx_Math" alttext="{\displaystyle F={\frac{MS_{{\text{Treatments}}}}{MS_{{\text{Error}}}}}={{SS_{%&#10;{\text{Treatments}}}/(I-1)}\over{SS_{{\text{Error}}}/(n_{T}-I)}}}" display="inline" xml:id="p1.1.m1.1" xref="p1.1.m1.1.cmml">
   <semantics xml:id="p1.1.m1.1a" xref="p1.1.m1.1.cmml">
     <mrow xml:id="p1.1.m1.1.6" xref="p1.1.m1.1.6.cmml">
@@ -1803,7 +1803,7 @@ within treatments}}}}}</annotation>
 </math>
 </mws:expr>
 
-<mws:expr url="math.6.16">
+<mws:expr url="6#math.6.16">
 	<math xmlns="http://www.w3.org/1998/Math/MathML" id="p1.1.m1" class="ltx_Math" alttext="{\displaystyle I}" display="inline" xml:id="p1.1.m1.1" xref="p1.1.m1.1.cmml">
   <semantics xml:id="p1.1.m1.1a" xref="p1.1.m1.1.cmml">
     <mi xml:id="p1.1.m1.1.1" xref="p1.1.m1.1.1.cmml">I</mi>
@@ -1815,7 +1815,7 @@ within treatments}}}}}</annotation>
 </math>
 </mws:expr>
 
-<mws:expr url="math.6.17">
+<mws:expr url="6#math.6.17">
 	<math xmlns="http://www.w3.org/1998/Math/MathML" id="p1.1.m1" class="ltx_Math" alttext="{\displaystyle n_{T}}" display="inline" xml:id="p1.1.m1.1" xref="p1.1.m1.1.cmml">
   <semantics xml:id="p1.1.m1.1a" xref="p1.1.m1.1.cmml">
     <msub xml:id="p1.1.m1.1.3" xref="p1.1.m1.1.3.cmml">
@@ -1834,7 +1834,7 @@ within treatments}}}}}</annotation>
 </math>
 </mws:expr>
 
-<mws:expr url="math.6.18">
+<mws:expr url="6#math.6.18">
 	<math xmlns="http://www.w3.org/1998/Math/MathML" id="p1.1.m1" class="ltx_Math" alttext="{\displaystyle I-1}" display="inline" xml:id="p1.1.m1.1" xref="p1.1.m1.1.cmml">
   <semantics xml:id="p1.1.m1.1a" xref="p1.1.m1.1.cmml">
     <mrow xml:id="p1.1.m1.1.4" xref="p1.1.m1.1.4.cmml">
@@ -1854,7 +1854,7 @@ within treatments}}}}}</annotation>
 </math>
 </mws:expr>
 
-<mws:expr url="math.6.19">
+<mws:expr url="6#math.6.19">
 	<math xmlns="http://www.w3.org/1998/Math/MathML" id="p1.1.m1" class="ltx_Math" alttext="{\displaystyle n_{T}-I}" display="inline" xml:id="p1.1.m1.1" xref="p1.1.m1.1.cmml">
   <semantics xml:id="p1.1.m1.1a" xref="p1.1.m1.1.cmml">
     <mrow xml:id="p1.1.m1.1.5" xref="p1.1.m1.1.5.cmml">
@@ -1881,7 +1881,7 @@ within treatments}}}}}</annotation>
 </math>
 </mws:expr>
 
-<mws:expr url="math.6.20">
+<mws:expr url="6#math.6.20">
 	<math xmlns="http://www.w3.org/1998/Math/MathML" id="p1.1.m1" class="ltx_Math" alttext="{\displaystyle 1+{n\sigma_{{\text{Treatment}}}^{2}}/{\sigma_{{\text{Error}}}^{%&#10;2}}}" display="inline" xml:id="p1.1.m1.1" xref="p1.1.m1.1.cmml">
   <semantics xml:id="p1.1.m1.1a" xref="p1.1.m1.1.cmml">
     <mrow xml:id="p1.1.m1.1.11" xref="p1.1.m1.1.11.cmml">
@@ -1942,7 +1942,7 @@ within treatments}}}}}</annotation>
 </math>
 </mws:expr>
 
-<mws:expr url="math.7.0">
+<mws:expr url="7#math.7.0">
 	<math xmlns="http://www.w3.org/1998/Math/MathML" id="p1.1.m1" class="ltx_Math" alttext="{\displaystyle K_{a}={\frac{[{\mbox{H}}^{+}][{\mbox{A}}^{-}]}{[{\mbox{HA}}]}}}" display="inline" xml:id="p1.1.m1.1" xref="p1.1.m1.1.cmml">
   <semantics xml:id="p1.1.m1.1a" xref="p1.1.m1.1.cmml">
     <mrow xml:id="p1.1.m1.1.5" xref="p1.1.m1.1.5.cmml">
@@ -2012,7 +2012,7 @@ within treatments}}}}}</annotation>
 </math>
 </mws:expr>
 
-<mws:expr url="math.7.1">
+<mws:expr url="7#math.7.1">
 	<math xmlns="http://www.w3.org/1998/Math/MathML" id="p1.1.m1" class="ltx_Math" alttext="{\displaystyle\alpha_{{H_{2}A}}={{[H^{+}]^{2}}\over{[H^{+}]^{2}+[H^{+}]K_{1}+K%&#10;_{1}K_{2}}}={{[H_{2}A]}\over{[H_{2}A]+[HA^{-}]+[A^{{2-}}]}}}" display="inline" xml:id="p1.1.m1.1" xref="p1.1.m1.1.cmml">
   <semantics xml:id="p1.1.m1.1a" xref="p1.1.m1.1.cmml">
     <mrow xml:id="p1.1.m1.1.7" xref="p1.1.m1.1.7.cmml">
@@ -2264,7 +2264,7 @@ _{1}K_{2}}}={{[H_{2}A]}\over{[H_{2}A]+[HA^{-}]+[A^{{2-}}]}}}</annotation>
 </math>
 </mws:expr>
 
-<mws:expr url="math.7.2">
+<mws:expr url="7#math.7.2">
 	<math xmlns="http://www.w3.org/1998/Math/MathML" id="p1.1.m1" class="ltx_Math" alttext="{\displaystyle\alpha_{{HA^{-}}}={{[H^{+}]K_{1}}\over{[H^{+}]^{2}+[H^{+}]K_{1}+%&#10;K_{1}K_{2}}}={{[HA^{-}]}\over{[H_{2}A]+[HA^{-}]+[A^{{2-}}]}}}" display="inline" xml:id="p1.1.m1.1" xref="p1.1.m1.1.cmml">
   <semantics xml:id="p1.1.m1.1a" xref="p1.1.m1.1.cmml">
     <mrow xml:id="p1.1.m1.1.7" xref="p1.1.m1.1.7.cmml">
@@ -2524,7 +2524,7 @@ K_{1}K_{2}}}={{[HA^{-}]}\over{[H_{2}A]+[HA^{-}]+[A^{{2-}}]}}}</annotation>
 </math>
 </mws:expr>
 
-<mws:expr url="math.7.3">
+<mws:expr url="7#math.7.3">
 	<math xmlns="http://www.w3.org/1998/Math/MathML" id="p1.1.m1" class="ltx_Math" alttext="{\displaystyle\alpha_{{A^{{2-}}}}={{K_{1}K_{2}}\over{[H^{+}]^{2}+[H^{+}]K_{1}+%&#10;K_{1}K_{2}}}={{[A^{{2-}}]}\over{[H_{2}A]+[HA^{-}]+[A^{{2-}}]}}}" display="inline" xml:id="p1.1.m1.1" xref="p1.1.m1.1.cmml">
   <semantics xml:id="p1.1.m1.1a" xref="p1.1.m1.1.cmml">
     <mrow xml:id="p1.1.m1.1.7" xref="p1.1.m1.1.7.cmml">
@@ -2778,7 +2778,7 @@ K_{1}K_{2}}}={{[A^{{2-}}]}\over{[H_{2}A]+[HA^{-}]+[A^{{2-}}]}}}</annotation>
 </math>
 </mws:expr>
 
-<mws:expr url="math.7.4">
+<mws:expr url="7#math.7.4">
 	<math xmlns="http://www.w3.org/1998/Math/MathML" id="p1.1.m1" class="ltx_Math" alttext="{\displaystyle\alpha_{{H_{{n-i}}A^{{i-}}}}={{[H^{+}]^{{n-i}}\displaystyle\prod%&#10;_{{j=0}}^{{i}}K_{j}}\over{\displaystyle\sum_{{i=0}}^{n}{\Big[}[H^{+}]^{{n-i}}%&#10;\displaystyle\prod_{{j=0}}^{{i}}K_{j}}{\Big]}}}" display="inline" xml:id="p1.1.m1.1" xref="p1.1.m1.1.cmml">
   <semantics xml:id="p1.1.m1.1a" xref="p1.1.m1.1.cmml">
     <mrow xml:id="p1.1.m1.1.5" xref="p1.1.m1.1.5.cmml">
@@ -3023,7 +3023,7 @@ _{{j=0}}^{{i}}K_{j}}\over{\displaystyle\sum_{{i=0}}^{n}{\Big[}[H^{+}]^{{n-i}}%
 </math>
 </mws:expr>
 
-<mws:expr url="math.8.0">
+<mws:expr url="8#math.8.0">
 	<math xmlns="http://www.w3.org/1998/Math/MathML" id="p1.1.m1" class="ltx_Math" alttext="{\displaystyle f=f(x)}" display="inline" xml:id="p1.1.m1.1" xref="p1.1.m1.1.cmml">
   <semantics xml:id="p1.1.m1.1a" xref="p1.1.m1.1.cmml">
     <mrow xml:id="p1.1.m1.1.7" xref="p1.1.m1.1.7.cmml">
@@ -3055,7 +3055,7 @@ _{{j=0}}^{{i}}K_{j}}\over{\displaystyle\sum_{{i=0}}^{n}{\Big[}[H^{+}]^{{n-i}}%
 </math>
 </mws:expr>
 
-<mws:expr url="math.8.1">
+<mws:expr url="8#math.8.1">
 	<math xmlns="http://www.w3.org/1998/Math/MathML" id="p1.1.m1" class="ltx_Math" alttext="{\displaystyle f=f(y+1)}" display="inline" xml:id="p1.1.m1.1" xref="p1.1.m1.1.cmml">
   <semantics xml:id="p1.1.m1.1a" xref="p1.1.m1.1.cmml">
     <mrow xml:id="p1.1.m1.1.9" xref="p1.1.m1.1.9.cmml">
@@ -3095,7 +3095,7 @@ _{{j=0}}^{{i}}K_{j}}\over{\displaystyle\sum_{{i=0}}^{n}{\Big[}[H^{+}]^{{n-i}}%
 </math>
 </mws:expr>
 
-<mws:expr url="math.8.2">
+<mws:expr url="8#math.8.2">
 	<math xmlns="http://www.w3.org/1998/Math/MathML" id="p1.1.m1" class="ltx_Math" alttext="{\displaystyle f=f(x)}" display="inline" xml:id="p1.1.m1.1" xref="p1.1.m1.1.cmml">
   <semantics xml:id="p1.1.m1.1a" xref="p1.1.m1.1.cmml">
     <mrow xml:id="p1.1.m1.1.7" xref="p1.1.m1.1.7.cmml">
@@ -3127,7 +3127,7 @@ _{{j=0}}^{{i}}K_{j}}\over{\displaystyle\sum_{{i=0}}^{n}{\Big[}[H^{+}]^{{n-i}}%
 </math>
 </mws:expr>
 
-<mws:expr url="math.8.3">
+<mws:expr url="8#math.8.3">
 	<math xmlns="http://www.w3.org/1998/Math/MathML" id="p1.1.m1" class="ltx_Math" alttext="{\displaystyle(y+1)}" display="inline" xml:id="p1.1.m1.1" xref="p1.1.m1.1.cmml">
   <semantics xml:id="p1.1.m1.1a" xref="p1.1.m1.1.cmml">
     <mrow xml:id="p1.1.m1.1.6" xref="p1.1.m1.1.6.cmml">
@@ -3151,7 +3151,7 @@ _{{j=0}}^{{i}}K_{j}}\over{\displaystyle\sum_{{i=0}}^{n}{\Big[}[H^{+}]^{{n-i}}%
 </math>
 </mws:expr>
 
-<mws:expr url="math.8.4">
+<mws:expr url="8#math.8.4">
 	<math xmlns="http://www.w3.org/1998/Math/MathML" id="p1.1.m1" class="ltx_Math" alttext="{\displaystyle f}" display="inline" xml:id="p1.1.m1.1" xref="p1.1.m1.1.cmml">
   <semantics xml:id="p1.1.m1.1a" xref="p1.1.m1.1.cmml">
     <mi xml:id="p1.1.m1.1.1" xref="p1.1.m1.1.1.cmml">f</mi>
@@ -3163,7 +3163,7 @@ _{{j=0}}^{{i}}K_{j}}\over{\displaystyle\sum_{{i=0}}^{n}{\Big[}[H^{+}]^{{n-i}}%
 </math>
 </mws:expr>
 
-<mws:expr url="math.8.5">
+<mws:expr url="8#math.8.5">
 	<math xmlns="http://www.w3.org/1998/Math/MathML" id="p1.1.m1" class="ltx_Math" alttext="{\displaystyle(y+1)}" display="inline" xml:id="p1.1.m1.1" xref="p1.1.m1.1.cmml">
   <semantics xml:id="p1.1.m1.1a" xref="p1.1.m1.1.cmml">
     <mrow xml:id="p1.1.m1.1.6" xref="p1.1.m1.1.6.cmml">
@@ -3187,7 +3187,7 @@ _{{j=0}}^{{i}}K_{j}}\over{\displaystyle\sum_{{i=0}}^{n}{\Big[}[H^{+}]^{{n-i}}%
 </math>
 </mws:expr>
 
-<mws:expr url="math.8.6">
+<mws:expr url="8#math.8.6">
 	<math xmlns="http://www.w3.org/1998/Math/MathML" id="p1.1.m1" class="ltx_Math" alttext="{\displaystyle a/bc}" display="inline" xml:id="p1.1.m1.1" xref="p1.1.m1.1.cmml">
   <semantics xml:id="p1.1.m1.1a" xref="p1.1.m1.1.cmml">
     <mrow xml:id="p1.1.m1.1.5" xref="p1.1.m1.1.5.cmml">
@@ -3215,7 +3215,7 @@ _{{j=0}}^{{i}}K_{j}}\over{\displaystyle\sum_{{i=0}}^{n}{\Big[}[H^{+}]^{{n-i}}%
 </math>
 </mws:expr>
 
-<mws:expr url="math.8.7">
+<mws:expr url="8#math.8.7">
 	<math xmlns="http://www.w3.org/1998/Math/MathML" id="p1.1.m1" class="ltx_Math" alttext="{\displaystyle a/(bc)}" display="inline" xml:id="p1.1.m1.1" xref="p1.1.m1.1.cmml">
   <semantics xml:id="p1.1.m1.1a" xref="p1.1.m1.1.cmml">
     <mrow xml:id="p1.1.m1.1.7" xref="p1.1.m1.1.7.cmml">
@@ -3247,7 +3247,7 @@ _{{j=0}}^{{i}}K_{j}}\over{\displaystyle\sum_{{i=0}}^{n}{\Big[}[H^{+}]^{{n-i}}%
 </math>
 </mws:expr>
 
-<mws:expr url="math.8.8">
+<mws:expr url="8#math.8.8">
 	<math xmlns="http://www.w3.org/1998/Math/MathML" id="p1.1.m1" class="ltx_Math" alttext="{\displaystyle sin\alpha}" display="inline" xml:id="p1.1.m1.1" xref="p1.1.m1.1.cmml">
   <semantics xml:id="p1.1.m1.1a" xref="p1.1.m1.1.cmml">
     <mrow xml:id="p1.1.m1.1.5" xref="p1.1.m1.1.5.cmml">
@@ -3273,7 +3273,7 @@ _{{j=0}}^{{i}}K_{j}}\over{\displaystyle\sum_{{i=0}}^{n}{\Big[}[H^{+}]^{{n-i}}%
 </math>
 </mws:expr>
 
-<mws:expr url="math.8.9">
+<mws:expr url="8#math.8.9">
 	<math xmlns="http://www.w3.org/1998/Math/MathML" id="p1.1.m1" class="ltx_Math" alttext="{\displaystyle s}" display="inline" xml:id="p1.1.m1.1" xref="p1.1.m1.1.cmml">
   <semantics xml:id="p1.1.m1.1a" xref="p1.1.m1.1.cmml">
     <mi xml:id="p1.1.m1.1.1" xref="p1.1.m1.1.1.cmml">s</mi>
@@ -3285,7 +3285,7 @@ _{{j=0}}^{{i}}K_{j}}\over{\displaystyle\sum_{{i=0}}^{n}{\Big[}[H^{+}]^{{n-i}}%
 </math>
 </mws:expr>
 
-<mws:expr url="math.8.10">
+<mws:expr url="8#math.8.10">
 	<math xmlns="http://www.w3.org/1998/Math/MathML" id="p1.1.m1" class="ltx_Math" alttext="{\displaystyle i}" display="inline" xml:id="p1.1.m1.1" xref="p1.1.m1.1.cmml">
   <semantics xml:id="p1.1.m1.1a" xref="p1.1.m1.1.cmml">
     <mi xml:id="p1.1.m1.1.1" xref="p1.1.m1.1.1.cmml">i</mi>
@@ -3297,7 +3297,7 @@ _{{j=0}}^{{i}}K_{j}}\over{\displaystyle\sum_{{i=0}}^{n}{\Big[}[H^{+}]^{{n-i}}%
 </math>
 </mws:expr>
 
-<mws:expr url="math.8.11">
+<mws:expr url="8#math.8.11">
 	<math xmlns="http://www.w3.org/1998/Math/MathML" id="p1.1.m1" class="ltx_Math" alttext="{\displaystyle n}" display="inline" xml:id="p1.1.m1.1" xref="p1.1.m1.1.cmml">
   <semantics xml:id="p1.1.m1.1a" xref="p1.1.m1.1.cmml">
     <mi xml:id="p1.1.m1.1.1" xref="p1.1.m1.1.1.cmml">n</mi>
@@ -3309,7 +3309,7 @@ _{{j=0}}^{{i}}K_{j}}\over{\displaystyle\sum_{{i=0}}^{n}{\Big[}[H^{+}]^{{n-i}}%
 </math>
 </mws:expr>
 
-<mws:expr url="math.8.12">
+<mws:expr url="8#math.8.12">
 	<math xmlns="http://www.w3.org/1998/Math/MathML" id="p1.1.m1" class="ltx_Math" alttext="{\displaystyle\alpha}" display="inline" xml:id="p1.1.m1.1" xref="p1.1.m1.1.cmml">
   <semantics xml:id="p1.1.m1.1a" xref="p1.1.m1.1.cmml">
     <mi xml:id="p1.1.m1.1.1" xref="p1.1.m1.1.1.cmml">α</mi>
@@ -3321,7 +3321,7 @@ _{{j=0}}^{{i}}K_{j}}\over{\displaystyle\sum_{{i=0}}^{n}{\Big[}[H^{+}]^{{n-i}}%
 </math>
 </mws:expr>
 
-<mws:expr url="math.8.13">
+<mws:expr url="8#math.8.13">
 	<math xmlns="http://www.w3.org/1998/Math/MathML" id="p1.1.m1" class="ltx_Math" alttext="{\displaystyle\sin[\alpha]}" display="inline" xml:id="p1.1.m1.1" xref="p1.1.m1.1.cmml">
   <semantics xml:id="p1.1.m1.1a" xref="p1.1.m1.1.cmml">
     <mrow xml:id="p1.1.m1.1.5" xref="p1.1.m1.1.5.cmml">
@@ -3344,7 +3344,7 @@ _{{j=0}}^{{i}}K_{j}}\over{\displaystyle\sum_{{i=0}}^{n}{\Big[}[H^{+}]^{{n-i}}%
 </math>
 </mws:expr>
 
-<mws:expr url="math.8.14">
+<mws:expr url="8#math.8.14">
 	<math xmlns="http://www.w3.org/1998/Math/MathML" id="p1.1.m1" class="ltx_Math" alttext="{\displaystyle T_{{mnk}}}" display="inline" xml:id="p1.1.m1.1" xref="p1.1.m1.1.cmml">
   <semantics xml:id="p1.1.m1.1a" xref="p1.1.m1.1.cmml">
     <msub xml:id="p1.1.m1.1.3" xref="p1.1.m1.1.3.cmml">
@@ -3374,7 +3374,7 @@ _{{j=0}}^{{i}}K_{j}}\over{\displaystyle\sum_{{i=0}}^{n}{\Big[}[H^{+}]^{{n-i}}%
 </math>
 </mws:expr>
 
-<mws:expr url="math.8.15">
+<mws:expr url="8#math.8.15">
 	<math xmlns="http://www.w3.org/1998/Math/MathML" id="p1.1.m1" class="ltx_Math" alttext="{\displaystyle m}" display="inline" xml:id="p1.1.m1.1" xref="p1.1.m1.1.cmml">
   <semantics xml:id="p1.1.m1.1a" xref="p1.1.m1.1.cmml">
     <mi xml:id="p1.1.m1.1.1" xref="p1.1.m1.1.1.cmml">m</mi>
@@ -3386,7 +3386,7 @@ _{{j=0}}^{{i}}K_{j}}\over{\displaystyle\sum_{{i=0}}^{n}{\Big[}[H^{+}]^{{n-i}}%
 </math>
 </mws:expr>
 
-<mws:expr url="math.8.16">
+<mws:expr url="8#math.8.16">
 	<math xmlns="http://www.w3.org/1998/Math/MathML" id="p1.1.m1" class="ltx_Math" alttext="{\displaystyle n}" display="inline" xml:id="p1.1.m1.1" xref="p1.1.m1.1.cmml">
   <semantics xml:id="p1.1.m1.1a" xref="p1.1.m1.1.cmml">
     <mi xml:id="p1.1.m1.1.1" xref="p1.1.m1.1.1.cmml">n</mi>
@@ -3398,7 +3398,7 @@ _{{j=0}}^{{i}}K_{j}}\over{\displaystyle\sum_{{i=0}}^{n}{\Big[}[H^{+}]^{{n-i}}%
 </math>
 </mws:expr>
 
-<mws:expr url="math.8.17">
+<mws:expr url="8#math.8.17">
 	<math xmlns="http://www.w3.org/1998/Math/MathML" id="p1.1.m1" class="ltx_Math" alttext="{\displaystyle k}" display="inline" xml:id="p1.1.m1.1" xref="p1.1.m1.1.cmml">
   <semantics xml:id="p1.1.m1.1a" xref="p1.1.m1.1.cmml">
     <mi xml:id="p1.1.m1.1.1" xref="p1.1.m1.1.1.cmml">k</mi>
@@ -3410,7 +3410,7 @@ _{{j=0}}^{{i}}K_{j}}\over{\displaystyle\sum_{{i=0}}^{n}{\Big[}[H^{+}]^{{n-i}}%
 </math>
 </mws:expr>
 
-<mws:expr url="math.8.18">
+<mws:expr url="8#math.8.18">
 	<math xmlns="http://www.w3.org/1998/Math/MathML" id="p1.1.m1" class="ltx_Math" alttext="{\displaystyle T_{{mnk}}}" display="inline" xml:id="p1.1.m1.1" xref="p1.1.m1.1.cmml">
   <semantics xml:id="p1.1.m1.1a" xref="p1.1.m1.1.cmml">
     <msub xml:id="p1.1.m1.1.3" xref="p1.1.m1.1.3.cmml">
@@ -3440,7 +3440,7 @@ _{{j=0}}^{{i}}K_{j}}\over{\displaystyle\sum_{{i=0}}^{n}{\Big[}[H^{+}]^{{n-i}}%
 </math>
 </mws:expr>
 
-<mws:expr url="math.8.19">
+<mws:expr url="8#math.8.19">
 	<math xmlns="http://www.w3.org/1998/Math/MathML" id="p1.1.m1" class="ltx_Math" alttext="{\displaystyle T_{{m,n,k}}}" display="inline" xml:id="p1.1.m1.1" xref="p1.1.m1.1.cmml">
   <semantics xml:id="p1.1.m1.1a" xref="p1.1.m1.1.cmml">
     <msub xml:id="p1.1.m1.1.3" xref="p1.1.m1.1.3.cmml">
@@ -3470,7 +3470,7 @@ _{{j=0}}^{{i}}K_{j}}\over{\displaystyle\sum_{{i=0}}^{n}{\Big[}[H^{+}]^{{n-i}}%
 </math>
 </mws:expr>
 
-<mws:expr url="math.8.20">
+<mws:expr url="8#math.8.20">
 	<math xmlns="http://www.w3.org/1998/Math/MathML" id="p1.1.m1" class="ltx_Math" alttext="{\displaystyle F_{{x}}}" display="inline" xml:id="p1.1.m1.1" xref="p1.1.m1.1.cmml">
   <semantics xml:id="p1.1.m1.1a" xref="p1.1.m1.1.cmml">
     <msub xml:id="p1.1.m1.1.3" xref="p1.1.m1.1.3.cmml">
@@ -3489,7 +3489,7 @@ _{{j=0}}^{{i}}K_{j}}\over{\displaystyle\sum_{{i=0}}^{n}{\Big[}[H^{+}]^{{n-i}}%
 </math>
 </mws:expr>
 
-<mws:expr url="math.8.21">
+<mws:expr url="8#math.8.21">
 	<math xmlns="http://www.w3.org/1998/Math/MathML" id="p1.1.m1" class="ltx_Math" alttext="{\displaystyle\sin^{2}\alpha/2\,}" display="inline" xml:id="p1.1.m1.1" xref="p1.1.m1.1.cmml">
   <semantics xml:id="p1.1.m1.1a" xref="p1.1.m1.1.cmml">
     <mrow xml:id="p1.1.m1.1.7" xref="p1.1.m1.1.7.cmml">
@@ -3525,7 +3525,7 @@ _{{j=0}}^{{i}}K_{j}}\over{\displaystyle\sum_{{i=0}}^{n}{\Big[}[H^{+}]^{{n-i}}%
 </math>
 </mws:expr>
 
-<mws:expr url="math.8.22">
+<mws:expr url="8#math.8.22">
 	<math xmlns="http://www.w3.org/1998/Math/MathML" id="p1.1.m1" class="ltx_Math" alttext="{\displaystyle(\sin(\alpha/2))^{2}\,}" display="inline" xml:id="p1.1.m1.1" xref="p1.1.m1.1.cmml">
   <semantics xml:id="p1.1.m1.1a" xref="p1.1.m1.1.cmml">
     <mpadded width="+1.67pt" xml:id="p1.1.m1.1.11" xref="p1.1.m1.1.11.cmml">
@@ -3569,7 +3569,7 @@ _{{j=0}}^{{i}}K_{j}}\over{\displaystyle\sum_{{i=0}}^{n}{\Big[}[H^{+}]^{{n-i}}%
 </math>
 </mws:expr>
 
-<mws:expr url="math.8.23">
+<mws:expr url="8#math.8.23">
 	<math xmlns="http://www.w3.org/1998/Math/MathML" id="p1.1.m1" class="ltx_Math" alttext="{\displaystyle(\sin(\alpha))^{2}/2\,}" display="inline" xml:id="p1.1.m1.1" xref="p1.1.m1.1.cmml">
   <semantics xml:id="p1.1.m1.1a" xref="p1.1.m1.1.cmml">
     <mrow xml:id="p1.1.m1.1.11" xref="p1.1.m1.1.11.cmml">
@@ -3613,7 +3613,7 @@ _{{j=0}}^{{i}}K_{j}}\over{\displaystyle\sum_{{i=0}}^{n}{\Big[}[H^{+}]^{{n-i}}%
 </math>
 </mws:expr>
 
-<mws:expr url="math.8.24">
+<mws:expr url="8#math.8.24">
 	<math xmlns="http://www.w3.org/1998/Math/MathML" id="p1.1.m1" class="ltx_Math" alttext="{\displaystyle\sin^{2}(x)}" display="inline" xml:id="p1.1.m1.1" xref="p1.1.m1.1.cmml">
   <semantics xml:id="p1.1.m1.1a" xref="p1.1.m1.1.cmml">
     <mrow xml:id="p1.1.m1.1.6" xref="p1.1.m1.1.6.cmml">
@@ -3643,7 +3643,7 @@ _{{j=0}}^{{i}}K_{j}}\over{\displaystyle\sum_{{i=0}}^{n}{\Big[}[H^{+}]^{{n-i}}%
 </math>
 </mws:expr>
 
-<mws:expr url="math.8.25">
+<mws:expr url="8#math.8.25">
 	<math xmlns="http://www.w3.org/1998/Math/MathML" id="p1.1.m1" class="ltx_Math" alttext="{\displaystyle\sin(\sin(x))}" display="inline" xml:id="p1.1.m1.1" xref="p1.1.m1.1.cmml">
   <semantics xml:id="p1.1.m1.1a" xref="p1.1.m1.1.cmml">
     <mrow xml:id="p1.1.m1.1.8" xref="p1.1.m1.1.8.cmml">
@@ -3677,7 +3677,7 @@ _{{j=0}}^{{i}}K_{j}}\over{\displaystyle\sum_{{i=0}}^{n}{\Big[}[H^{+}]^{{n-i}}%
 </math>
 </mws:expr>
 
-<mws:expr url="math.8.26">
+<mws:expr url="8#math.8.26">
 	<math xmlns="http://www.w3.org/1998/Math/MathML" id="p1.1.m1" class="ltx_Math" alttext="{\displaystyle\exp^{2}(x)}" display="inline" xml:id="p1.1.m1.1" xref="p1.1.m1.1.cmml">
   <semantics xml:id="p1.1.m1.1a" xref="p1.1.m1.1.cmml">
     <mrow xml:id="p1.1.m1.1.6" xref="p1.1.m1.1.6.cmml">
@@ -3707,7 +3707,7 @@ _{{j=0}}^{{i}}K_{j}}\over{\displaystyle\sum_{{i=0}}^{n}{\Big[}[H^{+}]^{{n-i}}%
 </math>
 </mws:expr>
 
-<mws:expr url="math.8.27">
+<mws:expr url="8#math.8.27">
 	<math xmlns="http://www.w3.org/1998/Math/MathML" id="p1.1.m1" class="ltx_Math" alttext="{\displaystyle\exp(\exp(x))}" display="inline" xml:id="p1.1.m1.1" xref="p1.1.m1.1.cmml">
   <semantics xml:id="p1.1.m1.1a" xref="p1.1.m1.1.cmml">
     <mrow xml:id="p1.1.m1.1.8" xref="p1.1.m1.1.8.cmml">
@@ -3741,7 +3741,7 @@ _{{j=0}}^{{i}}K_{j}}\over{\displaystyle\sum_{{i=0}}^{n}{\Big[}[H^{+}]^{{n-i}}%
 </math>
 </mws:expr>
 
-<mws:expr url="math.8.28">
+<mws:expr url="8#math.8.28">
 	<math xmlns="http://www.w3.org/1998/Math/MathML" id="p1.1.m1" class="ltx_Math" alttext="{\displaystyle\sin^{{-1}}\alpha}" display="inline" xml:id="p1.1.m1.1" xref="p1.1.m1.1.cmml">
   <semantics xml:id="p1.1.m1.1a" xref="p1.1.m1.1.cmml">
     <mrow xml:id="p1.1.m1.1.4" xref="p1.1.m1.1.4.cmml">
@@ -3773,7 +3773,7 @@ _{{j=0}}^{{i}}K_{j}}\over{\displaystyle\sum_{{i=0}}^{n}{\Big[}[H^{+}]^{{n-i}}%
 </math>
 </mws:expr>
 
-<mws:expr url="math.8.29">
+<mws:expr url="8#math.8.29">
 	<math xmlns="http://www.w3.org/1998/Math/MathML" id="p1.1.m1" class="ltx_Math" alttext="{\displaystyle\arcsin(\alpha)}" display="inline" xml:id="p1.1.m1.1" xref="p1.1.m1.1.cmml">
   <semantics xml:id="p1.1.m1.1a" xref="p1.1.m1.1.cmml">
     <mrow xml:id="p1.1.m1.1.5" xref="p1.1.m1.1.5.cmml">
@@ -3796,7 +3796,7 @@ _{{j=0}}^{{i}}K_{j}}\over{\displaystyle\sum_{{i=0}}^{n}{\Big[}[H^{+}]^{{n-i}}%
 </math>
 </mws:expr>
 
-<mws:expr url="math.8.30">
+<mws:expr url="8#math.8.30">
 	<math xmlns="http://www.w3.org/1998/Math/MathML" id="p1.1.m1" class="ltx_Math" alttext="{\displaystyle(\sin(\alpha))^{{-1}}}" display="inline" xml:id="p1.1.m1.1" xref="p1.1.m1.1.cmml">
   <semantics xml:id="p1.1.m1.1a" xref="p1.1.m1.1.cmml">
     <msup xml:id="p1.1.m1.1.8" xref="p1.1.m1.1.8.cmml">
@@ -3836,7 +3836,7 @@ _{{j=0}}^{{i}}K_{j}}\over{\displaystyle\sum_{{i=0}}^{n}{\Big[}[H^{+}]^{{n-i}}%
 </math>
 </mws:expr>
 
-<mws:expr url="math.8.31">
+<mws:expr url="8#math.8.31">
 	<math xmlns="http://www.w3.org/1998/Math/MathML" id="p1.1.m1" class="ltx_Math" alttext="{\displaystyle\sin^{{n}}\alpha}" display="inline" xml:id="p1.1.m1.1" xref="p1.1.m1.1.cmml">
   <semantics xml:id="p1.1.m1.1a" xref="p1.1.m1.1.cmml">
     <mrow xml:id="p1.1.m1.1.4" xref="p1.1.m1.1.4.cmml">
@@ -3862,7 +3862,7 @@ _{{j=0}}^{{i}}K_{j}}\over{\displaystyle\sum_{{i=0}}^{n}{\Big[}[H^{+}]^{{n-i}}%
 </math>
 </mws:expr>
 
-<mws:expr url="math.8.32">
+<mws:expr url="8#math.8.32">
 	<math xmlns="http://www.w3.org/1998/Math/MathML" id="p1.1.m1" class="ltx_Math" alttext="{\displaystyle(\sin(\alpha))^{{n}}\,}" display="inline" xml:id="p1.1.m1.1" xref="p1.1.m1.1.cmml">
   <semantics xml:id="p1.1.m1.1a" xref="p1.1.m1.1.cmml">
     <mpadded width="+1.67pt" xml:id="p1.1.m1.1.9" xref="p1.1.m1.1.9.cmml">
@@ -3898,7 +3898,7 @@ _{{j=0}}^{{i}}K_{j}}\over{\displaystyle\sum_{{i=0}}^{n}{\Big[}[H^{+}]^{{n-i}}%
 </math>
 </mws:expr>
 
-<mws:expr url="math.8.33">
+<mws:expr url="8#math.8.33">
 	<math xmlns="http://www.w3.org/1998/Math/MathML" id="p1.1.m1" class="ltx_Math" alttext="{\displaystyle a/2b\,}" display="inline" xml:id="p1.1.m1.1" xref="p1.1.m1.1.cmml">
   <semantics xml:id="p1.1.m1.1a" xref="p1.1.m1.1.cmml">
     <mrow xml:id="p1.1.m1.1.6" xref="p1.1.m1.1.6.cmml">
@@ -3928,7 +3928,7 @@ _{{j=0}}^{{i}}K_{j}}\over{\displaystyle\sum_{{i=0}}^{n}{\Big[}[H^{+}]^{{n-i}}%
 </math>
 </mws:expr>
 
-<mws:expr url="math.8.34">
+<mws:expr url="8#math.8.34">
 	<math xmlns="http://www.w3.org/1998/Math/MathML" id="p1.1.m1" class="ltx_Math" alttext="{\displaystyle(a/2)b\,}" display="inline" xml:id="p1.1.m1.1" xref="p1.1.m1.1.cmml">
   <semantics xml:id="p1.1.m1.1a" xref="p1.1.m1.1.cmml">
     <mrow xml:id="p1.1.m1.1.8" xref="p1.1.m1.1.8.cmml">
@@ -3962,7 +3962,7 @@ _{{j=0}}^{{i}}K_{j}}\over{\displaystyle\sum_{{i=0}}^{n}{\Big[}[H^{+}]^{{n-i}}%
 </math>
 </mws:expr>
 
-<mws:expr url="math.8.35">
+<mws:expr url="8#math.8.35">
 	<math xmlns="http://www.w3.org/1998/Math/MathML" id="p1.1.m1" class="ltx_Math" alttext="{\displaystyle a/(2b)\,}" display="inline" xml:id="p1.1.m1.1" xref="p1.1.m1.1.cmml">
   <semantics xml:id="p1.1.m1.1a" xref="p1.1.m1.1.cmml">
     <mrow xml:id="p1.1.m1.1.8" xref="p1.1.m1.1.8.cmml">
@@ -3996,7 +3996,7 @@ _{{j=0}}^{{i}}K_{j}}\over{\displaystyle\sum_{{i=0}}^{n}{\Big[}[H^{+}]^{{n-i}}%
 </math>
 </mws:expr>
 
-<mws:expr url="math.8.36">
+<mws:expr url="8#math.8.36">
 	<math xmlns="http://www.w3.org/1998/Math/MathML" id="p1.1.m1" class="ltx_Math" alttext="{\displaystyle~{}|\alpha\rangle~{}}" display="inline" xml:id="p1.1.m1.1" xref="p1.1.m1.1.cmml">
   <semantics xml:id="p1.1.m1.1a" xref="p1.1.m1.1.cmml">
     <mrow xml:id="p1.1.m1.1.6" xref="p1.1.m1.1.6.cmml">
@@ -4015,7 +4015,7 @@ _{{j=0}}^{{i}}K_{j}}\over{\displaystyle\sum_{{i=0}}^{n}{\Big[}[H^{+}]^{{n-i}}%
 </math>
 </mws:expr>
 
-<mws:expr url="math.8.37">
+<mws:expr url="8#math.8.37">
 	<math xmlns="http://www.w3.org/1998/Math/MathML" id="p1.1.m1" class="ltx_Math" alttext="{\displaystyle~{}|n\rangle~{}}" display="inline" xml:id="p1.1.m1.1" xref="p1.1.m1.1.cmml">
   <semantics xml:id="p1.1.m1.1a" xref="p1.1.m1.1.cmml">
     <mrow xml:id="p1.1.m1.1.6" xref="p1.1.m1.1.6.cmml">
@@ -4034,7 +4034,7 @@ _{{j=0}}^{{i}}K_{j}}\over{\displaystyle\sum_{{i=0}}^{n}{\Big[}[H^{+}]^{{n-i}}%
 </math>
 </mws:expr>
 
-<mws:expr url="math.8.38">
+<mws:expr url="8#math.8.38">
 	<math xmlns="http://www.w3.org/1998/Math/MathML" id="p1.1.m1" class="ltx_Math" alttext="{\displaystyle~{}n~{}}" display="inline" xml:id="p1.1.m1.1" xref="p1.1.m1.1.cmml">
   <semantics xml:id="p1.1.m1.1a" xref="p1.1.m1.1.cmml">
     <mpadded lspace="3.33pt" width="+6.66pt" xml:id="p1.1.m1.1.2" xref="p1.1.m1.1.2.cmml">
@@ -4047,7 +4047,7 @@ _{{j=0}}^{{i}}K_{j}}\over{\displaystyle\sum_{{i=0}}^{n}{\Big[}[H^{+}]^{{n-i}}%
   </semantics>
 </math>
 </mws:expr>
-<mws:expr url="dummy22"><math xmlns="http://www.w3.org/1998/Math/MathML" id="math.4416.4" class="ltx_Math" alttext="{\displaystyle{\text{Ker}}(k_{*}-l_{*})\cong{\text{Im}}(i_{*},j_{*}).}"  xml:id="math.4416.4.1" xref="math.4416.4.1.cmml">
+<mws:expr url="dummy22"><math xmlns="http://www.w3.org/1998/Math/MathML" id="4416#math.4416.4" class="ltx_Math" alttext="{\displaystyle{\text{Ker}}(k_{*}-l_{*})\cong{\text{Im}}(i_{*},j_{*}).}"  xml:id="4416#math.4416.4.1" xref="4416#math.4416.4.1.cmml">
     <semantics xml:id="math.4416.4.1a" xref="math.4416.4.1.cmml">
         <mrow xml:id="math.4416.4.1.19" xref="math.4416.4.1.19.cmml">
             <mrow xml:id="math.4416.4.1.19a" xref="math.4416.4.1.19.cmml">

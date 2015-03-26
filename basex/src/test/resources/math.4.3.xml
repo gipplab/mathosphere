@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <mws:harvest xmlns:mws="http://search.mathweb.org/ns">
-    <mws:expr url="math.800.3">
+    <mws:expr url="800#math.800.3">
         <math xmlns="http://www.w3.org/1998/Math/MathML" id="p1.1.m1" class="ltx_Math" alttext="{\displaystyle{\alpha}}"
               display="inline" xml:id="p1.1.m1.1" xref="p1.1.m1.1.cmml">
             <semantics xml:id="p1.1.m1.1a" xref="p1.1.m1.1.cmml">
