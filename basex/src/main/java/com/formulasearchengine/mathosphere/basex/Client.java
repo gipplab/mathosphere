@@ -185,15 +185,21 @@ public class Client {
 
 	public int countRevisionFormula(int rev){
 		try {
-			return Integer.parseInt( directXQuery( "count(//*:expr[matches(@url, 'math\\." + rev + "\\.*')])" ) );
+			return Integer.parseInt( directXQuery( "count(//*:" + getRevFormula( rev ) + ")"
+			) );
 		} catch ( XQException | IOException | QueryException e ) {
 			e.printStackTrace();
 			return 0;
 		}
 	}
+
+	private String getRevFormula( int rev ) {
+		return "expr[matches(@url, '" + rev + "#(.*)')]";
+	}
+
 	public boolean deleteRevisionFormula(int rev){
 		try {
-			directXQuery( "delete node //*:expr[matches(@url, 'math\\." + rev + "\\.*')]" );
+			directXQuery( "delete node //*:"+ getRevFormula( rev ) );
 			if (countRevisionFormula( rev ) == 0 ){
 				return true;
 			} else {
