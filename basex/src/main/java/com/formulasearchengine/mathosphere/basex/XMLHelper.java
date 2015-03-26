@@ -41,4 +41,5 @@ public final class XMLHelper {
 			Boolean.FALSE );
 		return domFactory.newDocumentBuilder();
 	}
+
 }
