@@ -167,10 +167,10 @@
                             <goal>java</goal>
                         </goals>
                         <configuration>
-                            <mainClass>com.formulasearchengine.mathosphere.restx.AppServer</mainClass>
+                            <mainClass>com.formulasearchengine.mathosphere.restd.AppServer</mainClass>
                             <systemProperties>
                                 <systemProperty>
-                                    <key>path</key>
+                                    <key>defaultPath</key>
                                     <value>${basedir}/src/test/resources/sampleHarvest.xml</value>
                                 </systemProperty>
                                 <systemProperty>

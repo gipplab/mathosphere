@@ -1,4 +1,4 @@
-package com.formulasearchengine.mathosphere.basex;
+package com.formulasearchengine.mathosphere.restd;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Charsets;
