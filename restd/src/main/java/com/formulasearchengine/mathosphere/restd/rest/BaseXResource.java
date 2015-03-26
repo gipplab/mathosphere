@@ -1,7 +1,7 @@
-package com.formulasearchengine.mathosphere.basex.rest;
+package com.formulasearchengine.mathosphere.restd.rest;
 
-import com.formulasearchengine.mathosphere.basex.domain.MathRequest;
-import com.formulasearchengine.mathosphere.basex.domain.MathUpdate;
+import com.formulasearchengine.mathosphere.restd.domain.MathRequest;
+import com.formulasearchengine.mathosphere.restd.domain.MathUpdate;
 import restx.annotations.GET;
 import restx.annotations.POST;
 import restx.annotations.RestxResource;

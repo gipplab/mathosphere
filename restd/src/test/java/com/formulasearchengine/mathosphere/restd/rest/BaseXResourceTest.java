@@ -1,4 +1,4 @@
-package com.formulasearchengine.mathosphere.basex.rest;
+package com.formulasearchengine.mathosphere.restd.rest;
 
 import com.formulasearchengine.mathosphere.basex.Server;
 import org.junit.BeforeClass;

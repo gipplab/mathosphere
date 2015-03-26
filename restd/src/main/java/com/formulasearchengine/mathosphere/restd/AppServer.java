@@ -1,5 +1,6 @@
-package com.formulasearchengine.mathosphere.basex;
+package com.formulasearchengine.mathosphere.restd;
 
+import com.formulasearchengine.mathosphere.basex.Server;
 import com.google.common.base.Optional;
 import restx.server.JettyWebServer;
 import restx.server.WebServer;
@@ -28,9 +29,9 @@ public class AppServer {
          */
 		System.setProperty( "restx.mode", System.getProperty( "restx.mode", "dev" ) );
 		System.setProperty( "restx.app.package", "com.formulasearchengine.backend.basex" );
-		String path = System.getProperty( "path" );
+		String path = System.getProperty( "path" , System.getProperty( "defaultPath" ) );
 		Server srv = null;
-		System.out.println("admin password is " + System.getProperty( "password" ));
+		System.out.println("admin password is " + System.getProperty( "password" ) );
 		try {
 			srv = new Server();
 			System.out.println( "importing data from " + path );

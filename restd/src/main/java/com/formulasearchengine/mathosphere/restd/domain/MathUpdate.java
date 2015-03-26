@@ -1,4 +1,4 @@
-package com.formulasearchengine.mathosphere.basex.domain;
+package com.formulasearchengine.mathosphere.restd.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.formulasearchengine.mathosphere.basex.Client;
