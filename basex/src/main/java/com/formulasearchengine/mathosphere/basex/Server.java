@@ -16,29 +16,58 @@ import java.io.PrintStream;
  * Created by Moritz on 08.11.2014.
  */
 public class Server {
-	//Do not allow for multiple server instances
-	public static BaseXServer server = null;
-	public static ClientSession session;
-	public static Context context;
-	public static boolean empty = true;
-
-	public static boolean isEmpty () {
-		return empty;
+	private static volatile Server instance;
+	/**
+	 * Get the only instance of this class.
+	 *
+	 * @return the single instance.
+	 */
+	public static Server getInstance() throws IOException {
+		if (instance == null) {
+			synchronized (Server.class) {
+				if (instance == null) {
+					instance = new Server();
+				}
+			}
+		}
+		return instance;
 	}
 
-	public Server() throws IOException {
-		if ( server == null ){
-			server = new BaseXServer();
-			context = new Context() ;
-			session = new ClientSession( context, "admin", "admin" );
+	//Do not allow for multiple server instances
+	public BaseXServer server = null;
+	public ClientSession session;
+	public Context context;
+	public boolean empty = true;
+	ServerMonitor monitor;
+
+	public static boolean isEmpty () {
+		if (instance == null){
+			return true;
+		} else {
+			try {
+				return getInstance().empty;
+			} catch ( IOException e ) {
+				e.printStackTrace();
+				return false;
+			}
 		}
 	}
 
+	public Server() throws IOException {
+			server = new BaseXServer();
+			context = new Context() ;
+			session = new ClientSession( context, "admin", "admin" );
+			monitor = new ServerMonitor();
+			monitor.start();
+	}
+
 	public void shutdown() throws IOException {
+		monitor.shutdown();
 		server.stop();
 		server = null;
 		session = null;
 		empty = true;
+		instance = null;
 	}
 
 	public void importData( String path ) throws IOException {
