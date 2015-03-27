@@ -12,7 +12,7 @@ public class ServerTest {
 	private Server srv;
 
 	public ServerTest() throws IOException {
-		srv = new Server();
+		srv = Server.getInstance();
 	}
 
 	@Test
