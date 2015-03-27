@@ -4,11 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.formulasearchengine.mathmlquerygenerator.NtcirPattern;
 import com.formulasearchengine.mathmlquerygenerator.XQueryGenerator;
 import net.xqj.basex.BaseXXQDataSource;
-import org.basex.core.cmd.Open;
 import org.basex.query.QueryException;
-import org.basex.query.QueryProcessor;
-import org.basex.query.iter.Iter;
-import org.basex.query.value.item.Item;
 import org.intellij.lang.annotations.Language;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -75,7 +71,7 @@ public class Client {
 			conn.close();
 		} else {
 			//TODO: This does not yet work
-			measurement = System.nanoTime();
+/*			measurement = System.nanoTime();
 			new Open("math").execute( Server.context );
 			QueryProcessor proc = new QueryProcessor(query, Server.context );
 			Iter iter = proc.iter();
@@ -89,7 +85,7 @@ public class Client {
 				}
 				currentResult.addHit( s, "", score, rank );
 				rank++;
-			}
+			}*/
 		}
 		return rank--;
 	}
