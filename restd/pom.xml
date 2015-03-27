@@ -171,7 +171,7 @@
                             <systemProperties>
                                 <systemProperty>
                                     <key>defaultPath</key>
-                                    <value>${basedir}/src/test/resources/sampleHarvest.xml</value>
+                                    <value>${basedir}/src/main/resources/sampleHarvest.xml</value>
                                 </systemProperty>
                                 <systemProperty>
                                     <key>restx.mode</key>
