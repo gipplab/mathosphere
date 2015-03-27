@@ -1,7 +1,7 @@
 == run ==
 ```
 cd restd
-mvn clean install
+mvn clean install -DskipTests
 mvn test
 mvn exec:java -Drestx.http.XForwardedSupport=all -Dpassword=mathosphere
 ```
