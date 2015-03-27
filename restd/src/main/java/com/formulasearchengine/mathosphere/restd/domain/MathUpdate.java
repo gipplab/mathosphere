@@ -53,21 +53,30 @@ public class MathUpdate {
 		if ( harvest.length()>0 ){
 			Document doc = XMLHelper.String2Doc( harvest );
 			//TODO: validate document
-			if ( doc != null && client.updateFormula( doc.getDocumentElement() ) ){
+			if ( doc == null ){
+				this.response = "harvest is not valid XML.";
+			} else if ( client.updateFormula( doc.getDocumentElement() ) ){
 				this.response = "updated";
 				success = true;
 			} else {
 				this.response = "update failed";
 			}
+		} else {
+			success = true;
 		}
-		if (delete.length>0){
+		if ( delete.length > 0 ){
 			for ( Integer s : delete ) {
 				if ( client.deleteRevisionFormula(s) ) {
 					response += "\nrevision " + s + " deleted";
 					success &= true;
 				} else {
+					success = false;
 					response += "\nrevision " + s + " not deleted";
 				}
+			}
+		} else {
+			if ( response.length() == 0  ){
+				success = false;
 			}
 		}
 		return this;

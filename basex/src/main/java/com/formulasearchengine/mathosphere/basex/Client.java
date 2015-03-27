@@ -192,6 +192,14 @@ public class Client {
 			return 0;
 		}
 	}
+	public int countAllFormula(){
+		try {
+			return Integer.parseInt( directXQuery( "count(./*/*)" ) );
+		} catch ( XQException | IOException | QueryException e ) {
+			e.printStackTrace();
+			return 0;
+		}
+	}
 
 	private String getRevFormula( int rev ) {
 		return "expr[matches(@url, '" + rev + "#(.*)')]";

@@ -10,7 +10,7 @@ import java.util.Scanner;
 
 import static org.junit.Assert.*;
 
-public class ClientTest {
+public final class ClientTest {
 
 	@BeforeClass
 	public static void setup() throws Exception {
@@ -76,7 +76,7 @@ public class ClientTest {
 	}
 
 	@Test
-	public void MWSQuery() throws Exception {
+	public void mwsQuery() throws Exception {
 		final String testInput = getFileContents( "dummy29.xml" );
 		final String expectedOutput = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n" +
 			"<results xmlns=\"http://ntcir-math.nii.ac.jp/\" total=\"1\">\n" +
@@ -157,7 +157,7 @@ public class ClientTest {
 	}
 
 	@Test
-	public void MeasureBadXQuery(){
+	public void measureBadXQuery(){
 		Client c = new Client(  );
 		assertEquals( Long.valueOf( -1 ), c.basex( ">invalid<" ) );
 		assertTrue( c.runXQuery( ">invalid<" ).startsWith( "Query" ) );
@@ -187,5 +187,11 @@ public class ClientTest {
 			s.useDelimiter( "\\A" );
 			return s.hasNext() ? s.next() : "";
 		}
+	}
+
+	@Test
+	public void testCountAllFormula() throws Exception {
+		Client c = new Client();
+		assertEquals( 104,c.countAllFormula());
 	}
 }
