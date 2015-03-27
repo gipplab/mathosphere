@@ -1,5 +1,6 @@
 package com.formulasearchengine.mathosphere.restd.rest;
 
+import com.formulasearchengine.mathosphere.basex.Client;
 import com.formulasearchengine.mathosphere.restd.domain.MathRequest;
 import com.formulasearchengine.mathosphere.restd.domain.MathUpdate;
 import restx.annotations.GET;
@@ -56,5 +57,17 @@ public class BaseXResource {
 	@PermitAll
 	public MathUpdate update( MathUpdate u ) {
 		return u.run();
+	}
+	@GET("/cntRev")
+	@PermitAll
+	public Integer dbsize( Integer revision ) {
+		Client client = new Client();
+		return client.countRevisionFormula( revision  );
+	}
+	@GET("/cntAll")
+	@PermitAll
+	public Integer dbsize(  ) {
+		Client client = new Client();
+		return client.countAllFormula();
 	}
 }

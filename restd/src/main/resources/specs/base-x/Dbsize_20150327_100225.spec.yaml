@@ -1,0 +1,9 @@
+title: Dbsize 20150327 100225
+given:
+  - time: 2015-03-27T10:02:25.558-04:00
+wts:
+  - when: |
+       GET cntRev?revision=6
+       Cookie: RestxSession={"_expires":"2015-04-26T10:02:25.558-04:00","principal":"admin","sessionKey":"a9c7a33a-13bc-454a-afc5-e89c79602704"}; RestxSessionSignature=ublbMBi3DRcoknKzKNdbfc5eVfo=
+    then: |
+        21

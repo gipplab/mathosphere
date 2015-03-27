@@ -1,0 +1,13 @@
+title: Dbsize 20150327 100358
+given:
+  - time: 2015-03-27T10:03:58.404-04:00
+wts:
+  - when: |
+       GET cntRev?revision=10000000000
+       Cookie: RestxSession={"_expires":"2015-04-26T10:03:58.404-04:00","principal":"admin","sessionKey":"a9c7a33a-13bc-454a-afc5-e89c79602704"}; RestxSessionSignature=IEpH1BJYVrKkFntDWAO8AWdA8JQ=
+    then: |
+       400
+
+        UNEXPECTED CLIENT ERROR:
+       Can not construct instance of int from String value '10000000000': Overflow: numeric value (10000000000) out of range of Integer (-2147483648 - 2147483647)
+        at [Source: N/A; line: -1, column: -1]
