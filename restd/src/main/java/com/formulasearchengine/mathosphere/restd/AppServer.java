@@ -5,6 +5,7 @@ import com.google.common.base.Optional;
 import restx.server.JettyWebServer;
 import restx.server.WebServer;
 
+import java.io.File;
 import java.io.IOException;
 
 /**
@@ -33,9 +34,9 @@ public class AppServer {
 		Server srv = null;
 		System.out.println("admin password is " + System.getProperty( "password" ) );
 		try {
-			srv = new Server();
+			File f = new File( path );
+			srv = new Server(f);
 			System.out.println( "importing data from " + path );
-			srv.importData( path );
 		} catch ( IOException e ) {
 			e.printStackTrace();
 		}
