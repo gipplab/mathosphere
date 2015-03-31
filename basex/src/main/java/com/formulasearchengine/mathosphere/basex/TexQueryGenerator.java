@@ -86,7 +86,7 @@ public class TexQueryGenerator {
 		try {
 			httppost.setEntity( new UrlEncodedFormEntity( p, "UTF-8" ) );
 			response = httpClient.execute( httppost );
-		} catch ( IOException e ) {
+		} catch ( IOException | IllegalStateException e ) {
 			lastException = e;
 			fail( e.getLocalizedMessage() );
 			return null;

@@ -10,10 +10,9 @@ import static org.junit.Assert.*;
 public class ServerMonitorTest {
 	@BeforeClass
 	public static void setup() throws Exception {
-		if ( !Server.isEmpty() ){
-			Server.getInstance().shutdown();
-		}
+		BaseXTestSuite.setup();
 	}
+
 
 	@Test(timeout = 10)
 	public void testRun() throws Exception {
@@ -27,8 +26,13 @@ public class ServerMonitorTest {
 	@Test
 	public void testIsGood() throws Exception {
 		ServerMonitor m = new ServerMonitor();
-		assertFalse( m.isGood() );
-		(new ServerTest()).testImportData();
 		assertTrue( m.isGood() );
+		try {
+			Server.getInstance().shutdown();
+			assertFalse( m.isGood() );
+		}catch ( Exception e ){
+			e.printStackTrace();
+			System.out.println("Warning can not test server shutdown. Server is being used" );
+		}
 	}
 }

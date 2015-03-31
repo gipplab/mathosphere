@@ -6,6 +6,7 @@ import org.junit.runner.RunWith;
 import restx.tests.FindSpecsIn;
 import restx.tests.RestxSpecTestsRunner;
 
+import java.io.File;
 import java.io.IOException;
 
 @RunWith (RestxSpecTestsRunner.class)
@@ -14,9 +15,10 @@ public class BaseXResourceTest {
 
 	@BeforeClass
 	public static void config() throws IOException {
-		BaseXResourceTest instance = new BaseXResourceTest();
-		Server srv = new Server();
-		srv.importData( instance.getClass().getClassLoader().getResource( "sampleHarvest.xml" ).getFile()   );
+		if (Server.getInstance() == null ){
+			BaseXResourceTest instance = new BaseXResourceTest();
+			File f = new File( instance.getClass().getClassLoader().getResource( "sampleHarvest.xml" ).getFile() );
+			Server.getInstance(f);
+		}
 	}
-
 }

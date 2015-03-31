@@ -95,9 +95,8 @@ public class Benchmark {
 	}
 
 	private void run() throws IOException, ParserConfigurationException, SAXException, XPathExpressionException {
-
-		Server srv = new Server();
-		srv.importData( line.getOptionValue( "datasource" ) );
+		File f = new File( line.getOptionValue( "datasource" ) );
+		Server srv = new Server(f);
 		File queries = new File( line.getOptionValue( "querysource" ) );
 		final NtcirTopicReader ntcirTopicReader = new NtcirTopicReader( queries );
 		ntcirTopicReader.setFooter( BASEX_FOOTER );
