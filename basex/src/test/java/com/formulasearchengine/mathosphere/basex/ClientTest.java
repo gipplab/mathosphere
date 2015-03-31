@@ -14,9 +14,7 @@ public final class ClientTest {
 
 	@BeforeClass
 	public static void setup() throws Exception {
-		if ( Server.isEmpty() ){
-			( new ServerTest() ).testImportData();
-		}
+		BaseXTestSuite.setup();
 	}
 
 	@Test
@@ -122,6 +120,14 @@ public final class ClientTest {
 			"<results xmlns=\"http://ntcir-math.nii.ac.jp/\" total=\"0\" />\n";
 		Client c = new Client();
 		String res = c.runTexQuery( "\\sin(\\cos(x^5))" );
+		assertEquals( empty,res );
+	}
+	@Test
+	public void testqVar(){
+		String empty = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n" +
+			"<results xmlns=\"http://ntcir-math.nii.ac.jp/\" total=\"0\" />\n";
+		Client c = new Client();
+		String res = c.runTexQuery( "a_i)" );
 		assertEquals( empty,res );
 	}
 
