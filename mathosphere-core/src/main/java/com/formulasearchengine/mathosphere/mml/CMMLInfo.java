@@ -42,6 +42,12 @@ public class CMMLInfo implements Document {
     public static final String ROBERT_MINER_XSL = "com/formulasearchengine/mathosphere/mml/RobertMinerC2s.xsl";
     final String XQUERY_FOOTER = "<element><x>{$x}</x><p>{data(functx:path-to-node($x))}</p></element>}\n" +
 		"</result>";
+	private final static String FN_PATH_FROM_ROOT2 = "declare function path-from-root($x as node()) {\n" +
+		" if ($x/parent::*) then\n" +
+		" concat( path-from-root($x/parent::*), \"/\", node-name($x) )\n" +
+		" else\n" +
+		" concat( \"/\", node-name($x) )\n" +
+		" };\n";
 	private static final String MATH_HEADER = "<?xml version=\"1.0\" ?>\n" +
 		"<math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n" +
 		"<semantics>\n";
