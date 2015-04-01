@@ -1,6 +1,7 @@
 package com.formulasearchengine.mathosphere.basex;
 
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.lang.Thread.State;
@@ -13,7 +14,7 @@ public class ServerMonitorTest {
 		BaseXTestSuite.setup();
 	}
 
-
+	@Ignore
 	@Test(timeout = 10)
 	public void testRun() throws Exception {
 		ServerMonitor m = new ServerMonitor();
@@ -23,6 +24,8 @@ public class ServerMonitorTest {
 		assertEquals( "Thread was not stopped", State.TERMINATED, m.getState() );
 	}
 
+
+	@Ignore
 	@Test
 	public void testIsGood() throws Exception {
 		ServerMonitor m = new ServerMonitor();
@@ -30,9 +33,9 @@ public class ServerMonitorTest {
 		try {
 			Server.getInstance().shutdown();
 			assertFalse( m.isGood() );
-		}catch ( Exception e ){
+		} catch ( Exception e ) {
 			e.printStackTrace();
-			System.out.println("Warning can not test server shutdown. Server is being used" );
+			System.out.println( "Warning can not test server shutdown. Server is being used" );
 		}
 	}
 }
