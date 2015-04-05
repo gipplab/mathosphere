@@ -3,10 +3,9 @@ package mlp.pojos;
 
 public class Relation {
 
-    private String documentTitle;
     private String identifier;
+    private String definition;
     private double score;
-    private Word word;
     private int identifierPosition;
     private int wordPosition;
     private Sentence sentence;
@@ -30,12 +29,16 @@ public class Relation {
         this.identifier = identifier;
     }
 
-    public Word getWord() {
-        return word;
+    public String getDefinition() {
+        return definition;
     }
 
-    public void setWord(Word word) {
-        this.word = word;
+    public void setDefinition(Word word) {
+        this.definition = word.getWord();
+    }
+    
+    public void setDefinition(String definition) {
+        this.definition = definition;
     }
 
     public Sentence getSentence() {
@@ -62,17 +65,9 @@ public class Relation {
         this.wordPosition = wordPosition;
     }
 
-    public String getDocumentTitle() {
-        return documentTitle;
-    }
-
-    public void setDocumentTitle(String documentTitle) {
-        this.documentTitle = documentTitle;
-    }
-
     @Override
     public String toString() {
-        return "Relation [" + identifier + ", score=" + score + ", word=" + word + "]";
+        return "Relation [" + identifier + ", score=" + score + ", word=" + definition + "]";
     }
 
 }

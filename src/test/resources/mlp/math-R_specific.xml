@@ -1,0 +1,31 @@
+<math xmlns="http://www.w3.org/1998/Math/MathML" id="p1.1.m1" class="ltx_Math" alttext="R_{{\rm specific}}=\frac{R}{M}" xml:id="p1.1.m1.1" display="inline" xref="p1.1.m1.1.cmml">
+  <semantics xml:id="p1.1.m1.1a" xref="p1.1.m1.1.cmml">
+    <mrow xml:id="p1.1.m1.1.5" xref="p1.1.m1.1.5.cmml">
+      <msub xml:id="p1.1.m1.1.5.1" xref="p1.1.m1.1.5.1.cmml">
+        <mi xml:id="p1.1.m1.1.1" xref="p1.1.m1.1.1.cmml">R</mi>
+        <mi xml:id="p1.1.m1.1.2.1" xref="p1.1.m1.1.2.1.cmml">specific</mi>
+      </msub>
+      <mo xml:id="p1.1.m1.1.3" xref="p1.1.m1.1.3.cmml">=</mo>
+      <mfrac xml:id="p1.1.m1.1.4" xref="p1.1.m1.1.4.cmml">
+        <mi xml:id="p1.1.m1.1.4.2" xref="p1.1.m1.1.4.2.cmml">R</mi>
+        <mi xml:id="p1.1.m1.1.4.3" xref="p1.1.m1.1.4.3.cmml">M</mi>
+      </mfrac>
+    </mrow>
+    <annotation-xml xml:id="p1.1.m1.1.cmml" encoding="MathML-Content" xref="p1.1.m1.1">
+      <apply xml:id="p1.1.m1.1.5.cmml" xref="p1.1.m1.1.5">
+        <eq xml:id="p1.1.m1.1.3.cmml" xref="p1.1.m1.1.3"/>
+        <apply xml:id="p1.1.m1.1.5.1.cmml" xref="p1.1.m1.1.5.1">
+          <csymbol cd="ambiguous" xml:id="p1.1.m1.1.5.1.1.cmml">subscript</csymbol>
+          <ci xml:id="p1.1.m1.1.1.cmml" xref="p1.1.m1.1.1">R</ci>
+          <ci xml:id="p1.1.m1.1.2.1.cmml" xref="p1.1.m1.1.2.1">specific</ci>
+        </apply>
+        <apply xml:id="p1.1.m1.1.4.cmml" xref="p1.1.m1.1.4">
+          <divide xml:id="p1.1.m1.1.4.1.cmml"/>
+          <ci xml:id="p1.1.m1.1.4.2.cmml" xref="p1.1.m1.1.4.2">R</ci>
+          <ci xml:id="p1.1.m1.1.4.3.cmml" xref="p1.1.m1.1.4.3">M</ci>
+        </apply>
+      </apply>
+    </annotation-xml>
+    <annotation xml:id="p1.1.m1.1b" encoding="application/x-tex" xref="p1.1.m1.1.cmml">R_{{\rm specific}}=\frac{R}{M}</annotation>
+  </semantics>
+</math>

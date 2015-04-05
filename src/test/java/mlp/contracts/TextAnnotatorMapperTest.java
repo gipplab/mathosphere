@@ -1,6 +1,8 @@
 package mlp.contracts;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.io.InputStream;
 import java.util.Arrays;
@@ -9,7 +11,7 @@ import java.util.Random;
 import java.util.Set;
 
 import mlp.Config;
-import mlp.RelationFinder;
+import mlp.PatternMatchingRelationFinder;
 import mlp.flink.ListCollector;
 import mlp.pojos.Formula;
 import mlp.pojos.Sentence;
@@ -22,7 +24,6 @@ import org.apache.commons.io.IOUtils;
 import org.junit.Test;
 
 import com.google.common.base.Throwables;
-
 
 public class TextAnnotatorMapperTest {
 
@@ -40,7 +41,15 @@ public class TextAnnotatorMapperTest {
         Set<String> identifiers = shroedingerOut.getIdentifiers();
         assertTrue(identifiers.containsAll(Arrays.asList("Ψ", "V", "h", "λ", "ρ", "τ")));
 
-        Formula formula = randomElement(shroedingerOut.getFormulas());
+        List<Formula> formulas = shroedingerOut.getFormulas();
+        Formula formula = null;
+        for (Formula f : formulas) {
+            if ("FORMULA_435442ec26d51f5503b96a94c0d7389f".equals(f.getKey())) {
+                formula = f;
+            }
+        }
+
+        assertNotNull(formula);
         assertTrue(contains(formula, shroedingerOut.getSentences()));
     }
 
@@ -61,7 +70,7 @@ public class TextAnnotatorMapperTest {
     }
 
     public static List<WikiDocumentText> readWikiTextDocuments(String testFile) throws Exception {
-        InputStream stream = RelationFinder.class.getResourceAsStream(testFile);
+        InputStream stream = PatternMatchingRelationFinder.class.getResourceAsStream(testFile);
         String rawImput = IOUtils.toString(stream);
         String[] pages = rawImput.split("</page>");
         TextExtractorMapper textExtractor = new TextExtractorMapper();
@@ -84,5 +93,20 @@ public class TextAnnotatorMapperTest {
         }
     }
 
-    
+    @Test
+    public void tokenization_formulaSuffexed() throws Exception {
+        String text = "The <math>x</math>-axis shows...";
+        WikiDocumentText doc = new WikiDocumentText("some doc", 1, text);
+        WikiDocument result = TEST_INSTANCE.map(doc);
+
+        List<Formula> formulas = result.getFormulas();
+        assertEquals(1, formulas.size());
+
+        Sentence sentence = result.getSentences().get(0);
+
+        List<Word> expected = Arrays.asList(new Word("The", "DT"), new Word("x", "ID"), new Word("-axis",
+                "-SUF"), new Word("shows", "VBZ"), new Word("...", ":"));
+        assertEquals(expected, sentence.getWords());
+    }
+
 }

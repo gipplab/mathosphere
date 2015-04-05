@@ -1,15 +1,19 @@
 package mlp.text;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import mlp.text.WikiTextUtils.MathMarkUpType;
+import mlp.text.WikiTextUtils.MathTag;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import mlp.text.WikiTextUtils.MathMarkUpType;
-import mlp.text.WikiTextUtils.MathTag;
 import uk.ac.ed.ph.snuggletex.SnuggleEngine;
 import uk.ac.ed.ph.snuggletex.SnuggleInput;
 import uk.ac.ed.ph.snuggletex.SnuggleSession;
@@ -27,19 +31,37 @@ public class MathMLUtils {
     /**
      * list of false positive identifiers
      */
-    private final static Set<String> BLACKLIST = ImmutableSet.of("sin", "cos", "tan", "min", "max", "inf",
-            "lim", "log", "exp", "sup", "lim sup", "lim inf", "arg", "dim", "cosh", "arccos", "arcsin",
-            "arctan", "rank", "ln", "det", "ker", "sec", "cot", "csc", "tanh", "sinh", "coth", "cot", "⋯",
-            ":", "'", "′", "…", "∞", "⋮", " ", " ", "~", ";", "#", "e", "⋱", "{", "}", "%", "?", "°",
-            "′", "−", "★", "\"", "!",
+    private final static Set<String> BLACKLIST = ImmutableSet.of(
+            // operators
+            "sin", "cos", "tan", "min", "max", "inf", "lim", "log", "exp", "sup", "lim sup", "lim inf",
+            "arg", "dim", "cosh", "arccos", "arcsin", "arctan", "arcsec", "rank", "ln", "det", "Det", "ker",
+            "sec", "cot", "csc", "tanh", "atanh", "sinh", "coth", "cot", "constant", "def", "image",
 
-            // ignore identifier that are also English (stop-)words
+            // math symbols
+            "∫", "∬", "∭", "⋯", "′", "∞", "⋮", " ", " ", "~", "e", "⋱", "°", "′", "−", "★", "\"", "╲",
+
+            // punctuation
+            "%", "?", "!", ":", "'", "…", ";",
+
+            // false identifiers
+            "where", "unless", "otherwise",
+
+            // identifier that are also English (stop-)words
             "a", "A", "i", "I",
 
-            // ignore special chars
-            "$", "\\");
+            // special chars
+            "#", "{", "}", "$", "\\");
 
     public static Set<String> extractIdentifiers(MathTag math) {
+        try {
+            return tryExtractIdentifiers(math);
+        } catch (Exception e) {
+            LOGGER.warn("exception occurred during 'extractIdentifiers'. Returning an empty set", e);
+            return Collections.emptySet();
+        }
+    }
+
+    private static Set<String> tryExtractIdentifiers(MathTag math) {
         if (math.getMarkUpType() == MathMarkUpType.LATEX) {
             return extractIdentifiersFromTex(math.getTagContent());
         } else {
@@ -54,9 +76,18 @@ public class MathMLUtils {
     }
 
     public static Set<String> extractIdentifiersFromMathML(String mathML) {
+        try {
+            return tryParseWithXpath(mathML);
+        } catch (Exception e) {
+            LOGGER.warn("exception occurred while trying to parse mathML with xpath... "
+                    + "backing off to the regexp parser.", e);
+            return parseWithRegex(mathML);
+        }
+    }
+
+    private static Set<String> tryParseWithXpath(String mathML) {
         XML xml = new XMLDocument(mathML);
         xml = xml.registerNs("m", "http://www.w3.org/1998/Math/MathML");
-
         Set<String> result = new LinkedHashSet<>();
 
         List<XML> subscript = xml.nodes("//m:msub");
@@ -68,13 +99,38 @@ public class MathMLUtils {
                 LOGGER.debug("unexpected input: {} for {}", debugText, nmsubMathMl);
                 continue;
             }
-            result.add(text.get(0) + "_" + text.get(1));
+            String id = UnicodeUtils.normalizeString(text.get(0));
+            String sub = UnicodeUtils.normalizeString(text.get(1));
+            if (BLACKLIST.contains(id)) {
+                continue;
+            }
+            result.add(id + "_" + sub);
         }
 
-        List<String> allIdentifiers = xml.xpath("//m:mi/text()");
-        result.addAll(allIdentifiers);
-        result.removeAll(BLACKLIST);
+        List<String> allIdentifiers = xml.xpath("//m:mi[not(ancestor::m:msub)]/text()");
+        for (String rawId : allIdentifiers) {
+            String id = UnicodeUtils.normalizeString(rawId);
+            if (BLACKLIST.contains(id)) {
+                continue;
+            }
+            result.add(id);
+        }
+
         return result;
+    }
+
+    private static Set<String> parseWithRegex(String mathML) {
+        Pattern miTag = Pattern.compile("<mi.*?>(.+?)</mi>");
+        Matcher matcher = miTag.matcher(mathML);
+
+        Set<String> ids = new LinkedHashSet<String>();
+        while (matcher.find()) {
+            String id = matcher.group(1);
+            ids.add(id);
+        }
+
+        ids.removeAll(BLACKLIST);
+        return ids;
     }
 
     public static String texToMathML(String tex) {
@@ -105,5 +161,4 @@ public class MathMLUtils {
         return tex;
     }
 
-    
 }

@@ -2,10 +2,11 @@ package mlp.text;
 
 import static org.junit.Assert.*;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.Set;
 
-import mlp.RelationFinder;
+import mlp.PatternMatchingRelationFinder;
 
 import org.apache.commons.io.IOUtils;
 import org.junit.Test;
@@ -55,12 +56,32 @@ public class MathMLUtilsTest {
     }
 
     @Test
-    public void extractFromTex_complextMsub_noSubCaptured() throws Exception {
-        InputStream inputStream = RelationFinder.class.getResourceAsStream("complex_msub.xml");
-        String mathML = IOUtils.toString(inputStream);
+    public void extractFromMathML_complextMsub_noSubCaptured() throws Exception {
+        String mathML = readResource("complex_msub.xml");
         Set<String> identifiers = MathMLUtils.extractIdentifiersFromMathML(mathML);
         identifiers.forEach(id -> assertFalse(id.contains("_")));
     }
-    
 
+    private static String readResource(String file) throws IOException {
+        InputStream inputStream = PatternMatchingRelationFinder.class.getResourceAsStream(file);
+        return IOUtils.toString(inputStream);
+    }
+
+    @Test
+    public void extractFromMathMl_identifiersFromMSub_notCaptured() throws Exception {
+        String mathML = readResource("math-R_specific.xml");
+        Set<String> identifiers = MathMLUtils.extractIdentifiersFromMathML(mathML);
+        Set<String> expected = ImmutableSet.of("R_specific", "R", "M");
+        assertFalse(identifiers.contains("specific"));
+        assertEquals(expected, identifiers);
+    }
+
+    @Test
+    public void extractFromMathML_notParsable() throws Exception {
+        String mathML = readResource("math-xmlparsingerror.xml");
+        Set<String> identifiers = MathMLUtils.extractIdentifiersFromMathML(mathML);
+        Set<String> expected = ImmutableSet.of("x", "b", "c"); // "a" is a stop word, it's removed
+        assertEquals(expected, identifiers);
+
+    }
 }

@@ -16,4 +16,6 @@ public class PosTag {
     public static final String NOUN_SEQUENCE = "NN+";
     public static final String NOUN_SEQUENCE_PHRASE = "NP+";
     public static final String NOUN_PHRASE = "NP";
+
+    public static final String SUFFIX = "-SUF";
 }

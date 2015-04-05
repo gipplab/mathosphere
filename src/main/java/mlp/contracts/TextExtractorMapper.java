@@ -20,8 +20,6 @@ public class TextExtractorMapper implements FlatMapFunction<String, WikiDocument
 
     private static final Pattern TITLE_PATTERN = Pattern.compile("(?:<title>)(.*?)(?:</title>)");
     private static final Pattern NAMESPACE_PATTERN = Pattern.compile("(?:<ns>)(.*?)(?:</ns>)");
-    private static final Pattern ID_PATTERN = Pattern.compile("(?:<revision>.*?<id>)(\\d+)(?:</id>)",
-            Pattern.DOTALL);
     private static final Pattern TEXT_PATTERN = Pattern.compile("(?:<text.*?>)(.*?)(?:</text>)",
             Pattern.DOTALL);
 
@@ -38,7 +36,7 @@ public class TextExtractorMapper implements FlatMapFunction<String, WikiDocument
         }
 
         String title = titleMatcher.group(1);
-        LOGGER.debug("processing document '{}'...", title);
+        LOGGER.info("processing document '{}'...", title);
 
         Matcher namespaceMatcher = NAMESPACE_PATTERN.matcher(content);
         if (!namespaceMatcher.find()) {
@@ -51,14 +49,6 @@ public class TextExtractorMapper implements FlatMapFunction<String, WikiDocument
             return;
         }
 
-        // parse revision id
-        Matcher idMatcher = ID_PATTERN.matcher(content);
-        if (!idMatcher.find()) {
-            return;
-        }
-
-        int id = Integer.parseInt(idMatcher.group(1));
-
         // parse text
         Matcher textMatcher = TEXT_PATTERN.matcher(content);
         if (!textMatcher.find()) {
@@ -68,7 +58,7 @@ public class TextExtractorMapper implements FlatMapFunction<String, WikiDocument
         String rawText = textMatcher.group(1);
         String text = unescape(rawText);
 
-        out.collect(new WikiDocumentText(id, title, ns, text));
+        out.collect(new WikiDocumentText(title, ns, text));
 
     }
 

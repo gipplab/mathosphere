@@ -8,7 +8,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import mlp.Config;
-import mlp.RelationFinder;
+import mlp.PatternMatchingRelationFinder;
 import mlp.contracts.TextAnnotatorMapper;
 import mlp.pojos.Formula;
 import mlp.pojos.Sentence;
@@ -121,7 +121,7 @@ public class PosTaggerTest {
     }
 
     public static String readText(String name) throws IOException {
-        InputStream inputStream = RelationFinder.class.getResourceAsStream(name);
+        InputStream inputStream = PatternMatchingRelationFinder.class.getResourceAsStream(name);
         return IOUtils.toString(inputStream);
     }
 

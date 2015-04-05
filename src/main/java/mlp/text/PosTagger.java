@@ -20,7 +20,8 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.itshared.rseq.BeanMatchers;
-import com.itshared.rseq.EnhancedMatcher;
+import com.itshared.rseq.XMatcher;
+import com.itshared.rseq.Match;
 import com.itshared.rseq.Transformer;
 import com.itshared.rseq.Matchers;
 import com.itshared.rseq.Pattern;
@@ -132,7 +133,12 @@ public class PosTagger {
             }
 
             if (PosTag.MATH.equals(pos)) {
-                Formula formula = formulaIndex.get(word);
+                String formulaKey = word;
+                if (word.length() > 40) {
+                    formulaKey = word.substring(0, 40);
+                }
+
+                Formula formula = formulaIndex.get(formulaKey);
                 if (formula == null) {
                     LOGGER.warn("formula {} does not exist", word);
                     words.add(w);
@@ -150,6 +156,12 @@ public class PosTagger {
                 } else {
                     words.add(w);
                 }
+
+                if (word.length() > 40) {
+                    String rest = word.substring(40, word.length());
+                    words.add(new Word(rest, PosTag.SUFFIX));
+                }
+
                 continue;
             }
 
@@ -185,25 +197,26 @@ public class PosTagger {
     }
 
     public static List<Word> concatenateLinks(List<Word> in) {
-        Pattern<Word> linksPattern = Pattern.create(pos(PosTag.QUOTE), anyWord().oneOrMore(),
+        Pattern<Word> linksPattern = Pattern.create(pos(PosTag.QUOTE), anyWord().oneOrMore().captureAs("link"),
                 pos(PosTag.UNQUOTE));
 
         return linksPattern.replace(in, new Transformer<Word>() {
             @Override
-            public Word transform(List<Word> words) {
-                List<Word> list = words.subList(1, words.size() - 1);
-                return new Word(joinWords(list), PosTag.LINK);
+            public Word transform(Match<Word> match) {
+                List<Word> words = match.getCapturedGroup("link");
+                return new Word(joinWords(words), PosTag.LINK);
             }
         });
     }
 
     public static List<Word> concatenateSuccessiveNounsToNounSequence(List<Word> in) {
-        EnhancedMatcher<Word> noun = posIn(PosTag.NOUN, PosTag.NOUN_PLURAL);
+        XMatcher<Word> noun = posIn(PosTag.NOUN, PosTag.NOUN_PLURAL);
         Pattern<Word> nounPattern = Pattern.create(noun.oneOrMore());
 
         return nounPattern.replace(in, new Transformer<Word>() {
             @Override
-            public Word transform(List<Word> words) {
+            public Word transform(Match<Word> match) {
+                List<Word> words = match.getMatchedSubsequence();
                 if (words.size() == 1) {
                     return words.get(0);
                 }
@@ -217,7 +230,7 @@ public class PosTagger {
     public static List<Word> contatenateSuccessive2Tags(List<Word> in, String tag1, String tag2,
             String outputTag) {
         Pattern<Word> pattern = Pattern.create(pos(tag1), pos(tag2));
-        return pattern.replace(in, list -> new Word(joinWords(list), outputTag));
+        return pattern.replace(in, m -> new Word(joinWords(m.getMatchedSubsequence()), outputTag));
     }
 
     public static String joinWords(List<Word> list) {
@@ -225,16 +238,16 @@ public class PosTagger {
         list.forEach(w -> toJoin.add(w.getWord()));
         return StringUtils.join(toJoin, " ");
     }
-    
-    public static EnhancedMatcher<Word> pos(String tag) {
+
+    public static XMatcher<Word> pos(String tag) {
         return BeanMatchers.eq(Word.class, "posTag", tag);
     }
-  
-    public static EnhancedMatcher<Word> posIn(String... tags) {
+
+    public static XMatcher<Word> posIn(String... tags) {
         return BeanMatchers.in(Word.class, "posTag", ImmutableSet.copyOf(tags));
     }
-  
-    public static EnhancedMatcher<Word> anyWord() {
+
+    public static XMatcher<Word> anyWord() {
         return Matchers.anything();
     }
 }

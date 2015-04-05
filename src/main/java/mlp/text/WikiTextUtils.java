@@ -3,8 +3,9 @@ package mlp.text;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.eclipse.mylyn.wikitext.core.parser.MarkupParser;
@@ -15,8 +16,7 @@ import com.google.common.hash.Hashing;
 
 public class WikiTextUtils {
 
-    private static final String MATH_TAG_OPEN = "<math";
-    private static final String MATH_TAG_CLOSE = "</math>";
+    private static final Pattern MATH_TAG_PATTERN = Pattern.compile("<math.+?</math>", Pattern.DOTALL);
 
     private static final HashFunction HASHER = Hashing.md5();
 
@@ -78,31 +78,25 @@ public class WikiTextUtils {
     public static List<MathTag> findMathTags(String text) {
         List<MathTag> results = new ArrayList<MathTag>();
 
-        int current = 0;
-        while (true) {
-            int start = text.indexOf(MATH_TAG_OPEN, current);
-            if (start < 0) {
-                break;
-            }
+        Matcher matcher = MATH_TAG_PATTERN.matcher(text);
 
-            int end = text.indexOf(MATH_TAG_CLOSE, start);
-            Validate.isTrue(end >= 0, "no closing tag for <math>");
-            current = end + MATH_TAG_CLOSE.length();
-
-            String math = text.substring(start, end + MATH_TAG_CLOSE.length());
-            MathMarkUpType markUp = guessMarkupType(math);
-
-            results.add(new MathTag(start, math, markUp));
+        while (matcher.find()) {
+            String tag = matcher.group();
+            MathMarkUpType markUp = guessMarkupType(tag);
+            results.add(new MathTag(matcher.start(), tag, markUp));
         }
 
         return results;
     }
 
     private static MathMarkUpType guessMarkupType(String math) {
-        int closingBracket = math.indexOf(">", MATH_TAG_OPEN.length());
-        String augmentationString = math.substring(MATH_TAG_OPEN.length(), closingBracket).trim();
-        boolean noAugmention = augmentationString.isEmpty();
-        return noAugmention ? MathMarkUpType.LATEX : MathMarkUpType.MATHML;
+        int closingBracket = math.indexOf(">", "<math".length());
+        String afterTag = math.substring(closingBracket + 1, math.length()).trim();
+        if (afterTag.startsWith("<")) {
+            return MathMarkUpType.MATHML;
+        } else {
+            return MathMarkUpType.LATEX;
+        }
     }
 
     public static String replaceAllFormulas(String text, List<MathTag> mathTags) {

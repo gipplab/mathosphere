@@ -38,7 +38,7 @@ public class TextAnnotatorMapper extends RichMapFunction<WikiDocumentText, WikiD
 
     @Override
     public WikiDocument map(WikiDocumentText doc) throws Exception {
-        LOGGER.debug("processing \"{}\"...", doc.title);
+        LOGGER.info("processing \"{}\"...", doc.title);
 
         List<MathTag> mathTags = WikiTextUtils.findMathTags(doc.text);
         List<Formula> formulas = toFormulas(mathTags);
@@ -53,7 +53,7 @@ public class TextAnnotatorMapper extends RichMapFunction<WikiDocumentText, WikiD
         String cleanText = WikiTextUtils.extractPlainText(newText);
         List<Sentence> sentences = posTagger.process(cleanText, formulas);
 
-        return new WikiDocument(doc.id, doc.title, allIdentifiers, formulas, sentences);
+        return new WikiDocument(doc.title, allIdentifiers, formulas, sentences);
     }
 
     public static List<Formula> toFormulas(List<MathTag> mathTags) {

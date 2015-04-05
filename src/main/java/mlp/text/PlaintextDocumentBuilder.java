@@ -216,7 +216,7 @@ public class PlaintextDocumentBuilder extends NoOpDocumentBuilder {
         if (skipSpans.size() > 0) {
             return;
         }
-        if (passingSpans.size() > 0) {
+        if (!passingSpans.isEmpty()) {
             SpanType type = passingSpans.getLast();
             switch (type) {
             case SUBSCRIPT:
@@ -274,7 +274,7 @@ public class PlaintextDocumentBuilder extends NoOpDocumentBuilder {
             return;
         }
 
-        // urls, beacause the parse also detects raw links
+        // urls, because the parser also detects raw links
         if (full.matches("https?:")) {
             return;
         }
@@ -284,8 +284,8 @@ public class PlaintextDocumentBuilder extends NoOpDocumentBuilder {
             return;
         }
 
-        // when textfield is emtpy the link will be shown, except
-        // anything in parentheses.
+        // when textfield is empty the link will be shown, except anything in
+        // parentheses.
         if (text.isEmpty()) {
             text = link.replaceAll("\\(.*?\\)", "");
         }

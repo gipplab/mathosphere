@@ -8,10 +8,10 @@ import mlp.pojos.Word;
 
 import com.google.common.collect.Lists;
 import com.itshared.rseq.BeanMatchers;
-import com.itshared.rseq.EnhancedMatcher;
 import com.itshared.rseq.Match;
 import com.itshared.rseq.Matcher;
 import com.itshared.rseq.Pattern;
+import com.itshared.rseq.XMatcher;
 
 public class PatternMatcher {
     private List<Pattern<Word>> patterns;
@@ -25,8 +25,8 @@ public class PatternMatcher {
         for (Pattern<Word> pattern : patterns) {
             List<Match<Word>> matches = pattern.find(words);
             for (Match<Word> match : matches) {
-                Word id = match.getVariable("identifier");
-                Word def = match.getVariable("definition");
+                String id = match.getVariable("identifier").getWord();
+                String def = match.getVariable("definition").getWord();
                 result.add(new IdentifierMatch(id, def));
             }
         }
@@ -62,32 +62,32 @@ public class PatternMatcher {
 
     }
 
-    private static EnhancedMatcher<Word> word(String word) {
+    private static XMatcher<Word> word(String word) {
         return BeanMatchers.eq(Word.class, "word", word);
     }
 
-    private static EnhancedMatcher<Word> pos(String pos) {
+    private static XMatcher<Word> pos(String pos) {
         return BeanMatchers.eq(Word.class, "posTag", pos);
     }
 
-    private static EnhancedMatcher<Word> posRegExp(String regexp) {
+    private static XMatcher<Word> posRegExp(String regexp) {
         return BeanMatchers.regex(Word.class, "posTag", regexp);
     }
 
     public static class IdentifierMatch {
-        private Word identifier;
-        private Word definition;
+        private String identifier;
+        private String definition;
 
-        public IdentifierMatch(Word identifier, Word definition) {
+        public IdentifierMatch(String identifier, String definition) {
             this.identifier = identifier;
             this.definition = definition;
         }
 
-        public Word getIdentifier() {
+        public String getIdentifier() {
             return identifier;
         }
 
-        public Word getDefinition() {
+        public String getDefinition() {
             return definition;
         }
     }

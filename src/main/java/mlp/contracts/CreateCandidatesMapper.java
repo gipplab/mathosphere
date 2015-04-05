@@ -79,13 +79,12 @@ public class CreateCandidatesMapper implements FlatMapFunction<WikiDocument, Rel
                 double score = calculateScore(distance, freq, maxFrequency, sentenceIdx);
 
                 Relation relation = new Relation();
-                relation.setDocumentTitle(doc.getTitle());
                 relation.setIdentifier(identifier);
                 relation.setIdentifierPosition(identifierPosition);
-                relation.setWord(word);
+                relation.setDefinition(word);
                 relation.setWordPosition(wordIdx);
                 relation.setScore(score);
-                relation.setSentence(sentence);
+                // relation.setSentence(sentence);
 
                 result.add(relation);
             }
@@ -106,7 +105,7 @@ public class CreateCandidatesMapper implements FlatMapFunction<WikiDocument, Rel
     }
 
     private static double gaussian(double x, double std) {
-        return Math.exp(- x * x / (2 * std * std));
+        return Math.exp(-x * x / (2 * std * std));
     }
 
     public static List<Integer> identifierPositions(List<Word> sentence, String identifier) {
@@ -143,7 +142,7 @@ public class CreateCandidatesMapper implements FlatMapFunction<WikiDocument, Rel
     }
 
     public static int calculateMax(Multiset<String> frequencies) {
-        Entry<String> max = Collections.max(frequencies.entrySet(), 
+        Entry<String> max = Collections.max(frequencies.entrySet(),
                 (e1, e2) -> Integer.compare(e1.getCount(), e2.getCount()));
         return max.getCount();
     }

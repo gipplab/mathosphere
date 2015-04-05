@@ -2,8 +2,8 @@ package mlp.contracts;
 
 import java.io.InputStream;
 
-import mlp.RelationFinder;
-import mlp.flink.ListCollector;
+import mlp.PatternMatchingRelationFinder;
+import mlp.pojos.IndentifiersRepresentation;
 import mlp.pojos.Relation;
 import mlp.pojos.WikiDocument;
 import mlp.pojos.WikiDocumentText;
@@ -19,31 +19,29 @@ public class PatternMatcherMapperTest {
 
     @Test
     public void testShodingerFull() throws Exception {
-        WikiDocument doc = CreateCandidatesMapperTest.read("augmentendwikitext.xml");
+        WikiDocument doc = CreateCandidatesMapperTest.read("augmentendwikitext.xml", 1);
 
         PatternMatcherMapper patternMatcher = new PatternMatcherMapper();
-        ListCollector<Relation> out = new ListCollector<>();
-        patternMatcher.flatMap(doc, out);
+        IndentifiersRepresentation identifiers = patternMatcher.map(doc);
 
-        for (Relation relation : out.getList()) {
+        for (Relation relation : identifiers.getRelations()) {
             LOGGER.debug("relation: {}", relation);
         }
     }
 
     @Test
     public void testShrodingerPart() throws Exception {
-        InputStream input = RelationFinder.class.getResourceAsStream("escaped.txt");
+        InputStream input = PatternMatchingRelationFinder.class.getResourceAsStream("escaped.txt");
         String text = IOUtils.toString(input);
-        WikiDocumentText documentText = new WikiDocumentText(1, "Document", 0, text);
+        WikiDocumentText documentText = new WikiDocumentText("Document", 0, text);
 
         TextAnnotatorMapper textAnnotator = TextAnnotatorMapperTest.TEST_INSTANCE;
         WikiDocument doc = textAnnotator.map(documentText);
 
         PatternMatcherMapper patternMatcher = new PatternMatcherMapper();
-        ListCollector<Relation> out = new ListCollector<>();
-        patternMatcher.flatMap(doc, out);
+        IndentifiersRepresentation identifiers = patternMatcher.map(doc);
 
-        for (Relation relation : out.getList()) {
+        for (Relation relation : identifiers.getRelations()) {
             LOGGER.debug("relation: {}, sentence: {}", relation, relation.getSentence());
         }
     }

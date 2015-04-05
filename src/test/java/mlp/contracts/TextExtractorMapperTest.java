@@ -5,7 +5,7 @@ import static org.junit.Assert.*;
 import java.io.InputStream;
 import java.util.List;
 
-import mlp.RelationFinder;
+import mlp.PatternMatchingRelationFinder;
 import mlp.flink.ListCollector;
 import mlp.pojos.WikiDocumentText;
 
@@ -16,7 +16,7 @@ public class TextExtractorMapperTest {
 
     @Test
     public void test() throws Exception {
-        InputStream stream = RelationFinder.class.getResourceAsStream("augmentendwikitext.xml");
+        InputStream stream = PatternMatchingRelationFinder.class.getResourceAsStream("augmentendwikitext.xml");
         String rawImput = IOUtils.toString(stream);
         assertTrue(rawImput.contains("&lt;math"));
 

@@ -48,7 +48,7 @@ public class Config implements Serializable {
         return dataset;
     }
 
-    public String getOutputdir() {
+    public String getOutputDir() {
         return outputdir;
     }
 

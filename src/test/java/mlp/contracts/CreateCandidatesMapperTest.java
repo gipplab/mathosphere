@@ -43,7 +43,11 @@ public class CreateCandidatesMapperTest {
 
 
     public static WikiDocument read(String testFile) throws Exception {
-        WikiDocumentText doc1 = TextAnnotatorMapperTest.readWikiTextDocuments(testFile).get(0);
+        return read(testFile, 0);
+    }
+
+    public static WikiDocument read(String testFile, int docNo) throws Exception {
+        WikiDocumentText doc1 = TextAnnotatorMapperTest.readWikiTextDocuments(testFile).get(docNo);
         TextAnnotatorMapper textAnnotator = TextAnnotatorMapperTest.TEST_INSTANCE;
         return textAnnotator.map(doc1);
     }

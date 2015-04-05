@@ -5,7 +5,6 @@ import java.util.Set;
 
 public class WikiDocument {
 
-    private int id;
     private String title;
     private Set<String> identifiers;
     private List<Formula> formulas;
@@ -14,21 +13,12 @@ public class WikiDocument {
     public WikiDocument() {
     }
 
-    public WikiDocument(int id, String title, Set<String> identifiers, List<Formula> formulas,
+    public WikiDocument(String title, Set<String> identifiers, List<Formula> formulas,
             List<Sentence> sentences) {
-        this.id = id;
         this.title = title;
         this.identifiers = identifiers;
         this.formulas = formulas;
         this.sentences = sentences;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getTitle() {
