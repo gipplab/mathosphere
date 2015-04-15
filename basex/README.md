@@ -21,8 +21,9 @@ The queries can be referenced via DOI 10.13140/2.1.1618.6564
 ```
 mkdir /tmp/baseX
 cd /tmp/baseX
-git clone https://github.com/TU-Berlin/fse-ntcir11-wmc-basex .
+git clone https://github.com/TU-Berlin/mathosphere .
 mvn install
+cd basex
 mkdir data
 cd data
 wget http://demo.formulasearchengine.com/images/NTCIR-11-Wikipedia-Math-MWS-Dump.zip
