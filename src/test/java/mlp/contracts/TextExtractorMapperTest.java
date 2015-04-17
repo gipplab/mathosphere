@@ -7,7 +7,7 @@ import java.util.List;
 
 import mlp.PatternMatchingRelationFinder;
 import mlp.flink.ListCollector;
-import mlp.pojos.WikiDocumentText;
+import mlp.pojos.RawWikiDocument;
 
 import org.apache.commons.io.IOUtils;
 import org.junit.Test;
@@ -23,20 +23,20 @@ public class TextExtractorMapperTest {
         String[] pages = rawImput.split("</page>");
         TextExtractorMapper textExtractor = new TextExtractorMapper();
 
-        ListCollector<WikiDocumentText> out = new ListCollector<>();
+        ListCollector<RawWikiDocument> out = new ListCollector<>();
         for (String page : pages) {
             textExtractor.flatMap(page, out);
         }
 
-        List<WikiDocumentText> output = out.getList();
+        List<RawWikiDocument> output = out.getList();
         assertEquals(2, output.size());
 
-        WikiDocumentText doc1 = output.get(0);
+        RawWikiDocument doc1 = output.get(0);
         assertEquals(doc1.title, "Schrödinger equation");
         assertFalse(doc1.text.contains("&lt;math"));
         assertTrue(doc1.text.contains("<math"));
 
-        WikiDocumentText doc2 = output.get(1);
+        RawWikiDocument doc2 = output.get(1);
         assertEquals(doc2.title, "Gas constant");
     }
 

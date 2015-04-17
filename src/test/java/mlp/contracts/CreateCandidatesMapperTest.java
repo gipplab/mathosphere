@@ -9,8 +9,8 @@ import java.util.List;
 import mlp.Config;
 import mlp.flink.ListCollector;
 import mlp.pojos.Relation;
-import mlp.pojos.WikiDocument;
-import mlp.pojos.WikiDocumentText;
+import mlp.pojos.ParsedWikiDocument;
+import mlp.pojos.RawWikiDocument;
 import mlp.pojos.Word;
 
 import org.junit.Test;
@@ -31,7 +31,7 @@ public class CreateCandidatesMapperTest {
 
     @Test
     public void test() throws Exception {
-        WikiDocument doc = read("augmentendwikitext.xml");
+        ParsedWikiDocument doc = read("augmentendwikitext.xml");
         CreateCandidatesMapper candidatesMapper = new CreateCandidatesMapper(alpha, beta, gamma);
         ListCollector<Relation> out = new ListCollector<>();
         candidatesMapper.flatMap(doc, out);
@@ -42,12 +42,12 @@ public class CreateCandidatesMapperTest {
     }
 
 
-    public static WikiDocument read(String testFile) throws Exception {
+    public static ParsedWikiDocument read(String testFile) throws Exception {
         return read(testFile, 0);
     }
 
-    public static WikiDocument read(String testFile, int docNo) throws Exception {
-        WikiDocumentText doc1 = TextAnnotatorMapperTest.readWikiTextDocuments(testFile).get(docNo);
+    public static ParsedWikiDocument read(String testFile, int docNo) throws Exception {
+        RawWikiDocument doc1 = TextAnnotatorMapperTest.readWikiTextDocuments(testFile).get(docNo);
         TextAnnotatorMapper textAnnotator = TextAnnotatorMapperTest.TEST_INSTANCE;
         return textAnnotator.map(doc1);
     }

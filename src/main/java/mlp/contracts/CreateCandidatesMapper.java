@@ -9,7 +9,7 @@ import java.util.Set;
 import mlp.Config;
 import mlp.pojos.Relation;
 import mlp.pojos.Sentence;
-import mlp.pojos.WikiDocument;
+import mlp.pojos.ParsedWikiDocument;
 import mlp.pojos.Word;
 
 import org.apache.flink.api.common.functions.FlatMapFunction;
@@ -21,7 +21,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Multiset;
 import com.google.common.collect.Multiset.Entry;
 
-public class CreateCandidatesMapper implements FlatMapFunction<WikiDocument, Relation> {
+public class CreateCandidatesMapper implements FlatMapFunction<ParsedWikiDocument, Relation> {
 
     private final static Set<String> BLACKLIST = ImmutableSet.of("behavior", "infinity", "sum", "other", "=",
             "|", "·", "≥", "≤", "≠", "lim", "ƒ", "×", "/", "\\", "-", "function", "functions", "equation",
@@ -42,8 +42,8 @@ public class CreateCandidatesMapper implements FlatMapFunction<WikiDocument, Rel
     }
 
     @Override
-    public void flatMap(WikiDocument doc, Collector<Relation> out) throws Exception {
-        Set<String> identifiers = doc.getIdentifiers();
+    public void flatMap(ParsedWikiDocument doc, Collector<Relation> out) throws Exception {
+        Set<String> identifiers = doc.getIdentifiers().elementSet();
 
         for (String identifier : identifiers) {
             List<Relation> relations = generateCandidates(doc, identifier);
@@ -51,7 +51,7 @@ public class CreateCandidatesMapper implements FlatMapFunction<WikiDocument, Rel
         }
     }
 
-    private List<Relation> generateCandidates(WikiDocument doc, String identifier) {
+    private List<Relation> generateCandidates(ParsedWikiDocument doc, String identifier) {
         List<Sentence> sentences = findSentencesWithIdentifier(doc.getSentences(), identifier);
         if (sentences.isEmpty()) {
             return Collections.emptyList();

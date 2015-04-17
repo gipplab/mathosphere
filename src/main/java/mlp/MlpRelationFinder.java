@@ -4,7 +4,7 @@ import mlp.contracts.CreateCandidatesMapper;
 import mlp.contracts.TextAnnotatorMapper;
 import mlp.contracts.TextExtractorMapper;
 import mlp.pojos.Relation;
-import mlp.pojos.WikiDocument;
+import mlp.pojos.ParsedWikiDocument;
 
 import org.apache.flink.api.java.DataSet;
 import org.apache.flink.api.java.ExecutionEnvironment;
@@ -20,7 +20,7 @@ public class MlpRelationFinder {
         ExecutionEnvironment env = ExecutionEnvironment.getExecutionEnvironment();
 
         DataSource<String> source = readWikiDump(config, env);
-        DataSet<WikiDocument> documents = source.flatMap(new TextExtractorMapper())
+        DataSet<ParsedWikiDocument> documents = source.flatMap(new TextExtractorMapper())
                                                 .map(new TextAnnotatorMapper(config.getModel()));
 
         DataSet<Relation> foundRelations = 

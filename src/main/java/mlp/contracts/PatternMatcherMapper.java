@@ -3,10 +3,10 @@ package mlp.contracts;
 import java.util.List;
 import java.util.Set;
 
-import mlp.pojos.IndentifiersRepresentation;
+import mlp.pojos.WikiDocumentOutput;
 import mlp.pojos.Relation;
 import mlp.pojos.Sentence;
-import mlp.pojos.WikiDocument;
+import mlp.pojos.ParsedWikiDocument;
 import mlp.text.PatternMatcher;
 import mlp.text.PatternMatcher.IdentifierMatch;
 
@@ -16,12 +16,12 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.Lists;
 
-public class PatternMatcherMapper implements MapFunction<WikiDocument, IndentifiersRepresentation> {
+public class PatternMatcherMapper implements MapFunction<ParsedWikiDocument, WikiDocumentOutput> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PatternMatcherMapper.class);
 
     @Override
-    public IndentifiersRepresentation map(WikiDocument doc) throws Exception {
+    public WikiDocumentOutput map(ParsedWikiDocument doc) throws Exception {
         List<Relation> foundRelations = Lists.newArrayList();
         List<Sentence> sentences = doc.getSentences();
         for (Sentence sentence : sentences) {
@@ -46,7 +46,7 @@ public class PatternMatcherMapper implements MapFunction<WikiDocument, Indentifi
         }
 
         LOGGER.info("extracted {} relations from {}", foundRelations.size(), doc.getTitle());
-        return new IndentifiersRepresentation(doc.getTitle(), foundRelations, doc.getIdentifiers());
+        return new WikiDocumentOutput(doc.getTitle(), foundRelations, doc.getIdentifiers());
     }
 
 }

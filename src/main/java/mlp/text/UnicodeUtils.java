@@ -2,9 +2,12 @@ package mlp.text;
 
 import java.lang.Character.UnicodeBlock;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang3.CharUtils;
 
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableMap.Builder;
 import com.google.common.collect.Lists;
 
 public class UnicodeUtils {
@@ -24,6 +27,52 @@ public class UnicodeUtils {
             + "αβγδεζηθικλμνξοπρςστυφχψω∂ϵϑϰϕϱϖ");
     private static final List<String> DIGIT_NORMAL = asList("0123456789");
 
+    private static final Map<Integer, String> LETTER_LIKE_MAPPING = buildLetterLikeMap();
+
+    private static Map<Integer, String> buildLetterLikeMap() {
+        // see table here
+        // http://unicode-table.com/en/blocks/letterlike-symbols/
+
+        Builder<Integer, String> letterLike = ImmutableMap.builder();
+        letterLike.put(0x2102, "C");
+        letterLike.put(0x210A, "g");
+        letterLike.put(0x210B, "H");
+        letterLike.put(0x210C, "H");
+        letterLike.put(0x210D, "H");
+        letterLike.put(0x2110, "I");
+        letterLike.put(0x2111, "I");
+        letterLike.put(0x2112, "L");
+        letterLike.put(0x2113, "l");
+        letterLike.put(0x2115, "N");
+        letterLike.put(0x2118, "P");
+        letterLike.put(0x2119, "P");
+        letterLike.put(0x211A, "Q");
+        letterLike.put(0x211B, "R");
+        letterLike.put(0x211C, "R");
+        letterLike.put(0x211D, "R");
+        letterLike.put(0x2124, "Z");
+        letterLike.put(0x2126, "Ω");
+        letterLike.put(0x212C, "B");
+        letterLike.put(0x212D, "C");
+        letterLike.put(0x212F, "e");
+        letterLike.put(0x2130, "E");
+        letterLike.put(0x2131, "F");
+        letterLike.put(0x2133, "M");
+        letterLike.put(0x2134, "o");
+        letterLike.put(0x213C, "π");
+        letterLike.put(0x213D, "γ");
+        letterLike.put(0x213E, "Γ");
+        letterLike.put(0x213F, "Π");
+        letterLike.put(0x2140, "Σ");
+        letterLike.put(0x2145, "D");
+        letterLike.put(0x2146, "d");
+        letterLike.put(0x2147, "e");
+        letterLike.put(0x2148, "i");
+        letterLike.put(0x2149, "j");
+
+        return letterLike.build();
+    }
+
     public static String normalizeString(String in) {
         int[] chars = in.codePoints().toArray();
         StringBuilder res = new StringBuilder(in.length());
@@ -40,15 +89,23 @@ public class UnicodeUtils {
             return "";
         }
 
+        // TODO: long search? maybe replace with own implementation
         UnicodeBlock block = Character.UnicodeBlock.of(codePoint);
         if (block == Character.UnicodeBlock.MATHEMATICAL_ALPHANUMERIC_SYMBOLS) {
             return normalizeMath(codePoint);
+        }
+
+        if (block == Character.UnicodeBlock.LETTERLIKE_SYMBOLS) {
+            return normalizeLetterLike(codePoint);
         }
 
         return codePointToString(codePoint);
     }
 
     private static String normalizeMath(int codePoint) {
+        // see here
+        // http://unicode-table.com/en/blocks/mathematical-alphanumeric-symbols/
+
         if (isMathLatin(codePoint)) {
             return processLatin(codePoint);
         }
@@ -158,6 +215,14 @@ public class UnicodeUtils {
 
         char[] chars = Character.toChars(codePoint);
         return new String(chars);
+    }
+
+    private static String normalizeLetterLike(int codePoint) {
+        if (LETTER_LIKE_MAPPING.containsKey(codePoint)) {
+            return LETTER_LIKE_MAPPING.get(codePoint);
+        } else {
+            return codePointToString(codePoint);
+        }
     }
 
 }

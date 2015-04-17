@@ -3,7 +3,7 @@ package mlp.contracts;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import mlp.pojos.WikiDocumentText;
+import mlp.pojos.RawWikiDocument;
 
 import org.apache.commons.lang3.text.translate.AggregateTranslator;
 import org.apache.commons.lang3.text.translate.CharSequenceTranslator;
@@ -14,7 +14,7 @@ import org.apache.flink.util.Collector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class TextExtractorMapper implements FlatMapFunction<String, WikiDocumentText> {
+public class TextExtractorMapper implements FlatMapFunction<String, RawWikiDocument> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TextExtractorMapper.class);
 
@@ -29,7 +29,7 @@ public class TextExtractorMapper implements FlatMapFunction<String, WikiDocument
                 new LookupTranslator(EntityArrays.HTML40_EXTENDED_UNESCAPE()));
 
     @Override
-    public void flatMap(String content, Collector<WikiDocumentText> out) throws Exception {
+    public void flatMap(String content, Collector<RawWikiDocument> out) throws Exception {
         Matcher titleMatcher = TITLE_PATTERN.matcher(content);
         if (!titleMatcher.find()) {
             return;
@@ -58,7 +58,7 @@ public class TextExtractorMapper implements FlatMapFunction<String, WikiDocument
         String rawText = textMatcher.group(1);
         String text = unescape(rawText);
 
-        out.collect(new WikiDocumentText(title, ns, text));
+        out.collect(new RawWikiDocument(title, ns, text));
 
     }
 

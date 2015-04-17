@@ -1,21 +1,22 @@
 package mlp.pojos;
 
 import java.util.List;
-import java.util.Set;
 
-public class IndentifiersRepresentation {
+import com.google.common.collect.Multiset;
+
+public class WikiDocumentOutput {
 
     private String title;
     private List<Relation> relations;
-    private Set<String> identifiers;
+    private Multiset<String> identifiers;
 
-    public IndentifiersRepresentation() {
+    public WikiDocumentOutput() {
     }
 
-    public IndentifiersRepresentation(String document, List<Relation> relations, Set<String> identifiers) {
+    public WikiDocumentOutput(String document, List<Relation> relations, Multiset<String> identifiers) {
         this.title = document;
         this.relations = relations;
-        this.setIdentifiers(identifiers);
+        this.identifiers = identifiers;
     }
 
     public String getTitle() {
@@ -34,11 +35,11 @@ public class IndentifiersRepresentation {
         this.relations = relations;
     }
 
-    public Set<String> getIdentifiers() {
+    public Multiset<String> getIdentifiers() {
         return identifiers;
     }
 
-    public void setIdentifiers(Set<String> identifiers) {
+    public void setIdentifiers(Multiset<String> identifiers) {
         this.identifiers = identifiers;
     }
 

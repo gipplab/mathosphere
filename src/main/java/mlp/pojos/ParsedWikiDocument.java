@@ -1,19 +1,20 @@
 package mlp.pojos;
 
 import java.util.List;
-import java.util.Set;
 
-public class WikiDocument {
+import com.google.common.collect.Multiset;
+
+public class ParsedWikiDocument {
 
     private String title;
-    private Set<String> identifiers;
+    private Multiset<String> identifiers;
     private List<Formula> formulas;
     private List<Sentence> sentences;
 
-    public WikiDocument() {
+    public ParsedWikiDocument() {
     }
 
-    public WikiDocument(String title, Set<String> identifiers, List<Formula> formulas,
+    public ParsedWikiDocument(String title, Multiset<String> identifiers, List<Formula> formulas,
             List<Sentence> sentences) {
         this.title = title;
         this.identifiers = identifiers;
@@ -33,11 +34,11 @@ public class WikiDocument {
         return sentences;
     }
 
-    public Set<String> getIdentifiers() {
+    public Multiset<String> getIdentifiers() {
         return identifiers;
     }
 
-    public void setIdentifiers(Set<String> identifiers) {
+    public void setIdentifiers(Multiset<String> identifiers) {
         this.identifiers = identifiers;
     }
 

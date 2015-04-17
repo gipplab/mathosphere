@@ -4,8 +4,8 @@ import mlp.contracts.JsonSerializerMapper;
 import mlp.contracts.PatternMatcherMapper;
 import mlp.contracts.TextAnnotatorMapper;
 import mlp.contracts.TextExtractorMapper;
-import mlp.pojos.IndentifiersRepresentation;
-import mlp.pojos.WikiDocument;
+import mlp.pojos.WikiDocumentOutput;
+import mlp.pojos.ParsedWikiDocument;
 
 import org.apache.flink.api.java.DataSet;
 import org.apache.flink.api.java.ExecutionEnvironment;
@@ -22,10 +22,10 @@ public class PatternMatchingRelationFinder {
         ExecutionEnvironment env = ExecutionEnvironment.getExecutionEnvironment();
 
         DataSource<String> source = readWikiDump(config, env);
-        DataSet<WikiDocument> documents = source.flatMap(new TextExtractorMapper())
+        DataSet<ParsedWikiDocument> documents = source.flatMap(new TextExtractorMapper())
                                                 .map(new TextAnnotatorMapper(config.getModel()));
 
-        DataSet<IndentifiersRepresentation> relations = documents.map(new PatternMatcherMapper());
+        DataSet<WikiDocumentOutput> relations = documents.map(new PatternMatcherMapper());
         relations.map(new JsonSerializerMapper<>())
                  .writeAsText(config.getOutputDir(), WriteMode.OVERWRITE);
 

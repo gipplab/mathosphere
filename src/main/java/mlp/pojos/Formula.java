@@ -1,18 +1,17 @@
 package mlp.pojos;
 
-import java.util.Set;
-
-import com.google.common.collect.Sets;
+import com.google.common.collect.HashMultiset;
+import com.google.common.collect.Multiset;
 
 public class Formula {
     private String key;
     private String content;
-    private Set<String> indentifiers = Sets.newLinkedHashSet();
+    private Multiset<String> indentifiers = HashMultiset.create();;
 
     public Formula() {
     }
 
-    public Formula(String key, String content, Set<String> identifiers) {
+    public Formula(String key, String content, Multiset<String> identifiers) {
         this.key = key;
         this.content = content;
         this.indentifiers.addAll(identifiers);
@@ -34,7 +33,7 @@ public class Formula {
         this.content = content;
     }
 
-    public Set<String> getIndentifiers() {
+    public Multiset<String> getIndentifiers() {
         return indentifiers;
     }
 

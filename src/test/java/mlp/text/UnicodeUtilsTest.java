@@ -1,6 +1,6 @@
 package mlp.text;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -70,9 +70,24 @@ public class UnicodeUtilsTest {
         }
     }
 
-    private List<String> readTestData() throws IOException {
-        InputStream is = UnicodeUtils.class.getResourceAsStream("unicode.txt");
+    @Test
+    public void normalize_letterLikeSymbols() throws Exception {
+        List<String> lines = readTestData("unicode2.txt");
+        for (String line : lines) {
+            String[] split = line.split(" ");
+            String expected = split[0];
+            String actual = UnicodeUtils.normalizeString(split[1]);
+            assertEquals(expected, actual);
+        }
+    }
+
+    private List<String> readTestData(String res) throws IOException {
+        InputStream is = UnicodeUtils.class.getResourceAsStream(res);
         return IOUtils.readLines(is);
+    }
+
+    private List<String> readTestData() throws IOException {
+        return readTestData("unicode.txt");
     }
 
 }

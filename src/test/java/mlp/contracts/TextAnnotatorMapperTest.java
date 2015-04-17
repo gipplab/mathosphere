@@ -15,8 +15,8 @@ import mlp.PatternMatchingRelationFinder;
 import mlp.flink.ListCollector;
 import mlp.pojos.Formula;
 import mlp.pojos.Sentence;
-import mlp.pojos.WikiDocument;
-import mlp.pojos.WikiDocumentText;
+import mlp.pojos.ParsedWikiDocument;
+import mlp.pojos.RawWikiDocument;
 import mlp.pojos.Word;
 import mlp.text.PosTag;
 
@@ -33,12 +33,12 @@ public class TextAnnotatorMapperTest {
 
     @Test
     public void test() throws Exception {
-        List<WikiDocumentText> docs = readWikiTextDocuments("augmentendwikitext.xml");
-        WikiDocumentText schroedingerIn = docs.get(0);
+        List<RawWikiDocument> docs = readWikiTextDocuments("augmentendwikitext.xml");
+        RawWikiDocument schroedingerIn = docs.get(0);
 
-        WikiDocument shroedingerOut = TEST_INSTANCE.map(schroedingerIn);
+        ParsedWikiDocument shroedingerOut = TEST_INSTANCE.map(schroedingerIn);
 
-        Set<String> identifiers = shroedingerOut.getIdentifiers();
+        Set<String> identifiers = shroedingerOut.getIdentifiers().elementSet();
         assertTrue(identifiers.containsAll(Arrays.asList("Ψ", "V", "h", "λ", "ρ", "τ")));
 
         List<Formula> formulas = shroedingerOut.getFormulas();
@@ -69,13 +69,13 @@ public class TextAnnotatorMapperTest {
         return formulas.get(idx);
     }
 
-    public static List<WikiDocumentText> readWikiTextDocuments(String testFile) throws Exception {
+    public static List<RawWikiDocument> readWikiTextDocuments(String testFile) throws Exception {
         InputStream stream = PatternMatchingRelationFinder.class.getResourceAsStream(testFile);
         String rawImput = IOUtils.toString(stream);
         String[] pages = rawImput.split("</page>");
         TextExtractorMapper textExtractor = new TextExtractorMapper();
 
-        ListCollector<WikiDocumentText> out = new ListCollector<>();
+        ListCollector<RawWikiDocument> out = new ListCollector<>();
         for (String page : pages) {
             textExtractor.flatMap(page, out);
         }
@@ -96,8 +96,8 @@ public class TextAnnotatorMapperTest {
     @Test
     public void tokenization_formulaSuffexed() throws Exception {
         String text = "The <math>x</math>-axis shows...";
-        WikiDocumentText doc = new WikiDocumentText("some doc", 1, text);
-        WikiDocument result = TEST_INSTANCE.map(doc);
+        RawWikiDocument doc = new RawWikiDocument("some doc", 1, text);
+        ParsedWikiDocument result = TEST_INSTANCE.map(doc);
 
         List<Formula> formulas = result.getFormulas();
         assertEquals(1, formulas.size());

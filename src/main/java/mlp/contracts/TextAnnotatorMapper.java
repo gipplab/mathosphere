@@ -1,12 +1,11 @@
 package mlp.contracts;
 
 import java.util.List;
-import java.util.Set;
 
 import mlp.pojos.Formula;
+import mlp.pojos.ParsedWikiDocument;
+import mlp.pojos.RawWikiDocument;
 import mlp.pojos.Sentence;
-import mlp.pojos.WikiDocument;
-import mlp.pojos.WikiDocumentText;
 import mlp.text.MathMLUtils;
 import mlp.text.PosTagger;
 import mlp.text.WikiTextUtils;
@@ -17,10 +16,11 @@ import org.apache.flink.configuration.Configuration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
+import com.google.common.collect.Multiset;
 
-public class TextAnnotatorMapper extends RichMapFunction<WikiDocumentText, WikiDocument> {
+public class TextAnnotatorMapper extends RichMapFunction<RawWikiDocument, ParsedWikiDocument> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TextAnnotatorMapper.class);
 
@@ -37,14 +37,17 @@ public class TextAnnotatorMapper extends RichMapFunction<WikiDocumentText, WikiD
     }
 
     @Override
-    public WikiDocument map(WikiDocumentText doc) throws Exception {
+    public ParsedWikiDocument map(RawWikiDocument doc) throws Exception {
         LOGGER.info("processing \"{}\"...", doc.title);
 
         List<MathTag> mathTags = WikiTextUtils.findMathTags(doc.text);
         List<Formula> formulas = toFormulas(mathTags);
-        Set<String> allIdentifiers = Sets.newLinkedHashSet();
+
+        Multiset<String> allIdentifiers = HashMultiset.create();
         for (Formula formula : formulas) {
-            allIdentifiers.addAll(formula.getIndentifiers());
+            for (Multiset.Entry<String> entry : formula.getIndentifiers().entrySet()) {
+                allIdentifiers.add(entry.getElement(), entry.getCount());
+            }
         }
 
         LOGGER.debug("identifiers in \"{}\" from {} formulas: {}", doc.title, formulas.size(), allIdentifiers);
@@ -53,13 +56,13 @@ public class TextAnnotatorMapper extends RichMapFunction<WikiDocumentText, WikiD
         String cleanText = WikiTextUtils.extractPlainText(newText);
         List<Sentence> sentences = posTagger.process(cleanText, formulas);
 
-        return new WikiDocument(doc.title, allIdentifiers, formulas, sentences);
+        return new ParsedWikiDocument(doc.title, allIdentifiers, formulas, sentences);
     }
 
     public static List<Formula> toFormulas(List<MathTag> mathTags) {
         List<Formula> formulas = Lists.newArrayList();
         for (MathTag math : mathTags) {
-            Set<String> identifiers = MathMLUtils.extractIdentifiers(math);
+            Multiset<String> identifiers = MathMLUtils.extractIdentifiers(math);
             formulas.add(new Formula(math.placeholder(), math.getContent(), identifiers));
         }
         return formulas;

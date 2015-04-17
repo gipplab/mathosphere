@@ -2,16 +2,16 @@ package mlp.pojos;
 
 import org.apache.commons.lang3.StringUtils;
 
-public class WikiDocumentText {
+public class RawWikiDocument {
 
     public String title;
     public int namespace;
     public String text;
 
-    public WikiDocumentText() {
+    public RawWikiDocument() {
     }
 
-    public WikiDocumentText(String title, int namespace, String text) {
+    public RawWikiDocument(String title, int namespace, String text) {
         this.title = title;
         this.namespace = namespace;
         this.text = text;

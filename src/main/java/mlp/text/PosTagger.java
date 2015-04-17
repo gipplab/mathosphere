@@ -18,6 +18,7 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.google.common.collect.Multiset;
 import com.google.common.collect.Sets;
 import com.itshared.rseq.BeanMatchers;
 import com.itshared.rseq.XMatcher;
@@ -147,8 +148,9 @@ public class PosTagger {
 
                 formulas.add(formula);
 
-                Set<String> formulaIdentifiers = formula.getIndentifiers();
-                if (formulaIdentifiers.size() == 1) {
+                Multiset<String> formulaIdentifiers = formula.getIndentifiers();
+                // only one occurrence of one single idendifier
+                if (formulaIdentifiers.size() == 1) { 
                     String id = Iterables.get(formulaIdentifiers, 0);
                     LOGGER.debug("convering formula {} to idenfier {}", formula.getKey(), id);
                     words.add(new Word(id, PosTag.IDENTIFIER));
