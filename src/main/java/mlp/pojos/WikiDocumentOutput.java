@@ -1,6 +1,7 @@
 package mlp.pojos;
 
 import java.util.List;
+import java.util.Set;
 
 import com.google.common.collect.Multiset;
 
@@ -8,15 +9,15 @@ public class WikiDocumentOutput {
 
     private String title;
     private List<Relation> relations;
-    private Multiset<String> identifiers;
+    private Set<Multiset.Entry<String>> identifiers;
 
     public WikiDocumentOutput() {
     }
 
-    public WikiDocumentOutput(String document, List<Relation> relations, Multiset<String> identifiers) {
-        this.title = document;
+    public WikiDocumentOutput(String title, List<Relation> relations, Multiset<String> identifiers) {
+        this.title = title;
         this.relations = relations;
-        this.identifiers = identifiers;
+        this.identifiers = identifiers.entrySet();
     }
 
     public String getTitle() {
@@ -35,11 +36,11 @@ public class WikiDocumentOutput {
         this.relations = relations;
     }
 
-    public Multiset<String> getIdentifiers() {
+    public Set<Multiset.Entry<String>> getIdentifiers() {
         return identifiers;
     }
 
-    public void setIdentifiers(Multiset<String> identifiers) {
+    public void setIdentifiers(Set<Multiset.Entry<String>> identifiers) {
         this.identifiers = identifiers;
     }
 

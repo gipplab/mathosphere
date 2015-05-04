@@ -7,13 +7,13 @@ import java.util.Objects;
 import java.util.Set;
 
 import mlp.Config;
+import mlp.pojos.ParsedWikiDocument;
 import mlp.pojos.Relation;
 import mlp.pojos.Sentence;
-import mlp.pojos.ParsedWikiDocument;
+import mlp.pojos.WikiDocumentOutput;
 import mlp.pojos.Word;
 
-import org.apache.flink.api.common.functions.FlatMapFunction;
-import org.apache.flink.util.Collector;
+import org.apache.flink.api.common.functions.MapFunction;
 
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.ImmutableSet;
@@ -21,7 +21,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Multiset;
 import com.google.common.collect.Multiset.Entry;
 
-public class CreateCandidatesMapper implements FlatMapFunction<ParsedWikiDocument, Relation> {
+public class CreateCandidatesMapper implements MapFunction<ParsedWikiDocument, WikiDocumentOutput> {
 
     private final static Set<String> BLACKLIST = ImmutableSet.of("behavior", "infinity", "sum", "other", "=",
             "|", "·", "≥", "≤", "≠", "lim", "ƒ", "×", "/", "\\", "-", "function", "functions", "equation",
@@ -30,25 +30,34 @@ public class CreateCandidatesMapper implements FlatMapFunction<ParsedWikiDocumen
     private double alpha;
     private double beta;
     private double gamma;
+    private double threshold;
 
-    public CreateCandidatesMapper(double alpha, double beta, double gamma) {
+    public CreateCandidatesMapper(double alpha, double beta, double gamma, double threshold) {
         this.alpha = alpha;
         this.beta = beta;
         this.gamma = gamma;
+        this.threshold = threshold;
     }
 
     public CreateCandidatesMapper(Config config) {
-        this(config.getAlpha(), config.getBeta(), config.getGamma());
+        this(config.getAlpha(), config.getBeta(), config.getGamma(), config.getThreshold());
     }
 
     @Override
-    public void flatMap(ParsedWikiDocument doc, Collector<Relation> out) throws Exception {
+    public WikiDocumentOutput map(ParsedWikiDocument doc) throws Exception {
         Set<String> identifiers = doc.getIdentifiers().elementSet();
 
+        List<Relation> relations = Lists.newArrayList();
         for (String identifier : identifiers) {
-            List<Relation> relations = generateCandidates(doc, identifier);
-            relations.forEach(rel -> out.collect(rel));
+            List<Relation> candidates = generateCandidates(doc, identifier);
+            for (Relation rel : candidates) {
+                if (rel.getScore() >= threshold) {
+                    relations.add(rel);
+                }
+            }
         }
+
+        return new WikiDocumentOutput(doc.getTitle(), relations, doc.getIdentifiers());
     }
 
     private List<Relation> generateCandidates(ParsedWikiDocument doc, String identifier) {

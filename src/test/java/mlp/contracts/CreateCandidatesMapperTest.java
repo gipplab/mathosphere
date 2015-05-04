@@ -7,10 +7,10 @@ import java.util.Collections;
 import java.util.List;
 
 import mlp.Config;
-import mlp.flink.ListCollector;
-import mlp.pojos.Relation;
 import mlp.pojos.ParsedWikiDocument;
 import mlp.pojos.RawWikiDocument;
+import mlp.pojos.Relation;
+import mlp.pojos.WikiDocumentOutput;
 import mlp.pojos.Word;
 
 import org.junit.Test;
@@ -25,22 +25,17 @@ public class CreateCandidatesMapperTest {
     private static final Logger LOGGER = LoggerFactory.getLogger(CreateCandidatesMapperTest.class);
 
     final Config config = Config.test();
-    final double alpha = config.getAlpha(); 
-    final double beta = config.getBeta();
-    final double gamma = config.getGamma();
 
     @Test
     public void test() throws Exception {
         ParsedWikiDocument doc = read("augmentendwikitext.xml");
-        CreateCandidatesMapper candidatesMapper = new CreateCandidatesMapper(alpha, beta, gamma);
-        ListCollector<Relation> out = new ListCollector<>();
-        candidatesMapper.flatMap(doc, out);
+        CreateCandidatesMapper candidatesMapper = new CreateCandidatesMapper(config);
+        WikiDocumentOutput output = candidatesMapper.map(doc);
 
-        for (Relation relation : out.getList()) {
+        for (Relation relation : output.getRelations()) {
             LOGGER.debug("relation: {}", relation);
         }
     }
-
 
     public static ParsedWikiDocument read(String testFile) throws Exception {
         return read(testFile, 0);

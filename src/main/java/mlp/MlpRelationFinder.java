@@ -4,15 +4,15 @@ import mlp.contracts.CreateCandidatesMapper;
 import mlp.contracts.JsonSerializerMapper;
 import mlp.contracts.TextAnnotatorMapper;
 import mlp.contracts.TextExtractorMapper;
-import mlp.pojos.Relation;
 import mlp.pojos.ParsedWikiDocument;
+import mlp.pojos.WikiDocumentOutput;
 
 import org.apache.flink.api.java.DataSet;
 import org.apache.flink.api.java.ExecutionEnvironment;
 import org.apache.flink.api.java.io.TextInputFormat;
 import org.apache.flink.api.java.operators.DataSource;
-import org.apache.flink.core.fs.Path;
 import org.apache.flink.core.fs.FileSystem.WriteMode;
+import org.apache.flink.core.fs.Path;
 
 public class MlpRelationFinder {
 
@@ -22,15 +22,13 @@ public class MlpRelationFinder {
         ExecutionEnvironment env = ExecutionEnvironment.getExecutionEnvironment();
 
         DataSource<String> source = readWikiDump(config, env);
-        DataSet<ParsedWikiDocument> documents = source.flatMap(new TextExtractorMapper())
-                                                .map(new TextAnnotatorMapper(config.getModel()));
+        DataSet<ParsedWikiDocument> documents = 
+                source.flatMap(new TextExtractorMapper())
+                      .map(new TextAnnotatorMapper(config.getModel()));
 
-        DataSet<Relation> foundRelations = 
-                        documents.flatMap(new CreateCandidatesMapper(config))
-                                 .filter(rel -> rel.getScore() > config.getThreshold());
-
-        foundRelations.map(new JsonSerializerMapper<>())
-                      .writeAsText(config.getOutputDir(), WriteMode.OVERWRITE);
+        DataSet<WikiDocumentOutput> result = documents.map(new CreateCandidatesMapper(config));
+        result.map(new JsonSerializerMapper<>())
+              .writeAsText(config.getOutputDir(), WriteMode.OVERWRITE);
 
         env.execute("Relation Finder");
     }
