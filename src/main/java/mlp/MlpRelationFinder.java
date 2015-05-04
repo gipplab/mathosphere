@@ -1,6 +1,7 @@
 package mlp;
 
 import mlp.contracts.CreateCandidatesMapper;
+import mlp.contracts.JsonSerializerMapper;
 import mlp.contracts.TextAnnotatorMapper;
 import mlp.contracts.TextExtractorMapper;
 import mlp.pojos.Relation;
@@ -11,11 +12,12 @@ import org.apache.flink.api.java.ExecutionEnvironment;
 import org.apache.flink.api.java.io.TextInputFormat;
 import org.apache.flink.api.java.operators.DataSource;
 import org.apache.flink.core.fs.Path;
+import org.apache.flink.core.fs.FileSystem.WriteMode;
 
 public class MlpRelationFinder {
 
     public static void main(String[] args) throws Exception {
-        Config config = Config.test();
+        Config config = Config.from(args);
 
         ExecutionEnvironment env = ExecutionEnvironment.getExecutionEnvironment();
 
@@ -27,6 +29,8 @@ public class MlpRelationFinder {
                         documents.flatMap(new CreateCandidatesMapper(config))
                                  .filter(rel -> rel.getScore() > config.getThreshold());
 
+        foundRelations.map(new JsonSerializerMapper<>())
+                      .writeAsText(config.getOutputDir(), WriteMode.OVERWRITE);
 
         env.execute("Relation Finder");
     }
