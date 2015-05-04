@@ -34,7 +34,7 @@ public class Config implements Serializable {
     }
 
     public static Config test() {
-        String dataset = "c:/tmp/mlp/input-test/";
+        String dataset = "c:/tmp/mlp/input/";
         String outputdir = "c:/tmp/mlp/output/";
 
         return new Config(dataset, outputdir);

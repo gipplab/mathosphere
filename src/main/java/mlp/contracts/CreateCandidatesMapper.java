@@ -68,6 +68,10 @@ public class CreateCandidatesMapper implements MapFunction<ParsedWikiDocument, W
 
         List<Relation> result = Lists.newArrayList();
         Multiset<String> frequencies = calcFrequencies(sentences);
+        if (frequencies.isEmpty()) {
+            return Collections.emptyList();
+        }
+
         int maxFrequency = calculateMax(frequencies);
 
         for (int sentenceIdx = 0; sentenceIdx < sentences.size(); sentenceIdx++) {
