@@ -16,6 +16,7 @@ The flink batch processing component is used for long running data analysis and 
 Currently, there is no Mathosphere release available. Version 3.0.0 is the first version that is going to be released to the public [![MavenCentral](https://maven-badges.herokuapp.com/maven-central/com.formulasearchengine/mathosphere/badge.svg)](maven-badges.herokuapp.com/maven-central/com.formulasearchengine/matosphere/)
 
 However, the MathML query generator is available from maven central [![MavenCentral](https://maven-badges.herokuapp.com/maven-central/com.formulasearchengine/mathmlquerygenerator/badge.svg)](maven-badges.herokuapp.com/maven-central/com.formulasearchengine/mathmlquerygenerator/)
+Note we are using a development version of MathML query generator for this project, under a submodule.
 
 Version 1.0.0-SNAPSHOT is tightly coupled to Stratosphere 0.2.x and was focused on batch formula search.
 The code is available from (TU-Berlin/mathosphere-history). The research prototype was build explicitly for the NTCIR-10.
@@ -37,3 +38,14 @@ training dataset.
 
 [![Coverage Status](https://coveralls.io/repos/TU-Berlin/mathosphere/badge.svg)](https://coveralls.io/r/TU-Berlin/mathosphere )
 
+### Building this project
+Run the following to initialize submodules after cloning this project:
+```
+git submodule init
+git submodule update
+```
+
+Run the following to pull latest changes from each submodules' repo
+```
+git submodule update --remote --merge
+```
