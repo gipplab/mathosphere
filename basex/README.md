@@ -3,8 +3,12 @@ fse-ntcir11-wmc-basex
 
 Code used for the BaseX run of the FSE team at the NTCIR-11 Math Wikipedia Subtask
 
+## Requirements
+The [Mathosphere](https://github.com/TU-Berlin/mathosphere) project must be cloned to your repository and its submodules
+must be initialized.
+
 ## Obtain the data
-The dataset is availible from
+The dataset is available from
 
 http://demo.formulasearchengine.com/images/NTCIR-11-Wikipedia-Math-MWS-Dump.zip
 
