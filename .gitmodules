@@ -8,3 +8,6 @@
 [submodule "lib/RTED"]
 	path = lib/RTED
 	url = https://github.com/TU-Berlin/RTED.git
+[submodule "lib/flink"]
+	path = lib/flink
+	url = https://github.com/apache/flink
