@@ -37,3 +37,13 @@ training dataset.
 
 [![Coverage Status](https://coveralls.io/repos/TU-Berlin/mathosphere/badge.svg)](https://coveralls.io/r/TU-Berlin/mathosphere )
 
+### Building
+This project uses MathMLQueryGenerator as a local Git submodule, so after cloning this project you must run:
+```
+git submodule init
+```
+
+To update MathMLQueryGenerator, run the following:
+```
+git submodule update --remote --merge
+```

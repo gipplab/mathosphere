@@ -45,10 +45,8 @@
     </distributionManagement>
 
     <modules>
+        <module>MathMLQueryGenerator</module>
         <module>mathosphere-core</module>
-        <module>lib/MathMLCan</module>
-        <module>lib/MathMLQueryGenerator</module>
-        <module>lib/RTED</module>
         <module>basex</module>
         <module>restd</module>
     </modules>
@@ -121,6 +119,8 @@
                 <artifactId>cobertura-maven-plugin</artifactId>
                 <version>2.6</version>
                 <configuration>
+                    <check>
+                    </check>
                     <format>xml</format>
                     <maxmem>256m</maxmem>
                     <!-- aggregated reports for multi-module projects -->
