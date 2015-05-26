@@ -15,7 +15,8 @@ The flink batch processing component is used for long running data analysis and 
 ### Releases and old versions
 Currently, there is no Mathosphere release available. Version 3.0.0 is the first version that is going to be released to the public [![MavenCentral](https://maven-badges.herokuapp.com/maven-central/com.formulasearchengine/mathosphere/badge.svg)](maven-badges.herokuapp.com/maven-central/com.formulasearchengine/matosphere/)
 
-However, the MathML query generator is available from maven central [![MavenCentral](https://maven-badges.herokuapp.com/maven-central/com.formulasearchengine/mathmlquerygenerator/badge.svg)](maven-badges.herokuapp.com/maven-central/com.formulasearchengine/mathmlquerygenerator/)
+However, the MathML query generator is available from maven central [![MavenCentral](https://maven-badges.herokuapp.com/maven-central/com.formulasearchengine/mathmlquerygenerator/badge.svg)](maven-badges.herokuapp.com/maven-central/com.formulasearchengine/mathmlquerygenerator/).
+Note that this is still in development and we currently use a development build for this project (see [Building](#Building)).
 
 Version 1.0.0-SNAPSHOT is tightly coupled to Stratosphere 0.2.x and was focused on batch formula search.
 The code is available from (TU-Berlin/mathosphere-history). The research prototype was build explicitly for the NTCIR-10.
@@ -37,7 +38,7 @@ training dataset.
 
 [![Coverage Status](https://coveralls.io/repos/TU-Berlin/mathosphere/badge.svg)](https://coveralls.io/r/TU-Berlin/mathosphere )
 
-### Building
+### Building this project <a name="Building"></a>
 This project uses MathMLQueryGenerator as a local Git submodule, so after cloning this project you must run:
 ```
 git submodule init
