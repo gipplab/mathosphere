@@ -12,20 +12,16 @@ import mlp.pojos.Relation;
 import mlp.pojos.Sentence;
 import mlp.pojos.WikiDocumentOutput;
 import mlp.pojos.Word;
+import mlp.text.DefinitionUtils;
 
 import org.apache.flink.api.common.functions.MapFunction;
 
 import com.google.common.collect.HashMultiset;
-import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multiset;
 import com.google.common.collect.Multiset.Entry;
 
 public class CreateCandidatesMapper implements MapFunction<ParsedWikiDocument, WikiDocumentOutput> {
-
-    private final static Set<String> BLACKLIST = ImmutableSet.of("behavior", "infinity", "sum", "other", "=",
-            "|", "·", "≥", "≤", "≠", "lim", "ƒ", "×", "/", "\\", "-", "function", "functions", "equation",
-            "equations", "solution", "solutions", "result", "results");
 
     private double alpha;
     private double beta;
@@ -178,7 +174,7 @@ public class CreateCandidatesMapper implements MapFunction<ParsedWikiDocument, W
         String word = in.getWord();
         String posTag = in.getPosTag();
 
-        if (BLACKLIST.contains(word.toLowerCase())) {
+        if (!DefinitionUtils.isValid(word)) {
             return false;
         }
 

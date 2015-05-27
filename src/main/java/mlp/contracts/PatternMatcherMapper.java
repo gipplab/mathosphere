@@ -7,6 +7,7 @@ import mlp.pojos.WikiDocumentOutput;
 import mlp.pojos.Relation;
 import mlp.pojos.Sentence;
 import mlp.pojos.ParsedWikiDocument;
+import mlp.text.DefinitionUtils;
 import mlp.text.PatternMatcher;
 import mlp.text.PatternMatcher.IdentifierMatch;
 
@@ -34,6 +35,10 @@ public class PatternMatcherMapper implements MapFunction<ParsedWikiDocument, Wik
             List<IdentifierMatch> foundMatches = matcher.match(sentence.getWords());
 
             for (IdentifierMatch match : foundMatches) {
+                if (!DefinitionUtils.isValid(match.getDefinition())) {
+                    continue;
+                }
+
                 Relation relation = new Relation();
                 relation.setIdentifier(match.getIdentifier());
                 relation.setDefinition(match.getDefinition());
