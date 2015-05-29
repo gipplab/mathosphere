@@ -1,16 +1,17 @@
 package com.formulasearchengine.mathosphere.basex;
 
 import java.util.LinkedList;
+import java.util.regex.Pattern;
 
 /**
- * Class with inner classes for generating xml trees
+ * Translates hits into different NTCIR result formats including XML and CSV.
  *
  * @author Tobias Uhlich
  * @author Thanh Phuong Luu
  */
 public class Results {
 
-	private LinkedList<Run> runs = new LinkedList<Run>();
+	private final LinkedList<Run> runs = new LinkedList<Run>();
 	private boolean showTime = true;
 
 	public void addRun( String runtag, Long ms, String type ) {
@@ -26,24 +27,24 @@ public class Results {
 	}
 
 	public String toXML() {
-		String runsXML = "";
-		for ( Run run : runs ) {
-			runsXML += run.toXML();
+		final StringBuilder runsXMLBuilder = new StringBuilder();
+		for (final Run run : runs ) {
+			runsXMLBuilder.append(run.toXML());
 		}
 
 		return "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
 			+ "<results xmlns=\"http://ntcir-math.nii.ac.jp/\">\n"
-			+ runsXML + "</results>\n";
+			+ runsXMLBuilder.toString() + "</results>\n";
 
 	}
 
 	public String toCSV() {
-		String runsCSV = "queryId,formulaId\n";
-		for ( Run run : runs ) {
-			runsCSV += run.toCSV();
+		final StringBuilder runsCSVBuilder = new StringBuilder().append("queryId,formulaId\n");
+		for (final Run run : runs ) {
+			runsCSVBuilder.append(run.toCSV());
 		}
 
-		return runsCSV;
+		return runsCSVBuilder.toString();
 
 	}
 
@@ -53,11 +54,11 @@ public class Results {
 
 	public class Run {
 
-		private String runtag;
+		private final String runtag;
 		private Long ms;
-		private String type;
+		private final String type;
 
-		private LinkedList<Result> results = new LinkedList<Result>();
+		private final LinkedList<Result> results = new LinkedList<Result>();
 
 		public Run( String runtag, Long ms, String type ) {
 			this.runtag = runtag;
@@ -75,7 +76,7 @@ public class Results {
 		}
 
 		public void addResult( String num, Long ms ) {
-			results.add( new Result( num, ms ) );
+			results.add(new Result(num, ms));
 		}
 
 		public void addResult( Result result ) {
@@ -83,35 +84,35 @@ public class Results {
 		}
 
 		public String toXML () {
-			String resultXML = "";
-			for ( Result result : results ) {
-				resultXML += result.toXML();
+			final StringBuilder resultXMLBuilder = new StringBuilder();
+			for ( final Result result : results ) {
+				resultXMLBuilder.append(result.toXML());
 			}
 
-			StringBuilder s = new StringBuilder().append( "  <run runtag=\"" ).append( runtag );
+			final StringBuilder s = new StringBuilder().append( "  <run runtag=\"" ).append( runtag );
 			if ( showTime ) {
 				s.append( "\" runtime=\"" ).append( ms );
 			}
 			s.append( "\" runtype=\"" ).append( type ).append( "\">\n" ).
-				append( resultXML ).append( "  </run>\n" );
+				append(resultXMLBuilder.toString()).append("  </run>\n");
 			return s.toString();
 		}
 
 		public String toCSV() {
-			String CSV = "";
-			for ( Result result : results ) {
-				CSV += result.toCSV();
+			final StringBuilder csvBuilder = new StringBuilder();
+			for (final Result result : results ) {
+				csvBuilder.append(result.toCSV());
 			}
-			return CSV;
+			return csvBuilder.toString();
 		}
 		
 
 		public class Result {
-
+			private final Pattern NTCIR_MATH_PATTERN = Pattern.compile("NTCIR11-Math-", Pattern.LITERAL);
 			private Long ms;
-			private String num;
+			private final String num;
 
-			private LinkedList<Hit> hits = new LinkedList<Hit>();
+			private final LinkedList<Hit> hits = new LinkedList<Hit>();
 
 			public Result( String num, Long ms ) {
 				this.ms = ms;
@@ -127,7 +128,7 @@ public class Results {
 			}
 
 			public Long getTime() {
-				return this.ms;
+				return ms;
 			}
 
 			public void setTime( Long ms ) {
@@ -139,30 +140,30 @@ public class Results {
 			}
 
 			public String toXML() {
-				String hitXML = "";
-				for ( Hit hit : hits ) {
-					hitXML += hit.toXML();
+				final StringBuilder hitXMLBuilder = new StringBuilder();
+				for (final Hit hit : hits ) {
+					hitXMLBuilder.append(hit.toXML());
 				}
 
-				StringBuilder s = new StringBuilder().append( "    <result for=\"NTCIR11-Math-" ).append( num );
+				final StringBuilder s = new StringBuilder().append( "    <result for=\"NTCIR11-Math-" ).append( num );
 				if ( showTime ){
 					s.append( "\" runtime=\"" ).append( ms );
 				}
-				s.append( "\">\n" ).append( hitXML ).append( "    </result>\n" ).toString();
-			return s.toString();
+				s.append( "\">\n" ).append(hitXMLBuilder.toString() ).append("    </result>\n").toString();
+                return s.toString();
 			}
 
 			public String toCSV() {
-				String CSV = "";
+				final StringBuilder csvBuilder = new StringBuilder();
 				String lastHit = "";
-				for ( Hit hit : hits ) {
+				for (final Hit hit : hits ) {
 					//Note, that there is no reason to output duplicates in csv output format.
 					if ( !hit.toCSV().equals( lastHit ) ) {
-						CSV += num.replace( "NTCIR11-Math-", "" ) + "," + hit.toCSV() + "\n";
+						csvBuilder.append(NTCIR_MATH_PATTERN.matcher(num).replaceAll("")).append(',').append(hit.toCSV()).append('\n');
 						lastHit = hit.toCSV();
 					}
 				}
-				return CSV;
+				return csvBuilder.toString();
 			}
 
 			public void addHit( String item, String filename, int score, int rank ) {
@@ -175,10 +176,10 @@ public class Results {
 			}
 
 			public class Hit {
-				private String id;
-				private String filename;
-				private String score;
-				private String rank;
+				private final String id;
+				private final String filename;
+				private final String score;
+				private final String rank;
 
 				public Hit( String id, String filename, String score, String rank ) {
 					this.id = id;
