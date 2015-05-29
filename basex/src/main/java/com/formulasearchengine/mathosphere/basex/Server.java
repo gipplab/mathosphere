@@ -14,6 +14,7 @@ import java.nio.channels.FileChannel;
 import java.nio.channels.FileLock;
 import java.nio.charset.Charset;
 import java.nio.file.FileVisitResult;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
@@ -62,6 +63,27 @@ public final class Server {
 		file = input;
         final Charset charset = Charsets.UTF_8;
         final StringBuilder stringBuilder = new StringBuilder();
+        if (file.isDirectory()) {
+            //read all files from directory
+            Files.walkFileTree(file.toPath(), new SimpleFileVisitor<Path>() {
+                @Override
+                public FileVisitResult visitFile(Path currentPath, BasicFileAttributes attrs) throws IOException {
+                    System.out.printf("Visiting path: %s\n", currentPath.toString());
+                    if (currentPath.toFile().isFile()) {
+                        try (BufferedReader fileReader = new BufferedReader(new InputStreamReader(new FileInputStream(currentPath.toFile()), charset))) {
+                            String line = fileReader.readLine();
+                            while (line != null) {
+                                stringBuilder.append(line);
+                                stringBuilder.append(System.getProperty("line.separator"));
+                                line = fileReader.readLine();
+                            }
+                        }
+                    }
+                    super.visitFile(currentPath, attrs);
+                    return FileVisitResult.CONTINUE;
+                }
+            });
+        } else if (file.isFile()) {
             try (BufferedReader fileReader = new BufferedReader(new InputStreamReader(new FileInputStream(file), charset))) {
                 String line = fileReader.readLine();
                 while (line != null) {
@@ -70,6 +92,9 @@ public final class Server {
                     line = fileReader.readLine();
                 }
             }
+        } else { //file does not exist
+            throw new IOException("Data files do not exist!");
+        }
 
         final CreateDB db = new CreateDB(DATABASE_NAME, stringBuilder.toString());
         db.execute(baseXServer.context);
@@ -136,6 +161,7 @@ public final class Server {
 	}
 
 	private void ensureFileLockRelease() {
+        //TODO: ensure release for directories as well
         if (file != null) {
             System.out.println("Trying to ensure release of database source file.");
             try (RandomAccessFile dummyFile = new RandomAccessFile(file, "rw");
