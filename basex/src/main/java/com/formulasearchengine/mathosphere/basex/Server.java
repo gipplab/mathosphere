@@ -98,7 +98,7 @@ public final class Server {
 			try {
 				c.directXQuery("count(./*/*)");
 				System.out.println("Server is healthy!");
-			} catch (IOException | QueryException | XQException e) {
+			} catch (XQException e) {
 				e.printStackTrace();
 				System.out.println("Server crashed or is in the process of shutting down!");
 				return false;
