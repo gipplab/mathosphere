@@ -40,7 +40,7 @@ public final class Server {
 	/**
 	 * @return The only instance of Server.
 	 */
-	public static Server getInstance() {
+	@NotNull public static Server getInstance() {
 		synchronized (Server.class) {
 			if (serverInstance == null) {
 				serverInstance = new Server();
