@@ -16,12 +16,9 @@ import java.net.URL;
 public class BaseXTestSuite {
 	@BeforeClass
 	public static void setup() throws Exception {
-		if (Server.getInstance()==null){
-			final URL fname = BaseXTestSuite.class.getClassLoader().getResource( "sampleHarvest.xml" );
-			File file = new File( fname.toURI() );
-			Server srv = Server.getInstance();
-			srv.startup(file);
-
-		}
+        final URL fname = BaseXTestSuite.class.getClassLoader().getResource( "sampleHarvest.xml" );
+        File file = new File( fname.toURI() );
+        Server srv = Server.getInstance();
+        srv.startup(file);
 	}
 }
