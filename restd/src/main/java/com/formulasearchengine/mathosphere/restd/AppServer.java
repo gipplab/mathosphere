@@ -35,7 +35,8 @@ public class AppServer {
 		System.out.println("admin password is " + System.getProperty( "password" ) );
 		try {
 			File f = new File( path );
-			srv = new Server(f);
+			srv = Server.getInstance();
+			srv.startup(f);
 			System.out.println( "importing data from " + path );
 		} catch ( IOException e ) {
 			e.printStackTrace();
