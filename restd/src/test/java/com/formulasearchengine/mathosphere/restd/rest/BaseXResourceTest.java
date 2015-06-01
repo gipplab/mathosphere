@@ -18,7 +18,8 @@ public class BaseXResourceTest {
 		if (Server.getInstance() == null ){
 			BaseXResourceTest instance = new BaseXResourceTest();
 			File f = new File( instance.getClass().getClassLoader().getResource( "sampleHarvest.xml" ).getFile() );
-			Server.getInstance(f);
+			Server srv = Server.getInstance();
+			srv.startup(f);
 		}
 	}
 }
