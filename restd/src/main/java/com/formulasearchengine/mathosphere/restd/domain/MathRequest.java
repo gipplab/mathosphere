@@ -67,7 +67,7 @@ public class MathRequest {
 				success = true;
 				break;
 			case "xquery":
-				response = client.runXQuery( query );
+				response = client.runQueryNtcirWrap(query);
 				success = true;
 				break;
 			default:
@@ -90,7 +90,7 @@ public class MathRequest {
 /* 		String result = "";
 		try {
 			Client client = new Client();
-			result = client.runXQuery( query );
+			result = client.runQueryNtcirWrap( query );
 		} catch ( Exception e ) {
 
 		}

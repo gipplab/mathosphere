@@ -21,14 +21,14 @@ public final class ClientTest {
 	public void basicTest() throws Exception {
 		Client c = new Client();
 		c.setShowTime( false );
-		String res = c.runXQuery( "declare default element namespace \"http://www.w3.org/1998/Math/MathML\";\n" +
-			"for $m in //*:expr return \n" +
-			"for $x in $m//*:apply\n" +
-			"[*[1]/name() = 'divide']\n" +
-			"where\n" +
-			"fn:count($x/*) = 3\n" +
-			"return\n" +
-			"<result>{$m/@url}</result>" );
+		String res = c.runQueryNtcirWrap("declare default element namespace \"http://www.w3.org/1998/Math/MathML\";\n" +
+				"for $m in //*:expr return \n" +
+				"for $x in $m//*:apply\n" +
+				"[*[1]/name() = 'divide']\n" +
+				"where\n" +
+				"fn:count($x/*) = 3\n" +
+				"return\n" +
+				"<result>{$m/@url}</result>");
 		assertEquals( "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n" +
 			"<results xmlns=\"http://ntcir-math.nii.ac.jp/\" total=\"37\">\n" +
 			"    <result for=\"NTCIR11-Math-\">\n" +
@@ -136,7 +136,7 @@ public final class ClientTest {
 		Client c = new Client();
 		String res = c.runTexQuery( "" );
 		assertEquals( "TeX query was empty.",res );
-		assertFalse( c.isSuccess() );
+		assertFalse( c.isLastQuerySuccess() );
 	}
 
 	@Test
@@ -144,30 +144,30 @@ public final class ClientTest {
 		Client c = new Client();
 		String res = c.runTexQuery( "++23424'ä#öä#ö\\exit" );
 		assertTrue( res.startsWith( "Problem during TeX to MathML conversion" ) );
-		assertFalse( c.isSuccess() );
+		assertFalse( c.isLastQuerySuccess() );
 	}
 
 	@Test
-	public void tesBadTex2(){
+	public void testBadTex2(){
 		Client c = new Client();
 		String res = c.runTexQuery( "\\frac" );
 		assertTrue( res.startsWith( "Problem during TeX to MathML conversion" ) );
-		assertFalse( c.isSuccess() );
+		assertFalse( c.isLastQuerySuccess() );
 	}
 	@Test
 	public void testEmptyMML(){
 		Client c = new Client();
 		String res = c.runMWSQuery( null );
 		assertEquals( "got empty MathML document",res );
-		assertFalse( c.isSuccess() );
+		assertFalse( c.isLastQuerySuccess() );
 	}
 
 	@Test
 	public void measureBadXQuery(){
 		Client c = new Client(  );
 		assertEquals( Long.valueOf( -1 ), c.basex( ">invalid<" ) );
-		assertTrue( c.runXQuery( ">invalid<" ).startsWith( "Query" ) );
-		assertFalse( c.isSuccess() );
+		assertTrue( c.runQueryNtcirWrap(">invalid<").startsWith( "Query" ) );
+		assertFalse( c.isLastQuerySuccess() );
 	}
 
 	@Test
