@@ -15,11 +15,9 @@ public class BaseXResourceTest {
 
 	@BeforeClass
 	public static void config() throws IOException {
-		if (Server.getInstance() == null ){
-			BaseXResourceTest instance = new BaseXResourceTest();
-			File f = new File( instance.getClass().getClassLoader().getResource( "sampleHarvest.xml" ).getFile() );
-			Server srv = Server.getInstance();
-			srv.startup(f);
-		}
+		BaseXResourceTest instance = new BaseXResourceTest();
+		File f = new File( instance.getClass().getClassLoader().getResource( "sampleHarvest.xml" ).getFile() );
+		Server srv = Server.getInstance();
+		srv.startup(f);
 	}
 }
