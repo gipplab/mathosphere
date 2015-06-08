@@ -18,12 +18,16 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.regex.Pattern;
 
 /**
  * Singleton server for handling BaseX queries.
  * Created by Moritz on 08.11.2014.
  */
 public final class Server {
+	private static final Pattern DB_LOCK_ERR_MATCH = Pattern.compile(
+			".*Database.*is currently opened by another process.*", Pattern.DOTALL);
+	private static final Pattern DB_DROPPED_ERR_MATCH = Pattern.compile(".*Database.*was not found.*");
 	private static Server serverInstance;
 	private File file;
 	public BaseXServer baseXServer;
@@ -119,19 +123,23 @@ public final class Server {
 		if (baseXServer != null) {
 			System.out.println("Shutting down");
 			healthTimer.cancel();
-			System.out.println("Waiting to acquire database lock...");
 			//Somewhat nasty but BaseX does not have a database lock checking function as far as I can tell
-			int tries = 0;
 			while (true) {
 				try {
 					final DropDB db = new DropDB(DATABASE_NAME);
 					db.execute(baseXServer.context);
 					break;
 				} catch (final BaseXException e) {
-					if (tries > 5000) {
+					final String msg = e.toString();
+					if (DB_LOCK_ERR_MATCH.matcher(msg).matches()) {
+						//DB locked, waiting
+						System.out.println("Waiting to acquire database lock...");
+					} else if (DB_DROPPED_ERR_MATCH.matcher(msg).matches()) {
+						//DB already dropped
+						break;
+					} else {
 						throw e;
 					}
-					tries++;
 				}
 			}
 			System.out.println("Database dropped");
