@@ -126,13 +126,6 @@ public final class Server {
 			//Somewhat nasty but BaseX does not have a database lock checking function as far as I can tell
 			while (true) {
 				try {
-					//Make sure this does not hog cpu
-					Thread.sleep(100);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-					break;
-				}
-				try {
 					final DropDB db = new DropDB(DATABASE_NAME);
 					db.execute(baseXServer.context);
 					break;
