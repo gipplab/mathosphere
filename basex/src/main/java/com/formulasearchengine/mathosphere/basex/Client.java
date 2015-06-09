@@ -21,7 +21,7 @@ public class Client {
 	private static final Pattern CR_PATTERN = Pattern.compile("\r");
 	private Results results = new Results();
 	private Results.Run currentRun = results.new Run( "baseX" + System.currentTimeMillis(), "automated" );
-	private Results.Run.Result currentResult;
+	private Results.Run.Result currentResult = currentRun.new Result( "" );
 	private Long lastQueryDuration;
 	private boolean useXQ = true;
 	private boolean lastQuerySuccess = false;
@@ -86,14 +86,14 @@ public class Client {
 	}
 
 	/**
-	 * Wrapper around XQuery search method runQuery() which handles exceptions and returns the length of time
+	 * Wrapper around XQuery search method runQueryBaseXSimple() which handles exceptions and returns the length of time
 	 * it took to run that query.
 	 * @param query Query in XQuery string format.
 	 * @return Time it took to run the query.
 	 */
 	public Long basex(String query) {
 		try {
-			runQuery( query );
+			runQueryBaseXSimple( query );
 		} catch (final XQException e) {
 			e.printStackTrace();
 			return -1L;
@@ -113,13 +113,53 @@ public class Client {
 
 	/**
 	 * Connects with the BaseX database, sending the given query as an XQuery query and saves the
-	 * result in a list.
+	 * result in a list. Assumes NTCIR_FOOTER is used as the result return type.
+	 * @param query Query in XQuery string format.
+	 * @param queryID ID number to mark this query (required for NTCIR search highlight format)
+	 * @return Result in NTCIR_FOOTER XML format (not in full NTCIR format)
+	 * @throws XQException When getXqConnection() falis to connect to the BaseX server, XQJ fails to process the query,
+	 * or XQJ fails to execute the query.
+	 */
+	protected String runQueryNTCIR( String query, String queryID ) throws XQException {
+		int score = 0;
+		int rank = 1;
+		if ( useXQ ) {
+			final XQConnection conn = getXqConnection();
+			final XQPreparedExpression xqpe = conn.prepareExpression( query );
+			lastQueryDuration = System.nanoTime();
+			final XQResultSequence rs = xqpe.executeQuery();
+			lastQueryDuration = System.nanoTime() - lastQueryDuration;
+			currentResult.setTime( lastQueryDuration );
+			while ( rs.next() ) {
+				final String result = rs.getItemAsString( null );
+				final String[] data = result.split( "," );
+				final String id = data[0];
+				final String filename = data[1];
+				final String xref = data[2];
+				//NTCIR_FOOTER format
+				final Results.Run.Result.Hit currentHit =
+						new Results().new Run("", 0L, "").new Result("")
+								.new Hit( id, filename, Integer.toString( score ), Integer.toString( rank ) );
+				currentHit.addFormula( id, queryID, xref, score );
+				currentResult.addHit( currentHit );
+				rank++;
+			}
+			conn.close();
+			return currentResult.toXML();
+		} else {
+			return "";
+		}
+	}
+
+	/**
+	 * Connects with the BaseX database, sending the given query as an XQuery query and saves the
+	 * result in a list. Assumes BASEX_FOOTER is used as the result return type.
 	 * @param query Query in XQuery string format.
 	 * @return Number of results.
 	 * @throws XQException When getXqConnection() fails to connect to the BaseX server, XQJ fails to process the query,
 	 * or XQJ fails to execute the query.
 	 */
-	protected int runQuery(String query) throws XQException {
+	protected int runQueryBaseXSimple( String query ) throws XQException {
 		int score = 10;
 		int rank = 1;
 		if ( useXQ ) {
@@ -130,7 +170,8 @@ public class Client {
 			lastQueryDuration = System.nanoTime() - lastQueryDuration;
 			currentResult.setTime( lastQueryDuration );
 			while (rs.next()) {
-				currentResult.addHit(CR_PATTERN.matcher(rs.getItemAsString(null)).replaceAll(""), "", score, rank );
+				final String result = rs.getItemAsString( null );
+				currentResult.addHit(CR_PATTERN.matcher(result).replaceAll(""), "", score, rank );
 				rank++;
 			}
 			conn.close();
@@ -156,7 +197,7 @@ public class Client {
 	}
 
 	/**
-	 * Calls {@link #runQuery(String)} and wraps the result with the NTCIR XML format.
+	 * Calls {@link #runQueryBaseXSimple(String)} and wraps the result with the NTCIR XML format.
 	 * This adds the result to {@link #currentResult}
 	 * @param query XQuery string
 	 * @return NTCIR XML formatted result
@@ -164,7 +205,7 @@ public class Client {
 	public String runQueryNtcirWrap(String query) {
 		currentResult = currentRun.new Result( "" );
 		try {
-			runQuery( query );
+			runQueryBaseXSimple( query );
 			lastQuerySuccess = true;
 			if ( currentResult.size() > 0 ) {
 				return "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
