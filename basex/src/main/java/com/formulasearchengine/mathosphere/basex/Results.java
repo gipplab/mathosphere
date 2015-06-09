@@ -28,32 +28,31 @@ public class Results {
 
 	public String toXML() {
 		final StringBuilder runsXMLBuilder = new StringBuilder();
-		for (final Run run : runs ) {
-			runsXMLBuilder.append(run.toXML());
+		for ( final Run run : runs ) {
+			runsXMLBuilder.append( run.toXML() );
 		}
 
 		return "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
-			+ "<results xmlns=\"http://ntcir-math.nii.ac.jp/\">\n"
-			+ runsXMLBuilder.toString() + "</results>\n";
+				+ "<results xmlns=\"http://ntcir-math.nii.ac.jp/\">\n"
+				+ runsXMLBuilder.toString() + "</results>\n";
 
 	}
 
 	public String toCSV() {
-		final StringBuilder runsCSVBuilder = new StringBuilder().append("queryId,formulaId\n");
-		for (final Run run : runs ) {
-			runsCSVBuilder.append(run.toCSV());
+		final StringBuilder runsCSVBuilder = new StringBuilder().append( "queryId,formulaId\n" );
+		for ( final Run run : runs ) {
+			runsCSVBuilder.append( run.toCSV() );
 		}
 
 		return runsCSVBuilder.toString();
 
 	}
 
-	public void setShowTime (boolean showTime) {
+	public void setShowTime( boolean showTime ) {
 		this.showTime = showTime;
 	}
 
 	public class Run {
-
 		private final String runtag;
 		private Long ms;
 		private final String type;
@@ -76,17 +75,17 @@ public class Results {
 		}
 
 		public void addResult( String num, Long ms ) {
-			results.add(new Result(num, ms));
+			results.add( new Result( num, ms ) );
 		}
 
 		public void addResult( Result result ) {
 			results.add( result );
 		}
 
-		public String toXML () {
+		public String toXML() {
 			final StringBuilder resultXMLBuilder = new StringBuilder();
 			for ( final Result result : results ) {
-				resultXMLBuilder.append(result.toXML());
+				resultXMLBuilder.append( result.toXML() );
 			}
 
 			final StringBuilder s = new StringBuilder().append( "  <run runtag=\"" ).append( runtag );
@@ -94,21 +93,20 @@ public class Results {
 				s.append( "\" runtime=\"" ).append( ms );
 			}
 			s.append( "\" runtype=\"" ).append( type ).append( "\">\n" ).
-				append(resultXMLBuilder.toString()).append("  </run>\n");
+					append( resultXMLBuilder.toString() ).append( "  </run>\n" );
 			return s.toString();
 		}
 
 		public String toCSV() {
 			final StringBuilder csvBuilder = new StringBuilder();
-			for (final Result result : results ) {
-				csvBuilder.append(result.toCSV());
+			for ( final Result result : results ) {
+				csvBuilder.append( result.toCSV() );
 			}
 			return csvBuilder.toString();
 		}
-		
 
 		public class Result {
-			private final Pattern NTCIR_MATH_PATTERN = Pattern.compile("NTCIR11-Math-", Pattern.LITERAL);
+			private final Pattern NTCIR_MATH_PATTERN = Pattern.compile( "NTCIR11-Math-", Pattern.LITERAL );
 			private Long ms;
 			private final String num;
 
@@ -141,25 +139,25 @@ public class Results {
 
 			public String toXML() {
 				final StringBuilder hitXMLBuilder = new StringBuilder();
-				for (final Hit hit : hits ) {
-					hitXMLBuilder.append(hit.toXML());
+				for ( final Hit hit : hits ) {
+					hitXMLBuilder.append( hit.toXML() );
 				}
 
 				final StringBuilder s = new StringBuilder().append( "    <result for=\"NTCIR11-Math-" ).append( num );
-				if ( showTime ){
+				if ( showTime ) {
 					s.append( "\" runtime=\"" ).append( ms );
 				}
-				s.append( "\">\n" ).append(hitXMLBuilder.toString() ).append("    </result>\n").toString();
-                return s.toString();
+				s.append( "\">\n" ).append( hitXMLBuilder.toString() ).append( "    </result>\n" ).toString();
+				return s.toString();
 			}
 
 			public String toCSV() {
 				final StringBuilder csvBuilder = new StringBuilder();
 				String lastHit = "";
-				for (final Hit hit : hits ) {
+				for ( final Hit hit : hits ) {
 					//Note, that there is no reason to output duplicates in csv output format.
 					if ( !hit.toCSV().equals( lastHit ) ) {
-						csvBuilder.append(NTCIR_MATH_PATTERN.matcher(num).replaceAll("")).append(',').append(hit.toCSV()).append('\n');
+						csvBuilder.append( NTCIR_MATH_PATTERN.matcher( num ).replaceAll( "" ) ).append( ',' ).append( hit.toCSV() ).append( '\n' );
 						lastHit = hit.toCSV();
 					}
 				}
@@ -170,8 +168,7 @@ public class Results {
 				addHit( item, filename, Integer.toString( score ), Integer.toString( rank ) );
 			}
 
-			public void addHit( String id, String filename, String score,
-			                    String rank ) {
+			public void addHit( String id, String filename, String score, String rank ) {
 				hits.add( new Hit( id, filename, score, rank ) );
 			}
 
@@ -181,25 +178,65 @@ public class Results {
 				private final String score;
 				private final String rank;
 
+				private final LinkedList<Formula> formulae = new LinkedList<Formula>();
+
 				public Hit( String id, String filename, String score, String rank ) {
 					this.id = id;
-					this.filename = "math000000000000.xml";
+					this.filename = filename;
 					this.score = score;
 					this.rank = rank;
 				}
 
 				public String toXML() {
-					return "      <hit id=\"" + id + "\" xref=\"" + filename
-						+ "\" score=\"" + score + "\" rank=\"" + rank
-						+ "\"/>\n";
+					final StringBuilder hitXMLBuilder = new StringBuilder();
+					hitXMLBuilder.append( "      <hit id=\"" ).append( id ).append( "\" xref=\"" ).append( filename )
+							.append( "\" score=\"" ).append( score ).append( "\" rank=\"" ).append( rank ).append( "\">\n" );
+					for ( final Formula formula : formulae ) {
+						hitXMLBuilder.append( formula.toXML() );
+					}
+					hitXMLBuilder.append( "      </hit>" );
+					return hitXMLBuilder.toString();
 				}
 
 				public String toCSV() {
 					return id;
 				}
+
+				public int size() {
+					return formulae.size();
+				}
+
+				public void addFormula( String id, String queryFormulaID, String resultFormulaID, int formulaScore ) {
+					addFormula( id, queryFormulaID, resultFormulaID, Integer.toString( formulaScore ) );
+				}
+
+				public void addFormula( String id, String queryFormulaID, String resultFormulaID, String formulaScore ) {
+					formulae.add( new Formula( id, queryFormulaID, resultFormulaID, formulaScore ) );
+				}
+
+				public class Formula {
+					private final String id;
+					private final String queryFormulaID;
+					private final String resultFormulaID;
+					private final String formulaScore;
+
+					public Formula( String id, String queryFormulaID, String resultFormulaID, String formulaScore ) {
+						this.id = id;
+						this.queryFormulaID = queryFormulaID;
+						this.resultFormulaID = resultFormulaID;
+						this.formulaScore = formulaScore;
+					}
+
+					public String toXML() {
+						return "        <formula id=\"" + id + "\" for=\"" + queryFormulaID + "\" xref=\""
+								+ resultFormulaID + "\" score=\"" + formulaScore + "\"/>";
+					}
+
+					public String toCSV() {
+						return id;
+					}
+				}
 			}
-
 		}
-
 	}
 }
