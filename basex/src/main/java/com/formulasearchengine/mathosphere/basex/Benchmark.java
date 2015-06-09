@@ -21,9 +21,15 @@ import java.util.List;
  */
 
 public class Benchmark {
+	//By default, MathMLQueryGenerator constructs XQueries for a DB2 instance, so we need to change that into basex format
+	//Search <mws:expr> elements
 	public static final String BASEX_HEADER = "declare default element namespace \"http://www.w3.org/1998/Math/MathML\";\n" +
 		"for $m in //*:expr return \n";
+	//Return URL of <mws:expr> element containing matches for queries
 	public static final String BASEX_FOOTER = " data($m/@url) \n";
+	//Return hit as csv with required NTCIR data: id, filename, result xref
+	public static final String NTCIR_FOOTER =
+			"string(concat(generate-id($x),\",\",base-uri($m),\",\",data($x/@xml:id)))";
 
 	private final CommandLine line;
 
