@@ -306,6 +306,7 @@ public class Client {
 			final XQPreparedExpression xqpe = conn.prepareExpression( xUpdate );
 			xqpe.bindNode( new QName( "input" ), n, null );
 			xqpe.executeQuery();
+			conn.close();
 			return true;
 		} catch (final XQException e ) {
 			e.printStackTrace();

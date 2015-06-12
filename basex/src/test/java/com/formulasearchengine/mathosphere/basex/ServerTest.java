@@ -95,6 +95,8 @@ public class ServerTest  {
 
 		final String res = rs.getSequenceAsString(null);
 
+		conn.close();
+
         assertEquals("<result xmlns=\"http://www.w3.org/1998/Math/MathML\" url=\"4#math.4.5\"/> " +
 			"<result xmlns=\"http://www.w3.org/1998/Math/MathML\" url=\"4#math.4.5\"/> " +
 			"<result xmlns=\"http://www.w3.org/1998/Math/MathML\" url=\"5#math.5.2\"/> " +
