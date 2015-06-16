@@ -7,6 +7,8 @@ import org.w3c.dom.Document;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static org.junit.Assert.*;
 
@@ -257,55 +259,15 @@ public final class ClientTest {
 			"[*[1]/name() = 'divide']\n" +
 			"where\n" +
 			"fn:count($x/*) = 3\n" +
+			"let $q := map{\"x\" : (data($x/*[2]/@xml:id)),\"y\" : (data($x/*[3]/@xml:id))}\n" +
 			"return\n" +
 			Benchmark.NTCIR_FOOTER;
 		final Client c = new Client();
 		c.setShowTime( false );
-		c.setUseXQ( true );
+		c.setUseXQ( false );
 		final String res = c.runQueryNTCIR( query , "f1.0");
 
-		final String expectedRegex =
-		"    <result for=\"NTCIR11-Math-\">\n" +
-		"      <hit id=\".*?\" xref=\"math/math\\.xml\" score=\"0\" rank=\"1\">\n" +
-		"        <formula id=\".*?\" for=\"f1\\.0\" xref=\"p1\\.1\\.m1\\.1\\.4\\.cmml\" score=\"0\"/>      </hit>      <hit id=\".*?\" xref=\"math/math\\.xml\" score=\"0\" rank=\"2\">\n" +
-		"        <formula id=\".*?\" for=\"f1\\.0\" xref=\"p1\\.1\\.m1\\.1\\.4\\.2\\.8\\.1\\.5\\.cmml\" score=\"0\"/>      </hit>      <hit id=\".*?\" xref=\"math/math\\.xml\" score=\"0\" rank=\"3\">\n" +
-		"        <formula id=\".*?\" for=\"f1\\.0\" xref=\"p1\\.1\\.m1\\.1\\.3\\.cmml\" score=\"0\"/>      </hit>      <hit id=\".*?\" xref=\"math/math\\.xml\" score=\"0\" rank=\"4\">\n" +
-		"        <formula id=\".*?\" for=\"f1\\.0\" xref=\"p1\\.1\\.m1\\.1\\.1\\.cmml\" score=\"0\"/>      </hit>      <hit id=\".*?\" xref=\"math/math\\.xml\" score=\"0\" rank=\"5\">\n" +
-		"        <formula id=\".*?\" for=\"f1\\.0\" xref=\"p1\\.1\\.m1\\.1\\.2\\.cmml\" score=\"0\"/>      </hit>      <hit id=\".*?\" xref=\"math/math\\.xml\" score=\"0\" rank=\"6\">\n" +
-		"        <formula id=\".*?\" for=\"f1\\.0\" xref=\"p1\\.1\\.m1\\.1\\.8\\.cmml\" score=\"0\"/>      </hit>      <hit id=\".*?\" xref=\"math/math\\.xml\" score=\"0\" rank=\"7\">\n" +
-		"        <formula id=\".*?\" for=\"f1\\.0\" xref=\"p1\\.1\\.m1\\.1\\.2\\.cmml\" score=\"0\"/>      </hit>      <hit id=\".*?\" xref=\"math/math\\.xml\" score=\"0\" rank=\"8\">\n" +
-		"        <formula id=\".*?\" for=\"f1\\.0\" xref=\"p1\\.1\\.m1\\.1\\.8\\.cmml\" score=\"0\"/>      </hit>      <hit id=\".*?\" xref=\"math/math\\.xml\" score=\"0\" rank=\"9\">\n" +
-		"        <formula id=\".*?\" for=\"f1\\.0\" xref=\"p1\\.1\\.m1\\.1\\.13\\.cmml\" score=\"0\"/>      </hit>      <hit id=\".*?\" xref=\"math/math\\.xml\" score=\"0\" rank=\"10\">\n" +
-		"        <formula id=\".*?\" for=\"f1\\.0\" xref=\"p1\\.1\\.m1\\.1\\.6\\.cmml\" score=\"0\"/>      </hit>      <hit id=\".*?\" xref=\"math/math\\.xml\" score=\"0\" rank=\"11\">\n" +
-		"        <formula id=\".*?\" for=\"f1\\.0\" xref=\"p1\\.1\\.m1\\.1\\.6\\.cmml\" score=\"0\"/>      </hit>      <hit id=\".*?\" xref=\"math/math\\.xml\" score=\"0\" rank=\"12\">\n" +
-		"        <formula id=\".*?\" for=\"f1\\.0\" xref=\"p1\\.1\\.m1\\.1\\.1\\.cmml\" score=\"0\"/>      </hit>      <hit id=\".*?\" xref=\"math/math\\.xml\" score=\"0\" rank=\"13\">\n" +
-		"        <formula id=\".*?\" for=\"f1\\.0\" xref=\"p1\\.1\\.m1\\.1\\.1\\.cmml\" score=\"0\"/>      </hit>      <hit id=\".*?\" xref=\"math/math\\.xml\" score=\"0\" rank=\"14\">\n" +
-		"        <formula id=\".*?\" for=\"f1\\.0\" xref=\"p1\\.1\\.m1\\.1\\.4\\.cmml\" score=\"0\"/>      </hit>      <hit id=\".*?\" xref=\"math/math\\.xml\" score=\"0\" rank=\"15\">\n" +
-		"        <formula id=\".*?\" for=\"f1\\.0\" xref=\"p1\\.1\\.m1\\.1\\.3\\.cmml\" score=\"0\"/>      </hit>      <hit id=\".*?\" xref=\"math/math\\.xml\" score=\"0\" rank=\"16\">\n" +
-		"        <formula id=\".*?\" for=\"f1\\.0\" xref=\"p1\\.1\\.m1\\.1\\.3\\.cmml\" score=\"0\"/>      </hit>      <hit id=\".*?\" xref=\"math/math\\.xml\" score=\"0\" rank=\"17\">\n" +
-		"        <formula id=\".*?\" for=\"f1\\.0\" xref=\"p1\\.1\\.m1\\.1\\.5\\.cmml\" score=\"0\"/>      </hit>      <hit id=\".*?\" xref=\"math/math\\.xml\" score=\"0\" rank=\"18\">\n" +
-		"        <formula id=\".*?\" for=\"f1\\.0\" xref=\"p1\\.1\\.m1\\.1\\.5\\.2\\.cmml\" score=\"0\"/>      </hit>      <hit id=\".*?\" xref=\"math/math\\.xml\" score=\"0\" rank=\"19\">\n" +
-		"        <formula id=\".*?\" for=\"f1\\.0\" xref=\"p1\\.1\\.m1\\.1\\.5\\.3\\.cmml\" score=\"0\"/>      </hit>      <hit id=\".*?\" xref=\"math/math\\.xml\" score=\"0\" rank=\"20\">\n" +
-		"        <formula id=\".*?\" for=\"f1\\.0\" xref=\"p1\\.1\\.m1\\.1\\.11\\.1\\.cmml\" score=\"0\"/>      </hit>      <hit id=\".*?\" xref=\"math/math\\.xml\" score=\"0\" rank=\"21\">\n" +
-		"        <formula id=\".*?\" for=\"f1\\.0\" xref=\"p1\\.1\\.m1\\.1\\.4\\.cmml\" score=\"0\"/>      </hit>      <hit id=\".*?\" xref=\"math/math\\.xml\" score=\"0\" rank=\"22\">\n" +
-		"        <formula id=\".*?\" for=\"f1\\.0\" xref=\"p1\\.1\\.m1\\.1\\.4\\.cmml\" score=\"0\"/>      </hit>      <hit id=\".*?\" xref=\"math/math\\.xml\" score=\"0\" rank=\"23\">\n" +
-		"        <formula id=\".*?\" for=\"f1\\.0\" xref=\"p1\\.1\\.m1\\.1\\.6\\.cmml\" score=\"0\"/>      </hit>      <hit id=\".*?\" xref=\"math/math\\.xml\" score=\"0\" rank=\"24\">\n" +
-		"        <formula id=\".*?\" for=\"f1\\.0\" xref=\"p1\\.1\\.m1\\.1\\.4\\.cmml\" score=\"0\"/>      </hit>      <hit id=\".*?\" xref=\"math/math\\.xml\" score=\"0\" rank=\"25\">\n" +
-		"        <formula id=\".*?\" for=\"f1\\.0\" xref=\"p1\\.1\\.m1\\.1\\.6\\.cmml\" score=\"0\"/>      </hit>      <hit id=\".*?\" xref=\"math/math\\.xml\" score=\"0\" rank=\"26\">\n" +
-		"        <formula id=\".*?\" for=\"f1\\.0\" xref=\"p1\\.1\\.m1\\.1\\.4\\.cmml\" score=\"0\"/>      </hit>      <hit id=\".*?\" xref=\"math/math\\.xml\" score=\"0\" rank=\"27\">\n" +
-		"        <formula id=\".*?\" for=\"f1\\.0\" xref=\"p1\\.1\\.m1\\.1\\.6\\.cmml\" score=\"0\"/>      </hit>      <hit id=\".*?\" xref=\"math/math\\.xml\" score=\"0\" rank=\"28\">\n" +
-		"        <formula id=\".*?\" for=\"f1\\.0\" xref=\"p1\\.1\\.m1\\.1\\.4\\.cmml\" score=\"0\"/>      </hit>      <hit id=\".*?\" xref=\"math/math\\.xml\" score=\"0\" rank=\"29\">\n" +
-		"        <formula id=\".*?\" for=\"f1\\.0\" xref=\"p1\\.1\\.m1\\.1\\.5\\.2\\.cmml\" score=\"0\"/>      </hit>      <hit id=\".*?\" xref=\"math/math\\.xml\" score=\"0\" rank=\"30\">\n" +
-		"        <formula id=\".*?\" for=\"f1\\.0\" xref=\"p1\\.1\\.m1\\.1\\.7\\.cmml\" score=\"0\"/>      </hit>      <hit id=\".*?\" xref=\"math/math\\.xml\" score=\"0\" rank=\"31\">\n" +
-		"        <formula id=\".*?\" for=\"f1\\.0\" xref=\"p1\\.1\\.m1\\.1\\.7\\.2\\.cmml\" score=\"0\"/>      </hit>      <hit id=\".*?\" xref=\"math/math\\.xml\" score=\"0\" rank=\"32\">\n" +
-		"        <formula id=\".*?\" for=\"f1\\.0\" xref=\"p1\\.1\\.m1\\.1\\.11\\.2\\.1\\.cmml\" score=\"0\"/>      </hit>      <hit id=\".*?\" xref=\"math/math\\.xml\" score=\"0\" rank=\"33\">\n" +
-		"        <formula id=\".*?\" for=\"f1\\.0\" xref=\"p1\\.1\\.m1\\.1\\.11\\.cmml\" score=\"0\"/>      </hit>      <hit id=\".*?\" xref=\"math/math\\.xml\" score=\"0\" rank=\"34\">\n" +
-		"        <formula id=\".*?\" for=\"f1\\.0\" xref=\"p1\\.1\\.m1\\.1\\.6\\.2\\.cmml\" score=\"0\"/>      </hit>      <hit id=\".*?\" xref=\"math/math\\.xml\" score=\"0\" rank=\"35\">\n" +
-		"        <formula id=\".*?\" for=\"f1\\.0\" xref=\"p1\\.1\\.m1\\.1\\.8\\.2\\.cmml\" score=\"0\"/>      </hit>      <hit id=\".*?\" xref=\"math/math\\.xml\" score=\"0\" rank=\"36\">\n" +
-		"        <formula id=\".*?\" for=\"f1\\.0\" xref=\"p1\\.1\\.m1\\.1\\.8\\.cmml\" score=\"0\"/>      </hit>      <hit id=\".*?\" xref=\"math/math\\.xml\" score=\"0\" rank=\"37\">\n" +
-		"        <formula id=\".*?\" for=\"f1\\.0\" xref=\"p1\\.1\\.m1\\.1\\.4\\.2\\.cmml\" score=\"0\"/>      </hit>    </result>\n";
-		assertTrue(res.matches(expectedRegex));
-
-
+		final String expectedRegex = getFileContents( "testNTCIRReturnExpected.regex" );
+		assertTrue( res.matches( expectedRegex ) );
 	}
 }

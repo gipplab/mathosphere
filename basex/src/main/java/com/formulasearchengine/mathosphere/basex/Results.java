@@ -172,69 +172,51 @@ public class Results {
 				hits.add( new Hit( id, filename, score, rank ) );
 			}
 
+			public void addHit( String xmlString ) {
+				hits.add( new Hit( xmlString ));
+			}
+
 			public class Hit {
 				private final String id;
 				private final String filename;
 				private final String score;
 				private final String rank;
-
-				private final LinkedList<Formula> formulae = new LinkedList<Formula>();
+				//If we want to replace the above characteristics with our own XML string
+				private final boolean overrideXML;
+				private final String overrideString;
 
 				public Hit( String id, String filename, String score, String rank ) {
 					this.id = id;
 					this.filename = filename;
 					this.score = score;
 					this.rank = rank;
+					this.overrideXML = false;
+					this.overrideString = "";
+				}
+
+				public Hit ( String hit ) {
+					this.id = "";
+					this.filename = "";
+					this.score = "";
+					this.rank = "";
+					this.overrideXML = true;
+					this.overrideString = hit;
 				}
 
 				public String toXML() {
-					final StringBuilder hitXMLBuilder = new StringBuilder();
-					hitXMLBuilder.append( "      <hit id=\"" ).append( id ).append( "\" xref=\"" ).append( filename )
-							.append( "\" score=\"" ).append( score ).append( "\" rank=\"" ).append( rank ).append( "\">\n" );
-					for ( final Formula formula : formulae ) {
-						hitXMLBuilder.append( formula.toXML() );
+					if ( overrideXML ) {
+						return overrideString;
+					} else {
+						final StringBuilder hitXMLBuilder = new StringBuilder();
+						hitXMLBuilder.append( "      <hit id=\"" ).append( id ).append( "\" xref=\"" ).append( filename )
+								.append( "\" score=\"" ).append( score ).append( "\" rank=\"" ).append( rank ).append( "\">\n" );
+						hitXMLBuilder.append( "      </hit>" );
+						return hitXMLBuilder.toString();
 					}
-					hitXMLBuilder.append( "      </hit>" );
-					return hitXMLBuilder.toString();
 				}
 
 				public String toCSV() {
 					return id;
-				}
-
-				public int size() {
-					return formulae.size();
-				}
-
-				public void addFormula( String id, String queryFormulaID, String resultFormulaID, int formulaScore ) {
-					addFormula( id, queryFormulaID, resultFormulaID, Integer.toString( formulaScore ) );
-				}
-
-				public void addFormula( String id, String queryFormulaID, String resultFormulaID, String formulaScore ) {
-					formulae.add( new Formula( id, queryFormulaID, resultFormulaID, formulaScore ) );
-				}
-
-				public class Formula {
-					private final String id;
-					private final String queryFormulaID;
-					private final String resultFormulaID;
-					private final String formulaScore;
-
-					public Formula( String id, String queryFormulaID, String resultFormulaID, String formulaScore ) {
-						this.id = id;
-						this.queryFormulaID = queryFormulaID;
-						this.resultFormulaID = resultFormulaID;
-						this.formulaScore = formulaScore;
-					}
-
-					public String toXML() {
-						return "        <formula id=\"" + id + "\" for=\"" + queryFormulaID + "\" xref=\""
-								+ resultFormulaID + "\" score=\"" + formulaScore + "\"/>";
-					}
-
-					public String toCSV() {
-						return id;
-					}
 				}
 			}
 		}
