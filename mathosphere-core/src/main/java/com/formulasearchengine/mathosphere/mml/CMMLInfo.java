@@ -1,8 +1,8 @@
 package com.formulasearchengine.mathosphere.mml;
 
 import com.formulasearchengine.mathmlquerygenerator.XQueryGenerator;
-import com.formulasearchengine.mathosphere.utils.XMLHelper;
 import com.formulasearchengine.mathosphere.utils.XmlNamespaceTranslator;
+import com.formulasearchengine.mathosphere.utils.XMLHelper;
 import com.formulasearchengine.xmlhelper.NonWhitespaceNodeList;
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Multiset;
@@ -365,6 +365,7 @@ public class CMMLInfo implements Document {
         final XQueryGenerator gen = new XQueryGenerator( cmmlDoc );
 		gen.setHeader( XQUERY_HEADER );
 		gen.setFooter( XQUERY_FOOTER );
+		gen.setAddQvarMap( false );
         final String queryString = gen.toString();
         return queryString;
 	}

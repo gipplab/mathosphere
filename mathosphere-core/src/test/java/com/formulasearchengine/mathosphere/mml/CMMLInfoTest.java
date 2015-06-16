@@ -267,7 +267,7 @@ public class CMMLInfoTest {
         final String res1 = TestUtils.getFileContents(MML_TEST_DIR + "res1.xml");
         CMMLInfo cmml = new CMMLInfo(ciI);
         final XQueryExecutable xQuery = cmml.getXQuery();
-        Document doc = XMLHelper.runXQuery(xQuery,sampleMML);
+        Document doc = XMLHelper.runXQuery( xQuery, sampleMML );
         assertTrue(compareXML(XMLHelper.String2Doc(res1, true), doc).identical());
 
     }
