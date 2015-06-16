@@ -1,5 +1,6 @@
 package com.formulasearchengine.mathosphere.basex;
 
+import com.formulasearchengine.mathosphere.utils.XMLHelper;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -129,7 +130,7 @@ public final class ClientTest {
 			"      </hit>" +
 			"    </result>\n"+
 			"</results>\n";
-		Document query = XMLHelper.String2Doc( testInput );
+		Document query = XMLHelper.String2Doc( testInput, true );
 		Client c = new Client();
 		c.setShowTime( true );
 		String res = c.runMWSQuery( query );
@@ -158,7 +159,7 @@ public final class ClientTest {
 			"      </hit>" +
 			"    </result>\n"+
 			"</results>\n";
-		Document query = XMLHelper.String2Doc( testInput );
+		Document query = XMLHelper.String2Doc( testInput, true );
 		Client c = new Client();
 		c.setShowTime( false );
 		c.setUseXQ( true );
@@ -233,7 +234,7 @@ public final class ClientTest {
 	}
 	@Test
 	public void testInsert() throws Exception{
-		Document doc = XMLHelper.String2Doc( getFileContents( "math.4.3.xml" ) );
+		Document doc = XMLHelper.String2Doc( getFileContents( "math.4.3.xml" ), true );
 		Client c = new Client(  );
 		assertEquals( 0, c.countRevisionFormula( 800 ) );
 		c.updateFormula( doc.getDocumentElement() );
@@ -259,7 +260,7 @@ public final class ClientTest {
 
 	@Test
 	public void testNTCIRReturn() throws Exception {
-		final Document doc = XMLHelper.String2Doc(getFileContents( "mws.xml" ));
+		final Document doc = XMLHelper.String2Doc(getFileContents( "mws.xml" ), true);
 		final String query = "declare default element namespace \"http://www.w3.org/1998/Math/MathML\";\n" +
 			"for $m in //*:expr return \n" +
 			"for $x in $m//*:apply\n" +
