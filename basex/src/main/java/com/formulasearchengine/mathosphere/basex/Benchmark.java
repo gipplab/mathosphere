@@ -27,9 +27,9 @@ public class Benchmark {
 		"for $m in //*:expr return \n";
 	//Return URL of <mws:expr> element containing matches for queries
 	public static final String BASEX_FOOTER = " data($m/@url) \n";
-	//Return hit as csv with required NTCIR data: id, filename, result xref
+	//Return hit as XML with required NTCIR data and highlighting
 	public static final String NTCIR_FOOTER =
-			"string(concat(generate-id($x),\",\",base-uri($m),\",\",data($x/@xml:id)))";
+			"<hit id=\"{generate-id()}\" xref=\"{base-uri($m)}\" score=\"\" rank=\"\"><formula id=\"{generate-id()}\" for=\"\" xref=\"{base-uri($m)}#{data($x/@xml:id)}\">{map:for-each($q,function($k,$v){for $value in $v return <qvar for=\"{$k}\" xref=\"{$value}\"/>})}</formula></hit>";
 
 	private final CommandLine line;
 

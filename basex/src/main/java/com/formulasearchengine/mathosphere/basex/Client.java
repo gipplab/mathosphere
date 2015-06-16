@@ -9,7 +9,15 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
 import javax.xml.namespace.QName;
+import javax.xml.stream.*;
+import javax.xml.stream.events.Attribute;
+import javax.xml.stream.events.StartElement;
+import javax.xml.stream.events.XMLEvent;
+import javax.xml.transform.*;
 import javax.xml.xquery.*;
+import java.io.*;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -111,6 +119,14 @@ public class Client {
 		return xqs.getConnection( srv.USER, srv.PASSWORD );
 	}
 
+	//Alternative API that enables XQuery v3.1
+	private static BaseXClient getBaseXClient() throws IOException {
+		final Server srv = Server.getInstance();
+		final BaseXClient session = new BaseXClient(srv.SERVER_NAME, Integer.parseInt(srv.PORT), srv.USER, srv.PASSWORD);
+		session.execute("OPEN " + srv.DATABASE_NAME);
+		return session;
+	}
+
 	/**
 	 * Connects with the BaseX database, sending the given query as an XQuery query and saves the
 	 * result in the currentResult list. Assumes NTCIR_FOOTER is used as the result return type.
@@ -119,36 +135,71 @@ public class Client {
 	 * @return Result in NTCIR_FOOTER XML format (not in full NTCIR format)
 	 * @throws XQException When getXqConnection() falis to connect to the BaseX server, XQJ fails to process the query,
 	 * or XQJ fails to execute the query.
+	 * @throws XMLStreamException When the output fails to parse as XML
+	 * @throws IOException When the client fails to open properly
+	 * @throws TransformerException When the XML reader/writers fail
 	 */
-	protected String runQueryNTCIR( String query, String queryID ) throws XQException {
+	protected String runQueryNTCIR( String query, String queryID )
+			throws XQException, XMLStreamException, IOException, TransformerException {
 		int score = 0;
 		int rank = 1;
 		if ( useXQ ) {
-			final XQConnection conn = getXqConnection();
-			final XQPreparedExpression xqpe = conn.prepareExpression( query );
+			return "";
+		} else {
+			final BaseXClient session = getBaseXClient();
 			lastQueryDuration = System.nanoTime();
-			final XQResultSequence rs = xqpe.executeQuery();
+			final BaseXClient.Query querySession = session.query( query );
 			lastQueryDuration = System.nanoTime() - lastQueryDuration;
 			currentResult.setTime( lastQueryDuration );
-			while ( rs.next() ) {
-				final String result = rs.getItemAsString( null );
-				final String[] data = result.split( "," );
-				final String id = data[0];
-				final String filename = data[1];
-				final String xref = data[2];
-				//NTCIR_FOOTER format
-				final Results.Run.Result.Hit currentHit =
-						new Results().new Run("", 0L, "").new Result("")
-								.new Hit( id, filename, Integer.toString( score ), Integer.toString( rank ) );
-				currentHit.addFormula( id, queryID, xref, score );
-				currentResult.addHit( currentHit );
-				rank++;
+
+			while ( querySession.more() ) {
+				final String result = querySession.next();
+				final byte[] byteArray = result.getBytes("UTF-8");
+				final ByteArrayInputStream inputStream = new ByteArrayInputStream(byteArray);
+				final XMLEventReader reader = XMLInputFactory.newFactory().createXMLEventReader( inputStream ) ;
+				final StringWriter hitWriter = new StringWriter(  );
+				final XMLEventWriter writer = XMLOutputFactory.newInstance().createXMLEventWriter( hitWriter );
+
+				while ( reader.hasNext() ) {
+					final XMLEvent curEvent = reader.nextEvent();
+					switch ( curEvent.getEventType() ) {
+						case XMLStreamConstants.START_ELEMENT:
+							if ( "formula".equals( curEvent.asStartElement().getName().getLocalPart() ) ) {
+								writer.add( replaceAttr( curEvent.asStartElement(), "for", queryID ) );
+							} else {
+								writer.add( curEvent );
+							}
+							break;
+						case XMLStreamConstants.START_DOCUMENT:
+							//do nothing
+							break;
+						default:
+							writer.add( curEvent );
+							break;
+					}
+				}
+				currentResult.addHit( hitWriter.toString() );
 			}
-			conn.close();
 			return currentResult.toXML();
-		} else {
-			return "";
 		}
+	}
+
+	/**
+	 * @return Returns new StartElement with replaced value for given attribute
+	 */
+	private static StartElement replaceAttr( StartElement event, String attribute, String value ) {
+		final XMLEventFactory eventFactory = XMLEventFactory.newInstance();
+		final Iterator<Attribute> attributeIterator = event.getAttributes();
+		final List<Attribute> attrs = new ArrayList<>();
+		while ( attributeIterator.hasNext() ) {
+			final Attribute curAttr = attributeIterator.next();
+			if ( attribute.equals( curAttr.getName().getLocalPart() ) ) {
+				attrs.add( eventFactory.createAttribute( new QName( attribute ), value ) );
+			} else {
+				attrs.add( curAttr );
+			}
+		}
+		return eventFactory.createStartElement( new QName( event.getName().getLocalPart() ), attrs.iterator(), null );
 	}
 
 	/**
