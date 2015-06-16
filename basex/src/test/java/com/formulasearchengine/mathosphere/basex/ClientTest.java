@@ -1,5 +1,7 @@
 package com.formulasearchengine.mathosphere.basex;
 
+import org.junit.After;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.w3c.dom.Document;
@@ -14,9 +16,14 @@ import static org.junit.Assert.*;
 
 public final class ClientTest {
 
-	@BeforeClass
-	public static void setup() throws Exception {
+	@Before
+	public void setup() throws Exception {
 		BaseXTestSuite.setup();
+	}
+
+	@After
+	public void shutdownServer() throws Exception {
+		Server.getInstance().shutdown();
 	}
 
 	@Test

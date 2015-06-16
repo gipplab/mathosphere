@@ -147,38 +147,42 @@ public class Client {
 			return "";
 		} else {
 			final BaseXClient session = getBaseXClient();
-			lastQueryDuration = System.nanoTime();
-			final BaseXClient.Query querySession = session.query( query );
-			lastQueryDuration = System.nanoTime() - lastQueryDuration;
-			currentResult.setTime( lastQueryDuration );
+			try {
+				lastQueryDuration = System.nanoTime();
+				final BaseXClient.Query querySession = session.query( query );
+				lastQueryDuration = System.nanoTime() - lastQueryDuration;
+				currentResult.setTime( lastQueryDuration );
 
-			while ( querySession.more() ) {
-				final String result = querySession.next();
-				final byte[] byteArray = result.getBytes("UTF-8");
-				final ByteArrayInputStream inputStream = new ByteArrayInputStream(byteArray);
-				final XMLEventReader reader = XMLInputFactory.newFactory().createXMLEventReader( inputStream ) ;
-				final StringWriter hitWriter = new StringWriter(  );
-				final XMLEventWriter writer = XMLOutputFactory.newInstance().createXMLEventWriter( hitWriter );
+				while ( querySession.more() ) {
+					final String result = querySession.next();
+					final byte[] byteArray = result.getBytes( "UTF-8" );
+					final ByteArrayInputStream inputStream = new ByteArrayInputStream( byteArray );
+					final XMLEventReader reader = XMLInputFactory.newFactory().createXMLEventReader( inputStream );
+					final StringWriter hitWriter = new StringWriter();
+					final XMLEventWriter writer = XMLOutputFactory.newInstance().createXMLEventWriter( hitWriter );
 
-				while ( reader.hasNext() ) {
-					final XMLEvent curEvent = reader.nextEvent();
-					switch ( curEvent.getEventType() ) {
-						case XMLStreamConstants.START_ELEMENT:
-							if ( "formula".equals( curEvent.asStartElement().getName().getLocalPart() ) ) {
-								writer.add( replaceAttr( curEvent.asStartElement(), "for", queryID ) );
-							} else {
+					while ( reader.hasNext() ) {
+						final XMLEvent curEvent = reader.nextEvent();
+						switch ( curEvent.getEventType() ) {
+							case XMLStreamConstants.START_ELEMENT:
+								if ( "formula".equals( curEvent.asStartElement().getName().getLocalPart() ) ) {
+									writer.add( replaceAttr( curEvent.asStartElement(), "for", queryID ) );
+								} else {
+									writer.add( curEvent );
+								}
+								break;
+							case XMLStreamConstants.START_DOCUMENT:
+								//do nothing
+								break;
+							default:
 								writer.add( curEvent );
-							}
-							break;
-						case XMLStreamConstants.START_DOCUMENT:
-							//do nothing
-							break;
-						default:
-							writer.add( curEvent );
-							break;
+								break;
+						}
 					}
+					currentResult.addHit( hitWriter.toString() );
 				}
-				currentResult.addHit( hitWriter.toString() );
+			} finally {
+				session.close();
 			}
 			return currentResult.toXML();
 		}
@@ -215,17 +219,20 @@ public class Client {
 		int rank = 1;
 		if ( useXQ ) {
 			final XQConnection conn = getXqConnection();
-			final XQPreparedExpression xqpe = conn.prepareExpression( query );
-			lastQueryDuration = System.nanoTime();
-			final XQResultSequence rs = xqpe.executeQuery();
-			lastQueryDuration = System.nanoTime() - lastQueryDuration;
-			currentResult.setTime( lastQueryDuration );
-			while (rs.next()) {
-				final String result = rs.getItemAsString( null );
-				currentResult.addHit(CR_PATTERN.matcher(result).replaceAll(""), "", score, rank );
-				rank++;
+			try {
+				final XQPreparedExpression xqpe = conn.prepareExpression( query );
+				lastQueryDuration = System.nanoTime();
+				final XQResultSequence rs = xqpe.executeQuery();
+				lastQueryDuration = System.nanoTime() - lastQueryDuration;
+				currentResult.setTime( lastQueryDuration );
+				while ( rs.next() ) {
+					final String result = rs.getItemAsString( null );
+					currentResult.addHit( CR_PATTERN.matcher( result ).replaceAll( "" ), "", score, rank );
+					rank++;
+				}
+			} finally {
+				conn.close();
 			}
-			conn.close();
 		} else {
 			//TODO: This does not yet work
 /*			measurement = System.nanoTime();
@@ -322,12 +329,15 @@ public class Client {
 	static String directXQuery(String query) throws XQException {
 		final StringBuilder outputBuilder = new StringBuilder();
 		final XQConnection conn = getXqConnection();
-		final XQPreparedExpression xqpe = conn.prepareExpression( query );
-		final XQResultSequence rs = xqpe.executeQuery();
-		while (rs.next()) {
-			outputBuilder.append(CR_PATTERN.matcher(rs.getItemAsString(null)).replaceAll(""));
+		try {
+			final XQPreparedExpression xqpe = conn.prepareExpression( query );
+			final XQResultSequence rs = xqpe.executeQuery();
+			while ( rs.next() ) {
+				outputBuilder.append( CR_PATTERN.matcher( rs.getItemAsString( null ) ).replaceAll( "" ) );
+			}
+		} finally {
+			conn.close();
 		}
-		conn.close();
 		return outputBuilder.toString();
 	}
 
@@ -395,9 +405,13 @@ public class Client {
 			"for $e in $input/mws:expr\n" +
 			"return ( delete node //*[@url=$e/@url], insert node $e into /mws:harvest[1])";
 			final XQConnection conn = getXqConnection();
-			final XQPreparedExpression xqpe = conn.prepareExpression( xUpdate );
-			xqpe.bindNode( new QName( "input" ), n, null );
-			xqpe.executeQuery();
+			try {
+				final XQPreparedExpression xqpe = conn.prepareExpression( xUpdate );
+				xqpe.bindNode( new QName( "input" ), n, null );
+				xqpe.executeQuery();
+			} finally {
+				conn.close();
+			}
 			return true;
 		} catch (final XQException e ) {
 			e.printStackTrace();
