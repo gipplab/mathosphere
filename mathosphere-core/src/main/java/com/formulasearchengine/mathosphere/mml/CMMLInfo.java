@@ -365,6 +365,7 @@ public class CMMLInfo implements Document {
         final XQueryGenerator gen = new XQueryGenerator( cmmlDoc );
 		gen.setHeader( XQUERY_HEADER );
 		gen.setFooter( XQUERY_FOOTER );
+		gen.setAddQvarMap( false );
         final String queryString = gen.toString();
         return queryString;
 	}

@@ -292,6 +292,7 @@ public class Client {
 		final XQueryGenerator generator = new XQueryGenerator( mwsQuery );
 		generator.setHeader( Benchmark.BASEX_HEADER );
 		generator.setFooter( Benchmark.BASEX_FOOTER );
+		generator.setAddQvarMap( false );
 		return runQueryNtcirWrap(generator.toString());
 	}
 
@@ -301,7 +302,7 @@ public class Client {
 	 * @param tex Tex string
 	 * @return NTCIR XML formatted result
 	 */
-	public String runTexQuery( String tex ){
+	public String runTexQuery( String tex ) {
 		if (tex == null || tex.isEmpty()){
 			lastQuerySuccess = false;
 			return "TeX query was empty.";
