@@ -3,6 +3,7 @@ package com.formulasearchengine.mathosphere.basex;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.formulasearchengine.mathmlquerygenerator.NtcirPattern;
 import com.formulasearchengine.mathmlquerygenerator.XQueryGenerator;
+import com.formulasearchengine.mathmlquerygenerator.xmlhelper.XMLHelper;
 import net.xqj.basex.BaseXXQDataSource;
 import org.intellij.lang.annotations.Language;
 import org.w3c.dom.Document;
@@ -310,7 +311,7 @@ public class Client {
 		final TexQueryGenerator t = new TexQueryGenerator();
 		final String mmlString = t.request(tex);
 		if ( mmlString != null ){
-			final Document doc = XMLHelper.String2Doc( mmlString );
+			final Document doc = XMLHelper.String2Doc( mmlString, true );
 			return runMWSQuery( doc );
 		}
 		lastQuerySuccess = false;

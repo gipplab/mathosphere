@@ -108,7 +108,7 @@ public class Benchmark {
 		final NtcirTopicReader ntcirTopicReader = new NtcirTopicReader( queries );
 		ntcirTopicReader.setFooter( BASEX_FOOTER );
 		ntcirTopicReader.setHeader( BASEX_HEADER );
-		ntcirTopicReader.setRestricLength( !line.hasOption( "i" ) );
+		ntcirTopicReader.setRestrictLength( !line.hasOption( "i" ) );
 		List<NtcirPattern> patterns = ntcirTopicReader.extractPatterns();
 		final Client client = new Client( patterns );
 		srv.shutdown();

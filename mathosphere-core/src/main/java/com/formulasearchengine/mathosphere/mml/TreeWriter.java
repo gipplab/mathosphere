@@ -1,6 +1,6 @@
 package com.formulasearchengine.mathosphere.mml;
 
-import com.formulasearchengine.mathosphere.utils.XMLHelper;
+import com.formulasearchengine.mathmlquerygenerator.xmlhelper.XMLHelper;
 import org.w3c.dom.Node;
 
 import javax.xml.xpath.XPathExpressionException;
