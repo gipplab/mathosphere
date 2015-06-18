@@ -12,7 +12,7 @@ import java.net.URL;
  */
 @RunWith(Suite.class)
 @Suite.SuiteClasses({ServerTest.class, ClientTest.class, BenchmarkTest.class,
-		TexQueryGeneratorTest.class, XMLHelperTest.class})
+		TexQueryGeneratorTest.class})
 public class BaseXTestSuite {
 	@BeforeClass
 	public static void setup() throws Exception {
