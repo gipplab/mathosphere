@@ -1,7 +1,7 @@
 package com.formulasearchengine.mathosphere.mml;
 
 import com.formulasearchengine.mathosphere.TestUtils;
-import com.formulasearchengine.mathosphere.utils.XMLHelper;
+import com.formulasearchengine.mathmlquerygenerator.xmlhelper.XMLHelper;
 import com.google.common.collect.ImmutableMultiset;
 import com.google.common.collect.Multiset;
 import net.sf.saxon.s9api.XQueryExecutable;
@@ -267,7 +267,7 @@ public class CMMLInfoTest {
         final String res1 = TestUtils.getFileContents(MML_TEST_DIR + "res1.xml");
         CMMLInfo cmml = new CMMLInfo(ciI);
         final XQueryExecutable xQuery = cmml.getXQuery();
-        Document doc = XMLHelper.runXQuery(xQuery,sampleMML);
+        Document doc = XMLHelper.runXQuery( xQuery, sampleMML );
         assertTrue(compareXML(XMLHelper.String2Doc(res1, true), doc).identical());
 
     }

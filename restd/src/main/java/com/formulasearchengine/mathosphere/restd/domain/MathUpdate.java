@@ -2,7 +2,7 @@ package com.formulasearchengine.mathosphere.restd.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.formulasearchengine.mathosphere.basex.Client;
-import com.formulasearchengine.mathosphere.basex.XMLHelper;
+import com.formulasearchengine.mathmlquerygenerator.xmlhelper.XMLHelper;
 import org.w3c.dom.Document;
 
 /**
@@ -51,7 +51,7 @@ public class MathUpdate {
 		Client client = new Client();
 		client.setShowTime( false ); //for testing
 		if ( harvest.length()>0 ){
-			Document doc = XMLHelper.String2Doc( harvest );
+			Document doc = XMLHelper.String2Doc( harvest, true );
 			//TODO: validate document
 			if ( doc == null ){
 				this.response = "harvest is not valid XML.";

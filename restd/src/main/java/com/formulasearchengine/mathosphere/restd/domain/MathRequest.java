@@ -2,7 +2,7 @@ package com.formulasearchengine.mathosphere.restd.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.formulasearchengine.mathosphere.basex.Client;
-import com.formulasearchengine.mathosphere.basex.XMLHelper;
+import com.formulasearchengine.mathmlquerygenerator.xmlhelper.XMLHelper;
 import org.w3c.dom.Document;
 
 /**
@@ -71,7 +71,7 @@ public class MathRequest {
 				success = true;
 				break;
 			default:
-				Document doc = XMLHelper.String2Doc( query );
+				Document doc = XMLHelper.String2Doc( query, true );
 				if ( doc != null ) {
 					response = client.runMWSQuery( doc );
 					success = true;
