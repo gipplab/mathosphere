@@ -272,6 +272,7 @@ public final class ClientTest {
 		c.setUseXQ( false );
 		final String res = c.runQueryNTCIR( query , "f1.0");
 
+		System.out.println(res);
 		final String expectedRegex = getFileContents( "testNTCIRReturnExpected.regex" );
 		assertTrue( res.matches( expectedRegex ) );
 	}
