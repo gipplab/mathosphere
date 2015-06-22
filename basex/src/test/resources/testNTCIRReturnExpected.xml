@@ -1,0 +1,187 @@
+    <result for="NTCIR11-Math-">
+<hit xmlns="http://www.w3.org/1998/Math/MathML" score="" xref="math/math.xml" rank="" id="id">
+  <formula xref="math/math.xml#p1.1.m1.1.4.cmml" for="f1.0" id="id">
+    <qvar xref="p1.1.m1.1.4.2.cmml" for="x"></qvar>
+    <qvar xref="p1.1.m1.1.4.3.cmml" for="y"></qvar>
+  </formula>
+</hit><hit xmlns="http://www.w3.org/1998/Math/MathML" score="" xref="math/math.xml" rank="" id="id">
+  <formula xref="math/math.xml#p1.1.m1.1.4.2.8.1.5.cmml" for="f1.0" id="id">
+    <qvar xref="p1.1.m1.1.4.2.8.1.2.cmml" for="x"></qvar>
+    <qvar xref="p1.1.m1.1.4.2.8.1.4.cmml" for="y"></qvar>
+  </formula>
+</hit><hit xmlns="http://www.w3.org/1998/Math/MathML" score="" xref="math/math.xml" rank="" id="id">
+  <formula xref="math/math.xml#p1.1.m1.1.3.cmml" for="f1.0" id="id">
+    <qvar xref="p1.1.m1.1.3.2.cmml" for="x"></qvar>
+    <qvar xref="p1.1.m1.1.3.3.cmml" for="y"></qvar>
+  </formula>
+</hit><hit xmlns="http://www.w3.org/1998/Math/MathML" score="" xref="math/math.xml" rank="" id="id">
+  <formula xref="math/math.xml#p1.1.m1.1.1.cmml" for="f1.0" id="id">
+    <qvar xref="p1.1.m1.1.1.2.cmml" for="x"></qvar>
+    <qvar xref="p1.1.m1.1.1.3.cmml" for="y"></qvar>
+  </formula>
+</hit><hit xmlns="http://www.w3.org/1998/Math/MathML" score="" xref="math/math.xml" rank="" id="id">
+  <formula xref="math/math.xml#p1.1.m1.1.2.cmml" for="f1.0" id="id">
+    <qvar xref="p1.1.m1.1.2.2.cmml" for="x"></qvar>
+    <qvar xref="p1.1.m1.1.2.3.cmml" for="y"></qvar>
+  </formula>
+</hit><hit xmlns="http://www.w3.org/1998/Math/MathML" score="" xref="math/math.xml" rank="" id="id">
+  <formula xref="math/math.xml#p1.1.m1.1.8.cmml" for="f1.0" id="id">
+    <qvar xref="p1.1.m1.1.8.2.cmml" for="x"></qvar>
+    <qvar xref="p1.1.m1.1.8.3.cmml" for="y"></qvar>
+  </formula>
+</hit><hit xmlns="http://www.w3.org/1998/Math/MathML" score="" xref="math/math.xml" rank="" id="id">
+  <formula xref="math/math.xml#p1.1.m1.1.2.cmml" for="f1.0" id="id">
+    <qvar xref="p1.1.m1.1.2.2.cmml" for="x"></qvar>
+    <qvar xref="p1.1.m1.1.2.3.cmml" for="y"></qvar>
+  </formula>
+</hit><hit xmlns="http://www.w3.org/1998/Math/MathML" score="" xref="math/math.xml" rank="" id="id">
+  <formula xref="math/math.xml#p1.1.m1.1.8.cmml" for="f1.0" id="id">
+    <qvar xref="p1.1.m1.1.8.2.cmml" for="x"></qvar>
+    <qvar xref="p1.1.m1.1.8.3.cmml" for="y"></qvar>
+  </formula>
+</hit><hit xmlns="http://www.w3.org/1998/Math/MathML" score="" xref="math/math.xml" rank="" id="id">
+  <formula xref="math/math.xml#p1.1.m1.1.13.cmml" for="f1.0" id="id">
+    <qvar xref="p1.1.m1.1.13.2.cmml" for="x"></qvar>
+    <qvar xref="p1.1.m1.1.13.3.cmml" for="y"></qvar>
+  </formula>
+</hit><hit xmlns="http://www.w3.org/1998/Math/MathML" score="" xref="math/math.xml" rank="" id="id">
+  <formula xref="math/math.xml#p1.1.m1.1.6.cmml" for="f1.0" id="id">
+    <qvar xref="p1.1.m1.1.2.cmml" for="x"></qvar>
+    <qvar xref="p1.1.m1.1.4.cmml" for="y"></qvar>
+  </formula>
+</hit><hit xmlns="http://www.w3.org/1998/Math/MathML" score="" xref="math/math.xml" rank="" id="id">
+  <formula xref="math/math.xml#p1.1.m1.1.6.cmml" for="f1.0" id="id">
+    <qvar xref="p1.1.m1.1.2.cmml" for="x"></qvar>
+    <qvar xref="p1.1.m1.1.4.cmml" for="y"></qvar>
+  </formula>
+</hit><hit xmlns="http://www.w3.org/1998/Math/MathML" score="" xref="math/math.xml" rank="" id="id">
+  <formula xref="math/math.xml#p1.1.m1.1.1.cmml" for="f1.0" id="id">
+    <qvar xref="p1.1.m1.1.1.2.cmml" for="x"></qvar>
+    <qvar xref="p1.1.m1.1.1.3.cmml" for="y"></qvar>
+  </formula>
+</hit><hit xmlns="http://www.w3.org/1998/Math/MathML" score="" xref="math/math.xml" rank="" id="id">
+  <formula xref="math/math.xml#p1.1.m1.1.1.cmml" for="f1.0" id="id">
+    <qvar xref="p1.1.m1.1.1.2.cmml" for="x"></qvar>
+    <qvar xref="p1.1.m1.1.1.3.cmml" for="y"></qvar>
+  </formula>
+</hit><hit xmlns="http://www.w3.org/1998/Math/MathML" score="" xref="math/math.xml" rank="" id="id">
+  <formula xref="math/math.xml#p1.1.m1.1.4.cmml" for="f1.0" id="id">
+    <qvar xref="p1.1.m1.1.4.2.cmml" for="x"></qvar>
+    <qvar xref="p1.1.m1.1.4.3.cmml" for="y"></qvar>
+  </formula>
+</hit><hit xmlns="http://www.w3.org/1998/Math/MathML" score="" xref="math/math.xml" rank="" id="id">
+  <formula xref="math/math.xml#p1.1.m1.1.3.cmml" for="f1.0" id="id">
+    <qvar xref="p1.1.m1.1.3.2.cmml" for="x"></qvar>
+    <qvar xref="p1.1.m1.1.3.3.cmml" for="y"></qvar>
+  </formula>
+</hit><hit xmlns="http://www.w3.org/1998/Math/MathML" score="" xref="math/math.xml" rank="" id="id">
+  <formula xref="math/math.xml#p1.1.m1.1.3.cmml" for="f1.0" id="id">
+    <qvar xref="p1.1.m1.1.3.2.cmml" for="x"></qvar>
+    <qvar xref="p1.1.m1.1.3.3.cmml" for="y"></qvar>
+  </formula>
+</hit><hit xmlns="http://www.w3.org/1998/Math/MathML" score="" xref="math/math.xml" rank="" id="id">
+  <formula xref="math/math.xml#p1.1.m1.1.5.cmml" for="f1.0" id="id">
+    <qvar xref="p1.1.m1.1.5.2.cmml" for="x"></qvar>
+    <qvar xref="p1.1.m1.1.5.3.cmml" for="y"></qvar>
+  </formula>
+</hit><hit xmlns="http://www.w3.org/1998/Math/MathML" score="" xref="math/math.xml" rank="" id="id">
+  <formula xref="math/math.xml#p1.1.m1.1.5.2.cmml" for="f1.0" id="id">
+    <qvar xref="p1.1.m1.1.5.2.10.cmml" for="x"></qvar>
+    <qvar xref="p1.1.m1.1.5.2.11.cmml" for="y"></qvar>
+  </formula>
+</hit><hit xmlns="http://www.w3.org/1998/Math/MathML" score="" xref="math/math.xml" rank="" id="id">
+  <formula xref="math/math.xml#p1.1.m1.1.5.3.cmml" for="f1.0" id="id">
+    <qvar xref="p1.1.m1.1.5.3.11.cmml" for="x"></qvar>
+    <qvar xref="p1.1.m1.1.5.3.12.cmml" for="y"></qvar>
+  </formula>
+</hit><hit xmlns="http://www.w3.org/1998/Math/MathML" score="" xref="math/math.xml" rank="" id="id">
+  <formula xref="math/math.xml#p1.1.m1.1.11.1.cmml" for="f1.0" id="id">
+    <qvar xref="p1.1.m1.1.11.1.1.cmml" for="x"></qvar>
+    <qvar xref="p1.1.m1.1.11.1.2.cmml" for="y"></qvar>
+  </formula>
+</hit><hit xmlns="http://www.w3.org/1998/Math/MathML" score="" xref="math/math.xml" rank="" id="id">
+  <formula xref="math/math.xml#p1.1.m1.1.4.cmml" for="f1.0" id="id">
+    <qvar xref="p1.1.m1.1.4.2.cmml" for="x"></qvar>
+    <qvar xref="p1.1.m1.1.4.3.cmml" for="y"></qvar>
+  </formula>
+</hit><hit xmlns="http://www.w3.org/1998/Math/MathML" score="" xref="math/math.xml" rank="" id="id">
+  <formula xref="math/math.xml#p1.1.m1.1.4.cmml" for="f1.0" id="id">
+    <qvar xref="p1.1.m1.1.4.2.cmml" for="x"></qvar>
+    <qvar xref="p1.1.m1.1.4.3.cmml" for="y"></qvar>
+  </formula>
+</hit><hit xmlns="http://www.w3.org/1998/Math/MathML" score="" xref="math/math.xml" rank="" id="id">
+  <formula xref="math/math.xml#p1.1.m1.1.6.cmml" for="f1.0" id="id">
+    <qvar xref="p1.1.m1.1.6.2.cmml" for="x"></qvar>
+    <qvar xref="p1.1.m1.1.6.3.cmml" for="y"></qvar>
+  </formula>
+</hit><hit xmlns="http://www.w3.org/1998/Math/MathML" score="" xref="math/math.xml" rank="" id="id">
+  <formula xref="math/math.xml#p1.1.m1.1.4.cmml" for="f1.0" id="id">
+    <qvar xref="p1.1.m1.1.4.2.cmml" for="x"></qvar>
+    <qvar xref="p1.1.m1.1.4.3.cmml" for="y"></qvar>
+  </formula>
+</hit><hit xmlns="http://www.w3.org/1998/Math/MathML" score="" xref="math/math.xml" rank="" id="id">
+  <formula xref="math/math.xml#p1.1.m1.1.6.cmml" for="f1.0" id="id">
+    <qvar xref="p1.1.m1.1.6.2.cmml" for="x"></qvar>
+    <qvar xref="p1.1.m1.1.6.3.cmml" for="y"></qvar>
+  </formula>
+</hit><hit xmlns="http://www.w3.org/1998/Math/MathML" score="" xref="math/math.xml" rank="" id="id">
+  <formula xref="math/math.xml#p1.1.m1.1.4.cmml" for="f1.0" id="id">
+    <qvar xref="p1.1.m1.1.4.2.cmml" for="x"></qvar>
+    <qvar xref="p1.1.m1.1.4.3.cmml" for="y"></qvar>
+  </formula>
+</hit><hit xmlns="http://www.w3.org/1998/Math/MathML" score="" xref="math/math.xml" rank="" id="id">
+  <formula xref="math/math.xml#p1.1.m1.1.6.cmml" for="f1.0" id="id">
+    <qvar xref="p1.1.m1.1.6.2.cmml" for="x"></qvar>
+    <qvar xref="p1.1.m1.1.6.3.cmml" for="y"></qvar>
+  </formula>
+</hit><hit xmlns="http://www.w3.org/1998/Math/MathML" score="" xref="math/math.xml" rank="" id="id">
+  <formula xref="math/math.xml#p1.1.m1.1.4.cmml" for="f1.0" id="id">
+    <qvar xref="p1.1.m1.1.4.2.cmml" for="x"></qvar>
+    <qvar xref="p1.1.m1.1.4.3.cmml" for="y"></qvar>
+  </formula>
+</hit><hit xmlns="http://www.w3.org/1998/Math/MathML" score="" xref="math/math.xml" rank="" id="id">
+  <formula xref="math/math.xml#p1.1.m1.1.5.2.cmml" for="f1.0" id="id">
+    <qvar xref="p1.1.m1.1.1.cmml" for="x"></qvar>
+    <qvar xref="p1.1.m1.1.3.cmml" for="y"></qvar>
+  </formula>
+</hit><hit xmlns="http://www.w3.org/1998/Math/MathML" score="" xref="math/math.xml" rank="" id="id">
+  <formula xref="math/math.xml#p1.1.m1.1.7.cmml" for="f1.0" id="id">
+    <qvar xref="p1.1.m1.1.1.cmml" for="x"></qvar>
+    <qvar xref="p1.1.m1.1.7.1.cmml" for="y"></qvar>
+  </formula>
+</hit><hit xmlns="http://www.w3.org/1998/Math/MathML" score="" xref="math/math.xml" rank="" id="id">
+  <formula xref="math/math.xml#p1.1.m1.1.7.2.cmml" for="f1.0" id="id">
+    <qvar xref="p1.1.m1.1.3.cmml" for="x"></qvar>
+    <qvar xref="p1.1.m1.1.5.cmml" for="y"></qvar>
+  </formula>
+</hit><hit xmlns="http://www.w3.org/1998/Math/MathML" score="" xref="math/math.xml" rank="" id="id">
+  <formula xref="math/math.xml#p1.1.m1.1.11.2.1.cmml" for="f1.0" id="id">
+    <qvar xref="p1.1.m1.1.4.cmml" for="x"></qvar>
+    <qvar xref="p1.1.m1.1.6.cmml" for="y"></qvar>
+  </formula>
+</hit><hit xmlns="http://www.w3.org/1998/Math/MathML" score="" xref="math/math.xml" rank="" id="id">
+  <formula xref="math/math.xml#p1.1.m1.1.11.cmml" for="f1.0" id="id">
+    <qvar xref="p1.1.m1.1.11.1.cmml" for="x"></qvar>
+    <qvar xref="p1.1.m1.1.9.cmml" for="y"></qvar>
+  </formula>
+</hit><hit xmlns="http://www.w3.org/1998/Math/MathML" score="" xref="math/math.xml" rank="" id="id">
+  <formula xref="math/math.xml#p1.1.m1.1.6.2.cmml" for="f1.0" id="id">
+    <qvar xref="p1.1.m1.1.1.cmml" for="x"></qvar>
+    <qvar xref="p1.1.m1.1.3.cmml" for="y"></qvar>
+  </formula>
+</hit><hit xmlns="http://www.w3.org/1998/Math/MathML" score="" xref="math/math.xml" rank="" id="id">
+  <formula xref="math/math.xml#p1.1.m1.1.8.2.cmml" for="f1.0" id="id">
+    <qvar xref="p1.1.m1.1.2.cmml" for="x"></qvar>
+    <qvar xref="p1.1.m1.1.4.cmml" for="y"></qvar>
+  </formula>
+</hit><hit xmlns="http://www.w3.org/1998/Math/MathML" score="" xref="math/math.xml" rank="" id="id">
+  <formula xref="math/math.xml#p1.1.m1.1.8.cmml" for="f1.0" id="id">
+    <qvar xref="p1.1.m1.1.1.cmml" for="x"></qvar>
+    <qvar xref="p1.1.m1.1.8.1.cmml" for="y"></qvar>
+  </formula>
+</hit><hit xmlns="http://www.w3.org/1998/Math/MathML" score="" xref="math/math.xml" rank="" id="id">
+  <formula xref="math/math.xml#p1.1.m1.1.4.2.cmml" for="f1.0" id="id">
+    <qvar xref="p1.1.m1.1.4.2.1.2.cmml" for="x"></qvar>
+    <qvar xref="p1.1.m1.1.4.2.1.3.cmml" for="y"></qvar>
+  </formula>
+</hit>    </result>
