@@ -192,7 +192,7 @@ public class Client {
 	/**
 	 * @return Returns new StartElement with replaced value for given attribute
 	 */
-	private static StartElement replaceAttr( StartElement event, String attribute, String value ) {
+	public static StartElement replaceAttr( StartElement event, String attribute, String value ) {
 		final XMLEventFactory eventFactory = XMLEventFactory.newInstance();
 		final Iterator<Attribute> attributeIterator = event.getAttributes();
 		final List<Attribute> attrs = new ArrayList<>();
@@ -204,7 +204,7 @@ public class Client {
 				attrs.add( curAttr );
 			}
 		}
-		return eventFactory.createStartElement( new QName( event.getName().getLocalPart() ), attrs.iterator(), null );
+		return eventFactory.createStartElement( new QName( event.getName().getLocalPart() ), attrs.iterator(), event.getNamespaces() );
 	}
 
 	/**

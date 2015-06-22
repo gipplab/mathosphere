@@ -1,13 +1,19 @@
 package com.formulasearchengine.mathosphere.basex;
 
 import com.formulasearchengine.mathmlquerygenerator.xmlhelper.XMLHelper;
+import org.custommonkey.xmlunit.XMLAssert;
+import org.custommonkey.xmlunit.XMLUnit;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.w3c.dom.Document;
 
+import javax.xml.stream.*;
+import javax.xml.stream.events.XMLEvent;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.StringWriter;
 import java.util.Scanner;
 
 import static org.junit.Assert.*;
@@ -270,9 +276,34 @@ public final class ClientTest {
 		final Client c = new Client();
 		c.setShowTime( false );
 		c.setUseXQ( false );
-		final String res = c.runQueryNTCIR( query , "f1.0");
+		final String res = c.runQueryNTCIR( query, "f1.0" );
 
-		final String expectedRegex = getFileContents( "testNTCIRReturnExpected.regex" );
-		assertTrue( res.matches( expectedRegex ) );
+		//Strip all ID values
+		final byte[] byteArray = res.getBytes( "UTF-8" );
+		final ByteArrayInputStream inputStream = new ByteArrayInputStream( byteArray );
+		final XMLEventReader reader = XMLInputFactory.newFactory().createXMLEventReader( inputStream );
+		final StringWriter hitWriter = new StringWriter();
+		final XMLEventWriter writer = XMLOutputFactory.newInstance().createXMLEventWriter( hitWriter );
+
+		while ( reader.hasNext() ) {
+			final XMLEvent curEvent = reader.nextEvent();
+			final XMLEvent writeEvent;
+			if (curEvent.getEventType() == XMLStreamConstants.START_ELEMENT) {
+				final String name = curEvent.asStartElement().getName().getLocalPart();
+				if ( "formula".equals( name ) || "hit".equals( name ) ) {
+					writeEvent = Client.replaceAttr( curEvent.asStartElement(), "id", "id" );
+				} else {
+					writeEvent = curEvent;
+				}
+			} else {
+				writeEvent = curEvent;
+			}
+			writer.add( writeEvent );
+		}
+
+		final String expectedXML = getFileContents( "testNTCIRReturnExpected.xml" );
+		XMLUnit.setIgnoreWhitespace( true );
+		XMLUnit.setIgnoreAttributeOrder( true );
+		XMLAssert.assertXMLEqual( expectedXML, hitWriter.toString() );
 	}
 }
