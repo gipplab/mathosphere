@@ -5,6 +5,7 @@ import org.basex.api.client.ClientSession;
 import org.junit.After;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.Assert;
 
 import javax.xml.xquery.XQConnection;
 import javax.xml.xquery.XQDataSource;
@@ -15,8 +16,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.net.URL;
-
-import static org.junit.Assert.assertEquals;
 
 public class ServerTest  {
     @BeforeClass
@@ -59,10 +58,10 @@ public class ServerTest  {
         session.execute("SET SERIALIZER newline=\"\\n\"");
         session.execute("SET SERIALIZER item-separator=\"\\n\"");
         session.execute("OPEN math");
-        session.setOutputStream(baos);
+        session.setOutputStream( baos );
         session.query("count(./*/*)").execute();
-		assertEquals("104",baos.toString("UTF-8"));
-        session.execute("CLOSE");
+		Assert.assertEquals( "104", baos.toString( "UTF-8" ) );
+        session.execute( "CLOSE" );
         session.close();
 	}
 
@@ -95,7 +94,7 @@ public class ServerTest  {
 
 			final String res = rs.getSequenceAsString( null );
 
-			assertEquals( "<result xmlns=\"http://www.w3.org/1998/Math/MathML\" url=\"4#math.4.5\"/> " +
+			Assert.assertEquals( "<result xmlns=\"http://www.w3.org/1998/Math/MathML\" url=\"4#math.4.5\"/> " +
 					"<result xmlns=\"http://www.w3.org/1998/Math/MathML\" url=\"4#math.4.5\"/> " +
 					"<result xmlns=\"http://www.w3.org/1998/Math/MathML\" url=\"5#math.5.2\"/> " +
 					"<result xmlns=\"http://www.w3.org/1998/Math/MathML\" url=\"5#math.5.17\"/> " +
@@ -137,5 +136,14 @@ public class ServerTest  {
 			conn.close();
 		}
     }
+
+	@Test
+	public void testCheckHealth() throws Exception {
+		final Server srv = Server.getInstance();
+        final URL fname = BaseXTestSuite.class.getClassLoader().getResource( "sampleHarvest.xml" );
+		File file = new File(fname.toURI());
+        srv.startup(file);
+		Assert.assertTrue( srv.checkHealth() );
+	}
 
 }
