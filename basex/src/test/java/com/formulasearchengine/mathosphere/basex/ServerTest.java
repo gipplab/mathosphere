@@ -76,8 +76,8 @@ public class ServerTest  {
 		xqs.setProperty("serverName", srv.SERVER_NAME);
 		xqs.setProperty("port", srv.PORT);
 		xqs.setProperty("databaseName", srv.DATABASE_NAME);
-		xqs.setProperty("user", srv.USER);
-		xqs.setProperty("password", srv.PASSWORD);
+		xqs.setProperty("user", Client.USER);
+		xqs.setProperty("password", Client.PASSWORD);
 
 		final XQConnection conn = xqs.getConnection();
 		try {

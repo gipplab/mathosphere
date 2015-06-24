@@ -35,8 +35,7 @@ public final class Server {
 	public final String SERVER_NAME = "localhost";
 	public final String PORT = "1984";
 	public final String DATABASE_NAME = "math";
-	public final String USER = "admin";
-	public final String PASSWORD = System.getProperty("password") != null ? System.getProperty("password") : "admin";
+
 
 	private Server() {
 	}
@@ -62,7 +61,7 @@ public final class Server {
 	 */
 	public void startup(@NotNull File input) throws IOException {
 		shutdown();
-		baseXServer = new BaseXServer("-p" + PORT); // "-d" for debug
+		baseXServer = new BaseXServer( "-p" + PORT, "-n" + SERVER_NAME ); // "-d" for debug
 		file = input;
 		final Charset charset = Charsets.UTF_8;
 		final StringBuilder stringBuilder = new StringBuilder();

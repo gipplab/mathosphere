@@ -35,6 +35,9 @@ public class Client {
 	private boolean useXQ = true;
 	private boolean lastQuerySuccess = false;
 
+	public static final String USER = "admin";
+	public static final String PASSWORD = "admin";
+
 	/**
 	 * Constructs a new empty Client. Used for running individual queries.
 	 */
@@ -113,17 +116,20 @@ public class Client {
     private static XQConnection getXqConnection() throws XQException {
 		final Server srv = Server.getInstance();
 		final XQDataSource xqs = new BaseXXQDataSource();
+		//Other properties: description, logLevel, loginTimeout, readOnly
 		xqs.setProperty( "serverName", srv.SERVER_NAME);
 		xqs.setProperty( "port", srv.PORT );
 		xqs.setProperty( "databaseName", srv.DATABASE_NAME );
+		xqs.setProperty( "user", USER );
+		xqs.setProperty( "password", PASSWORD );
 
-		return xqs.getConnection( srv.USER, srv.PASSWORD );
+		return xqs.getConnection( USER, PASSWORD );
 	}
 
 	//Alternative API that enables XQuery v3.1
 	private static BaseXClient getBaseXClient() throws IOException {
 		final Server srv = Server.getInstance();
-		final BaseXClient session = new BaseXClient(srv.SERVER_NAME, Integer.parseInt(srv.PORT), srv.USER, srv.PASSWORD);
+		final BaseXClient session = new BaseXClient(srv.SERVER_NAME, Integer.parseInt(srv.PORT), USER, PASSWORD);
 		session.execute("OPEN " + srv.DATABASE_NAME);
 		return session;
 	}
