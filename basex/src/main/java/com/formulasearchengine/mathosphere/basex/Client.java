@@ -4,6 +4,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.formulasearchengine.mathmlquerygenerator.NtcirPattern;
 import com.formulasearchengine.mathmlquerygenerator.XQueryGenerator;
 import com.formulasearchengine.mathmlquerygenerator.xmlhelper.XMLHelper;
+import com.formulasearchengine.mathosphere.basex.types.Results;
+import com.formulasearchengine.mathosphere.basex.types.Run;
+import com.formulasearchengine.mathosphere.basex.types.Result;
 import net.xqj.basex.BaseXXQDataSource;
 import org.intellij.lang.annotations.Language;
 import org.w3c.dom.Document;
@@ -29,11 +32,12 @@ import java.util.regex.Pattern;
 public class Client {
 	private static final Pattern CR_PATTERN = Pattern.compile("\r");
 	private Results results = new Results();
-	private Results.Run currentRun = results.new Run( "baseX" + System.currentTimeMillis(), "automated" );
-	private Results.Run.Result currentResult = currentRun.new Result( "" );
+	private Run currentRun = new Run( "baseX" + System.currentTimeMillis(), "automated" );
+	private Result currentResult = new Result( "" );
 	private Long lastQueryDuration;
 	private boolean useXQ = true;
 	private boolean lastQuerySuccess = false;
+	private boolean showTime = true;
 
 	public static final String USER = "admin";
 	public static final String PASSWORD = "admin";
@@ -62,18 +66,15 @@ public class Client {
 	}
 
 	/**
-	 * @return Returns results in CSV format.
-	 */
-	public String getCSV() {
-		return results.toCSV();
-	}
-
-	/**
 	 * Setter for whether or not to show time in results.
 	 * @param showTime Boolean for showing time or not
 	 */
 	public void setShowTime (boolean showTime) {
-		results.setShowTime(showTime);
+		this.showTime = showTime;
+		for ( final Run run : results.getRuns() ) {
+			run.setShowTime( showTime );
+		}
+		currentResult.setShowTime( showTime );
 	}
 
 	/**
@@ -92,7 +93,8 @@ public class Client {
 	}
 
 	private void processPattern(NtcirPattern pattern) {
-		currentResult = currentRun.new Result( pattern.getNum() );
+		currentResult = new Result( pattern.getNum() );
+		currentResult.setShowTime( showTime );
 		basex( pattern.getxQueryExpression() );
 		currentRun.addResult( currentResult );
 	}
@@ -268,7 +270,8 @@ public class Client {
 	 * @return NTCIR XML formatted result
 	 */
 	public String runQueryNtcirWrap(String query) {
-		currentResult = currentRun.new Result( "" );
+		currentResult = new Result( "" );
+		currentResult.setShowTime( showTime );
 		try {
 			runQueryBaseXSimple( query );
 			lastQuerySuccess = true;
