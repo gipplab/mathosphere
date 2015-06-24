@@ -1,9 +1,14 @@
 package com.formulasearchengine.mathosphere.basex;
 
 import com.formulasearchengine.mathmlquerygenerator.xmlhelper.XMLHelper;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
 import org.custommonkey.xmlunit.XMLAssert;
 import org.custommonkey.xmlunit.XMLUnit;
 import org.junit.After;
+import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Test;
 import org.w3c.dom.Document;
@@ -19,6 +24,26 @@ import java.util.Scanner;
 import static org.junit.Assert.*;
 
 public final class ClientTest {
+
+	/**
+	 * Checks if there is a working connection to the xsede server, stops the test if there isn't.
+	 */
+	public void checkConnection() {
+		TexQueryGenerator gen = new TexQueryGenerator();
+		HttpPost httppost = new HttpPost( gen.getLaTeXMLURL() );
+		CloseableHttpClient httpClient = HttpClients.createDefault();
+		HttpResponse response;
+		try {
+			response = httpClient.execute( httppost );
+			if ( response.getStatusLine().getStatusCode() == 4 ) {
+				System.out.println( "Ignoring unit test. Xsede connection unstable." );
+				Assume.assumeTrue( false );
+			}
+		}  catch ( final IOException e ) {
+			System.out.println( "Ignoring unit test. Xsede connection unstable." );
+			Assume.assumeTrue( false );
+		}
+	}
 
 	@Before
 	public void setup() throws Exception {
@@ -174,6 +199,7 @@ public final class ClientTest {
 	}
 	@Test
 	public void testEmpty(){
+		checkConnection();
 		String empty = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n" +
 			"<results xmlns=\"http://ntcir-math.nii.ac.jp/\" total=\"0\" />\n";
 		Client c = new Client();
@@ -182,6 +208,7 @@ public final class ClientTest {
 	}
 	@Test
 	public void testqVar(){
+		checkConnection();
 		String empty = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n" +
 			"<results xmlns=\"http://ntcir-math.nii.ac.jp/\" total=\"0\" />\n";
 		Client c = new Client();
@@ -191,6 +218,7 @@ public final class ClientTest {
 
 	@Test
 	public void testEmptyTex(){
+		checkConnection();
 		Client c = new Client();
 		String res = c.runTexQuery( "" );
 		assertEquals( "TeX query was empty.",res );
@@ -198,7 +226,8 @@ public final class ClientTest {
 	}
 
 	@Test
-		 public void testBadTex(){
+	 public void testBadTex(){
+		checkConnection();
 		Client c = new Client();
 		String res = c.runTexQuery( "++23424'ä#öä#ö\\exit" );
 		assertTrue( res.startsWith( "Problem during TeX to MathML conversion" ) );
@@ -207,6 +236,7 @@ public final class ClientTest {
 
 	@Test
 	public void testBadTex2(){
+		checkConnection();
 		Client c = new Client();
 		String res = c.runTexQuery( "\\frac" );
 		assertTrue( res.startsWith( "Problem during TeX to MathML conversion" ) );

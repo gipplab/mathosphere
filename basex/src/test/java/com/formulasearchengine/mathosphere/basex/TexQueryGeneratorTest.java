@@ -1,14 +1,40 @@
 package com.formulasearchengine.mathosphere.basex;
 
+import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
+import org.junit.Before;
 import org.junit.Test;
+import org.junit.Assume;
 
+import java.io.IOException;
 import java.util.List;
 
 import static org.junit.Assert.*;
 
 public class TexQueryGeneratorTest {
+
+	/**
+	 * Check if we have a working connection to the xsede server before all unit tests.
+	 */
+	@Before
+	public void checkConnection() {
+		TexQueryGenerator gen = new TexQueryGenerator();
+		HttpPost httppost = new HttpPost( gen.getLaTeXMLURL() );
+		CloseableHttpClient httpClient = HttpClients.createDefault();
+		HttpResponse response;
+		try {
+			response = httpClient.execute( httppost );
+			Assume.assumeTrue( response.getStatusLine().getStatusCode() != 4 );
+		}  catch ( final IOException e ) {
+			Assume.assumeTrue( false );
+		}
+	}
 
 	@Test
 	public void testQuery () throws Exception {
