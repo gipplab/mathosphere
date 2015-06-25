@@ -18,59 +18,59 @@ import java.io.PrintStream;
 import java.net.URL;
 
 public class ServerTest  {
-    @BeforeClass
-    public static void setServerModeProd() {
-        System.setProperty("restx.mode", "prod");
-    }
+	@BeforeClass
+	public static void setServerModeProd() {
+		System.setProperty("restx.mode", "prod");
+	}
 
-    @After
-    public void shutdownServer() throws IOException {
-        if (Server.getInstance() != null) {
-            Server.getInstance().shutdown();
-        }
-    }
+	@After
+	public void shutdownServer() throws IOException {
+		if (Server.getInstance() != null) {
+			Server.getInstance().shutdown();
+		}
+	}
 
 	@Test
 	public void restartServerTest() throws Exception {
 		final URL fname = BaseXTestSuite.class.getClassLoader().getResource( "sampleHarvest.xml" );
 		File file = new File(fname.toURI());
 		Server srv = Server.getInstance();
-        srv.startup( file );
+		srv.startup( file );
 		srv.shutdown();
 		srv.startup( file );
-        srv.shutdown();
+		srv.shutdown();
 		srv.startup(file);
 	}
 
 	@Test
 	public void testImportData() throws Exception {
-        Server srv = Server.getInstance();
-        final URL fname = BaseXTestSuite.class.getClassLoader().getResource( "sampleHarvest.xml" );
+		Server srv = Server.getInstance();
+		final URL fname = BaseXTestSuite.class.getClassLoader().getResource( "sampleHarvest.xml" );
 		File file = new File(fname.toURI());
-        srv.startup(file);
+		srv.startup(file);
 
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		PrintStream ps = new PrintStream(baos);
-        ClientSession session = new ClientSession(srv.baseXServer.context, "admin", "admin");
+		ClientSession session = new ClientSession(srv.baseXServer.context, "admin", "admin");
 
-        session.execute("SET mainmem true");
-        //session.execute( "SET DEBUG true" );
-        session.execute("SET SERIALIZER newline=\"\\n\"");
-        session.execute("SET SERIALIZER item-separator=\"\\n\"");
-        session.execute("OPEN math");
-        session.setOutputStream( baos );
-        session.query("count(./*/*)").execute();
+		session.execute("SET mainmem true");
+		//session.execute( "SET DEBUG true" );
+		session.execute("SET SERIALIZER newline=\"\\n\"");
+		session.execute("SET SERIALIZER item-separator=\"\\n\"");
+		session.execute("OPEN math");
+		session.setOutputStream( baos );
+		session.query("count(./*/*)").execute();
 		Assert.assertEquals( "104", baos.toString( "UTF-8" ) );
-        session.execute( "CLOSE" );
-        session.close();
+		session.execute( "CLOSE" );
+		session.close();
 	}
 
-    @Test
-    public void testXQConnection() throws Exception {
-        final Server srv = Server.getInstance();
-        final URL fname = BaseXTestSuite.class.getClassLoader().getResource( "sampleHarvest.xml" );
+	@Test
+	public void testXQConnection() throws Exception {
+		final Server srv = Server.getInstance();
+		final URL fname = BaseXTestSuite.class.getClassLoader().getResource( "sampleHarvest.xml" );
 		File file = new File(fname.toURI());
-        srv.startup(file);
+		srv.startup(file);
 		final XQDataSource xqs = new BaseXXQDataSource();
 		xqs.setProperty("serverName", srv.SERVER_NAME);
 		xqs.setProperty("port", srv.PORT);
@@ -135,14 +135,14 @@ public class ServerTest  {
 		} finally {
 			conn.close();
 		}
-    }
+	}
 
 	@Test
 	public void testCheckHealth() throws Exception {
 		final Server srv = Server.getInstance();
-        final URL fname = BaseXTestSuite.class.getClassLoader().getResource( "sampleHarvest.xml" );
+		final URL fname = BaseXTestSuite.class.getClassLoader().getResource( "sampleHarvest.xml" );
 		File file = new File(fname.toURI());
-        srv.startup(file);
+		srv.startup(file);
 		Assert.assertTrue( srv.checkHealth() );
 	}
 
