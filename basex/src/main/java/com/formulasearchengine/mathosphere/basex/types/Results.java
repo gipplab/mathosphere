@@ -1,5 +1,9 @@
 package com.formulasearchengine.mathosphere.basex.types;
 
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
+import com.thoughtworks.xstream.annotations.XStreamImplicit;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,15 +13,24 @@ import java.util.List;
  * @author Tobias Uhlich
  * @author Thanh Phuong Luu
  */
+@XStreamAlias("results")
 public class Results {
+	@XStreamImplicit
 	private List<Run> runs;
+
+	@XStreamAlias("xmlns")
+	@XStreamAsAttribute
+	private String xmlns="http://ntcir-math.nii.ac.jp/";
 
 	public Results() {
 		this.runs = new ArrayList<>();
+		//hack b/c xstream does not support default values
+		this.xmlns = xmlns;
 	}
 
 	public Results( List<Run> runs ) {
 		this.runs = new ArrayList<>( runs );
+		this.xmlns = xmlns;
 	}
 
 	public void addRun( Run run ) {
@@ -25,21 +38,14 @@ public class Results {
 	}
 
 	public void setRuns( List<Run> runs ) {
-		this.runs = runs;
+		this.runs = new ArrayList<>( runs );
 	}
 
 	public List<Run> getRuns() {
 		return runs;
 	}
 
-	public String toXML() {
-		final StringBuilder runsXMLBuilder = new StringBuilder();
-		for ( final Run run : runs ) {
-			runsXMLBuilder.append( run.toXML() );
-		}
-
-		return "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
-				+ "<results xmlns=\"http://ntcir-math.nii.ac.jp/\">\n"
-				+ runsXMLBuilder.toString() + "</results>\n";
+	public int getNumRuns() {
+		return runs.size();
 	}
 }

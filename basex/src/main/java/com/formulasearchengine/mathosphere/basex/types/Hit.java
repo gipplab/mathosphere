@@ -1,49 +1,56 @@
 package com.formulasearchengine.mathosphere.basex.types;
 
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
+import com.thoughtworks.xstream.annotations.XStreamImplicit;
+
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Stores hits in Ntcir format.
  * Created by jjl4 on 6/24/15.
  */
+@XStreamAlias("hit")
 public class Hit {
+	@XStreamAlias("id")
+	@XStreamAsAttribute
 	private final String id;
-	private final String filename;
-	private final String score;
-	private final String rank;
-	//If we want to replace the above characteristics with our own XML string
-	private final boolean overrideXML;
-	private final String overrideString;
 
-	public Hit( String id, String filename, String score, String rank ) {
+	@XStreamAlias("xref")
+	@XStreamAsAttribute
+	private final String filename;
+
+	//These are strings so that "" strings are deserialized correctly
+	@XStreamAlias("score")
+	@XStreamAsAttribute
+	private final String score;
+
+	@XStreamAlias("rank")
+	@XStreamAsAttribute
+	private final String rank;
+
+	@XStreamImplicit
+	private List<Formula> formulae;
+
+	public Hit( String id, String filename, Integer score, Integer rank ) {
 		this.id = id;
 		this.filename = filename;
-		this.score = score;
-		this.rank = rank;
-		this.overrideXML = false;
-		this.overrideString = "";
+		this.score = score == null ? "" : String.valueOf( score );
+		this.rank = rank == null ? "" : String.valueOf( rank );
+		this.formulae = new ArrayList<>();
 	}
 
-	public Hit( String hit ) {
-		this.id = "";
-		this.filename = "";
-		this.score = "";
-		this.rank = "";
-		this.overrideXML = true;
-		this.overrideString = hit;
+	public void addFormula( Formula formula ) {
+		formulae.add( formula );
 	}
 
-	public String toXML() {
-		if ( overrideXML ) {
-			return overrideString;
-		} else {
-			final StringBuilder hitXMLBuilder = new StringBuilder();
-			hitXMLBuilder.append( "      <hit id=\"" ).append( id ).append( "\" xref=\"" ).append( filename )
-					.append( "\" score=\"" ).append( score ).append( "\" rank=\"" ).append( rank ).append( "\">\n" );
-			hitXMLBuilder.append( "      </hit>" );
-			return hitXMLBuilder.toString();
-		}
+	public void setFormulae( List<Formula> formulae ) {
+		this.formulae = new ArrayList<>( formulae );
 	}
 
-	public String toCSV() {
-		return id;
+	public List<Formula> getFormulae() {
+		return new ArrayList<>( formulae );
 	}
+
 }
