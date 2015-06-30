@@ -67,97 +67,21 @@ public final class ClientTest {
 			"fn:count($x/*) = 3\n" +
 			"return\n" +
 			"<result>{$m/@url}</result>");
-		assertEquals( "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n" +
-			"<results xmlns=\"http://ntcir-math.nii.ac.jp/\" total=\"37\">\n" +
-			"    <result for=\"NTCIR11-Math-\">\n" +
-			"      <hit id=\"<result xmlns=\"http://www.w3.org/1998/Math/MathML\" url=\"4#math.4.5\"/>\" " +
-				"xref=\"\" score=\"10\" rank=\"1\">\n      </hit>" +
-			"      <hit id=\"<result xmlns=\"http://www.w3.org/1998/Math/MathML\" url=\"4#math.4.5\"/>\" " +
-				"xref=\"\" score=\"10\" rank=\"2\">\n      </hit>" +
-			"      <hit id=\"<result xmlns=\"http://www.w3.org/1998/Math/MathML\" url=\"5#math.5.2\"/>\" " +
-				"xref=\"\" score=\"10\" rank=\"3\">\n      </hit>" +
-			"      <hit id=\"<result xmlns=\"http://www.w3.org/1998/Math/MathML\" url=\"5#math.5.17\"/>\" " +
-				"xref=\"\" score=\"10\" rank=\"4\">\n      </hit>" +
-			"      <hit id=\"<result xmlns=\"http://www.w3.org/1998/Math/MathML\" url=\"5#math.5.18\"/>\" " +
-				"xref=\"\" score=\"10\" rank=\"5\">\n      </hit>" +
-			"      <hit id=\"<result xmlns=\"http://www.w3.org/1998/Math/MathML\" url=\"5#math.5.18\"/>\" " +
-				"xref=\"\" score=\"10\" rank=\"6\">\n      </hit>" +
-			"      <hit id=\"<result xmlns=\"http://www.w3.org/1998/Math/MathML\" url=\"5#math.5.19\"/>\" " +
-				"xref=\"\" score=\"10\" rank=\"7\">\n      </hit>" +
-			"      <hit id=\"<result xmlns=\"http://www.w3.org/1998/Math/MathML\" url=\"5#math.5.19\"/>\" " +
-				"xref=\"\" score=\"10\" rank=\"8\">\n      </hit>" +
-			"      <hit id=\"<result xmlns=\"http://www.w3.org/1998/Math/MathML\" url=\"5#math.5.19\"/>\" " +
-				"xref=\"\" score=\"10\" rank=\"9\">\n      </hit>" +
-			"      <hit id=\"<result xmlns=\"http://www.w3.org/1998/Math/MathML\" url=\"5#math.5.20\"/>\" " +
-				"xref=\"\" score=\"10\" rank=\"10\">\n      </hit>" +
-			"      <hit id=\"<result xmlns=\"http://www.w3.org/1998/Math/MathML\" url=\"5#math.5.21\"/>\" " +
-				"xref=\"\" score=\"10\" rank=\"11\">\n      </hit>" +
-			"      <hit id=\"<result xmlns=\"http://www.w3.org/1998/Math/MathML\" url=\"5#math.5.22\"/>\" " +
-				"xref=\"\" score=\"10\" rank=\"12\">\n      </hit>" +
-			"      <hit id=\"<result xmlns=\"http://www.w3.org/1998/Math/MathML\" url=\"5#math.5.23\"/>\" " +
-				"xref=\"\" score=\"10\" rank=\"13\">\n      </hit>" +
-			"      <hit id=\"<result xmlns=\"http://www.w3.org/1998/Math/MathML\" url=\"6#math.6.11\"/>\" " +
-				"xref=\"\" score=\"10\" rank=\"14\">\n      </hit>" +
-			"      <hit id=\"<result xmlns=\"http://www.w3.org/1998/Math/MathML\" url=\"6#math.6.14\"/>\" " +
-				"xref=\"\" score=\"10\" rank=\"15\">\n      </hit>" +
-			"      <hit id=\"<result xmlns=\"http://www.w3.org/1998/Math/MathML\" url=\"6#math.6.15\"/>\" " +
-				"xref=\"\" score=\"10\" rank=\"16\">\n      </hit>" +
-			"      <hit id=\"<result xmlns=\"http://www.w3.org/1998/Math/MathML\" url=\"6#math.6.15\"/>\" " +
-				"xref=\"\" score=\"10\" rank=\"17\">\n      </hit>" +
-			"      <hit id=\"<result xmlns=\"http://www.w3.org/1998/Math/MathML\" url=\"6#math.6.15\"/>\" " +
-				"xref=\"\" score=\"10\" rank=\"18\">\n      </hit>" +
-			"      <hit id=\"<result xmlns=\"http://www.w3.org/1998/Math/MathML\" url=\"6#math.6.15\"/>\" " +
-				"xref=\"\" score=\"10\" rank=\"19\">\n      </hit>" +
-			"      <hit id=\"<result xmlns=\"http://www.w3.org/1998/Math/MathML\" url=\"6#math.6.20\"/>\" " +
-				"xref=\"\" score=\"10\" rank=\"20\">\n      </hit>" +
-			"      <hit id=\"<result xmlns=\"http://www.w3.org/1998/Math/MathML\" url=\"7#math.7.0\"/>\" " +
-				"xref=\"\" score=\"10\" rank=\"21\">\n      </hit>" +
-			"      <hit id=\"<result xmlns=\"http://www.w3.org/1998/Math/MathML\" url=\"7#math.7.1\"/>\" " +
-				"xref=\"\" score=\"10\" rank=\"22\">\n      </hit>" +
-			"      <hit id=\"<result xmlns=\"http://www.w3.org/1998/Math/MathML\" url=\"7#math.7.1\"/>\" " +
-				"xref=\"\" score=\"10\" rank=\"23\">\n      </hit>" +
-			"      <hit id=\"<result xmlns=\"http://www.w3.org/1998/Math/MathML\" url=\"7#math.7.2\"/>\" " +
-				"xref=\"\" score=\"10\" rank=\"24\">\n      </hit>" +
-			"      <hit id=\"<result xmlns=\"http://www.w3.org/1998/Math/MathML\" url=\"7#math.7.2\"/>\" " +
-				"xref=\"\" score=\"10\" rank=\"25\">\n      </hit>" +
-			"      <hit id=\"<result xmlns=\"http://www.w3.org/1998/Math/MathML\" url=\"7#math.7.3\"/>\" " +
-				"xref=\"\" score=\"10\" rank=\"26\">\n      </hit>" +
-			"      <hit id=\"<result xmlns=\"http://www.w3.org/1998/Math/MathML\" url=\"7#math.7.3\"/>\" " +
-				"xref=\"\" score=\"10\" rank=\"27\">\n      </hit>" +
-			"      <hit id=\"<result xmlns=\"http://www.w3.org/1998/Math/MathML\" url=\"7#math.7.4\"/>\" " +
-				"xref=\"\" score=\"10\" rank=\"28\">\n      </hit>" +
-			"      <hit id=\"<result xmlns=\"http://www.w3.org/1998/Math/MathML\" url=\"8#math.8.6\"/>\" " +
-				"xref=\"\" score=\"10\" rank=\"29\">\n      </hit>" +
-			"      <hit id=\"<result xmlns=\"http://www.w3.org/1998/Math/MathML\" url=\"8#math.8.7\"/>\" " +
-				"xref=\"\" score=\"10\" rank=\"30\">\n      </hit>" +
-			"      <hit id=\"<result xmlns=\"http://www.w3.org/1998/Math/MathML\" url=\"8#math.8.21\"/>\" " +
-				"xref=\"\" score=\"10\" rank=\"31\">\n      </hit>" +
-			"      <hit id=\"<result xmlns=\"http://www.w3.org/1998/Math/MathML\" url=\"8#math.8.22\"/>\" " +
-				"xref=\"\" score=\"10\" rank=\"32\">\n      </hit>" +
-			"      <hit id=\"<result xmlns=\"http://www.w3.org/1998/Math/MathML\" url=\"8#math.8.23\"/>\" " +
-				"xref=\"\" score=\"10\" rank=\"33\">\n      </hit>" +
-			"      <hit id=\"<result xmlns=\"http://www.w3.org/1998/Math/MathML\" url=\"8#math.8.33\"/>\" " +
-				"xref=\"\" score=\"10\" rank=\"34\">\n      </hit>" +
-			"      <hit id=\"<result xmlns=\"http://www.w3.org/1998/Math/MathML\" url=\"8#math.8.34\"/>\" " +
-				"xref=\"\" score=\"10\" rank=\"35\">\n      </hit>" +
-			"      <hit id=\"<result xmlns=\"http://www.w3.org/1998/Math/MathML\" url=\"8#math.8.35\"/>\" " +
-				"xref=\"\" score=\"10\" rank=\"36\">\n      </hit>" +
-			"      <hit id=\"<result xmlns=\"http://www.w3.org/1998/Math/MathML\" url=\"dummy29\"/>\" " +
-				"xref=\"\" score=\"10\" rank=\"37\">\n      </hit>" +
-			"    </result>\n" +
-			"</results>\n", res );
+
+		assertEquals(TestUtils.getFileContents( TestUtils.BASEX_RESOURCE_DIR + "testClientBasic.xml" ), res );
 	}
 
 	@Test
 	public void mwsQuery() throws Exception {
 		final String testInput = getFileContents( "dummy29.xml" );
 		final String expectedOutput = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n" +
-			"<results xmlns=\"http://ntcir-math.nii.ac.jp/\" total=\"1\">\n" +
+			"<results xmlns=\"http://ntcir-math.nii.ac.jp/\">\n" +
+			"  <run runtag=\"\" run_type=\"\">\n" +
 			"    <result for=\"NTCIR11-Math-\" >\n" +
-			"      <hit id=\"dummy29\" xref=\"\" score=\"10\" rank=\"1\">\n" +
-			"      </hit>" +
+			"      <hit id=\"dummy29\" xref=\"\" score=\"10\" rank=\"1\"/>\n" +
 			"    </result>\n"+
-			"</results>\n";
+			"  </run>\n" +
+			"</results>";
 		Document query = XMLHelper.String2Doc( testInput, true );
 		Client c = new Client();
 		c.setShowTime( true );
@@ -169,24 +93,19 @@ public final class ClientTest {
 	public void MWS2() throws Exception {
 		final String testInput = getFileContents( "mws.xml" );
 		final String expectedOutput = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n" +
-			"<results xmlns=\"http://ntcir-math.nii.ac.jp/\" total=\"7\">\n" +
+			"<results xmlns=\"http://ntcir-math.nii.ac.jp/\">\n" +
+			"  <run runtag=\"\" run_type=\"\">\n" +
 			"    <result for=\"NTCIR11-Math-\">\n" +
-			"      <hit id=\"8#math.8.13\" xref=\"\" score=\"10\" rank=\"1\">\n" +
-			"      </hit>" +
-			"      <hit id=\"8#math.8.22\" xref=\"\" score=\"10\" rank=\"2\">\n" +
-			"      </hit>" +
-			"      <hit id=\"8#math.8.23\" xref=\"\" score=\"10\" rank=\"3\">\n" +
-			"      </hit>" +
-			"      <hit id=\"8#math.8.25\" xref=\"\" score=\"10\" rank=\"4\">\n" +
-			"      </hit>" +
-			"      <hit id=\"8#math.8.25\" xref=\"\" score=\"10\" rank=\"5\">\n" +
-			"      </hit>" +
-			"      <hit id=\"8#math.8.30\" xref=\"\" score=\"10\" rank=\"6\">\n" +
-			"      </hit>" +
-			"      <hit id=\"8#math.8.32\" xref=\"\" score=\"10\" rank=\"7\">\n" +
-			"      </hit>" +
+			"      <hit id=\"8#math.8.13\" xref=\"\" score=\"10\" rank=\"1\"/>\n" +
+			"      <hit id=\"8#math.8.22\" xref=\"\" score=\"10\" rank=\"2\"/>\n" +
+			"      <hit id=\"8#math.8.23\" xref=\"\" score=\"10\" rank=\"3\"/>\n" +
+			"      <hit id=\"8#math.8.25\" xref=\"\" score=\"10\" rank=\"4\"/>\n" +
+			"      <hit id=\"8#math.8.25\" xref=\"\" score=\"10\" rank=\"5\"/>\n" +
+			"      <hit id=\"8#math.8.30\" xref=\"\" score=\"10\" rank=\"6\"/>\n" +
+			"      <hit id=\"8#math.8.32\" xref=\"\" score=\"10\" rank=\"7\"/>\n" +
 			"    </result>\n"+
-			"</results>\n";
+			"  </run>\n" +
+			"</results>";
 		Document query = XMLHelper.String2Doc( testInput, true );
 		Client c = new Client();
 		c.setShowTime( false );
@@ -201,7 +120,7 @@ public final class ClientTest {
 	public void testEmpty(){
 		checkConnection();
 		String empty = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n" +
-			"<results xmlns=\"http://ntcir-math.nii.ac.jp/\" total=\"0\" />\n";
+			"<results xmlns=\"http://ntcir-math.nii.ac.jp/\"/>";
 		Client c = new Client();
 		String res = c.runTexQuery( "\\sin(\\cos(x^5))" );
 		assertEquals( empty,res );
@@ -210,7 +129,7 @@ public final class ClientTest {
 	public void testqVar(){
 		checkConnection();
 		String empty = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n" +
-			"<results xmlns=\"http://ntcir-math.nii.ac.jp/\" total=\"0\" />\n";
+			"<results xmlns=\"http://ntcir-math.nii.ac.jp/\"/>";
 		Client c = new Client();
 		String res = c.runTexQuery( "a_i)" );
 		assertEquals( empty,res );

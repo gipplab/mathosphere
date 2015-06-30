@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<result for="NTCIR11-Math-1" runtime="21">
+    <hit id="id" xref="filename" score="" rank="">
+        <formula id="id" for="queryFormulaID" xref="filename#formulaID" score="0">
+            <qvar for="queryQvarID" xref="qvarID"/>
+            <qvar for="queryQvarID" xref="qvarID"/>
+        </formula>
+        <formula id="id" for="queryFormulaID" xref="filename#formulaID" score="0"/>
+    </hit>
+    <hit id="id" xref="filename" score="0" rank="0"/>
+</result>
