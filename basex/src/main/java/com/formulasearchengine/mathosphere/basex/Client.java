@@ -4,6 +4,13 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.formulasearchengine.mathmlquerygenerator.NtcirPattern;
 import com.formulasearchengine.mathmlquerygenerator.XQueryGenerator;
 import com.formulasearchengine.mathmlquerygenerator.xmlhelper.XMLHelper;
+import com.formulasearchengine.mathosphere.basex.types.Hit;
+import com.formulasearchengine.mathosphere.basex.types.Result;
+import com.formulasearchengine.mathosphere.basex.types.Results;
+import com.formulasearchengine.mathosphere.basex.types.Run;
+import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.io.xml.XmlFriendlyNameCoder;
+import com.thoughtworks.xstream.io.xml.Xpp3Driver;
 import net.xqj.basex.BaseXXQDataSource;
 import org.intellij.lang.annotations.Language;
 import org.w3c.dom.Document;
@@ -14,9 +21,11 @@ import javax.xml.stream.*;
 import javax.xml.stream.events.Attribute;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
-import javax.xml.transform.*;
+import javax.xml.transform.TransformerException;
 import javax.xml.xquery.*;
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -29,11 +38,12 @@ import java.util.regex.Pattern;
 public class Client {
 	private static final Pattern CR_PATTERN = Pattern.compile("\r");
 	private Results results = new Results();
-	private Results.Run currentRun = results.new Run( "baseX" + System.currentTimeMillis(), "automated" );
-	private Results.Run.Result currentResult = currentRun.new Result( "" );
+	private Run currentRun = new Run( "baseX" + System.currentTimeMillis(), "automated" );
+	private Result currentResult = new Result( "NTCIR11-Math-" );
 	private Long lastQueryDuration;
 	private boolean useXQ = true;
 	private boolean lastQuerySuccess = false;
+	private boolean showTime = true;
 
 	public static final String USER = "admin";
 	public static final String PASSWORD = "admin";
@@ -58,14 +68,50 @@ public class Client {
 	 * @return Returns results in XML format.
 	 */
 	public String getXML() {
-		return results.toXML();
+		return resultsToXML( results, showTime );
 	}
 
 	/**
-	 * @return Returns results in CSV format.
+	 * @return Returns given Result as XML string, and shows time based on showTime
 	 */
-	public String getCSV() {
-		return results.toCSV();
+	public static String resultToXML( Result result, boolean showTime ) {
+		//Use custom coder to disable underscore escaping so run_type is properly printed
+		final XStream stream = new XStream( new Xpp3Driver( new XmlFriendlyNameCoder( "_-", "_" ) ) );
+		if ( !showTime ) {
+			stream.omitField( Result.class, "ms" );
+		}
+		stream.processAnnotations( Result.class );
+		return "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n" + stream.toXML( result );
+	}
+
+	/**
+	 * @return Returns given Results as XML string, and shows time based on showTime
+	 */
+	public static String resultsToXML( Results results, boolean showTime ) {
+		//Use custom coder to disable underscore escaping so run_type is properly printed
+		final XStream stream = new XStream(new Xpp3Driver( new XmlFriendlyNameCoder( "_-", "_" ) ) );
+		if ( !showTime ) {
+			stream.omitField( Run.class, "ms" );
+			stream.omitField( Result.class, "ms" );
+		}
+		stream.processAnnotations( Results.class );
+		return "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n" + stream.toXML( results );
+	}
+
+	/**
+	 * @return the given XML string as an object of the given class. note that this method disables
+	 * underscore as an escape character if the class is Results so the attribute "run_type" is printed correctly.
+	 */
+	public static Object xmlToClass( String xml, Class convertClass ) {
+		final XStream stream;
+		if ( convertClass.equals( Results.class )) {
+			//Use custom coder to disable underscore escaping so run_type is properly printed
+			stream = new XStream( new Xpp3Driver( new XmlFriendlyNameCoder( "_-", "_" ) ) );
+		} else {
+			stream = new XStream();
+		}
+		stream.processAnnotations( convertClass );
+		return stream.fromXML( xml );
 	}
 
 	/**
@@ -73,7 +119,7 @@ public class Client {
 	 * @param showTime Boolean for showing time or not
 	 */
 	public void setShowTime (boolean showTime) {
-		results.setShowTime(showTime);
+		this.showTime = showTime;
 	}
 
 	/**
@@ -92,7 +138,7 @@ public class Client {
 	}
 
 	private void processPattern(NtcirPattern pattern) {
-		currentResult = currentRun.new Result( pattern.getNum() );
+		currentResult = new Result( pattern.getNum() );
 		basex( pattern.getxQueryExpression() );
 		currentRun.addResult( currentResult );
 	}
@@ -186,12 +232,12 @@ public class Client {
 								break;
 						}
 					}
-					currentResult.addHit( hitWriter.toString() );
+					currentResult.addHit( (Hit) xmlToClass( hitWriter.toString(), Hit.class ) );
 				}
 			} finally {
 				session.close();
 			}
-			return currentResult.toXML();
+			return resultToXML( currentResult, showTime );
 		}
 	}
 
@@ -234,7 +280,7 @@ public class Client {
 				currentResult.setTime( lastQueryDuration );
 				while ( rs.next() ) {
 					final String result = rs.getItemAsString( null );
-					currentResult.addHit( CR_PATTERN.matcher( result ).replaceAll( "" ), "", score, rank );
+					currentResult.addHit( new Hit( CR_PATTERN.matcher( result ).replaceAll( "" ), "", score, rank ) );
 					rank++;
 				}
 			} finally {
@@ -268,18 +314,17 @@ public class Client {
 	 * @return NTCIR XML formatted result
 	 */
 	public String runQueryNtcirWrap(String query) {
-		currentResult = currentRun.new Result( "" );
+		currentResult = new Result( "NTCIR11-Math-");
 		try {
 			runQueryBaseXSimple( query );
 			lastQuerySuccess = true;
-			if ( currentResult.size() > 0 ) {
-				return "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
-					+ "<results xmlns=\"http://ntcir-math.nii.ac.jp/\" total=\"" + currentResult.size() + "\">\n"
-					+ currentResult.toXML() + "</results>\n";
-			} else {
-				return "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
-					+ "<results xmlns=\"http://ntcir-math.nii.ac.jp/\" total=\"0\" />\n";
+			final Results resultsFrame = new Results();
+			if ( currentResult.getNumHits() != 0 ) {
+				final Run run = new Run( "", "" );
+				run.addResult( currentResult );
+				resultsFrame.addRun( run );
 			}
+			return resultsToXML( resultsFrame, showTime );
 		} catch (final XQException e) {
 			lastQuerySuccess = false;
 			return "Query :\n" + query + "\n\n failed " + e.getLocalizedMessage();

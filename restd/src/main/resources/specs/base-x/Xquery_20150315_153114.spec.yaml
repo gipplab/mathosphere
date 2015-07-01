@@ -14,6 +14,6 @@ wts:
         {
           "type" : "xquery",
           "query" : "declare namespace output = \"http://www.w3.org/2010/xslt-xquery-serialization\";\ndeclare option output:newline \"\\n\"; let $message := 'Hello World!' return <results><message>{$message}</message></results>",
-          "response" : "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<results xmlns=\"http://ntcir-math.nii.ac.jp/\" total=\"1\">\n    <result for=\"NTCIR11-Math-\">\n      <hit id=\"<results>\n  <message>Hello World!</message>\n</results>\" xref=\"\" score=\"10\" rank=\"1\">\n      </hit>    </result>\n</results>\n",
+          "response" : "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<results xmlns=\"http://ntcir-math.nii.ac.jp/\">\n  <run runtag=\"\" run_type=\"\">\n    <result for=\"NTCIR11-Math-\">\n      <hit id=\"&lt;results&gt;&#xa;  &lt;message&gt;Hello World!&lt;/message&gt;&#xa;&lt;/results&gt;\" xref=\"\" score=\"10\" rank=\"1\"/>\n    </result>\n  </run>\n</results>",
           "success" : true
         }

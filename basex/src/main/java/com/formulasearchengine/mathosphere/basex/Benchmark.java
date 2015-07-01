@@ -115,7 +115,7 @@ public class Benchmark {
 		srv = null;
 		String result;
 		if ( line.hasOption( "c" ) ) {
-			result = client.getCSV();
+			result = "CSV option has been disabled for now. Use https://github.com/physikerwelt/xstlprocJ/blob/master/test/transform.xsl";
 		} else {
 			result = client.getXML();
 		}
