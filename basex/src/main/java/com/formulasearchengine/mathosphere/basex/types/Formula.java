@@ -19,24 +19,34 @@ import java.util.List;
  * Created by jjl4 on 6/24/15.
  */
 @XStreamAlias("formula")
-@XStreamConverter(Formula.FormulaConverter.class)
 public class Formula {
+	@XStreamAlias("id")
+	@XStreamAsAttribute
 	private String id;
 
+	@XStreamAlias("for")
+	@XStreamAsAttribute
 	private String queryFormulaID;
 
+	@XStreamAlias("xref")
+	@XStreamAsAttribute
 	private String filename;
 
 	//This is a string so that "" strings are deserialized correctly
+	@XStreamAlias("score")
+	@XStreamAsAttribute
 	private String score;
 
+	@XStreamAlias("qvar")
+	@XStreamImplicit
 	private List<Qvar> qvars;
 
 	public Formula( String id, String queryFormulaID, String filenameAndFormulaID, Integer score ) {
 		this.id = id;
 		this.queryFormulaID = queryFormulaID;
 		this.filename = filenameAndFormulaID;
-		this.score = score == null ? "" : String.valueOf( score );
+		//Null assignment makes attribute disappear
+		this.score = score == null ? null : String.valueOf( score );
 		qvars = new ArrayList<>();
 	}
 
@@ -82,44 +92,5 @@ public class Formula {
 
 	public void setXref( String filename ) {
 		this.filename = filename;
-	}
-
-	/**
-	 * This converter class makes the "score" attribute optional.
-	 */
-	public static class FormulaConverter implements Converter {
-		@Override
-		public final void marshal( Object o, HierarchicalStreamWriter hsw, MarshallingContext marshallingContext ) {
-			final Formula formula = (Formula) o;
-			hsw.addAttribute( "id", formula.getId() );
-			hsw.addAttribute( "for", formula.getFor() );
-			hsw.addAttribute( "xref", formula.getXref() );
-			if ( formula.getScore() != null ) {
-				hsw.addAttribute( "score", String.valueOf( formula.getScore() ) );
-			}
-			marshallingContext.convertAnother( formula.getQvars() );
-		}
-		@Override
-		public final Object unmarshal( HierarchicalStreamReader hsr, UnmarshallingContext unmarshallingContext ) {
-			final String xmlScore = hsr.getAttribute( "score" );
-			final Integer score = xmlScore == null || xmlScore.isEmpty() ? null : Integer.valueOf( xmlScore );
-			final Formula formula = new Formula( hsr.getAttribute( "id" ),
-					hsr.getAttribute( "for" ),
-					hsr.getAttribute( "xref" ),
-					score );
-
-			final List<Qvar> qvars = new ArrayList<>();
-			while ( hsr.hasMoreChildren() ) {
-				hsr.moveDown();
-				qvars.add( (Qvar) unmarshallingContext.convertAnother(formula, Qvar.class ) );
-				hsr.moveUp();
-			}
-			formula.setQvars( qvars );
-			return formula;
-		}
-		@Override
-		public final boolean canConvert( Class aClass ) {
-			return aClass.equals( Formula.class );
-		}
 	}
 }
