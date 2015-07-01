@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<results xmlns="http://ntcir-math.nii.ac.jp/">
+  <run runtag="" run_type="">
+    <result for="NTCIR11-Math-">
+      <hit id="&lt;result xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot; url=&quot;4#math.4.5&quot;/&gt;" xref="" score="10" rank="1"/>
+      <hit id="&lt;result xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot; url=&quot;4#math.4.5&quot;/&gt;" xref="" score="10" rank="2"/>
+      <hit id="&lt;result xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot; url=&quot;5#math.5.2&quot;/&gt;" xref="" score="10" rank="3"/>
+      <hit id="&lt;result xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot; url=&quot;5#math.5.17&quot;/&gt;" xref="" score="10" rank="4"/>
+      <hit id="&lt;result xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot; url=&quot;5#math.5.18&quot;/&gt;" xref="" score="10" rank="5"/>
+      <hit id="&lt;result xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot; url=&quot;5#math.5.18&quot;/&gt;" xref="" score="10" rank="6"/>
+      <hit id="&lt;result xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot; url=&quot;5#math.5.19&quot;/&gt;" xref="" score="10" rank="7"/>
+      <hit id="&lt;result xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot; url=&quot;5#math.5.19&quot;/&gt;" xref="" score="10" rank="8"/>
+      <hit id="&lt;result xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot; url=&quot;5#math.5.19&quot;/&gt;" xref="" score="10" rank="9"/>
+      <hit id="&lt;result xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot; url=&quot;5#math.5.20&quot;/&gt;" xref="" score="10" rank="10"/>
+      <hit id="&lt;result xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot; url=&quot;5#math.5.21&quot;/&gt;" xref="" score="10" rank="11"/>
+      <hit id="&lt;result xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot; url=&quot;5#math.5.22&quot;/&gt;" xref="" score="10" rank="12"/>
+      <hit id="&lt;result xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot; url=&quot;5#math.5.23&quot;/&gt;" xref="" score="10" rank="13"/>
+      <hit id="&lt;result xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot; url=&quot;6#math.6.11&quot;/&gt;" xref="" score="10" rank="14"/>
+      <hit id="&lt;result xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot; url=&quot;6#math.6.14&quot;/&gt;" xref="" score="10" rank="15"/>
+      <hit id="&lt;result xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot; url=&quot;6#math.6.15&quot;/&gt;" xref="" score="10" rank="16"/>
+      <hit id="&lt;result xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot; url=&quot;6#math.6.15&quot;/&gt;" xref="" score="10" rank="17"/>
+      <hit id="&lt;result xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot; url=&quot;6#math.6.15&quot;/&gt;" xref="" score="10" rank="18"/>
+      <hit id="&lt;result xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot; url=&quot;6#math.6.15&quot;/&gt;" xref="" score="10" rank="19"/>
+      <hit id="&lt;result xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot; url=&quot;6#math.6.20&quot;/&gt;" xref="" score="10" rank="20"/>
+      <hit id="&lt;result xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot; url=&quot;7#math.7.0&quot;/&gt;" xref="" score="10" rank="21"/>
+      <hit id="&lt;result xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot; url=&quot;7#math.7.1&quot;/&gt;" xref="" score="10" rank="22"/>
+      <hit id="&lt;result xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot; url=&quot;7#math.7.1&quot;/&gt;" xref="" score="10" rank="23"/>
+      <hit id="&lt;result xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot; url=&quot;7#math.7.2&quot;/&gt;" xref="" score="10" rank="24"/>
+      <hit id="&lt;result xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot; url=&quot;7#math.7.2&quot;/&gt;" xref="" score="10" rank="25"/>
+      <hit id="&lt;result xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot; url=&quot;7#math.7.3&quot;/&gt;" xref="" score="10" rank="26"/>
+      <hit id="&lt;result xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot; url=&quot;7#math.7.3&quot;/&gt;" xref="" score="10" rank="27"/>
+      <hit id="&lt;result xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot; url=&quot;7#math.7.4&quot;/&gt;" xref="" score="10" rank="28"/>
+      <hit id="&lt;result xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot; url=&quot;8#math.8.6&quot;/&gt;" xref="" score="10" rank="29"/>
+      <hit id="&lt;result xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot; url=&quot;8#math.8.7&quot;/&gt;" xref="" score="10" rank="30"/>
+      <hit id="&lt;result xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot; url=&quot;8#math.8.21&quot;/&gt;" xref="" score="10" rank="31"/>
+      <hit id="&lt;result xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot; url=&quot;8#math.8.22&quot;/&gt;" xref="" score="10" rank="32"/>
+      <hit id="&lt;result xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot; url=&quot;8#math.8.23&quot;/&gt;" xref="" score="10" rank="33"/>
+      <hit id="&lt;result xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot; url=&quot;8#math.8.33&quot;/&gt;" xref="" score="10" rank="34"/>
+      <hit id="&lt;result xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot; url=&quot;8#math.8.34&quot;/&gt;" xref="" score="10" rank="35"/>
+      <hit id="&lt;result xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot; url=&quot;8#math.8.35&quot;/&gt;" xref="" score="10" rank="36"/>
+      <hit id="&lt;result xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot; url=&quot;dummy29&quot;/&gt;" xref="" score="10" rank="37"/>
+    </result>
+  </run>
+</results>
