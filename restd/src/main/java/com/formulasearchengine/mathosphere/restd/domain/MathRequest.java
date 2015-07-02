@@ -78,6 +78,11 @@ public class MathRequest {
 		return this;
 	}
 
+	public MathRequest setSuccess( final boolean success ) {
+		this.success = success;
+		return this;
+	}
+
 	@JsonIgnore
 	public MathRequest run () {
 		if (type == null || type == "" ){
