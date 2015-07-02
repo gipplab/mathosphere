@@ -59,7 +59,7 @@ public class Formula {
 	}
 
 	public List<Qvar> getQvars() {
-		return new ArrayList<>( qvars );
+		return qvars;
 	}
 
 	public void setScore( Integer score ) {

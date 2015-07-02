@@ -66,7 +66,7 @@ public class Result {
 	}
 
 	public List<Hit> getHits() {
-		return new ArrayList<>( hits );
+		return hits;
 	}
 
 	public int getNumHits() {

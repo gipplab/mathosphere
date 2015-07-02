@@ -50,7 +50,7 @@ public class Hit {
 	}
 
 	public List<Formula> getFormulae() {
-		return new ArrayList<>( formulae );
+		return formulae;
 	}
 
 }

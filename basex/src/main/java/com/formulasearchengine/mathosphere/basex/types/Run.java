@@ -71,7 +71,7 @@ public class Run {
 	}
 
 	public List<Result> getResults() {
-		return new ArrayList<>( results );
+		return results;
 	}
 
 	public void setResults( List<Result> results ) {
