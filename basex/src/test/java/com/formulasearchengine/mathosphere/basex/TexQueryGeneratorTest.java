@@ -31,7 +31,7 @@ public class TexQueryGeneratorTest {
 		try {
 			response = httpClient.execute( httppost );
 			Assume.assumeTrue( response.getStatusLine().getStatusCode() != 4 );
-		}  catch ( final IOException e ) {
+		}  catch( final IOException e ) {
 			Assume.assumeTrue( false );
 		}
 	}
@@ -56,9 +56,7 @@ public class TexQueryGeneratorTest {
 			"</math>";
 		assertEquals( mml, t.request( "E=mc^2" ) );
 		assertEquals( 0, t.getOb().get("status_code") );
-		assertEquals( "No obvious problems", t.getOb().get("status") );
-		assertTrue( t.isSuccess() );
-
+		assertEquals( "No obvious problems", t.getOb().get( "status" ) );
 	}
 
 	@Test
@@ -73,9 +71,15 @@ public class TexQueryGeneratorTest {
 		List<NameValuePair> p = t.getParams();
 		p.remove( new BasicNameValuePair( "preload", "texvc" ) );
 		t.setParams( p );
-		assertEquals( withoutTexvc, t.request( "\\sen" ) );
-		assertEquals( "2", t.getOb().get( "status_code" ) );
-		assertFalse( t.isSuccess() );
+
+		try {
+			t.request( "\\sen" );
+		} catch( final IOException expected ) {
+			assertEquals( "2", t.getOb().get( "status_code" ) );
+			assertEquals( withoutTexvc, t.getOb().get( "result" ) );
+			assertEquals( "Tex request to MathML conversion server produced failed response.", expected.getMessage() );
+		}
+
 		t = new TexQueryGenerator();
 		assertEquals( withTexv, t.request( "\\sen" )  );
 
@@ -87,14 +91,22 @@ public class TexQueryGeneratorTest {
 		List<NameValuePair> p = t.getParams();
 		p.clear();
 		t.setParams( p );
-		assertEquals( "", t.request( "" ) );
-		assertEquals( 3, t.getOb().get( "status_code" ) );
-		assertFalse( t.isSuccess() );
-		p.add( new BasicNameValuePair( "destroy", "LaTeXML" )  );
+		try {
+			t.request( "" );
+		} catch( final IOException expected ) {
+			assertEquals( 3, t.getOb().get( "status_code" ) );
+			assertEquals( "", t.getOb().get( "result" ) );
+			assertEquals( "Tex request to MathML conversion server produced failed response.", expected.getMessage() );
+		}
+		p.add( new BasicNameValuePair( "destroy", "LaTeXML" ) );
 		t.setParams( p );
-		assertEquals( "", t.request( "" ) );
-		assertEquals( 3, t.getOb().get( "status_code" ) );
-		assertNull(t.getLastException());
+		try {
+			t.request( "" );
+		} catch( final IOException expected ) {
+			assertEquals( "Tex request to MathML conversion server produced failed response.", expected.getMessage() );
+			assertEquals( 3, t.getOb().get( "status_code" ) );
+			assertEquals( "", t.getOb().get( "result" ) );
+		}
 	}
 
 	@Test
@@ -102,14 +114,20 @@ public class TexQueryGeneratorTest {
 		final TexQueryGenerator t = new TexQueryGenerator();
 		t.setLaTeXMLURL( "http://example.com" );
 		assertEquals( "http://example.com", t.getLaTeXMLURL() );
-		assertNull( t.request( "E=mc^2" ) );
-		assertEquals( 4, t.getOb().get( "status_code" ) );
-		assertEquals( "com.fasterxml.jackson.core.JsonParseException",
-			t.getLastException().getClass().getCanonicalName() );
-		t.setLaTeXMLURL( "xxy://invalid" );
-		assertNull( t.request( "E=mc^2" ) );
-		assertEquals( "org.apache.http.client.ClientProtocolException",
-			t.getLastException().getClass().getCanonicalName() );
-	}
+		try {
+			t.request( "E=mc^2" );
+		} catch( final IOException expected ) {
+			assertEquals( "com.fasterxml.jackson.core.JsonParseException",
+					expected.getClass().getCanonicalName() );
+		}
 
+		t.setLaTeXMLURL( "xxy://invalid" );
+
+		try {
+			t.request( "E=mc^2" );
+		} catch( final IOException expected ) {
+			assertEquals( "org.apache.http.client.ClientProtocolException",
+				expected.getClass().getCanonicalName() );
+		}
+	}
 }

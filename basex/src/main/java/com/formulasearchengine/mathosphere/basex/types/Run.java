@@ -3,6 +3,7 @@ package com.formulasearchengine.mathosphere.basex.types;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 import com.thoughtworks.xstream.annotations.XStreamImplicit;
+import com.thoughtworks.xstream.annotations.XStreamOmitField;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +30,9 @@ public class Run {
 	@XStreamImplicit
 	private List<Result> results;
 
+	@XStreamOmitField
+	private boolean showTime = true;
+
 	public Run( String runtag, Long ms, String type ) {
 		this.runtag = runtag;
 		this.ms = ms == null ? "" : String.valueOf( ms );
@@ -40,6 +44,21 @@ public class Run {
 		this.runtag = runtag;
 		this.type = type;
 		this.results = new ArrayList<>();
+		this.ms = "";
+	}
+
+	public void setShowTime( boolean showTime ) {
+		this.showTime = showTime;
+
+		if ( results != null ) {
+			for ( final Result result : results ) {
+				result.setShowTime( showTime );
+			}
+		}
+	}
+
+	public boolean getShowTime() {
+		return this.showTime;
 	}
 
 	public void setTime( Long ms ) {
@@ -47,6 +66,7 @@ public class Run {
 	}
 
 	public void addResult( Result result ) {
+		result.setShowTime( showTime );
 		results.add( result );
 	}
 
@@ -56,6 +76,10 @@ public class Run {
 
 	public void setResults( List<Result> results ) {
 		this.results = new ArrayList<>( results );
+
+		for ( final Result result : results ) {
+			result.setShowTime( showTime );
+		}
 	}
 
 	public int getNumResults() {

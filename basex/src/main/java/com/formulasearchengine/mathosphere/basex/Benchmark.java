@@ -8,6 +8,7 @@ import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPathExpressionException;
+import javax.xml.xquery.XQException;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -97,10 +98,13 @@ public class Benchmark {
 		} catch ( XPathExpressionException e ) {
 			System.err.println( "XPath Error in query file: " + e.getMessage() );
 			e.printStackTrace();
+		} catch (XQException e ) {
+			System.err.println( "Error in connection to the server: " + e.getMessage() );
+			e.printStackTrace();
 		}
 	}
 
-	private void run() throws IOException, ParserConfigurationException, SAXException, XPathExpressionException {
+	private void run() throws IOException, ParserConfigurationException, SAXException, XPathExpressionException, XQException {
 		File f = new File( line.getOptionValue( "datasource" ) );
 		Server srv = Server.getInstance();
 		srv.startup(f);

@@ -3,6 +3,7 @@ package com.formulasearchengine.mathosphere.basex.types;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 import com.thoughtworks.xstream.annotations.XStreamImplicit;
+import com.thoughtworks.xstream.annotations.XStreamOmitField;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +26,9 @@ public class Result {
 	@XStreamImplicit
 	private List<Hit> hits;
 
+	@XStreamOmitField
+	private boolean showTime = true;
+
 	public Result( String queryIDNum, Long ms ) {
 		this.ms = ms == null ? "" : String.valueOf( ms );
 		this.queryID = queryIDNum;
@@ -34,6 +38,15 @@ public class Result {
 	public Result( String queryIDNum ) {
 		this.queryID = queryIDNum;
 		this.hits = new ArrayList<>();
+		this.ms = "";
+	}
+
+	public void setShowTime( boolean showTime ) {
+		this.showTime = showTime;
+	}
+
+	public boolean getShowTime() {
+		return showTime;
 	}
 
 	public Long getTime() {
