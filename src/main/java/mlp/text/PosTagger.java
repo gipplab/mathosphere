@@ -8,6 +8,7 @@ import java.util.Set;
 import mlp.pojos.Formula;
 import mlp.pojos.Sentence;
 import mlp.pojos.Word;
+import mlp.rus.RusPosAnnotator;
 
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -21,11 +22,11 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Multiset;
 import com.google.common.collect.Sets;
 import com.itshared.rseq.BeanMatchers;
-import com.itshared.rseq.XMatcher;
 import com.itshared.rseq.Match;
-import com.itshared.rseq.Transformer;
 import com.itshared.rseq.Matchers;
 import com.itshared.rseq.Pattern;
+import com.itshared.rseq.Transformer;
+import com.itshared.rseq.XMatcher;
 
 import edu.stanford.nlp.ling.CoreAnnotations.PartOfSpeechAnnotation;
 import edu.stanford.nlp.ling.CoreAnnotations.SentencesAnnotation;
@@ -33,6 +34,7 @@ import edu.stanford.nlp.ling.CoreAnnotations.TextAnnotation;
 import edu.stanford.nlp.ling.CoreAnnotations.TokensAnnotation;
 import edu.stanford.nlp.ling.CoreLabel;
 import edu.stanford.nlp.pipeline.Annotation;
+import edu.stanford.nlp.pipeline.POSTaggerAnnotator;
 import edu.stanford.nlp.pipeline.StanfordCoreNLP;
 import edu.stanford.nlp.util.CoreMap;
 
@@ -46,14 +48,24 @@ public class PosTagger {
             .put("-LRB-", "(").put("-RRB-", ")").put("-LCB-", "{").put("-RCB-", "}").put("-LSB-", "[")
             .put("-RSB-", "]").build();
 
-    public static PosTagger create(String posModelName) {
+    public static PosTagger create(String language, String model) {
         Properties props = new Properties();
-        props.put("annotators", "tokenize, ssplit, pos");
-        props.put("pos.model", posModelName);
+        props.put("annotators", "tokenize, ssplit");
         props.put("tokenize.options", "untokenizable=firstKeep,strictTreebank3=true,"
                 + "ptb3Escaping=true,escapeForwardSlashAsterisk=false");
         props.put("ssplit.newlineIsSentenceBreak", "two");
-        return new PosTagger(new StanfordCoreNLP(props));
+        StanfordCoreNLP pipeline = new StanfordCoreNLP(props);
+
+        if ("en".equals(language)) {
+            POSTaggerAnnotator modelBasedPosAnnotator = new POSTaggerAnnotator(model, false);
+            pipeline.addAnnotator(modelBasedPosAnnotator);
+        } else if ("ru".equals(language)) {
+            pipeline.addAnnotator(new RusPosAnnotator());
+        } else {
+            throw new IllegalArgumentException("Cannot deal with language " + language);
+        }
+
+        return new PosTagger(pipeline);
     }
 
     private final StanfordCoreNLP nlpPipeline;
@@ -150,7 +162,7 @@ public class PosTagger {
 
                 Multiset<String> formulaIdentifiers = formula.getIndentifiers();
                 // only one occurrence of one single idendifier
-                if (formulaIdentifiers.size() == 1) { 
+                if (formulaIdentifiers.size() == 1) {
                     String id = Iterables.get(formulaIdentifiers, 0);
                     LOGGER.debug("convering formula {} to idenfier {}", formula.getKey(), id);
                     words.add(new Word(id, PosTag.IDENTIFIER));
@@ -199,8 +211,8 @@ public class PosTagger {
     }
 
     public static List<Word> concatenateLinks(List<Word> in) {
-        Pattern<Word> linksPattern = Pattern.create(pos(PosTag.QUOTE), anyWord().oneOrMore().captureAs("link"),
-                pos(PosTag.UNQUOTE));
+        Pattern<Word> linksPattern = Pattern.create(pos(PosTag.QUOTE), anyWord().oneOrMore()
+                .captureAs("link"), pos(PosTag.UNQUOTE));
 
         return linksPattern.replace(in, new Transformer<Word>() {
             @Override

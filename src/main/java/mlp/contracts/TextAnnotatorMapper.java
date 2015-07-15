@@ -2,6 +2,7 @@ package mlp.contracts;
 
 import java.util.List;
 
+import mlp.Config;
 import mlp.pojos.Formula;
 import mlp.pojos.ParsedWikiDocument;
 import mlp.pojos.RawWikiDocument;
@@ -24,16 +25,19 @@ public class TextAnnotatorMapper extends RichMapFunction<RawWikiDocument, Parsed
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TextAnnotatorMapper.class);
 
-    private String posModel;
+    private final String language;
+    private final String model;
+
     private PosTagger posTagger;
 
-    public TextAnnotatorMapper(String posModel) {
-        this.posModel = posModel;
+    public TextAnnotatorMapper(Config config) {
+        this.language = config.getLanguage();
+        this.model = config.getModel();
     }
 
     @Override
     public void open(Configuration cfg) throws Exception {
-        posTagger = PosTagger.create(posModel);
+        posTagger = PosTagger.create(language, model);
     }
 
     @Override

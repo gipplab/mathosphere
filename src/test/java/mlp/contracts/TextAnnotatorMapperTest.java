@@ -85,7 +85,7 @@ public class TextAnnotatorMapperTest {
 
     private static TextAnnotatorMapper createTestInstance() {
         try {
-            TextAnnotatorMapper textAnnotator = new TextAnnotatorMapper(Config.test().getModel());
+            TextAnnotatorMapper textAnnotator = new TextAnnotatorMapper(Config.test());
             textAnnotator.open(null);
             return textAnnotator;
         } catch (Exception e) {

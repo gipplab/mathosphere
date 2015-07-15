@@ -39,6 +39,7 @@ public class UnicodeUtils {
         letterLike.put(0x210B, "H");
         letterLike.put(0x210C, "H");
         letterLike.put(0x210D, "H");
+        letterLike.put(0x210F, "h");
         letterLike.put(0x2110, "I");
         letterLike.put(0x2111, "I");
         letterLike.put(0x2112, "L");

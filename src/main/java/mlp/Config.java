@@ -18,6 +18,9 @@ public class Config implements Serializable {
     @Parameter(names = { "-pos", "--posModel" }, description = "POS model to use")
     private String model = DEFAULT_POS_MODEL;
 
+    @Parameter(names = { "-l", "--language" }, description = "Language of the input")
+    private String language = "en";
+
     @Parameter(names = { "-a", "--alpha" })
     private double alpha = 1.0;
 
@@ -57,11 +60,12 @@ public class Config implements Serializable {
         this.outputdir = outputdir;
     }
 
-    public Config(String dataset, String outputdir, String model, double alpha, double beta, double gamma,
-            double threshold) {
+    public Config(String dataset, String outputdir, String model, String language, double alpha, double beta,
+            double gamma, double threshold) {
         this.dataset = dataset;
         this.outputdir = outputdir;
         this.model = model;
+        this.language = language;
         this.alpha = alpha;
         this.beta = beta;
         this.gamma = gamma;
@@ -96,4 +100,7 @@ public class Config implements Serializable {
         return threshold;
     }
 
+    public String getLanguage() {
+        return language;
+    }
 }

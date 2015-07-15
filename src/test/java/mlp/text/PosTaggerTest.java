@@ -23,11 +23,11 @@ import org.slf4j.LoggerFactory;
 public class PosTaggerTest {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PosTaggerTest.class);
-    private static final String MODEL = Config.test().getModel();
 
     @Test
     public void annotation() throws Exception {
-        PosTagger nlpProcessor = PosTagger.create(MODEL);
+        Config cfg = Config.test();
+        PosTagger nlpProcessor = PosTagger.create(cfg.getLanguage(), cfg.getModel());
         String text = readText("escaped.txt");
 
         List<MathTag> mathTags = WikiTextUtils.findMathTags(text);

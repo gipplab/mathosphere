@@ -24,9 +24,10 @@ public class MlpRelationFinder {
         DataSource<String> source = readWikiDump(config, env);
         DataSet<ParsedWikiDocument> documents = 
                 source.flatMap(new TextExtractorMapper())
-                      .map(new TextAnnotatorMapper(config.getModel()));
+                      .map(new TextAnnotatorMapper(config));
 
         DataSet<WikiDocumentOutput> result = documents.map(new CreateCandidatesMapper(config));
+        result.print();
         result.map(new JsonSerializerMapper<>())
               .writeAsText(config.getOutputDir(), WriteMode.OVERWRITE);
 
