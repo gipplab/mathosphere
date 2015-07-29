@@ -33,7 +33,12 @@ public class Results {
 	}
 
 	public Results( List<Run> runs ) {
-		this.runs = new ArrayList<>( runs );
+		this.setRuns( runs );
+		this.xmlns = xmlns;
+	}
+
+	public Results( Results results ) {
+		this.runs = cloneRuns( results.getRuns() );
 		this.xmlns = xmlns;
 	}
 
@@ -51,19 +56,28 @@ public class Results {
 	}
 
 	public void addRun( Run run ) {
-		run.setShowTime( showTime );
-		this.runs.add( run );
+		this.runs.add( new Run( run ) );
 	}
 
 	public void setRuns( List<Run> runs ) {
-		this.runs = new ArrayList<>( runs );
-		for ( final Run run : runs ) {
-			run.setShowTime( showTime );
-		}
+		this.runs = cloneRuns( runs );
 	}
 
 	public List<Run> getRuns() {
 		return runs;
+	}
+
+	private static List<Run> cloneRuns( List<Run> runs ) {
+		if ( runs != null ) {
+			final List<Run> out = new ArrayList<>();
+			for ( final Run run : runs ) {
+				final Run runCopy = new Run( run );
+				out.add( runCopy );
+			}
+			return out;
+		} else {
+			return null;
+		}
 	}
 
 	public int getNumRuns() {

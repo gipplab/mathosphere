@@ -29,6 +29,12 @@ public class Result {
 	@XStreamOmitField
 	private boolean showTime = true;
 
+	public Result( Result result ) {
+		this.queryID = result.getQueryID();
+		this.ms = result.getTime();
+		this.setHits( result.getHits() );
+	}
+
 	public Result( String queryIDNum, Long ms ) {
 		this.ms = ms == null ? "" : String.valueOf( ms );
 		this.queryID = queryIDNum;
@@ -41,6 +47,9 @@ public class Result {
 		this.ms = "";
 	}
 
+	public String getQueryID() {
+		return queryID;
+	}
 	public void setShowTime( boolean showTime ) {
 		this.showTime = showTime;
 	}
@@ -49,8 +58,8 @@ public class Result {
 		return showTime;
 	}
 
-	public Long getTime() {
-		return ms != null && ms.isEmpty() ? null : Long.valueOf( ms );
+	public String getTime() {
+		return ms;
 	}
 
 	public void setTime( Long ms ) {
@@ -58,15 +67,28 @@ public class Result {
 	}
 
 	public void addHit( Hit hit ) {
-		hits.add( hit );
+		hits.add( new Hit( hit ) );
 	}
 
 	public void setHits( List<Hit> hits ) {
-		this.hits = new ArrayList<>( hits );
+		this.hits = cloneHits( hits );
 	}
 
 	public List<Hit> getHits() {
 		return hits;
+	}
+
+	private static List<Hit> cloneHits( List<Hit> hits ) {
+		if ( hits != null ) {
+			final List<Hit> out = new ArrayList<>();
+			for ( final Hit hit : hits ) {
+				final Hit hitCopy = new Hit( hit );
+				out.add( hit );
+			}
+			return out;
+		} else {
+			return null;
+		}
 	}
 
 	public int getNumHits() {
