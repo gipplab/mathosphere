@@ -185,6 +185,27 @@ public class MathRequest {
 		}
 		results = setResultsToCache( runType, queryID, cachedResults );
 
+		if ( !( ( offset <= 0 && limit <= 0 ) || results.getRuns().isEmpty() ||
+				results.getRuns().get(0).getResults().isEmpty()) ) {
+
+			final Result result = results.getRuns().get( 0 ).getResults().get( 0 );
+
+			if ( offset > result.getHits().size() ) {
+				results = new Results();
+				errorMessage += "Offset is greater than the number of hits.";
+				return this;
+			} else {
+				result.getHits().subList( 0, offset ).clear();
+			}
+
+			if ( limit > result.getHits().size() ) {
+				errorMessage += "Limit is greater than the number of hits.";
+			} else if ( limit <= 0 ) {
+				//do nothing
+			} else {
+				result.getHits().subList( limit, result.getHits().size() ).clear();
+			}
+		}
 		return this;
 	}
 

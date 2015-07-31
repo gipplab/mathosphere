@@ -1,0 +1,21 @@
+title: Query 20150731 212002
+given:
+  - time: 2015-07-31T21:20:02.187-04:00
+wts:
+  - when: |
+       POST /
+       Cookie: RestxSession-BaseXMathSearch={"_expires":"2015-08-14T21:20:02.187-04:00","principal":"admin","sessionKey":"621cd389-8f16-4d1e-ac53-d1edee5ae001"}; RestxSessionSignature-BaseXMathSearch=m0MtjB5KfqCwMEkqAT2izxkUULs=
+
+        {
+          "type": "tex",
+          "query": "\\sin",
+          "offset": 1,
+          "limit": 3
+        }
+    then: |
+        {
+          "type": "tex",
+          "query": "\\sin",
+          "response": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<results xmlns=\"http://ntcir-math.nii.ac.jp/\">\n  <run runtag=\"\" run_type=\"\">\n    <result for=\"NTCIR11-Math-\">\n      <hit id=\"8#math.8.21\" xref=\"\" score=\"10\" rank=\"2\"/>\n      <hit id=\"8#math.8.22\" xref=\"\" score=\"10\" rank=\"3\"/>\n      <hit id=\"8#math.8.23\" xref=\"\" score=\"10\" rank=\"4\"/>\n    </result>\n  </run>\n</results>",
+          "success": true
+        }
