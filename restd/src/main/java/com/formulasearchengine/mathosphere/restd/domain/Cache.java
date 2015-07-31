@@ -8,38 +8,38 @@ import restx.factory.Component;
 import java.util.*;
 
 /**
- * This class caches results for pagination, and it also logs queries
+ * This class caches results for pagination, and it also logs queries.
+ * Only full results should be cached (non limited results).
  * Created by jjl4 on 6/23/15.
  */
 @Component
 public class Cache implements AutoStartable {
-	//Least recently used cache of results that had limits/offsets
-	private static LRUMap<String, Results> resultsCache;
+	//Least recently used cache of results
+	private static LRUMap<String, Results> resultsCache = new LRUMap<>( 30, 30 );
 	//Log of all queries
-	private static List<MathRequest> queryLog;
+	private static List<MathRequest> queryLog = new ArrayList<>();
 
 	public void start() {
+		// Necessary to restart cache after every spec
 		resultsCache = new LRUMap<>( 30, 30 );
 		queryLog = new ArrayList<>();
 		System.out.println( "Cache started" );
 	}
 
 	public static boolean logQuery( MathRequest request ) {
-		return queryLog.add( new MathRequest().setQuery( request.getQuery() ).setType( request.getType() ));
+		return queryLog.add( new MathRequest( request ) );
 	}
 
-	public static boolean cacheResults( MathRequest request ) {
-		resultsCache.put( request.getQuery(), request.getResults() );
-		return true;
+	public static void cacheResults( String query, Results results ) {
+		resultsCache.put( query, new Results( results ) );
 	}
 
-	public static Results getCachedResults( MathRequest request ) {
-		return resultsCache.get( request.getQuery() );
+	public static Results getCachedResults( String query ) {
+		return resultsCache.get( query );
 	}
 
-	public static boolean flushCachedResults() {
+	public static void flushCachedResults() {
 		resultsCache.clear();
-		return true;
 	}
 
 	public static Map<String, Results> getAllCachedResults() {

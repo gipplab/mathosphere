@@ -24,14 +24,14 @@ import java.util.Map;
 public class BaseXResource {
 	private MathRequest logAndGetResponse( MathRequest request ) {
 		Cache.logQuery( request );
-		final Results cachedResults = Cache.getCachedResults( request );
+		final Results cachedResults = Cache.getCachedResults( request.getQuery() );
 		if ( cachedResults != null ) {
 			request.setResults( cachedResults );
 			request.setSuccess( true );
 			return request;
 		} else {
 			request.run();
-			Cache.cacheResults( request );
+			Cache.cacheResults( request.getQuery(), request.getResults() );
 			return request;
 		}
 	}

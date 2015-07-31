@@ -58,26 +58,31 @@ public class MathRequest {
 	public MathRequest () {
 	}
 
+	/**
+	 * This clone constructor clones everything except for results, error message, and success.
+	 * @param request
+	 */
+	public MathRequest( MathRequest request ) {
+		this.type = request.getType();
+		this.query = request.getQuery();
+	}
+
 	public MathRequest setType (final String type) {
 		this.type = type;
 		return this;
 	}
-
 	public MathRequest setQuery (final String query) {
 		this.query = query;
 		return this;
 	}
-
 	public MathRequest setShowTime(final boolean showTime) {
 		this.showTime = showTime;
 		return this;
 	}
-
 	public MathRequest setResults( final Results results ) {
 		this.results = results;
 		return this;
 	}
-
 	public MathRequest setSuccess( final boolean success ) {
 		this.success = success;
 		return this;
