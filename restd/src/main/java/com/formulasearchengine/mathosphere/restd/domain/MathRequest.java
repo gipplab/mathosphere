@@ -14,6 +14,7 @@ import org.w3c.dom.Document;
 
 import javax.xml.xquery.XQException;
 import java.io.IOException;
+import java.util.Optional;
 
 /**
  * Created by Moritz on 14.03.2015.
@@ -28,7 +29,19 @@ public class MathRequest {
 
 	private boolean success = false;
 
-	private String errorMessage = null;
+	private String errorMessage = "";
+
+	//By default return the non typed run
+	private String runType = "";
+
+	//By default return the results for non numbered query
+	private String queryID = "NTCIR11-Math-";
+
+	//Setting offset to 0 or lower disables offset
+	private int offset = 0;
+
+	//Setting limit to 0 or lower disables limit
+	private int limit = 0;
 
 	@JsonIgnore
 	private boolean showTime = false;
@@ -65,8 +78,67 @@ public class MathRequest {
 	public MathRequest( MathRequest request ) {
 		this.type = request.getType();
 		this.query = request.getQuery();
+		this.runType = request.getRunType();
+		this.queryID = request.getQueryID();
+		this.offset = request.getOffset();
+		this.limit = request.getLimit();
 	}
 
+	public void processRequestParams( Optional<String> runtype, Optional<String> queryID,
+								  Optional<String> offset, Optional<String> limit ) {
+		if ( runtype.isPresent() ) {
+			this.setRunType( runtype.get() );
+		}
+		if ( queryID.isPresent() ) {
+			this.setQueryID( queryID.get() );
+		}
+		if ( offset.isPresent() ) {
+			try {
+				this.setOffset( Integer.parseInt( offset.get() ) );
+			} catch ( final NumberFormatException e ) {
+				errorMessage += "Unable to parse int from offset.\n";
+			}
+		}
+		if ( limit.isPresent() ) {
+			try {
+				this.setLimit( Integer.parseInt( limit.get() ) );
+			} catch ( final NumberFormatException e ) {
+				errorMessage += "Unable to parse int from limit.\n";
+			}
+		}
+	}
+
+	public MathRequest setRunType( String runType ) {
+		this.runType = runType;
+		return this;
+	}
+	public MathRequest setQueryID( String queryID ) {
+		this.queryID = queryID;
+		return this;
+	}
+	public MathRequest setLimit( int limit ) {
+		this.limit = limit;
+		return this;
+	}
+	public MathRequest setOffset( int offset ) {
+		this.offset = offset;
+		return this;
+	}
+	public String getErrorMessage() {
+		return errorMessage;
+	}
+	public String getRunType() {
+		return this.runType;
+	}
+	public String getQueryID() {
+		return this.queryID;
+	}
+	public int getOffset() {
+		return this.offset;
+	}
+	public int getLimit() {
+		return this.limit;
+	}
 	public MathRequest setType (final String type) {
 		this.type = type;
 		return this;

@@ -15,6 +15,7 @@ import restx.security.PermitAll;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * This class handles all REST requests to the BaseX server.
@@ -38,10 +39,11 @@ public class BaseXResource {
 
 	@GET("/texquery")
 	@PermitAll
-	public MathRequest texquery( String query ) {
+	public MathRequest texquery( String query, Optional<String> runtype, Optional<String> queryID,
+								 Optional<String> offset, Optional<String> limit ) {
 		final MathRequest request = new MathRequest( query ).setType( "tex" );
+		request.processRequestParams( runtype, queryID, offset, limit );
 		return logAndGetResponse( request );
-
 	}
 	@POST("/texquery")
 	@PermitAll
@@ -53,8 +55,10 @@ public class BaseXResource {
 	}
 	@GET("/xquery")
 	@PermitAll
-	public MathRequest xquery( String query ) {
+	public MathRequest xquery( String query, Optional<String> runtype, Optional<String> queryID,
+							   Optional<String> offset, Optional<String> limit ) {
 		final MathRequest request = new MathRequest( query ).setType( "xquery" );
+		request.processRequestParams( runtype, queryID, offset, limit );
 		return logAndGetResponse( request );
 	}
 	@POST("/xquery")
@@ -67,8 +71,10 @@ public class BaseXResource {
 	}
 	@GET("/mwsquery")
 	@PermitAll
-	public MathRequest mwsquery( String q ) {
+	public MathRequest mwsquery( String q, Optional<String> runtype, Optional<String> queryID,
+							     Optional<String> offset, Optional<String> limit ) {
 		final MathRequest request = new MathRequest( q ).setType( "mws" );
+		request.processRequestParams( runtype, queryID, offset, limit );
 		return logAndGetResponse( request );
 	}
 	@POST("/mwsquery")
