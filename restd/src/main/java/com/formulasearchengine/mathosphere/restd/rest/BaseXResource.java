@@ -23,19 +23,6 @@ import java.util.Optional;
 @Component
 @RestxResource
 public class BaseXResource {
-	private MathRequest logAndGetResponse( MathRequest request ) {
-		Cache.logQuery( request );
-		final Results cachedResults = Cache.getCachedResults( request.getQuery() );
-		if ( cachedResults != null ) {
-			request.setResults( cachedResults );
-			request.setSuccess( true );
-			return request;
-		} else {
-			request.run();
-			Cache.cacheResults( request.getQuery(), request.getResults() );
-			return request;
-		}
-	}
 
 	@GET("/texquery")
 	@PermitAll
@@ -43,7 +30,7 @@ public class BaseXResource {
 								 Optional<String> offset, Optional<String> limit ) {
 		final MathRequest request = new MathRequest( query ).setType( "tex" );
 		request.processRequestParams( runtype, queryID, offset, limit );
-		return logAndGetResponse( request );
+		return request.run();
 	}
 	@POST("/texquery")
 	@PermitAll
@@ -51,7 +38,7 @@ public class BaseXResource {
 		if( request.getType() == null ||  "".equals( request.getType() ) ){
 			request.setType( "tex" );
 		}
-		return logAndGetResponse( request );
+		return request.run();
 	}
 	@GET("/xquery")
 	@PermitAll
@@ -59,7 +46,7 @@ public class BaseXResource {
 							   Optional<String> offset, Optional<String> limit ) {
 		final MathRequest request = new MathRequest( query ).setType( "xquery" );
 		request.processRequestParams( runtype, queryID, offset, limit );
-		return logAndGetResponse( request );
+		return request.run();
 	}
 	@POST("/xquery")
 	@PermitAll
@@ -67,7 +54,7 @@ public class BaseXResource {
 		if( request.getType() == null ||  "".equals( request.getType() ) ){
 			request.setType( "xquery" );
 		}
-		return logAndGetResponse( request );
+		return request.run();
 	}
 	@GET("/mwsquery")
 	@PermitAll
@@ -75,7 +62,7 @@ public class BaseXResource {
 							     Optional<String> offset, Optional<String> limit ) {
 		final MathRequest request = new MathRequest( q ).setType( "mws" );
 		request.processRequestParams( runtype, queryID, offset, limit );
-		return logAndGetResponse( request );
+		return request.run();
 	}
 	@POST("/mwsquery")
 	@PermitAll
@@ -83,12 +70,12 @@ public class BaseXResource {
 		if( request.getType() == null ||  "".equals( request.getType() ) ) {
 			request.setType( "mws" );
 		}
-		return logAndGetResponse( request );
+		return request.run();
 	}
 	@POST("/")
 	@PermitAll
 	public MathRequest query( MathRequest request ) {
-		return logAndGetResponse( request );
+		return request.run();
 	}
 	@POST("/update")
 	@PermitAll
