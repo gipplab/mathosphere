@@ -26,10 +26,12 @@ public class XStreamTest {
 		result.addHit( hit );
 		result.addHit( hit2 );
 
+		result.setShowTime( true );
+
 		XMLUnit.setIgnoreWhitespace( true );
 		XMLUnit.setIgnoreAttributeOrder( true );
 		XMLAssert.assertXMLEqual( TestUtils.getFileContents( TestUtils.BASEX_RESOURCE_DIR + "testResultToXML.xml" ),
-				Client.resultToXML( result, true ) );
+				Client.resultToXML( result ) );
 
 	}
 
@@ -51,10 +53,12 @@ public class XStreamTest {
 		results.addRun( run );
 		results.addRun( run2 );
 
+		results.setShowTime( true );
+
 		XMLUnit.setIgnoreWhitespace( true );
 		XMLUnit.setIgnoreAttributeOrder( true );
 		XMLAssert.assertXMLEqual( TestUtils.getFileContents( TestUtils.BASEX_RESOURCE_DIR + "testResultsToXML.xml" ),
-				Client.resultsToXML( results, true ) );
+				Client.resultsToXML( results ) );
 	}
 
 	@Test
@@ -62,9 +66,13 @@ public class XStreamTest {
 		final String file = TestUtils.getFileContents( TestUtils.BASEX_RESOURCE_DIR + "testResultToXML.xml" );
 		final Result result = (Result) Client.xmlToClass( file, Result.class );
 
+		result.setShowTime( true );
+
+		System.out.println( "RES:\n" + Client.resultToXML( result ) );
+
 		XMLUnit.setIgnoreWhitespace( true );
 		XMLUnit.setIgnoreAttributeOrder( true );
-		XMLAssert.assertXMLEqual( file, Client.resultToXML( result, true ) );
+		XMLAssert.assertXMLEqual( file, Client.resultToXML( result ) );
 	}
 
 	@Test
@@ -72,9 +80,11 @@ public class XStreamTest {
 		final String file = TestUtils.getFileContents( TestUtils.BASEX_RESOURCE_DIR + "testResultsToXML.xml" );
 		final Results results = (Results) Client.xmlToClass( file, Results.class );
 
+		results.setShowTime( true );
+
 		XMLUnit.setIgnoreWhitespace( true );
 		XMLUnit.setIgnoreAttributeOrder( true );
-		XMLAssert.assertXMLEqual( file, Client.resultsToXML( results, true ) );
+		XMLAssert.assertXMLEqual( file, Client.resultsToXML( results ) );
 	}
 
 	@Test
@@ -95,9 +105,11 @@ public class XStreamTest {
 		results.addRun( run );
 		results.addRun( run2 );
 
+		results.setShowTime( false );
+
 		final String file = TestUtils.getFileContents( TestUtils.BASEX_RESOURCE_DIR + "testResultsShowTime.xml" );
 		XMLUnit.setIgnoreWhitespace( true );
 		XMLUnit.setIgnoreAttributeOrder( true );
-		XMLAssert.assertXMLEqual( file, Client.resultsToXML( results, false ) );
+		XMLAssert.assertXMLEqual( file, Client.resultsToXML( results ) );
 	}
 }

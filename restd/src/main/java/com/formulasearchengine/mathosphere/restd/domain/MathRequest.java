@@ -1,17 +1,37 @@
 package com.formulasearchengine.mathosphere.restd.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.formulasearchengine.mathosphere.basex.Client;
 import com.formulasearchengine.mathmlquerygenerator.xmlhelper.XMLHelper;
+import com.formulasearchengine.mathosphere.basex.types.Results;
 import org.w3c.dom.Document;
+
+import javax.xml.xquery.XQException;
+import java.io.IOException;
 
 /**
  * Created by Moritz on 14.03.2015.
  */
 public class MathRequest {
-	String type = "";
-	String query = "";
-	String response = "";
+	private String type = "";
+	private String query = "";
+
+	@JsonSerialize(using = ResultsSerializer.class)
+	@JsonProperty("response")
+	private Results results = null;
+
+	private boolean success = false;
+
+	private String errorMessage = null;
+
+	@JsonIgnore
+	private boolean showTime = false;
 
 	public String getType () {
 		return type;
@@ -21,19 +41,18 @@ public class MathRequest {
 		return query;
 	}
 
-	public String getResponse () {
-		return response;
+	public Results getResults() {
+		return results;
 	}
 
-	boolean success = false;
 	public MathRequest(String query){
 		this.query = query;
 	}
 
-	public MathRequest (String type, String query, String response) {
+	public MathRequest (String type, String query, Results results) {
 		this.type = type;
 		this.query = query;
-		this.response = response;
+		this.results = results;
 	}
 
 	public MathRequest () {
@@ -49,8 +68,13 @@ public class MathRequest {
 		return this;
 	}
 
-	public MathRequest setResponse (final String response) {
-		this.response = response;
+	public MathRequest setShowTime(final boolean showTime) {
+		this.showTime = showTime;
+		return this;
+	}
+
+	public MathRequest setResults( final Results results ) {
+		this.results = results;
 		return this;
 	}
 
@@ -60,30 +84,62 @@ public class MathRequest {
 			type = "mws";
 		}
 		Client client = new Client();
-		client.setShowTime( false ); //for testing
+		client.setShowTime( showTime );
 		switch ( type ) {
 			case "tex":
-				response = client.runTexQuery( query );
-				success = true;
+				try {
+					results = client.runTexQuery( query );
+					errorMessage = null;
+					success = true;
+				} catch ( final IOException | XQException e ) {
+					results = null;
+					errorMessage = "Tex Query failed, due to the following exception:\n" + e.getMessage();
+					success = false;
+				}
 				break;
 			case "xquery":
-				response = client.runQueryNtcirWrap(query);
-				success = true;
+				try {
+					results = client.runQueryNtcirWrap( query );
+					errorMessage = null;
+					success = true;
+				} catch ( final XQException e ) {
+					results = null;
+					errorMessage = "XQuery Query failed, due to the following exception:\n" + e.getMessage();
+					success = false;
+				}
 				break;
 			default:
 				Document doc = XMLHelper.String2Doc( query, true );
 				if ( doc != null ) {
-					response = client.runMWSQuery( doc );
-					success = true;
+					try {
+						results = client.runMWSQuery( doc );
+						errorMessage = null;
+						success = true;
+					} catch ( final XQException e ) {
+						results = null;
+						errorMessage = "XQuery Query failed, due to the following exception:\n" + e.getMessage();
+						success = false;
+					}
 				} else {
-					response = "No valid XML Document retrieved.";
+					results = null;
+					errorMessage = "XQuery Query failed. No valid XML Document could be retrieved.";
 					success = false;
 				}
 		}
 		return this;
 	}
+
 	public boolean isSuccess () {
 		return success;
+	}
+
+	public static class ResultsSerializer extends JsonSerializer<Results> {
+		@Override
+		public void serialize( Results results, JsonGenerator jGen, SerializerProvider provider ) throws IOException, JsonProcessingException {
+			if ( results != null ) {
+				jGen.writeString( Client.resultsToXML( results ) );
+			}
+		}
 	}
 }
 
