@@ -15,6 +15,7 @@ import org.w3c.dom.Document;
 
 import javax.xml.stream.*;
 import javax.xml.stream.events.XMLEvent;
+import javax.xml.xquery.XQException;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -59,14 +60,14 @@ public final class ClientTest {
 	public void basicTest() throws Exception {
 		Client c = new Client();
 		c.setShowTime( false );
-		String res = c.runQueryNtcirWrap("declare default element namespace \"http://www.w3.org/1998/Math/MathML\";\n" +
+		String res = Client.resultsToXML( c.runQueryNtcirWrap("declare default element namespace \"http://www.w3.org/1998/Math/MathML\";\n" +
 			"for $m in //*:expr return \n" +
 			"for $x in $m//*:apply\n" +
 			"[*[1]/name() = 'divide']\n" +
 			"where\n" +
 			"fn:count($x/*) = 3\n" +
 			"return\n" +
-			"<result>{$m/@url}</result>");
+			"<result>{$m/@url}</result>") );
 
 		assertEquals(TestUtils.getFileContents( TestUtils.BASEX_RESOURCE_DIR + "testClientBasic.xml" ), res );
 	}
@@ -77,16 +78,16 @@ public final class ClientTest {
 		final String expectedOutput = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n" +
 			"<results xmlns=\"http://ntcir-math.nii.ac.jp/\">\n" +
 			"  <run runtag=\"\" run_type=\"\">\n" +
-			"    <result for=\"NTCIR11-Math-\" >\n" +
+			"    <result for=\"NTCIR11-Math-\">\n" +
 			"      <hit id=\"dummy29\" xref=\"\" score=\"10\" rank=\"1\"/>\n" +
 			"    </result>\n"+
 			"  </run>\n" +
 			"</results>";
 		Document query = XMLHelper.String2Doc( testInput, true );
 		Client c = new Client();
-		c.setShowTime( true );
-		String res = c.runMWSQuery( query );
-		assertEquals( expectedOutput, res.replaceAll( "runtime=\"\\d+\"", "" ) );
+		c.setShowTime( false );
+		String res = Client.resultsToXML( c.runMWSQuery( query ) );
+		assertEquals( expectedOutput, res );
 	}
 
 	@Test
@@ -110,71 +111,86 @@ public final class ClientTest {
 		Client c = new Client();
 		c.setShowTime( false );
 		c.setUseXQ( true );
-		String res = c.runMWSQuery( query );
+		String res = c.resultsToXML( c.runMWSQuery( query ) );
 		assertEquals( expectedOutput, res );
 		c.setUseXQ( false );
 		c.runMWSQuery( query );
 		assertEquals( expectedOutput, res );
 	}
 	@Test
-	public void testEmpty(){
+	public void testEmpty() throws Exception {
 		checkConnection();
 		String empty = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n" +
 			"<results xmlns=\"http://ntcir-math.nii.ac.jp/\"/>";
 		Client c = new Client();
-		String res = c.runTexQuery( "\\sin(\\cos(x^5))" );
+		String res = c.resultsToXML( c.runTexQuery( "\\sin(\\cos(x^5))" ) );
 		assertEquals( empty,res );
 	}
 	@Test
-	public void testqVar(){
+	public void testqVar() throws Exception {
 		checkConnection();
 		String empty = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n" +
 			"<results xmlns=\"http://ntcir-math.nii.ac.jp/\"/>";
 		Client c = new Client();
-		String res = c.runTexQuery( "a_i)" );
+		String res = c.resultsToXML( c.runTexQuery( "a_i)" ) );
 		assertEquals( empty,res );
 	}
 
 	@Test
-	public void testEmptyTex(){
+	public void testEmptyTex() throws Exception {
 		checkConnection();
 		Client c = new Client();
-		String res = c.runTexQuery( "" );
-		assertEquals( "TeX query was empty.",res );
-		assertFalse( c.isLastQuerySuccess() );
+		try {
+			String res = c.resultsToXML( c.runTexQuery( "" ) );
+		} catch ( final IllegalArgumentException expected ) {
+			assertEquals( "Got empty TeX query", expected.getMessage());
+		}
 	}
 
 	@Test
-	 public void testBadTex(){
+	 public void testBadTex() throws Exception {
 		checkConnection();
 		Client c = new Client();
-		String res = c.runTexQuery( "++23424'ä#öä#ö\\exit" );
-		assertTrue( res.startsWith( "Problem during TeX to MathML conversion" ) );
-		assertFalse( c.isLastQuerySuccess() );
+		try {
+			String res = c.resultsToXML( c.runTexQuery( "++23424'ä#öä#ö\\exit" ) );
+		} catch ( final IOException expected ) {
+			assertTrue( expected.getMessage().startsWith( "Unable to process MathML conversion server response to Tex request." ) );
+		}
 	}
 
 	@Test
-	public void testBadTex2(){
+	public void testBadTex2() throws Exception {
 		checkConnection();
 		Client c = new Client();
-		String res = c.runTexQuery( "\\frac" );
-		assertTrue( res.startsWith( "Problem during TeX to MathML conversion" ) );
-		assertFalse( c.isLastQuerySuccess() );
+		try {
+			String res = c.resultsToXML( c.runTexQuery( "\\frac" ) );
+		} catch ( final IOException expected ) {
+			assertTrue( expected.getMessage().startsWith( "Unable to process MathML conversion server response to Tex request." ) );
+		}
 	}
 	@Test
-	public void testEmptyMML(){
+	public void testEmptyMML() throws Exception {
 		Client c = new Client();
-		String res = c.runMWSQuery( null );
-		assertEquals( "got empty MathML document", res );
-		assertFalse( c.isLastQuerySuccess() );
+		try {
+			String res = c.resultsToXML( c.runMWSQuery( null ) );
+		} catch ( final IllegalArgumentException expected ) {
+			assertEquals( "Got empty MathML document", expected.getMessage() );
+		}
 	}
 
 	@Test
 	public void measureBadXQuery(){
 		Client c = new Client(  );
-		assertEquals( Long.valueOf( -1 ), c.basex( ">invalid<" ) );
-		assertTrue( c.runQueryNtcirWrap( ">invalid<" ).startsWith( "Query" ) );
-		assertFalse( c.isLastQuerySuccess() );
+		try {
+			c.basex( ">invalid<" );
+		} catch ( final XQException expected ) {
+			assertEquals( "Invalid XQuery syntax, syntax does not pass static validation.", expected.getMessage() );
+		}
+		try {
+			c.runQueryNtcirWrap( ">invalid<" );
+		} catch ( final XQException expected ) {
+			assertEquals( "Invalid XQuery syntax, syntax does not pass static validation.", expected.getMessage() );
+		}
 	}
 
 	@Test
@@ -225,7 +241,7 @@ public final class ClientTest {
 		final Client c = new Client();
 		c.setShowTime( false );
 		c.setUseXQ( false );
-		final String res = c.runQueryNTCIR( query, "f1.0" );
+		final String res = c.resultToXML( c.runQueryNTCIR( query, "f1.0" ) );
 
 		//Strip all ID values
 		final byte[] byteArray = res.getBytes( "UTF-8" );

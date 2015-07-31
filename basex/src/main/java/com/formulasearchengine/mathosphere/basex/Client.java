@@ -42,7 +42,7 @@ public class Client {
 	private Result currentResult = new Result( "NTCIR11-Math-" );
 	private Long lastQueryDuration;
 	private boolean useXQ = true;
-	private boolean lastQuerySuccess = false;
+
 	private boolean showTime = true;
 
 	public static final String USER = "admin";
@@ -57,7 +57,7 @@ public class Client {
 	 * Constructs a new Client with the given queryset. This constructor will also search all queries immediately.
 	 * @param patterns List of NtcirPattern
 	 */
-	public Client(List<NtcirPattern> patterns) {
+	public Client(List<NtcirPattern> patterns) throws XQException {
 		for (final NtcirPattern pattern : patterns) {
 			processPattern( pattern );
 		}
@@ -68,16 +68,17 @@ public class Client {
 	 * @return Returns results in XML format.
 	 */
 	public String getXML() {
-		return resultsToXML( results, showTime );
+		results.setShowTime( showTime );
+		return resultsToXML( results );
 	}
 
 	/**
 	 * @return Returns given Result as XML string, and shows time based on showTime
 	 */
-	public static String resultToXML( Result result, boolean showTime ) {
+	public static String resultToXML( Result result ) {
 		//Use custom coder to disable underscore escaping so run_type is properly printed
 		final XStream stream = new XStream( new Xpp3Driver( new XmlFriendlyNameCoder( "_-", "_" ) ) );
-		if ( !showTime ) {
+		if ( !result.getShowTime() ) {
 			stream.omitField( Result.class, "ms" );
 		}
 		stream.processAnnotations( Result.class );
@@ -87,10 +88,10 @@ public class Client {
 	/**
 	 * @return Returns given Results as XML string, and shows time based on showTime
 	 */
-	public static String resultsToXML( Results results, boolean showTime ) {
+	public static String resultsToXML( Results results ) {
 		//Use custom coder to disable underscore escaping so run_type is properly printed
 		final XStream stream = new XStream(new Xpp3Driver( new XmlFriendlyNameCoder( "_-", "_" ) ) );
-		if ( !showTime ) {
+		if ( !results.getShowTime() ) {
 			stream.omitField( Run.class, "ms" );
 			stream.omitField( Result.class, "ms" );
 		}
@@ -120,6 +121,7 @@ public class Client {
 	 */
 	public void setShowTime (boolean showTime) {
 		this.showTime = showTime;
+		results.setShowTime( showTime );
 	}
 
 	/**
@@ -130,15 +132,9 @@ public class Client {
 		this.useXQ = useXQ;
 	}
 
-	/**
-	 * @return Whether or not the last query succeeded.
-	 */
-	public boolean isLastQuerySuccess() {
-		return lastQuerySuccess;
-	}
-
-	private void processPattern(NtcirPattern pattern) {
+	private void processPattern(NtcirPattern pattern) throws XQException {
 		currentResult = new Result( pattern.getNum() );
+		currentResult.setShowTime( showTime );
 		basex( pattern.getxQueryExpression() );
 		currentRun.addResult( currentResult );
 	}
@@ -149,13 +145,8 @@ public class Client {
 	 * @param query Query in XQuery string format.
 	 * @return Time it took to run the query.
 	 */
-	public Long basex(String query) {
-		try {
-			runQueryBaseXSimple( query );
-		} catch (final XQException e) {
-			e.printStackTrace();
-			return -1L;
-		}
+	public Long basex(String query) throws XQException {
+		runQueryBaseXSimple( query );
 		return lastQueryDuration;
 	}
 
@@ -192,12 +183,12 @@ public class Client {
 	 * @throws IOException When the client fails to open properly
 	 * @throws TransformerException When the XML reader/writers fail
 	 */
-	protected String runQueryNTCIR( String query, String queryID )
-			throws XQException, XMLStreamException, IOException, TransformerException {
+	protected Result runQueryNTCIR( String query, String queryID )
+			throws XQException, XMLStreamException, IOException, TransformerException, java.io.UnsupportedEncodingException {
 		int score = 0;
 		int rank = 1;
 		if ( useXQ ) {
-			return "";
+			return null;
 		} else {
 			final BaseXClient session = getBaseXClient();
 			try {
@@ -205,6 +196,7 @@ public class Client {
 				final BaseXClient.Query querySession = session.query( query );
 				lastQueryDuration = System.nanoTime() - lastQueryDuration;
 				currentResult.setTime( lastQueryDuration );
+				currentResult.setShowTime( showTime );
 
 				while ( querySession.more() ) {
 					final String result = querySession.next();
@@ -237,7 +229,7 @@ public class Client {
 			} finally {
 				session.close();
 			}
-			return resultToXML( currentResult, showTime );
+			return currentResult;
 		}
 	}
 
@@ -278,6 +270,7 @@ public class Client {
 				final XQResultSequence rs = xqpe.executeQuery();
 				lastQueryDuration = System.nanoTime() - lastQueryDuration;
 				currentResult.setTime( lastQueryDuration );
+				currentResult.setShowTime( showTime );
 				while ( rs.next() ) {
 					final String result = rs.getItemAsString( null );
 					currentResult.addHit( new Hit( CR_PATTERN.matcher( result ).replaceAll( "" ), "", score, rank ) );
@@ -311,35 +304,33 @@ public class Client {
 	 * Calls {@link #runQueryBaseXSimple(String)} and wraps the result with the NTCIR XML format.
 	 * This adds the result to {@link #currentResult}
 	 * @param query XQuery string
+	 * @throws XQException when the server xq connection fails
 	 * @return NTCIR XML formatted result
 	 */
-	public String runQueryNtcirWrap(String query) {
+	public Results runQueryNtcirWrap( String query ) throws XQException {
 		currentResult = new Result( "NTCIR11-Math-");
-		try {
-			runQueryBaseXSimple( query );
-			lastQuerySuccess = true;
-			final Results resultsFrame = new Results();
-			if ( currentResult.getNumHits() != 0 ) {
-				final Run run = new Run( "", "" );
-				run.addResult( currentResult );
-				resultsFrame.addRun( run );
-			}
-			return resultsToXML( resultsFrame, showTime );
-		} catch (final XQException e) {
-			lastQuerySuccess = false;
-			return "Query :\n" + query + "\n\n failed " + e.getLocalizedMessage();
+		currentResult.setShowTime( showTime );
+		runQueryBaseXSimple( query );
+		final Results resultsFrame = new Results();
+		resultsFrame.setShowTime( showTime );
+		if ( currentResult.getNumHits() != 0 ) {
+			final Run run = new Run( "", "" );
+			run.setShowTime( showTime );
+			run.addResult( currentResult );
+			resultsFrame.addRun( run );
 		}
+		return resultsFrame;
 	}
 
 	/**
 	 * Calls {@link #runQueryNtcirWrap(String)} given a MathML MathWebSearch XML document query
 	 * @param mwsQuery Document in MathML MathWebSearch query format
+	 * @throws XQException when the server xq connection fails
 	 * @return NTCIR XML formatted result
 	 */
-	public String runMWSQuery( Document mwsQuery ) {
+	public Results runMWSQuery( Document mwsQuery ) throws XQException {
 		if ( mwsQuery == null ){
-			lastQuerySuccess = false;
-			return "got empty MathML document";
+			throw new IllegalArgumentException( "Got empty MathML document" );
 		}
 		final XQueryGenerator generator = new XQueryGenerator( mwsQuery );
 		generator.setHeader( Benchmark.BASEX_HEADER );
@@ -352,25 +343,19 @@ public class Client {
 	 * Calls {@link #runMWSQuery(Document)} given a Tex string.
 	 * Converts the Tex string into MathML MathWebSearch XML document query format and then runs the search.
 	 * @param tex Tex string
+	 *
+	 * @throws XQException when the server xq connection fails
+	 * @throws IOException when the tex to MathML conversion fails
 	 * @return NTCIR XML formatted result
 	 */
-	public String runTexQuery( String tex ) {
+	public Results runTexQuery( String tex ) throws IOException, XQException {
 		if (tex == null || tex.isEmpty()){
-			lastQuerySuccess = false;
-			return "TeX query was empty.";
+			throw new IllegalArgumentException( "Got empty TeX query" );
 		}
 		final TexQueryGenerator t = new TexQueryGenerator();
 		final String mmlString = t.request(tex);
-		if ( mmlString != null ){
-			final Document doc = XMLHelper.String2Doc( mmlString, true );
-			return runMWSQuery( doc );
-		}
-		lastQuerySuccess = false;
-		try {
-			return t.getErrorMessage() ;
-		} catch (final JsonProcessingException ignore ) {
-			return "Tex parsing failed. Can not parse error message.";
-		}
+		final Document doc = XMLHelper.String2Doc( mmlString, true );
+		return runMWSQuery( doc );
 	}
 
 	/**

@@ -11,25 +11,16 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class TexQueryGenerator {
-	private boolean success = false;
 	private String LaTeXMLURL = "http://gw125.iu.xsede.org:8888";
-	private Map ob;
+	private Map ob = new LinkedHashMap();
 	private List<NameValuePair> params;
-
-	public Exception getLastException () {
-		return lastException;
-	}
-
-	private Exception lastException;
 
 	public List<NameValuePair> getParams () {
 		if ( params == null ){
@@ -59,10 +50,6 @@ public class TexQueryGenerator {
 		this.params = params;
 	}
 
-	public boolean isSuccess () {
-		return success;
-	}
-
 	public String getLaTeXMLURL () {
 		return LaTeXMLURL;
 	}
@@ -75,53 +62,30 @@ public class TexQueryGenerator {
 		LaTeXMLURL = laTeXMLURL;
 	}
 
-
-
-	public String request (String tex) {
+	public String request (String tex) throws IOException, IllegalStateException {
 		HttpPost httppost = new HttpPost( LaTeXMLURL );
 		CloseableHttpClient httpClient = HttpClients.createDefault();
 		List<NameValuePair> p = getParams();
 		p.add( new BasicNameValuePair( "tex", tex.trim() ) );
 		HttpResponse response;
-		try {
-			httppost.setEntity( new UrlEncodedFormEntity( p, "UTF-8" ) );
-			response = httpClient.execute( httppost );
-		} catch ( IOException | IllegalStateException e ) {
-			lastException = e;
-			fail( e.getLocalizedMessage() );
-			return null;
-		}
+
+		httppost.setEntity( new UrlEncodedFormEntity( p, "UTF-8" ) );
+		response = httpClient.execute( httppost );
 
 		HttpEntity entity = response.getEntity();
-		try{
-			InputStream instream = entity.getContent();
-			ob = new ObjectMapper().readValue( instream, Map.class );
-			if ( Integer.parseInt(  ob.get( "status_code" ).toString() ) < 2 ) {
-				success = true;
-			}
-			return ob.get( "result" ).toString();
-		} catch (  IOException | NullPointerException e ){
-			lastException = e;
+
+		InputStream instream = entity.getContent();
+		ob = new ObjectMapper().readValue( instream, Map.class );
+
+		if ( ob.get( "status_code" ) == null || ob.get( "result" ) == null ) {
+			throw new IOException( "Unable to process MathML conversion server response to Tex request.");
 		}
-		fail( "LaTeXML crashed" );
-		return null;
-	}
 
-	private void fail (String message) {
-		success = false;
-		ob = new HashMap(  );
-		ob.put( "status_code", 4 );
-		ob.put( "status", message );
-	}
-
-	public String getErrorMessage() throws JsonProcessingException {
-		String out = "Problem during TeX to MathML conversion:\n";
-		if (lastException != null){
-			out += "Exception:" + lastException.getLocalizedMessage() +"\n";
+		if ( Integer.parseInt(  ob.get( "status_code" ).toString() ) > 1 ) {
+			throw new IOException( "Tex request to MathML conversion server produced failed response.",
+					new IOException( ob.get( "result" ).toString()));
 		}
-		ObjectMapper mapper = new ObjectMapper();
-		out +=  mapper.writeValueAsString( ob );
-		return out;
-	}
 
+		return ob.get( "result" ).toString();
+	}
 }
