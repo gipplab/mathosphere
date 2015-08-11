@@ -17,8 +17,21 @@ public class Qvar {
 	@XStreamAsAttribute
 	private final String qvarID;
 
+	public Qvar( Qvar qvar ) {
+		this.queryQvarID = qvar.getQueryQvarID();
+		this.qvarID = qvar.getQvarID();
+	}
+
 	public Qvar( String queryQvarID, String qvarID ) {
 		this.queryQvarID = queryQvarID;
 		this.qvarID = qvarID;
+	}
+
+	public String getQueryQvarID() {
+		return queryQvarID;
+	}
+
+	public String getQvarID() {
+		return qvarID;
 	}
 }

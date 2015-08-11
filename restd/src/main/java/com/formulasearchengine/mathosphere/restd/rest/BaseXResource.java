@@ -1,73 +1,123 @@
 package com.formulasearchengine.mathosphere.restd.rest;
 
 import com.formulasearchengine.mathosphere.basex.Client;
+import com.formulasearchengine.mathosphere.basex.types.Results;
+import com.formulasearchengine.mathosphere.restd.domain.Cache;
 import com.formulasearchengine.mathosphere.restd.domain.MathRequest;
 import com.formulasearchengine.mathosphere.restd.domain.MathUpdate;
+import restx.Status;
+import restx.annotations.DELETE;
 import restx.annotations.GET;
 import restx.annotations.POST;
 import restx.annotations.RestxResource;
 import restx.factory.Component;
 import restx.security.PermitAll;
 
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+
+/**
+ * This class handles all REST requests to the BaseX server.
+ */
 @Component
 @RestxResource
 public class BaseXResource {
+
 	@GET("/texquery")
 	@PermitAll
-	public MathRequest texquery( String query ) {
-		return new MathRequest( query ).setType( "tex" ).run();
+	public MathRequest texquery( String query, Optional<String> runtype, Optional<String> queryID,
+								 Optional<String> offset, Optional<String> limit ) {
+		final MathRequest request = new MathRequest( query ).setType( "tex" );
+		request.processRequestParams( runtype, queryID, offset, limit );
+		return request.run();
 	}
 	@POST("/texquery")
 	@PermitAll
-	public MathRequest texquery( MathRequest q ) {
-		if( q.getType() == null ||  "".equals( q.getType()) ){
-			q.setType( "tex" );
+	public MathRequest texquery( MathRequest request ) {
+		if( request.getType() == null ||  "".equals( request.getType() ) ){
+			request.setType( "tex" );
 		}
-		return q.run();
+		return request.run();
 	}
 	@GET("/xquery")
 	@PermitAll
-	public MathRequest xquery( String query ) {
-		return new MathRequest( query ).setType( "xquery" ).run();
+	public MathRequest xquery( String query, Optional<String> runtype, Optional<String> queryID,
+							   Optional<String> offset, Optional<String> limit ) {
+		final MathRequest request = new MathRequest( query ).setType( "xquery" );
+		request.processRequestParams( runtype, queryID, offset, limit );
+		return request.run();
 	}
 	@POST("/xquery")
 	@PermitAll
-	public MathRequest xquery( MathRequest q ) {
-		if( q.getType() == null ||  "".equals( q.getType()) ){
-			q.setType( "xquery" );
+	public MathRequest xquery( MathRequest request ) {
+		if( request.getType() == null ||  "".equals( request.getType() ) ){
+			request.setType( "xquery" );
 		}
-		return q.run();
+		return request.run();
 	}
 	@GET("/mwsquery")
 	@PermitAll
-	public MathRequest mwsquery( String q ) {
-		return new MathRequest( q ).run();
+	public MathRequest mwsquery( String q, Optional<String> runtype, Optional<String> queryID,
+							     Optional<String> offset, Optional<String> limit ) {
+		final MathRequest request = new MathRequest( q ).setType( "mws" );
+		request.processRequestParams( runtype, queryID, offset, limit );
+		return request.run();
 	}
 	@POST("/mwsquery")
 	@PermitAll
-	public MathRequest mwsquery( MathRequest q ) {
-		return q.run();
+	public MathRequest mwsquery( MathRequest request ) {
+		if( request.getType() == null ||  "".equals( request.getType() ) ) {
+			request.setType( "mws" );
+		}
+		return request.run();
 	}
 	@POST("/")
 	@PermitAll
-	public MathRequest query( MathRequest q ) {
-		return q.run();
+	public MathRequest query( MathRequest request ) {
+		return request.run();
 	}
 	@POST("/update")
 	@PermitAll
-	public MathUpdate update( MathUpdate u ) {
-		return u.run();
+	public MathUpdate update( MathUpdate update ) {
+		return update.run();
 	}
 	@GET("/cntRev")
 	@PermitAll
 	public Integer dbsize( Integer revision ) {
 		Client client = new Client();
-		return client.countRevisionFormula( revision  );
+		return client.countRevisionFormula( revision );
 	}
 	@GET("/cntAll")
 	@PermitAll
 	public Integer dbsize(  ) {
 		Client client = new Client();
 		return client.countAllFormula();
+	}
+
+	@DELETE("/queryLog/")
+	@PermitAll
+	public Status flushQueryLog() {
+		Cache.flushQueryLog();
+		return Status.of( "Flushed query log" );
+	}
+
+	@GET("/queryLog/")
+	@PermitAll
+	public List<MathRequest> getQueryLog() {
+		return Cache.getQueryLog();
+	}
+
+	@DELETE("/resultsCache/")
+	@PermitAll
+	public Status flushResultsCache() {
+		Cache.flushCachedResults();
+		return Status.of( "Flushed results cache" );
+	}
+
+	@GET("/resultsCache/")
+	@PermitAll
+	public Map<String, String> getResultsCache() {
+		return Cache.getAllCachedResultsAsStrings();
 	}
 }

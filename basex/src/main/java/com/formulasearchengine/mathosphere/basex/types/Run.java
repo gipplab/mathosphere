@@ -33,6 +33,14 @@ public class Run {
 	@XStreamOmitField
 	private boolean showTime = true;
 
+	public Run ( Run run ) {
+		this.runtag = run.getRuntag();
+		this.ms = run.getRuntime();
+		this.type = run.getRunType();
+		this.setResults( run.getResults() );
+		this.showTime = run.getShowTime();
+	}
+
 	public Run( String runtag, Long ms, String type ) {
 		this.runtag = runtag;
 		this.ms = ms == null ? "" : String.valueOf( ms );
@@ -57,6 +65,15 @@ public class Run {
 		}
 	}
 
+	public String getRuntime() {
+		return ms;
+	}
+	public String getRuntag() {
+		return runtag;
+	}
+	public String getRunType() {
+		return this.type;
+	}
 	public boolean getShowTime() {
 		return this.showTime;
 	}
@@ -66,19 +83,27 @@ public class Run {
 	}
 
 	public void addResult( Result result ) {
-		result.setShowTime( showTime );
-		results.add( result );
+		results.add( new Result( result ) );
 	}
 
 	public List<Result> getResults() {
-		return new ArrayList<>( results );
+		return results;
 	}
 
 	public void setResults( List<Result> results ) {
-		this.results = new ArrayList<>( results );
+		this.results = cloneResults( results );
+	}
 
-		for ( final Result result : results ) {
-			result.setShowTime( showTime );
+	private static List<Result> cloneResults( List<Result> results ) {
+		if ( results != null ) {
+			final List<Result> out = new ArrayList<>();
+			for ( final Result result : results ) {
+				final Result resultCopy = new Result( result );
+				out.add( resultCopy );
+			}
+			return out;
+		} else {
+			return null;
 		}
 	}
 

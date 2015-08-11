@@ -33,6 +33,7 @@ public class AppServer {
 		String path = System.getProperty( "path" , System.getProperty( "defaultPath" ) );
 		Server srv = null;
 		System.out.println("admin password is " + System.getProperty( "password" ) );
+		System.out.println("server mode is " + System.getProperty( "restx.mode" ) );
 		try {
 			File f = new File( path );
 			srv = Server.getInstance();

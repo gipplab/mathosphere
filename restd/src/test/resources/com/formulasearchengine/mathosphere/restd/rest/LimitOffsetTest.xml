@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<results xmlns="http://ntcir-math.nii.ac.jp/">
+    <run runtag="runtag" runtime="23" run_type="">
+        <result for="NTCIR11-Math-" runtime="21">
+            <hit id="id2" xref="filename" score="0" rank="2">
+                <formula id="id" for="queryFormulaID" xref="filename#formulaID" score="0"/>
+                <formula id="id" for="queryFormulaID" xref="filename#formulaID">
+                    <qvar for="queryQvarID" xref="qvarID"/>
+                </formula>
+            </hit>
+            <hit id="id3" xref="filename" score="0" rank="3">
+                <formula id="id" for="queryFormulaID" xref="filename#formulaID" score="0"/>
+                <formula id="id" for="queryFormulaID" xref="filename#formulaID">
+                    <qvar for="queryQvarID" xref="qvarID"/>
+                </formula>
+            </hit>
+        </result>
+    </run>
+</results>
