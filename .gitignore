@@ -3,3 +3,6 @@
 .classpath
 .project
 nbactions.xml
+
+.idea
+mlp.iml

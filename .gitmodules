@@ -1,0 +1,3 @@
+[submodule "lib/rseq"]
+	path = lib/rseq
+	url = git@github.com:TU-Berlin/rseq.git

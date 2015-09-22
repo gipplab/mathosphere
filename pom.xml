@@ -96,6 +96,7 @@
             <groupId>com.itshared</groupId>
             <artifactId>rseq</artifactId>
             <version>0.0.1-SNAPSHOT</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.jcabi</groupId>
