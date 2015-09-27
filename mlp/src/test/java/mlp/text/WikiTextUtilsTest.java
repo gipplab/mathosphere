@@ -16,9 +16,10 @@ public class WikiTextUtilsTest {
     String input = "Text text <math>V = V_0</math> text text <math>V = V_1</math> text. "
       + "Text <math>V = V_2</math>.";
     List<MathTag> actual = WikiTextUtils.findMathTags(input);
-    List<MathTag> expected = Arrays.asList(new MathTag(10, "<math>V = V_0</math>", MathMarkUpType.LATEX),
-      new MathTag(41, "<math>V = V_1</math>", MathMarkUpType.LATEX), new MathTag(73,
-        "<math>V = V_2</math>", MathMarkUpType.LATEX));
+    List<MathTag> expected = Arrays.asList(
+      new MathTag(10, "<math>V = V_0</math>", MathMarkUpType.LATEX),
+      new MathTag(41, "<math>V = V_1</math>", MathMarkUpType.LATEX),
+      new MathTag(73, "<math>V = V_2</math>", MathMarkUpType.LATEX));
     assertEquals(expected, actual);
   }
 
