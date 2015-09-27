@@ -1,5 +1,6 @@
 Mathematical Language Processing
 ================================
+[![Build Status](https://travis-ci.org/TU-Berlin/project-mlp.svg?branch=master)](https://travis-ci.org/TU-Berlin/project-mlp)
 
 # Run
 * compile the maven project
