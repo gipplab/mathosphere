@@ -2,8 +2,10 @@ package mlp.contracts;
 
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Multiset;
-import mlp.Config;
+
+import mlp.cli.FlinkMlpCommandConfig;
 import mlp.pojos.*;
+
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,7 +20,7 @@ public class CreateCandidatesMapperTest {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(CreateCandidatesMapperTest.class);
 
-  final Config config = Config.test();
+  final FlinkMlpCommandConfig config = FlinkMlpCommandConfig.test();
 
   @Test
   public void test() throws Exception {

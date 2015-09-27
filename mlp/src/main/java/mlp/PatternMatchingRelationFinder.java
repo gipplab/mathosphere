@@ -1,11 +1,13 @@
 package mlp;
 
+import mlp.cli.FlinkMlpCommandConfig;
 import mlp.contracts.JsonSerializerMapper;
 import mlp.contracts.PatternMatcherMapper;
 import mlp.contracts.TextAnnotatorMapper;
 import mlp.contracts.TextExtractorMapper;
 import mlp.pojos.ParsedWikiDocument;
 import mlp.pojos.WikiDocumentOutput;
+
 import org.apache.flink.api.java.DataSet;
 import org.apache.flink.api.java.ExecutionEnvironment;
 import org.apache.flink.api.java.io.TextInputFormat;
@@ -16,7 +18,7 @@ import org.apache.flink.core.fs.Path;
 public class PatternMatchingRelationFinder {
 
   public static void main(String[] args) throws Exception {
-    Config config = Config.test();
+    FlinkMlpCommandConfig config = FlinkMlpCommandConfig.test();
 
     ExecutionEnvironment env = ExecutionEnvironment.getExecutionEnvironment();
 
@@ -31,7 +33,7 @@ public class PatternMatchingRelationFinder {
     env.execute("Pattern Matcher Relation Finder");
   }
 
-  public static DataSource<String> readWikiDump(Config config, ExecutionEnvironment env) {
+  public static DataSource<String> readWikiDump(FlinkMlpCommandConfig config, ExecutionEnvironment env) {
     Path filePath = new Path(config.getDataset());
     TextInputFormat inp = new TextInputFormat(filePath);
     inp.setCharsetName("UTF-8");

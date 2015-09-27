@@ -1,12 +1,13 @@
 package mlp.text;
 
-import mlp.Config;
 import mlp.PatternMatchingRelationFinder;
+import mlp.cli.FlinkMlpCommandConfig;
 import mlp.contracts.TextAnnotatorMapper;
 import mlp.pojos.Formula;
 import mlp.pojos.Sentence;
 import mlp.pojos.Word;
 import mlp.text.WikiTextUtils.MathTag;
+
 import org.apache.commons.io.IOUtils;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -25,7 +26,7 @@ public class PosTaggerTest {
 
   @Test
   public void annotation() throws Exception {
-    Config cfg = Config.test();
+    FlinkMlpCommandConfig cfg = FlinkMlpCommandConfig.test();
     PosTagger nlpProcessor = PosTagger.create(cfg.getLanguage(), cfg.getModel());
     String text = readText("escaped.txt");
 

@@ -1,8 +1,9 @@
 package mlp.contracts;
 
-import mlp.Config;
+import mlp.cli.FlinkMlpCommandConfig;
 import mlp.pojos.ParsedWikiDocument;
 import mlp.pojos.RawWikiDocument;
+
 import org.junit.Test;
 
 import java.util.List;
@@ -29,7 +30,7 @@ public class RussianWikiPipelineTest {
 
   private static TextAnnotatorMapper ruTextAnnotator() throws Exception {
     String[] params = {"--language", "ru", "-pos", ""};
-    Config config = Config.from(params);
+    FlinkMlpCommandConfig config = FlinkMlpCommandConfig.from(params);
 
     TextAnnotatorMapper textAnnotator = new TextAnnotatorMapper(config);
     textAnnotator.open(null);

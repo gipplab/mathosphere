@@ -1,11 +1,13 @@
 package mlp.contracts;
 
 import com.google.common.base.Throwables;
-import mlp.Config;
+
 import mlp.PatternMatchingRelationFinder;
+import mlp.cli.FlinkMlpCommandConfig;
 import mlp.flink.ListCollector;
 import mlp.pojos.*;
 import mlp.text.PosTag;
+
 import org.apache.commons.io.IOUtils;
 import org.junit.Test;
 
@@ -77,7 +79,7 @@ public class TextAnnotatorMapperTest {
 
   private static TextAnnotatorMapper createTestInstance() {
     try {
-      TextAnnotatorMapper textAnnotator = new TextAnnotatorMapper(Config.test());
+      TextAnnotatorMapper textAnnotator = new TextAnnotatorMapper(FlinkMlpCommandConfig.test());
       textAnnotator.open(null);
       return textAnnotator;
     } catch (Exception e) {

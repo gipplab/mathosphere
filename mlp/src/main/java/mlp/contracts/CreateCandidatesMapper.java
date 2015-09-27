@@ -4,9 +4,11 @@ import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multiset;
 import com.google.common.collect.Multiset.Entry;
-import mlp.Config;
+
+import mlp.cli.BaseConfig;
 import mlp.pojos.*;
 import mlp.text.DefinitionUtils;
+
 import org.apache.flink.api.common.functions.MapFunction;
 
 import java.util.*;
@@ -25,7 +27,7 @@ public class CreateCandidatesMapper implements MapFunction<ParsedWikiDocument, W
     this.threshold = threshold;
   }
 
-  public CreateCandidatesMapper(Config config) {
+  public CreateCandidatesMapper(BaseConfig config) {
     this(config.getAlpha(), config.getBeta(), config.getGamma(), config.getThreshold());
   }
 
