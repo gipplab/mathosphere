@@ -3,71 +3,71 @@ package mlp.pojos;
 
 public class Relation {
 
-    private String identifier;
-    private String definition;
-    private double score;
-    private int identifierPosition;
-    private int wordPosition;
-    private Sentence sentence;
+  private String identifier;
+  private String definition;
+  private double score;
+  private int identifierPosition;
+  private int wordPosition;
+  private Sentence sentence;
 
-    public Relation() {
-    }
+  public Relation() {
+  }
 
-    public double getScore() {
-        return score;
-    }
+  public double getScore() {
+    return score;
+  }
 
-    public void setScore(double score) {
-        this.score = score;
-    }
+  public void setScore(double score) {
+    this.score = score;
+  }
 
-    public String getIdentifier() {
-        return identifier;
-    }
+  public String getIdentifier() {
+    return identifier;
+  }
 
-    public void setIdentifier(String identifier) {
-        this.identifier = identifier;
-    }
+  public void setIdentifier(String identifier) {
+    this.identifier = identifier;
+  }
 
-    public String getDefinition() {
-        return definition;
-    }
+  public String getDefinition() {
+    return definition;
+  }
 
-    public void setDefinition(Word word) {
-        this.definition = word.getWord();
-    }
-    
-    public void setDefinition(String definition) {
-        this.definition = definition;
-    }
+  public void setDefinition(Word word) {
+    this.definition = word.getWord();
+  }
 
-    public Sentence getSentence() {
-        return sentence;
-    }
+  public void setDefinition(String definition) {
+    this.definition = definition;
+  }
 
-    public void setSentence(Sentence sentence) {
-        this.sentence = sentence;
-    }
+  public Sentence getSentence() {
+    return sentence;
+  }
 
-    public int getIdentifierPosition() {
-        return identifierPosition;
-    }
+  public void setSentence(Sentence sentence) {
+    this.sentence = sentence;
+  }
 
-    public void setIdentifierPosition(int identifierPosition) {
-        this.identifierPosition = identifierPosition;
-    }
+  public int getIdentifierPosition() {
+    return identifierPosition;
+  }
 
-    public int getWordPosition() {
-        return wordPosition;
-    }
+  public void setIdentifierPosition(int identifierPosition) {
+    this.identifierPosition = identifierPosition;
+  }
 
-    public void setWordPosition(int wordPosition) {
-        this.wordPosition = wordPosition;
-    }
+  public int getWordPosition() {
+    return wordPosition;
+  }
 
-    @Override
-    public String toString() {
-        return "Relation [" + identifier + ", score=" + score + ", word=" + definition + "]";
-    }
+  public void setWordPosition(int wordPosition) {
+    this.wordPosition = wordPosition;
+  }
+
+  @Override
+  public String toString() {
+    return "Relation [" + identifier + ", score=" + score + ", word=" + definition + "]";
+  }
 
 }
