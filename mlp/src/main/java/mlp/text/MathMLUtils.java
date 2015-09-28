@@ -16,7 +16,6 @@ import uk.ac.ed.ph.snuggletex.SnuggleEngine;
 import uk.ac.ed.ph.snuggletex.SnuggleInput;
 import uk.ac.ed.ph.snuggletex.SnuggleSession;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Set;
 import java.util.regex.Matcher;
@@ -31,6 +30,8 @@ public class MathMLUtils {
    * list of false positive identifiers
    */
   public final static Set<String> BLACKLIST = prepareBlacklist();
+  //@TODO: Make this configurable
+  private static String engine = "";
 
   private static Set<String> prepareBlacklist() {
     ImmutableSet.Builder<String> builder = ImmutableSet.builder();
@@ -193,15 +194,21 @@ public class MathMLUtils {
   }
 
   public static String texToMathML(String tex) {
-    try {
-      SnuggleSession session = SNUGGLE_ENGINE.createSession();
-      String cleanTexString = cleanTexString(tex);
-      session.parseInput(new SnuggleInput("$$ " + cleanTexString + " $$"));
-      String xmlString = session.buildXMLString();
-      return xmlString;
-    } catch (IOException e) {
-      throw Throwables.propagate(e);
-    }
+
+      try {
+        if (engine.equals("snuggle")) {
+        SnuggleSession session = SNUGGLE_ENGINE.createSession();
+        String cleanTexString = cleanTexString(tex);
+        session.parseInput(new SnuggleInput("$$ " + cleanTexString + " $$"));
+        String xmlString = session.buildXMLString();
+        return xmlString;    } else {
+          return TeX2MathML.TeX2MML(tex);
+        }
+      } catch (Exception e) {
+        throw Throwables.propagate(e);
+      }
+
+
   }
 
   public static String cleanTexString(String tex) {

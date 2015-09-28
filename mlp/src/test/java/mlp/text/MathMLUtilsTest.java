@@ -26,7 +26,7 @@ public class MathMLUtilsTest {
 
   @Test
   public void extractFromTex_moreComplex() {
-    String tex = "\\sqrt{x + y} = \\cfrac{\\phi + \\rho}{\\Theta \\cdot \\Phi}";
+    String tex = "\\sqrt{x + y} = \\cfrac{\\varphi + \\rho}{\\Theta \\cdot \\Phi}";
     Set<String> identifiers = MathMLUtils.extractIdentifiersFromTex(tex).elementSet();
     Set<String> expected = ImmutableSet.of("x", "y", "φ", "ρ", "Θ", "Φ");
     assertEquals(expected, identifiers);
