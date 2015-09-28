@@ -112,6 +112,19 @@ public class WikiTextUtils {
     return newText.toString();
   }
 
+  public static String renderAllFormulae(String text) {
+    return StringReplacer.replace(text, MATH_TAG_PATTERN, (Matcher m) ->
+      {
+        try {
+          return TeX2MathML.TeX2MML(m.group(0).replaceAll("<math.*?>", "").replaceAll("</math>", ""));
+        } catch (Exception e) {
+          e.printStackTrace();
+          return m.group(0);
+        }
+      }
+    );
+  }
+
   public static String subsup(String markup) {
     return markup.replaceAll("[{<]sub[}>](.+?)[{<]/sub[}>]", "_$1")
       .replaceAll("[{<]sup[}>](.+?)[{<]/sup[}>]", "^$1");

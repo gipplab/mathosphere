@@ -79,4 +79,36 @@ public class WikiTextUtilsTest {
     assertEquals(MathMarkUpType.MATHML, tag.getMarkUpType());
   }
 
+  @Test
+  public void testReplaceAllFormulas1() throws Exception {
+
+  }
+
+  @Test
+  public void testRenderAllFormulae() throws Exception {
+    //final ClassLoader classLoader = getClass().getClassLoader();
+    //String testString = PosTaggerTest.readText("mean_wiki.txt");
+    String testString = "The energy <math>E</math>,";
+    String out = WikiTextUtils.renderAllFormulae(testString);
+    assertEquals("The energy <math xmlns=\"http://www.w3.org/1998/Math/MathML\" id=\"p1.1.m1.1\" class=\"ltx_Math\" alttext=\"E\" display=\"inline\">\n" +
+      "  <semantics id=\"p1.1.m1.1a\">\n" +
+      "    <mi id=\"p1.1.m1.1.1\" xref=\"p1.1.m1.1.1.cmml\">E</mi>\n" +
+      "    <annotation-xml encoding=\"MathML-Content\" id=\"p1.1.m1.1b\">\n" +
+      "      <ci id=\"p1.1.m1.1.1.cmml\" xref=\"p1.1.m1.1.1\">italic-E</ci>\n" +
+      "    </annotation-xml>\n" +
+      "    <annotation encoding=\"application/x-tex\" id=\"p1.1.m1.1c\">E</annotation>\n" +
+      "  </semantics>\n" +
+      "</math>,",out);
+
+  }
+
+  @Test
+  public void testSubsup() throws Exception {
+
+  }
+
+  @Test
+  public void testExtractPlainText() throws Exception {
+
+  }
 }
