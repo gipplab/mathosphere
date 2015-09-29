@@ -15,20 +15,17 @@ import java.util.*;
 
 public class CreateCandidatesMapper implements MapFunction<ParsedWikiDocument, WikiDocumentOutput> {
 
+  private final BaseConfig config;
   private double alpha;
   private double beta;
   private double gamma;
-  private double threshold;
-
-  public CreateCandidatesMapper(double alpha, double beta, double gamma, double threshold) {
-    this.alpha = alpha;
-    this.beta = beta;
-    this.gamma = gamma;
-    this.threshold = threshold;
-  }
 
   public CreateCandidatesMapper(BaseConfig config) {
-    this(config.getAlpha(), config.getBeta(), config.getGamma(), config.getThreshold());
+    this.config = config;
+    //copy alpha, beta and gamma for convince
+    this.alpha = config.getAlpha();
+    this.beta = config.getBeta();
+    this.gamma = config.getGamma();
   }
 
   @Override
@@ -39,7 +36,7 @@ public class CreateCandidatesMapper implements MapFunction<ParsedWikiDocument, W
     for (String identifier : identifiers) {
       List<Relation> candidates = generateCandidates(doc, identifier);
       for (Relation rel : candidates) {
-        if (rel.getScore() >= threshold) {
+        if (rel.getScore() >= config.getThreshold()) {
           relations.add(rel);
         }
       }

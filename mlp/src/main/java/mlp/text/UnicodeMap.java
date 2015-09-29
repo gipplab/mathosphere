@@ -2,6 +2,8 @@ package mlp.text;
 
 import com.google.common.collect.ImmutableMap;
 import org.apache.commons.lang3.CharUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Map;
 
@@ -663,7 +665,7 @@ public class UnicodeMap {
     unicode2tex.put(0x210B, "\\mathscr{H}");
     unicode2tex.put(0x210C, "\\mathfrak{H}");
     unicode2tex.put(0x210D, "\\mathbb{H}");
-    unicode2tex.put(0x210F, "\\hslash ");
+    unicode2tex.put(0x210F, "\\hbar "); //This is "PLANCK CONSTANT OVER TWO PI"
     unicode2tex.put(0x2110, "\\mathscr{I}");
     unicode2tex.put(0x2111, "\\mathfrak{I}");
     unicode2tex.put(0x2112, "\\mathscr{L}");
@@ -2377,8 +2379,9 @@ public class UnicodeMap {
     unicode2tex.put("\u2009\u200A\u200A", "\\;");*/
 
   }
-
+  private static final Logger LOGGER = LoggerFactory.getLogger(UnicodeMap.class);
   public static String string2TeX(String in) {
+
     int[] chars = in.codePoints().toArray();
     StringBuilder res = new StringBuilder();
 
@@ -2394,7 +2397,11 @@ public class UnicodeMap {
     if (MAP.containsKey(codePoint)) {
       return MAP.get(codePoint);
     } else {
-      return CharUtils.toString((char) codePoint);
+      if (CharUtils.isAsciiPrintable((char)codePoint)){
+        return CharUtils.toString((char) codePoint);
+      }
+      LOGGER.debug("invalid char",codePoint);
+      return "";
     }
   }
 }

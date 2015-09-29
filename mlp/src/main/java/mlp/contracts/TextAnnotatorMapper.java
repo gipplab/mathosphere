@@ -25,12 +25,14 @@ public class TextAnnotatorMapper extends RichMapFunction<RawWikiDocument, Parsed
 
   private static final Logger LOGGER = LoggerFactory.getLogger(TextAnnotatorMapper.class);
 
+  private final BaseConfig config;
   private final String language;
   private final String model;
 
   private PosTagger posTagger;
 
   public TextAnnotatorMapper(BaseConfig config) {
+    this.config= config;
     this.language = config.getLanguage();
     this.model = config.getModel();
   }
@@ -38,6 +40,7 @@ public class TextAnnotatorMapper extends RichMapFunction<RawWikiDocument, Parsed
   @Override
   public void open(Configuration cfg) throws Exception {
     posTagger = PosTagger.create(language, model);
+    //posTagger = PosTagger.create(config.getLanguage(), config.getModel());
   }
 
   @Override
@@ -45,7 +48,7 @@ public class TextAnnotatorMapper extends RichMapFunction<RawWikiDocument, Parsed
     LOGGER.info("processing \"{}\"...", doc.title);
 
     List<MathTag> mathTags = WikiTextUtils.findMathTags(doc.text);
-    List<Formula> formulas = toFormulas(mathTags);
+    List<Formula> formulas = toFormulas(mathTags,config.getUseTeXIdentifiers());
 
     Multiset<String> allIdentifiers = HashMultiset.create();
     for (Formula formula : formulas) {
@@ -63,10 +66,10 @@ public class TextAnnotatorMapper extends RichMapFunction<RawWikiDocument, Parsed
     return new ParsedWikiDocument(doc.title, allIdentifiers, formulas, sentences);
   }
 
-  public static List<Formula> toFormulas(List<MathTag> mathTags) {
+  public static List<Formula> toFormulas(List<MathTag> mathTags, Boolean useTeXIdentifiers) {
     List<Formula> formulas = Lists.newArrayList();
     for (MathTag math : mathTags) {
-      Multiset<String> identifiers = MathMLUtils.extractIdentifiers(math);
+      Multiset<String> identifiers = MathMLUtils.extractIdentifiers(math,useTeXIdentifiers);
       formulas.add(new Formula(math.placeholder(), math.getContent(), identifiers));
     }
     return formulas;

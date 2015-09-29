@@ -38,8 +38,10 @@ public class TextAnnotatorMapperTest {
     List<Formula> formulas = shroedingerOut.getFormulas();
     Formula formula = null;
     for (Formula f : formulas) {
-      if ("FORMULA_435442ec26d51f5503b96a94c0d7389f".equals(f.getKey())) {
+      //@TODO: find a more intuitive way of testing
+      if ("FORMULA_e661437c77b5fcb3f5d9f09bd84eded2".equals(f.getKey())) {
         formula = f;
+        break;
       }
     }
 

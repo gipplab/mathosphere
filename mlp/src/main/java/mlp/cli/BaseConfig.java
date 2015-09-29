@@ -4,7 +4,7 @@ package mlp.cli;
 import com.beust.jcommander.Parameter;
 
 public class BaseConfig {
-  private static final String DEFAULT_POS_MODEL = 
+  private static final String DEFAULT_POS_MODEL =
       "edu/stanford/nlp/models/pos-tagger/english-left3words/english-left3words-distsim.tagger";
   @Parameter(names = {"-pos", "--posModel"}, description = "POS model to use")
   private String model = DEFAULT_POS_MODEL;
@@ -24,9 +24,12 @@ public class BaseConfig {
   @Parameter(names = {"-t", "--threshold"})
   private double threshold = 0.8;
 
+  @Parameter(names = {"-T", "--TeX"})
+  private Boolean useTeXIdentifiers = false;
+
   public BaseConfig() {
   }
-  
+
   public BaseConfig(String model, String language, double alpha, double beta, double gamma,
       double threshold) {
     this.model = model;
@@ -59,5 +62,9 @@ public class BaseConfig {
 
   public String getLanguage() {
     return language;
+  }
+
+  public Boolean getUseTeXIdentifiers() {
+    return useTeXIdentifiers;
   }
 }

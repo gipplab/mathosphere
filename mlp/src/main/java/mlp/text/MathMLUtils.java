@@ -101,32 +101,32 @@ public class MathMLUtils {
     return result;
   }
 
-  public static Multiset<String> extractIdentifiers(MathTag math) {
+  public static Multiset<String> extractIdentifiers(MathTag math, Boolean useTeXIdentifiers) {
     try {
-      return tryExtractIdentifiers(math);
+      return tryExtractIdentifiers(math,useTeXIdentifiers);
     } catch (Exception e) {
       LOGGER.warn("exception occurred during 'extractIdentifiers'. Returning an empty set", e);
       return HashMultiset.create();
     }
   }
 
-  private static Multiset<String> tryExtractIdentifiers(MathTag math) {
+  private static Multiset<String> tryExtractIdentifiers(MathTag math, Boolean useTeXIdentifiers) {
     if (math.getMarkUpType() == MathMarkUpType.LATEX) {
       return extractIdentifiersFromTex(math.getTagContent());
     } else {
-      return extractIdentifiersFromMathML(math.getContent());
+      return extractIdentifiersFromMathML(math.getContent(),useTeXIdentifiers);
     }
   }
 
   public static Multiset<String> extractIdentifiersFromTex(String tex) {
     String mathML = texToMathML(tex);
     LOGGER.debug("converted {} to {}", tex.replaceAll("\\s+", " "), mathML);
-    return extractIdentifiersFromMathML(mathML);
+    return extractIdentifiersFromMathML(mathML, false);
   }
 
-  public static Multiset<String> extractIdentifiersFromMathML(String mathML) {
+  public static Multiset<String> extractIdentifiersFromMathML(String mathML, Boolean useTeXIdentifiers) {
     try {
-      return tryParseWithXpath(mathML);
+      return tryParseWithXpath(mathML,useTeXIdentifiers);
     } catch (Exception e) {
       LOGGER.warn("exception occurred while trying to parse mathML with xpath... "
         + "backing off to the regexp parser.", e);
@@ -134,7 +134,7 @@ public class MathMLUtils {
     }
   }
 
-  private static Multiset<String> tryParseWithXpath(String mathML) {
+  private static Multiset<String> tryParseWithXpath(String mathML, boolean useTeX) {
     XML xml = new XMLDocument(mathML);
     xml = xml.registerNs("m", "http://www.w3.org/1998/Math/MathML");
     Multiset<String> result = HashMultiset.create();
@@ -148,8 +148,14 @@ public class MathMLUtils {
         LOGGER.debug("unexpected input: {} for {}", debugText, nmsubMathMl);
         continue;
       }
-      String id = UnicodeUtils.normalizeString(text.get(0));
-      String sub = UnicodeUtils.normalizeString(text.get(1));
+      String id;      String sub;
+      if ( useTeX ){
+        id = UnicodeMap.string2TeX(text.get(0));
+        sub = "{" + UnicodeMap.string2TeX(text.get(1)) + "}";
+      } else {
+        id = UnicodeUtils.normalizeString(text.get(0));
+        sub = UnicodeUtils.normalizeString(text.get(1));
+      }
       if (BLACKLIST.contains(id)) {
         continue;
       }
@@ -161,7 +167,12 @@ public class MathMLUtils {
 
     List<String> allIdentifiers = xml.xpath("//m:mi[not(ancestor::m:msub)]/text()");
     for (String rawId : allIdentifiers) {
-      String id = UnicodeUtils.normalizeString(rawId);
+      String id;
+      if ( useTeX ){
+        id = UnicodeMap.string2TeX(rawId);
+      } else {
+        id = UnicodeUtils.normalizeString(rawId);
+      }
       if (BLACKLIST.contains(id)) {
         continue;
       }

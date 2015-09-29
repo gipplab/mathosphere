@@ -74,7 +74,7 @@ public class MathMLUtilsTest {
   @Test
   public void extractFromMathML_complextMsub_noSubCaptured() throws Exception {
     String mathML = readResource("complex_msub.xml");
-    Set<String> identifiers = MathMLUtils.extractIdentifiersFromMathML(mathML).elementSet();
+    Set<String> identifiers = MathMLUtils.extractIdentifiersFromMathML(mathML, false).elementSet();
     identifiers.forEach(id -> assertFalse(id.contains("_")));
   }
 
@@ -86,7 +86,7 @@ public class MathMLUtilsTest {
   @Test
   public void extractFromMathMl_identifiersFromMSub_notCaptured() throws Exception {
     String mathML = readResource("math-R_specific.xml");
-    Set<String> identifiers = MathMLUtils.extractIdentifiersFromMathML(mathML).elementSet();
+    Set<String> identifiers = MathMLUtils.extractIdentifiersFromMathML(mathML, false).elementSet();
     Set<String> expected = ImmutableSet.of("R_specific", "R", "M");
     assertFalse(identifiers.contains("specific"));
     assertEquals(expected, identifiers);
@@ -95,7 +95,7 @@ public class MathMLUtilsTest {
   @Test
   public void extractFromMathML_notParsable() throws Exception {
     String mathML = readResource("math-xmlparsingerror.xml");
-    Set<String> identifiers = MathMLUtils.extractIdentifiersFromMathML(mathML).elementSet();
+    Set<String> identifiers = MathMLUtils.extractIdentifiersFromMathML(mathML, false).elementSet();
     // "a" is a stop word, it's removed
     Set<String> expected = ImmutableSet.of("x", "b", "c");
     assertEquals(expected, identifiers);

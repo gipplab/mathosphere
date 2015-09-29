@@ -29,12 +29,12 @@ public class CliMainTest {
 
   @Test
   public void testList() throws Exception {
-
-    String[] args = new String[3];
+    String[] args = new String[4];
     final ClassLoader classLoader = getClass().getClassLoader();
     args[0] = "list";
     args[1] = "-in";
     args[2] = classLoader.getResource("mlp/hamiltonian_esc.txt").getFile();
+    args[3] = "-T";
     final PrintStream stdout = System.out;
     final ByteArrayOutputStream myOut = new ByteArrayOutputStream();
     System.setOut(new PrintStream(myOut));
