@@ -1,0 +1,66 @@
+{{Use dmy dates|date=October 2014}}
+
+The '''Nakajima–Zwanzig equation''' (named after the physicists [[Sadao Nakajima]] and [[Robert Zwanzig]]) is an integral equation describing the time evolution of the "relevant" part of a quantum-mechanical system. It is formulated in the [[density matrix]] formalism and can be regarded a generalization of the [[Master equation]].
+
+The equation belongs to the [[Mori–Zwanzig theory]] within the statistical mechanics of irreversible processes (named after [[Hazime Mori]]). By means of a projection operator the dynamics is split into a slow, collective part (''relevant part'') and a rapidly fluctuating ''irrelevant'' part. The goal is to develop dynamical equations for the collective part.
+
+== Derivation ==
+The starting point<ref>A derivation analogous to that presented here is found, for instance, in Breuer, Petruccione ''The theory of open quantum systems'', Oxford University Press 2002, S.443ff</ref> is the quantum mechanical [[Liouville equation]] ([[von Neumann equation]])
+:<math>\partial_t \rho = \frac{i}{\hbar}[\rho,H] = L \rho,</math>
+where the Liouville operator <math>L</math> is defined as <math>L A = \frac{i}{\hbar}[A,H]</math>.
+
+The [[density operator]] (density matrix) <math>\rho</math> is split by means of a projection operator
+<math>\mathcal{P}</math>
+into two parts
+<math>\rho =\left( \mathcal{P}+\mathcal{Q} \right)\rho </math>,
+where <math>\mathcal{Q}\equiv 1-\mathcal{P}</math>. The projection operator <math>\mathcal{P}</math> projects onto the aforementioned ''relevant'' part, for which an equation of motion is to be derived.
+
+The Liouville – von Neumann equation can thus be represented as
+:<math>{\partial_t}\left( \begin{matrix}
+   \mathcal{P}  \\
+   \mathcal{Q}  \\
+\end{matrix} \right)\rho =\left( \begin{matrix}
+   \mathcal{P}  \\
+   \mathcal{Q}  \\
+\end{matrix} \right)L\left( \begin{matrix}
+   \mathcal{P}  \\
+   \mathcal{Q}  \\
+\end{matrix} \right)\rho +\left( \begin{matrix}
+   \mathcal{P}  \\
+   \mathcal{Q}  \\
+\end{matrix} \right)L\left( \begin{matrix}
+   \mathcal{Q}  \\
+   \mathcal{P}  \\
+\end{matrix} \right)\rho.</math>
+
+The second line is formally solved as<ref>To verify the equation it suffices to write the function under the integral as a derivative, ''de<sup>QLt'</sup>Qe<sup>L(t-t')</sup> = -e<sup>QLt'</sup>QLPe<sup>L(t-t')</sup>dt'''.</ref>
+:<math>\mathcal{Q}\rho ={{e}^{\mathcal{Q}Lt}}Q\rho (t=0)+\int_{0}^{t}dt'{e}^{\mathcal{Q}Lt'}\mathcal{Q}L\mathcal{P}\rho (t-{t}').</math>
+
+By plugging the solution into the first equation, we obtain the Nakajima–Zwanzig equation:
+
+:<math>\partial_t \mathcal{P}\rho =\mathcal{P}L\mathcal{P}\rho +\underbrace{\mathcal{P}L{{e}^{\mathcal{Q}Lt}}Q\rho (t=0)}_{=0}+\mathcal{P}L\int_{0}^{t}{dt'{{e}^{\mathcal{Q}Lt'}}\mathcal{Q}L\mathcal{P}\rho (t-{t}')}.</math>
+
+Under the assumption that the inhomogeneous term vanishes<ref>Such an assumption can be made if we assume that the irrelevant part of the density matrix is 0 at the initial time, so that the projector for t=0 is the identity.</ref> and using
+:<math>\mathcal{K}\left( t \right)\equiv\mathcal{P}L{{e}^{\mathcal{Q}Lt}}\mathcal{Q}L\mathcal{P},</math>
+:<math>\mathcal{P}\rho \equiv {{\rho }_\mathrm{rel}},</math> as well as
+:<math>\mathcal{P}^2=\mathcal{P},</math>
+we obtain the final form
+:<math>\partial_t{\rho }_\mathrm{rel}=\mathcal{P}L{{\rho}_\mathrm{rel}}+\int_{0}^{t}{dt'\mathcal{K}({t}'){{\rho }_\mathrm{rel}}(t-{t}')}.</math>
+
+== References ==
+* E. Fick, G. Sauermann: ''The Quantum Statistics of Dynamic Processes'' Springer-Verlag, 1983, ISBN {{ISSN|3-540-50824-4}}.
+* Heinz-Peter Breuer, Francesco Petruccione: ''Theory of Open Quantum Systems.'' Oxford, 2002  ISBN {{ISSN|970-0-19-852063-4}}
+* Hermann Grabert ''Projection operator techniques in nonequilibrium statistical mechanics'', Springer Tracts in Modern Physics, Band 95, 1982
+* R. Kühne, P. Reineker: ''Nakajima-Zwanzig's generalized master equation: Evaluation of the kernel of the integro-differential equation'', Zeitschrift für Physik B (Condensed Matter), Band 31, 1978, S. 105–110, [http://dx.doi.org/10.1007/BF01320131 Abstract]
+
+=== Original works ===
+*{{Literatur|Autor=Sadao Nakajima|Titel=On Quantum Theory of Transport Phenomena|Sammelwerk=Progress of Theoretical Physics|Band=20|Nummer=6|Seiten=948–959|Jahr=1958}}
+*{{Literatur|Autor=Robert Zwanzig|Titel=Ensemble Method in the Theory of Irreversibility|Sammelwerk=Journal of Chemical Physics|Band=33|Nummer=5|Seiten=1338–1341|Jahr=1960}}
+* [http://wiki.physikerwelt.de/wiki/Nakajima-Zwanzig-Gleichung original paper]
+
+== Notes ==
+<references />
+
+{{DEFAULTSORT:Nakajima-Zwanzig equation}}
+[[Category:Quantum mechanics]]
+[[Category:Statistical mechanics]]
