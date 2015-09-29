@@ -1,10 +1,10 @@
 package mlp.cli;
 
-import java.io.Serializable;
-
 import com.beust.jcommander.Parameters;
 
+import java.io.Serializable;
+
 @Parameters(commandDescription="Finds, extracts and lists different things")
-public class ListCommandConfig implements Serializable {
+public class ListCommandConfig extends MlpCommandConfig implements Serializable {
 
 }

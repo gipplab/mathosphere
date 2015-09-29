@@ -1,8 +1,7 @@
 package mlp;
 
-import org.apache.commons.lang3.NotImplementedException;
-
 import mlp.cli.CliParams;
+import org.apache.commons.lang3.NotImplementedException;
 
 
 /**
@@ -19,7 +18,7 @@ public class Main {
     } else if ("count".equals(command)) {
       throw new NotImplementedException("The 'count' command is not yet implemented");
     } else if ("list".equals(command)) {
-      throw new NotImplementedException("The 'list' command is not yet implemented");
+      RelationExtractor.list(params.getList());
     } else if ("extract".equals(command)) {
       RelationExtractor.run(params.getMlp());
     } else if ("mlp".equals(command)) {
