@@ -1,9 +1,12 @@
 package mlp.text;
 
+import mlp.PatternMatchingRelationFinder;
 import mlp.text.WikiTextUtils.MathMarkUpType;
 import mlp.text.WikiTextUtils.MathTag;
+import org.junit.Ignore;
 import org.junit.Test;
 
+import java.io.FileWriter;
 import java.util.Arrays;
 import java.util.List;
 
@@ -98,17 +101,20 @@ public class WikiTextUtilsTest {
       "    </annotation-xml>\n" +
       "    <annotation encoding=\"application/x-tex\" id=\"p1.1.m1.1c\">E</annotation>\n" +
       "  </semantics>\n" +
-      "</math>,",out);
+      "</math>,", out);
 
   }
 
+  @Ignore
   @Test
-  public void testSubsup() throws Exception {
-
-  }
-
-  @Test
-  public void testExtractPlainText() throws Exception {
-
+  public void renderResource() throws Exception {
+    final String name = "n20";
+    String testString = PosTaggerTest.readText(name + "_wiki.txt");
+    String targetPath=PatternMatchingRelationFinder.class.getResource(name+"_wiki.txt").getPath().replace("_wiki.txt", "_exc.txt");
+    FileWriter writer = new FileWriter(targetPath);
+    String out = WikiTextUtils.renderAllFormulae(testString);
+    writer.write(out);
+    writer.close();
+    System.out.println(out);
   }
 }
