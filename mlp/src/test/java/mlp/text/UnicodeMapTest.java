@@ -12,7 +12,7 @@ public class UnicodeMapTest {
   @Test
   public void testString2TeX() throws Exception {
     String teX = UnicodeMap.string2TeX("Ĥψ=Eψ");
-    assertEquals("\\hat{H}\\psi =E\\psi ", teX);
+    assertEquals("\\hat{H}\\psi =E\\psi", teX);
   }
 
   @Test
