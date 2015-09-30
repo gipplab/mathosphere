@@ -3,16 +3,24 @@ package mlp.text;
 import mlp.PatternMatchingRelationFinder;
 import mlp.pojos.MathTag;
 import mlp.text.WikiTextUtils.MathMarkUpType;
+import org.apache.commons.io.IOUtils;
 import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
 public class WikiTextUtilsTest {
+
+  public static String getTestResource(String testFile) throws IOException {
+    InputStream stream = PatternMatchingRelationFinder.class.getResourceAsStream(testFile);
+    return IOUtils.toString(stream, "utf-8");
+  }
 
   @Test
   public void findMathTags() {

@@ -1,17 +1,14 @@
 package mlp.contracts;
 
 import com.google.common.base.Throwables;
-import mlp.PatternMatchingRelationFinder;
 import mlp.cli.FlinkMlpCommandConfig;
 import mlp.flink.ListCollector;
 import mlp.pojos.*;
 import mlp.text.PosTag;
 import mlp.text.WikiTextUtils;
-import org.apache.commons.io.IOUtils;
+import mlp.text.WikiTextUtilsTest;
 import org.junit.Test;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
@@ -27,7 +24,7 @@ public class TextAnnotatorMapperTest {
 
   @Test
   public void test() throws Exception {
-    final String mathMLExtract = getTestResource("schrödinger_eq.xml").trim();
+    final String mathMLExtract = WikiTextUtilsTest.getTestResource("schrödinger_eq.xml").trim();
     List<RawWikiDocument> docs = readWikiTextDocuments("augmentendwikitext.xml");
 
     RawWikiDocument schroedingerIn = docs.get(0);
@@ -69,7 +66,7 @@ public class TextAnnotatorMapperTest {
   }
 
   public static List<RawWikiDocument> readWikiTextDocuments(String testFile) throws Exception {
-    String rawImput = getTestResource(testFile);
+    String rawImput = WikiTextUtilsTest.getTestResource(testFile);
     String[] pages = rawImput.split("</page>");
     TextExtractorMapper textExtractor = new TextExtractorMapper();
 
@@ -79,11 +76,6 @@ public class TextAnnotatorMapperTest {
     }
 
     return out.getList();
-  }
-
-  private static String getTestResource(String testFile) throws IOException {
-    InputStream stream = PatternMatchingRelationFinder.class.getResourceAsStream(testFile);
-    return IOUtils.toString(stream,"utf-8");
   }
 
   private static TextAnnotatorMapper createTestInstance() {

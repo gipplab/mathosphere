@@ -1,5 +1,6 @@
 package mlp.pojos;
 
+import com.google.common.collect.Multiset;
 import com.google.common.hash.HashFunction;
 import com.google.common.hash.Hashing;
 import mlp.text.WikiTextUtils.MathMarkUpType;
@@ -7,6 +8,8 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import java.nio.charset.StandardCharsets;
+
+import static mlp.text.MathMLUtils.extractIdentifiersFromMathML;
 
 
 public class MathTag {
@@ -43,6 +46,10 @@ public class MathTag {
 
   public MathMarkUpType getMarkUpType() {
     return markUpType;
+  }
+
+  public Multiset<String> getIdentifier(boolean useTeX, boolean useBlacklist){
+    return extractIdentifiersFromMathML(getContent(), useTeX,useBlacklist);
   }
 
   @Override

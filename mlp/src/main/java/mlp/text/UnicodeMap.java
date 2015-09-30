@@ -2346,6 +2346,8 @@ public class UnicodeMap {
     unicode2tex.put(0xD7FE, "\\mathtt{8}");
     unicode2tex.put(0xD7FF, "\\mathtt{9}");
 
+    unicode2tex.put(0x1d563, "\\mathbb{r}");
+    //unicode2tex.put(0xF09D95A3, "\\mathbb{r}");
 
     return unicode2tex.build();
 /*    unicode2tex.put("\u2AFD\u20E5", "{\\rlap{\\textbackslash}{{/}\\!\\!{/}}}");
@@ -2390,7 +2392,7 @@ public class UnicodeMap {
       res.append(char2TeX(code));
     }
 
-    return res.toString();
+    return res.toString().trim();
   }
 
   public static String char2TeX(int codePoint) {

@@ -114,19 +114,19 @@ public class MathMLUtils {
     if (math.getMarkUpType() == MathMarkUpType.LATEX) {
       return extractIdentifiersFromTex(math.getTagContent());
     } else {
-      return extractIdentifiersFromMathML(math.getContent(),useTeXIdentifiers);
+      return extractIdentifiersFromMathML(math.getContent(),useTeXIdentifiers,false);
     }
   }
 
   public static Multiset<String> extractIdentifiersFromTex(String tex) {
     String mathML = texToMathML(tex);
     LOGGER.debug("converted {} to {}", tex.replaceAll("\\s+", " "), mathML);
-    return extractIdentifiersFromMathML(mathML, false);
+    return extractIdentifiersFromMathML(mathML, false,false);
   }
 
-  public static Multiset<String> extractIdentifiersFromMathML(String mathML, Boolean useTeXIdentifiers) {
+  public static Multiset<String> extractIdentifiersFromMathML(String mathML, Boolean useTeXIdentifiers, boolean useBlacklist) {
     try {
-      return tryParseWithXpath(mathML,useTeXIdentifiers);
+      return tryParseWithXpath(mathML,useTeXIdentifiers, useBlacklist);
     } catch (Exception e) {
       LOGGER.warn("exception occurred while trying to parse mathML with xpath... "
         + "backing off to the regexp parser.", e);
@@ -134,7 +134,7 @@ public class MathMLUtils {
     }
   }
 
-  private static Multiset<String> tryParseWithXpath(String mathML, boolean useTeX) {
+  private static Multiset<String> tryParseWithXpath(String mathML, boolean useTeX, boolean useBlacklist) {
     XML xml = new XMLDocument(mathML);
     xml = xml.registerNs("m", "http://www.w3.org/1998/Math/MathML");
     Multiset<String> result = HashMultiset.create();
@@ -156,7 +156,7 @@ public class MathMLUtils {
         id = UnicodeUtils.normalizeString(text.get(0));
         sub = UnicodeUtils.normalizeString(text.get(1));
       }
-      if (BLACKLIST.contains(id)) {
+      if (useBlacklist && BLACKLIST.contains(id)) {
         continue;
       }
       if (isNumeric(id)) {
@@ -173,7 +173,7 @@ public class MathMLUtils {
       } else {
         id = UnicodeUtils.normalizeString(rawId);
       }
-      if (BLACKLIST.contains(id)) {
+      if (useBlacklist && BLACKLIST.contains(id)) {
         continue;
       }
       if (isNumeric(id)) {
