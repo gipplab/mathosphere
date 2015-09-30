@@ -1,16 +1,16 @@
 package mlp.contracts;
 
 import com.google.common.base.Throwables;
-
 import mlp.PatternMatchingRelationFinder;
 import mlp.cli.FlinkMlpCommandConfig;
 import mlp.flink.ListCollector;
 import mlp.pojos.*;
 import mlp.text.PosTag;
-
+import mlp.text.WikiTextUtils;
 import org.apache.commons.io.IOUtils;
 import org.junit.Test;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
 import java.util.List;
@@ -27,9 +27,13 @@ public class TextAnnotatorMapperTest {
 
   @Test
   public void test() throws Exception {
+    final String mathMLExtract = getTestResource("schrödinger_eq.xml").trim();
     List<RawWikiDocument> docs = readWikiTextDocuments("augmentendwikitext.xml");
-    RawWikiDocument schroedingerIn = docs.get(0);
 
+    RawWikiDocument schroedingerIn = docs.get(0);
+    assertTrue( "the seed math tag was not found", schroedingerIn.text.contains(mathMLExtract) );
+    MathTag tag = new MathTag(0,mathMLExtract, WikiTextUtils.MathMarkUpType.MATHML);
+    String placeholder = tag.placeholder();
     ParsedWikiDocument shroedingerOut = TEST_INSTANCE.map(schroedingerIn);
 
     Set<String> identifiers = shroedingerOut.getIdentifiers().elementSet();
@@ -38,15 +42,14 @@ public class TextAnnotatorMapperTest {
     List<Formula> formulas = shroedingerOut.getFormulas();
     Formula formula = null;
     for (Formula f : formulas) {
-      //@TODO: find a more intuitive way of testing
-      if ("FORMULA_e661437c77b5fcb3f5d9f09bd84eded2".equals(f.getKey())) {
+      if (placeholder.equals(f.getKey())) {
         formula = f;
         break;
       }
     }
     //@TODO: reactivate tests
-    //assertNotNull(formula);
-    //assertTrue(contains(formula, shroedingerOut.getSentences()));
+    assertNotNull("the placeholder was not found", formula);
+    assertTrue("the placeholder was not part of the sentence", contains(formula, shroedingerOut.getSentences()));
   }
 
   private static boolean contains(Formula formula, List<Sentence> sentences) {
@@ -66,8 +69,7 @@ public class TextAnnotatorMapperTest {
   }
 
   public static List<RawWikiDocument> readWikiTextDocuments(String testFile) throws Exception {
-    InputStream stream = PatternMatchingRelationFinder.class.getResourceAsStream(testFile);
-    String rawImput = IOUtils.toString(stream);
+    String rawImput = getTestResource(testFile);
     String[] pages = rawImput.split("</page>");
     TextExtractorMapper textExtractor = new TextExtractorMapper();
 
@@ -77,6 +79,11 @@ public class TextAnnotatorMapperTest {
     }
 
     return out.getList();
+  }
+
+  private static String getTestResource(String testFile) throws IOException {
+    InputStream stream = PatternMatchingRelationFinder.class.getResourceAsStream(testFile);
+    return IOUtils.toString(stream,"utf-8");
   }
 
   private static TextAnnotatorMapper createTestInstance() {

@@ -31,7 +31,7 @@ public class TextExtractorMapperTest {
     assertEquals(2, output.size());
 
     RawWikiDocument doc1 = output.get(0);
-    assertEquals(doc1.title, "Schrödinger equation");
+    assertEquals("Schrödinger equation", doc1.title);
     assertFalse(doc1.text.contains("&lt;math"));
     assertTrue(doc1.text.contains("<math"));
 
