@@ -39,7 +39,7 @@ public class PosTaggerTest {
 
     List<Word> expected = Arrays.asList(w("where", "WRB"), w("Ψ", "ID"), w("is", "VBZ"), w("the", "DT"),
       w("wave function", "LNK"), w("of", "IN"), w("the", "DT"), w("quantum system", "NN+"),
-      w(",", ","), w("i", "FW"), w("is", "VBZ"), w("the", "DT"), w("imaginary unit", "LNK"),
+      w(",", ","), w("i", "ID"), w("is", "VBZ"), w("the", "DT"), w("imaginary unit", "LNK"),
       w(",", ","), w("ħ", "NN"), w("is", "VBZ"), w("the", "DT"),
       w("reduced Planck constant", "LNK"));
 
