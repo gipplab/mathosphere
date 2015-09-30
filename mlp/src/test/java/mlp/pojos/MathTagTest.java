@@ -15,7 +15,7 @@ public class MathTagTest {
 
   @Test
   public void testGetContentHash() throws Exception {
-    MathTag t = new MathTag(1, "<math><mrow><mo>x</mo></mrow></math>", WikiTextUtils.MathMarkUpType.MATHML);
+    MathTag t = new MathTag(1, "<math><mrow><mo>x</mo><mrow></math>", WikiTextUtils.MathMarkUpType.MATHML);
     assertEquals("2cf05995ef521b456aa419201d160406", t.getContentHash());
   }
 
