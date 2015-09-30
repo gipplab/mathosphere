@@ -3,17 +3,11 @@ package mlp.contracts;
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multiset;
-
 import mlp.cli.BaseConfig;
-import mlp.pojos.Formula;
-import mlp.pojos.ParsedWikiDocument;
-import mlp.pojos.RawWikiDocument;
-import mlp.pojos.Sentence;
+import mlp.pojos.*;
 import mlp.text.MathMLUtils;
 import mlp.text.PosTagger;
 import mlp.text.WikiTextUtils;
-import mlp.text.WikiTextUtils.MathTag;
-
 import org.apache.flink.api.common.functions.RichMapFunction;
 import org.apache.flink.configuration.Configuration;
 import org.slf4j.Logger;

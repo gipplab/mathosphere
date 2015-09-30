@@ -4,10 +4,9 @@ import mlp.PatternMatchingRelationFinder;
 import mlp.cli.FlinkMlpCommandConfig;
 import mlp.contracts.TextAnnotatorMapper;
 import mlp.pojos.Formula;
+import mlp.pojos.MathTag;
 import mlp.pojos.Sentence;
 import mlp.pojos.Word;
-import mlp.text.WikiTextUtils.MathTag;
-
 import org.apache.commons.io.IOUtils;
 import org.junit.Test;
 import org.slf4j.Logger;

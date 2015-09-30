@@ -1,8 +1,8 @@
 package mlp.text;
 
 import mlp.PatternMatchingRelationFinder;
+import mlp.pojos.MathTag;
 import mlp.text.WikiTextUtils.MathMarkUpType;
-import mlp.text.WikiTextUtils.MathTag;
 import org.junit.Ignore;
 import org.junit.Test;
 
