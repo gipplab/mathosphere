@@ -105,7 +105,7 @@ public class WikiTextUtilsTest {
       "  <semantics id=\"p1.1.m1.1a\">\n" +
       "    <mi id=\"p1.1.m1.1.1\" xref=\"p1.1.m1.1.1.cmml\">E</mi>\n" +
       "    <annotation-xml encoding=\"MathML-Content\" id=\"p1.1.m1.1b\">\n" +
-      "      <ci id=\"p1.1.m1.1.1.cmml\" xref=\"p1.1.m1.1.1\">italic-E</ci>\n" +
+      "      <ci id=\"p1.1.m1.1.1.cmml\" xref=\"p1.1.m1.1.1\">E</ci>\n" +
       "    </annotation-xml>\n" +
       "    <annotation encoding=\"application/x-tex\" id=\"p1.1.m1.1c\">E</annotation>\n" +
       "  </semantics>\n" +

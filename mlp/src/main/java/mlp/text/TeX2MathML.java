@@ -27,7 +27,7 @@ public class TeX2MathML {
   private static String tex2json(String tex){
     HttpClient client = new DefaultHttpClient();
     //HttpPost post = new HttpPost("http://localhost/convert");
-    HttpPost post = new HttpPost("http://latexml.mathweb.org/convert");
+    HttpPost post = new HttpPost("http://gw125.iu.xsede.org:8888");
     try {
       List<NameValuePair> nameValuePairs = new ArrayList<>(1);
       nameValuePairs.add(new BasicNameValuePair("tex",
