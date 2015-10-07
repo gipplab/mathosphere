@@ -1,14 +1,20 @@
 package mlp.text;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.guava.GuavaModule;
 import com.google.common.collect.HashMultiset;
+import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Multiset;
+import com.google.common.collect.Multisets;
+import mlp.cli.CountCommandConfig;
 import org.apache.flink.api.java.tuple.Tuple2;
 import org.codehaus.jackson.JsonFactory;
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.JsonToken;
 
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
+
+import static mlp.RelationExtractor.createPrinter;
 
 /**
  * Created by Moritz on 07.10.2015.
@@ -98,4 +104,23 @@ public class TokenCounter {
     jParser.close();
   }
 
+  public static void run(CountCommandConfig config) {
+    try {
+      PrintWriter pw = createPrinter(config);
+      InputStream in = new FileInputStream(config.getInput());
+      TokenCounter tokenCounter = new TokenCounter();
+      ObjectMapper mapper = new ObjectMapper().registerModule(new GuavaModule());
+      if(config.isIdentifiers()){
+        ImmutableSet<Multiset.Entry<String>> entries = Multisets.copyHighestCountFirst(tokenCounter.countIdentifer(in)).entrySet();
+        mapper.writeValue(pw,entries);
+      } else {
+        ImmutableSet<Multiset.Entry<Tuple2<String, String>>> entries = Multisets.copyHighestCountFirst(tokenCounter.countTokens(in)).entrySet();
+        mapper.writeValue(pw,entries);
+      }
+      pw.flush();
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+
+  }
 }

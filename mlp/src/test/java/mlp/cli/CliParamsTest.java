@@ -1,10 +1,8 @@
 package mlp.cli;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
 import org.junit.Test;
+
+import static org.junit.Assert.*;
 
 public class CliParamsTest {
 
@@ -26,7 +24,7 @@ public class CliParamsTest {
     assertTrue(count.isFormulas());
     assertFalse(count.isDefinitions());
     assertFalse(count.isIdentifiers());
-    assertEquals("c:/tmp/mlp/input/", count.getDataset());
+    assertEquals("c:/tmp/mlp/input/", count.getInput());
   }
 
 }
