@@ -1,0 +1,2687 @@
+[
+  {
+    "inputhash": "00001453ad6771567b7ec0e7404a1e79",
+    "texvcinfo": [
+      "P",
+      "B_{0}",
+      "\\eta",
+      "\\eta",
+      "e",
+      "B_{0}'",
+      "\\eta"
+    ]
+  },
+  {
+    "inputhash": "0000239ab0143b8cd72151bf852d7af7",
+    "texvcinfo": [
+      "\\beth_{d}",
+      "\\alpha",
+      "\\omega",
+      "\\aleph_{0}"
+    ]
+  },
+  {
+    "inputhash": "00004cd84d4d46d0e37b841cd7509c2c",
+    "texvcinfo": [
+      "\\mathrm{REC}",
+      "N"
+    ]
+  },
+  {
+    "inputhash": "00009654348eebd7ab85d8599c25aace",
+    "texvcinfo": [
+      "W",
+      "k",
+      "k",
+      "k",
+      "\\varepsilon"
+    ]
+  },
+  {
+    "inputhash": "0000a3595ace35143948315a2841b307",
+    "texvcinfo": [
+      "h"
+    ]
+  },
+  {
+    "inputhash": "000138f6a2210ff1f9bb5eb7bc25ab6c",
+    "texvcinfo": [
+      "X",
+      "\\Sigma"
+    ]
+  },
+  {
+    "inputhash": "0001e5b7a90547e1d7bc8be8a5c1e161",
+    "texvcinfo": []
+  },
+  {
+    "inputhash": "00021ba3771fa2c4684c5639fecea94e",
+    "texvcinfo": [
+      "\\pi"
+    ]
+  },
+  {
+    "inputhash": "00023b9224ac900169410ee72115cea4",
+    "texvcinfo": [
+      "\\chi",
+      "T",
+      "T",
+      "g",
+      "a_{1}",
+      "T",
+      "g",
+      "a_{g}",
+      "T",
+      "g",
+      "a_{1}",
+      "q",
+      "g",
+      "T",
+      "q",
+      "g"
+    ]
+  },
+  {
+    "inputhash": "00029fdbca88b454dc6e742a8f404ca2",
+    "texvcinfo": [
+      "p",
+      "n"
+    ]
+  },
+  {
+    "inputhash": "0002a4a9343567b9a285b034b9a38ecb",
+    "texvcinfo": [
+      "p",
+      "E",
+      "c",
+      "h",
+      "f",
+      "c",
+      "h",
+      "\\lambda"
+    ]
+  },
+  {
+    "inputhash": "0002a95f3d21c0d5e5f455a832f2c17d",
+    "texvcinfo": [
+      "\\psi",
+      "e",
+      "i",
+      "\\gamma_{d}",
+      "\\alpha",
+      "x",
+      "\\psi"
+    ]
+  },
+  {
+    "inputhash": "0002cea3a95fae1835af3910d7ca6930",
+    "texvcinfo": [
+      "e",
+      "\\Delta",
+      "\\rho",
+      "\\epsilon_{0}",
+      "k",
+      "\\Delta",
+      "\\phi"
+    ]
+  },
+  {
+    "inputhash": "000303c8a822cfee55c1bd97c1d4cc4a",
+    "texvcinfo": [
+      "f_{c}",
+      "z",
+      "z",
+      "c"
+    ]
+  },
+  {
+    "inputhash": "000334cb9f0bccc26284c6ef02725e06",
+    "texvcinfo": [
+      "H",
+      "G",
+      "N",
+      "G'",
+      "N'"
+    ]
+  },
+  {
+    "inputhash": "0003cda16b8f0d055034e3c54846c175",
+    "texvcinfo": [
+      "m_{\\text,o}"
+    ]
+  },
+  {
+    "inputhash": "0003d3bfc208df07075efc742b3af376",
+    "texvcinfo": [
+      "\\mathbf{J_{2}}"
+    ]
+  },
+  {
+    "inputhash": "0003ff41496b4d8a9a60cf3e03db80f2",
+    "texvcinfo": [
+      "p",
+      "q",
+      "p",
+      "q",
+      "p"
+    ]
+  },
+  {
+    "inputhash": "00040a566d6ca57745bff5a2514f424c",
+    "texvcinfo": [
+      "A_{\\mu}",
+      "x_{i}"
+    ]
+  },
+  {
+    "inputhash": "00040baa2353e06d351f6c9dac889ece",
+    "texvcinfo": [
+      "d",
+      "s",
+      "g",
+      "d",
+      "t",
+      "g_{j,k}",
+      "d",
+      "x",
+      "j",
+      "d",
+      "x",
+      "k",
+      "j",
+      "k"
+    ]
+  },
+  {
+    "inputhash": "00047597e6585d2a8d77e2c4bb610401",
+    "texvcinfo": [
+      "\\bar{h}",
+      "s",
+      "i",
+      "L",
+      "c",
+      "i",
+      "k_{c}",
+      "k_{c}",
+      "L",
+      "i",
+      "c",
+      "\\bar{f}_{k_{c}}",
+      "s"
+    ]
+  },
+  {
+    "inputhash": "0004c246ad141d5412a457dc81323857",
+    "texvcinfo": [
+      "H_{1}",
+      "\\mathrm{A}_{3}",
+      "H_{1}",
+      "\\mathrm{A}_{4}",
+      "\\mathrm{C}_{3}"
+    ]
+  },
+  {
+    "inputhash": "000592a04b7c6c5cc9a9429a048b2757",
+    "texvcinfo": [
+      "\\mu",
+      "C_{1}",
+      "i",
+      "i",
+      "\\alpha_{i}",
+      "\\beta",
+      "i",
+      "I",
+      "i"
+    ]
+  },
+  {
+    "inputhash": "0005a6b0b0b3be71744f935c4a5eeb3a",
+    "texvcinfo": [
+      "f",
+      "\\mathcal{H}_{g}",
+      "V"
+    ]
+  },
+  {
+    "inputhash": "0005eff4a121d51b65af0ee36bc65e70",
+    "texvcinfo": [
+      "q",
+      "\\mathbf{\\pi}",
+      "k",
+      "K",
+      "q",
+      "\\mathbf{\\mu}_{k}",
+      "\\mathbf{\\Lambda}_{k}"
+    ]
+  },
+  {
+    "inputhash": "000643b3754284c8b2aeb53d4394f021",
+    "texvcinfo": [
+      "i",
+      "I",
+      "f",
+      "V_{i}",
+      "V_{i}"
+    ]
+  },
+  {
+    "inputhash": "0006b557602a072b21da57443b92f449",
+    "texvcinfo": []
+  },
+  {
+    "inputhash": "000723a6105c190f41462d560ad7458a",
+    "texvcinfo": [
+      "R",
+      "X_{1}",
+      "X_{n}"
+    ]
+  },
+  {
+    "inputhash": "000736cda6b8807641f5244f27742f56",
+    "texvcinfo": [
+      "P_{i,j}",
+      "f",
+      "A_{i,j}",
+      "f",
+      "\\mathbf{a}",
+      "j",
+      "f",
+      "\\mathbf{a}_{j}",
+      "f"
+    ]
+  },
+  {
+    "inputhash": "00073e38a79657d8dfb58930122512ce",
+    "texvcinfo": [
+      "A",
+      "x",
+      "y",
+      "d",
+      "x",
+      "B",
+      "x",
+      "y",
+      "d",
+      "y"
+    ]
+  },
+  {
+    "inputhash": "00078c12a085f724c262a7295f8d70b0",
+    "texvcinfo": [
+      "\\text",
+      "40m",
+      "\\text",
+      "30m"
+    ]
+  },
+  {
+    "inputhash": "00079c0fe89f86a710a201e0689b2172",
+    "texvcinfo": [
+      "u",
+      "v",
+      "u",
+      "v",
+      "v",
+      "u"
+    ]
+  },
+  {
+    "inputhash": "0008510cb7881764a542e8502fc95b28",
+    "texvcinfo": [
+      "\\Psi",
+      "w",
+      "v",
+      "w",
+      "\\alpha",
+      "v",
+      "i",
+      "n",
+      "w",
+      "i",
+      "q",
+      "v_{i}"
+    ]
+  },
+  {
+    "inputhash": "0008c41df7229f6c3753f8c45db87f04",
+    "texvcinfo": [
+      "f_{x}",
+      "m"
+    ]
+  },
+  {
+    "inputhash": "0008d640a21f52b6b7067d7b03547108",
+    "texvcinfo": [
+      "v_{i}",
+      "\\Phi",
+      "x_{i}"
+    ]
+  },
+  {
+    "inputhash": "000904ee9bee58b7b339bfe4b842e49a",
+    "texvcinfo": [
+      "x",
+      "y",
+      "P",
+      "x",
+      "y",
+      "y",
+      "x",
+      "P",
+      "x",
+      "y"
+    ]
+  },
+  {
+    "inputhash": "000931b2d65a0f6ce57156ed9e2f457e",
+    "texvcinfo": [
+      "\\mathrm{resultant}",
+      "p",
+      "T"
+    ]
+  },
+  {
+    "inputhash": "000945530b96364391c181a406d4fa29",
+    "texvcinfo": [
+      "P",
+      "X_{i}",
+      "a"
+    ]
+  },
+  {
+    "inputhash": "0009d412dbeb47c56fe78c99cfd4dc08",
+    "texvcinfo": [
+      "p",
+      "c",
+      "u",
+      "\\rho"
+    ]
+  },
+  {
+    "inputhash": "0009d7ff4e372f215e5fc71b37a42038",
+    "texvcinfo": [
+      "R_{\\alpha,\\beta}",
+      "g_{\\alpha,\\beta}",
+      "R"
+    ]
+  },
+  {
+    "inputhash": "000a91452ffe8335b67f0e5ff2c0a767",
+    "texvcinfo": [
+      "P",
+      "A",
+      "\\Delta",
+      "f",
+      "B"
+    ]
+  },
+  {
+    "inputhash": "000ab33a85842800e48143f212ac5fc0",
+    "texvcinfo": [
+      "p",
+      "\\text",
+      "GeV",
+      "c",
+      "\\text",
+      "C",
+      "\\text",
+      "V",
+      "\\text",
+      "m",
+      "\\text",
+      "s",
+      "\\text",
+      "kg",
+      "\\text",
+      "m",
+      "\\text",
+      "s"
+    ]
+  },
+  {
+    "inputhash": "000ad1eb8a2c2182ff048350cc9eb0e8",
+    "texvcinfo": [
+      "\\alpha",
+      "x"
+    ]
+  },
+  {
+    "inputhash": "000ae84c0190bb851b585c79e3b8449f",
+    "texvcinfo": []
+  },
+  {
+    "inputhash": "000af2fae5bdfcd63e6dc3e5bce0dea3",
+    "texvcinfo": [
+      "f",
+      "x",
+      "x",
+      "X",
+      "x",
+      "x",
+      "f",
+      "x",
+      "x",
+      "X"
+    ]
+  },
+  {
+    "inputhash": "000b1d2bea2949b83a2325c116ed0f04",
+    "texvcinfo": [
+      "T",
+      "\\omega",
+      "T"
+    ]
+  },
+  {
+    "inputhash": "000b37155b94f927910c738a2cb82536",
+    "texvcinfo": [
+      "f",
+      "\\lambda",
+      "x",
+      "\\lambda",
+      "y",
+      "f",
+      "x",
+      "f",
+      "y"
+    ]
+  },
+  {
+    "inputhash": "000b55413dd8e51c6a5331d756bb35cd",
+    "texvcinfo": [
+      "r_{k}",
+      "B",
+      "B_{k}",
+      "B",
+      "B"
+    ]
+  },
+  {
+    "inputhash": "000b60e64695a061524870992c804694",
+    "texvcinfo": [
+      "\\mathfrak{H}",
+      "Z_{\\infty}",
+      "\\gamma_{1}",
+      "\\gamma_{2}",
+      "z_{\\infty}",
+      "Z_{\\infty}",
+      "\\gamma_{1}",
+      "\\gamma_{2}",
+      "z_{\\infty}"
+    ]
+  },
+  {
+    "inputhash": "000bdb583c44e7082a31ebb9e6d3270e",
+    "texvcinfo": [
+      "Y",
+      "\\theta",
+      "\\varphi",
+      "\\pi",
+      "e",
+      "i",
+      "\\varphi",
+      "\\theta",
+      "\\theta"
+    ]
+  },
+  {
+    "inputhash": "000c0ecd3b1cdd0c543c83fb72777e40",
+    "texvcinfo": [
+      "u",
+      "u",
+      "u"
+    ]
+  },
+  {
+    "inputhash": "000c247a72b758a4a7b58c94ef5c0143",
+    "texvcinfo": [
+      "C_{T}'"
+    ]
+  },
+  {
+    "inputhash": "000c2d05999df03021184202a05ed589",
+    "texvcinfo": [
+      "p",
+      "p"
+    ]
+  },
+  {
+    "inputhash": "000c2fdc9d5f7e0d8645da414718e55b",
+    "texvcinfo": [
+      "a",
+      "b",
+      "i",
+      "c",
+      "d",
+      "i",
+      "a",
+      "c",
+      "b",
+      "d",
+      "b",
+      "c",
+      "a",
+      "d",
+      "i"
+    ]
+  },
+  {
+    "inputhash": "000c509e2ba315d93d74f4358779d6db",
+    "texvcinfo": [
+      "V",
+      "Y",
+      "Y"
+    ]
+  },
+  {
+    "inputhash": "000ccb0783ce670a6c05781e17c96ac4",
+    "texvcinfo": [
+      "H",
+      "H_{e}",
+      "H_{h}",
+      "V",
+      "r_{e}",
+      "r_{h}"
+    ]
+  },
+  {
+    "inputhash": "000dd16a691352805a456b763a587df9",
+    "texvcinfo": [
+      "E",
+      "F"
+    ]
+  },
+  {
+    "inputhash": "000dd846c45c943c8bc9924ef48d1f0d",
+    "texvcinfo": [
+      "e",
+      "i",
+      "\\mathbf{kr}"
+    ]
+  },
+  {
+    "inputhash": "000de4afc6a32a049d59aeacdb9ef318",
+    "texvcinfo": [
+      "f",
+      "x",
+      "x",
+      "x"
+    ]
+  },
+  {
+    "inputhash": "000dfe97e8b66bd454b3cee3f7fdd708",
+    "texvcinfo": [
+      "e",
+      "c",
+      "n",
+      "\\alpha",
+      "n",
+      "\\alpha"
+    ]
+  },
+  {
+    "inputhash": "000e03d98da2c9a1864a463164762254",
+    "texvcinfo": [
+      "p"
+    ]
+  },
+  {
+    "inputhash": "000e18741a314511f1bc6557ae754035",
+    "texvcinfo": [
+      "\\mbox",
+      "E",
+      "N",
+      "\\pi",
+      "\\pi",
+      "d",
+      "N",
+      "d"
+    ]
+  },
+  {
+    "inputhash": "000e540b8ebc9ff725e5bb41d49be814",
+    "texvcinfo": [
+      "\\text",
+      "Spec ",
+      "B"
+    ]
+  },
+  {
+    "inputhash": "000e5c1739ea28760d66f6d05f0e18d1",
+    "texvcinfo": [
+      "J_{\\alpha}",
+      "\\infty",
+      "x",
+      "x",
+      "b",
+      "x",
+      "a"
+    ]
+  },
+  {
+    "inputhash": "000ec8a8686baebba2fe12442b863020",
+    "texvcinfo": [
+      "U",
+      "U"
+    ]
+  },
+  {
+    "inputhash": "000f32a1b8f6232759a658d470fe72c5",
+    "texvcinfo": [
+      "y",
+      "p",
+      "x"
+    ]
+  },
+  {
+    "inputhash": "000f743b3f56fd60b28545a4a844b238",
+    "texvcinfo": [
+      "\\Psi",
+      "i_{1}",
+      "i_{2}",
+      "\\alpha_{1}",
+      "\\alpha_{2}",
+      "\\Gamma",
+      "\\alpha_{1}",
+      "i_{1}",
+      "\\lambda",
+      "\\alpha_{1}",
+      "\\Gamma",
+      "\\alpha_{1}",
+      "\\alpha_{2}",
+      "i_{2}",
+      "\\lambda",
+      "\\alpha_{2}",
+      "i_{1}",
+      "i_{2}",
+      "\\Phi",
+      "\\alpha_{2}",
+      "N"
+    ]
+  },
+  {
+    "inputhash": "000f9bd1ad9b3b09c9aa4c60c45692fc",
+    "texvcinfo": [
+      "e",
+      "O",
+      "n",
+      "m",
+      "n",
+      "m"
+    ]
+  },
+  {
+    "inputhash": "000febfeef5745a752e85b94b75cf713",
+    "texvcinfo": [
+      "t_{2}",
+      "t_{1}",
+      "F_{t_{1},t_{0}}",
+      "p",
+      "D",
+      "X"
+    ]
+  },
+  {
+    "inputhash": "000ff44c1346a4a8419c634aa6792a6b",
+    "texvcinfo": [
+      "m",
+      "k"
+    ]
+  },
+  {
+    "inputhash": "0010ce961820b14519f4edb042677035",
+    "texvcinfo": [
+      "\\vec{b}",
+      "\\vec{B}",
+      "B"
+    ]
+  },
+  {
+    "inputhash": "0010d521b3b9b45b628e76ac7a7e0477",
+    "texvcinfo": [
+      "\\mathit{MPC}",
+      "\\Delta",
+      "C",
+      "\\Delta",
+      "Y"
+    ]
+  },
+  {
+    "inputhash": "00114d741d2031bf778fd8e43ac0cbeb",
+    "texvcinfo": [
+      "r",
+      "\\theta_{r}",
+      "\\phi_{r}"
+    ]
+  },
+  {
+    "inputhash": "00114eb3ada60483709d9dc80af6eb9e",
+    "texvcinfo": [
+      "L_{\\mathrm{dB}}",
+      "P_{1}",
+      "P_{0}"
+    ]
+  },
+  {
+    "inputhash": "0011faa0f320ff9b7bc5a9e9ec93bd19",
+    "texvcinfo": [
+      "g",
+      "\\mathcal{D}",
+      "\\Sigma"
+    ]
+  },
+  {
+    "inputhash": "001222b8821d1da420dbe52f697b6ceb",
+    "texvcinfo": [
+      "x'",
+      "y'",
+      "x",
+      "y",
+      "A",
+      "b"
+    ]
+  },
+  {
+    "inputhash": "00123391b9f305cfe97c99078735ae00",
+    "texvcinfo": [
+      "\\tilde{k}"
+    ]
+  },
+  {
+    "inputhash": "00124f922ab1a17e5e2a9a6c50b17a11",
+    "texvcinfo": [
+      "A",
+      "B",
+      "B",
+      "A",
+      "A",
+      "B",
+      "I"
+    ]
+  },
+  {
+    "inputhash": "0012c829b2e3bbb683c9a17381e15b4e",
+    "texvcinfo": [
+      "\\mathbf{T}",
+      "s",
+      "\\Delta",
+      "s",
+      "\\mathbf{T}",
+      "s",
+      "\\Delta",
+      "s",
+      "\\mathbf{q}",
+      "s"
+    ]
+  },
+  {
+    "inputhash": "0013269ea11adb76b0e5c55c5d2da6e3",
+    "texvcinfo": []
+  },
+  {
+    "inputhash": "0013271afabc2f00efdeafe99dabfc9c",
+    "texvcinfo": [
+      "P",
+      "s_{i}"
+    ]
+  },
+  {
+    "inputhash": "0013383b9f26d293e8432ded6c3e5520",
+    "texvcinfo": [
+      "S_{1}",
+      "a_{1}",
+      "S_{2}",
+      "a_{1}",
+      "a_{2}",
+      "S_{3}",
+      "a_{1}",
+      "a_{2}",
+      "a_{3}",
+      "S_{N}",
+      "a_{1}",
+      "a_{2}",
+      "a_{3}"
+    ]
+  },
+  {
+    "inputhash": "001384455f0b171fd018da65ca08ae9a",
+    "texvcinfo": [
+      "V",
+      "V",
+      "v_{1}",
+      "v_{2}",
+      "v_{2}",
+      "v_{1}",
+      "\\text",
+      " for all ",
+      "v_{1}",
+      "v_{2}",
+      "V"
+    ]
+  },
+  {
+    "inputhash": "0013ada8dc886f1e875984bee5fdea27",
+    "texvcinfo": [
+      "\\rho_{x,n,m}",
+      "\\rho_{x,m}",
+      "\\rho_{x_{n},m}"
+    ]
+  },
+  {
+    "inputhash": "0013b318ce7c8b8ca29b706aaa5ec54d",
+    "texvcinfo": [
+      "\\mathbf{A}",
+      "\\mathbf{B}",
+      "\\mathbf{A}",
+      "\\mathbf{B}",
+      "\\mathbf{A}",
+      "\\mathbf{B}",
+      "\\mathbf{A}",
+      "\\mathbf{B}"
+    ]
+  },
+  {
+    "inputhash": "00141348cd6cabc06166525b88bb1493",
+    "texvcinfo": [
+      "\\alpha",
+      "n_{\\alpha}",
+      "m_{\\alpha}",
+      "r"
+    ]
+  },
+  {
+    "inputhash": "00143ba3149a2dfac0bbad577d553b6c",
+    "texvcinfo": [
+      "\\vec{A}",
+      "B",
+      "x",
+      "\\hat{y}",
+      "y",
+      "\\hat{x}"
+    ]
+  },
+  {
+    "inputhash": "001462c07545b4ba9084efef2a96cf16",
+    "texvcinfo": [
+      "q",
+      "q",
+      "p",
+      "q",
+      "r",
+      "q",
+      "p",
+      "q",
+      "q",
+      "r",
+      "q",
+      "q",
+      "p",
+      "r",
+      "q",
+      "q",
+      "q",
+      "p",
+      "r",
+      "p",
+      "r",
+      "p",
+      "q",
+      "q",
+      "r",
+      "q_{1}"
+    ]
+  },
+  {
+    "inputhash": "00147bc5b79f2b9ed52b22af8d073758",
+    "texvcinfo": [
+      "z",
+      "x",
+      "y"
+    ]
+  },
+  {
+    "inputhash": "00148c7652375ca3d73b9b13e86e6c09",
+    "texvcinfo": [
+      "\\psi",
+      "\\hat{\\alpha}",
+      "\\psi",
+      "\\hat{\\alpha}",
+      "\\hat{\\beta}",
+      "\\hat{G}_{X}"
+    ]
+  },
+  {
+    "inputhash": "0014c0cbfae8735b260b1d36141ba2fb",
+    "texvcinfo": [
+      "\\alpha",
+      "\\gamma",
+      "n",
+      "\\mathbb{R}",
+      "\\overline{\\varphixttn}"
+    ]
+  },
+  {
+    "inputhash": "0014ef9d03a61d379058ee81b8306ba2",
+    "texvcinfo": [
+      "a",
+      "d",
+      "x",
+      "d",
+      "y",
+      "a",
+      "d",
+      "x",
+      "d",
+      "z",
+      "a",
+      "d",
+      "y",
+      "d",
+      "z"
+    ]
+  },
+  {
+    "inputhash": "0014f6558469ba4380401518bc112eab",
+    "texvcinfo": [
+      "\\rho",
+      "X"
+    ]
+  },
+  {
+    "inputhash": "0014fd219fc32a104f17c85feed0ec75",
+    "texvcinfo": [
+      "d",
+      "d",
+      "x",
+      "c",
+      "x",
+      "x",
+      "c",
+      "c",
+      "c"
+    ]
+  },
+  {
+    "inputhash": "001526024fa254f09f605fe336f1efb9",
+    "texvcinfo": [
+      "x",
+      "C_{i}"
+    ]
+  },
+  {
+    "inputhash": "0015764e9f5498369d691b91d3e231a0",
+    "texvcinfo": [
+      "f_{x,y}",
+      "f_{y,x}"
+    ]
+  },
+  {
+    "inputhash": "0015c94baa30e618e20880703cd9574e",
+    "texvcinfo": [
+      "\\kappa"
+    ]
+  },
+  {
+    "inputhash": "00160f32f654a73bc70209c66ba07704",
+    "texvcinfo": [
+      "K",
+      "\\mathbb{Q}"
+    ]
+  },
+  {
+    "inputhash": "001664050cbc76569028d6ac26295a53",
+    "texvcinfo": [
+      "\\theta",
+      "n"
+    ]
+  },
+  {
+    "inputhash": "0016dac7c84a2f7a9a5b064c68d1af56",
+    "texvcinfo": [
+      "B",
+      "n_{b}",
+      "n_{\\bar{b}}"
+    ]
+  },
+  {
+    "inputhash": "0017516c449d71df2d3f9b14a22cab76",
+    "texvcinfo": [
+      "R",
+      "D",
+      "R",
+      "D_{0}",
+      "c",
+      "t"
+    ]
+  },
+  {
+    "inputhash": "001758801bb0a24a60d89d6ed42620aa",
+    "texvcinfo": [
+      "g",
+      "a",
+      "b",
+      "c",
+      "d"
+    ]
+  },
+  {
+    "inputhash": "00178a6c0a72a69875dabaf4d5ccc192",
+    "texvcinfo": [
+      "p",
+      "b",
+      "a",
+      "c",
+      "c",
+      "d",
+      "b",
+      "d",
+      "e",
+      "a",
+      "e"
+    ]
+  },
+  {
+    "inputhash": "00178f10a40e91f76517d52061ef2a42",
+    "texvcinfo": [
+      "n"
+    ]
+  },
+  {
+    "inputhash": "00179f58dfc9cf36493673f0dacf255e",
+    "texvcinfo": [
+      "s_{V}",
+      "\\mathcal{R}"
+    ]
+  },
+  {
+    "inputhash": "0017f09b2d0eb84ef7d74112761e5ca2",
+    "texvcinfo": [
+      "\\Phi",
+      "\\Phi",
+      "\\Phi",
+      "x",
+      "p",
+      "A",
+      "A",
+      "m",
+      "S",
+      "S",
+      "p",
+      "A",
+      "A",
+      "m",
+      "S",
+      "S",
+      "\\varepsilon_{w}",
+      "A",
+      "A",
+      "m_{w}",
+      "S",
+      "S"
+    ]
+  },
+  {
+    "inputhash": "0017fa64796d63c8af98928a15b3662c",
+    "texvcinfo": [
+      "F",
+      "\\mathbf{e}_{y}"
+    ]
+  },
+  {
+    "inputhash": "001803962c3d9e04abb4057c65fa219a",
+    "texvcinfo": [
+      "d_{\\phi}"
+    ]
+  },
+  {
+    "inputhash": "00180c42d14cacb3f499b74661393fb8",
+    "texvcinfo": [
+      "f",
+      "s",
+      "g",
+      "s",
+      "f",
+      "s",
+      "p",
+      "p",
+      "g",
+      "s",
+      "q",
+      "q",
+      "s",
+      "S"
+    ]
+  },
+  {
+    "inputhash": "001848ad365fbadd5ad138e8c017229c",
+    "texvcinfo": [
+      "c_{\\rm,s}"
+    ]
+  },
+  {
+    "inputhash": "0018ea864cfdaca5dd616457e5376705",
+    "texvcinfo": [
+      "X",
+      "Y",
+      "Z"
+    ]
+  },
+  {
+    "inputhash": "001906e750dc40c74b91cf7d58e53031",
+    "texvcinfo": [
+      "S",
+      "k"
+    ]
+  },
+  {
+    "inputhash": "001914d9d31353c1e3f3a0cc4f5d1b26",
+    "texvcinfo": [
+      "\\mathbf{a}_{\\mathrm{average}}",
+      "\\Delta",
+      "\\mathbf{v}",
+      "\\Delta",
+      "t"
+    ]
+  },
+  {
+    "inputhash": "0019535400d4fd1cc406673a5c837318",
+    "texvcinfo": [
+      "i",
+      "\\phi",
+      "V_{i}",
+      "q",
+      "V",
+      "q",
+      "i",
+      "V_{i}"
+    ]
+  },
+  {
+    "inputhash": "0019561cf8dcc36cdbaef1e31544dba0",
+    "texvcinfo": [
+      "W",
+      "L"
+    ]
+  },
+  {
+    "inputhash": "00195c93942fa87df4fc3cc6475b99f9",
+    "texvcinfo": [
+      "h",
+      "k",
+      "d",
+      "\\theta"
+    ]
+  },
+  {
+    "inputhash": "0019c83f9d0e4f79dbb27fa6520759ef",
+    "texvcinfo": [
+      "\\ell",
+      "m"
+    ]
+  },
+  {
+    "inputhash": "001a3615880485d99edbd2bcfd14bbd6",
+    "texvcinfo": [
+      "i",
+      "d_{\\tau}"
+    ]
+  },
+  {
+    "inputhash": "001a607e35251386d2e1be0dfd149e51",
+    "texvcinfo": [
+      "\\mathbf{L}",
+      "\\mathbf{r}",
+      "\\mathbf{p}",
+      "\\mathbf{I}",
+      "\\boldsymbol{\\omega}"
+    ]
+  },
+  {
+    "inputhash": "001ab4e8bcdb353a5c9bd1db301c1b29",
+    "texvcinfo": [
+      "x",
+      "n",
+      "a",
+      "a",
+      "x",
+      "n",
+      "a",
+      "x",
+      "a",
+      "x",
+      "n",
+      "n",
+      "a",
+      "x",
+      "n"
+    ]
+  },
+  {
+    "inputhash": "001ac223727c30afb98538642f53b42f",
+    "texvcinfo": []
+  },
+  {
+    "inputhash": "001ad3e03ed6e69c3304e438fa6e082b",
+    "texvcinfo": [
+      "\\mathbb{P}",
+      "Y",
+      "X",
+      "\\infty",
+      "f_{Y,X}",
+      "y",
+      "y",
+      "y",
+      "\\pi",
+      "y",
+      "\\pi"
+    ]
+  },
+  {
+    "inputhash": "001b05b435b5ca1ad78f35000decd950",
+    "texvcinfo": [
+      "g",
+      "x",
+      "x",
+      "x"
+    ]
+  },
+  {
+    "inputhash": "001bae4d7ab52c8a0edd0a57e8d85701",
+    "texvcinfo": [
+      "\\mathrm{Poi}",
+      "C",
+      "\\mathrm{Poi}",
+      "\\mathrm{Poi}"
+    ]
+  },
+  {
+    "inputhash": "001bde6f639fbdb6285b504b829d3dce",
+    "texvcinfo": [
+      "b",
+      "x",
+      "x"
+    ]
+  },
+  {
+    "inputhash": "001c03be5066415d5004e2ad5cd961da",
+    "texvcinfo": [
+      "\\mathbf{E}",
+      "z",
+      "t",
+      "e",
+      "z",
+      "\\delta_{s,k,i,n}",
+      "\\mathrm{Re}",
+      "\\mathbf{E}_{0}",
+      "e",
+      "i",
+      "k",
+      "z",
+      "\\omega",
+      "t"
+    ]
+  },
+  {
+    "inputhash": "001c03cd18548eff08e44a1c6a40460b",
+    "texvcinfo": []
+  },
+  {
+    "inputhash": "001c1c698265214507f5814c8c9bbe62",
+    "texvcinfo": [
+      "f",
+      "x",
+      "\\nu",
+      "x",
+      "F_{\\nu,\\mu}",
+      "x",
+      "\\nu",
+      "F_{\\nu,\\mu}",
+      "x",
+      "\\mbox",
+      "if ",
+      "x",
+      "\\Gamma",
+      "\\nu",
+      "\\pi",
+      "\\nu",
+      "\\Gamma",
+      "\\nu",
+      "\\mu",
+      "\\mbox",
+      "if ",
+      "x"
+    ]
+  },
+  {
+    "inputhash": "001c5d215d3b2e814fd7cd1aa4ff25d9",
+    "texvcinfo": [
+      "\\Sigma",
+      "\\chi",
+      "n"
+    ]
+  },
+  {
+    "inputhash": "001c5d9c01ea2876ea70689bc638e282",
+    "texvcinfo": [
+      "\\omega_{k}"
+    ]
+  },
+  {
+    "inputhash": "001c9503cb4f65ca231b9ff284672084",
+    "texvcinfo": [
+      "\\mathbf{m}_{1}"
+    ]
+  },
+  {
+    "inputhash": "001ce3f609a62621c609e14916adfe6d",
+    "texvcinfo": [
+      "s_{2}",
+      "r_{2}",
+      "c",
+      "x_{2}",
+      "\\mathrm{mod}",
+      "q"
+    ]
+  },
+  {
+    "inputhash": "001d17159eebbaefe304508512f197cc",
+    "texvcinfo": [
+      "n",
+      "n"
+    ]
+  },
+  {
+    "inputhash": "001d433c42ed4314705b2e49be9be3c5",
+    "texvcinfo": [
+      "\\operatorname{Weight}",
+      "\\sigma",
+      "i",
+      "n",
+      "a_{i,\\sigma,i}"
+    ]
+  },
+  {
+    "inputhash": "001da83ce80e2772b581b06641d3ca0c",
+    "texvcinfo": [
+      "\\hat{U}",
+      "\\hat{U}",
+      "I"
+    ]
+  },
+  {
+    "inputhash": "001de956296095739ae9e0dc253c9269",
+    "texvcinfo": [
+      "C",
+      "\\ell",
+      "E",
+      "F",
+      "E",
+      "\\rho",
+      "C",
+      "\\ell_{n}",
+      "\\mathbb{R}"
+    ]
+  },
+  {
+    "inputhash": "001df96de10d73eb37ced28a37eed908",
+    "texvcinfo": [
+      "\\theta",
+      "\\zeta",
+      "n",
+      "a_{g,n}"
+    ]
+  },
+  {
+    "inputhash": "001e2e0eb8437d7fafe16bdea61c10f3",
+    "texvcinfo": [
+      "A",
+      "\\ell",
+      "\\text",
+      "P"
+    ]
+  },
+  {
+    "inputhash": "001e37a6336dbdddd5ac30dfc8964b0d",
+    "texvcinfo": [
+      "r_{i,j}"
+    ]
+  },
+  {
+    "inputhash": "001e7337ad903328d8889cc1ede11dc1",
+    "texvcinfo": [
+      "h_{\\bar{a}}",
+      "\\bar{x}",
+      "\\mathrm{strong}",
+      "a_{0}",
+      "i",
+      "k",
+      "a_{i}",
+      "x_{i}",
+      "w",
+      "w"
+    ]
+  },
+  {
+    "inputhash": "001ea95cf12dc19b9749fa4c5600c6ed",
+    "texvcinfo": [
+      "W",
+      "W",
+      "W",
+      "W",
+      "W",
+      "W",
+      "W"
+    ]
+  },
+  {
+    "inputhash": "001f090921d4950e090223a9db6fb0be",
+    "texvcinfo": [
+      "\\mu_{k}",
+      "A",
+      "A_{k}",
+      "\\epsilon",
+      "k",
+      "N"
+    ]
+  },
+  {
+    "inputhash": "001f1531e895160d2f69783938a8d931",
+    "texvcinfo": [
+      "P",
+      "B",
+      "A",
+      "P",
+      "B"
+    ]
+  },
+  {
+    "inputhash": "001f223d90ce21bb776d2afe729bfeac",
+    "texvcinfo": [
+      "\\mathcal{C}",
+      "\\mathbf{q}",
+      "\\mathbb{R}",
+      "N"
+    ]
+  },
+  {
+    "inputhash": "001f504393a856e45d22e00796231c32",
+    "texvcinfo": [
+      "\\vec{r}",
+      "t"
+    ]
+  },
+  {
+    "inputhash": "001f53b99bd91a14b91c2e4d6d62757a",
+    "texvcinfo": [
+      "Z",
+      "j",
+      "g_{j}",
+      "\\mathrm{e}",
+      "\\beta",
+      "E_{j}"
+    ]
+  },
+  {
+    "inputhash": "001fb78130e343f9c200bd3aa484a3f7",
+    "texvcinfo": [
+      "\\tau",
+      "E_{t,h}",
+      "E'",
+      "E''",
+      "E''",
+      "D",
+      "E''",
+      "\\overline{\\xi}",
+      "D",
+      "E''",
+      "B_{g}",
+      "\\Sigma_{t}",
+      "E'"
+    ]
+  },
+  {
+    "inputhash": "001fdd3fb9e94017c83e467233ef49ec",
+    "texvcinfo": [
+      "H",
+      "f",
+      "P",
+      "f_{\\overline{z}}"
+    ]
+  },
+  {
+    "inputhash": "001fdfda5cdd7974a1f1e9f94673914b",
+    "texvcinfo": [
+      "V",
+      "w",
+      "q",
+      "w",
+      "q",
+      "w_{s}",
+      "q_{s}",
+      "u",
+      "q",
+      "u",
+      "q",
+      "u_{s}",
+      "q_{s}"
+    ]
+  },
+  {
+    "inputhash": "00201b4361e4f3f5e5e6700e906ab77e",
+    "texvcinfo": [
+      "f_{1}",
+      "f_{n}",
+      "k"
+    ]
+  },
+  {
+    "inputhash": "002094dbb4ecaa0e1203ad652f1688dc",
+    "texvcinfo": [
+      "\\theta_{k}",
+      "\\theta_{k}"
+    ]
+  },
+  {
+    "inputhash": "00213d222a8d87df7a615d7276c5a6cc",
+    "texvcinfo": [
+      "s_{0}",
+      "s_{0}"
+    ]
+  },
+  {
+    "inputhash": "0021503bde14e7a6b4016da9424dcf7d",
+    "texvcinfo": [
+      "e",
+      "x",
+      "x",
+      "x"
+    ]
+  },
+  {
+    "inputhash": "002155c7baeb5176edda09dbdefab697",
+    "texvcinfo": [
+      "E",
+      "A",
+      "s",
+      "E",
+      "s",
+      "A",
+      "\\hbar",
+      "c",
+      "\\pi",
+      "a",
+      "\\zeta"
+    ]
+  },
+  {
+    "inputhash": "0021c015403002b9cd758587bb4b6964",
+    "texvcinfo": [
+      "q_{2}",
+      "k",
+      "N",
+      "k",
+      "N"
+    ]
+  },
+  {
+    "inputhash": "00222862eb12394ac0c8c08e36208b90",
+    "texvcinfo": [
+      "R",
+      "R",
+      "\\alpha",
+      "\\beta",
+      "I",
+      "J",
+      "e",
+      "I",
+      "\\alpha",
+      "e",
+      "J",
+      "\\beta"
+    ]
+  },
+  {
+    "inputhash": "00223afcebe050cdafb431b459794ef3",
+    "texvcinfo": [
+      "k",
+      "p",
+      "N",
+      "N"
+    ]
+  },
+  {
+    "inputhash": "00225356a24bd1ec942aeca27c1a547a",
+    "texvcinfo": [
+      "v"
+    ]
+  },
+  {
+    "inputhash": "0022573b4553c3cd0fcebdfc5e357e55",
+    "texvcinfo": [
+      "R",
+      "\\phi",
+      "x",
+      "\\phi",
+      "y",
+      "\\phi",
+      "y",
+      "R",
+      "\\phi",
+      "x"
+    ]
+  },
+  {
+    "inputhash": "00226656ea0692401f9834fe6994da11",
+    "texvcinfo": [
+      "S'"
+    ]
+  },
+  {
+    "inputhash": "0022669f61dc6da750ad3b0b6cd0ab48",
+    "texvcinfo": [
+      "\\text",
+      "Ker",
+      "k",
+      "l",
+      "\\text",
+      "Im",
+      "i",
+      "j"
+    ]
+  },
+  {
+    "inputhash": "0022f6407bd7dc02538291c1ffe49744",
+    "texvcinfo": [
+      "x",
+      "X",
+      "X_{0}",
+      "\\lambda"
+    ]
+  },
+  {
+    "inputhash": "00231e43bf02e01b0e106fc44adb74e5",
+    "texvcinfo": [
+      "Y_{1}",
+      "Y_{2}",
+      "Y_{3}"
+    ]
+  },
+  {
+    "inputhash": "002326506700d44c9abb37d147e43b5b",
+    "texvcinfo": [
+      "v_{c}",
+      "\\alpha",
+      "\\beta",
+      "c",
+      "\\alpha",
+      "\\beta",
+      "\\alpha",
+      "\\beta"
+    ]
+  },
+  {
+    "inputhash": "002366902dffd8673e5f838a29448df7",
+    "texvcinfo": [
+      "e",
+      "\\mathbf{p}",
+      "u"
+    ]
+  },
+  {
+    "inputhash": "0023c250d7374bd8d6cec3b306e3c490",
+    "texvcinfo": [
+      "p_{1}",
+      "p_{2}"
+    ]
+  },
+  {
+    "inputhash": "002506aecf8a8eca0bddf976a3e83647",
+    "texvcinfo": [
+      "x_{r}",
+      "\\theta_{r}",
+      "t"
+    ]
+  },
+  {
+    "inputhash": "0025775d9f14d8821126387b6fa5c846",
+    "texvcinfo": [
+      "D",
+      "G",
+      "H",
+      "i",
+      "F_{i}",
+      "G",
+      "F_{i}",
+      "H"
+    ]
+  },
+  {
+    "inputhash": "0025b36cbda8365c09737acc9159df57",
+    "texvcinfo": [
+      "\\gamma"
+    ]
+  },
+  {
+    "inputhash": "0025cd57f9b2bd585ee2e2b8a93ef1ad",
+    "texvcinfo": [
+      "P",
+      "X_{1}",
+      "X_{N}",
+      "e",
+      "E",
+      "k_{\\rm,B}",
+      "T",
+      "X_{1}",
+      "d",
+      "X_{2}",
+      "d",
+      "X_{N}",
+      "e",
+      "E",
+      "k_{\\rm,B}",
+      "T"
+    ]
+  },
+  {
+    "inputhash": "0025e1301274e14414e139894060dc23",
+    "texvcinfo": [
+      "C",
+      "x_{j}",
+      "x_{k}"
+    ]
+  },
+  {
+    "inputhash": "0025e75d1ffda9c4bff6b3de9560fe9d",
+    "texvcinfo": [
+      "g",
+      "u",
+      "h",
+      "g",
+      "h",
+      "u"
+    ]
+  },
+  {
+    "inputhash": "00262cd78d796a5bb0baa8fd774728fd",
+    "texvcinfo": [
+      "\\Delta",
+      "n"
+    ]
+  },
+  {
+    "inputhash": "00267af4bf244fb88fc329938fac577c",
+    "texvcinfo": [
+      "r",
+      "K",
+      "D_{K}",
+      "F",
+      "K",
+      "L",
+      "K"
+    ]
+  },
+  {
+    "inputhash": "00269b430e579348929cba8ca3c9990c",
+    "texvcinfo": [
+      "p",
+      "m_{i}"
+    ]
+  },
+  {
+    "inputhash": "00269e3bc1fc99fff7bc6d83b0d70bd0",
+    "texvcinfo": [
+      "t"
+    ]
+  },
+  {
+    "inputhash": "0026a625f7d3fd336acca8ae2bfcc06e",
+    "texvcinfo": [
+      "E_{\\mathrm{h}}",
+      "a_{0}"
+    ]
+  },
+  {
+    "inputhash": "0026b62d6355a23f08830d835b366f02",
+    "texvcinfo": [
+      "\\omega"
+    ]
+  },
+  {
+    "inputhash": "00279c44b6f5f02d0d5a761218b91ce4",
+    "texvcinfo": [
+      "E_{\\text,k}",
+      "E_{t}",
+      "E_{\\text,r}"
+    ]
+  },
+  {
+    "inputhash": "0027acfd0c7490167b612c4b8b787509",
+    "texvcinfo": [
+      "\\mathrm{ber}",
+      "x",
+      "e",
+      "x"
+    ]
+  },
+  {
+    "inputhash": "0027e0646c279e8a69c9579dbef60613",
+    "texvcinfo": [
+      "g",
+      "T",
+      "\\mu",
+      "\\nu",
+      "t",
+      "L",
+      "L",
+      "\\mu",
+      "\\nu",
+      "\\mu"
+    ]
+  },
+  {
+    "inputhash": "002825bde096fa03b809c2b7fa66fe47",
+    "texvcinfo": [
+      "g",
+      "G",
+      "f",
+      "g",
+      "g"
+    ]
+  },
+  {
+    "inputhash": "00287e7aa89ea392e3ecb9cb2837eeb9",
+    "texvcinfo": [
+      "\\tilde{\\boldsymbol{\\Sigma}}"
+    ]
+  },
+  {
+    "inputhash": "002884828b36c8d042d8a853f57e5eec",
+    "texvcinfo": [
+      "P",
+      "X",
+      "x",
+      "Q",
+      "x",
+      "\\Pi",
+      "x",
+      "\\infty",
+      "e",
+      "X"
+    ]
+  },
+  {
+    "inputhash": "0028c604c387c78bc42c47b30010b464",
+    "texvcinfo": [
+      "i",
+      "i",
+      "i"
+    ]
+  },
+  {
+    "inputhash": "00290f11d9ba0677c1614e97a3e1f097",
+    "texvcinfo": [
+      "v",
+      "t",
+      "t_{0}",
+      "t",
+      "i",
+      "\\tau",
+      "\\tau"
+    ]
+  },
+  {
+    "inputhash": "002917cdd4458fc6214ed9aaf24cd803",
+    "texvcinfo": [
+      "v",
+      "c"
+    ]
+  },
+  {
+    "inputhash": "0029190f5afee4bdfbdd64cd63bc229b",
+    "texvcinfo": [
+      "\\delta",
+      "\\Omega",
+      "\\delta",
+      "k",
+      "k",
+      "x",
+      "\\delta_{0}",
+      "\\Omega_{0}"
+    ]
+  },
+  {
+    "inputhash": "002938e91e1d12948fb82e55131c99e7",
+    "texvcinfo": [
+      "D",
+      "f",
+      "\\infty",
+      "U",
+      "K"
+    ]
+  },
+  {
+    "inputhash": "00293e3339b4ec9cb5f75b6d8ad16918",
+    "texvcinfo": [
+      "z_{0}",
+      "z_{n}"
+    ]
+  },
+  {
+    "inputhash": "002978af538e0cb31098f49ab472ca41",
+    "texvcinfo": [
+      "n",
+      "z",
+      "n",
+      "Q",
+      "z"
+    ]
+  },
+  {
+    "inputhash": "0029b0f2bac08e3532a265b95a74cde9",
+    "texvcinfo": [
+      "\\lambda",
+      "L",
+      "B",
+      "d"
+    ]
+  },
+  {
+    "inputhash": "0029c61e83cd7d4546a128f79bd99822",
+    "texvcinfo": [
+      "A",
+      "A",
+      "A",
+      "A",
+      "L"
+    ]
+  },
+  {
+    "inputhash": "002a1bd731bf132e2f5b74a55b6f5c19",
+    "texvcinfo": [
+      "R_{A}",
+      "R",
+      "A",
+      "R"
+    ]
+  },
+  {
+    "inputhash": "002a358521632ae5e656e6a8b93ab594",
+    "texvcinfo": [
+      "\\mathbf{u}",
+      "x",
+      "\\rm",
+      "T"
+    ]
+  },
+  {
+    "inputhash": "002ad7526d493f4eff5ee031f9462971",
+    "texvcinfo": [
+      "P",
+      "F",
+      "B",
+      "F",
+      "C",
+      "F",
+      "W",
+      "M",
+      "C"
+    ]
+  },
+  {
+    "inputhash": "002aeef2f67a7ab68b15f786fe0b673c",
+    "texvcinfo": [
+      "L",
+      "C",
+      "L",
+      "T"
+    ]
+  },
+  {
+    "inputhash": "002aef6e85c21276cf6521320260f5a6",
+    "texvcinfo": [
+      "P",
+      "a",
+      "\\tau",
+      "q",
+      "m",
+      "F",
+      "a",
+      "b",
+      "P_{b}"
+    ]
+  },
+  {
+    "inputhash": "002af1a2280bc443756033b1f386b056",
+    "texvcinfo": [
+      "v",
+      "c",
+      "n"
+    ]
+  },
+  {
+    "inputhash": "002b0f6cbb93d8febf576f9419105ab4",
+    "texvcinfo": [
+      "\\eta",
+      "\\mathit{u}_{1}",
+      "\\mathit{u}_{4}",
+      "\\mathit{u}_{2}",
+      "\\mathit{u}_{3}"
+    ]
+  },
+  {
+    "inputhash": "002b6847b0190969eb52946cc76f76ea",
+    "texvcinfo": [
+      "a",
+      "x",
+      "b",
+      "y",
+      "e",
+      "c",
+      "x",
+      "d",
+      "y",
+      "f"
+    ]
+  },
+  {
+    "inputhash": "002b89f0fa3e9036b33e69d614b18060",
+    "texvcinfo": [
+      "P",
+      "F",
+      "G",
+      "I",
+      "J",
+      "E",
+      "q"
+    ]
+  },
+  {
+    "inputhash": "002b94338d3ad1e2adc60862582ccff2",
+    "texvcinfo": [
+      "\\text",
+      "bind",
+      "A",
+      "A",
+      "B",
+      "B",
+      "a",
+      "f",
+      "\\text",
+      "Nothing",
+      "\\text",
+      "if",
+      "a",
+      "\\text",
+      "Nothing",
+      "f",
+      "a'",
+      "\\text",
+      "if",
+      "a",
+      "\\text",
+      "Just",
+      "a'"
+    ]
+  },
+  {
+    "inputhash": "002b9647d9a7aacbaaf44a4c005c7f54",
+    "texvcinfo": [
+      "\\Delta",
+      "\\tau",
+      "\\Delta",
+      "s",
+      "c",
+      "\\Delta",
+      "s"
+    ]
+  },
+  {
+    "inputhash": "002ba4169a0d47f5c24244d1f9a82cfd",
+    "texvcinfo": [
+      "f",
+      "b",
+      "p",
+      "q",
+      "b",
+      "p",
+      "b",
+      "b"
+    ]
+  },
+  {
+    "inputhash": "002c115aa5aba4aac873a44e7ec65ae1",
+    "texvcinfo": [
+      "\\alpha_{\\tau,\\tau}",
+      "\\beta_{\\tau,\\tau}",
+      "e",
+      "\\beta",
+      "e",
+      "\\alpha"
+    ]
+  },
+  {
+    "inputhash": "002c1f766558995e2b1166f45a9eb1b0",
+    "texvcinfo": [
+      "w",
+      "n"
+    ]
+  },
+  {
+    "inputhash": "002c5051d7053790557612d8d2ef2019",
+    "texvcinfo": [
+      "h",
+      "C",
+      "k",
+      "v",
+      "\\rho_{v}",
+      "g",
+      "\\rho_{L}",
+      "\\rho_{v}",
+      "h_{f,g}",
+      "c_{p,v}",
+      "T_{s}",
+      "T_{s,a,t}",
+      "D_{o}",
+      "\\mu_{v}",
+      "T_{s}",
+      "T_{s,a,t}"
+    ]
+  },
+  {
+    "inputhash": "002c8bca1a57ee65188cb4adb14e632c",
+    "texvcinfo": [
+      "f",
+      "M",
+      "N"
+    ]
+  },
+  {
+    "inputhash": "002c92314c9a6e81956f72dbe61c39b2",
+    "texvcinfo": [
+      "F",
+      "\\overline{ABCD}"
+    ]
+  },
+  {
+    "inputhash": "002cbb90309335ef7183f232ac4bf55d",
+    "texvcinfo": [
+      "a",
+      "c",
+      "b"
+    ]
+  },
+  {
+    "inputhash": "002ccee36eec167b5d69bb76524b75fd",
+    "texvcinfo": [
+      "S",
+      "U_{\\mu}",
+      "C",
+      "S",
+      "U_{\\mu}",
+      "u"
+    ]
+  },
+  {
+    "inputhash": "002cddc16ea0c92f40c38202e128497f",
+    "texvcinfo": [
+      "\\mathrm{SquaresofLand}",
+      "\\mathrm{acres}",
+      "\\mathrm{SquaresofLand}",
+      "S",
+      "q",
+      "u",
+      "a",
+      "r",
+      "e",
+      "s",
+      "o",
+      "f",
+      "L",
+      "a",
+      "n",
+      "d",
+      "a",
+      "c",
+      "r",
+      "e",
+      "s"
+    ]
+  },
+  {
+    "inputhash": "002d84f8f9870a8115b7866dae7d6d31",
+    "texvcinfo": [
+      "\\sigma",
+      "y",
+      "\\tau",
+      "\\pi",
+      "\\tau",
+      "h"
+    ]
+  },
+  {
+    "inputhash": "002d94ef85bc9ea2c41a550659eb05eb",
+    "texvcinfo": [
+      "\\mathbf{E}",
+      "\\xi",
+      "i",
+      "k",
+      "x",
+      "\\omega",
+      "t",
+      "\\mathbf{\\hat{x}}"
+    ]
+  },
+  {
+    "inputhash": "002e06e607e26e75da249f7016a07881",
+    "texvcinfo": [
+      "m_{i}",
+      "t",
+      "t",
+      "\\gamma_{i}",
+      "T_{i}",
+      "n_{i}",
+      "Z_{i}",
+      "e",
+      "n_{i}",
+      "\\vec{E}"
+    ]
+  },
+  {
+    "inputhash": "002e08819822cb8016bf5d8593615452",
+    "texvcinfo": [
+      "\\varphi",
+      "\\pi",
+      "\\xi",
+      "\\pi",
+      "\\varphi"
+    ]
+  },
+  {
+    "inputhash": "002e5e677339873ae56de031260218b0",
+    "texvcinfo": [
+      "N",
+      "\\Gamma"
+    ]
+  },
+  {
+    "inputhash": "002e83cd7e3a8308c5836320f9ac437c",
+    "texvcinfo": [
+      "x",
+      "y",
+      "M",
+      "N",
+      "M",
+      "x",
+      "y",
+      "N"
+    ]
+  },
+  {
+    "inputhash": "002ec7f385d551b2c31aedcf1fce7f32",
+    "texvcinfo": [
+      "f_{k,i}"
+    ]
+  },
+  {
+    "inputhash": "002f374ea2a9a5316d9dc2de5ba0db82",
+    "texvcinfo": [
+      "z",
+      "k",
+      "k",
+      "i",
+      "k",
+      "z",
+      "i",
+      "s_{k,i}",
+      "i",
+      "k",
+      "z",
+      "z_{0}",
+      "i",
+      "j",
+      "i",
+      "k",
+      "z_{0}",
+      "j",
+      "i",
+      "s_{k,i,j,i}",
+      "k",
+      "i",
+      "j",
+      "i",
+      "k",
+      "z",
+      "z_{0}",
+      "i",
+      "j",
+      "i",
+      "k",
+      "z",
+      "j",
+      "i",
+      "j",
+      "i",
+      "s_{k,j}",
+      "k"
+    ]
+  },
+  {
+    "inputhash": "002f4e6f409b9611d103847696ce30dd",
+    "texvcinfo": [
+      "C",
+      "j",
+      "n"
+    ]
+  },
+  {
+    "inputhash": "002f4eb7b268cb63dbf1116acb66ed23",
+    "texvcinfo": [
+      "\\Psi",
+      "x",
+      "t",
+      "n",
+      "a_{n}",
+      "\\Psi_{n}",
+      "x",
+      "t",
+      "a_{1}",
+      "\\Psi_{1}",
+      "x",
+      "t",
+      "a_{2}",
+      "\\Psi_{2}",
+      "x",
+      "t"
+    ]
+  },
+  {
+    "inputhash": "002f8af8f796e82cb12d524429901412",
+    "texvcinfo": [
+      "\\rho",
+      "S",
+      "X"
+    ]
+  },
+  {
+    "inputhash": "002fa9e5e3ba534bf208264e185bab38",
+    "texvcinfo": [
+      "u",
+      "r",
+      "\\alpha"
+    ]
+  },
+  {
+    "inputhash": "002fde17fb2df61903a3cb830c71241b",
+    "texvcinfo": [
+      "a_{1}",
+      "b_{1}",
+      "c_{1}",
+      "d_{1}",
+      "a_{2}",
+      "b_{2}",
+      "c_{2}",
+      "d_{2}",
+      "a_{1}",
+      "a_{2}",
+      "b_{1}",
+      "b_{2}",
+      "c_{1}",
+      "c_{2}",
+      "d_{1}",
+      "d_{2}"
+    ]
+  },
+  {
+    "inputhash": "0030177130f83768f8c7205d73fdfadc",
+    "texvcinfo": [
+      "P",
+      "y",
+      "d",
+      "y",
+      "Q",
+      "x",
+      "d",
+      "x"
+    ]
+  },
+  {
+    "inputhash": "00306d74825ca4c699ac02b1aa3caa18",
+    "texvcinfo": []
+  },
+  {
+    "inputhash": "00308fa277a754af480d4ed68cce2a56",
+    "texvcinfo": [
+      "A",
+      "b",
+      "h"
+    ]
+  },
+  {
+    "inputhash": "0030dd6def07c2a872c23491e5c9ac7d",
+    "texvcinfo": [
+      "K",
+      "I",
+      "I"
+    ]
+  },
+  {
+    "inputhash": "0030ee1373b5795f95a2d5c2a66b49e5",
+    "texvcinfo": [
+      "\\Delta_{\\mathrm{adv}}",
+      "x",
+      "y"
+    ]
+  },
+  {
+    "inputhash": "003101e85d556302192b466977a60a8d",
+    "texvcinfo": [
+      "M",
+      "N",
+      "\\lambda",
+      "z",
+      "z",
+      "M",
+      "N"
+    ]
+  },
+  {
+    "inputhash": "00310fe1c22c34624ec5fd12b34213a3",
+    "texvcinfo": [
+      "R_{s,n,o,r,m,a,l}",
+      "\\omega",
+      "\\mu_{0}",
+      "\\sigma"
+    ]
+  },
+  {
+    "inputhash": "003144652c05f21650272d2e79242048",
+    "texvcinfo": [
+      "s",
+      "h'",
+      "P"
+    ]
+  },
+  {
+    "inputhash": "003163f025c02255900f7c4225a576b1",
+    "texvcinfo": [
+      "\\mathbf{t}",
+      "T",
+      "\\mathbf{V}",
+      "\\mathbf{W}",
+      "\\mathbf{\\Sigma}",
+      "T",
+      "\\mathbf{V}",
+      "T",
+      "\\mathbf{V}",
+      "\\mathbf{W}",
+      "\\mathbf{\\Sigma}",
+      "\\mathbf{V}",
+      "T",
+      "\\mathbf{t}"
+    ]
+  },
+  {
+    "inputhash": "0031b1a0e5881f6b0ca5ce52f4ab1b04",
+    "texvcinfo": [
+      "f",
+      "x",
+      "x",
+      "x"
+    ]
+  },
+  {
+    "inputhash": "0031b38c8e97ea03a011524a0ea2b77f",
+    "texvcinfo": [
+      "\\lambda",
+      "\\lambda",
+      "\\lambda",
+      "\\lambda",
+      "\\lambda",
+      "\\lambda",
+      "\\lambda",
+      "\\lambda",
+      "\\lambda",
+      "\\lambda",
+      "\\lambda",
+      "\\lambda",
+      "\\lambda",
+      "\\lambda",
+      "\\lambda",
+      "\\lambda",
+      "\\lambda",
+      "\\lambda",
+      "\\lambda",
+      "\\lambda",
+      "\\lambda",
+      "\\lambda"
+    ]
+  },
+  {
+    "inputhash": "003206d6d973a25d27d7badeae180f6a",
+    "texvcinfo": [
+      "A",
+      "r",
+      "e",
+      "a",
+      "b",
+      "a",
+      "s",
+      "e",
+      "h",
+      "e",
+      "i",
+      "g",
+      "h",
+      "t",
+      "\\pi",
+      "r",
+      "r",
+      "\\pi",
+      "r"
+    ]
+  },
+  {
+    "inputhash": "003222c0d800ed511b981e1590fd5579",
+    "texvcinfo": []
+  },
+  {
+    "inputhash": "003248f7ade6dc2990d6ae7a805628a8",
+    "texvcinfo": [
+      "\\mathrm{N}",
+      "\\mathrm{kg}",
+      "\\mathrm{ms}"
+    ]
+  },
+  {
+    "inputhash": "003275472d45cd9706e6d88486831729",
+    "texvcinfo": [
+      "\\phi_{1}",
+      "\\phi_{2}",
+      "\\phi_{3}"
+    ]
+  },
+  {
+    "inputhash": "0032b9d5134fe210abc9011e684a4d23",
+    "texvcinfo": [
+      "a_{i}"
+    ]
+  },
+  {
+    "inputhash": "0032f418f93bbaab612a5213f21b9122",
+    "texvcinfo": [
+      "T_{r}",
+      "T",
+      "T_{c}"
+    ]
+  },
+  {
+    "inputhash": "0033322e706f0c7b7dbae50459e4e1a2",
+    "texvcinfo": [
+      "\\Pi"
+    ]
+  },
+  {
+    "inputhash": "00338841eb1ca80fef553f18dd02d7db",
+    "texvcinfo": [
+      "x",
+      "y",
+      "y",
+      "x",
+      "P",
+      "y",
+      "P",
+      "x",
+      "x",
+      "P",
+      "x"
+    ]
+  },
+  {
+    "inputhash": "003395de5184f994ecb8f96a60890b6e",
+    "texvcinfo": [
+      "\\chi_{G}",
+      "\\lambda",
+      "V",
+      "k",
+      "G",
+      "\\lambda",
+      "k",
+      "G",
+      "T_{G}",
+      "\\lambda"
+    ]
+  },
+  {
+    "inputhash": "0033aa54194929b25fd3cf4bb6c7d369",
+    "texvcinfo": [
+      "z",
+      "p",
+      "\\overline{z}",
+      "q"
+    ]
+  },
+  {
+    "inputhash": "0033ccc8d80038ec44629c31966dfe06",
+    "texvcinfo": [
+      "v_{G,c}"
+    ]
+  },
+  {
+    "inputhash": "003411f88f779a77e67b7eccd9c6d41a",
+    "texvcinfo": [
+      "\\rho",
+      "\\alpha",
+      "i_{0}",
+      "A",
+      "\\alpha",
+      "\\sigma",
+      "i_{0}"
+    ]
+  },
+  {
+    "inputhash": "00345c04233a175efdd1e2494c42a238",
+    "texvcinfo": [
+      "\\phi_{1}"
+    ]
+  }
+]
