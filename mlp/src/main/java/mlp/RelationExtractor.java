@@ -52,7 +52,7 @@ public class RelationExtractor {
     return mlp.map(parsedDocument);
   }
 
-  private static PrintWriter createPrinter(MlpCommandConfig config) throws FileNotFoundException {
+  public static PrintWriter createPrinter(MlpCommandConfig config) throws FileNotFoundException {
     if (StringUtils.isNotBlank(config.getOutput())) {
       return new PrintWriter(new File(config.getOutput()));
     }

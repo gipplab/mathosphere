@@ -1,7 +1,7 @@
 package mlp;
 
 import mlp.cli.CliParams;
-import org.apache.commons.lang3.NotImplementedException;
+import mlp.text.TokenCounter;
 
 
 /**
@@ -16,7 +16,7 @@ public class Main {
     if ("help".equals(command)) {
       params.printHelp();
     } else if ("count".equals(command)) {
-      throw new NotImplementedException("The 'count' command is not yet implemented");
+      TokenCounter.run(params.getCount());
     } else if ("list".equals(command)) {
       RelationExtractor.list(params.getList());
     } else if ("extract".equals(command)) {
