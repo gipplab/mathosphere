@@ -7,12 +7,17 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Multiset;
 import com.google.common.collect.Multisets;
 import mlp.cli.CountCommandConfig;
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVPrinter;
 import org.apache.flink.api.java.tuple.Tuple2;
 import org.codehaus.jackson.JsonFactory;
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.JsonToken;
 
-import java.io.*;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.PrintWriter;
 
 import static mlp.RelationExtractor.createPrinter;
 
@@ -68,7 +73,7 @@ public class TokenCounter {
     JsonParser jParser = jfactory.createJsonParser(in);
     String hash = "";
     if (jParser.nextToken() != JsonToken.START_ARRAY) {
-      throw new IOException("Expected a JSON array Unexpected token " + jParser.getText());
+      emitError("Expected a JSON array Unexpected token " + jParser.getText());
     }
     while (jParser.nextToken() != JsonToken.END_ARRAY) {
       if (jParser.getCurrentToken() == JsonToken.START_OBJECT) {
@@ -78,30 +83,41 @@ public class TokenCounter {
           hash = jParser.getText();
           jParser.nextToken();
         } else {
-          throw new IOException("Missing inputhash " + jParser.getText());
+          emitError("Missing inputhash " + jParser.getText());
         }
       } else {
-        throw new IOException("Unexpected token " + jParser.getText());
+        emitError("Unexpected token " + jParser.getText());
       }
       switch (jParser.getCurrentName()) {
         case "tokens":
         case "texvcinfo":
-          if (jParser.nextToken() != JsonToken.START_ARRAY) {
-            throw new IOException("[ after texvcinfo expected");
-          } else {
+          if (jParser.nextToken() == JsonToken.START_ARRAY) {
             while (jParser.nextToken() != JsonToken.END_ARRAY) {
               tokens.addFromJson(jParser);
             }
+          } else if((jParser.nextToken() == JsonToken.START_OBJECT)) {
+            if (jParser.nextToken() != JsonToken.END_OBJECT) {
+              //noinspection StatementWithEmptyBody
+              do {
+
+              } while (jParser.nextToken() != JsonToken.END_OBJECT);
+            }
+          } else {
+            emitError("[ after texvcinfo expected in " + hash + " but got " + jParser.getText());
           }
           break;
         default:
-          throw new IOException("Unexpected token" + jParser.getText());
+          emitError("Unexpected token" + jParser.getText());
       }
       if (jParser.nextToken() != JsonToken.END_OBJECT) {
-        throw new IOException("Missing object end");
+        emitError("Missing object end");
       }
     }
     jParser.close();
+  }
+
+  private void emitError(String message) throws IOException {
+    throw new IOException(message);
   }
 
   public static void run(CountCommandConfig config) {
@@ -112,15 +128,23 @@ public class TokenCounter {
       ObjectMapper mapper = new ObjectMapper().registerModule(new GuavaModule());
       if(config.isIdentifiers()){
         ImmutableSet<Multiset.Entry<String>> entries = Multisets.copyHighestCountFirst(tokenCounter.countIdentifer(in)).entrySet();
-        mapper.writeValue(pw,entries);
+        if (config.isCsv()){
+          CSVPrinter printer = CSVFormat.DEFAULT.withHeader("tex", "count").withRecordSeparator("\n").print(pw);
+
+          for (Multiset.Entry<String> entry : entries) {
+            String[] output  = {entry.getElement(), String.valueOf(entry.getCount())};
+            printer.printRecord(output);
+          }
+        } else{
+          mapper.writeValue(pw, entries);
+        }
       } else {
         ImmutableSet<Multiset.Entry<Tuple2<String, String>>> entries = Multisets.copyHighestCountFirst(tokenCounter.countTokens(in)).entrySet();
-        mapper.writeValue(pw,entries);
+        mapper.writeValue(pw, entries);
       }
       pw.flush();
     } catch (Exception e) {
       e.printStackTrace();
     }
-
   }
 }
