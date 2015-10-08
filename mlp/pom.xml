@@ -99,7 +99,7 @@
         </dependency>
 
         <dependency>
-            <groupId>com.itshared</groupId>
+            <groupId>com.alexeygrigorev</groupId>
             <artifactId>rseq</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>

@@ -1,7 +1,8 @@
 package mlp.text;
 
+import com.alexeygrigorev.rseq.*;
 import com.google.common.collect.*;
-import com.itshared.rseq.*;
+
 import edu.stanford.nlp.ling.CoreAnnotations.PartOfSpeechAnnotation;
 import edu.stanford.nlp.ling.CoreAnnotations.SentencesAnnotation;
 import edu.stanford.nlp.ling.CoreAnnotations.TextAnnotation;
@@ -15,6 +16,7 @@ import mlp.pojos.Formula;
 import mlp.pojos.Sentence;
 import mlp.pojos.Word;
 import mlp.rus.RusPosAnnotator;
+
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

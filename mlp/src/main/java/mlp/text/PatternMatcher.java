@@ -1,7 +1,8 @@
 package mlp.text;
 
+import com.alexeygrigorev.rseq.*;
 import com.google.common.collect.Lists;
-import com.itshared.rseq.*;
+
 import mlp.pojos.Word;
 
 import java.util.Arrays;
