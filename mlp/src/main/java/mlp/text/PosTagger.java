@@ -202,7 +202,7 @@ public class PosTagger {
     Pattern<Word> linksPattern = Pattern.create(pos(PosTag.QUOTE), anyWord().oneOrMore()
       .captureAs("link"), pos(PosTag.UNQUOTE));
 
-    return linksPattern.replace(in, new Transformer<Word>() {
+    return linksPattern.replaceToOne(in, new TransformerToElement<Word>() {
       @Override
       public Word transform(Match<Word> match) {
         List<Word> words = match.getCapturedGroup("link");
@@ -215,7 +215,7 @@ public class PosTagger {
     XMatcher<Word> noun = posIn(PosTag.NOUN, PosTag.NOUN_PLURAL);
     Pattern<Word> nounPattern = Pattern.create(noun.oneOrMore());
 
-    return nounPattern.replace(in, new Transformer<Word>() {
+    return nounPattern.replaceToOne(in, new TransformerToElement<Word>() {
       @Override
       public Word transform(Match<Word> match) {
         List<Word> words = match.getMatchedSubsequence();
@@ -232,7 +232,7 @@ public class PosTagger {
   public static List<Word> contatenateSuccessive2Tags(List<Word> in, String tag1, String tag2,
                                                       String outputTag) {
     Pattern<Word> pattern = Pattern.create(pos(tag1), pos(tag2));
-    return pattern.replace(in, m -> new Word(joinWords(m.getMatchedSubsequence()), outputTag));
+    return pattern.replaceToOne(in, m -> new Word(joinWords(m.getMatchedSubsequence()), outputTag));
   }
 
   public static String joinWords(List<Word> list) {
