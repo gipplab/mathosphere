@@ -1,0 +1,1094 @@
+<!DOCTYPE html><html>
+<head>
+<title>Firing dynamics of an autaptic neuron</title>
+<!--Generated on Mon Sep 21 17:39:40 2015 by LaTeXML (version 0.8.1) http://dlmf.nist.gov/LaTeXML/.-->
+
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" href="LaTeXML.css" type="text/css">
+<link rel="stylesheet" href="ltx-article.css" type="text/css">
+</head>
+<body>
+<div class="ltx_page_main">
+<div class="ltx_page_content">
+<article class="ltx_document ltx_authors_1line">
+<h1 class="ltx_title ltx_title_document">Firing dynamics of an autaptic neuron</h1>
+<div class="ltx_authors">
+<span class="ltx_creator ltx_role_author">
+<span class="ltx_personname">Hengtong Wang
+</span><span class="ltx_author_notes"><span>
+<span class="ltx_contact ltx_role_affiliation">School of Physics and Information Technology, Shaanxi Normal University, Xi’an 710119, China
+</span></span></span></span>
+<span class="ltx_author_before">  </span><span class="ltx_creator ltx_role_author">
+<span class="ltx_personname">Yong Chen
+</span><span class="ltx_author_notes"><span>
+<span class="ltx_contact ltx_role_email"><a href="mailto:ychen@buaa.edu.cn">ychen@buaa.edu.cn</a>
+</span>
+<span class="ltx_contact ltx_role_affiliation">Center of soft matter physics and its application, Beihang University, Beijing 100191, China
+<br class="ltx_break">School of Physics and Nuclear Energy Engineering, Beihang University, Beijing 100191, China
+</span></span></span></span>
+</div>
+
+<div class="ltx_abstract">
+<h6 class="ltx_title ltx_title_abstract">Abstract</h6>
+    
+<p class="ltx_p">Autapses are synapses that connect a neuron to itself in the nervous system. Previously, both experimental and theoretical studies have demonstrated that autaptic connections in the nervous system have a significant physiological function. Autapses in nature provide self-delayed feedback, thus introducing an additional time scale to neuronal activities and causing many dynamic behaviors in neurons. Recently, theoretical studies have revealed that an autapse provides a control option for adjusting the response of a neuron: e.g., an autaptic connection can cause the electrical activities of the Hindmarsh-Rose neuron to switch between quiescent, periodic, and chaotic firing patterns; an autapse can enhance or suppress the mode-locking status of a neuron injected with sinusoidal current; and the firing frequency and interspike interval distributions of the response spike train can also be modified by the autapse. In this paper, we review recent studies that showed how an autapse affects the response of a single neuron.</p>
+    
+<br class="ltx_break">
+    
+<p class="ltx_p"><span class="ltx_text ltx_font_bold">Keywords:</span> Autapse, Self-delay feedback, single neuron, firing pattern
+<br class="ltx_break"></p>
+    
+<p class="ltx_p"><span class="ltx_text ltx_font_bold">PACS:</span> 87.19.ll, 87.19.ls, 87.18.Sn, 87.19.lg</p>
+  
+</div>
+<span class="ltx_ERROR undefined">{CJK}</span>
+<div id="p1" class="ltx_para">
+<p class="ltx_p">UTF8gbsn</p>
+</div>
+<section id="S1" class="ltx_section">
+<h2 class="ltx_title ltx_title_section">
+<span class="ltx_tag ltx_tag_section">1 </span>Introduction</h2>
+
+<div id="S1.p1" class="ltx_para">
+<p class="ltx_p">The nervous system is a complex network of neurons, synapses, and other specialized cells, and through this system, neurons receive and transmit information between different parts of the body <cite class="ltx_cite ltx_citemacro_cite">[<a href="#bib.bib1" title="" class="ltx_ref">1</a>]</cite>. The responses of neurons and the function of synapses have received considerable attention because of their status as building blocks of the nervous system <cite class="ltx_cite ltx_citemacro_cite">[<a href="#bib.bib2" title="" class="ltx_ref">2</a>, <a href="#bib.bib3" title="" class="ltx_ref">3</a>, <a href="#bib.bib4" title="" class="ltx_ref">4</a>]</cite>. Nearly a century ago, neuroscientists found a special synaptic structure, the autapse, which is a synapse between different parts of the same neuron <cite class="ltx_cite ltx_citemacro_cite">[<a href="#bib.bib5" title="" class="ltx_ref">5</a>, <a href="#bib.bib6" title="" class="ltx_ref">6</a>, <a href="#bib.bib7" title="" class="ltx_ref">7</a>]</cite>. Because of its odd structure, the self-synaptic connection has remained poorly understood. However, many recent studies found that autapses are much more widespread in the nervous system than previously thought. Autapses have been reported in various brain areas, such as the neocortex, cerebellum, hippocampus, striatum, and substantia nigra <cite class="ltx_cite ltx_citemacro_cite">[<a href="#bib.bib8" title="" class="ltx_ref">8</a>, <a href="#bib.bib6" title="" class="ltx_ref">6</a>, <a href="#bib.bib9" title="" class="ltx_ref">9</a>, <a href="#bib.bib10" title="" class="ltx_ref">10</a>, <a href="#bib.bib11" title="" class="ltx_ref">11</a>, <a href="#bib.bib12" title="" class="ltx_ref">12</a>]</cite>. Interestingly, about 80% of cortical pyramidal neurons have autaptic connections <cite class="ltx_cite ltx_citemacro_cite">[<a href="#bib.bib8" title="" class="ltx_ref">8</a>]</cite>. Many studies have revealed that autapses are not merely curiosities, but play an authentic physiological role in the nervous system. Autapses can maintain persistent activity in the nervous system by mediating positive feedback <cite class="ltx_cite ltx_citemacro_cite">[<a href="#bib.bib13" title="" class="ltx_ref">13</a>]</cite>.</p>
+</div>
+<div id="S1.p2" class="ltx_para">
+<p class="ltx_p">Recent experiments also demonstrated that autapses are very important for the processing function of the brain <cite class="ltx_cite ltx_citemacro_cite">[<a href="#bib.bib14" title="" class="ltx_ref">14</a>]</cite>. Bacci et al. recorded the activity of fast spiking interneurons in acute brain slices of juvenile rats and found that autaptic transmission increased the spike-timing precision <cite class="ltx_cite ltx_citemacro_cite">[<a href="#bib.bib15" title="" class="ltx_ref">15</a>]</cite>. A somatic spike can evoke excitatory postsynaptic currents with various amplitudes through an autapse <cite class="ltx_cite ltx_citemacro_cite">[<a href="#bib.bib11" title="" class="ltx_ref">11</a>]</cite>. However, the function of autapses and their contribution to information processing are still unclear <cite class="ltx_cite ltx_citemacro_cite">[<a href="#bib.bib14" title="" class="ltx_ref">14</a>, <a href="#bib.bib16" title="" class="ltx_ref">16</a>]</cite>. Thus, understanding the effect of autaptic activities on the responses of a neuron is a fundamental step to elucidating the process of information transfer in the nervous system <cite class="ltx_cite ltx_citemacro_cite">[<a href="#bib.bib17" title="" class="ltx_ref">17</a>, <a href="#bib.bib18" title="" class="ltx_ref">18</a>, <a href="#bib.bib19" title="" class="ltx_ref">19</a>, <a href="#bib.bib20" title="" class="ltx_ref">20</a>]</cite>.</p>
+</div>
+<div id="S1.p3" class="ltx_para">
+<p class="ltx_p">In fact, natural autapses are self-feedback connections in the nervous system and may allow a unique type of self-control, similar to the feedback in other systems <cite class="ltx_cite ltx_citemacro_cite">[<a href="#bib.bib14" title="" class="ltx_ref">14</a>]</cite>. Actually, feedback creates a circuit, or loop, that connects a system to itself and commonly occurs in many systems, e.g., gene regulatory networks <cite class="ltx_cite ltx_citemacro_cite">[<a href="#bib.bib21" title="" class="ltx_ref">21</a>, <a href="#bib.bib22" title="" class="ltx_ref">22</a>]</cite>, population dynamics <cite class="ltx_cite ltx_citemacro_cite">[<a href="#bib.bib23" title="" class="ltx_ref">23</a>]</cite>, and climate systems <cite class="ltx_cite ltx_citemacro_cite">[<a href="#bib.bib24" title="" class="ltx_ref">24</a>]</cite>. Feedback is also used extensively to control the state of a nonlinear system, such as to stabilize periodic orbits or to control coherence resonance <cite class="ltx_cite ltx_citemacro_cite">[<a href="#bib.bib25" title="" class="ltx_ref">25</a>, <a href="#bib.bib26" title="" class="ltx_ref">26</a>]</cite>. Feedback is also very commonly used in the design of electric circuit elements <cite class="ltx_cite ltx_citemacro_cite">[<a href="#bib.bib27" title="" class="ltx_ref">27</a>]</cite>. In these systems, information about the past or the present influences the same phenomena in the present or future, respectively. Moreover, feedback has a marked effect on the dynamics of nonlinear systems. The frequency at the onset of the oscillation of a nonlinear system can be modified by the feedback loop <cite class="ltx_cite ltx_citemacro_cite">[<a href="#bib.bib28" title="" class="ltx_ref">28</a>]</cite>. Furthermore, self-delayed feedback with a fixed delay time can suppress chaos and also control steady states <cite class="ltx_cite ltx_citemacro_cite">[<a href="#bib.bib29" title="" class="ltx_ref">29</a>, <a href="#bib.bib30" title="" class="ltx_ref">30</a>]</cite>. In a simulation study, Popovych et al. showed that time-delayed feedback has the ability to desynchronize groups of model neurons <cite class="ltx_cite ltx_citemacro_cite">[<a href="#bib.bib31" title="" class="ltx_ref">31</a>]</cite>.
+</p>
+</div>
+<div id="S1.p4" class="ltx_para">
+<p class="ltx_p">A neuron with an autaptic connection can provide a distinctive physiological self-feedback model with many dynamic properties. Rusin et al. performed a time-delayed feedback stimulation of a group of cultured neurons and experimentally demonstrated that time-delayed feedback could cause synchronization of the action potentials of a group of neurons <cite class="ltx_cite ltx_citemacro_cite">[<a href="#bib.bib32" title="" class="ltx_ref">32</a>]</cite>. Prager et al. found that time-delayed feedback can facilitate the noise-induced oscillation of a neuronal system <cite class="ltx_cite ltx_citemacro_cite">[<a href="#bib.bib33" title="" class="ltx_ref">33</a>]</cite>. Autaptic delayed feedback was found to modify the bursting in the distribution of interspike intervals of a stochastic Hodgkin-Huxley (HH) neuron <cite class="ltx_cite ltx_citemacro_cite">[<a href="#bib.bib34" title="" class="ltx_ref">34</a>]</cite>. Such autaptic delayed feedback can also reduce the spontaneous spiking activity of a stochastic neuron at the characteristic frequencies. The effect of an autapse on the spike rate of a single neuronal system shows dependence on the duration of the autapse activity <cite class="ltx_cite ltx_citemacro_cite">[<a href="#bib.bib35" title="" class="ltx_ref">35</a>]</cite>. Modulation of autaptic delay feedback can cause the dynamic behaviors of a Hindmarsh-Rose (HR) neuron to switch between quiescent, periodic, and chaotic firing patterns <cite class="ltx_cite ltx_citemacro_cite">[<a href="#bib.bib36" title="" class="ltx_ref">36</a>]</cite>.</p>
+</div>
+<div id="S1.p5" class="ltx_para">
+<p class="ltx_p">In this article, we review the current stat of knowledge of the effect of an autapse on single neurons.</p>
+</div>
+</section>
+<section id="S2" class="ltx_section">
+<h2 class="ltx_title ltx_title_section">
+<span class="ltx_tag ltx_tag_section">2 </span>Autaptic connection</h2>
+
+<div id="S2.p1" class="ltx_para">
+<p class="ltx_p">Scientists have long investigated the functions and properties of neurons and synapses. Neurons vary widely with different sizes and forms, and neuron responses are also involved in many dynamic behaviors. A synapse is a structure in the nervous system that permits a neuron (or nerve cell) to transmit an electrical or chemical signal to another cell (neural or otherwise) <cite class="ltx_cite ltx_citemacro_cite">[<a href="#bib.bib37" title="" class="ltx_ref">37</a>]</cite>. The self-synapse, or the autapse, was first described as a synapse between the axon of a pyramidal cell and its own dendrites by Van der Loos and Glaser in 1972 <cite class="ltx_cite ltx_citemacro_cite">[<a href="#bib.bib5" title="" class="ltx_ref">5</a>]</cite>. Before the report by Van der loos et al., other terms, such as ’self-excitation’ and ’self-sensing’, were used to describe the self-synaptic structure. For a long time, autapses in the nervous system seemed like anatomical curiosities with questionable functional significance. However, recent experiments began to reveal how autapses might play an important role in brain function. Some reports also suggested that autapses are connected to some neural diseases <cite class="ltx_cite ltx_citemacro_cite">[<a href="#bib.bib38" title="" class="ltx_ref">38</a>]</cite>. Neurobiology experiments have always focused on excitatory (glutamate-releasing) and inhibitory (GABA-releasing) autapses. To date, autaptic structures have been found in almost all parts of the nervous system <cite class="ltx_cite ltx_citemacro_cite">[<a href="#bib.bib6" title="" class="ltx_ref">6</a>]</cite>. Fig. <a href="#S2.F1" title="Figure 1 ‣ 2 Autaptic connection ‣ Firing dynamics of an autaptic neuron" class="ltx_ref"><span class="ltx_text ltx_ref_tag">1</span></a> shows photos of the many autapses of a single rat hippocampal neuron.</p>
+</div>
+<figure id="S2.F1" class="ltx_figure"><img src="x1.png" id="S2.F1.g1" class="ltx_graphics ltx_centering" width="338" height="182" alt="">
+<figcaption class="ltx_caption"><span class="ltx_tag ltx_tag_figure">Figure 1: </span>A single rat hippocampal neuron (arrowed, left) grown in culture on a Â­âmicrodotâ of glia (flat gray cells), showing abundant autapses labeled with an antibody (small dark spots, right) <cite class="ltx_cite ltx_citemacro_cite">[<a href="#bib.bib14" title="" class="ltx_ref">14</a>]</cite>.</figcaption>
+</figure>
+<figure id="S2.F2" class="ltx_figure"><img src="x2.png" id="S2.F2.g1" class="ltx_graphics ltx_centering" width="303" height="168" alt="">
+<figcaption class="ltx_caption"><span class="ltx_tag ltx_tag_figure">Figure 2: </span>Schematic drawing of a neuron with autaptic feedback. The structure in the circle represents an autaptic connection between dendritic and axonal terminals. </figcaption>
+</figure>
+<div id="S2.p2" class="ltx_para">
+<p class="ltx_p">In nature, autaptic connections enable self-feedback of a neuron. Thus, in almost all current autapse studies, the model of a neuron with an autaptic connection contains a single compartment that exhibits a self-delayed feedback mechanism, as shown in Fig. <a href="#S2.F2" title="Figure 2 ‣ 2 Autaptic connection ‣ Firing dynamics of an autaptic neuron" class="ltx_ref"><span class="ltx_text ltx_ref_tag">2</span></a>. The delay time represents the elapsed time associated with the axonal propagation prior to the reintroduction of the signal into the neuron. The delay time is also believed to be one of the important properties of autaptic connections. Mathematical models of an autapse in previous studies of the effect of self-synapses on neurons fall into two main categories: one has linear self-coupling and describes a gap junction, and the other has nonlinear self-coupling and describes a chemical synapse, which may be an excitatory or inhibitory synapse. The specific mathematical form of the autapse depends on the chosen neuronal model.</p>
+</div>
+<div id="S2.p3" class="ltx_para">
+<p class="ltx_p">The autaptic connection of a simplified neuron model (such as the HR neuron, FitzHugh-Nagumo neuron, Izhikevich neuron and others) can often be described by one of the following formulas <cite class="ltx_cite ltx_citemacro_cite">[<a href="#bib.bib35" title="" class="ltx_ref">35</a>, <a href="#bib.bib36" title="" class="ltx_ref">36</a>, <a href="#bib.bib39" title="" class="ltx_ref">39</a>]</cite>:</p>
+</div>
+<div id="S2.p4" class="ltx_para">
+<ul id="I1" class="ltx_itemize">
+<li id="I1.i1" class="ltx_item" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_itemize">•</span> 
+<div id="I1.i1.p1" class="ltx_para">
+<p class="ltx_p">Linear coupling gives as electrical diffusive-type:</p>
+<table id="S2.E1" class="ltx_equation ltx_eqn_table">
+
+<tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="S2.E1.m1" class="ltx_Math" alttext="I_{aut}=g_{aut}[u(t-\tau)-u(t)]." display="block"><semantics><mrow id="S2.E1.m1.22" xref="S2.E1.m1.22.cmml"><mrow id="S2.E1.m1.22a" xref="S2.E1.m1.22.cmml"><msub id="S2.E1.m1.9" xref="S2.E1.m1.9.cmml"><mi id="S2.E1.m1.3" xref="S2.E1.m1.3.cmml">I</mi><mrow id="S2.E1.m1.8" xref="S2.E1.m1.8.cmml"><mi id="S2.E1.m1.4" xref="S2.E1.m1.4.cmml">a</mi><mo id="S2.E1.m1.5" xref="S2.E1.m1.5.cmml">⁢</mo><mi id="S2.E1.m1.6" xref="S2.E1.m1.6.cmml">u</mi><mo id="S2.E1.m1.5a" xref="S2.E1.m1.5.cmml">⁢</mo><mi id="S2.E1.m1.7" xref="S2.E1.m1.7.cmml">t</mi></mrow></msub><mo id="S2.E1.m1.10" xref="S2.E1.m1.10.cmml">=</mo><mrow id="S2.E1.m1.21" xref="S2.E1.m1.21.cmml"><msub id="S2.E1.m1.17" xref="S2.E1.m1.17.cmml"><mi id="S2.E1.m1.11" xref="S2.E1.m1.11.cmml">g</mi><mrow id="S2.E1.m1.16" xref="S2.E1.m1.16.cmml"><mi id="S2.E1.m1.12" xref="S2.E1.m1.12.cmml">a</mi><mo id="S2.E1.m1.13" xref="S2.E1.m1.13.cmml">⁢</mo><mi id="S2.E1.m1.14" xref="S2.E1.m1.14.cmml">u</mi><mo id="S2.E1.m1.13a" xref="S2.E1.m1.13.cmml">⁢</mo><mi id="S2.E1.m1.15" xref="S2.E1.m1.15.cmml">t</mi></mrow></msub><mo id="S2.E1.m1.18" xref="S2.E1.m1.18.cmml">⁢</mo><mrow id="S2.E1.m1.20b" xref="S2.E1.m1.20b.cmml"><mo stretchy="false" id="S2.E1.m1.19" xref="S2.E1.m1.19.cmml">[</mo><mrow id="S2.E1.m1.2" xref="S2.E1.m1.20b.cmml"><mrow id="S2.E1.m1.20" xref="S2.E1.m1.20b.cmml"><mi id="S2.E1.m1.2.2" xref="S2.E1.m1.2.2.cmml">u</mi><mo id="S2.E1.m1.2.3" xref="S2.E1.m1.2.3.cmml">⁢</mo><mrow id="S2.E1.m1.2.5" xref="S2.E1.m1.2.1.cmml"><mo stretchy="false" id="S2.E1.m1.2.4">(</mo><mrow id="S2.E1.m1.2.1" xref="S2.E1.m1.2.1.cmml"><mi id="S2.E1.m1.2.1.1" xref="S2.E1.m1.2.1.1.cmml">t</mi><mo id="S2.E1.m1.2.1.2" xref="S2.E1.m1.2.1.2.cmml">-</mo><mi id="S2.E1.m1.2.1.3" xref="S2.E1.m1.2.1.3.cmml">τ</mi></mrow><mo stretchy="false" id="S2.E1.m1.2.4a">)</mo></mrow></mrow><mo id="S2.E1.m1.2.6" xref="S2.E1.m1.2.6.cmml">-</mo><mrow id="S2.E1.m1.20a" xref="S2.E1.m1.20b.cmml"><mi id="S2.E1.m1.2.7" xref="S2.E1.m1.2.7.cmml">u</mi><mo id="S2.E1.m1.2.8" xref="S2.E1.m1.2.8.cmml">⁢</mo><mrow id="S2.E1.m1.2.10"><mo stretchy="false" id="S2.E1.m1.2.9">(</mo><mi id="S2.E1.m1.1" xref="S2.E1.m1.1.cmml">t</mi><mo stretchy="false" id="S2.E1.m1.2.9a">)</mo></mrow></mrow></mrow><mo stretchy="false" id="S2.E1.m1.19a" xref="S2.E1.m1.19.cmml">]</mo></mrow></mrow></mrow><mo id="S2.E1.m1.22b" xref="S2.E1.m1.22.cmml">.</mo></mrow><annotation-xml encoding="MathML-Content"><apply id="S2.E1.m1.22.cmml" xref="S2.E1.m1.22"><eq id="S2.E1.m1.10.cmml" xref="S2.E1.m1.10"></eq><apply id="S2.E1.m1.9.cmml" xref="S2.E1.m1.9"><csymbol cd="ambiguous" id="S2.E1.m1.9.1.cmml">subscript</csymbol><ci id="S2.E1.m1.3.cmml" xref="S2.E1.m1.3">𝐼</ci><apply id="S2.E1.m1.8.cmml" xref="S2.E1.m1.8"><times id="S2.E1.m1.5.cmml" xref="S2.E1.m1.5"></times><ci id="S2.E1.m1.4.cmml" xref="S2.E1.m1.4">𝑎</ci><ci id="S2.E1.m1.6.cmml" xref="S2.E1.m1.6">𝑢</ci><ci id="S2.E1.m1.7.cmml" xref="S2.E1.m1.7">𝑡</ci></apply></apply><apply id="S2.E1.m1.21.cmml" xref="S2.E1.m1.21"><times id="S2.E1.m1.18.cmml" xref="S2.E1.m1.18"></times><apply id="S2.E1.m1.17.cmml" xref="S2.E1.m1.17"><csymbol cd="ambiguous" id="S2.E1.m1.17.1.cmml">subscript</csymbol><ci id="S2.E1.m1.11.cmml" xref="S2.E1.m1.11">𝑔</ci><apply id="S2.E1.m1.16.cmml" xref="S2.E1.m1.16"><times id="S2.E1.m1.13.cmml" xref="S2.E1.m1.13"></times><ci id="S2.E1.m1.12.cmml" xref="S2.E1.m1.12">𝑎</ci><ci id="S2.E1.m1.14.cmml" xref="S2.E1.m1.14">𝑢</ci><ci id="S2.E1.m1.15.cmml" xref="S2.E1.m1.15">𝑡</ci></apply></apply><apply id="S2.E1.m1.20b.cmml" xref="S2.E1.m1.20b"><csymbol cd="latexml" id="S2.E1.m1.19.cmml" xref="S2.E1.m1.19">delimited-[]</csymbol><apply id="S2.E1.m1.2.cmml" xref="S2.E1.m1.20b"><minus id="S2.E1.m1.2.6.cmml" xref="S2.E1.m1.2.6"></minus><apply id="S2.E1.m1.20.cmml" xref="S2.E1.m1.20b"><times id="S2.E1.m1.2.3.cmml" xref="S2.E1.m1.2.3"></times><ci id="S2.E1.m1.2.2.cmml" xref="S2.E1.m1.2.2">𝑢</ci><apply id="S2.E1.m1.2.1.cmml" xref="S2.E1.m1.2.5"><minus id="S2.E1.m1.2.1.2.cmml" xref="S2.E1.m1.2.1.2"></minus><ci id="S2.E1.m1.2.1.1.cmml" xref="S2.E1.m1.2.1.1">𝑡</ci><ci id="S2.E1.m1.2.1.3.cmml" xref="S2.E1.m1.2.1.3">𝜏</ci></apply></apply><apply id="S2.E1.m1.20a.cmml" xref="S2.E1.m1.20b"><times id="S2.E1.m1.2.8.cmml" xref="S2.E1.m1.2.8"></times><ci id="S2.E1.m1.2.7.cmml" xref="S2.E1.m1.2.7">𝑢</ci><ci id="S2.E1.m1.1.cmml" xref="S2.E1.m1.1">𝑡</ci></apply></apply></apply></apply></apply></annotation-xml><annotation encoding="application/x-tex">I_{aut}=g_{aut}[u(t-\tau)-u(t)].</annotation></semantics></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation
+      ltx_eqn_eqno ltx_align_middle
+      ltx_align_right">(1)</span></td>
+</tr>
+</table>
+<p class="ltx_p"><math id="I1.i1.p1.m1" class="ltx_Math" alttext="g_{aut}" display="inline"><semantics><msub id="I1.i1.p1.m1.7" xref="I1.i1.p1.m1.7.cmml"><mi id="I1.i1.p1.m1.1" xref="I1.i1.p1.m1.1.cmml">g</mi><mrow id="I1.i1.p1.m1.6" xref="I1.i1.p1.m1.6.cmml"><mi id="I1.i1.p1.m1.2" xref="I1.i1.p1.m1.2.cmml">a</mi><mo id="I1.i1.p1.m1.3" xref="I1.i1.p1.m1.3.cmml">⁢</mo><mi id="I1.i1.p1.m1.4" xref="I1.i1.p1.m1.4.cmml">u</mi><mo id="I1.i1.p1.m1.3a" xref="I1.i1.p1.m1.3.cmml">⁢</mo><mi id="I1.i1.p1.m1.5" xref="I1.i1.p1.m1.5.cmml">t</mi></mrow></msub><annotation-xml encoding="MathML-Content"><apply id="I1.i1.p1.m1.7.cmml" xref="I1.i1.p1.m1.7"><csymbol cd="ambiguous" id="I1.i1.p1.m1.7.1.cmml">subscript</csymbol><ci id="I1.i1.p1.m1.1.cmml" xref="I1.i1.p1.m1.1">𝑔</ci><apply id="I1.i1.p1.m1.6.cmml" xref="I1.i1.p1.m1.6"><times id="I1.i1.p1.m1.3.cmml" xref="I1.i1.p1.m1.3"></times><ci id="I1.i1.p1.m1.2.cmml" xref="I1.i1.p1.m1.2">𝑎</ci><ci id="I1.i1.p1.m1.4.cmml" xref="I1.i1.p1.m1.4">𝑢</ci><ci id="I1.i1.p1.m1.5.cmml" xref="I1.i1.p1.m1.5">𝑡</ci></apply></apply></annotation-xml><annotation encoding="application/x-tex">g_{aut}</annotation></semantics></math> is the autaptic conductivity. <math id="I1.i1.p1.m2" class="ltx_Math" alttext="\tau" display="inline"><semantics><mi id="I1.i1.p1.m2.1" xref="I1.i1.p1.m2.1.cmml">τ</mi><annotation-xml encoding="MathML-Content"><ci id="I1.i1.p1.m2.1.cmml" xref="I1.i1.p1.m2.1">𝜏</ci></annotation-xml><annotation encoding="application/x-tex">\tau</annotation></semantics></math> is the delay time. This form of autaptic current is proportional to the difference between the membrane potential at <math id="I1.i1.p1.m3" class="ltx_Math" alttext="t" display="inline"><semantics><mi id="I1.i1.p1.m3.1" xref="I1.i1.p1.m3.1.cmml">t</mi><annotation-xml encoding="MathML-Content"><ci id="I1.i1.p1.m3.1.cmml" xref="I1.i1.p1.m3.1">𝑡</ci></annotation-xml><annotation encoding="application/x-tex">t</annotation></semantics></math> and that at an earlier time point <math id="I1.i1.p1.m4" class="ltx_Math" alttext="t-\tau" display="inline"><semantics><mrow id="I1.i1.p1.m4.4" xref="I1.i1.p1.m4.4.cmml"><mi id="I1.i1.p1.m4.1" xref="I1.i1.p1.m4.1.cmml">t</mi><mo id="I1.i1.p1.m4.2" xref="I1.i1.p1.m4.2.cmml">-</mo><mi id="I1.i1.p1.m4.3" xref="I1.i1.p1.m4.3.cmml">τ</mi></mrow><annotation-xml encoding="MathML-Content"><apply id="I1.i1.p1.m4.4.cmml" xref="I1.i1.p1.m4.4"><minus id="I1.i1.p1.m4.2.cmml" xref="I1.i1.p1.m4.2"></minus><ci id="I1.i1.p1.m4.1.cmml" xref="I1.i1.p1.m4.1">𝑡</ci><ci id="I1.i1.p1.m4.3.cmml" xref="I1.i1.p1.m4.3">𝜏</ci></apply></annotation-xml><annotation encoding="application/x-tex">t-\tau</annotation></semantics></math>.</p>
+</div>
+</li>
+<li id="I1.i2" class="ltx_item" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_itemize">•</span> 
+<div id="I1.i2.p1" class="ltx_para">
+<p class="ltx_p">The chemical synapse function is modeled using the so-called fast threshold modulation (FTM) scheme <cite class="ltx_cite ltx_citemacro_cite">[<a href="#bib.bib40" title="" class="ltx_ref">40</a>, <a href="#bib.bib41" title="" class="ltx_ref">41</a>]</cite>:</p>
+<table id="A0.EGx1" class="ltx_equationgroup ltx_eqn_eqnarray ltx_eqn_table">
+
+<tr id="S2.E2" class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"><math id="S2.E2.m1" class="ltx_Math" alttext="\displaystyle I_{aut}(t)" display="inline"><semantics><mrow id="S2.E2.m1.12" xref="S2.E2.m1.12.cmml"><msub id="S2.E2.m1.8" xref="S2.E2.m1.8.cmml"><mi id="S2.E2.m1.2" xref="S2.E2.m1.2.cmml">I</mi><mrow id="S2.E2.m1.7" xref="S2.E2.m1.7.cmml"><mi id="S2.E2.m1.3" xref="S2.E2.m1.3.cmml">a</mi><mo id="S2.E2.m1.4" xref="S2.E2.m1.4.cmml">⁢</mo><mi id="S2.E2.m1.5" xref="S2.E2.m1.5.cmml">u</mi><mo id="S2.E2.m1.4a" xref="S2.E2.m1.4.cmml">⁢</mo><mi id="S2.E2.m1.6" xref="S2.E2.m1.6.cmml">t</mi></mrow></msub><mo id="S2.E2.m1.9" xref="S2.E2.m1.9.cmml">⁢</mo><mrow id="S2.E2.m1.11"><mo stretchy="false" id="S2.E2.m1.10">(</mo><mi id="S2.E2.m1.1" xref="S2.E2.m1.1.cmml">t</mi><mo stretchy="false" id="S2.E2.m1.10a">)</mo></mrow></mrow><annotation-xml encoding="MathML-Content"><apply id="S2.E2.m1.12.cmml" xref="S2.E2.m1.12"><times id="S2.E2.m1.9.cmml" xref="S2.E2.m1.9"></times><apply id="S2.E2.m1.8.cmml" xref="S2.E2.m1.8"><csymbol cd="ambiguous" id="S2.E2.m1.8.1.cmml">subscript</csymbol><ci id="S2.E2.m1.2.cmml" xref="S2.E2.m1.2">𝐼</ci><apply id="S2.E2.m1.7.cmml" xref="S2.E2.m1.7"><times id="S2.E2.m1.4.cmml" xref="S2.E2.m1.4"></times><ci id="S2.E2.m1.3.cmml" xref="S2.E2.m1.3">𝑎</ci><ci id="S2.E2.m1.5.cmml" xref="S2.E2.m1.5">𝑢</ci><ci id="S2.E2.m1.6.cmml" xref="S2.E2.m1.6">𝑡</ci></apply></apply><ci id="S2.E2.m1.1.cmml" xref="S2.E2.m1.1">𝑡</ci></apply></annotation-xml><annotation encoding="application/x-tex">\displaystyle I_{aut}(t)</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_center ltx_eqn_cell"><math id="S2.E2.m2" class="ltx_Math" alttext="\displaystyle=" display="inline"><semantics><mo id="S2.E2.m2.1" xref="S2.E2.m2.1.cmml">=</mo><annotation-xml encoding="MathML-Content"><eq id="S2.E2.m2.1.cmml" xref="S2.E2.m2.1"></eq></annotation-xml><annotation encoding="application/x-tex">\displaystyle=</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="S2.E2.m3" class="ltx_Math" alttext="\displaystyle-g_{aut}(u(t)-V_{syn})S(t-\tau)," display="inline"><semantics><mrow id="S2.E2.m3.19" xref="S2.E2.m3.19.cmml"><mrow id="S2.E2.m3.19a" xref="S2.E2.m3.19.cmml"><mo id="S2.E2.m3.4" xref="S2.E2.m3.4.cmml">-</mo><mrow id="S2.E2.m3.18" xref="S2.E2.m3.18.cmml"><msub id="S2.E2.m3.11" xref="S2.E2.m3.11.cmml"><mi id="S2.E2.m3.5" xref="S2.E2.m3.5.cmml">g</mi><mrow id="S2.E2.m3.10" xref="S2.E2.m3.10.cmml"><mi id="S2.E2.m3.6" xref="S2.E2.m3.6.cmml">a</mi><mo id="S2.E2.m3.7" xref="S2.E2.m3.7.cmml">⁢</mo><mi id="S2.E2.m3.8" xref="S2.E2.m3.8.cmml">u</mi><mo id="S2.E2.m3.7a" xref="S2.E2.m3.7.cmml">⁢</mo><mi id="S2.E2.m3.9" xref="S2.E2.m3.9.cmml">t</mi></mrow></msub><mo id="S2.E2.m3.12" xref="S2.E2.m3.12.cmml">⁢</mo><mrow id="S2.E2.m3.14c" xref="S2.E2.m3.2.cmml"><mo stretchy="false" id="S2.E2.m3.13">(</mo><mrow id="S2.E2.m3.2" xref="S2.E2.m3.2.cmml"><mrow id="S2.E2.m3.14" xref="S2.E2.m3.2.cmml"><mi id="S2.E2.m3.2.1" xref="S2.E2.m3.2.1.cmml">u</mi><mo id="S2.E2.m3.2.2" xref="S2.E2.m3.2.2.cmml">⁢</mo><mrow id="S2.E2.m3.2.4"><mo stretchy="false" id="S2.E2.m3.2.3">(</mo><mi id="S2.E2.m3.1" xref="S2.E2.m3.1.cmml">t</mi><mo stretchy="false" id="S2.E2.m3.2.3a">)</mo></mrow></mrow><mo id="S2.E2.m3.2.5" xref="S2.E2.m3.2.5.cmml">-</mo><msub id="S2.E2.m3.14b" xref="S2.E2.m3.2.cmml"><mi id="S2.E2.m3.2.6" xref="S2.E2.m3.2.6.cmml">V</mi><mrow id="S2.E2.m3.14a" xref="S2.E2.m3.2.cmml"><mi id="S2.E2.m3.2.7" xref="S2.E2.m3.2.7.cmml">s</mi><mo id="S2.E2.m3.2.8" xref="S2.E2.m3.2.8.cmml">⁢</mo><mi id="S2.E2.m3.2.9" xref="S2.E2.m3.2.9.cmml">y</mi><mo id="S2.E2.m3.2.8a" xref="S2.E2.m3.2.8.cmml">⁢</mo><mi id="S2.E2.m3.2.10" xref="S2.E2.m3.2.10.cmml">n</mi></mrow></msub></mrow><mo stretchy="false" id="S2.E2.m3.13a">)</mo></mrow><mo id="S2.E2.m3.12a" xref="S2.E2.m3.12.cmml">⁢</mo><mi id="S2.E2.m3.15" xref="S2.E2.m3.15.cmml">S</mi><mo id="S2.E2.m3.12b" xref="S2.E2.m3.12.cmml">⁢</mo><mrow id="S2.E2.m3.17" xref="S2.E2.m3.3.cmml"><mo stretchy="false" id="S2.E2.m3.16">(</mo><mrow id="S2.E2.m3.3" xref="S2.E2.m3.3.cmml"><mi id="S2.E2.m3.3.1" xref="S2.E2.m3.3.1.cmml">t</mi><mo id="S2.E2.m3.3.2" xref="S2.E2.m3.3.2.cmml">-</mo><mi id="S2.E2.m3.3.3" xref="S2.E2.m3.3.3.cmml">τ</mi></mrow><mo stretchy="false" id="S2.E2.m3.16a">)</mo></mrow></mrow></mrow><mo id="S2.E2.m3.19b" xref="S2.E2.m3.19.cmml">,</mo></mrow><annotation-xml encoding="MathML-Content"><apply id="S2.E2.m3.19.cmml" xref="S2.E2.m3.19"><minus id="S2.E2.m3.4.cmml" xref="S2.E2.m3.4"></minus><apply id="S2.E2.m3.18.cmml" xref="S2.E2.m3.18"><times id="S2.E2.m3.12.cmml" xref="S2.E2.m3.12"></times><apply id="S2.E2.m3.11.cmml" xref="S2.E2.m3.11"><csymbol cd="ambiguous" id="S2.E2.m3.11.1.cmml">subscript</csymbol><ci id="S2.E2.m3.5.cmml" xref="S2.E2.m3.5">𝑔</ci><apply id="S2.E2.m3.10.cmml" xref="S2.E2.m3.10"><times id="S2.E2.m3.7.cmml" xref="S2.E2.m3.7"></times><ci id="S2.E2.m3.6.cmml" xref="S2.E2.m3.6">𝑎</ci><ci id="S2.E2.m3.8.cmml" xref="S2.E2.m3.8">𝑢</ci><ci id="S2.E2.m3.9.cmml" xref="S2.E2.m3.9">𝑡</ci></apply></apply><apply id="S2.E2.m3.2.cmml" xref="S2.E2.m3.14c"><minus id="S2.E2.m3.2.5.cmml" xref="S2.E2.m3.2.5"></minus><apply id="S2.E2.m3.14.cmml" xref="S2.E2.m3.14c"><times id="S2.E2.m3.2.2.cmml" xref="S2.E2.m3.2.2"></times><ci id="S2.E2.m3.2.1.cmml" xref="S2.E2.m3.2.1">𝑢</ci><ci id="S2.E2.m3.1.cmml" xref="S2.E2.m3.1">𝑡</ci></apply><apply id="S2.E2.m3.14b.cmml" xref="S2.E2.m3.14c"><csymbol cd="ambiguous" id="S2.E2.m3.2.11.cmml">subscript</csymbol><ci id="S2.E2.m3.2.6.cmml" xref="S2.E2.m3.2.6">𝑉</ci><apply id="S2.E2.m3.14a.cmml" xref="S2.E2.m3.14c"><times id="S2.E2.m3.2.8.cmml" xref="S2.E2.m3.2.8"></times><ci id="S2.E2.m3.2.7.cmml" xref="S2.E2.m3.2.7">𝑠</ci><ci id="S2.E2.m3.2.9.cmml" xref="S2.E2.m3.2.9">𝑦</ci><ci id="S2.E2.m3.2.10.cmml" xref="S2.E2.m3.2.10">𝑛</ci></apply></apply></apply><ci id="S2.E2.m3.15.cmml" xref="S2.E2.m3.15">𝑆</ci><apply id="S2.E2.m3.3.cmml" xref="S2.E2.m3.17"><minus id="S2.E2.m3.3.2.cmml" xref="S2.E2.m3.3.2"></minus><ci id="S2.E2.m3.3.1.cmml" xref="S2.E2.m3.3.1">𝑡</ci><ci id="S2.E2.m3.3.3.cmml" xref="S2.E2.m3.3.3">𝜏</ci></apply></apply></apply></annotation-xml><annotation encoding="application/x-tex">\displaystyle-g_{aut}(u(t)-V_{syn})S(t-\tau),</annotation></semantics></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation
+      ltx_eqn_eqno ltx_align_middle
+      ltx_align_right">(2)</span></td>
+</tr>
+<tr id="S2.E3" class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"><math id="S2.E3.m1" class="ltx_Math" alttext="\displaystyle S(t-\tau)" display="inline"><semantics><mrow id="S2.E3.m1.6" xref="S2.E3.m1.6.cmml"><mi id="S2.E3.m1.2" xref="S2.E3.m1.2.cmml">S</mi><mo id="S2.E3.m1.3" xref="S2.E3.m1.3.cmml">⁢</mo><mrow id="S2.E3.m1.5" xref="S2.E3.m1.1.cmml"><mo stretchy="false" id="S2.E3.m1.4">(</mo><mrow id="S2.E3.m1.1" xref="S2.E3.m1.1.cmml"><mi id="S2.E3.m1.1.1" xref="S2.E3.m1.1.1.cmml">t</mi><mo id="S2.E3.m1.1.2" xref="S2.E3.m1.1.2.cmml">-</mo><mi id="S2.E3.m1.1.3" xref="S2.E3.m1.1.3.cmml">τ</mi></mrow><mo stretchy="false" id="S2.E3.m1.4a">)</mo></mrow></mrow><annotation-xml encoding="MathML-Content"><apply id="S2.E3.m1.6.cmml" xref="S2.E3.m1.6"><times id="S2.E3.m1.3.cmml" xref="S2.E3.m1.3"></times><ci id="S2.E3.m1.2.cmml" xref="S2.E3.m1.2">𝑆</ci><apply id="S2.E3.m1.1.cmml" xref="S2.E3.m1.5"><minus id="S2.E3.m1.1.2.cmml" xref="S2.E3.m1.1.2"></minus><ci id="S2.E3.m1.1.1.cmml" xref="S2.E3.m1.1.1">𝑡</ci><ci id="S2.E3.m1.1.3.cmml" xref="S2.E3.m1.1.3">𝜏</ci></apply></apply></annotation-xml><annotation encoding="application/x-tex">\displaystyle S(t-\tau)</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_center ltx_eqn_cell"><math id="S2.E3.m2" class="ltx_Math" alttext="\displaystyle=" display="inline"><semantics><mo id="S2.E3.m2.1" xref="S2.E3.m2.1.cmml">=</mo><annotation-xml encoding="MathML-Content"><eq id="S2.E3.m2.1.cmml" xref="S2.E3.m2.1"></eq></annotation-xml><annotation encoding="application/x-tex">\displaystyle=</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="S2.E3.m3" class="ltx_Math" alttext="\displaystyle 1/\{1+\exp[-k(u(t-\tau)-\theta)]\}," display="inline"><semantics><mrow id="S2.E3.m3.7" xref="S2.E3.m3.7.cmml"><mrow id="S2.E3.m3.7a" xref="S2.E3.m3.7.cmml"><mn id="S2.E3.m3.3" xref="S2.E3.m3.3.cmml">1</mn><mo id="S2.E3.m3.4" xref="S2.E3.m3.4.cmml">/</mo><mrow id="S2.E3.m3.6" xref="S2.E3.m3.6.cmml"><mo stretchy="false" id="S2.E3.m3.5">{</mo><mrow id="S2.E3.m3.2" xref="S2.E3.m3.6.cmml"><mn id="S2.E3.m3.2.2" xref="S2.E3.m3.2.2.cmml">1</mn><mo id="S2.E3.m3.2.3" xref="S2.E3.m3.2.3.cmml">+</mo><mrow id="S2.E3.m3.2.4d" xref="S2.E3.m3.2.4a.cmml"><mi id="S2.E3.m3.1" xref="S2.E3.m3.1.cmml">exp</mi><mo id="S2.E3.m3.2.4e" xref="S2.E3.m3.2.4a.cmml">⁡</mo><mrow id="S2.E3.m3.2.4c" xref="S2.E3.m3.2.4a.cmml"><mo stretchy="false" id="S2.E3.m3.2.4" xref="S2.E3.m3.2.4a.cmml">[</mo><mrow id="S2.E3.m3.2.1" xref="S2.E3.m3.2.4a.cmml"><mo id="S2.E3.m3.2.1.2" xref="S2.E3.m3.2.1.2.cmml">-</mo><mrow id="S2.E3.m3.2.4a" xref="S2.E3.m3.2.4a.cmml"><mi id="S2.E3.m3.2.1.3" xref="S2.E3.m3.2.1.3.cmml">k</mi><mo id="S2.E3.m3.2.1.4" xref="S2.E3.m3.2.1.4.cmml">⁢</mo><mrow id="S2.E3.m3.2.1.6a" xref="S2.E3.m3.2.1.1.cmml"><mo stretchy="false" id="S2.E3.m3.2.1.5">(</mo><mrow id="S2.E3.m3.2.1.1" xref="S2.E3.m3.2.1.1.cmml"><mrow id="S2.E3.m3.2.1.6" xref="S2.E3.m3.2.1.1.cmml"><mi id="S2.E3.m3.2.1.1.2" xref="S2.E3.m3.2.1.1.2.cmml">u</mi><mo id="S2.E3.m3.2.1.1.3" xref="S2.E3.m3.2.1.1.3.cmml">⁢</mo><mrow id="S2.E3.m3.2.1.1.5" xref="S2.E3.m3.2.1.1.1.cmml"><mo stretchy="false" id="S2.E3.m3.2.1.1.4">(</mo><mrow id="S2.E3.m3.2.1.1.1" xref="S2.E3.m3.2.1.1.1.cmml"><mi id="S2.E3.m3.2.1.1.1.1" xref="S2.E3.m3.2.1.1.1.1.cmml">t</mi><mo id="S2.E3.m3.2.1.1.1.2" xref="S2.E3.m3.2.1.1.1.2.cmml">-</mo><mi id="S2.E3.m3.2.1.1.1.3" xref="S2.E3.m3.2.1.1.1.3.cmml">τ</mi></mrow><mo stretchy="false" id="S2.E3.m3.2.1.1.4a">)</mo></mrow></mrow><mo id="S2.E3.m3.2.1.1.6" xref="S2.E3.m3.2.1.1.6.cmml">-</mo><mi id="S2.E3.m3.2.1.1.7" xref="S2.E3.m3.2.1.1.7.cmml">θ</mi></mrow><mo stretchy="false" id="S2.E3.m3.2.1.5a">)</mo></mrow></mrow></mrow><mo stretchy="false" id="S2.E3.m3.2.4b" xref="S2.E3.m3.2.4a.cmml">]</mo></mrow></mrow></mrow><mo stretchy="false" id="S2.E3.m3.5a">}</mo></mrow></mrow><mo id="S2.E3.m3.7b" xref="S2.E3.m3.7.cmml">,</mo></mrow><annotation-xml encoding="MathML-Content"><apply id="S2.E3.m3.7.cmml" xref="S2.E3.m3.7"><divide id="S2.E3.m3.4.cmml" xref="S2.E3.m3.4"></divide><cn type="integer" id="S2.E3.m3.3.cmml" xref="S2.E3.m3.3">1</cn><set id="S2.E3.m3.6.cmml" xref="S2.E3.m3.6"><apply id="S2.E3.m3.2.cmml" xref="S2.E3.m3.6"><plus id="S2.E3.m3.2.3.cmml" xref="S2.E3.m3.2.3"></plus><cn type="integer" id="S2.E3.m3.2.2.cmml" xref="S2.E3.m3.2.2">1</cn><apply id="S2.E3.m3.2.4a.cmml" xref="S2.E3.m3.2.4d"><exp id="S2.E3.m3.1.cmml" xref="S2.E3.m3.1"></exp><apply id="S2.E3.m3.2.1.cmml" xref="S2.E3.m3.2.4d"><minus id="S2.E3.m3.2.1.2.cmml" xref="S2.E3.m3.2.1.2"></minus><apply id="S2.E3.m3.2.4.cmml" xref="S2.E3.m3.2.4d"><times id="S2.E3.m3.2.1.4.cmml" xref="S2.E3.m3.2.1.4"></times><ci id="S2.E3.m3.2.1.3.cmml" xref="S2.E3.m3.2.1.3">𝑘</ci><apply id="S2.E3.m3.2.1.1.cmml" xref="S2.E3.m3.2.1.6a"><minus id="S2.E3.m3.2.1.1.6.cmml" xref="S2.E3.m3.2.1.1.6"></minus><apply id="S2.E3.m3.2.1.6.cmml" xref="S2.E3.m3.2.1.6a"><times id="S2.E3.m3.2.1.1.3.cmml" xref="S2.E3.m3.2.1.1.3"></times><ci id="S2.E3.m3.2.1.1.2.cmml" xref="S2.E3.m3.2.1.1.2">𝑢</ci><apply id="S2.E3.m3.2.1.1.1.cmml" xref="S2.E3.m3.2.1.1.5"><minus id="S2.E3.m3.2.1.1.1.2.cmml" xref="S2.E3.m3.2.1.1.1.2"></minus><ci id="S2.E3.m3.2.1.1.1.1.cmml" xref="S2.E3.m3.2.1.1.1.1">𝑡</ci><ci id="S2.E3.m3.2.1.1.1.3.cmml" xref="S2.E3.m3.2.1.1.1.3">𝜏</ci></apply></apply><ci id="S2.E3.m3.2.1.1.7.cmml" xref="S2.E3.m3.2.1.1.7">𝜃</ci></apply></apply></apply></apply></apply></set></apply></annotation-xml><annotation encoding="application/x-tex">\displaystyle 1/\{1+\exp[-k(u(t-\tau)-\theta)]\},</annotation></semantics></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation
+      ltx_eqn_eqno ltx_align_middle
+      ltx_align_right">(3)</span></td>
+</tr>
+</table>
+<p class="ltx_p">where <math id="I1.i2.p1.m1" class="ltx_Math" alttext="g_{aut}" display="inline"><semantics><msub id="I1.i2.p1.m1.7" xref="I1.i2.p1.m1.7.cmml"><mi id="I1.i2.p1.m1.1" xref="I1.i2.p1.m1.1.cmml">g</mi><mrow id="I1.i2.p1.m1.6" xref="I1.i2.p1.m1.6.cmml"><mi id="I1.i2.p1.m1.2" xref="I1.i2.p1.m1.2.cmml">a</mi><mo id="I1.i2.p1.m1.3" xref="I1.i2.p1.m1.3.cmml">⁢</mo><mi id="I1.i2.p1.m1.4" xref="I1.i2.p1.m1.4.cmml">u</mi><mo id="I1.i2.p1.m1.3a" xref="I1.i2.p1.m1.3.cmml">⁢</mo><mi id="I1.i2.p1.m1.5" xref="I1.i2.p1.m1.5.cmml">t</mi></mrow></msub><annotation-xml encoding="MathML-Content"><apply id="I1.i2.p1.m1.7.cmml" xref="I1.i2.p1.m1.7"><csymbol cd="ambiguous" id="I1.i2.p1.m1.7.1.cmml">subscript</csymbol><ci id="I1.i2.p1.m1.1.cmml" xref="I1.i2.p1.m1.1">𝑔</ci><apply id="I1.i2.p1.m1.6.cmml" xref="I1.i2.p1.m1.6"><times id="I1.i2.p1.m1.3.cmml" xref="I1.i2.p1.m1.3"></times><ci id="I1.i2.p1.m1.2.cmml" xref="I1.i2.p1.m1.2">𝑎</ci><ci id="I1.i2.p1.m1.4.cmml" xref="I1.i2.p1.m1.4">𝑢</ci><ci id="I1.i2.p1.m1.5.cmml" xref="I1.i2.p1.m1.5">𝑡</ci></apply></apply></annotation-xml><annotation encoding="application/x-tex">g_{aut}</annotation></semantics></math> is the autaptic intensity, and <math id="I1.i2.p1.m2" class="ltx_Math" alttext="V_{syn}" display="inline"><semantics><msub id="I1.i2.p1.m2.7" xref="I1.i2.p1.m2.7.cmml"><mi id="I1.i2.p1.m2.1" xref="I1.i2.p1.m2.1.cmml">V</mi><mrow id="I1.i2.p1.m2.6" xref="I1.i2.p1.m2.6.cmml"><mi id="I1.i2.p1.m2.2" xref="I1.i2.p1.m2.2.cmml">s</mi><mo id="I1.i2.p1.m2.3" xref="I1.i2.p1.m2.3.cmml">⁢</mo><mi id="I1.i2.p1.m2.4" xref="I1.i2.p1.m2.4.cmml">y</mi><mo id="I1.i2.p1.m2.3a" xref="I1.i2.p1.m2.3.cmml">⁢</mo><mi id="I1.i2.p1.m2.5" xref="I1.i2.p1.m2.5.cmml">n</mi></mrow></msub><annotation-xml encoding="MathML-Content"><apply id="I1.i2.p1.m2.7.cmml" xref="I1.i2.p1.m2.7"><csymbol cd="ambiguous" id="I1.i2.p1.m2.7.1.cmml">subscript</csymbol><ci id="I1.i2.p1.m2.1.cmml" xref="I1.i2.p1.m2.1">𝑉</ci><apply id="I1.i2.p1.m2.6.cmml" xref="I1.i2.p1.m2.6"><times id="I1.i2.p1.m2.3.cmml" xref="I1.i2.p1.m2.3"></times><ci id="I1.i2.p1.m2.2.cmml" xref="I1.i2.p1.m2.2">𝑠</ci><ci id="I1.i2.p1.m2.4.cmml" xref="I1.i2.p1.m2.4">𝑦</ci><ci id="I1.i2.p1.m2.5.cmml" xref="I1.i2.p1.m2.5">𝑛</ci></apply></apply></annotation-xml><annotation encoding="application/x-tex">V_{syn}</annotation></semantics></math> is the synaptic reversal potential. <math id="I1.i2.p1.m3" class="ltx_Math" alttext="V_{syn}" display="inline"><semantics><msub id="I1.i2.p1.m3.7" xref="I1.i2.p1.m3.7.cmml"><mi id="I1.i2.p1.m3.1" xref="I1.i2.p1.m3.1.cmml">V</mi><mrow id="I1.i2.p1.m3.6" xref="I1.i2.p1.m3.6.cmml"><mi id="I1.i2.p1.m3.2" xref="I1.i2.p1.m3.2.cmml">s</mi><mo id="I1.i2.p1.m3.3" xref="I1.i2.p1.m3.3.cmml">⁢</mo><mi id="I1.i2.p1.m3.4" xref="I1.i2.p1.m3.4.cmml">y</mi><mo id="I1.i2.p1.m3.3a" xref="I1.i2.p1.m3.3.cmml">⁢</mo><mi id="I1.i2.p1.m3.5" xref="I1.i2.p1.m3.5.cmml">n</mi></mrow></msub><annotation-xml encoding="MathML-Content"><apply id="I1.i2.p1.m3.7.cmml" xref="I1.i2.p1.m3.7"><csymbol cd="ambiguous" id="I1.i2.p1.m3.7.1.cmml">subscript</csymbol><ci id="I1.i2.p1.m3.1.cmml" xref="I1.i2.p1.m3.1">𝑉</ci><apply id="I1.i2.p1.m3.6.cmml" xref="I1.i2.p1.m3.6"><times id="I1.i2.p1.m3.3.cmml" xref="I1.i2.p1.m3.3"></times><ci id="I1.i2.p1.m3.2.cmml" xref="I1.i2.p1.m3.2">𝑠</ci><ci id="I1.i2.p1.m3.4.cmml" xref="I1.i2.p1.m3.4">𝑦</ci><ci id="I1.i2.p1.m3.5.cmml" xref="I1.i2.p1.m3.5">𝑛</ci></apply></apply></annotation-xml><annotation encoding="application/x-tex">V_{syn}</annotation></semantics></math>=2 and <math id="I1.i2.p1.m4" class="ltx_Math" alttext="V_{syn}" display="inline"><semantics><msub id="I1.i2.p1.m4.7" xref="I1.i2.p1.m4.7.cmml"><mi id="I1.i2.p1.m4.1" xref="I1.i2.p1.m4.1.cmml">V</mi><mrow id="I1.i2.p1.m4.6" xref="I1.i2.p1.m4.6.cmml"><mi id="I1.i2.p1.m4.2" xref="I1.i2.p1.m4.2.cmml">s</mi><mo id="I1.i2.p1.m4.3" xref="I1.i2.p1.m4.3.cmml">⁢</mo><mi id="I1.i2.p1.m4.4" xref="I1.i2.p1.m4.4.cmml">y</mi><mo id="I1.i2.p1.m4.3a" xref="I1.i2.p1.m4.3.cmml">⁢</mo><mi id="I1.i2.p1.m4.5" xref="I1.i2.p1.m4.5.cmml">n</mi></mrow></msub><annotation-xml encoding="MathML-Content"><apply id="I1.i2.p1.m4.7.cmml" xref="I1.i2.p1.m4.7"><csymbol cd="ambiguous" id="I1.i2.p1.m4.7.1.cmml">subscript</csymbol><ci id="I1.i2.p1.m4.1.cmml" xref="I1.i2.p1.m4.1">𝑉</ci><apply id="I1.i2.p1.m4.6.cmml" xref="I1.i2.p1.m4.6"><times id="I1.i2.p1.m4.3.cmml" xref="I1.i2.p1.m4.3"></times><ci id="I1.i2.p1.m4.2.cmml" xref="I1.i2.p1.m4.2">𝑠</ci><ci id="I1.i2.p1.m4.4.cmml" xref="I1.i2.p1.m4.4">𝑦</ci><ci id="I1.i2.p1.m4.5.cmml" xref="I1.i2.p1.m4.5">𝑛</ci></apply></apply></annotation-xml><annotation encoding="application/x-tex">V_{syn}</annotation></semantics></math>=-2 correspond to excitatory and inhibitory autapses, respectively.</p>
+</div>
+</li>
+</ul>
+</div>
+<div id="S2.p5" class="ltx_para">
+<p class="ltx_p">For a conductance-based neuron model (such as the HH neuron, Morris-Lecar neuron, Connor-Stevens neuron and others), the mathematic model of the autapse is often given as follows <cite class="ltx_cite ltx_citemacro_cite">[<a href="#bib.bib34" title="" class="ltx_ref">34</a>, <a href="#bib.bib35" title="" class="ltx_ref">35</a>, <a href="#bib.bib42" title="" class="ltx_ref">42</a>, <a href="#bib.bib43" title="" class="ltx_ref">43</a>]</cite></p>
+<ul id="I2" class="ltx_itemize">
+<li id="I2.i1" class="ltx_item" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_itemize">•</span> 
+<div id="I2.i1.p1" class="ltx_para">
+<p class="ltx_p">Linear coupling is also always set as electrical diffusive-type and has the same form as Eq. <a href="#S2.E1" title="(1) ‣ 2 Autaptic connection ‣ Firing dynamics of an autaptic neuron" class="ltx_ref"><span class="ltx_text ltx_ref_tag">1</span></a>.</p>
+</div>
+</li>
+<li id="I2.i2" class="ltx_item" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_itemize">•</span> 
+<div id="I2.i2.p1" class="ltx_para">
+<p class="ltx_p">Conductance-based chemical autapses can be described using a bi-exponential function, which has been reported to fit well with experiment results <cite class="ltx_cite ltx_citemacro_cite">[<a href="#bib.bib44" title="" class="ltx_ref">44</a>]</cite>,</p>
+<table id="S2.E4" class="ltx_equation ltx_eqn_table">
+
+<tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math id="S2.E4.m1" class="ltx_Math" alttext="I_{aut}(t)=G(t-t_{delay})(V-E_{syn})," display="block"><semantics><mrow id="S2.E4.m1.23" xref="S2.E4.m1.23.cmml"><mrow id="S2.E4.m1.23a" xref="S2.E4.m1.23.cmml"><mrow id="S2.E4.m1.14" xref="S2.E4.m1.14.cmml"><msub id="S2.E4.m1.10" xref="S2.E4.m1.10.cmml"><mi id="S2.E4.m1.4" xref="S2.E4.m1.4.cmml">I</mi><mrow id="S2.E4.m1.9" xref="S2.E4.m1.9.cmml"><mi id="S2.E4.m1.5" xref="S2.E4.m1.5.cmml">a</mi><mo id="S2.E4.m1.6" xref="S2.E4.m1.6.cmml">⁢</mo><mi id="S2.E4.m1.7" xref="S2.E4.m1.7.cmml">u</mi><mo id="S2.E4.m1.6a" xref="S2.E4.m1.6.cmml">⁢</mo><mi id="S2.E4.m1.8" xref="S2.E4.m1.8.cmml">t</mi></mrow></msub><mo id="S2.E4.m1.11" xref="S2.E4.m1.11.cmml">⁢</mo><mrow id="S2.E4.m1.13"><mo stretchy="false" id="S2.E4.m1.12">(</mo><mi id="S2.E4.m1.1" xref="S2.E4.m1.1.cmml">t</mi><mo stretchy="false" id="S2.E4.m1.12a">)</mo></mrow></mrow><mo id="S2.E4.m1.15" xref="S2.E4.m1.15.cmml">=</mo><mrow id="S2.E4.m1.22" xref="S2.E4.m1.22.cmml"><mi id="S2.E4.m1.16" xref="S2.E4.m1.16.cmml">G</mi><mo id="S2.E4.m1.17" xref="S2.E4.m1.17.cmml">⁢</mo><mrow id="S2.E4.m1.19b" xref="S2.E4.m1.2.cmml"><mo stretchy="false" id="S2.E4.m1.18">(</mo><mrow id="S2.E4.m1.2" xref="S2.E4.m1.2.cmml"><mi id="S2.E4.m1.2.1" xref="S2.E4.m1.2.1.cmml">t</mi><mo id="S2.E4.m1.2.2" xref="S2.E4.m1.2.2.cmml">-</mo><msub id="S2.E4.m1.19a" xref="S2.E4.m1.2.cmml"><mi id="S2.E4.m1.2.3" xref="S2.E4.m1.2.3.cmml">t</mi><mrow id="S2.E4.m1.19" xref="S2.E4.m1.2.cmml"><mi id="S2.E4.m1.2.4" xref="S2.E4.m1.2.4.cmml">d</mi><mo id="S2.E4.m1.2.5" xref="S2.E4.m1.2.5.cmml">⁢</mo><mi id="S2.E4.m1.2.6" xref="S2.E4.m1.2.6.cmml">e</mi><mo id="S2.E4.m1.2.5a" xref="S2.E4.m1.2.5.cmml">⁢</mo><mi id="S2.E4.m1.2.7" xref="S2.E4.m1.2.7.cmml">l</mi><mo id="S2.E4.m1.2.5b" xref="S2.E4.m1.2.5.cmml">⁢</mo><mi id="S2.E4.m1.2.8" xref="S2.E4.m1.2.8.cmml">a</mi><mo id="S2.E4.m1.2.5c" xref="S2.E4.m1.2.5.cmml">⁢</mo><mi id="S2.E4.m1.2.9" xref="S2.E4.m1.2.9.cmml">y</mi></mrow></msub></mrow><mo stretchy="false" id="S2.E4.m1.18a">)</mo></mrow><mo id="S2.E4.m1.17a" xref="S2.E4.m1.17.cmml">⁢</mo><mrow id="S2.E4.m1.21b" xref="S2.E4.m1.3.cmml"><mo stretchy="false" id="S2.E4.m1.20">(</mo><mrow id="S2.E4.m1.3" xref="S2.E4.m1.3.cmml"><mi id="S2.E4.m1.3.1" xref="S2.E4.m1.3.1.cmml">V</mi><mo id="S2.E4.m1.3.2" xref="S2.E4.m1.3.2.cmml">-</mo><msub id="S2.E4.m1.21a" xref="S2.E4.m1.3.cmml"><mi id="S2.E4.m1.3.3" xref="S2.E4.m1.3.3.cmml">E</mi><mrow id="S2.E4.m1.21" xref="S2.E4.m1.3.cmml"><mi id="S2.E4.m1.3.4" xref="S2.E4.m1.3.4.cmml">s</mi><mo id="S2.E4.m1.3.5" xref="S2.E4.m1.3.5.cmml">⁢</mo><mi id="S2.E4.m1.3.6" xref="S2.E4.m1.3.6.cmml">y</mi><mo id="S2.E4.m1.3.5a" xref="S2.E4.m1.3.5.cmml">⁢</mo><mi id="S2.E4.m1.3.7" xref="S2.E4.m1.3.7.cmml">n</mi></mrow></msub></mrow><mo stretchy="false" id="S2.E4.m1.20a">)</mo></mrow></mrow></mrow><mo id="S2.E4.m1.23b" xref="S2.E4.m1.23.cmml">,</mo></mrow><annotation-xml encoding="MathML-Content"><apply id="S2.E4.m1.23.cmml" xref="S2.E4.m1.23"><eq id="S2.E4.m1.15.cmml" xref="S2.E4.m1.15"></eq><apply id="S2.E4.m1.14.cmml" xref="S2.E4.m1.14"><times id="S2.E4.m1.11.cmml" xref="S2.E4.m1.11"></times><apply id="S2.E4.m1.10.cmml" xref="S2.E4.m1.10"><csymbol cd="ambiguous" id="S2.E4.m1.10.1.cmml">subscript</csymbol><ci id="S2.E4.m1.4.cmml" xref="S2.E4.m1.4">𝐼</ci><apply id="S2.E4.m1.9.cmml" xref="S2.E4.m1.9"><times id="S2.E4.m1.6.cmml" xref="S2.E4.m1.6"></times><ci id="S2.E4.m1.5.cmml" xref="S2.E4.m1.5">𝑎</ci><ci id="S2.E4.m1.7.cmml" xref="S2.E4.m1.7">𝑢</ci><ci id="S2.E4.m1.8.cmml" xref="S2.E4.m1.8">𝑡</ci></apply></apply><ci id="S2.E4.m1.1.cmml" xref="S2.E4.m1.1">𝑡</ci></apply><apply id="S2.E4.m1.22.cmml" xref="S2.E4.m1.22"><times id="S2.E4.m1.17.cmml" xref="S2.E4.m1.17"></times><ci id="S2.E4.m1.16.cmml" xref="S2.E4.m1.16">𝐺</ci><apply id="S2.E4.m1.2.cmml" xref="S2.E4.m1.19b"><minus id="S2.E4.m1.2.2.cmml" xref="S2.E4.m1.2.2"></minus><ci id="S2.E4.m1.2.1.cmml" xref="S2.E4.m1.2.1">𝑡</ci><apply id="S2.E4.m1.19a.cmml" xref="S2.E4.m1.19b"><csymbol cd="ambiguous" id="S2.E4.m1.2.10.cmml">subscript</csymbol><ci id="S2.E4.m1.2.3.cmml" xref="S2.E4.m1.2.3">𝑡</ci><apply id="S2.E4.m1.19.cmml" xref="S2.E4.m1.19b"><times id="S2.E4.m1.2.5.cmml" xref="S2.E4.m1.2.5"></times><ci id="S2.E4.m1.2.4.cmml" xref="S2.E4.m1.2.4">𝑑</ci><ci id="S2.E4.m1.2.6.cmml" xref="S2.E4.m1.2.6">𝑒</ci><ci id="S2.E4.m1.2.7.cmml" xref="S2.E4.m1.2.7">𝑙</ci><ci id="S2.E4.m1.2.8.cmml" xref="S2.E4.m1.2.8">𝑎</ci><ci id="S2.E4.m1.2.9.cmml" xref="S2.E4.m1.2.9">𝑦</ci></apply></apply></apply><apply id="S2.E4.m1.3.cmml" xref="S2.E4.m1.21b"><minus id="S2.E4.m1.3.2.cmml" xref="S2.E4.m1.3.2"></minus><ci id="S2.E4.m1.3.1.cmml" xref="S2.E4.m1.3.1">𝑉</ci><apply id="S2.E4.m1.21a.cmml" xref="S2.E4.m1.21b"><csymbol cd="ambiguous" id="S2.E4.m1.3.8.cmml">subscript</csymbol><ci id="S2.E4.m1.3.3.cmml" xref="S2.E4.m1.3.3">𝐸</ci><apply id="S2.E4.m1.21.cmml" xref="S2.E4.m1.21b"><times id="S2.E4.m1.3.5.cmml" xref="S2.E4.m1.3.5"></times><ci id="S2.E4.m1.3.4.cmml" xref="S2.E4.m1.3.4">𝑠</ci><ci id="S2.E4.m1.3.6.cmml" xref="S2.E4.m1.3.6">𝑦</ci><ci id="S2.E4.m1.3.7.cmml" xref="S2.E4.m1.3.7">𝑛</ci></apply></apply></apply></apply></apply></annotation-xml><annotation encoding="application/x-tex">I_{aut}(t)=G(t-t_{delay})(V-E_{syn}),</annotation></semantics></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation
+      ltx_eqn_eqno ltx_align_middle
+      ltx_align_right">(4)</span></td>
+</tr>
+</table>
+<p class="ltx_p">where <math id="I2.i2.p1.m1" class="ltx_Math" alttext="G(t-t_{delay})" display="inline"><semantics><mrow id="I2.i2.p1.m1.6" xref="I2.i2.p1.m1.6.cmml"><mi id="I2.i2.p1.m1.2" xref="I2.i2.p1.m1.2.cmml">G</mi><mo id="I2.i2.p1.m1.3" xref="I2.i2.p1.m1.3.cmml">⁢</mo><mrow id="I2.i2.p1.m1.5b" xref="I2.i2.p1.m1.1.cmml"><mo stretchy="false" id="I2.i2.p1.m1.4">(</mo><mrow id="I2.i2.p1.m1.1" xref="I2.i2.p1.m1.1.cmml"><mi id="I2.i2.p1.m1.1.1" xref="I2.i2.p1.m1.1.1.cmml">t</mi><mo id="I2.i2.p1.m1.1.2" xref="I2.i2.p1.m1.1.2.cmml">-</mo><msub id="I2.i2.p1.m1.5a" xref="I2.i2.p1.m1.1.cmml"><mi id="I2.i2.p1.m1.1.3" xref="I2.i2.p1.m1.1.3.cmml">t</mi><mrow id="I2.i2.p1.m1.5" xref="I2.i2.p1.m1.1.cmml"><mi id="I2.i2.p1.m1.1.4" xref="I2.i2.p1.m1.1.4.cmml">d</mi><mo id="I2.i2.p1.m1.1.5" xref="I2.i2.p1.m1.1.5.cmml">⁢</mo><mi id="I2.i2.p1.m1.1.6" xref="I2.i2.p1.m1.1.6.cmml">e</mi><mo id="I2.i2.p1.m1.1.5a" xref="I2.i2.p1.m1.1.5.cmml">⁢</mo><mi id="I2.i2.p1.m1.1.7" xref="I2.i2.p1.m1.1.7.cmml">l</mi><mo id="I2.i2.p1.m1.1.5b" xref="I2.i2.p1.m1.1.5.cmml">⁢</mo><mi id="I2.i2.p1.m1.1.8" xref="I2.i2.p1.m1.1.8.cmml">a</mi><mo id="I2.i2.p1.m1.1.5c" xref="I2.i2.p1.m1.1.5.cmml">⁢</mo><mi id="I2.i2.p1.m1.1.9" xref="I2.i2.p1.m1.1.9.cmml">y</mi></mrow></msub></mrow><mo stretchy="false" id="I2.i2.p1.m1.4a">)</mo></mrow></mrow><annotation-xml encoding="MathML-Content"><apply id="I2.i2.p1.m1.6.cmml" xref="I2.i2.p1.m1.6"><times id="I2.i2.p1.m1.3.cmml" xref="I2.i2.p1.m1.3"></times><ci id="I2.i2.p1.m1.2.cmml" xref="I2.i2.p1.m1.2">𝐺</ci><apply id="I2.i2.p1.m1.1.cmml" xref="I2.i2.p1.m1.5b"><minus id="I2.i2.p1.m1.1.2.cmml" xref="I2.i2.p1.m1.1.2"></minus><ci id="I2.i2.p1.m1.1.1.cmml" xref="I2.i2.p1.m1.1.1">𝑡</ci><apply id="I2.i2.p1.m1.5a.cmml" xref="I2.i2.p1.m1.5b"><csymbol cd="ambiguous" id="I2.i2.p1.m1.1.10.cmml">subscript</csymbol><ci id="I2.i2.p1.m1.1.3.cmml" xref="I2.i2.p1.m1.1.3">𝑡</ci><apply id="I2.i2.p1.m1.5.cmml" xref="I2.i2.p1.m1.5b"><times id="I2.i2.p1.m1.1.5.cmml" xref="I2.i2.p1.m1.1.5"></times><ci id="I2.i2.p1.m1.1.4.cmml" xref="I2.i2.p1.m1.1.4">𝑑</ci><ci id="I2.i2.p1.m1.1.6.cmml" xref="I2.i2.p1.m1.1.6">𝑒</ci><ci id="I2.i2.p1.m1.1.7.cmml" xref="I2.i2.p1.m1.1.7">𝑙</ci><ci id="I2.i2.p1.m1.1.8.cmml" xref="I2.i2.p1.m1.1.8">𝑎</ci><ci id="I2.i2.p1.m1.1.9.cmml" xref="I2.i2.p1.m1.1.9">𝑦</ci></apply></apply></apply></apply></annotation-xml><annotation encoding="application/x-tex">G(t-t_{delay})</annotation></semantics></math> is the autaptic conductance, and <math id="I2.i2.p1.m2" class="ltx_Math" alttext="E_{syn}" display="inline"><semantics><msub id="I2.i2.p1.m2.7" xref="I2.i2.p1.m2.7.cmml"><mi id="I2.i2.p1.m2.1" xref="I2.i2.p1.m2.1.cmml">E</mi><mrow id="I2.i2.p1.m2.6" xref="I2.i2.p1.m2.6.cmml"><mi id="I2.i2.p1.m2.2" xref="I2.i2.p1.m2.2.cmml">s</mi><mo id="I2.i2.p1.m2.3" xref="I2.i2.p1.m2.3.cmml">⁢</mo><mi id="I2.i2.p1.m2.4" xref="I2.i2.p1.m2.4.cmml">y</mi><mo id="I2.i2.p1.m2.3a" xref="I2.i2.p1.m2.3.cmml">⁢</mo><mi id="I2.i2.p1.m2.5" xref="I2.i2.p1.m2.5.cmml">n</mi></mrow></msub><annotation-xml encoding="MathML-Content"><apply id="I2.i2.p1.m2.7.cmml" xref="I2.i2.p1.m2.7"><csymbol cd="ambiguous" id="I2.i2.p1.m2.7.1.cmml">subscript</csymbol><ci id="I2.i2.p1.m2.1.cmml" xref="I2.i2.p1.m2.1">𝐸</ci><apply id="I2.i2.p1.m2.6.cmml" xref="I2.i2.p1.m2.6"><times id="I2.i2.p1.m2.3.cmml" xref="I2.i2.p1.m2.3"></times><ci id="I2.i2.p1.m2.2.cmml" xref="I2.i2.p1.m2.2">𝑠</ci><ci id="I2.i2.p1.m2.4.cmml" xref="I2.i2.p1.m2.4">𝑦</ci><ci id="I2.i2.p1.m2.5.cmml" xref="I2.i2.p1.m2.5">𝑛</ci></apply></apply></annotation-xml><annotation encoding="application/x-tex">E_{syn}</annotation></semantics></math> is the autaptic reversal potential. In this equation, we used <math id="I2.i2.p1.m3" class="ltx_Math" alttext="E_{syn}=0\;\mathrm{mV}" display="inline"><semantics><mrow id="I2.i2.p1.m3.13" xref="I2.i2.p1.m3.13.cmml"><msub id="I2.i2.p1.m3.7" xref="I2.i2.p1.m3.7.cmml"><mi id="I2.i2.p1.m3.1" xref="I2.i2.p1.m3.1.cmml">E</mi><mrow id="I2.i2.p1.m3.6" xref="I2.i2.p1.m3.6.cmml"><mi id="I2.i2.p1.m3.2" xref="I2.i2.p1.m3.2.cmml">s</mi><mo id="I2.i2.p1.m3.3" xref="I2.i2.p1.m3.3.cmml">⁢</mo><mi id="I2.i2.p1.m3.4" xref="I2.i2.p1.m3.4.cmml">y</mi><mo id="I2.i2.p1.m3.3a" xref="I2.i2.p1.m3.3.cmml">⁢</mo><mi id="I2.i2.p1.m3.5" xref="I2.i2.p1.m3.5.cmml">n</mi></mrow></msub><mo id="I2.i2.p1.m3.8" xref="I2.i2.p1.m3.8.cmml">=</mo><mrow id="I2.i2.p1.m3.12" xref="I2.i2.p1.m3.12.cmml"><mpadded width="+2.8pt" id="I2.i2.p1.m3.9" xref="I2.i2.p1.m3.9.cmml"><mn id="I2.i2.p1.m3.9a" xref="I2.i2.p1.m3.9.cmml">0</mn></mpadded><mo id="I2.i2.p1.m3.10" xref="I2.i2.p1.m3.10.cmml">⁢</mo><mi id="I2.i2.p1.m3.11" xref="I2.i2.p1.m3.11.cmml">mV</mi></mrow></mrow><annotation-xml encoding="MathML-Content"><apply id="I2.i2.p1.m3.13.cmml" xref="I2.i2.p1.m3.13"><eq id="I2.i2.p1.m3.8.cmml" xref="I2.i2.p1.m3.8"></eq><apply id="I2.i2.p1.m3.7.cmml" xref="I2.i2.p1.m3.7"><csymbol cd="ambiguous" id="I2.i2.p1.m3.7.1.cmml">subscript</csymbol><ci id="I2.i2.p1.m3.1.cmml" xref="I2.i2.p1.m3.1">𝐸</ci><apply id="I2.i2.p1.m3.6.cmml" xref="I2.i2.p1.m3.6"><times id="I2.i2.p1.m3.3.cmml" xref="I2.i2.p1.m3.3"></times><ci id="I2.i2.p1.m3.2.cmml" xref="I2.i2.p1.m3.2">𝑠</ci><ci id="I2.i2.p1.m3.4.cmml" xref="I2.i2.p1.m3.4">𝑦</ci><ci id="I2.i2.p1.m3.5.cmml" xref="I2.i2.p1.m3.5">𝑛</ci></apply></apply><apply id="I2.i2.p1.m3.12.cmml" xref="I2.i2.p1.m3.12"><times id="I2.i2.p1.m3.10.cmml" xref="I2.i2.p1.m3.10"></times><cn type="integer" id="I2.i2.p1.m3.9.cmml" xref="I2.i2.p1.m3.9">0</cn><ci id="I2.i2.p1.m3.11.cmml" xref="I2.i2.p1.m3.11">mV</ci></apply></apply></annotation-xml><annotation encoding="application/x-tex">E_{syn}=0\;\mathrm{mV}</annotation></semantics></math> for excitatory neurons and -80 <math id="I2.i2.p1.m4" class="ltx_Math" alttext="\mathrm{mV}" display="inline"><semantics><mi id="I2.i2.p1.m4.1" xref="I2.i2.p1.m4.1.cmml">mV</mi><annotation-xml encoding="MathML-Content"><ci id="I2.i2.p1.m4.1.cmml" xref="I2.i2.p1.m4.1">mV</ci></annotation-xml><annotation encoding="application/x-tex">\mathrm{mV}</annotation></semantics></math> for inhibitory neurons. The autaptic conductance is defined as</p>
+<table id="A0.EGx2" class="ltx_equationgroup ltx_eqn_eqnarray ltx_eqn_table">
+
+<tr id="S2.E5" class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"><math id="S2.E5.m1" class="ltx_Math" alttext="\displaystyle G(t)" display="inline"><semantics><mrow id="S2.E5.m1.6" xref="S2.E5.m1.6.cmml"><mi id="S2.E5.m1.2" xref="S2.E5.m1.2.cmml">G</mi><mo id="S2.E5.m1.3" xref="S2.E5.m1.3.cmml">⁢</mo><mrow id="S2.E5.m1.5"><mo stretchy="false" id="S2.E5.m1.4">(</mo><mi id="S2.E5.m1.1" xref="S2.E5.m1.1.cmml">t</mi><mo stretchy="false" id="S2.E5.m1.4a">)</mo></mrow></mrow><annotation-xml encoding="MathML-Content"><apply id="S2.E5.m1.6.cmml" xref="S2.E5.m1.6"><times id="S2.E5.m1.3.cmml" xref="S2.E5.m1.3"></times><ci id="S2.E5.m1.2.cmml" xref="S2.E5.m1.2">𝐺</ci><ci id="S2.E5.m1.1.cmml" xref="S2.E5.m1.1">𝑡</ci></apply></annotation-xml><annotation encoding="application/x-tex">\displaystyle G(t)</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_center ltx_eqn_cell"><math id="S2.E5.m2" class="ltx_Math" alttext="\displaystyle=" display="inline"><semantics><mo id="S2.E5.m2.1" xref="S2.E5.m2.1.cmml">=</mo><annotation-xml encoding="MathML-Content"><eq id="S2.E5.m2.1.cmml" xref="S2.E5.m2.1"></eq></annotation-xml><annotation encoding="application/x-tex">\displaystyle=</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="S2.E5.m3" class="ltx_Math" alttext="\displaystyle g_{aut}\sigma(t-t_{fire})" display="inline"><semantics><mrow id="S2.E5.m3.13" xref="S2.E5.m3.13.cmml"><msub id="S2.E5.m3.8" xref="S2.E5.m3.8.cmml"><mi id="S2.E5.m3.2" xref="S2.E5.m3.2.cmml">g</mi><mrow id="S2.E5.m3.7" xref="S2.E5.m3.7.cmml"><mi id="S2.E5.m3.3" xref="S2.E5.m3.3.cmml">a</mi><mo id="S2.E5.m3.4" xref="S2.E5.m3.4.cmml">⁢</mo><mi id="S2.E5.m3.5" xref="S2.E5.m3.5.cmml">u</mi><mo id="S2.E5.m3.4a" xref="S2.E5.m3.4.cmml">⁢</mo><mi id="S2.E5.m3.6" xref="S2.E5.m3.6.cmml">t</mi></mrow></msub><mo id="S2.E5.m3.9" xref="S2.E5.m3.9.cmml">⁢</mo><mi id="S2.E5.m3.10" xref="S2.E5.m3.10.cmml">σ</mi><mo id="S2.E5.m3.9a" xref="S2.E5.m3.9.cmml">⁢</mo><mrow id="S2.E5.m3.12b" xref="S2.E5.m3.1.cmml"><mo stretchy="false" id="S2.E5.m3.11">(</mo><mrow id="S2.E5.m3.1" xref="S2.E5.m3.1.cmml"><mi id="S2.E5.m3.1.1" xref="S2.E5.m3.1.1.cmml">t</mi><mo id="S2.E5.m3.1.2" xref="S2.E5.m3.1.2.cmml">-</mo><msub id="S2.E5.m3.12a" xref="S2.E5.m3.1.cmml"><mi id="S2.E5.m3.1.3" xref="S2.E5.m3.1.3.cmml">t</mi><mrow id="S2.E5.m3.12" xref="S2.E5.m3.1.cmml"><mi id="S2.E5.m3.1.4" xref="S2.E5.m3.1.4.cmml">f</mi><mo id="S2.E5.m3.1.5" xref="S2.E5.m3.1.5.cmml">⁢</mo><mi id="S2.E5.m3.1.6" xref="S2.E5.m3.1.6.cmml">i</mi><mo id="S2.E5.m3.1.5a" xref="S2.E5.m3.1.5.cmml">⁢</mo><mi id="S2.E5.m3.1.7" xref="S2.E5.m3.1.7.cmml">r</mi><mo id="S2.E5.m3.1.5b" xref="S2.E5.m3.1.5.cmml">⁢</mo><mi id="S2.E5.m3.1.8" xref="S2.E5.m3.1.8.cmml">e</mi></mrow></msub></mrow><mo stretchy="false" id="S2.E5.m3.11a">)</mo></mrow></mrow><annotation-xml encoding="MathML-Content"><apply id="S2.E5.m3.13.cmml" xref="S2.E5.m3.13"><times id="S2.E5.m3.9.cmml" xref="S2.E5.m3.9"></times><apply id="S2.E5.m3.8.cmml" xref="S2.E5.m3.8"><csymbol cd="ambiguous" id="S2.E5.m3.8.1.cmml">subscript</csymbol><ci id="S2.E5.m3.2.cmml" xref="S2.E5.m3.2">𝑔</ci><apply id="S2.E5.m3.7.cmml" xref="S2.E5.m3.7"><times id="S2.E5.m3.4.cmml" xref="S2.E5.m3.4"></times><ci id="S2.E5.m3.3.cmml" xref="S2.E5.m3.3">𝑎</ci><ci id="S2.E5.m3.5.cmml" xref="S2.E5.m3.5">𝑢</ci><ci id="S2.E5.m3.6.cmml" xref="S2.E5.m3.6">𝑡</ci></apply></apply><ci id="S2.E5.m3.10.cmml" xref="S2.E5.m3.10">𝜎</ci><apply id="S2.E5.m3.1.cmml" xref="S2.E5.m3.12b"><minus id="S2.E5.m3.1.2.cmml" xref="S2.E5.m3.1.2"></minus><ci id="S2.E5.m3.1.1.cmml" xref="S2.E5.m3.1.1">𝑡</ci><apply id="S2.E5.m3.12a.cmml" xref="S2.E5.m3.12b"><csymbol cd="ambiguous" id="S2.E5.m3.1.9.cmml">subscript</csymbol><ci id="S2.E5.m3.1.3.cmml" xref="S2.E5.m3.1.3">𝑡</ci><apply id="S2.E5.m3.12.cmml" xref="S2.E5.m3.12b"><times id="S2.E5.m3.1.5.cmml" xref="S2.E5.m3.1.5"></times><ci id="S2.E5.m3.1.4.cmml" xref="S2.E5.m3.1.4">𝑓</ci><ci id="S2.E5.m3.1.6.cmml" xref="S2.E5.m3.1.6">𝑖</ci><ci id="S2.E5.m3.1.7.cmml" xref="S2.E5.m3.1.7">𝑟</ci><ci id="S2.E5.m3.1.8.cmml" xref="S2.E5.m3.1.8">𝑒</ci></apply></apply></apply></apply></annotation-xml><annotation encoding="application/x-tex">\displaystyle g_{aut}\sigma(t-t_{fire})</annotation></semantics></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation
+      ltx_eqn_eqno ltx_align_middle
+      ltx_align_right">(5)</span></td>
+</tr>
+<tr id="S2.E6" class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"><math id="S2.E6.m1" class="ltx_Math" alttext="\displaystyle\sigma(t)" display="inline"><semantics><mrow id="S2.E6.m1.6" xref="S2.E6.m1.6.cmml"><mi id="S2.E6.m1.2" xref="S2.E6.m1.2.cmml">σ</mi><mo id="S2.E6.m1.3" xref="S2.E6.m1.3.cmml">⁢</mo><mrow id="S2.E6.m1.5"><mo stretchy="false" id="S2.E6.m1.4">(</mo><mi id="S2.E6.m1.1" xref="S2.E6.m1.1.cmml">t</mi><mo stretchy="false" id="S2.E6.m1.4a">)</mo></mrow></mrow><annotation-xml encoding="MathML-Content"><apply id="S2.E6.m1.6.cmml" xref="S2.E6.m1.6"><times id="S2.E6.m1.3.cmml" xref="S2.E6.m1.3"></times><ci id="S2.E6.m1.2.cmml" xref="S2.E6.m1.2">𝜎</ci><ci id="S2.E6.m1.1.cmml" xref="S2.E6.m1.1">𝑡</ci></apply></annotation-xml><annotation encoding="application/x-tex">\displaystyle\sigma(t)</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_center ltx_eqn_cell"><math id="S2.E6.m2" class="ltx_Math" alttext="\displaystyle=" display="inline"><semantics><mo id="S2.E6.m2.1" xref="S2.E6.m2.1.cmml">=</mo><annotation-xml encoding="MathML-Content"><eq id="S2.E6.m2.1.cmml" xref="S2.E6.m2.1"></eq></annotation-xml><annotation encoding="application/x-tex">\displaystyle=</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math id="S2.E6.m3" class="ltx_Math" alttext="\displaystyle\frac{\exp(-t/t_{d})-\exp(-t/t_{r})}{t_{d}-t_{r}}" display="inline"><semantics><mstyle displaystyle="true" id="S2.E6.m3.17" xref="S2.E6.m3.17.cmml"><mfrac id="S2.E6.m3.17a" xref="S2.E6.m3.17.cmml"><mrow id="S2.E6.m3.8" xref="S2.E6.m3.8.cmml"><mrow id="S2.E6.m3.5e" xref="S2.E6.m3.5b.cmml"><mi id="S2.E6.m3.1" xref="S2.E6.m3.1.cmml">exp</mi><mo id="S2.E6.m3.5f" xref="S2.E6.m3.5b.cmml">⁡</mo><mrow id="S2.E6.m3.5d" xref="S2.E6.m3.5b.cmml"><mo stretchy="false" id="S2.E6.m3.5" xref="S2.E6.m3.5b.cmml">(</mo><mrow id="S2.E6.m3.3" xref="S2.E6.m3.5b.cmml"><mo id="S2.E6.m3.3.1" xref="S2.E6.m3.3.1.cmml">-</mo><mrow id="S2.E6.m3.5b" xref="S2.E6.m3.5b.cmml"><mi id="S2.E6.m3.3.2" xref="S2.E6.m3.3.2.cmml">t</mi><mo id="S2.E6.m3.3.3" xref="S2.E6.m3.3.3.cmml">/</mo><msub id="S2.E6.m3.5a" xref="S2.E6.m3.5b.cmml"><mi id="S2.E6.m3.3.4" xref="S2.E6.m3.3.4.cmml">t</mi><mi id="S2.E6.m3.3.5" xref="S2.E6.m3.3.5.cmml">d</mi></msub></mrow></mrow><mo stretchy="false" id="S2.E6.m3.5c" xref="S2.E6.m3.5b.cmml">)</mo></mrow></mrow><mo id="S2.E6.m3.6" xref="S2.E6.m3.6.cmml">-</mo><mrow id="S2.E6.m3.7e" xref="S2.E6.m3.7b.cmml"><mi id="S2.E6.m3.2" xref="S2.E6.m3.2.cmml">exp</mi><mo id="S2.E6.m3.7f" xref="S2.E6.m3.7b.cmml">⁡</mo><mrow id="S2.E6.m3.7d" xref="S2.E6.m3.7b.cmml"><mo stretchy="false" id="S2.E6.m3.7" xref="S2.E6.m3.7b.cmml">(</mo><mrow id="S2.E6.m3.4" xref="S2.E6.m3.7b.cmml"><mo id="S2.E6.m3.4.1" xref="S2.E6.m3.4.1.cmml">-</mo><mrow id="S2.E6.m3.7b" xref="S2.E6.m3.7b.cmml"><mi id="S2.E6.m3.4.2" xref="S2.E6.m3.4.2.cmml">t</mi><mo id="S2.E6.m3.4.3" xref="S2.E6.m3.4.3.cmml">/</mo><msub id="S2.E6.m3.7a" xref="S2.E6.m3.7b.cmml"><mi id="S2.E6.m3.4.4" xref="S2.E6.m3.4.4.cmml">t</mi><mi id="S2.E6.m3.4.5" xref="S2.E6.m3.4.5.cmml">r</mi></msub></mrow></mrow><mo stretchy="false" id="S2.E6.m3.7c" xref="S2.E6.m3.7b.cmml">)</mo></mrow></mrow></mrow><mrow id="S2.E6.m3.16" xref="S2.E6.m3.16.cmml"><msub id="S2.E6.m3.11" xref="S2.E6.m3.11.cmml"><mi id="S2.E6.m3.9" xref="S2.E6.m3.9.cmml">t</mi><mi id="S2.E6.m3.10" xref="S2.E6.m3.10.cmml">d</mi></msub><mo id="S2.E6.m3.12" xref="S2.E6.m3.12.cmml">-</mo><msub id="S2.E6.m3.15" xref="S2.E6.m3.15.cmml"><mi id="S2.E6.m3.13" xref="S2.E6.m3.13.cmml">t</mi><mi id="S2.E6.m3.14" xref="S2.E6.m3.14.cmml">r</mi></msub></mrow></mfrac></mstyle><annotation-xml encoding="MathML-Content"><apply id="S2.E6.m3.17.cmml" xref="S2.E6.m3.17"><divide id="S2.E6.m3.17.1.cmml"></divide><apply id="S2.E6.m3.8.cmml" xref="S2.E6.m3.8"><minus id="S2.E6.m3.6.cmml" xref="S2.E6.m3.6"></minus><apply id="S2.E6.m3.5b.cmml" xref="S2.E6.m3.5e"><exp id="S2.E6.m3.1.cmml" xref="S2.E6.m3.1"></exp><apply id="S2.E6.m3.3.cmml" xref="S2.E6.m3.5e"><minus id="S2.E6.m3.3.1.cmml" xref="S2.E6.m3.3.1"></minus><apply id="S2.E6.m3.5a.cmml" xref="S2.E6.m3.5e"><divide id="S2.E6.m3.3.3.cmml" xref="S2.E6.m3.3.3"></divide><ci id="S2.E6.m3.3.2.cmml" xref="S2.E6.m3.3.2">𝑡</ci><apply id="S2.E6.m3.5.cmml" xref="S2.E6.m3.5e"><csymbol cd="ambiguous" id="S2.E6.m3.3.6.cmml">subscript</csymbol><ci id="S2.E6.m3.3.4.cmml" xref="S2.E6.m3.3.4">𝑡</ci><ci id="S2.E6.m3.3.5.cmml" xref="S2.E6.m3.3.5">𝑑</ci></apply></apply></apply></apply><apply id="S2.E6.m3.7b.cmml" xref="S2.E6.m3.7e"><exp id="S2.E6.m3.2.cmml" xref="S2.E6.m3.2"></exp><apply id="S2.E6.m3.4.cmml" xref="S2.E6.m3.7e"><minus id="S2.E6.m3.4.1.cmml" xref="S2.E6.m3.4.1"></minus><apply id="S2.E6.m3.7a.cmml" xref="S2.E6.m3.7e"><divide id="S2.E6.m3.4.3.cmml" xref="S2.E6.m3.4.3"></divide><ci id="S2.E6.m3.4.2.cmml" xref="S2.E6.m3.4.2">𝑡</ci><apply id="S2.E6.m3.7.cmml" xref="S2.E6.m3.7e"><csymbol cd="ambiguous" id="S2.E6.m3.4.6.cmml">subscript</csymbol><ci id="S2.E6.m3.4.4.cmml" xref="S2.E6.m3.4.4">𝑡</ci><ci id="S2.E6.m3.4.5.cmml" xref="S2.E6.m3.4.5">𝑟</ci></apply></apply></apply></apply></apply><apply id="S2.E6.m3.16.cmml" xref="S2.E6.m3.16"><minus id="S2.E6.m3.12.cmml" xref="S2.E6.m3.12"></minus><apply id="S2.E6.m3.11.cmml" xref="S2.E6.m3.11"><csymbol cd="ambiguous" id="S2.E6.m3.11.1.cmml">subscript</csymbol><ci id="S2.E6.m3.9.cmml" xref="S2.E6.m3.9">𝑡</ci><ci id="S2.E6.m3.10.cmml" xref="S2.E6.m3.10">𝑑</ci></apply><apply id="S2.E6.m3.15.cmml" xref="S2.E6.m3.15"><csymbol cd="ambiguous" id="S2.E6.m3.15.1.cmml">subscript</csymbol><ci id="S2.E6.m3.13.cmml" xref="S2.E6.m3.13">𝑡</ci><ci id="S2.E6.m3.14.cmml" xref="S2.E6.m3.14">𝑟</ci></apply></apply></apply></annotation-xml><annotation encoding="application/x-tex">\displaystyle\frac{\exp(-t/t_{d})-\exp(-t/t_{r})}{t_{d}-t_{r}}</annotation></semantics></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td rowspan="1" class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right"><span class="ltx_tag ltx_tag_equation
+      ltx_eqn_eqno ltx_align_middle
+      ltx_align_right">(6)</span></td>
+</tr>
+</table>
+<p class="ltx_p">with presynaptic spikes occurring at <math id="I2.i2.p1.m5" class="ltx_Math" alttext="t_{fire}" display="inline"><semantics><msub id="I2.i2.p1.m5.8" xref="I2.i2.p1.m5.8.cmml"><mi id="I2.i2.p1.m5.1" xref="I2.i2.p1.m5.1.cmml">t</mi><mrow id="I2.i2.p1.m5.7" xref="I2.i2.p1.m5.7.cmml"><mi id="I2.i2.p1.m5.2" xref="I2.i2.p1.m5.2.cmml">f</mi><mo id="I2.i2.p1.m5.3" xref="I2.i2.p1.m5.3.cmml">⁢</mo><mi id="I2.i2.p1.m5.4" xref="I2.i2.p1.m5.4.cmml">i</mi><mo id="I2.i2.p1.m5.3a" xref="I2.i2.p1.m5.3.cmml">⁢</mo><mi id="I2.i2.p1.m5.5" xref="I2.i2.p1.m5.5.cmml">r</mi><mo id="I2.i2.p1.m5.3b" xref="I2.i2.p1.m5.3.cmml">⁢</mo><mi id="I2.i2.p1.m5.6" xref="I2.i2.p1.m5.6.cmml">e</mi></mrow></msub><annotation-xml encoding="MathML-Content"><apply id="I2.i2.p1.m5.8.cmml" xref="I2.i2.p1.m5.8"><csymbol cd="ambiguous" id="I2.i2.p1.m5.8.1.cmml">subscript</csymbol><ci id="I2.i2.p1.m5.1.cmml" xref="I2.i2.p1.m5.1">𝑡</ci><apply id="I2.i2.p1.m5.7.cmml" xref="I2.i2.p1.m5.7"><times id="I2.i2.p1.m5.3.cmml" xref="I2.i2.p1.m5.3"></times><ci id="I2.i2.p1.m5.2.cmml" xref="I2.i2.p1.m5.2">𝑓</ci><ci id="I2.i2.p1.m5.4.cmml" xref="I2.i2.p1.m5.4">𝑖</ci><ci id="I2.i2.p1.m5.5.cmml" xref="I2.i2.p1.m5.5">𝑟</ci><ci id="I2.i2.p1.m5.6.cmml" xref="I2.i2.p1.m5.6">𝑒</ci></apply></apply></annotation-xml><annotation encoding="application/x-tex">t_{fire}</annotation></semantics></math>. The parameters <math id="I2.i2.p1.m6" class="ltx_Math" alttext="t_{d}" display="inline"><semantics><msub id="I2.i2.p1.m6.3" xref="I2.i2.p1.m6.3.cmml"><mi id="I2.i2.p1.m6.1" xref="I2.i2.p1.m6.1.cmml">t</mi><mi id="I2.i2.p1.m6.2" xref="I2.i2.p1.m6.2.cmml">d</mi></msub><annotation-xml encoding="MathML-Content"><apply id="I2.i2.p1.m6.3.cmml" xref="I2.i2.p1.m6.3"><csymbol cd="ambiguous" id="I2.i2.p1.m6.3.1.cmml">subscript</csymbol><ci id="I2.i2.p1.m6.1.cmml" xref="I2.i2.p1.m6.1">𝑡</ci><ci id="I2.i2.p1.m6.2.cmml" xref="I2.i2.p1.m6.2">𝑑</ci></apply></annotation-xml><annotation encoding="application/x-tex">t_{d}</annotation></semantics></math> and <math id="I2.i2.p1.m7" class="ltx_Math" alttext="t_{r}" display="inline"><semantics><msub id="I2.i2.p1.m7.3" xref="I2.i2.p1.m7.3.cmml"><mi id="I2.i2.p1.m7.1" xref="I2.i2.p1.m7.1.cmml">t</mi><mi id="I2.i2.p1.m7.2" xref="I2.i2.p1.m7.2.cmml">r</mi></msub><annotation-xml encoding="MathML-Content"><apply id="I2.i2.p1.m7.3.cmml" xref="I2.i2.p1.m7.3"><csymbol cd="ambiguous" id="I2.i2.p1.m7.3.1.cmml">subscript</csymbol><ci id="I2.i2.p1.m7.1.cmml" xref="I2.i2.p1.m7.1">𝑡</ci><ci id="I2.i2.p1.m7.2.cmml" xref="I2.i2.p1.m7.2">𝑟</ci></apply></annotation-xml><annotation encoding="application/x-tex">t_{r}</annotation></semantics></math> represent the decay and rise times of the function, respectively, and these parameters determine the duration of the response. The autaptic rise and decay times were set to <math id="I2.i2.p1.m8" class="ltx_Math" alttext="t_{r}=0.1\;\mathrm{ms}" display="inline"><semantics><mrow id="I2.i2.p1.m8.9" xref="I2.i2.p1.m8.9.cmml"><msub id="I2.i2.p1.m8.3" xref="I2.i2.p1.m8.3.cmml"><mi id="I2.i2.p1.m8.1" xref="I2.i2.p1.m8.1.cmml">t</mi><mi id="I2.i2.p1.m8.2" xref="I2.i2.p1.m8.2.cmml">r</mi></msub><mo id="I2.i2.p1.m8.4" xref="I2.i2.p1.m8.4.cmml">=</mo><mrow id="I2.i2.p1.m8.8" xref="I2.i2.p1.m8.8.cmml"><mpadded width="+2.8pt" id="I2.i2.p1.m8.5" xref="I2.i2.p1.m8.5.cmml"><mn id="I2.i2.p1.m8.5a" xref="I2.i2.p1.m8.5.cmml">0.1</mn></mpadded><mo id="I2.i2.p1.m8.6" xref="I2.i2.p1.m8.6.cmml">⁢</mo><mi id="I2.i2.p1.m8.7" xref="I2.i2.p1.m8.7.cmml">ms</mi></mrow></mrow><annotation-xml encoding="MathML-Content"><apply id="I2.i2.p1.m8.9.cmml" xref="I2.i2.p1.m8.9"><eq id="I2.i2.p1.m8.4.cmml" xref="I2.i2.p1.m8.4"></eq><apply id="I2.i2.p1.m8.3.cmml" xref="I2.i2.p1.m8.3"><csymbol cd="ambiguous" id="I2.i2.p1.m8.3.1.cmml">subscript</csymbol><ci id="I2.i2.p1.m8.1.cmml" xref="I2.i2.p1.m8.1">𝑡</ci><ci id="I2.i2.p1.m8.2.cmml" xref="I2.i2.p1.m8.2">𝑟</ci></apply><apply id="I2.i2.p1.m8.8.cmml" xref="I2.i2.p1.m8.8"><times id="I2.i2.p1.m8.6.cmml" xref="I2.i2.p1.m8.6"></times><cn type="float" id="I2.i2.p1.m8.5.cmml" xref="I2.i2.p1.m8.5">0.1</cn><ci id="I2.i2.p1.m8.7.cmml" xref="I2.i2.p1.m8.7">ms</ci></apply></apply></annotation-xml><annotation encoding="application/x-tex">t_{r}=0.1\;\mathrm{ms}</annotation></semantics></math> and <math id="I2.i2.p1.m9" class="ltx_Math" alttext="t_{d}=3\;\mathrm{ms}" display="inline"><semantics><mrow id="I2.i2.p1.m9.9" xref="I2.i2.p1.m9.9.cmml"><msub id="I2.i2.p1.m9.3" xref="I2.i2.p1.m9.3.cmml"><mi id="I2.i2.p1.m9.1" xref="I2.i2.p1.m9.1.cmml">t</mi><mi id="I2.i2.p1.m9.2" xref="I2.i2.p1.m9.2.cmml">d</mi></msub><mo id="I2.i2.p1.m9.4" xref="I2.i2.p1.m9.4.cmml">=</mo><mrow id="I2.i2.p1.m9.8" xref="I2.i2.p1.m9.8.cmml"><mpadded width="+2.8pt" id="I2.i2.p1.m9.5" xref="I2.i2.p1.m9.5.cmml"><mn id="I2.i2.p1.m9.5a" xref="I2.i2.p1.m9.5.cmml">3</mn></mpadded><mo id="I2.i2.p1.m9.6" xref="I2.i2.p1.m9.6.cmml">⁢</mo><mi id="I2.i2.p1.m9.7" xref="I2.i2.p1.m9.7.cmml">ms</mi></mrow></mrow><annotation-xml encoding="MathML-Content"><apply id="I2.i2.p1.m9.9.cmml" xref="I2.i2.p1.m9.9"><eq id="I2.i2.p1.m9.4.cmml" xref="I2.i2.p1.m9.4"></eq><apply id="I2.i2.p1.m9.3.cmml" xref="I2.i2.p1.m9.3"><csymbol cd="ambiguous" id="I2.i2.p1.m9.3.1.cmml">subscript</csymbol><ci id="I2.i2.p1.m9.1.cmml" xref="I2.i2.p1.m9.1">𝑡</ci><ci id="I2.i2.p1.m9.2.cmml" xref="I2.i2.p1.m9.2">𝑑</ci></apply><apply id="I2.i2.p1.m9.8.cmml" xref="I2.i2.p1.m9.8"><times id="I2.i2.p1.m9.6.cmml" xref="I2.i2.p1.m9.6"></times><cn type="integer" id="I2.i2.p1.m9.5.cmml" xref="I2.i2.p1.m9.5">3</cn><ci id="I2.i2.p1.m9.7.cmml" xref="I2.i2.p1.m9.7">ms</ci></apply></apply></annotation-xml><annotation encoding="application/x-tex">t_{d}=3\;\mathrm{ms}</annotation></semantics></math>, respectively.</p>
+</div>
+</li>
+</ul>
+</div>
+<div id="S2.p6" class="ltx_para">
+<p class="ltx_p">In the following sections, we will review the two main forms of an autapse. Studies have shown that autapses that exhibit delayed feedback provide a control option for adjusting neuron responses.</p>
+</div>
+</section>
+<section id="S3" class="ltx_section">
+<h2 class="ltx_title ltx_title_section">
+<span class="ltx_tag ltx_tag_section">3 </span>Firing pattern transition in a bursting neuron</h2>
+
+<div id="S3.p1" class="ltx_para">
+<p class="ltx_p">Experimental observations have indicated that action potentials can occur with different firing patterns, and the primary firing patterns are spiking and bursting <cite class="ltx_cite ltx_citemacro_cite">[<a href="#bib.bib45" title="" class="ltx_ref">45</a>, <a href="#bib.bib46" title="" class="ltx_ref">46</a>, <a href="#bib.bib47" title="" class="ltx_ref">47</a>, <a href="#bib.bib48" title="" class="ltx_ref">48</a>, <a href="#bib.bib49" title="" class="ltx_ref">49</a>, <a href="#bib.bib50" title="" class="ltx_ref">50</a>]</cite>. Bursting is an extremely diverse general phenomenon in firing patterns exhibited by neurons in the central nervous system and spinal cord <cite class="ltx_cite ltx_citemacro_cite">[<a href="#bib.bib51" title="" class="ltx_ref">51</a>, <a href="#bib.bib52" title="" class="ltx_ref">52</a>]</cite>. Previous studies on a bursting neuron with an autapse showed the novel dynamics and the transition of firing patterns induced by an autapse <cite class="ltx_cite ltx_citemacro_cite">[<a href="#bib.bib36" title="" class="ltx_ref">36</a>]</cite>.</p>
+</div>
+<div id="S3.p2" class="ltx_para">
+<p class="ltx_p">The simplified model of Hindmarsh and Rose has turned out to capture the features of experimentally measured electrical data quite accurately, particularly for studies of the spiking-bursting behavior of neuron membrane potentials.</p>
+</div>
+<div id="S3.p3" class="ltx_para">
+<p class="ltx_p">Without an autapse, HR neurons exhibit many dynamic behaviors, including quiescent, regular spiking, periodic, and chaotic bursting firing patterns (see Fig. 1 in Ref. <cite class="ltx_cite ltx_citemacro_cite">[<a href="#bib.bib36" title="" class="ltx_ref">36</a>]</cite> and Ref. <cite class="ltx_cite ltx_citemacro_cite">[<a href="#bib.bib53" title="" class="ltx_ref">53</a>]</cite>).</p>
+</div>
+<div id="S3.p4" class="ltx_para">
+<p class="ltx_p">The presence of an autapse completely changes the firing patterns of the original HR neuron. The firing pattern can be adjusted from a periodic or chaotic pattern to another periodic pattern or to a chaotic bursting pattern as the autaptic parameters change, independently of the original firing pattern. Fig. <a href="#S3.F3" title="Figure 3 ‣ 3 Firing pattern transition in a bursting neuron ‣ Firing dynamics of an autaptic neuron" class="ltx_ref"><span class="ltx_text ltx_ref_tag">3</span></a> shows the time courses of the membrane potentials of an HR neuron with an electrical autapse as an example. Importantly, the maximum action potential is increased by the electrical autapse.</p>
+</div>
+<figure id="S3.F3" class="ltx_figure"><img src="x3.png" id="S3.F3.g1" class="ltx_graphics ltx_centering" width="339" height="166" alt="">
+<figcaption class="ltx_caption"><span class="ltx_tag ltx_tag_figure">Figure 3: </span>Time courses of the membrane potentials in response to different <math id="S3.F3.m3" class="ltx_Math" alttext="I_{ext}" display="inline"><semantics><msub id="S3.F3.m3.7" xref="S3.F3.m3.7.cmml"><mi id="S3.F3.m3.1" xref="S3.F3.m3.1.cmml">I</mi><mrow id="S3.F3.m3.6" xref="S3.F3.m3.6.cmml"><mi id="S3.F3.m3.2" xref="S3.F3.m3.2.cmml">e</mi><mo id="S3.F3.m3.3" xref="S3.F3.m3.3.cmml">⁢</mo><mi id="S3.F3.m3.4" xref="S3.F3.m3.4.cmml">x</mi><mo id="S3.F3.m3.3a" xref="S3.F3.m3.3.cmml">⁢</mo><mi id="S3.F3.m3.5" xref="S3.F3.m3.5.cmml">t</mi></mrow></msub><annotation-xml encoding="MathML-Content"><apply id="S3.F3.m3.7.cmml" xref="S3.F3.m3.7"><csymbol cd="ambiguous" id="S3.F3.m3.7.1.cmml">subscript</csymbol><ci id="S3.F3.m3.1.cmml" xref="S3.F3.m3.1">𝐼</ci><apply id="S3.F3.m3.6.cmml" xref="S3.F3.m3.6"><times id="S3.F3.m3.3.cmml" xref="S3.F3.m3.3"></times><ci id="S3.F3.m3.2.cmml" xref="S3.F3.m3.2">𝑒</ci><ci id="S3.F3.m3.4.cmml" xref="S3.F3.m3.4">𝑥</ci><ci id="S3.F3.m3.5.cmml" xref="S3.F3.m3.5">𝑡</ci></apply></apply></annotation-xml><annotation encoding="application/x-tex">I_{ext}</annotation></semantics></math> with <math id="S3.F3.m4" class="ltx_Math" alttext="g_{aut}=0.5" display="inline"><semantics><mrow id="S3.F3.m4.10" xref="S3.F3.m4.10.cmml"><msub id="S3.F3.m4.7" xref="S3.F3.m4.7.cmml"><mi id="S3.F3.m4.1" xref="S3.F3.m4.1.cmml">g</mi><mrow id="S3.F3.m4.6" xref="S3.F3.m4.6.cmml"><mi id="S3.F3.m4.2" xref="S3.F3.m4.2.cmml">a</mi><mo id="S3.F3.m4.3" xref="S3.F3.m4.3.cmml">⁢</mo><mi id="S3.F3.m4.4" xref="S3.F3.m4.4.cmml">u</mi><mo id="S3.F3.m4.3a" xref="S3.F3.m4.3.cmml">⁢</mo><mi id="S3.F3.m4.5" xref="S3.F3.m4.5.cmml">t</mi></mrow></msub><mo id="S3.F3.m4.8" xref="S3.F3.m4.8.cmml">=</mo><mn id="S3.F3.m4.9" xref="S3.F3.m4.9.cmml">0.5</mn></mrow><annotation-xml encoding="MathML-Content"><apply id="S3.F3.m4.10.cmml" xref="S3.F3.m4.10"><eq id="S3.F3.m4.8.cmml" xref="S3.F3.m4.8"></eq><apply id="S3.F3.m4.7.cmml" xref="S3.F3.m4.7"><csymbol cd="ambiguous" id="S3.F3.m4.7.1.cmml">subscript</csymbol><ci id="S3.F3.m4.1.cmml" xref="S3.F3.m4.1">𝑔</ci><apply id="S3.F3.m4.6.cmml" xref="S3.F3.m4.6"><times id="S3.F3.m4.3.cmml" xref="S3.F3.m4.3"></times><ci id="S3.F3.m4.2.cmml" xref="S3.F3.m4.2">𝑎</ci><ci id="S3.F3.m4.4.cmml" xref="S3.F3.m4.4">𝑢</ci><ci id="S3.F3.m4.5.cmml" xref="S3.F3.m4.5">𝑡</ci></apply></apply><cn type="float" id="S3.F3.m4.9.cmml" xref="S3.F3.m4.9">0.5</cn></apply></annotation-xml><annotation encoding="application/x-tex">g_{aut}=0.5</annotation></semantics></math> <cite class="ltx_cite ltx_citemacro_cite">[<a href="#bib.bib36" title="" class="ltx_ref">36</a>]</cite>. The blue curves represent the time course of the HR neuron with an autapse, and the red curves indicate that without autapse.</figcaption>
+</figure>
+<figure id="S3.F4" class="ltx_figure"><img src="x4.png" id="S3.F4.g1" class="ltx_graphics ltx_centering" width="304" height="421" alt="">
+<figcaption class="ltx_caption"><span class="ltx_tag ltx_tag_figure">Figure 4: </span>Bifurcation diagram of the interspike interval of an HR neuron with an autapse versus the autaptic delay time <cite class="ltx_cite ltx_citemacro_cite">[<a href="#bib.bib36" title="" class="ltx_ref">36</a>]</cite>. From left to right, the panels show the results of the electrical autapse, excitatory chemical autapse, and inhibitory chemical autapse.</figcaption>
+</figure>
+<div id="S3.p5" class="ltx_para">
+<p class="ltx_p">The ISI plot bifurcation diagrams of the HR neuron clearly show the transition between periodic and aperiodic firing. For an electrical autapse, the periodic state transits to the chaotic state exhibiting an alternating behavior as the time delay increased. With higher autaptic intensity, this alternating behavior is more noticeable and occurs more frequently. For shorter delay times, the firing pattern of the HR neuron showed periodic spiking independent of the external DC input. The neuron with an excitatory chemical autapse exhibits chaotic firing patterns in a larger area of <math id="S3.p5.m1" class="ltx_Math" alttext="g_{aut}" display="inline"><semantics><msub id="S3.p5.m1.7" xref="S3.p5.m1.7.cmml"><mi id="S3.p5.m1.1" xref="S3.p5.m1.1.cmml">g</mi><mrow id="S3.p5.m1.6" xref="S3.p5.m1.6.cmml"><mi id="S3.p5.m1.2" xref="S3.p5.m1.2.cmml">a</mi><mo id="S3.p5.m1.3" xref="S3.p5.m1.3.cmml">⁢</mo><mi id="S3.p5.m1.4" xref="S3.p5.m1.4.cmml">u</mi><mo id="S3.p5.m1.3a" xref="S3.p5.m1.3.cmml">⁢</mo><mi id="S3.p5.m1.5" xref="S3.p5.m1.5.cmml">t</mi></mrow></msub><annotation-xml encoding="MathML-Content"><apply id="S3.p5.m1.7.cmml" xref="S3.p5.m1.7"><csymbol cd="ambiguous" id="S3.p5.m1.7.1.cmml">subscript</csymbol><ci id="S3.p5.m1.1.cmml" xref="S3.p5.m1.1">𝑔</ci><apply id="S3.p5.m1.6.cmml" xref="S3.p5.m1.6"><times id="S3.p5.m1.3.cmml" xref="S3.p5.m1.3"></times><ci id="S3.p5.m1.2.cmml" xref="S3.p5.m1.2">𝑎</ci><ci id="S3.p5.m1.4.cmml" xref="S3.p5.m1.4">𝑢</ci><ci id="S3.p5.m1.5.cmml" xref="S3.p5.m1.5">𝑡</ci></apply></apply></annotation-xml><annotation encoding="application/x-tex">g_{aut}</annotation></semantics></math>-<math id="S3.p5.m2" class="ltx_Math" alttext="\tau" display="inline"><semantics><mi id="S3.p5.m2.1" xref="S3.p5.m2.1.cmml">τ</mi><annotation-xml encoding="MathML-Content"><ci id="S3.p5.m2.1.cmml" xref="S3.p5.m2.1">𝜏</ci></annotation-xml><annotation encoding="application/x-tex">\tau</annotation></semantics></math> space than that of the neuron with an electrical autapse. For strong external stimuli, the chaotic region of the combinational parameters in the <math id="S3.p5.m3" class="ltx_Math" alttext="g_{aut}" display="inline"><semantics><msub id="S3.p5.m3.7" xref="S3.p5.m3.7.cmml"><mi id="S3.p5.m3.1" xref="S3.p5.m3.1.cmml">g</mi><mrow id="S3.p5.m3.6" xref="S3.p5.m3.6.cmml"><mi id="S3.p5.m3.2" xref="S3.p5.m3.2.cmml">a</mi><mo id="S3.p5.m3.3" xref="S3.p5.m3.3.cmml">⁢</mo><mi id="S3.p5.m3.4" xref="S3.p5.m3.4.cmml">u</mi><mo id="S3.p5.m3.3a" xref="S3.p5.m3.3.cmml">⁢</mo><mi id="S3.p5.m3.5" xref="S3.p5.m3.5.cmml">t</mi></mrow></msub><annotation-xml encoding="MathML-Content"><apply id="S3.p5.m3.7.cmml" xref="S3.p5.m3.7"><csymbol cd="ambiguous" id="S3.p5.m3.7.1.cmml">subscript</csymbol><ci id="S3.p5.m3.1.cmml" xref="S3.p5.m3.1">𝑔</ci><apply id="S3.p5.m3.6.cmml" xref="S3.p5.m3.6"><times id="S3.p5.m3.3.cmml" xref="S3.p5.m3.3"></times><ci id="S3.p5.m3.2.cmml" xref="S3.p5.m3.2">𝑎</ci><ci id="S3.p5.m3.4.cmml" xref="S3.p5.m3.4">𝑢</ci><ci id="S3.p5.m3.5.cmml" xref="S3.p5.m3.5">𝑡</ci></apply></apply></annotation-xml><annotation encoding="application/x-tex">g_{aut}</annotation></semantics></math>-<math id="S3.p5.m4" class="ltx_Math" alttext="\tau" display="inline"><semantics><mi id="S3.p5.m4.1" xref="S3.p5.m4.1.cmml">τ</mi><annotation-xml encoding="MathML-Content"><ci id="S3.p5.m4.1.cmml" xref="S3.p5.m4.1">𝜏</ci></annotation-xml><annotation encoding="application/x-tex">\tau</annotation></semantics></math> space is enlarged. The excitatory autapse plays a positive role in generating and enhancing chaos as a whole. As neurons with an inhibitory autaptic connection, the chaotic spiking of the HR neuron can be decreased and suppressed. With the proper inhibitory autaptic parameters, the HR neuron could be driven to a resting state. Fig. <a href="#S3.F4" title="Figure 4 ‣ 3 Firing pattern transition in a bursting neuron ‣ Firing dynamics of an autaptic neuron" class="ltx_ref"><span class="ltx_text ltx_ref_tag">4</span></a> shows the bifurcation of the ISIs of an HR neuron for the three types of autapses.</p>
+</div>
+<figure id="S3.F5" class="ltx_figure"><img src="x5.png" id="S3.F5.g1" class="ltx_graphics ltx_centering" width="335" height="155" alt="">
+<figcaption class="ltx_caption ltx_centering"><span class="ltx_tag ltx_tag_figure">Figure 5: </span>An example of the two ways of transition (the discontinuous transition [upper] and the continuous transition [bottom]) into chaos from periodic firing <cite class="ltx_cite ltx_citemacro_cite">[<a href="#bib.bib36" title="" class="ltx_ref">36</a>]</cite>.
+External stimuli is set as <math id="S3.F5.m2" class="ltx_Math" alttext="I_{ext}" display="inline"><semantics><msub id="S3.F5.m2.7" xref="S3.F5.m2.7.cmml"><mi id="S3.F5.m2.1" xref="S3.F5.m2.1.cmml">I</mi><mrow id="S3.F5.m2.6" xref="S3.F5.m2.6.cmml"><mi id="S3.F5.m2.2" xref="S3.F5.m2.2.cmml">e</mi><mo id="S3.F5.m2.3" xref="S3.F5.m2.3.cmml">⁢</mo><mi id="S3.F5.m2.4" xref="S3.F5.m2.4.cmml">x</mi><mo id="S3.F5.m2.3a" xref="S3.F5.m2.3.cmml">⁢</mo><mi id="S3.F5.m2.5" xref="S3.F5.m2.5.cmml">t</mi></mrow></msub><annotation-xml encoding="MathML-Content"><apply id="S3.F5.m2.7.cmml" xref="S3.F5.m2.7"><csymbol cd="ambiguous" id="S3.F5.m2.7.1.cmml">subscript</csymbol><ci id="S3.F5.m2.1.cmml" xref="S3.F5.m2.1">𝐼</ci><apply id="S3.F5.m2.6.cmml" xref="S3.F5.m2.6"><times id="S3.F5.m2.3.cmml" xref="S3.F5.m2.3"></times><ci id="S3.F5.m2.2.cmml" xref="S3.F5.m2.2">𝑒</ci><ci id="S3.F5.m2.4.cmml" xref="S3.F5.m2.4">𝑥</ci><ci id="S3.F5.m2.5.cmml" xref="S3.F5.m2.5">𝑡</ci></apply></apply></annotation-xml><annotation encoding="application/x-tex">I_{ext}</annotation></semantics></math>=2.67.</figcaption>
+</figure>
+<div id="S3.p6" class="ltx_para">
+<p class="ltx_p">Without an autapse, the firing pattern of an HR neuron switches from silent to periodic bursting and then to chaotic firing with period-doubling bifurcation as the DC current increased <cite class="ltx_cite ltx_citemacro_cite">[<a href="#bib.bib54" title="" class="ltx_ref">54</a>, <a href="#bib.bib55" title="" class="ltx_ref">55</a>, <a href="#bib.bib56" title="" class="ltx_ref">56</a>, <a href="#bib.bib57" title="" class="ltx_ref">57</a>]</cite>. For neurons with an autapse, the firing pattern can switch into any other firing pattern, regardless of the original pattern. As a whole, there are two main approaches to transition from a periodic to a chaotic firing pattern: discontinuous and continuous. The interspike interval return map is a useful approach to characterizing the transition to chaos. Fig. <a href="#S3.F5" title="Figure 5 ‣ 3 Firing pattern transition in a bursting neuron ‣ Firing dynamics of an autaptic neuron" class="ltx_ref"><span class="ltx_text ltx_ref_tag">5</span></a> shows an example of the two approaches for the transition of a neuron to chaos. In the discontinuous transition, the neuron has a periodic bursting firing pattern because the delay time is short. When the delay time increases, the system suddenly enters a chaotic firing state. In the continuous transition, the neuron first displays a periodic firing pattern. As the autaptic parameters change, the number of spikes in the single burst as well as the period of the periodic bursting increase almost continuously, and the neuron transitions into the chaotic state.</p>
+</div>
+</section>
+<section id="S4" class="ltx_section">
+<h2 class="ltx_title ltx_title_section">
+<span class="ltx_tag ltx_tag_section">4 </span>Mode-locking behavior of a regular spiking neuron</h2>
+
+<div id="S4.p1" class="ltx_para">
+<p class="ltx_p">When excited by a periodic stimulus, neurons respond with various mode-locking firing patterns and quasi-periodic states <cite class="ltx_cite ltx_citemacro_cite">[<a href="#bib.bib58" title="" class="ltx_ref">58</a>, <a href="#bib.bib59" title="" class="ltx_ref">59</a>, <a href="#bib.bib60" title="" class="ltx_ref">60</a>, <a href="#bib.bib61" title="" class="ltx_ref">61</a>, <a href="#bib.bib42" title="" class="ltx_ref">42</a>]</cite>. When an autapse is present, the mode-locking firing of a neuron can be switched to another state, depending on the chosen autapse parameters. An autapse provides self-feedback and contributes an additional time scale to the dynamic neuronal system. Thus, the neuron-autapse system may exhibit very complex dynamics, due to the interplay between autaptic delayed feedback, an external periodic stimulus, and the intrinsic activity of the neuron.</p>
+</div>
+<div id="S4.p2" class="ltx_para">
+<p class="ltx_p">In previous studies, the model neuron-autapse system often contained an HH neuron and an autapse. The HH model is a conductance-based model that describes how action potentials in neurons are initiated and propagated <cite class="ltx_cite ltx_citemacro_cite">[<a href="#bib.bib62" title="" class="ltx_ref">62</a>]</cite>. In this section, we review the mode-locking firing pattern of an HH neuron with an electrical autapse that has the same mathematical form as Eq. (<a href="#S2.E1" title="(1) ‣ 2 Autaptic connection ‣ Firing dynamics of an autaptic neuron" class="ltx_ref"><span class="ltx_text ltx_ref_tag">1</span></a>).</p>
+</div>
+<figure id="S4.F6" class="ltx_figure">
+<table style="width:100%;">
+<tr>
+<td class="ltx_subgraphics"><img src="x6.png" id="S4.F6.g1" class="ltx_graphics ltx_centering" width="157" height="122" alt=""></td>
+<td class="ltx_subgraphics"><img src="x7.png" id="S4.F6.g2" class="ltx_graphics ltx_centering" width="157" height="122" alt=""></td>
+<td class="ltx_subgraphics"><img src="x8.png" id="S4.F6.g3" class="ltx_graphics ltx_centering" width="157" height="122" alt=""></td>
+<td class="ltx_subgraphics"><img src="x9.png" id="S4.F6.g4" class="ltx_graphics ltx_centering" width="157" height="122" alt=""></td>
+</tr>
+</table>
+<figcaption class="ltx_caption"><span class="ltx_tag ltx_tag_figure">Figure 6: </span>Mode-locking of responses of an HH autaptic neuron with different delay times <cite class="ltx_cite ltx_citemacro_cite">[<a href="#bib.bib42" title="" class="ltx_ref">42</a>]</cite>. The lines with different markers denote the firing rate of the neuron excited by different input frequencies. </figcaption>
+</figure>
+<div id="S4.p3" class="ltx_para">
+<p class="ltx_p">Without an autapse, the mode-locking behaviors depend on the values of the stimulus frequencies and amplitudes. As shown in Fig. 1 in Ref <cite class="ltx_cite ltx_citemacro_cite">[<a href="#bib.bib42" title="" class="ltx_ref">42</a>]</cite>, the Arnold tongues in the frequency and amplitude space show the overall features of various phase-locked states and provide the different <math id="S4.p3.m1" class="ltx_Math" alttext="p:q" display="inline"><semantics><mrow id="S4.p3.m1.4" xref="S4.p3.m1.4.cmml"><mi id="S4.p3.m1.1" xref="S4.p3.m1.1.cmml">p</mi><mo id="S4.p3.m1.2" xref="S4.p3.m1.2.cmml">:</mo><mi id="S4.p3.m1.3" xref="S4.p3.m1.3.cmml">q</mi></mrow><annotation-xml encoding="MathML-Content"><apply id="S4.p3.m1.4.cmml" xref="S4.p3.m1.4"><ci id="S4.p3.m1.2.cmml" xref="S4.p3.m1.2">:</ci><ci id="S4.p3.m1.1.cmml" xref="S4.p3.m1.1">𝑝</ci><ci id="S4.p3.m1.3.cmml" xref="S4.p3.m1.3">𝑞</ci></apply></annotation-xml><annotation encoding="application/x-tex">p:q</annotation></semantics></math> (denoting output action potentials per input spikes) mode-locking regions. Ref <cite class="ltx_cite ltx_citemacro_cite">[<a href="#bib.bib58" title="" class="ltx_ref">58</a>]</cite> also shows the bifurcation mechanisms that create the boundaries of the complex mode-locking structure.</p>
+</div>
+<div id="S4.p4" class="ltx_para">
+<p class="ltx_p">The presence of an autapse substantially modifies the mode-locking patterns of the neuron. For the same sinusoidal stimulus, the neuron with an autapse can fire more or fewer action potentials than that of a neuron without an autapse. The activities of the neuron can also be driven into sub-threshold oscillation. The electrical autapse displays a regulating function that controls the mode-locking firing of the neuron. The time courses of the membrane potentials of the neuron with and without an autapse are shown in Fig. 2 of Ref. <cite class="ltx_cite ltx_citemacro_cite">[<a href="#bib.bib42" title="" class="ltx_ref">42</a>]</cite>. With an autapse, the modification of the mode-locking firing pattern depends on the autaptic conductivity and the delay time. When the synaptic conductivity is small, the mode-locking <math id="S4.p4.m1" class="ltx_Math" alttext="p:q" display="inline"><semantics><mrow id="S4.p4.m1.4" xref="S4.p4.m1.4.cmml"><mi id="S4.p4.m1.1" xref="S4.p4.m1.1.cmml">p</mi><mo id="S4.p4.m1.2" xref="S4.p4.m1.2.cmml">:</mo><mi id="S4.p4.m1.3" xref="S4.p4.m1.3.cmml">q</mi></mrow><annotation-xml encoding="MathML-Content"><apply id="S4.p4.m1.4.cmml" xref="S4.p4.m1.4"><ci id="S4.p4.m1.2.cmml" xref="S4.p4.m1.2">:</ci><ci id="S4.p4.m1.1.cmml" xref="S4.p4.m1.1">𝑝</ci><ci id="S4.p4.m1.3.cmml" xref="S4.p4.m1.3">𝑞</ci></apply></annotation-xml><annotation encoding="application/x-tex">p:q</annotation></semantics></math> is similar to that without an autaptic connection. When the synaptic conductivity is large, the neuron displays very complex mode-locking firing. The <math id="S4.p4.m2" class="ltx_Math" alttext="p:q" display="inline"><semantics><mrow id="S4.p4.m2.4" xref="S4.p4.m2.4.cmml"><mi id="S4.p4.m2.1" xref="S4.p4.m2.1.cmml">p</mi><mo id="S4.p4.m2.2" xref="S4.p4.m2.2.cmml">:</mo><mi id="S4.p4.m2.3" xref="S4.p4.m2.3.cmml">q</mi></mrow><annotation-xml encoding="MathML-Content"><apply id="S4.p4.m2.4.cmml" xref="S4.p4.m2.4"><ci id="S4.p4.m2.2.cmml" xref="S4.p4.m2.2">:</ci><ci id="S4.p4.m2.1.cmml" xref="S4.p4.m2.1">𝑝</ci><ci id="S4.p4.m2.3.cmml" xref="S4.p4.m2.3">𝑞</ci></apply></annotation-xml><annotation encoding="application/x-tex">p:q</annotation></semantics></math> value of mode-locked firing increases from zero to a very large value when the frequency of the sinusoidal current increases from zero to the ”threshold” frequency (the minimal input frequency for which the neuron fires an action potential given a fixed input amplitude). For further increases in the frequency of the sinusoidal current, the <math id="S4.p4.m3" class="ltx_Math" alttext="p:q" display="inline"><semantics><mrow id="S4.p4.m3.4" xref="S4.p4.m3.4.cmml"><mi id="S4.p4.m3.1" xref="S4.p4.m3.1.cmml">p</mi><mo id="S4.p4.m3.2" xref="S4.p4.m3.2.cmml">:</mo><mi id="S4.p4.m3.3" xref="S4.p4.m3.3.cmml">q</mi></mrow><annotation-xml encoding="MathML-Content"><apply id="S4.p4.m3.4.cmml" xref="S4.p4.m3.4"><ci id="S4.p4.m3.2.cmml" xref="S4.p4.m3.2">:</ci><ci id="S4.p4.m3.1.cmml" xref="S4.p4.m3.1">𝑝</ci><ci id="S4.p4.m3.3.cmml" xref="S4.p4.m3.3">𝑞</ci></apply></annotation-xml><annotation encoding="application/x-tex">p:q</annotation></semantics></math> value of mode-locking firing decreases. In the case of extremely strong autaptic conductivity [see Fig. 3 (d) in Ref. <cite class="ltx_cite ltx_citemacro_cite">[<a href="#bib.bib42" title="" class="ltx_ref">42</a>]</cite>], the autaptic activities completely disrupt the original mode-locking firing of the neuron without an autapse.</p>
+</div>
+<div id="S4.p5" class="ltx_para">
+<p class="ltx_p">For continuous changes in the delay time, the model-locked firing of the neuron is also quite interesting. Fig. <a href="#S4.F6" title="Figure 6 ‣ 4 Mode-locking behavior of a regular spiking neuron ‣ Firing dynamics of an autaptic neuron" class="ltx_ref"><span class="ltx_text ltx_ref_tag">6</span></a> shows the dependence of the mode-locking state on the delay time for different input frequencies and autaptic conductivities. For weak autaptic conductivities [Fig. <a href="#S4.F6" title="Figure 6 ‣ 4 Mode-locking behavior of a regular spiking neuron ‣ Firing dynamics of an autaptic neuron" class="ltx_ref"><span class="ltx_text ltx_ref_tag">6</span></a>(a)], the <math id="S4.p5.m1" class="ltx_Math" alttext="p:q" display="inline"><semantics><mrow id="S4.p5.m1.4" xref="S4.p5.m1.4.cmml"><mi id="S4.p5.m1.1" xref="S4.p5.m1.1.cmml">p</mi><mo id="S4.p5.m1.2" xref="S4.p5.m1.2.cmml">:</mo><mi id="S4.p5.m1.3" xref="S4.p5.m1.3.cmml">q</mi></mrow><annotation-xml encoding="MathML-Content"><apply id="S4.p5.m1.4.cmml" xref="S4.p5.m1.4"><ci id="S4.p5.m1.2.cmml" xref="S4.p5.m1.2">:</ci><ci id="S4.p5.m1.1.cmml" xref="S4.p5.m1.1">𝑝</ci><ci id="S4.p5.m1.3.cmml" xref="S4.p5.m1.3">𝑞</ci></apply></annotation-xml><annotation encoding="application/x-tex">p:q</annotation></semantics></math> values of mode-locking are similar to those without self-feedback for the short delay time. As the delay time increases, the values of <math id="S4.p5.m2" class="ltx_Math" alttext="p:q" display="inline"><semantics><mrow id="S4.p5.m2.4" xref="S4.p5.m2.4.cmml"><mi id="S4.p5.m2.1" xref="S4.p5.m2.1.cmml">p</mi><mo id="S4.p5.m2.2" xref="S4.p5.m2.2.cmml">:</mo><mi id="S4.p5.m2.3" xref="S4.p5.m2.3.cmml">q</mi></mrow><annotation-xml encoding="MathML-Content"><apply id="S4.p5.m2.4.cmml" xref="S4.p5.m2.4"><ci id="S4.p5.m2.2.cmml" xref="S4.p5.m2.2">:</ci><ci id="S4.p5.m2.1.cmml" xref="S4.p5.m2.1">𝑝</ci><ci id="S4.p5.m2.3.cmml" xref="S4.p5.m2.3">𝑞</ci></apply></annotation-xml><annotation encoding="application/x-tex">p:q</annotation></semantics></math> mode-locking begin to fluctuate. The smaller the input frequency is, the larger the resulting fluctuation. For strong autaptic intensities [shown in Fig. <a href="#S4.F6" title="Figure 6 ‣ 4 Mode-locking behavior of a regular spiking neuron ‣ Firing dynamics of an autaptic neuron" class="ltx_ref"><span class="ltx_text ltx_ref_tag">6</span></a>(b-d)], the <math id="S4.p5.m3" class="ltx_Math" alttext="p:q" display="inline"><semantics><mrow id="S4.p5.m3.4" xref="S4.p5.m3.4.cmml"><mi id="S4.p5.m3.1" xref="S4.p5.m3.1.cmml">p</mi><mo id="S4.p5.m3.2" xref="S4.p5.m3.2.cmml">:</mo><mi id="S4.p5.m3.3" xref="S4.p5.m3.3.cmml">q</mi></mrow><annotation-xml encoding="MathML-Content"><apply id="S4.p5.m3.4.cmml" xref="S4.p5.m3.4"><ci id="S4.p5.m3.2.cmml" xref="S4.p5.m3.2">:</ci><ci id="S4.p5.m3.1.cmml" xref="S4.p5.m3.1">𝑝</ci><ci id="S4.p5.m3.3.cmml" xref="S4.p5.m3.3">𝑞</ci></apply></annotation-xml><annotation encoding="application/x-tex">p:q</annotation></semantics></math> values of mode-locking decrease with increasing delay time in a stepwise manner. With further increases in the delay time, the <math id="S4.p5.m4" class="ltx_Math" alttext="p:q" display="inline"><semantics><mrow id="S4.p5.m4.4" xref="S4.p5.m4.4.cmml"><mi id="S4.p5.m4.1" xref="S4.p5.m4.1.cmml">p</mi><mo id="S4.p5.m4.2" xref="S4.p5.m4.2.cmml">:</mo><mi id="S4.p5.m4.3" xref="S4.p5.m4.3.cmml">q</mi></mrow><annotation-xml encoding="MathML-Content"><apply id="S4.p5.m4.4.cmml" xref="S4.p5.m4.4"><ci id="S4.p5.m4.2.cmml" xref="S4.p5.m4.2">:</ci><ci id="S4.p5.m4.1.cmml" xref="S4.p5.m4.1">𝑝</ci><ci id="S4.p5.m4.3.cmml" xref="S4.p5.m4.3">𝑞</ci></apply></annotation-xml><annotation encoding="application/x-tex">p:q</annotation></semantics></math> values of mode-locking suddenly jump to a very large value (larger than that without autaptic self-feedback) and then decrease smoothly. As the delay time increases, the <math id="S4.p5.m5" class="ltx_Math" alttext="p:q" display="inline"><semantics><mrow id="S4.p5.m5.4" xref="S4.p5.m5.4.cmml"><mi id="S4.p5.m5.1" xref="S4.p5.m5.1.cmml">p</mi><mo id="S4.p5.m5.2" xref="S4.p5.m5.2.cmml">:</mo><mi id="S4.p5.m5.3" xref="S4.p5.m5.3.cmml">q</mi></mrow><annotation-xml encoding="MathML-Content"><apply id="S4.p5.m5.4.cmml" xref="S4.p5.m5.4"><ci id="S4.p5.m5.2.cmml" xref="S4.p5.m5.2">:</ci><ci id="S4.p5.m5.1.cmml" xref="S4.p5.m5.1">𝑝</ci><ci id="S4.p5.m5.3.cmml" xref="S4.p5.m5.3">𝑞</ci></apply></annotation-xml><annotation encoding="application/x-tex">p:q</annotation></semantics></math> value of mode-locking of a neuron with a high autaptic intensity exhibits periodic behavior.</p>
+</div>
+<div id="S4.p6" class="ltx_para">
+<p class="ltx_p">With autaptic self-feedback, the responses of an HH neuron to a sinusoidal stimulus can have higher or lower <math id="S4.p6.m1" class="ltx_Math" alttext="p:q" display="inline"><semantics><mrow id="S4.p6.m1.4" xref="S4.p6.m1.4.cmml"><mi id="S4.p6.m1.1" xref="S4.p6.m1.1.cmml">p</mi><mo id="S4.p6.m1.2" xref="S4.p6.m1.2.cmml">:</mo><mi id="S4.p6.m1.3" xref="S4.p6.m1.3.cmml">q</mi></mrow><annotation-xml encoding="MathML-Content"><apply id="S4.p6.m1.4.cmml" xref="S4.p6.m1.4"><ci id="S4.p6.m1.2.cmml" xref="S4.p6.m1.2">:</ci><ci id="S4.p6.m1.1.cmml" xref="S4.p6.m1.1">𝑝</ci><ci id="S4.p6.m1.3.cmml" xref="S4.p6.m1.3">𝑞</ci></apply></annotation-xml><annotation encoding="application/x-tex">p:q</annotation></semantics></math> mode-locking responses than that of a neuron without an autapse. These dynamical behaviors depend on the autaptic intensity and the delay time. Moreover, the presence of an autapse increases the range of values for which the HH neuron spiking is locked with the sinusoidal current. When the autaptic intensity is weak, the mode-locking behaviors show no marked changes. That is, an autapse with a weak intensity will have a negligible effect on the response of the neuron. For stronger autaptic intensities, the <math id="S4.p6.m2" class="ltx_Math" alttext="p:q" display="inline"><semantics><mrow id="S4.p6.m2.4" xref="S4.p6.m2.4.cmml"><mi id="S4.p6.m2.1" xref="S4.p6.m2.1.cmml">p</mi><mo id="S4.p6.m2.2" xref="S4.p6.m2.2.cmml">:</mo><mi id="S4.p6.m2.3" xref="S4.p6.m2.3.cmml">q</mi></mrow><annotation-xml encoding="MathML-Content"><apply id="S4.p6.m2.4.cmml" xref="S4.p6.m2.4"><ci id="S4.p6.m2.2.cmml" xref="S4.p6.m2.2">:</ci><ci id="S4.p6.m2.1.cmml" xref="S4.p6.m2.1">𝑝</ci><ci id="S4.p6.m2.3.cmml" xref="S4.p6.m2.3">𝑞</ci></apply></annotation-xml><annotation encoding="application/x-tex">p:q</annotation></semantics></math> value of the mode-locking increases and then decreases as the delay time increases, exhibiting nearly periodic behaviors. Thus, for sufficiently strong autaptic intensity, changing the delay time provides better regulation of mode-locking than does changing the autaptic intensity. The autaptic connection may also provide a control option for adjusting mode-locked firing in a neural information process.</p>
+</div>
+</section>
+<section id="S5" class="ltx_section">
+<h2 class="ltx_title ltx_title_section">
+<span class="ltx_tag ltx_tag_section">5 </span>Responses of a regular spiking neuron</h2>
+
+<section id="S5.SS1" class="ltx_subsection">
+<h3 class="ltx_title ltx_title_subsection">
+<span class="ltx_tag ltx_tag_subsection">5.1 </span>Response to DC currents</h3>
+
+<figure id="S5.F7" class="ltx_figure">
+<table style="width:100%;">
+<tr>
+<td class="ltx_subgraphics"><img src="x10.png" id="S5.F7.g1" class="ltx_graphics ltx_centering" width="159" height="124" alt=""></td>
+<td class="ltx_subgraphics"><img src="x11.png" id="S5.F7.g2" class="ltx_graphics ltx_centering" width="160" height="127" alt=""></td>
+<td class="ltx_subgraphics"><img src="x12.png" id="S5.F7.g3" class="ltx_graphics ltx_centering" width="159" height="124" alt=""></td>
+<td class="ltx_subgraphics"><img src="x13.png" id="S5.F7.g4" class="ltx_graphics ltx_centering" width="159" height="127" alt=""></td>
+</tr>
+</table>
+<figcaption class="ltx_caption ltx_centering"><span class="ltx_tag ltx_tag_figure">Figure 7: </span>(Color online) Firing frequencies ( (a),(c)) and ISI distribution ((b), (d)) of a neuron with a chemical autapse (upper panels: excitatory autapse; lower panels: inhibitory autapse) excited by a DC current <cite class="ltx_cite ltx_citemacro_cite">[<a href="#bib.bib43" title="" class="ltx_ref">43</a>]</cite>. Dotted lines gives the odd multiples of half the intrinsic period of a single HH neuron excited by the corresponding DC current.</figcaption>
+</figure>
+<div id="S5.SS1.p1" class="ltx_para">
+<p class="ltx_p">When injected with a DC current, an HH neuron without an autapse displays regular spiking when the current intensity is larger than a critical current value. As for most neuronal models, increases in the current will increase the firing rate of the neuron, and the HH neuron undergoes a Hopf bifurcation.
+In the presence of an autapse, the output frequency can be higher or lower than the intrinsic frequency (the firing frequency of an HH neuron without an autapse) when the autaptic conductance and delay time are changed. Interestingly, the output frequency, as well as the output ISI distribution, shows periodic behaviors as the autaptic delay time increases. This periodicity of the changes in the output frequency (ISI distributions) in response to changes in the delay time is also similar to the intrinsic period of the neuron. When an HH neuron is connected to an electrical or excitatory chemical autapse, the firing rate and the ISI distribution of the response spike trains can both be either amplified or depressed. When the delay time approaches the odd multiples of the intrinsic half period of the firing of an HH neuron with an electrical or excitatory chemical autapse, the ISIs of the spike train are very different from the intrinsic ISIs. When the delay time approaches a multiple of the intrinsic period, the ISIs of the spike train are similar to the intrinsic ISIs. However, the inhibitory chemical autapse can only suppress the firing responses of the neuron. The ISIs of the response spike train of a neuron with an inhibitory autapse are always greater than the intrinsic period, whereas the corresponding response frequency is not less than the intrinsic response frequency. Current neurobiological experiments also reveal that autapses in the nervous system can be either self-inhibitory or self-excitatory, depending on their location on the neuron <cite class="ltx_cite ltx_citemacro_cite">[<a href="#bib.bib6" title="" class="ltx_ref">6</a>, <a href="#bib.bib63" title="" class="ltx_ref">63</a>, <a href="#bib.bib64" title="" class="ltx_ref">64</a>, <a href="#bib.bib65" title="" class="ltx_ref">65</a>]</cite>.</p>
+</div>
+<div id="S5.SS1.p2" class="ltx_para">
+<p class="ltx_p">Because autaptic pulses perturb neural spiking through a process that is similar to that of an oscillating system with a fixed-delay feedback, the phase-response curve (PRC) theory can provide useful insight into the phenomena of the neuron-autapse system <cite class="ltx_cite ltx_citemacro_cite">[<a href="#bib.bib66" title="" class="ltx_ref">66</a>, <a href="#bib.bib67" title="" class="ltx_ref">67</a>, <a href="#bib.bib68" title="" class="ltx_ref">68</a>, <a href="#bib.bib69" title="" class="ltx_ref">69</a>]</cite>. For an oscillating system, the PRC describes the phase shift that occurs in response to a brief external stimulus <cite class="ltx_cite ltx_citemacro_cite">[<a href="#bib.bib70" title="" class="ltx_ref">70</a>, <a href="#bib.bib71" title="" class="ltx_ref">71</a>]</cite>. Fig. <a href="#S5.F8" title="Figure 8 ‣ 5.1 Response to DC currents ‣ 5 Responses of a regular spiking neuron ‣ Firing dynamics of an autaptic neuron" class="ltx_ref"><span class="ltx_text ltx_ref_tag">8</span></a> gives the phase-response curves of the three types of autapses. The PRCs of a neuron with an electrical autapse or an excitatory chemical autapse can be negative or positive, depending on the stimulus phase (delay time). Thus, an electrical autapse or excitatory chemical autapse could delay or advance the next spike. Therefore, the firing rate of a neuron with an electrical autapse or an excitatory chemical autapse can be higher or smaller than that of the neuron without an autapse. For the inhibitory chemical autapse, however, the PRC is always positive, because the delay time increased. That is, an inhibitory autapse always postpones the next spike. Thus, the firing rate of an HH neuron with an inhibitory autapse is not larger than that of the neuron without an autapse.</p>
+</div>
+<figure id="S5.F8" class="ltx_figure">
+<table style="width:100%;">
+<tr>
+<td class="ltx_subgraphics"><img src="x14.png" id="S5.F8.g1" class="ltx_graphics ltx_centering" width="151" height="118" alt=""></td>
+<td class="ltx_subgraphics"><img src="x15.png" id="S5.F8.g2" class="ltx_graphics ltx_centering" width="152" height="114" alt=""></td>
+<td class="ltx_subgraphics"><img src="x16.png" id="S5.F8.g3" class="ltx_graphics ltx_centering" width="151" height="118" alt=""></td>
+</tr>
+</table>
+<figcaption class="ltx_caption ltx_centering"><span class="ltx_tag ltx_tag_figure">Figure 8: </span>(Color online) The phase-response curve of three types of autapses with different autaptic conductivity <math id="S5.F8.m4" class="ltx_Math" alttext="g_{aut}" display="inline"><semantics><msub id="S5.F8.m4.7" xref="S5.F8.m4.7.cmml"><mi id="S5.F8.m4.1" xref="S5.F8.m4.1.cmml">g</mi><mrow id="S5.F8.m4.6" xref="S5.F8.m4.6.cmml"><mi id="S5.F8.m4.2" xref="S5.F8.m4.2.cmml">a</mi><mo id="S5.F8.m4.3" xref="S5.F8.m4.3.cmml">⁢</mo><mi id="S5.F8.m4.4" xref="S5.F8.m4.4.cmml">u</mi><mo id="S5.F8.m4.3a" xref="S5.F8.m4.3.cmml">⁢</mo><mi id="S5.F8.m4.5" xref="S5.F8.m4.5.cmml">t</mi></mrow></msub><annotation-xml encoding="MathML-Content"><apply id="S5.F8.m4.7.cmml" xref="S5.F8.m4.7"><csymbol cd="ambiguous" id="S5.F8.m4.7.1.cmml">subscript</csymbol><ci id="S5.F8.m4.1.cmml" xref="S5.F8.m4.1">𝑔</ci><apply id="S5.F8.m4.6.cmml" xref="S5.F8.m4.6"><times id="S5.F8.m4.3.cmml" xref="S5.F8.m4.3"></times><ci id="S5.F8.m4.2.cmml" xref="S5.F8.m4.2">𝑎</ci><ci id="S5.F8.m4.4.cmml" xref="S5.F8.m4.4">𝑢</ci><ci id="S5.F8.m4.5.cmml" xref="S5.F8.m4.5">𝑡</ci></apply></apply></annotation-xml><annotation encoding="application/x-tex">g_{aut}</annotation></semantics></math>, (a) electrical autapse, (b) excitatory chemical autapse, and (c) inhibitory chemical autapse. The external DC stimuli is set as 26 <math id="S5.F8.m5" class="ltx_Math" alttext="\mu" display="inline"><semantics><mi id="S5.F8.m5.1" xref="S5.F8.m5.1.cmml">μ</mi><annotation-xml encoding="MathML-Content"><ci id="S5.F8.m5.1.cmml" xref="S5.F8.m5.1">𝜇</ci></annotation-xml><annotation encoding="application/x-tex">\mu</annotation></semantics></math>A/cm<math id="S5.F8.m6" class="ltx_Math" alttext="{}^{2}" display="inline"><semantics><msup id="S5.F8.m6.2" xref="S5.F8.m6.2.cmml"><mi id="S5.F8.m6.2a" xref="S5.F8.m6.2.cmml"></mi><mn id="S5.F8.m6.1" xref="S5.F8.m6.1.cmml">2</mn></msup><annotation-xml encoding="MathML-Content"><apply id="S5.F8.m6.2.cmml" xref="S5.F8.m6.2"><cn type="integer" id="S5.F8.m6.1.cmml" xref="S5.F8.m6.1">2</cn></apply></annotation-xml><annotation encoding="application/x-tex">{}^{2}</annotation></semantics></math>.</figcaption>
+</figure>
+<div id="S5.SS1.p3" class="ltx_para">
+<p class="ltx_p">When the DC current increases, the HH neuron without an autapse undergoes a Hopf bifurcation from a quiescent state to a periodic spiking state. Although the limit cycle and the oscillation period of the neuron have been disturbed by the autaptic current, the neuron-autapse system still undergoes the Hopf bifurcation, generating a stable periodic orbit. Interestingly, an HH neuron with some special autaptic parameters does not fire regular action potentials and is attracted to the quiescent state. This result reveals the phenomenon of spiking death that is induced by an autaptic connection, which is more clearly shown in the membrane potential and autaptic current traces in Fig. <a href="#S5.F9" title="Figure 9 ‣ 5.1 Response to DC currents ‣ 5 Responses of a regular spiking neuron ‣ Firing dynamics of an autaptic neuron" class="ltx_ref"><span class="ltx_text ltx_ref_tag">9</span></a>. With an upper-threshold DC current, the neuron fires action potentials at first. After the delay time, the subsequent autaptic pulse reaches the neuron and drives the neuron to a fixed point. Moreover, the spiking death induced by the autapse is independent of the initial conditions of the neuron. As shown in the inset of Fig. <a href="#S5.F9" title="Figure 9 ‣ 5.1 Response to DC currents ‣ 5 Responses of a regular spiking neuron ‣ Firing dynamics of an autaptic neuron" class="ltx_ref"><span class="ltx_text ltx_ref_tag">9</span></a> (a), the neuron-autapse system can return to the fixed point even when the input is a brief external perturbation. The figure also shows that the spiking death induced by the autapse is stable. The Ref. <cite class="ltx_cite ltx_citemacro_cite">[<a href="#bib.bib72" title="" class="ltx_ref">72</a>]</cite> also shows a similar phenomenon: an HH neuron transitions from a limit cycle to a fixed point when the neuron is perturbed by an excitatory chemical synaptic pulse.</p>
+</div>
+<figure id="S5.F9" class="ltx_figure"><img src="x17.png" id="S5.F9.g1" class="ltx_graphics ltx_centering" width="338" height="254" alt="">
+<figcaption class="ltx_caption ltx_centering"><span class="ltx_tag ltx_tag_figure">Figure 9: </span>(Color online) (a) Traces of the membrane potential (dashed lines) and autaptic current (solid lines) <cite class="ltx_cite ltx_citemacro_cite">[<a href="#bib.bib43" title="" class="ltx_ref">43</a>]</cite>. (b) The phase portrait corresponds to (a). (c) and (d) are the enlarged plots of (a) and (b), respectively. The different colors indicate different integral initial conditions (The specific set of parameters can be found in Ref. <cite class="ltx_cite ltx_citemacro_cite">[<a href="#bib.bib43" title="" class="ltx_ref">43</a>]</cite>). The inset in (a): The membrane potential of HH neuron-autapse system perturbed by a brief step pause (black solid line).</figcaption>
+</figure>
+</section>
+<section id="S5.SS2" class="ltx_subsection">
+<h3 class="ltx_title ltx_title_subsection">
+<span class="ltx_tag ltx_tag_subsection">5.2 </span>Response to a random synaptic pulse-like input</h3>
+
+<div id="S5.SS2.p1" class="ltx_para">
+<p class="ltx_p">The assumed <math id="S5.SS2.p1.m1" class="ltx_Math" alttext="\alpha" display="inline"><semantics><mi id="S5.SS2.p1.m1.1" xref="S5.SS2.p1.m1.1.cmml">α</mi><annotation-xml encoding="MathML-Content"><ci id="S5.SS2.p1.m1.1.cmml" xref="S5.SS2.p1.m1.1">𝛼</ci></annotation-xml><annotation encoding="application/x-tex">\alpha</annotation></semantics></math> form of the postsynaptic current model that is used in many works is perfect for generating pulse-like currents that are similar to the synaptic pulses observed experimentally and also enables easy modification of the ISI of the input current to investigate the input-output properties conveniently <cite class="ltx_cite ltx_citemacro_cite">[<a href="#bib.bib60" title="" class="ltx_ref">60</a>]</cite>. Injecting this type of synaptic pulse-like signal with different ISIs into the HH neuron, Hideo et al. have reported that the mean firing frequency decreases as the mean input ISI increases <cite class="ltx_cite ltx_citemacro_cite">[<a href="#bib.bib73" title="" class="ltx_ref">73</a>, <a href="#bib.bib74" title="" class="ltx_ref">74</a>]</cite>. When a neuron is injected with a synaptic-like pulsed current with random ISIs, the neuron displays interesting autapse-induced response behaviors <cite class="ltx_cite ltx_citemacro_cite">[<a href="#bib.bib43" title="" class="ltx_ref">43</a>]</cite>. As the delay time increases, the frequency of the neuron with a sufficient electrical or excitatory chemical autapse shows nearly periodic behaviors. Such periodicity is not changed when the mean ISIs of the input synaptic current changes. When given the input synaptic pulses with a large mean value of ISIs, however, the response frequency of a neuron with an inhibitory autapse does not show periodic behavior when the autaptic delay time increases.</p>
+</div>
+<div id="S5.SS2.p2" class="ltx_para">
+<p class="ltx_p">Autaptic activities also influence the detailed response of the ISI distribution. For a short autaptic delay time, the output ISIs are distributed in an area [blue bars in Fig. <a href="#S5.F10" title="Figure 10 ‣ 5.2 Response to a random synaptic pulse-like input ‣ 5 Responses of a regular spiking neuron ‣ Firing dynamics of an autaptic neuron" class="ltx_ref"><span class="ltx_text ltx_ref_tag">10</span></a>] that is smaller than the input area (red lines in Fig. <a href="#S5.F10" title="Figure 10 ‣ 5.2 Response to a random synaptic pulse-like input ‣ 5 Responses of a regular spiking neuron ‣ Firing dynamics of an autaptic neuron" class="ltx_ref"><span class="ltx_text ltx_ref_tag">10</span></a>). When the delay time increases, the region in which the output ISIs are distributed does not change much compared with that for the neuron without an autapse (green lines in Fig. <a href="#S5.F10" title="Figure 10 ‣ 5.2 Response to a random synaptic pulse-like input ‣ 5 Responses of a regular spiking neuron ‣ Firing dynamics of an autaptic neuron" class="ltx_ref"><span class="ltx_text ltx_ref_tag">10</span></a>). For further increases in the delay time, the distribution of the output ISIs suddenly decreases almost to a single point (<math id="S5.SS2.p2.m1" class="ltx_Math" alttext="t_{delay}=8.5" display="inline"><semantics><mrow id="S5.SS2.p2.m1.12" xref="S5.SS2.p2.m1.12.cmml"><msub id="S5.SS2.p2.m1.9" xref="S5.SS2.p2.m1.9.cmml"><mi id="S5.SS2.p2.m1.1" xref="S5.SS2.p2.m1.1.cmml">t</mi><mrow id="S5.SS2.p2.m1.8" xref="S5.SS2.p2.m1.8.cmml"><mi id="S5.SS2.p2.m1.2" xref="S5.SS2.p2.m1.2.cmml">d</mi><mo id="S5.SS2.p2.m1.3" xref="S5.SS2.p2.m1.3.cmml">⁢</mo><mi id="S5.SS2.p2.m1.4" xref="S5.SS2.p2.m1.4.cmml">e</mi><mo id="S5.SS2.p2.m1.3a" xref="S5.SS2.p2.m1.3.cmml">⁢</mo><mi id="S5.SS2.p2.m1.5" xref="S5.SS2.p2.m1.5.cmml">l</mi><mo id="S5.SS2.p2.m1.3b" xref="S5.SS2.p2.m1.3.cmml">⁢</mo><mi id="S5.SS2.p2.m1.6" xref="S5.SS2.p2.m1.6.cmml">a</mi><mo id="S5.SS2.p2.m1.3c" xref="S5.SS2.p2.m1.3.cmml">⁢</mo><mi id="S5.SS2.p2.m1.7" xref="S5.SS2.p2.m1.7.cmml">y</mi></mrow></msub><mo id="S5.SS2.p2.m1.10" xref="S5.SS2.p2.m1.10.cmml">=</mo><mn id="S5.SS2.p2.m1.11" xref="S5.SS2.p2.m1.11.cmml">8.5</mn></mrow><annotation-xml encoding="MathML-Content"><apply id="S5.SS2.p2.m1.12.cmml" xref="S5.SS2.p2.m1.12"><eq id="S5.SS2.p2.m1.10.cmml" xref="S5.SS2.p2.m1.10"></eq><apply id="S5.SS2.p2.m1.9.cmml" xref="S5.SS2.p2.m1.9"><csymbol cd="ambiguous" id="S5.SS2.p2.m1.9.1.cmml">subscript</csymbol><ci id="S5.SS2.p2.m1.1.cmml" xref="S5.SS2.p2.m1.1">𝑡</ci><apply id="S5.SS2.p2.m1.8.cmml" xref="S5.SS2.p2.m1.8"><times id="S5.SS2.p2.m1.3.cmml" xref="S5.SS2.p2.m1.3"></times><ci id="S5.SS2.p2.m1.2.cmml" xref="S5.SS2.p2.m1.2">𝑑</ci><ci id="S5.SS2.p2.m1.4.cmml" xref="S5.SS2.p2.m1.4">𝑒</ci><ci id="S5.SS2.p2.m1.5.cmml" xref="S5.SS2.p2.m1.5">𝑙</ci><ci id="S5.SS2.p2.m1.6.cmml" xref="S5.SS2.p2.m1.6">𝑎</ci><ci id="S5.SS2.p2.m1.7.cmml" xref="S5.SS2.p2.m1.7">𝑦</ci></apply></apply><cn type="float" id="S5.SS2.p2.m1.11.cmml" xref="S5.SS2.p2.m1.11">8.5</cn></apply></annotation-xml><annotation encoding="application/x-tex">t_{delay}=8.5</annotation></semantics></math> ms in Fig. <a href="#S5.F10" title="Figure 10 ‣ 5.2 Response to a random synaptic pulse-like input ‣ 5 Responses of a regular spiking neuron ‣ Firing dynamics of an autaptic neuron" class="ltx_ref"><span class="ltx_text ltx_ref_tag">10</span></a>). For these autaptic parameters, the responding spike train is strongly regulated.
+Then, the size of the distribution of ISIs increases slowly as the delay time is increased further.</p>
+</div>
+<div id="S5.SS2.p3" class="ltx_para">
+<p class="ltx_p">When the size of the distribution of the output ISIs increases to its maximum (this maximum distribution area is smaller than the area for the low delay time condition <math id="S5.SS2.p3.m1" class="ltx_Math" alttext="t_{delay}&lt;5.5\mathrm{ms}" display="inline"><semantics><mrow id="S5.SS2.p3.m1.15" xref="S5.SS2.p3.m1.15.cmml"><msub id="S5.SS2.p3.m1.9" xref="S5.SS2.p3.m1.9.cmml"><mi id="S5.SS2.p3.m1.1" xref="S5.SS2.p3.m1.1.cmml">t</mi><mrow id="S5.SS2.p3.m1.8" xref="S5.SS2.p3.m1.8.cmml"><mi id="S5.SS2.p3.m1.2" xref="S5.SS2.p3.m1.2.cmml">d</mi><mo id="S5.SS2.p3.m1.3" xref="S5.SS2.p3.m1.3.cmml">⁢</mo><mi id="S5.SS2.p3.m1.4" xref="S5.SS2.p3.m1.4.cmml">e</mi><mo id="S5.SS2.p3.m1.3a" xref="S5.SS2.p3.m1.3.cmml">⁢</mo><mi id="S5.SS2.p3.m1.5" xref="S5.SS2.p3.m1.5.cmml">l</mi><mo id="S5.SS2.p3.m1.3b" xref="S5.SS2.p3.m1.3.cmml">⁢</mo><mi id="S5.SS2.p3.m1.6" xref="S5.SS2.p3.m1.6.cmml">a</mi><mo id="S5.SS2.p3.m1.3c" xref="S5.SS2.p3.m1.3.cmml">⁢</mo><mi id="S5.SS2.p3.m1.7" xref="S5.SS2.p3.m1.7.cmml">y</mi></mrow></msub><mo id="S5.SS2.p3.m1.10" xref="S5.SS2.p3.m1.10.cmml">&lt;</mo><mrow id="S5.SS2.p3.m1.14" xref="S5.SS2.p3.m1.14.cmml"><mn id="S5.SS2.p3.m1.11" xref="S5.SS2.p3.m1.11.cmml">5.5</mn><mo id="S5.SS2.p3.m1.12" xref="S5.SS2.p3.m1.12.cmml">⁢</mo><mi id="S5.SS2.p3.m1.13" xref="S5.SS2.p3.m1.13.cmml">ms</mi></mrow></mrow><annotation-xml encoding="MathML-Content"><apply id="S5.SS2.p3.m1.15.cmml" xref="S5.SS2.p3.m1.15"><lt id="S5.SS2.p3.m1.10.cmml" xref="S5.SS2.p3.m1.10"></lt><apply id="S5.SS2.p3.m1.9.cmml" xref="S5.SS2.p3.m1.9"><csymbol cd="ambiguous" id="S5.SS2.p3.m1.9.1.cmml">subscript</csymbol><ci id="S5.SS2.p3.m1.1.cmml" xref="S5.SS2.p3.m1.1">𝑡</ci><apply id="S5.SS2.p3.m1.8.cmml" xref="S5.SS2.p3.m1.8"><times id="S5.SS2.p3.m1.3.cmml" xref="S5.SS2.p3.m1.3"></times><ci id="S5.SS2.p3.m1.2.cmml" xref="S5.SS2.p3.m1.2">𝑑</ci><ci id="S5.SS2.p3.m1.4.cmml" xref="S5.SS2.p3.m1.4">𝑒</ci><ci id="S5.SS2.p3.m1.5.cmml" xref="S5.SS2.p3.m1.5">𝑙</ci><ci id="S5.SS2.p3.m1.6.cmml" xref="S5.SS2.p3.m1.6">𝑎</ci><ci id="S5.SS2.p3.m1.7.cmml" xref="S5.SS2.p3.m1.7">𝑦</ci></apply></apply><apply id="S5.SS2.p3.m1.14.cmml" xref="S5.SS2.p3.m1.14"><times id="S5.SS2.p3.m1.12.cmml" xref="S5.SS2.p3.m1.12"></times><cn type="float" id="S5.SS2.p3.m1.11.cmml" xref="S5.SS2.p3.m1.11">5.5</cn><ci id="S5.SS2.p3.m1.13.cmml" xref="S5.SS2.p3.m1.13">ms</ci></apply></apply></annotation-xml><annotation encoding="application/x-tex">t_{delay}&lt;5.5\mathrm{ms}</annotation></semantics></math>), the distribution suddenly shrinks nearly to a point again (see <math id="S5.SS2.p3.m2" class="ltx_Math" alttext="t_{delay}=20.5" display="inline"><semantics><mrow id="S5.SS2.p3.m2.12" xref="S5.SS2.p3.m2.12.cmml"><msub id="S5.SS2.p3.m2.9" xref="S5.SS2.p3.m2.9.cmml"><mi id="S5.SS2.p3.m2.1" xref="S5.SS2.p3.m2.1.cmml">t</mi><mrow id="S5.SS2.p3.m2.8" xref="S5.SS2.p3.m2.8.cmml"><mi id="S5.SS2.p3.m2.2" xref="S5.SS2.p3.m2.2.cmml">d</mi><mo id="S5.SS2.p3.m2.3" xref="S5.SS2.p3.m2.3.cmml">⁢</mo><mi id="S5.SS2.p3.m2.4" xref="S5.SS2.p3.m2.4.cmml">e</mi><mo id="S5.SS2.p3.m2.3a" xref="S5.SS2.p3.m2.3.cmml">⁢</mo><mi id="S5.SS2.p3.m2.5" xref="S5.SS2.p3.m2.5.cmml">l</mi><mo id="S5.SS2.p3.m2.3b" xref="S5.SS2.p3.m2.3.cmml">⁢</mo><mi id="S5.SS2.p3.m2.6" xref="S5.SS2.p3.m2.6.cmml">a</mi><mo id="S5.SS2.p3.m2.3c" xref="S5.SS2.p3.m2.3.cmml">⁢</mo><mi id="S5.SS2.p3.m2.7" xref="S5.SS2.p3.m2.7.cmml">y</mi></mrow></msub><mo id="S5.SS2.p3.m2.10" xref="S5.SS2.p3.m2.10.cmml">=</mo><mn id="S5.SS2.p3.m2.11" xref="S5.SS2.p3.m2.11.cmml">20.5</mn></mrow><annotation-xml encoding="MathML-Content"><apply id="S5.SS2.p3.m2.12.cmml" xref="S5.SS2.p3.m2.12"><eq id="S5.SS2.p3.m2.10.cmml" xref="S5.SS2.p3.m2.10"></eq><apply id="S5.SS2.p3.m2.9.cmml" xref="S5.SS2.p3.m2.9"><csymbol cd="ambiguous" id="S5.SS2.p3.m2.9.1.cmml">subscript</csymbol><ci id="S5.SS2.p3.m2.1.cmml" xref="S5.SS2.p3.m2.1">𝑡</ci><apply id="S5.SS2.p3.m2.8.cmml" xref="S5.SS2.p3.m2.8"><times id="S5.SS2.p3.m2.3.cmml" xref="S5.SS2.p3.m2.3"></times><ci id="S5.SS2.p3.m2.2.cmml" xref="S5.SS2.p3.m2.2">𝑑</ci><ci id="S5.SS2.p3.m2.4.cmml" xref="S5.SS2.p3.m2.4">𝑒</ci><ci id="S5.SS2.p3.m2.5.cmml" xref="S5.SS2.p3.m2.5">𝑙</ci><ci id="S5.SS2.p3.m2.6.cmml" xref="S5.SS2.p3.m2.6">𝑎</ci><ci id="S5.SS2.p3.m2.7.cmml" xref="S5.SS2.p3.m2.7">𝑦</ci></apply></apply><cn type="float" id="S5.SS2.p3.m2.11.cmml" xref="S5.SS2.p3.m2.11">20.5</cn></apply></annotation-xml><annotation encoding="application/x-tex">t_{delay}=20.5</annotation></semantics></math> ms in Fig. <a href="#S5.F10" title="Figure 10 ‣ 5.2 Response to a random synaptic pulse-like input ‣ 5 Responses of a regular spiking neuron ‣ Firing dynamics of an autaptic neuron" class="ltx_ref"><span class="ltx_text ltx_ref_tag">10</span></a>). For the entire range of delay times, the distribution of the output ISIs periodically exhibits the above behaviors when the delay time increases. Thus, the delayed feedback activities of an autapse can act as a regulator that adjusts the ISIs of the output spike train. For some specific autaptic parameters, the resulting spike train of a neuron can be modified to obtain an almost regular spiking, even for a very random ISI input.</p>
+</div>
+<figure id="S5.F10" class="ltx_figure"><img src="x18.png" id="S5.F10.g1" class="ltx_graphics ltx_centering" width="304" height="230" alt="">
+<figcaption class="ltx_caption ltx_centering"><span class="ltx_tag ltx_tag_figure">Figure 10: </span>(Color online) Histograms of output (blue bars) ISIs of a neuron with an electrical autapse <cite class="ltx_cite ltx_citemacro_cite">[<a href="#bib.bib43" title="" class="ltx_ref">43</a>]</cite>. The green lines gives the output ISI of a neuron without an autapse and the red lines give the ISI of the random input pulse train.</figcaption>
+</figure>
+<div id="S5.SS2.p4" class="ltx_para">
+<p class="ltx_p">Without an autapse, the neuron will filter the spikes with a short ISI and thus show low-pass filtering behavior when the neuron is injected with a random synaptic pulse-like current <cite class="ltx_cite ltx_citemacro_cite">[<a href="#bib.bib73" title="" class="ltx_ref">73</a>]</cite>. For a neuron with an autapse, long ISI pulses can be filtered in addition to the short ISI spikes. Thus, the neuron-autapse system displays complex filtering behaviors, including low-pass filtering and band-filtering behaviors.</p>
+</div>
+<div id="S5.SS2.p5" class="ltx_para">
+<p class="ltx_p">When the delay time is short, an HH neuron with an electrical or excitatory chemical autapse acts as a low-pass filter similar to a neuron without an autapse and removes the spikes with short ISIs. When the autaptic delay time is long enough, the neuron displays band-pass filtering behavior and removes both the short- and long-ISI spikes. The cut-off value for the ISIs (either the minimum or the maximum ISIs that will be retained in the output spike train) can be changed by changing the autaptic parameters. For some specific autaptic parameters, the neuron can filter most of the input pulse, and the output spike train can be altered into a nearly regular spike train, even for an input with highly random ISIs. More interestingly, a neuron with an inhibitory chemical autapse can only act as a low-pass filter. Thus, the inhibitory chemical autapse does not have a significant effect on the frequency of the output spike train.</p>
+</div>
+<div id="S5.SS2.p6" class="ltx_para">
+<p class="ltx_p">It can be conjectured that the filtering properties depend on the intrinsic properties of both the neuron and the autapse. For electrical or excitatory chemical autapses, the delay time will act as a border or as a cut-off value for the ISI filtering of synaptic pulses with a long ISI. The intrinsic filtering property of neurons removes the short input ISI pulses, and the time delay of the electrical or excitatory chemical autapse removes the long input ISI pulses. However, an inhibitory autapse delays the spikes of a neuron and thus filters the spikes that have short ISI pulses. Thus, the firing frequency of a neuron with an inhibitory autapse is not higher than that of a neuron without an autapse.</p>
+</div>
+</section>
+</section>
+<section id="S6" class="ltx_section">
+<h2 class="ltx_title ltx_title_section">
+<span class="ltx_tag ltx_tag_section">6 </span>Effect of noise on the firing dynamics of a neuron</h2>
+
+<div id="S6.p1" class="ltx_para">
+<p class="ltx_p">Neuronal noise is random electrical fluctuations within neuronal networks and affects the patterns of neural activity in a determinant way <cite class="ltx_cite ltx_citemacro_cite">[<a href="#bib.bib75" title="" class="ltx_ref">75</a>, <a href="#bib.bib76" title="" class="ltx_ref">76</a>, <a href="#bib.bib77" title="" class="ltx_ref">77</a>, <a href="#bib.bib78" title="" class="ltx_ref">78</a>]</cite>. In the presence of noise, autapses can also substantially affect the response of a neuron. In this section, we review previous studies on the interplay of autapses and noise on the firing of an autaptic neuron.</p>
+</div>
+<div id="S6.p2" class="ltx_para">
+<p class="ltx_p">Considering the subthreshold dynamics of a neuron with interaction between autaptic-delayed feedback and noise, Masoller et al. investigated the firing patterns of an HH model of a thermoreceptor neuron with an electrical autaptic feedback in the presence of a Gaussian white noise <cite class="ltx_cite ltx_citemacro_cite">[<a href="#bib.bib79" title="" class="ltx_ref">79</a>]</cite>. In their studies, the neuron displays only subthreshold oscillations in the absence of feedback and noise. Their results show that the interaction among weak autaptic feedback, noise, and the subthreshold intrinsic activity is nontrivial. The subthreshold oscillation amplitude can be enhanced by the autapse in the presence of external noise, and this enhancement is more pronounced for certain delay values. For negative autaptic delay feedback, the firing rate can be lower than that of the noise-free situation, depending on the delay. This is because noise inhibits feedback-induced spikes by driving the neuronal oscillations away from the firing threshold. For positive autaptic delay feedback, there are regions of delay values where the noise-induced spikes are inhibited by the feedback; in this case, the autaptic feedback drives the neuronal oscillations away from the threshold.</p>
+</div>
+<div id="S6.p3" class="ltx_para">
+<p class="ltx_p">Li and his co-workers analyzed the effects of electrical autapses on the spiking dynamics of a stochastic HH neuron <cite class="ltx_cite ltx_citemacro_cite">[<a href="#bib.bib34" title="" class="ltx_ref">34</a>]</cite>, considering the stochastic gating of ion channels or the so-called intrinsic channel noise is considered. They found that the delayed feedback manifests itself in the occurrence of bursting and a rich multimodal interspike interval distribution, exhibiting a delay-induced reduction in the spontaneous spiking activity at characteristic frequencies. For small numbers of ion channels, the channel noise is sizable and the excitatory dynamics remain practically unaffected by the delay. However, smaller noise levels and stronger autaptic intensities induce different synchronization phenomena between the delay time and the intrinsic time scales. The delay time and the intrinsic time scales determine the number of spikes that will be induced and become subsequently locked during one delay epoch.</p>
+</div>
+<div id="S6.p4" class="ltx_para">
+<p class="ltx_p">Recently, Yilmaz and Ozer showed that the electrical autaptic delayed feedback either enhances or suppresses the weak signal detection, depending on the parameters of autapse and channel noise <cite class="ltx_cite ltx_citemacro_cite">[<a href="#bib.bib80" title="" class="ltx_ref">80</a>]</cite>. When the delay time is close to integer multiples of the period of the intrinsic oscillations, the autapse enhances the weak periodic signal detection for the optimal values of the intrinsic noise and the autaptic intensity. The system response also exhibits stochastic resonance behavior, depending on the autaptic intensity. Moreover, the weak signal detection capability of the HH neuron is strongly dependent on the cell size and autaptic strength.</p>
+</div>
+</section>
+<section id="S7" class="ltx_section">
+<h2 class="ltx_title ltx_title_section">
+<span class="ltx_tag ltx_tag_section">7 </span>Conclusion and outlook</h2>
+
+<div id="S7.p1" class="ltx_para">
+<p class="ltx_p">Self-delayed feedback significantly affects nonlinear dynamic systems because such self-feedback loops introduce a new time scale into the dynamics of the system <cite class="ltx_cite ltx_citemacro_cite">[<a href="#bib.bib81" title="" class="ltx_ref">81</a>, <a href="#bib.bib82" title="" class="ltx_ref">82</a>, <a href="#bib.bib81" title="" class="ltx_ref">81</a>]</cite>. The system of a neuron with an autapse contains two time scales: the intrinsic time scale of the neuron and the time scale of the autapse. However, the situation is more complex in the nervous system, because there are many more time scales, including the time scales of the neurons, the synapse, the environment, and the autaptic connections. This complexity raises the question of how the activity time of an autapse influences the activities of coupled neurons in the nervous system.</p>
+</div>
+<div id="S7.p2" class="ltx_para">
+<p class="ltx_p">Autapses provide self-feedback circuits that are common in the nervous system. Since the naming of autapses, many experimental studies have revealed that autapses play important roles in brain function <cite class="ltx_cite ltx_citemacro_cite">[<a href="#bib.bib6" title="" class="ltx_ref">6</a>, <a href="#bib.bib14" title="" class="ltx_ref">14</a>, <a href="#bib.bib15" title="" class="ltx_ref">15</a>, <a href="#bib.bib11" title="" class="ltx_ref">11</a>, <a href="#bib.bib17" title="" class="ltx_ref">17</a>, <a href="#bib.bib18" title="" class="ltx_ref">18</a>, <a href="#bib.bib20" title="" class="ltx_ref">20</a>]</cite>. The current theoretical studies on the topic of autaptic connections also reported the importance of autapses and the many novel dynamic behaviors induced by the autapse <cite class="ltx_cite ltx_citemacro_cite">[<a href="#bib.bib32" title="" class="ltx_ref">32</a>, <a href="#bib.bib34" title="" class="ltx_ref">34</a>, <a href="#bib.bib35" title="" class="ltx_ref">35</a>, <a href="#bib.bib36" title="" class="ltx_ref">36</a>, <a href="#bib.bib42" title="" class="ltx_ref">42</a>, <a href="#bib.bib43" title="" class="ltx_ref">43</a>]</cite>. Autapses provide a control option that can sufficiently adjust the firing behaviors of a neuron for any form of input stimulus, regardless of the neuron type.</p>
+</div>
+<div id="S7.p3" class="ltx_para">
+<p class="ltx_p">Autapses offer a new mechanism for switching between quiescent, periodic and chaotic firing patterns in bursting neurons <cite class="ltx_cite ltx_citemacro_cite">[<a href="#bib.bib36" title="" class="ltx_ref">36</a>]</cite>. Additionally, the nervous system responds rapidly to an external stimulus based on the transition between neuron firing patterns <cite class="ltx_cite ltx_citemacro_cite">[<a href="#bib.bib40" title="" class="ltx_ref">40</a>, <a href="#bib.bib83" title="" class="ltx_ref">83</a>]</cite>. Thus, the results of the firing pattern transition induced by an autapse also indicate that an autapse could act as an efficient tool for controlling the transition among different relevant neuronal activities in the nervous system.</p>
+</div>
+<div id="S7.p4" class="ltx_para">
+<p class="ltx_p">For an HH neuron with an autapse, the firing frequency and interspike interval distributions of the output spike train show periodic behavior when the delay time is increased <cite class="ltx_cite ltx_citemacro_cite">[<a href="#bib.bib43" title="" class="ltx_ref">43</a>]</cite>. When specific autaptic parameters are chosen, the response spike trains are nearly regular, and the ISI distribution covers a small area, even with a highly random input. This phenomenon emphassises the autapse-induced filtering behaviors of the neuron. These results about the autapse are useful for studying the control of a nonlinear system.</p>
+</div>
+<div id="S7.p5" class="ltx_para">
+<p class="ltx_p">In neuronal systems, an autapse can take the form of recurrent excitation, i.e., the discharge of a neuron, possibly after passing through the axon, can subsequently induce an excitatory response in the same neuron. This self-excitation mechanism is important for maintaining persistent activity, particularly the feeding behavior in sea slugs. Leonel et al. also reported that such processes play functional roles in amplifying activity in neuronal assemblies, causing reverberating activity, inducing some form of memory, or generating rhythmic patterns, such as those in central pattern generators <cite class="ltx_cite ltx_citemacro_cite">[<a href="#bib.bib84" title="" class="ltx_ref">84</a>]</cite>. The previous experimental data also indicate that the brain tissue expresses a novel form of self inhibition, namely autaptic inhibitory transmission in Fast-Spike (FS) cells slow self activities in interneurons <cite class="ltx_cite ltx_citemacro_cite">[<a href="#bib.bib85" title="" class="ltx_ref">85</a>]</cite>. Ma et al. also investigated the activities of a two-dimensional neural network containing autapses with different time delays and found that the autapses induced many novel collective behaviors <cite class="ltx_cite ltx_citemacro_cite">[<a href="#bib.bib86" title="" class="ltx_ref">86</a>]</cite>. The effect of autapse on the synchronization of neural network have also been conducted in a group of HH neurons with small world network structure <cite class="ltx_cite ltx_citemacro_cite">[<a href="#bib.bib87" title="" class="ltx_ref">87</a>]</cite>. It was found that the neurons exhibit synchronization transitions as autaptic delay feedback is varied, and fine synchronized network activities occur when an optimal autaptic strength is chosen.
+Alberto Bacci and his colleagues studied the autaptic self-inhibition of basket cells and the role of the autaptic connections of disinhibition within cortical circuits and argued that autaptic feedback could have a dual function in temporally coordinating parvalbumin basket cells during cortical network activity <cite class="ltx_cite ltx_citemacro_cite">[<a href="#bib.bib88" title="" class="ltx_ref">88</a>]</cite>. Another study also indicated that fast spiking neurons with autapses showed the strongest asynchronous release in brain slices obtained from patients with intractable epilepsy, and that such discharges may be involved in generating and regulating network activities, including epileptic activity <cite class="ltx_cite ltx_citemacro_cite">[<a href="#bib.bib38" title="" class="ltx_ref">38</a>]</cite>.</p>
+</div>
+<div id="S7.p6" class="ltx_para">
+<p class="ltx_p">Although there are many studies on the topic of the autapse, the precise function of autapses and their contribution to information processing are remain unclear. There are also many open questions both in the experimental and theoretical areas: 1) What is the role of autapses in coordinating network activities? i.e., FS cell autapses in adjusting fast network synchrony. 2) What are the molecular mechanisms underlying autaptic asynchronous release and what is its relevance during physiological and pathological network activities? 3) What are the functions of autapses in the information propagation in the neural circuit and neural network? Addressing these questions will also facilitate our understanding of the fundamental mechanisms governing several core functions of cortical activities.</p>
+</div>
+</section>
+<section id="bib" class="ltx_bibliography">
+<h2 class="ltx_title ltx_title_bibliography">References</h2>
+
+<ul class="ltx_biblist">
+      
+<li id="bib.bib1" class="ltx_bibitem">
+        <span class="ltx_bibtag ltx_role_refnum">1</span>
+        
+<span class="ltx_bibblock"> Kandel E R, Schwartz J H, Jessell T M, Siegelbaum S A and Hudspeth A J 2000 <span class="ltx_text ltx_font_italic">Principles of Neural Science</span> (New York: McGraw-Hill Medical)
+
+</span>
+      </li>
+      
+<li id="bib.bib2" class="ltx_bibitem">
+        <span class="ltx_bibtag ltx_role_refnum">2</span>
+        
+<span class="ltx_bibblock"> Bartos M, Vida I and Jonas P 2007 <span class="ltx_text ltx_font_italic">Nat. Rev. Neurosci.</span> <span class="ltx_text ltx_font_bold">8</span> 45
+
+</span>
+      </li>
+      
+<li id="bib.bib3" class="ltx_bibitem">
+        <span class="ltx_bibtag ltx_role_refnum">3</span>
+        
+<span class="ltx_bibblock"> Bennett M V L and Zukin R S 2004 <span class="ltx_text ltx_font_italic">Neuron</span> <span class="ltx_text ltx_font_bold">41</span> 495
+
+</span>
+      </li>
+      
+<li id="bib.bib4" class="ltx_bibitem">
+        <span class="ltx_bibtag ltx_role_refnum">4</span>
+        
+<span class="ltx_bibblock"> Connors B W and Long M A 2004 <span class="ltx_text ltx_font_italic">Annu. Rev. Neurosci.</span> <span class="ltx_text ltx_font_bold">27</span> 393
+
+</span>
+      </li>
+      
+<li id="bib.bib5" class="ltx_bibitem">
+        <span class="ltx_bibtag ltx_role_refnum">5</span>
+        
+<span class="ltx_bibblock">Van der Loos H and Glaser E M 1972 <span class="ltx_text ltx_font_italic">Brain Res.</span> <span class="ltx_text ltx_font_bold">48</span> 355
+
+</span>
+      </li>
+      
+<li id="bib.bib6" class="ltx_bibitem">
+        <span class="ltx_bibtag ltx_role_refnum">6</span>
+        
+<span class="ltx_bibblock"> Bekkers J M 1998 <span class="ltx_text ltx_font_italic">Curr. Biol.</span> <span class="ltx_text ltx_font_bold">8</span> R52
+
+</span>
+      </li>
+      
+<li id="bib.bib7" class="ltx_bibitem">
+        <span class="ltx_bibtag ltx_role_refnum">7</span>
+        
+<span class="ltx_bibblock"> Yamaguchi K 2008 <span class="ltx_text ltx_font_italic">Autapse Encyclopedia of Neuroscience</span> (M. D. Binder ed.), N Hirokawa and U Windhorst (Springer Berlin Heidelberg) pp 229-32
+
+</span>
+      </li>
+      
+<li id="bib.bib8" class="ltx_bibitem">
+        <span class="ltx_bibtag ltx_role_refnum">8</span>
+        
+<span class="ltx_bibblock"> Lübke J, Markram H, Frotscher M and Sakmann B 1996 <span class="ltx_text ltx_font_italic">J. Neurosci. </span> <span class="ltx_text ltx_font_bold">16</span> 3209
+
+</span>
+      </li>
+      
+<li id="bib.bib9" class="ltx_bibitem">
+        <span class="ltx_bibtag ltx_role_refnum">9</span>
+        
+<span class="ltx_bibblock"> Flight M H 2009 <span class="ltx_text ltx_font_italic">Nat. Rev. Neurosci. </span> <span class="ltx_text ltx_font_bold">10</span> 316
+
+</span>
+      </li>
+      
+<li id="bib.bib10" class="ltx_bibitem">
+        <span class="ltx_bibtag ltx_role_refnum">10</span>
+        
+<span class="ltx_bibblock"> Branco T and Staras K 2009 <span class="ltx_text ltx_font_italic">Nat. Rev. Neurosci.</span> <span class="ltx_text ltx_font_bold">10</span> 373
+
+</span>
+      </li>
+      
+<li id="bib.bib11" class="ltx_bibitem">
+        <span class="ltx_bibtag ltx_role_refnum">11</span>
+        
+<span class="ltx_bibblock"> Kimura F, Otsu Y and Tsumoto T 1997 <span class="ltx_text ltx_font_italic">J. Neurophysiol.</span> <span class="ltx_text ltx_font_bold">77</span> 2805
+
+</span>
+      </li>
+      
+<li id="bib.bib12" class="ltx_bibitem">
+        <span class="ltx_bibtag ltx_role_refnum">12</span>
+        
+<span class="ltx_bibblock"> Tamás G, Buhl E H and Somogyi P 1997 <span class="ltx_text ltx_font_italic">J. Neurosci.</span> <span class="ltx_text ltx_font_bold">17</span> 6352
+
+</span>
+      </li>
+      
+<li id="bib.bib13" class="ltx_bibitem">
+        <span class="ltx_bibtag ltx_role_refnum">13</span>
+        
+<span class="ltx_bibblock"> Saada R, Miller N, Hurwitz I and Susswein A J 2009 <span class="ltx_text ltx_font_italic">Curr. Biol. </span> <span class="ltx_text ltx_font_bold">19</span> 479
+
+</span>
+      </li>
+      
+<li id="bib.bib14" class="ltx_bibitem">
+        <span class="ltx_bibtag ltx_role_refnum">14</span>
+        
+<span class="ltx_bibblock"> Ikeda K and Bekkers J M 2006 <span class="ltx_text ltx_font_italic">Curr. Biol. </span> <span class="ltx_text ltx_font_bold">16</span> R308
+
+</span>
+      </li>
+      
+<li id="bib.bib15" class="ltx_bibitem">
+        <span class="ltx_bibtag ltx_role_refnum">15</span>
+        
+<span class="ltx_bibblock"> Bacci A and Huguenard J R 2006 <span class="ltx_text ltx_font_italic">Neuron</span> <span class="ltx_text ltx_font_bold">49</span> 119
+
+</span>
+      </li>
+      
+<li id="bib.bib16" class="ltx_bibitem">
+        <span class="ltx_bibtag ltx_role_refnum">16</span>
+        
+<span class="ltx_bibblock"> Bekkers J M 2009 <span class="ltx_text ltx_font_italic">Curr. Biol.</span> <span class="ltx_text ltx_font_bold">19</span>, R296
+
+</span>
+      </li>
+      
+<li id="bib.bib17" class="ltx_bibitem">
+        <span class="ltx_bibtag ltx_role_refnum">17</span>
+        
+<span class="ltx_bibblock"> Salinas E and Sejnowski T J 2001 <span class="ltx_text ltx_font_italic">Nat. Rev. Neurosci.</span> <span class="ltx_text ltx_font_bold">2</span> 539
+
+</span>
+      </li>
+      
+<li id="bib.bib18" class="ltx_bibitem">
+        <span class="ltx_bibtag ltx_role_refnum">18</span>
+        
+<span class="ltx_bibblock">Chen Y, Yu L and Qin S M 2008 <span class="ltx_text ltx_font_italic">Phys. Rev. E</span> <span class="ltx_text ltx_font_bold">78</span> 051909
+
+</span>
+      </li>
+      
+<li id="bib.bib19" class="ltx_bibitem">
+        <span class="ltx_bibtag ltx_role_refnum">19</span>
+        
+<span class="ltx_bibblock"> Chen Y, Zhang H, Wang H, Yu L and Chen Y 2013 <span class="ltx_text ltx_font_italic">PLoS ONE</span> <span class="ltx_text ltx_font_bold">8</span> e56822
+
+</span>
+      </li>
+      
+<li id="bib.bib20" class="ltx_bibitem">
+        <span class="ltx_bibtag ltx_role_refnum">20</span>
+        
+<span class="ltx_bibblock"> Quiroga R Q and Panzeri S 2009 <span class="ltx_text ltx_font_italic">Nat. Rev. Neurosci.</span> <span class="ltx_text ltx_font_bold">10</span> 173
+
+</span>
+      </li>
+      
+<li id="bib.bib21" class="ltx_bibitem">
+        <span class="ltx_bibtag ltx_role_refnum">21</span>
+        
+<span class="ltx_bibblock"> Davidson E. and Levin M. 2005 <span class="ltx_text ltx_font_italic">Proc. Natl. Acad. Sci. U.S.A.</span> <span class="ltx_text ltx_font_bold">102</span> 4935
+
+</span>
+      </li>
+      
+<li id="bib.bib22" class="ltx_bibitem">
+        <span class="ltx_bibtag ltx_role_refnum">22</span>
+        
+<span class="ltx_bibblock"> Zhang H, Chen Y and Chen Y 2012 <span class="ltx_text ltx_font_italic">PLoS ONE</span> <span class="ltx_text ltx_font_bold">7</span> e51840
+
+</span>
+      </li>
+      
+<li id="bib.bib23" class="ltx_bibitem">
+        <span class="ltx_bibtag ltx_role_refnum">23</span>
+        
+<span class="ltx_bibblock"> Cabrera J L and Milton J G 2002 <span class="ltx_text ltx_font_italic">Phys. Rev. Lett.</span> <span class="ltx_text ltx_font_bold">89</span> 158702
+
+</span>
+      </li>
+      
+<li id="bib.bib24" class="ltx_bibitem">
+        <span class="ltx_bibtag ltx_role_refnum">24</span>
+        
+<span class="ltx_bibblock"> Bonan G B 2008 <span class="ltx_text ltx_font_italic">Science</span> <span class="ltx_text ltx_font_bold">320</span> 1444
+
+</span>
+      </li>
+      
+<li id="bib.bib25" class="ltx_bibitem">
+        <span class="ltx_bibtag ltx_role_refnum">25</span>
+        
+<span class="ltx_bibblock"> Postlethwaite C M and Silber M 2007 <span class="ltx_text ltx_font_italic">Phys. Rev. E</span> <span class="ltx_text ltx_font_bold">76</span> 056214
+
+</span>
+      </li>
+      
+<li id="bib.bib26" class="ltx_bibitem">
+        <span class="ltx_bibtag ltx_role_refnum">26</span>
+        
+<span class="ltx_bibblock"> Sethia G C, Kurths J, and Sen A 2007 <span class="ltx_text ltx_font_italic">Phys. Lett. A</span> <span class="ltx_text ltx_font_bold">364</span> 227
+
+</span>
+      </li>
+      
+<li id="bib.bib27" class="ltx_bibitem">
+        <span class="ltx_bibtag ltx_role_refnum">27</span>
+        
+<span class="ltx_bibblock"> Chen W-K 2005 <span class="ltx_text ltx_font_italic">Circuit Analysis and Feedback Amplifier Theory</span> (Bocan Raton, FL: CRC Press)
+
+</span>
+      </li>
+      
+<li id="bib.bib28" class="ltx_bibitem">
+        <span class="ltx_bibtag ltx_role_refnum">28</span>
+        
+<span class="ltx_bibblock"> Gaudreault M, Drolet F and ViÃ±als J 2012 <span class="ltx_text ltx_font_italic">Phys. Rev. E</span> <span class="ltx_text ltx_font_bold">85</span> 056214
+
+</span>
+      </li>
+      
+<li id="bib.bib29" class="ltx_bibitem">
+        <span class="ltx_bibtag ltx_role_refnum">29</span>
+        
+<span class="ltx_bibblock"> Ahlborn A and Parlitz U 2004 <span class="ltx_text ltx_font_italic">Phys. Rev. Lett.</span> <span class="ltx_text ltx_font_bold">93</span> 264101
+
+</span>
+      </li>
+      
+<li id="bib.bib30" class="ltx_bibitem">
+        <span class="ltx_bibtag ltx_role_refnum">30</span>
+        
+<span class="ltx_bibblock"> Balanov A G, Janson N B and Schöll E 2005 <span class="ltx_text ltx_font_italic">Phys. Rev. E</span> <span class="ltx_text ltx_font_bold">71</span> 016222
+
+</span>
+      </li>
+      
+<li id="bib.bib31" class="ltx_bibitem">
+        <span class="ltx_bibtag ltx_role_refnum">31</span>
+        
+<span class="ltx_bibblock"> Popovych O V, Hauptmann C and Tass P A 2006 <span class="ltx_text ltx_font_italic">Biol. Cybern.</span> <span class="ltx_text ltx_font_bold">95</span> 69
+
+</span>
+      </li>
+      
+<li id="bib.bib32" class="ltx_bibitem">
+        <span class="ltx_bibtag ltx_role_refnum">32</span>
+        
+<span class="ltx_bibblock"> Rusin C G, Johnson S E, Kapur J and Hudson J L 2011 <span class="ltx_text ltx_font_italic">Phys. Rev. E</span> <span class="ltx_text ltx_font_bold">84</span> 066202
+
+</span>
+      </li>
+      
+<li id="bib.bib33" class="ltx_bibitem">
+        <span class="ltx_bibtag ltx_role_refnum">33</span>
+        
+<span class="ltx_bibblock"> Prager T, Lerch H P, Schimansky-Geier L and Schöll E 2007 <span class="ltx_text ltx_font_italic">J. Phys. A</span> <span class="ltx_text ltx_font_bold">40</span> 11045
+
+</span>
+      </li>
+      
+<li id="bib.bib34" class="ltx_bibitem">
+        <span class="ltx_bibtag ltx_role_refnum">34</span>
+        
+<span class="ltx_bibblock"> Li Y, Schmid G, HÃ¤nggi P and Schimansky-Geier L 2010 <span class="ltx_text ltx_font_italic">Phys. Rev. E</span> <span class="ltx_text ltx_font_bold">82</span> 061907
+
+</span>
+      </li>
+      
+<li id="bib.bib35" class="ltx_bibitem">
+        <span class="ltx_bibtag ltx_role_refnum">35</span>
+        
+<span class="ltx_bibblock"> Hashemi M, Valizadeh A and Azizi Y 2012 <span class="ltx_text ltx_font_italic">Phys. Rev. E</span> <span class="ltx_text ltx_font_bold">85</span> 021917
+
+</span>
+      </li>
+      
+<li id="bib.bib36" class="ltx_bibitem">
+        <span class="ltx_bibtag ltx_role_refnum">36</span>
+        
+<span class="ltx_bibblock"> Wang H, Ma J, Chen Y and Chen Y 2014 <span class="ltx_text ltx_font_italic">Commun. Nonlinear Sci. Numer. Simul.</span> <span class="ltx_text ltx_font_bold">19</span> 3242
+
+</span>
+      </li>
+      
+<li id="bib.bib37" class="ltx_bibitem">
+        <span class="ltx_bibtag ltx_role_refnum">37</span>
+        
+<span class="ltx_bibblock"> Schacter D L, Gilbert D T, Wegner D M and Nock M K 2014 <span class="ltx_text ltx_font_italic">Psychology</span> (New York, NY: Worth Publishers)
+
+</span>
+      </li>
+      
+<li id="bib.bib38" class="ltx_bibitem">
+        <span class="ltx_bibtag ltx_role_refnum">38</span>
+        
+<span class="ltx_bibblock"> Jiang M, Zhu J, Liu Y, Yang M, Tian C, Jiang S, Wang Y, Guo H, Wang K and Shu Y 2012 <span class="ltx_text ltx_font_italic">PLoS Biol.</span> <span class="ltx_text ltx_font_bold">10</span> e1001324
+
+</span>
+      </li>
+      
+<li id="bib.bib39" class="ltx_bibitem">
+        <span class="ltx_bibtag ltx_role_refnum">39</span>
+        
+<span class="ltx_bibblock"> Jun Ma H Q 2015 <span class="ltx_text ltx_font_italic">Int. J. of Mod. Phys. B</span> <span class="ltx_text ltx_font_bold">29</span> 1450239
+
+</span>
+      </li>
+      
+<li id="bib.bib40" class="ltx_bibitem">
+        <span class="ltx_bibtag ltx_role_refnum">40</span>
+        
+<span class="ltx_bibblock"> Belykh I, de Lange E and Hasler M 2005 <span class="ltx_text ltx_font_italic">Phys. Rev. Lett.</span> <span class="ltx_text ltx_font_bold">94</span> 188101
+
+</span>
+      </li>
+      
+<li id="bib.bib41" class="ltx_bibitem">
+        <span class="ltx_bibtag ltx_role_refnum">41</span>
+        
+<span class="ltx_bibblock"> Burić N, Todorović K and Vasović N 2008 <span class="ltx_text ltx_font_italic">Phys. Rev. E</span> <span class="ltx_text ltx_font_bold">78</span> 036211
+
+</span>
+      </li>
+      
+<li id="bib.bib42" class="ltx_bibitem">
+        <span class="ltx_bibtag ltx_role_refnum">42</span>
+        
+<span class="ltx_bibblock"> Wang H, Sun Y, Li Y and Chen Y 2014 <span class="ltx_text ltx_font_italic">J. Theor. Biol.</span> <span class="ltx_text ltx_font_bold">358</span> 25
+
+</span>
+      </li>
+      
+<li id="bib.bib43" class="ltx_bibitem">
+        <span class="ltx_bibtag ltx_role_refnum">43</span>
+        
+<span class="ltx_bibblock"> Wang H, Wang L, Chen Y and Chen Y 2014 <span class="ltx_text ltx_font_italic">Chaos</span> <span class="ltx_text ltx_font_bold">24</span> 033122
+
+</span>
+      </li>
+      
+<li id="bib.bib44" class="ltx_bibitem">
+        <span class="ltx_bibtag ltx_role_refnum">44</span>
+        
+<span class="ltx_bibblock">Connelly W M and Lees G 2010 <span class="ltx_text ltx_font_italic">J. Physiol.</span> <span class="ltx_text ltx_font_bold">588</span>, 2047
+
+</span>
+      </li>
+      
+<li id="bib.bib45" class="ltx_bibitem">
+        <span class="ltx_bibtag ltx_role_refnum">45</span>
+        
+<span class="ltx_bibblock">Cocatre-Zilgien JH, Delcomyn F 1992 <span class="ltx_text ltx_font_italic">J. Neurosci. Meth.</span> <span class="ltx_text ltx_font_bold">41</span> 19
+
+</span>
+      </li>
+      
+<li id="bib.bib46" class="ltx_bibitem">
+        <span class="ltx_bibtag ltx_role_refnum">46</span>
+        
+<span class="ltx_bibblock"> Mainen Z F and Sejnowski T J 1996 <span class="ltx_text ltx_font_italic">Nature</span> <span class="ltx_text ltx_font_bold">382</span> 363
+
+</span>
+      </li>
+      
+<li id="bib.bib47" class="ltx_bibitem">
+        <span class="ltx_bibtag ltx_role_refnum">47</span>
+        
+<span class="ltx_bibblock"> Izhikevich E M 2000 <span class="ltx_text ltx_font_italic">Int. J. Bifurcat. Chaos</span> <span class="ltx_text ltx_font_bold">10</span> 1171
+
+</span>
+      </li>
+      
+<li id="bib.bib48" class="ltx_bibitem">
+        <span class="ltx_bibtag ltx_role_refnum">48</span>
+        
+<span class="ltx_bibblock"> Kepecs A, Wang X-J and Lisman J 2002 <span class="ltx_text ltx_font_italic">J. Neurosci.</span> <span class="ltx_text ltx_font_bold">22</span> 9053
+
+</span>
+      </li>
+      
+<li id="bib.bib49" class="ltx_bibitem">
+        <span class="ltx_bibtag ltx_role_refnum">49</span>
+        
+<span class="ltx_bibblock"> Gu Hua-Guang,Zhu Zhou,Jia Bing. 2011 <span class="ltx_text ltx_font_italic">Acta Physica Sinica</span> <span class="ltx_text ltx_font_bold">60</span> 100505
+
+</span>
+      </li>
+      
+<li id="bib.bib50" class="ltx_bibitem">
+        <span class="ltx_bibtag ltx_role_refnum">50</span>
+        
+<span class="ltx_bibblock"> Yu H-T, Wang J, Deng B and Wei X-L 2013 <span class="ltx_text ltx_font_italic">Chin. Phys. B</span> <span class="ltx_text ltx_font_bold">22</span> 018701
+
+</span>
+      </li>
+      
+<li id="bib.bib51" class="ltx_bibitem">
+        <span class="ltx_bibtag ltx_role_refnum">51</span>
+        
+<span class="ltx_bibblock"> Wagenaar D A, Pine J and Potter S M 2006 <span class="ltx_text ltx_font_italic"> BMC Neurosci.</span> <span class="ltx_text ltx_font_bold">7</span> 11
+
+</span>
+      </li>
+      
+<li id="bib.bib52" class="ltx_bibitem">
+        <span class="ltx_bibtag ltx_role_refnum">52</span>
+        
+<span class="ltx_bibblock"> Yu H, Wang J, Deng B, Wei X, Wong Y K, Chan W L, Tsang K M, Ziqi Y. et al. 2011 <span class="ltx_text ltx_font_italic">Chaos</span> <span class="ltx_text ltx_font_bold">21</span> 013127
+
+</span>
+      </li>
+      
+<li id="bib.bib53" class="ltx_bibitem">
+        <span class="ltx_bibtag ltx_role_refnum">53</span>
+        
+<span class="ltx_bibblock"> Tang G, Xu K and Jiang L 2011 <span class="ltx_text ltx_font_italic">Phys. Rev. E</span> <span class="ltx_text ltx_font_bold">84</span> 046207
+
+</span>
+      </li>
+      
+<li id="bib.bib54" class="ltx_bibitem">
+        <span class="ltx_bibtag ltx_role_refnum">54</span>
+        
+<span class="ltx_bibblock"> Wang X-J 1993 <span class="ltx_text ltx_font_italic">Physica D</span> <span class="ltx_text ltx_font_bold">62</span> 263
+
+</span>
+      </li>
+      
+<li id="bib.bib55" class="ltx_bibitem">
+        <span class="ltx_bibtag ltx_role_refnum">55</span>
+        
+<span class="ltx_bibblock"> Jm G-M 2003 <span class="ltx_text ltx_font_italic">Chaos</span> <span class="ltx_text ltx_font_bold">13</span> 845
+
+</span>
+      </li>
+      
+<li id="bib.bib56" class="ltx_bibitem">
+        <span class="ltx_bibtag ltx_role_refnum">56</span>
+        
+<span class="ltx_bibblock"> Innocenti G, Morelli A, Genesio R and Torcini A 2007 <span class="ltx_text ltx_font_italic">Chaos</span> <span class="ltx_text ltx_font_bold">17</span> 043128
+
+</span>
+      </li>
+      
+<li id="bib.bib57" class="ltx_bibitem">
+        <span class="ltx_bibtag ltx_role_refnum">57</span>
+        
+<span class="ltx_bibblock"> Innocenti G and Genesio R 2009 <span class="ltx_text ltx_font_italic">Chaos</span> <span class="ltx_text ltx_font_bold">19</span> 023124
+
+</span>
+      </li>
+      
+<li id="bib.bib58" class="ltx_bibitem">
+        <span class="ltx_bibtag ltx_role_refnum">58</span>
+        
+<span class="ltx_bibblock"> Lee S-G and Kim S 2006 <span class="ltx_text ltx_font_italic">Phys. Rev. E</span> <span class="ltx_text ltx_font_bold">73</span> 041924
+
+</span>
+      </li>
+      
+<li id="bib.bib59" class="ltx_bibitem">
+        <span class="ltx_bibtag ltx_role_refnum">59</span>
+        
+<span class="ltx_bibblock"> Che Y-Q, Wang J, Si W-J and Fei X-Y 2009 <span class="ltx_text ltx_font_italic">Chaos, Solitons</span> &amp; <span class="ltx_text ltx_font_italic">Fractals</span> <span class="ltx_text ltx_font_bold">39</span> 454
+
+</span>
+      </li>
+      
+<li id="bib.bib60" class="ltx_bibitem">
+        <span class="ltx_bibtag ltx_role_refnum">60</span>
+        
+<span class="ltx_bibblock"> Wang H, Wang L, Yu L and Chen Y 2011 <span class="ltx_text ltx_font_italic">Phys. Rev. E.</span> <span class="ltx_text ltx_font_bold">83</span> 021915
+
+</span>
+      </li>
+      
+<li id="bib.bib61" class="ltx_bibitem">
+        <span class="ltx_bibtag ltx_role_refnum">61</span>
+        
+<span class="ltx_bibblock"> Fellous J-M, Houweling, A R, Modi, R H, Rao, R P N, Tiesinga P H E and Sejnowski T J2001 <span class="ltx_text ltx_font_italic">J Neurophysiol.</span> <span class="ltx_text ltx_font_bold">85</span> 1782
+
+</span>
+      </li>
+      
+<li id="bib.bib62" class="ltx_bibitem">
+        <span class="ltx_bibtag ltx_role_refnum">62</span>
+        
+<span class="ltx_bibblock"> Hodgkin A L and Huxley A F 1952 <span class="ltx_text ltx_font_italic">The J. of Physiol. </span> <span class="ltx_text ltx_font_bold">117</span> 500
+
+</span>
+      </li>
+      
+<li id="bib.bib63" class="ltx_bibitem">
+        <span class="ltx_bibtag ltx_role_refnum">63</span>
+        
+<span class="ltx_bibblock">Bekkers J M 2003 <span class="ltx_text ltx_font_italic">Curr. Biol.</span> <span class="ltx_text ltx_font_bold">13</span>, R433
+
+</span>
+      </li>
+      
+<li id="bib.bib64" class="ltx_bibitem">
+        <span class="ltx_bibtag ltx_role_refnum">64</span>
+        
+<span class="ltx_bibblock">Gulledge A T and Stuart G J 2003 <span class="ltx_text ltx_font_italic">Neuron</span> <span class="ltx_text ltx_font_bold">37</span>, 299
+
+</span>
+      </li>
+      
+<li id="bib.bib65" class="ltx_bibitem">
+        <span class="ltx_bibtag ltx_role_refnum">65</span>
+        
+<span class="ltx_bibblock">Saada-Madar R, Miller N and Susswein A J 2012 <span class="ltx_text ltx_font_italic">J. Mol. Histol.</span> <span class="ltx_text ltx_font_bold">43</span> 431
+
+</span>
+      </li>
+      
+<li id="bib.bib66" class="ltx_bibitem">
+        <span class="ltx_bibtag ltx_role_refnum">66</span>
+        
+<span class="ltx_bibblock"> Lewis J, Bachoo M, Glass L, and Polosa C 1987 <span class="ltx_text ltx_font_italic">Phys. Lett. A </span> <span class="ltx_text ltx_font_bold">125</span>, 119
+
+</span>
+      </li>
+      
+<li id="bib.bib67" class="ltx_bibitem">
+        <span class="ltx_bibtag ltx_role_refnum">67</span>
+        
+<span class="ltx_bibblock"> Glass L and Zeng W-Z 1990 <span class="ltx_text ltx_font_italic">Ann.NY Acad.Sci. </span> <span class="ltx_text ltx_font_bold">591</span> 316
+
+</span>
+      </li>
+      
+<li id="bib.bib68" class="ltx_bibitem">
+        <span class="ltx_bibtag ltx_role_refnum">68</span>
+        
+<span class="ltx_bibblock"> Lewis J E, Glass L, Bachoo M, and Polosa C 1992 <span class="ltx_text ltx_font_italic">J. Theor. Biol.</span> <span class="ltx_text ltx_font_bold">159</span> 491
+
+</span>
+      </li>
+      
+<li id="bib.bib69" class="ltx_bibitem">
+        <span class="ltx_bibtag ltx_role_refnum">69</span>
+        
+<span class="ltx_bibblock"> Kunysz A M, Shrier A, and Glass L 1997 <span class="ltx_text ltx_font_italic">Am. J. Physiol.</span> <span class="ltx_text ltx_font_bold">273</span> C331
+
+</span>
+      </li>
+      
+<li id="bib.bib70" class="ltx_bibitem">
+        <span class="ltx_bibtag ltx_role_refnum">70</span>
+        
+<span class="ltx_bibblock">Smeal R M, Ermentrout G B, and White J A 2010 <span class="ltx_text ltx_font_italic">Trans. R. Soc. B</span> <span class="ltx_text ltx_font_bold">365</span> 2407
+
+</span>
+      </li>
+      
+<li id="bib.bib71" class="ltx_bibitem">
+        <span class="ltx_bibtag ltx_role_refnum">71</span>
+        
+<span class="ltx_bibblock"> Krogh-Madsen T, Butera R, Ermentrout G B, and Glass L, in Phase Response Curves in Neuroscience, edited by N.W. Schultheiss, Prinz A A., and Butera R J (Springer New York, 2012), pp. 33
+
+</span>
+      </li>
+      
+<li id="bib.bib72" class="ltx_bibitem">
+        <span class="ltx_bibtag ltx_role_refnum">72</span>
+        
+<span class="ltx_bibblock"> Wang S-J, Xu X-J, Wu Z-X, Huang Z-G, and Wang Y-H 2008 <span class="ltx_text ltx_font_italic">Phys. Rev. E</span> <span class="ltx_text ltx_font_bold">78</span> 061906
+
+</span>
+      </li>
+      
+<li id="bib.bib73" class="ltx_bibitem">
+        <span class="ltx_bibtag ltx_role_refnum">73</span>
+        
+<span class="ltx_bibblock"> Hasegawa H 2000 <span class="ltx_text ltx_font_italic">Phys. Rev. E</span> <span class="ltx_text ltx_font_bold">61</span> 718
+
+</span>
+      </li>
+      
+<li id="bib.bib74" class="ltx_bibitem">
+        <span class="ltx_bibtag ltx_role_refnum">74</span>
+        
+<span class="ltx_bibblock"> Borkowski L S <span class="ltx_text ltx_font_italic">Phys. Rev. E</span> <span class="ltx_text ltx_font_bold">80</span> 051914
+
+</span>
+      </li>
+      
+<li id="bib.bib75" class="ltx_bibitem">
+        <span class="ltx_bibtag ltx_role_refnum">75</span>
+        
+<span class="ltx_bibblock"> White J A, Rubinstein J T and Kay A R 2000 <span class="ltx_text ltx_font_italic">Trends in Neurosci.</span> <span class="ltx_text ltx_font_bold">23</span> 131
+
+</span>
+      </li>
+      
+<li id="bib.bib76" class="ltx_bibitem">
+        <span class="ltx_bibtag ltx_role_refnum">76</span>
+        
+<span class="ltx_bibblock"> Jacobson G A, et al. 2005 <span class="ltx_text ltx_font_italic">J. Physiol.</span> <span class="ltx_text ltx_font_bold">564</span> 145
+
+</span>
+      </li>
+      
+<li id="bib.bib77" class="ltx_bibitem">
+        <span class="ltx_bibtag ltx_role_refnum">77</span>
+        
+<span class="ltx_bibblock"> Wang H, Yu L and Chen Y 2009 <span class="ltx_text ltx_font_italic">Acta Phys. Sin.</span> <span class="ltx_text ltx_font_bold">58</span> 5070
+
+</span>
+      </li>
+      
+<li id="bib.bib78" class="ltx_bibitem">
+        <span class="ltx_bibtag ltx_role_refnum">78</span>
+        
+<span class="ltx_bibblock"> Destexhe A and Rudolph-Lilith M 2012 Neuronal Noise (New York: Springer)
+
+</span>
+      </li>
+      
+<li id="bib.bib79" class="ltx_bibitem">
+        <span class="ltx_bibtag ltx_role_refnum">79</span>
+        
+<span class="ltx_bibblock"> Masoller C, Torrent M C and Garcia-Ojalvo J 2008 <span class="ltx_text ltx_font_italic">Phys. Rev. E</span> <span class="ltx_text ltx_font_bold">78</span> 041907
+
+</span>
+      </li>
+      
+<li id="bib.bib80" class="ltx_bibitem">
+        <span class="ltx_bibtag ltx_role_refnum">80</span>
+        
+<span class="ltx_bibblock"> Yilmaz E and Ozer M 2015 <span class="ltx_text ltx_font_italic">Physica A</span> <span class="ltx_text ltx_font_bold">421</span> 455
+
+</span>
+      </li>
+      
+<li id="bib.bib81" class="ltx_bibitem">
+        <span class="ltx_bibtag ltx_role_refnum">81</span>
+        
+<span class="ltx_bibblock"> Soriano M C, Garcia-Ojalvo J, Mirasso C R and Fischer I 2013 <span class="ltx_text ltx_font_italic">Rev. Mod. Phys.</span> <span class="ltx_text ltx_font_bold">85</span> 421
+
+</span>
+      </li>
+      
+<li id="bib.bib82" class="ltx_bibitem">
+        <span class="ltx_bibtag ltx_role_refnum">82</span>
+        
+<span class="ltx_bibblock"> Park J-H, Huh S-H, Kim S-H, Seo S-J and Park G-T 2005 <span class="ltx_text ltx_font_italic">IEEE Trans. Neural. Netw.</span> <span class="ltx_text ltx_font_bold">16</span> 414
+
+</span>
+      </li>
+      
+<li id="bib.bib83" class="ltx_bibitem">
+        <span class="ltx_bibtag ltx_role_refnum">83</span>
+        
+<span class="ltx_bibblock"> Erichsen R J, Brunnet L G. 2008 <span class="ltx_text ltx_font_italic">Phys. Rev. E</span> <span class="ltx_text ltx_font_bold">78</span> 061917
+
+</span>
+      </li>
+      
+<li id="bib.bib84" class="ltx_bibitem">
+        <span class="ltx_bibtag ltx_role_refnum">84</span>
+        
+<span class="ltx_bibblock"> Gómez L, Budelli R and Pakdaman K 2001 <span class="ltx_text ltx_font_italic">Phys. Rev. E</span> <span class="ltx_text ltx_font_bold">64</span> 061910
+
+</span>
+      </li>
+      
+<li id="bib.bib85" class="ltx_bibitem">
+        <span class="ltx_bibtag ltx_role_refnum">85</span>
+        
+<span class="ltx_bibblock"> Pawelzik H, Hughes D I and Thomson A M 2003 <span class="ltx_text ltx_font_italic">J Physiol</span> <span class="ltx_text ltx_font_bold">546</span> 701
+
+</span>
+      </li>
+      
+<li id="bib.bib86" class="ltx_bibitem">
+        <span class="ltx_bibtag ltx_role_refnum">86</span>
+        
+<span class="ltx_bibblock"> Qin H, Wu Y, Wang C and Ma J 2015 <span class="ltx_text ltx_font_italic">Commun. Nonlinear. Sci. Numer. Simulat.</span> <span class="ltx_text ltx_font_bold">23</span> 164
+
+</span>
+      </li>
+      
+<li id="bib.bib87" class="ltx_bibitem">
+        <span class="ltx_bibtag ltx_role_refnum">87</span>
+        
+<span class="ltx_bibblock"> Wu Y, Gong Y and Wang Q 2015 <span class="ltx_text ltx_font_italic">Chaos</span> <span class="ltx_text ltx_font_bold">25</span> 043113
+
+</span>
+      </li>
+      
+<li id="bib.bib88" class="ltx_bibitem">
+        <span class="ltx_bibtag ltx_role_refnum">88</span>
+        
+<span class="ltx_bibblock"> Deleuze C, Pazienti A and Bacci A 2014 <span class="ltx_text ltx_font_italic">Curr. Opin. Neurobiol.</span> <span class="ltx_text ltx_font_bold">26</span> 64
+
+</span>
+      </li>
+    
+</ul>
+</section>
+</article>
+</div>
+<footer class="ltx_page_footer">
+<div class="ltx_page_logo">Generated  on Mon Sep 21 17:39:40 2015 by <a href="http://dlmf.nist.gov/LaTeXML/">LaTeXML <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAAOCAYAAAD5YeaVAAAAAXNSR0IArs4c6QAAAAZiS0dEAP8A/wD/oL2nkwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9wKExQZLWTEaOUAAAAddEVYdENvbW1lbnQAQ3JlYXRlZCB3aXRoIFRoZSBHSU1Q72QlbgAAAdpJREFUKM9tkL+L2nAARz9fPZNCKFapUn8kyI0e4iRHSR1Kb8ng0lJw6FYHFwv2LwhOpcWxTjeUunYqOmqd6hEoRDhtDWdA8ApRYsSUCDHNt5ul13vz4w0vWCgUnnEc975arX6ORqN3VqtVZbfbTQC4uEHANM3jSqXymFI6yWazP2KxWAXAL9zCUa1Wy2tXVxheKA9YNoR8Pt+aTqe4FVVVvz05O6MBhqUIBGk8Hn8HAOVy+T+XLJfLS4ZhTiRJgqIoVBRFIoric47jPnmeB1mW/9rr9ZpSSn3Lsmir1fJZlqWlUonKsvwWwD8ymc/nXwVBeLjf7xEKhdBut9Hr9WgmkyGEkJwsy5eHG5vN5g0AKIoCAEgkEkin0wQAfN9/cXPdheu6P33fBwB4ngcAcByHJpPJl+fn54mD3Gg0NrquXxeLRQAAwzAYj8cwTZPwPH9/sVg8PXweDAauqqr2cDjEer1GJBLBZDJBs9mE4zjwfZ85lAGg2+06hmGgXq+j3+/DsixYlgVN03a9Xu8jgCNCyIegIAgx13Vfd7vdu+FweG8YRkjXdWy329+dTgeSJD3ieZ7RNO0VAXAPwDEAO5VKndi2fWrb9jWl9Esul6PZbDY9Go1OZ7PZ9z/lyuD3OozU2wAAAABJRU5ErkJggg==" alt="[LOGO]"></a>
+</div></footer>
+</div>
+</body>
+</html>

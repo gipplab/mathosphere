@@ -1,0 +1,167 @@
+<math xmlns="http://www.w3.org/1998/Math/MathML" id="p1.1.m1" class="ltx_Math" alttext="i\hbar\frac{\partial}{\partial t}\Psi(\mathbb{r},\,t)=-\frac{\hbar^{2}}{2m}%&#10;\nabla^{2}\Psi(\mathbb{r},\,t)+V(\mathbb{r})\Psi(\mathbb{r},\,t)." xml:id="p1.1.m1.1" display="inline" xref="p1.1.m1.1.cmml">
+  <semantics xml:id="p1.1.m1.1a" xref="p1.1.m1.1.cmml">
+    <mrow xml:id="p1.1.m1.1.36" xref="p1.1.m1.1.36.cmml">
+      <mrow xml:id="p1.1.m1.1.36a" xref="p1.1.m1.1.36.cmml">
+        <mrow xml:id="p1.1.m1.1.36.1" xref="p1.1.m1.1.36.1.cmml">
+          <mi xml:id="p1.1.m1.1.1" xref="p1.1.m1.1.1.cmml">i</mi>
+          <mo xml:id="p1.1.m1.1.36.1.1" xref="p1.1.m1.1.36.1.1.cmml">⁢</mo>
+          <mi mathvariant="normal" xml:id="p1.1.m1.1.2" xref="p1.1.m1.1.2.cmml">ℏ</mi>
+          <mo xml:id="p1.1.m1.1.36.1.1a" xref="p1.1.m1.1.36.1.1.cmml">⁢</mo>
+          <mfrac xml:id="p1.1.m1.1.3" xref="p1.1.m1.1.3.cmml">
+            <mo xml:id="p1.1.m1.1.3.2" xref="p1.1.m1.1.3.2.cmml">∂</mo>
+            <mrow xml:id="p1.1.m1.1.3.3" xref="p1.1.m1.1.3.3.cmml">
+              <mo xml:id="p1.1.m1.1.3.3.1" xref="p1.1.m1.1.3.3.1.cmml">∂</mo>
+              <mo xml:id="p1.1.m1.1.3.3a" xref="p1.1.m1.1.3.3.cmml">⁡</mo>
+              <mi xml:id="p1.1.m1.1.3.3.2" xref="p1.1.m1.1.3.3.2.cmml">t</mi>
+            </mrow>
+          </mfrac>
+          <mo xml:id="p1.1.m1.1.36.1.1b" xref="p1.1.m1.1.36.1.1.cmml">⁢</mo>
+          <mi mathvariant="normal" xml:id="p1.1.m1.1.4" xref="p1.1.m1.1.4.cmml">Ψ</mi>
+          <mo xml:id="p1.1.m1.1.36.1.1c" xref="p1.1.m1.1.36.1.1.cmml">⁢</mo>
+          <mrow xml:id="p1.1.m1.1.36.1.2" xref="p1.1.m1.1.36.1.2.cmml">
+            <mo xml:id="p1.1.m1.1.36.1.2a" xref="p1.1.m1.1.36.1.2.cmml">(</mo>
+            <mrow xml:id="p1.1.m1.1.36.1.2b" xref="p1.1.m1.1.36.1.2.cmml">
+              <mi xml:id="p1.1.m1.1.6" xref="p1.1.m1.1.6.cmml">𝕣</mi>
+              <mo separator="true" xml:id="p1.1.m1.1.36.1.2c" xref="p1.1.m1.1.36.1.2.cmml">, </mo>
+              <mi xml:id="p1.1.m1.1.9" xref="p1.1.m1.1.9.cmml">t</mi>
+            </mrow>
+            <mo xml:id="p1.1.m1.1.36.1.2d" xref="p1.1.m1.1.36.1.2.cmml">)</mo>
+          </mrow>
+        </mrow>
+        <mo xml:id="p1.1.m1.1.11" xref="p1.1.m1.1.11.cmml">=</mo>
+        <mrow xml:id="p1.1.m1.1.36.2" xref="p1.1.m1.1.36.2.cmml">
+          <mrow xml:id="p1.1.m1.1.36.2.1" xref="p1.1.m1.1.36.2.1.cmml">
+            <mo xml:id="p1.1.m1.1.12" xref="p1.1.m1.1.12.cmml">-</mo>
+            <mrow xml:id="p1.1.m1.1.36.2.1.1" xref="p1.1.m1.1.36.2.1.1.cmml">
+              <mfrac xml:id="p1.1.m1.1.13" xref="p1.1.m1.1.13.cmml">
+                <msup xml:id="p1.1.m1.1.13.2" xref="p1.1.m1.1.13.2.cmml">
+                  <mi mathvariant="normal" xml:id="p1.1.m1.1.13.2.1" xref="p1.1.m1.1.13.2.1.cmml">ℏ</mi>
+                  <mn xml:id="p1.1.m1.1.13.2.2.1" xref="p1.1.m1.1.13.2.2.1.cmml">2</mn>
+                </msup>
+                <mrow xml:id="p1.1.m1.1.13.3" xref="p1.1.m1.1.13.3.cmml">
+                  <mn xml:id="p1.1.m1.1.13.3.1" xref="p1.1.m1.1.13.3.1.cmml">2</mn>
+                  <mo xml:id="p1.1.m1.1.13.3.3" xref="p1.1.m1.1.13.3.3.cmml">⁢</mo>
+                  <mi xml:id="p1.1.m1.1.13.3.2" xref="p1.1.m1.1.13.3.2.cmml">m</mi>
+                </mrow>
+              </mfrac>
+              <mo xml:id="p1.1.m1.1.36.2.1.1.1" xref="p1.1.m1.1.36.2.1.1.1.cmml">⁢</mo>
+              <mrow xml:id="p1.1.m1.1.36.2.1.1.2" xref="p1.1.m1.1.36.2.1.1.2.cmml">
+                <msup xml:id="p1.1.m1.1.36.2.1.1.2.1" xref="p1.1.m1.1.36.2.1.1.2.1.cmml">
+                  <mo xml:id="p1.1.m1.1.14" xref="p1.1.m1.1.14.cmml">∇</mo>
+                  <mn xml:id="p1.1.m1.1.15.1" xref="p1.1.m1.1.15.1.cmml">2</mn>
+                </msup>
+                <mo xml:id="p1.1.m1.1.36.2.1.1.2a" xref="p1.1.m1.1.36.2.1.1.2.cmml">⁡</mo>
+                <mi mathvariant="normal" xml:id="p1.1.m1.1.16" xref="p1.1.m1.1.16.cmml">Ψ</mi>
+              </mrow>
+              <mo xml:id="p1.1.m1.1.36.2.1.1.1a" xref="p1.1.m1.1.36.2.1.1.1.cmml">⁢</mo>
+              <mrow xml:id="p1.1.m1.1.36.2.1.1.3" xref="p1.1.m1.1.36.2.1.1.3.cmml">
+                <mo xml:id="p1.1.m1.1.36.2.1.1.3a" xref="p1.1.m1.1.36.2.1.1.3.cmml">(</mo>
+                <mrow xml:id="p1.1.m1.1.36.2.1.1.3b" xref="p1.1.m1.1.36.2.1.1.3.cmml">
+                  <mi xml:id="p1.1.m1.1.18" xref="p1.1.m1.1.18.cmml">𝕣</mi>
+                  <mo separator="true" xml:id="p1.1.m1.1.36.2.1.1.3c" xref="p1.1.m1.1.36.2.1.1.3.cmml">, </mo>
+                  <mi xml:id="p1.1.m1.1.21" xref="p1.1.m1.1.21.cmml">t</mi>
+                </mrow>
+                <mo xml:id="p1.1.m1.1.36.2.1.1.3d" xref="p1.1.m1.1.36.2.1.1.3.cmml">)</mo>
+              </mrow>
+            </mrow>
+          </mrow>
+          <mo xml:id="p1.1.m1.1.23" xref="p1.1.m1.1.23.cmml">+</mo>
+          <mrow xml:id="p1.1.m1.1.36.2.2" xref="p1.1.m1.1.36.2.2.cmml">
+            <mi xml:id="p1.1.m1.1.24" xref="p1.1.m1.1.24.cmml">V</mi>
+            <mo xml:id="p1.1.m1.1.36.2.2.1" xref="p1.1.m1.1.36.2.2.1.cmml">⁢</mo>
+            <mrow xml:id="p1.1.m1.1.26" xref="p1.1.m1.1.26.cmml">
+              <mo xml:id="p1.1.m1.1.26a" xref="p1.1.m1.1.26.cmml">(</mo>
+              <mi xml:id="p1.1.m1.1.26b" xref="p1.1.m1.1.26.cmml">𝕣</mi>
+              <mo xml:id="p1.1.m1.1.26c" xref="p1.1.m1.1.26.cmml">)</mo>
+            </mrow>
+            <mo xml:id="p1.1.m1.1.36.2.2.1a" xref="p1.1.m1.1.36.2.2.1.cmml">⁢</mo>
+            <mi mathvariant="normal" xml:id="p1.1.m1.1.28" xref="p1.1.m1.1.28.cmml">Ψ</mi>
+            <mo xml:id="p1.1.m1.1.36.2.2.1b" xref="p1.1.m1.1.36.2.2.1.cmml">⁢</mo>
+            <mrow xml:id="p1.1.m1.1.36.2.2.2" xref="p1.1.m1.1.36.2.2.2.cmml">
+              <mo xml:id="p1.1.m1.1.36.2.2.2a" xref="p1.1.m1.1.36.2.2.2.cmml">(</mo>
+              <mrow xml:id="p1.1.m1.1.36.2.2.2b" xref="p1.1.m1.1.36.2.2.2.cmml">
+                <mi xml:id="p1.1.m1.1.30" xref="p1.1.m1.1.30.cmml">𝕣</mi>
+                <mo separator="true" xml:id="p1.1.m1.1.36.2.2.2c" xref="p1.1.m1.1.36.2.2.2.cmml">, </mo>
+                <mi xml:id="p1.1.m1.1.33" xref="p1.1.m1.1.33.cmml">t</mi>
+              </mrow>
+              <mo xml:id="p1.1.m1.1.36.2.2.2d" xref="p1.1.m1.1.36.2.2.2.cmml">)</mo>
+            </mrow>
+          </mrow>
+        </mrow>
+      </mrow>
+      <mo xml:id="p1.1.m1.1.36b" xref="p1.1.m1.1.36.cmml">.</mo>
+    </mrow>
+    <annotation-xml xml:id="p1.1.m1.1.cmml" encoding="MathML-Content" xref="p1.1.m1.1">
+      <apply xml:id="p1.1.m1.1.36.cmml" xref="p1.1.m1.1.36">
+        <eq xml:id="p1.1.m1.1.11.cmml" xref="p1.1.m1.1.11"/>
+        <apply xml:id="p1.1.m1.1.36.1.cmml" xref="p1.1.m1.1.36.1">
+          <times xml:id="p1.1.m1.1.36.1.1.cmml" xref="p1.1.m1.1.36.1.1"/>
+          <ci xml:id="p1.1.m1.1.1.cmml" xref="p1.1.m1.1.1">i</ci>
+          <csymbol cd="latexml" xml:id="p1.1.m1.1.2.cmml" xref="p1.1.m1.1.2">Planck-constant-over-2-pi</csymbol>
+          <apply xml:id="p1.1.m1.1.3.cmml" xref="p1.1.m1.1.3">
+            <divide xml:id="p1.1.m1.1.3.1.cmml"/>
+            <partialdiff xml:id="p1.1.m1.1.3.2.cmml" xref="p1.1.m1.1.3.2"/>
+            <apply xml:id="p1.1.m1.1.3.3.cmml" xref="p1.1.m1.1.3.3">
+              <partialdiff xml:id="p1.1.m1.1.3.3.1.cmml" xref="p1.1.m1.1.3.3.1"/>
+              <ci xml:id="p1.1.m1.1.3.3.2.cmml" xref="p1.1.m1.1.3.3.2">t</ci>
+            </apply>
+          </apply>
+          <ci xml:id="p1.1.m1.1.4.cmml" xref="p1.1.m1.1.4">normal-Ψ</ci>
+          <apply xml:id="p1.1.m1.1.36.1.2.cmml" xref="p1.1.m1.1.36.1.2">
+            <interval closure="open" xml:id="p1.1.m1.1.36.1.2.1.cmml"/>
+            <ci xml:id="p1.1.m1.1.6.cmml" xref="p1.1.m1.1.6">𝕣</ci>
+            <ci xml:id="p1.1.m1.1.9.cmml" xref="p1.1.m1.1.9">t</ci>
+          </apply>
+        </apply>
+        <apply xml:id="p1.1.m1.1.36.2.cmml" xref="p1.1.m1.1.36.2">
+          <plus xml:id="p1.1.m1.1.23.cmml" xref="p1.1.m1.1.23"/>
+          <apply xml:id="p1.1.m1.1.36.2.1.cmml" xref="p1.1.m1.1.36.2.1">
+            <minus xml:id="p1.1.m1.1.12.cmml" xref="p1.1.m1.1.12"/>
+            <apply xml:id="p1.1.m1.1.36.2.1.1.cmml" xref="p1.1.m1.1.36.2.1.1">
+              <times xml:id="p1.1.m1.1.36.2.1.1.1.cmml" xref="p1.1.m1.1.36.2.1.1.1"/>
+              <apply xml:id="p1.1.m1.1.13.cmml" xref="p1.1.m1.1.13">
+                <divide xml:id="p1.1.m1.1.13.1.cmml"/>
+                <apply xml:id="p1.1.m1.1.13.2.cmml" xref="p1.1.m1.1.13.2">
+                  <csymbol cd="ambiguous" xml:id="p1.1.m1.1.13.2.3.cmml">superscript</csymbol>
+                  <csymbol cd="latexml" xml:id="p1.1.m1.1.13.2.1.cmml" xref="p1.1.m1.1.13.2.1">Planck-constant-over-2-pi</csymbol>
+                  <cn type="integer" xml:id="p1.1.m1.1.13.2.2.1.cmml" xref="p1.1.m1.1.13.2.2.1">2</cn>
+                </apply>
+                <apply xml:id="p1.1.m1.1.13.3.cmml" xref="p1.1.m1.1.13.3">
+                  <times xml:id="p1.1.m1.1.13.3.3.cmml" xref="p1.1.m1.1.13.3.3"/>
+                  <cn type="integer" xml:id="p1.1.m1.1.13.3.1.cmml" xref="p1.1.m1.1.13.3.1">2</cn>
+                  <ci xml:id="p1.1.m1.1.13.3.2.cmml" xref="p1.1.m1.1.13.3.2">m</ci>
+                </apply>
+              </apply>
+              <apply xml:id="p1.1.m1.1.36.2.1.1.2.cmml" xref="p1.1.m1.1.36.2.1.1.2">
+                <apply xml:id="p1.1.m1.1.36.2.1.1.2.1.cmml" xref="p1.1.m1.1.36.2.1.1.2.1">
+                  <csymbol cd="ambiguous" xml:id="p1.1.m1.1.36.2.1.1.2.1.1.cmml">superscript</csymbol>
+                  <ci xml:id="p1.1.m1.1.14.cmml" xref="p1.1.m1.1.14">normal-∇</ci>
+                  <cn type="integer" xml:id="p1.1.m1.1.15.1.cmml" xref="p1.1.m1.1.15.1">2</cn>
+                </apply>
+                <ci xml:id="p1.1.m1.1.16.cmml" xref="p1.1.m1.1.16">normal-Ψ</ci>
+              </apply>
+              <apply xml:id="p1.1.m1.1.36.2.1.1.3.cmml" xref="p1.1.m1.1.36.2.1.1.3">
+                <interval closure="open" xml:id="p1.1.m1.1.36.2.1.1.3.1.cmml"/>
+                <ci xml:id="p1.1.m1.1.18.cmml" xref="p1.1.m1.1.18">𝕣</ci>
+                <ci xml:id="p1.1.m1.1.21.cmml" xref="p1.1.m1.1.21">t</ci>
+              </apply>
+            </apply>
+          </apply>
+          <apply xml:id="p1.1.m1.1.36.2.2.cmml" xref="p1.1.m1.1.36.2.2">
+            <times xml:id="p1.1.m1.1.36.2.2.1.cmml" xref="p1.1.m1.1.36.2.2.1"/>
+            <ci xml:id="p1.1.m1.1.24.cmml" xref="p1.1.m1.1.24">V</ci>
+            <ci xml:id="p1.1.m1.1.26.cmml" xref="p1.1.m1.1.26">𝕣</ci>
+            <ci xml:id="p1.1.m1.1.28.cmml" xref="p1.1.m1.1.28">normal-Ψ</ci>
+            <apply xml:id="p1.1.m1.1.36.2.2.2.cmml" xref="p1.1.m1.1.36.2.2.2">
+              <interval closure="open" xml:id="p1.1.m1.1.36.2.2.2.1.cmml"/>
+              <ci xml:id="p1.1.m1.1.30.cmml" xref="p1.1.m1.1.30">𝕣</ci>
+              <ci xml:id="p1.1.m1.1.33.cmml" xref="p1.1.m1.1.33">t</ci>
+            </apply>
+          </apply>
+        </apply>
+      </apply>
+    </annotation-xml>
+    <annotation xml:id="p1.1.m1.1b" encoding="application/x-tex" xref="p1.1.m1.1.cmml">i\hbar\frac{\partial}{\partial t}\Psi(\mathbb{r},\,t)=-\frac{\hbar^{2}}{2m}%
+\nabla^{2}\Psi(\mathbb{r},\,t)+V(\mathbb{r})\Psi(\mathbb{r},\,t).</annotation>
+  </semantics>
+</math>

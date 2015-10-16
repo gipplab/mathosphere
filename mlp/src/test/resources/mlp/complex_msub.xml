@@ -1,0 +1,27 @@
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+  <msub>
+    <mrow>
+      <mrow>
+        <mi>H</mi>
+        <mo>⁢</mo>
+        <mi mathvariant="normal">Ψ</mi>
+        <mo>⁢</mo>
+        <mrow>
+          <mo>(</mo>
+          <mrow>
+            <mi>ݕ£</mi>
+            <mo>,</mo>
+            <mi>t</mi>
+          </mrow>
+          <mo>)</mo>
+        </mrow>
+      </mrow>
+      <mo fence="true">|</mo>
+    </mrow>
+    <mrow>
+      <mi>t</mi>
+      <mo>=</mo>
+      <mn>0</mn>
+    </mrow>
+  </msub>
+</math>

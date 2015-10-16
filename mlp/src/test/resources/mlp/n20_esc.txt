@@ -1,0 +1,1058 @@
+{{Use dmy dates|date=October 2014}}
+
+The '''Nakajima–Zwanzig equation''' (named after the physicists [[Sadao Nakajima]] and [[Robert Zwanzig]]) is an integral equation describing the time evolution of the "relevant" part of a quantum-mechanical system. It is formulated in the [[density matrix]] formalism and can be regarded a generalization of the [[Master equation]].
+
+The equation belongs to the [[Mori–Zwanzig theory]] within the statistical mechanics of irreversible processes (named after [[Hazime Mori]]). By means of a projection operator the dynamics is split into a slow, collective part (''relevant part'') and a rapidly fluctuating ''irrelevant'' part. The goal is to develop dynamical equations for the collective part.
+
+== Derivation ==
+The starting point<ref>A derivation analogous to that presented here is found, for instance, in Breuer, Petruccione ''The theory of open quantum systems'', Oxford University Press 2002, S.443ff</ref> is the quantum mechanical [[Liouville equation]] ([[von Neumann equation]])
+:<math xmlns="http://www.w3.org/1998/Math/MathML" id="p1.1.m1.1" class="ltx_Math" alttext="partial_{t}rho=frac{i}{hbar}[rho,H]=Lrho," display="inline">
+  <semantics id="p1.1.m1.1a">
+    <mrow id="p1.1.m1.1.15" xref="p1.1.m1.1.15.cmml">
+      <mrow id="p1.1.m1.1.15a" xref="p1.1.m1.1.15.cmml">
+        <mrow id="p1.1.m1.1.15.2" xref="p1.1.m1.1.15.2.cmml">
+          <msub id="p1.1.m1.1.15.2.1" xref="p1.1.m1.1.15.2.1.cmml">
+            <mo id="p1.1.m1.1.1" xref="p1.1.m1.1.1.cmml">∂</mo>
+            <mi id="p1.1.m1.1.2.1" xref="p1.1.m1.1.2.1.cmml">t</mi>
+          </msub>
+          <mo id="p1.1.m1.1.15.2a" xref="p1.1.m1.1.15.2.cmml">⁡</mo>
+          <mi id="p1.1.m1.1.3" xref="p1.1.m1.1.3.cmml">ρ</mi>
+        </mrow>
+        <mo id="p1.1.m1.1.4" xref="p1.1.m1.1.4.cmml">=</mo>
+        <mrow id="p1.1.m1.1.15.3" xref="p1.1.m1.1.15.3.cmml">
+          <mfrac id="p1.1.m1.1.5" xref="p1.1.m1.1.5.cmml">
+            <mi id="p1.1.m1.1.5.2" xref="p1.1.m1.1.5.2.cmml">i</mi>
+            <mi mathvariant="normal" id="p1.1.m1.1.5.3" xref="p1.1.m1.1.5.3.cmml">ℏ</mi>
+          </mfrac>
+          <mo id="p1.1.m1.1.15.3.1" xref="p1.1.m1.1.15.3.1.cmml">⁢</mo>
+          <mrow id="p1.1.m1.1.15.3.2" xref="p1.1.m1.1.15.3.2.1.cmml">
+            <mo stretchy="false" id="p1.1.m1.1.6">[</mo>
+            <mi id="p1.1.m1.1.7" xref="p1.1.m1.1.7.cmml">ρ</mi>
+            <mo id="p1.1.m1.1.8">,</mo>
+            <mi id="p1.1.m1.1.9" xref="p1.1.m1.1.9.cmml">H</mi>
+            <mo stretchy="false" id="p1.1.m1.1.10">]</mo>
+          </mrow>
+        </mrow>
+        <mo id="p1.1.m1.1.11" xref="p1.1.m1.1.11.cmml">=</mo>
+        <mrow id="p1.1.m1.1.15.4" xref="p1.1.m1.1.15.4.cmml">
+          <mi id="p1.1.m1.1.12" xref="p1.1.m1.1.12.cmml">L</mi>
+          <mo id="p1.1.m1.1.15.4.1" xref="p1.1.m1.1.15.4.1.cmml">⁢</mo>
+          <mi id="p1.1.m1.1.13" xref="p1.1.m1.1.13.cmml">ρ</mi>
+        </mrow>
+      </mrow>
+      <mo id="p1.1.m1.1.15b" xref="p1.1.m1.1.15.cmml">,</mo>
+    </mrow>
+    <annotation-xml encoding="MathML-Content" id="p1.1.m1.1b">
+      <apply id="p1.1.m1.1.15.cmml" xref="p1.1.m1.1.15">
+        <and id="p1.1.m1.1.15a.cmml" xref="p1.1.m1.1.15"/>
+        <apply id="p1.1.m1.1.15b.cmml" xref="p1.1.m1.1.15">
+          <eq id="p1.1.m1.1.4.cmml" xref="p1.1.m1.1.4"/>
+          <apply id="p1.1.m1.1.15.2.cmml" xref="p1.1.m1.1.15.2">
+            <apply id="p1.1.m1.1.15.2.1.cmml" xref="p1.1.m1.1.15.2.1">
+              <csymbol cd="ambiguous" id="p1.1.m1.1.15.2.1.1.cmml">subscript</csymbol>
+              <partialdiff id="p1.1.m1.1.1.cmml" xref="p1.1.m1.1.1"/>
+              <ci id="p1.1.m1.1.2.1.cmml" xref="p1.1.m1.1.2.1">italic-t</ci>
+            </apply>
+            <ci id="p1.1.m1.1.3.cmml" xref="p1.1.m1.1.3">italic-ρ</ci>
+          </apply>
+          <apply id="p1.1.m1.1.15.3.cmml" xref="p1.1.m1.1.15.3">
+            <times id="p1.1.m1.1.15.3.1.cmml" xref="p1.1.m1.1.15.3.1"/>
+            <apply id="p1.1.m1.1.5.cmml" xref="p1.1.m1.1.5">
+              <divide id="p1.1.m1.1.5.1.cmml"/>
+              <ci id="p1.1.m1.1.5.2.cmml" xref="p1.1.m1.1.5.2">italic-i</ci>
+              <csymbol cd="latexml" id="p1.1.m1.1.5.3.cmml" xref="p1.1.m1.1.5.3">Planck-constant-over-2-pi</csymbol>
+            </apply>
+            <interval closure="closed" id="p1.1.m1.1.15.3.2.1.cmml" xref="p1.1.m1.1.15.3.2">
+              <ci id="p1.1.m1.1.7.cmml" xref="p1.1.m1.1.7">italic-ρ</ci>
+              <ci id="p1.1.m1.1.9.cmml" xref="p1.1.m1.1.9">italic-H</ci>
+            </interval>
+          </apply>
+        </apply>
+        <apply id="p1.1.m1.1.15c.cmml" xref="p1.1.m1.1.15">
+          <eq id="p1.1.m1.1.11.cmml" xref="p1.1.m1.1.11"/>
+          <share href="#p1.1.m1.1.15.3.cmml" id="p1.1.m1.1.15d.cmml" xref="p1.1.m1.1.15"/>
+          <apply id="p1.1.m1.1.15.4.cmml" xref="p1.1.m1.1.15.4">
+            <times id="p1.1.m1.1.15.4.1.cmml" xref="p1.1.m1.1.15.4.1"/>
+            <ci id="p1.1.m1.1.12.cmml" xref="p1.1.m1.1.12">italic-L</ci>
+            <ci id="p1.1.m1.1.13.cmml" xref="p1.1.m1.1.13">italic-ρ</ci>
+          </apply>
+        </apply>
+      </apply>
+    </annotation-xml>
+    <annotation encoding="application/x-tex" id="p1.1.m1.1c">partial_{t}rho=frac{i}{hbar}[rho,H]=Lrho,</annotation>
+  </semantics>
+</math>
+where the Liouville operator <math xmlns="http://www.w3.org/1998/Math/MathML" id="p1.1.m1.1" class="ltx_Math" alttext="L" display="inline">
+  <semantics id="p1.1.m1.1a">
+    <mi id="p1.1.m1.1.1" xref="p1.1.m1.1.1.cmml">L</mi>
+    <annotation-xml encoding="MathML-Content" id="p1.1.m1.1b">
+      <ci id="p1.1.m1.1.1.cmml" xref="p1.1.m1.1.1">italic-L</ci>
+    </annotation-xml>
+    <annotation encoding="application/x-tex" id="p1.1.m1.1c">L</annotation>
+  </semantics>
+</math> is defined as <math xmlns="http://www.w3.org/1998/Math/MathML" id="p1.1.m1.1" class="ltx_Math" alttext="LA=frac{i}{hbar}[A,H]" display="inline">
+  <semantics id="p1.1.m1.1a">
+    <mrow id="p1.1.m1.1.10" xref="p1.1.m1.1.10.cmml">
+      <mrow id="p1.1.m1.1.10.1" xref="p1.1.m1.1.10.1.cmml">
+        <mi id="p1.1.m1.1.1" xref="p1.1.m1.1.1.cmml">L</mi>
+        <mo id="p1.1.m1.1.10.1.1" xref="p1.1.m1.1.10.1.1.cmml">⁢</mo>
+        <mi id="p1.1.m1.1.2" xref="p1.1.m1.1.2.cmml">A</mi>
+      </mrow>
+      <mo id="p1.1.m1.1.3" xref="p1.1.m1.1.3.cmml">=</mo>
+      <mrow id="p1.1.m1.1.10.2" xref="p1.1.m1.1.10.2.cmml">
+        <mfrac id="p1.1.m1.1.4" xref="p1.1.m1.1.4.cmml">
+          <mi id="p1.1.m1.1.4.2" xref="p1.1.m1.1.4.2.cmml">i</mi>
+          <mi mathvariant="normal" id="p1.1.m1.1.4.3" xref="p1.1.m1.1.4.3.cmml">ℏ</mi>
+        </mfrac>
+        <mo id="p1.1.m1.1.10.2.1" xref="p1.1.m1.1.10.2.1.cmml">⁢</mo>
+        <mrow id="p1.1.m1.1.10.2.2" xref="p1.1.m1.1.10.2.2.1.cmml">
+          <mo stretchy="false" id="p1.1.m1.1.5">[</mo>
+          <mi id="p1.1.m1.1.6" xref="p1.1.m1.1.6.cmml">A</mi>
+          <mo id="p1.1.m1.1.7">,</mo>
+          <mi id="p1.1.m1.1.8" xref="p1.1.m1.1.8.cmml">H</mi>
+          <mo stretchy="false" id="p1.1.m1.1.9">]</mo>
+        </mrow>
+      </mrow>
+    </mrow>
+    <annotation-xml encoding="MathML-Content" id="p1.1.m1.1b">
+      <apply id="p1.1.m1.1.10.cmml" xref="p1.1.m1.1.10">
+        <eq id="p1.1.m1.1.3.cmml" xref="p1.1.m1.1.3"/>
+        <apply id="p1.1.m1.1.10.1.cmml" xref="p1.1.m1.1.10.1">
+          <times id="p1.1.m1.1.10.1.1.cmml" xref="p1.1.m1.1.10.1.1"/>
+          <ci id="p1.1.m1.1.1.cmml" xref="p1.1.m1.1.1">italic-L</ci>
+          <ci id="p1.1.m1.1.2.cmml" xref="p1.1.m1.1.2">italic-A</ci>
+        </apply>
+        <apply id="p1.1.m1.1.10.2.cmml" xref="p1.1.m1.1.10.2">
+          <times id="p1.1.m1.1.10.2.1.cmml" xref="p1.1.m1.1.10.2.1"/>
+          <apply id="p1.1.m1.1.4.cmml" xref="p1.1.m1.1.4">
+            <divide id="p1.1.m1.1.4.1.cmml"/>
+            <ci id="p1.1.m1.1.4.2.cmml" xref="p1.1.m1.1.4.2">italic-i</ci>
+            <csymbol cd="latexml" id="p1.1.m1.1.4.3.cmml" xref="p1.1.m1.1.4.3">Planck-constant-over-2-pi</csymbol>
+          </apply>
+          <interval closure="closed" id="p1.1.m1.1.10.2.2.1.cmml" xref="p1.1.m1.1.10.2.2">
+            <ci id="p1.1.m1.1.6.cmml" xref="p1.1.m1.1.6">italic-A</ci>
+            <ci id="p1.1.m1.1.8.cmml" xref="p1.1.m1.1.8">italic-H</ci>
+          </interval>
+        </apply>
+      </apply>
+    </annotation-xml>
+    <annotation encoding="application/x-tex" id="p1.1.m1.1c">LA=frac{i}{hbar}[A,H]</annotation>
+  </semantics>
+</math>.
+
+The [[density operator]] (density matrix) <math xmlns="http://www.w3.org/1998/Math/MathML" id="p1.1.m1.1" class="ltx_Math" alttext="rho" display="inline">
+  <semantics id="p1.1.m1.1a">
+    <mi id="p1.1.m1.1.1" xref="p1.1.m1.1.1.cmml">ρ</mi>
+    <annotation-xml encoding="MathML-Content" id="p1.1.m1.1b">
+      <ci id="p1.1.m1.1.1.cmml" xref="p1.1.m1.1.1">italic-ρ</ci>
+    </annotation-xml>
+    <annotation encoding="application/x-tex" id="p1.1.m1.1c">rho</annotation>
+  </semantics>
+</math> is split by means of a projection operator
+<math xmlns="http://www.w3.org/1998/Math/MathML" id="p1.1.m1.1" class="ltx_Math" alttext="mathcal{P}" display="inline">
+  <semantics id="p1.1.m1.1a">
+    <mi class="ltx_font_mathcaligraphic" mathvariant="script" id="p1.1.m1.1.1" xref="p1.1.m1.1.1.cmml">P</mi>
+    <annotation-xml encoding="MathML-Content" id="p1.1.m1.1b">
+      <ci id="p1.1.m1.1.1.cmml" xref="p1.1.m1.1.1">script-P</ci>
+    </annotation-xml>
+    <annotation encoding="application/x-tex" id="p1.1.m1.1c">mathcal{P}</annotation>
+  </semantics>
+</math>
+into two parts
+<math xmlns="http://www.w3.org/1998/Math/MathML" id="p1.1.m1.1" class="ltx_Math" alttext="rho=left(mathcal{P}+mathcal{Q}right)rho" display="inline">
+  <semantics id="p1.1.m1.1a">
+    <mrow id="p1.1.m1.1.9" xref="p1.1.m1.1.9.cmml">
+      <mi id="p1.1.m1.1.1" xref="p1.1.m1.1.1.cmml">ρ</mi>
+      <mo id="p1.1.m1.1.2" xref="p1.1.m1.1.2.cmml">=</mo>
+      <mrow id="p1.1.m1.1.9.1" xref="p1.1.m1.1.9.1.cmml">
+        <mrow id="p1.1.m1.1.9.1.2" xref="p1.1.m1.1.9.1.2.2.cmml">
+          <mo id="p1.1.m1.1.3">(</mo>
+          <mrow id="p1.1.m1.1.9.1.2.2" xref="p1.1.m1.1.9.1.2.2.cmml">
+            <mi class="ltx_font_mathcaligraphic" mathvariant="script" id="p1.1.m1.1.4" xref="p1.1.m1.1.4.cmml">P</mi>
+            <mo id="p1.1.m1.1.5" xref="p1.1.m1.1.5.cmml">+</mo>
+            <mi class="ltx_font_mathcaligraphic" mathvariant="script" id="p1.1.m1.1.6" xref="p1.1.m1.1.6.cmml">Q</mi>
+          </mrow>
+          <mo id="p1.1.m1.1.7">)</mo>
+        </mrow>
+        <mo id="p1.1.m1.1.9.1.1" xref="p1.1.m1.1.9.1.1.cmml">⁢</mo>
+        <mi id="p1.1.m1.1.8" xref="p1.1.m1.1.8.cmml">ρ</mi>
+      </mrow>
+    </mrow>
+    <annotation-xml encoding="MathML-Content" id="p1.1.m1.1b">
+      <apply id="p1.1.m1.1.9.cmml" xref="p1.1.m1.1.9">
+        <eq id="p1.1.m1.1.2.cmml" xref="p1.1.m1.1.2"/>
+        <ci id="p1.1.m1.1.1.cmml" xref="p1.1.m1.1.1">italic-ρ</ci>
+        <apply id="p1.1.m1.1.9.1.cmml" xref="p1.1.m1.1.9.1">
+          <times id="p1.1.m1.1.9.1.1.cmml" xref="p1.1.m1.1.9.1.1"/>
+          <apply id="p1.1.m1.1.9.1.2.2.cmml" xref="p1.1.m1.1.9.1.2">
+            <plus id="p1.1.m1.1.5.cmml" xref="p1.1.m1.1.5"/>
+            <ci id="p1.1.m1.1.4.cmml" xref="p1.1.m1.1.4">script-P</ci>
+            <ci id="p1.1.m1.1.6.cmml" xref="p1.1.m1.1.6">script-Q</ci>
+          </apply>
+          <ci id="p1.1.m1.1.8.cmml" xref="p1.1.m1.1.8">italic-ρ</ci>
+        </apply>
+      </apply>
+    </annotation-xml>
+    <annotation encoding="application/x-tex" id="p1.1.m1.1c">rho=left(mathcal{P}+mathcal{Q}right)rho</annotation>
+  </semantics>
+</math>,
+where <math xmlns="http://www.w3.org/1998/Math/MathML" id="p1.1.m1.1" class="ltx_Math" alttext="mathcal{Q}equiv 1-mathcal{P}" display="inline">
+  <semantics id="p1.1.m1.1a">
+    <mrow id="p1.1.m1.1.6" xref="p1.1.m1.1.6.cmml">
+      <mi class="ltx_font_mathcaligraphic" mathvariant="script" id="p1.1.m1.1.1" xref="p1.1.m1.1.1.cmml">Q</mi>
+      <mo id="p1.1.m1.1.2" xref="p1.1.m1.1.2.cmml">≡</mo>
+      <mrow id="p1.1.m1.1.6.1" xref="p1.1.m1.1.6.1.cmml">
+        <mn id="p1.1.m1.1.3" xref="p1.1.m1.1.3.cmml">1</mn>
+        <mo id="p1.1.m1.1.4" xref="p1.1.m1.1.4.cmml">-</mo>
+        <mi class="ltx_font_mathcaligraphic" mathvariant="script" id="p1.1.m1.1.5" xref="p1.1.m1.1.5.cmml">P</mi>
+      </mrow>
+    </mrow>
+    <annotation-xml encoding="MathML-Content" id="p1.1.m1.1b">
+      <apply id="p1.1.m1.1.6.cmml" xref="p1.1.m1.1.6">
+        <equivalent id="p1.1.m1.1.2.cmml" xref="p1.1.m1.1.2"/>
+        <ci id="p1.1.m1.1.1.cmml" xref="p1.1.m1.1.1">script-Q</ci>
+        <apply id="p1.1.m1.1.6.1.cmml" xref="p1.1.m1.1.6.1">
+          <minus id="p1.1.m1.1.4.cmml" xref="p1.1.m1.1.4"/>
+          <cn type="integer" id="p1.1.m1.1.3.cmml" xref="p1.1.m1.1.3">1</cn>
+          <ci id="p1.1.m1.1.5.cmml" xref="p1.1.m1.1.5">script-P</ci>
+        </apply>
+      </apply>
+    </annotation-xml>
+    <annotation encoding="application/x-tex" id="p1.1.m1.1c">mathcal{Q}equiv 1-mathcal{P}</annotation>
+  </semantics>
+</math>. The projection operator <math xmlns="http://www.w3.org/1998/Math/MathML" id="p1.1.m1.1" class="ltx_Math" alttext="mathcal{P}" display="inline">
+  <semantics id="p1.1.m1.1a">
+    <mi class="ltx_font_mathcaligraphic" mathvariant="script" id="p1.1.m1.1.1" xref="p1.1.m1.1.1.cmml">P</mi>
+    <annotation-xml encoding="MathML-Content" id="p1.1.m1.1b">
+      <ci id="p1.1.m1.1.1.cmml" xref="p1.1.m1.1.1">script-P</ci>
+    </annotation-xml>
+    <annotation encoding="application/x-tex" id="p1.1.m1.1c">mathcal{P}</annotation>
+  </semantics>
+</math> projects onto the aforementioned ''relevant'' part, for which an equation of motion is to be derived.
+
+The Liouville – von Neumann equation can thus be represented as
+:<math xmlns="http://www.w3.org/1998/Math/MathML" id="p1.1.m1.1" class="ltx_Math" alttext="{partial_{t}}left(begin{matrix}mathcal{P}\&#10;mathcal{Q}\&#10;end{matrix}right)rho=left(begin{matrix}mathcal{P}\&#10;mathcal{Q}\&#10;end{matrix}right)Lleft(begin{matrix}mathcal{P}\&#10;mathcal{Q}\&#10;end{matrix}right)rho+left(begin{matrix}mathcal{P}\&#10;mathcal{Q}\&#10;end{matrix}right)Lleft(begin{matrix}mathcal{Q}\&#10;mathcal{P}\&#10;end{matrix}right)rho." display="inline">
+  <semantics id="p1.1.m1.1a">
+    <mrow id="p1.1.m1.1.26" xref="p1.1.m1.1.26.cmml">
+      <mrow id="p1.1.m1.1.26a" xref="p1.1.m1.1.26.cmml">
+        <mrow id="p1.1.m1.1.26.1" xref="p1.1.m1.1.26.1.cmml">
+          <mrow id="p1.1.m1.1.26.1.1.2" xref="p1.1.m1.1.26.1.1.1.cmml">
+            <msub id="p1.1.m1.1.26.1.1.2.1" xref="p1.1.m1.1.26.1.1.1.cmml">
+              <mo id="p1.1.m1.1.1" xref="p1.1.m1.1.1.cmml">∂</mo>
+              <mi id="p1.1.m1.1.2.1" xref="p1.1.m1.1.2.1.cmml">t</mi>
+            </msub>
+            <mo id="p1.1.m1.1.26.1.1.2a" xref="p1.1.m1.1.26.1.1.1.cmml">⁡</mo>
+            <mrow id="p1.1.m1.1.26.1.1" xref="p1.1.m1.1.26.1.1.1.cmml">
+              <mo id="p1.1.m1.1.3" xref="p1.1.m1.1.26.1.1.1.cmml">(</mo>
+              <mtable columnspacing="5pt" rowspacing="0pt" id="p1.1.m1.1.4" xref="p1.1.m1.1.26.1.1.1.cmml">
+                <mtr id="p1.1.m1.1.4a" xref="p1.1.m1.1.26.1.1.1.cmml">
+                  <mtd columnalign="center" id="p1.1.m1.1.4b" xref="p1.1.m1.1.26.1.1.1.cmml">
+                    <mi class="ltx_font_mathcaligraphic" mathvariant="script" id="p1.1.m1.1.4.1.1.1" xref="p1.1.m1.1.4.1.1.1.cmml">P</mi>
+                  </mtd>
+                </mtr>
+                <mtr id="p1.1.m1.1.4c" xref="p1.1.m1.1.26.1.1.1.cmml">
+                  <mtd columnalign="center" id="p1.1.m1.1.4d" xref="p1.1.m1.1.26.1.1.1.cmml">
+                    <mi class="ltx_font_mathcaligraphic" mathvariant="script" id="p1.1.m1.1.4.2.1.1" xref="p1.1.m1.1.4.2.1.1.cmml">Q</mi>
+                  </mtd>
+                </mtr>
+              </mtable>
+              <mo id="p1.1.m1.1.5" xref="p1.1.m1.1.26.1.1.1.cmml">)</mo>
+            </mrow>
+          </mrow>
+          <mo id="p1.1.m1.1.26.1a" xref="p1.1.m1.1.26.1.cmml">⁡</mo>
+          <mi id="p1.1.m1.1.6" xref="p1.1.m1.1.6.cmml">ρ</mi>
+        </mrow>
+        <mo id="p1.1.m1.1.7" xref="p1.1.m1.1.7.cmml">=</mo>
+        <mrow id="p1.1.m1.1.26.2" xref="p1.1.m1.1.26.2.cmml">
+          <mrow id="p1.1.m1.1.26.2.1" xref="p1.1.m1.1.26.2.1.cmml">
+            <mrow id="p1.1.m1.1.26.2.1.2" xref="p1.1.m1.1.9.cmml">
+              <mo id="p1.1.m1.1.8">(</mo>
+              <mtable columnspacing="5pt" rowspacing="0pt" id="p1.1.m1.1.9" xref="p1.1.m1.1.9.cmml">
+                <mtr id="p1.1.m1.1.9a" xref="p1.1.m1.1.9.cmml">
+                  <mtd columnalign="center" id="p1.1.m1.1.9b" xref="p1.1.m1.1.9.cmml">
+                    <mi class="ltx_font_mathcaligraphic" mathvariant="script" id="p1.1.m1.1.9.1.1.1" xref="p1.1.m1.1.9.1.1.1.cmml">P</mi>
+                  </mtd>
+                </mtr>
+                <mtr id="p1.1.m1.1.9c" xref="p1.1.m1.1.9.cmml">
+                  <mtd columnalign="center" id="p1.1.m1.1.9d" xref="p1.1.m1.1.9.cmml">
+                    <mi class="ltx_font_mathcaligraphic" mathvariant="script" id="p1.1.m1.1.9.2.1.1" xref="p1.1.m1.1.9.2.1.1.cmml">Q</mi>
+                  </mtd>
+                </mtr>
+              </mtable>
+              <mo id="p1.1.m1.1.10">)</mo>
+            </mrow>
+            <mo id="p1.1.m1.1.26.2.1.1" xref="p1.1.m1.1.26.2.1.1.cmml">⁢</mo>
+            <mi id="p1.1.m1.1.11" xref="p1.1.m1.1.11.cmml">L</mi>
+            <mo id="p1.1.m1.1.26.2.1.1a" xref="p1.1.m1.1.26.2.1.1.cmml">⁢</mo>
+            <mrow id="p1.1.m1.1.26.2.1.3" xref="p1.1.m1.1.13.cmml">
+              <mo id="p1.1.m1.1.12">(</mo>
+              <mtable columnspacing="5pt" rowspacing="0pt" id="p1.1.m1.1.13" xref="p1.1.m1.1.13.cmml">
+                <mtr id="p1.1.m1.1.13a" xref="p1.1.m1.1.13.cmml">
+                  <mtd columnalign="center" id="p1.1.m1.1.13b" xref="p1.1.m1.1.13.cmml">
+                    <mi class="ltx_font_mathcaligraphic" mathvariant="script" id="p1.1.m1.1.13.1.1.1" xref="p1.1.m1.1.13.1.1.1.cmml">P</mi>
+                  </mtd>
+                </mtr>
+                <mtr id="p1.1.m1.1.13c" xref="p1.1.m1.1.13.cmml">
+                  <mtd columnalign="center" id="p1.1.m1.1.13d" xref="p1.1.m1.1.13.cmml">
+                    <mi class="ltx_font_mathcaligraphic" mathvariant="script" id="p1.1.m1.1.13.2.1.1" xref="p1.1.m1.1.13.2.1.1.cmml">Q</mi>
+                  </mtd>
+                </mtr>
+              </mtable>
+              <mo id="p1.1.m1.1.14">)</mo>
+            </mrow>
+            <mo id="p1.1.m1.1.26.2.1.1b" xref="p1.1.m1.1.26.2.1.1.cmml">⁢</mo>
+            <mi id="p1.1.m1.1.15" xref="p1.1.m1.1.15.cmml">ρ</mi>
+          </mrow>
+          <mo id="p1.1.m1.1.16" xref="p1.1.m1.1.16.cmml">+</mo>
+          <mrow id="p1.1.m1.1.26.2.2" xref="p1.1.m1.1.26.2.2.cmml">
+            <mrow id="p1.1.m1.1.26.2.2.2" xref="p1.1.m1.1.18.cmml">
+              <mo id="p1.1.m1.1.17">(</mo>
+              <mtable columnspacing="5pt" rowspacing="0pt" id="p1.1.m1.1.18" xref="p1.1.m1.1.18.cmml">
+                <mtr id="p1.1.m1.1.18a" xref="p1.1.m1.1.18.cmml">
+                  <mtd columnalign="center" id="p1.1.m1.1.18b" xref="p1.1.m1.1.18.cmml">
+                    <mi class="ltx_font_mathcaligraphic" mathvariant="script" id="p1.1.m1.1.18.1.1.1" xref="p1.1.m1.1.18.1.1.1.cmml">P</mi>
+                  </mtd>
+                </mtr>
+                <mtr id="p1.1.m1.1.18c" xref="p1.1.m1.1.18.cmml">
+                  <mtd columnalign="center" id="p1.1.m1.1.18d" xref="p1.1.m1.1.18.cmml">
+                    <mi class="ltx_font_mathcaligraphic" mathvariant="script" id="p1.1.m1.1.18.2.1.1" xref="p1.1.m1.1.18.2.1.1.cmml">Q</mi>
+                  </mtd>
+                </mtr>
+              </mtable>
+              <mo id="p1.1.m1.1.19">)</mo>
+            </mrow>
+            <mo id="p1.1.m1.1.26.2.2.1" xref="p1.1.m1.1.26.2.2.1.cmml">⁢</mo>
+            <mi id="p1.1.m1.1.20" xref="p1.1.m1.1.20.cmml">L</mi>
+            <mo id="p1.1.m1.1.26.2.2.1a" xref="p1.1.m1.1.26.2.2.1.cmml">⁢</mo>
+            <mrow id="p1.1.m1.1.26.2.2.3" xref="p1.1.m1.1.22.cmml">
+              <mo id="p1.1.m1.1.21">(</mo>
+              <mtable columnspacing="5pt" rowspacing="0pt" id="p1.1.m1.1.22" xref="p1.1.m1.1.22.cmml">
+                <mtr id="p1.1.m1.1.22a" xref="p1.1.m1.1.22.cmml">
+                  <mtd columnalign="center" id="p1.1.m1.1.22b" xref="p1.1.m1.1.22.cmml">
+                    <mi class="ltx_font_mathcaligraphic" mathvariant="script" id="p1.1.m1.1.22.1.1.1" xref="p1.1.m1.1.22.1.1.1.cmml">Q</mi>
+                  </mtd>
+                </mtr>
+                <mtr id="p1.1.m1.1.22c" xref="p1.1.m1.1.22.cmml">
+                  <mtd columnalign="center" id="p1.1.m1.1.22d" xref="p1.1.m1.1.22.cmml">
+                    <mi class="ltx_font_mathcaligraphic" mathvariant="script" id="p1.1.m1.1.22.2.1.1" xref="p1.1.m1.1.22.2.1.1.cmml">P</mi>
+                  </mtd>
+                </mtr>
+              </mtable>
+              <mo id="p1.1.m1.1.23">)</mo>
+            </mrow>
+            <mo id="p1.1.m1.1.26.2.2.1b" xref="p1.1.m1.1.26.2.2.1.cmml">⁢</mo>
+            <mi id="p1.1.m1.1.24" xref="p1.1.m1.1.24.cmml">ρ</mi>
+          </mrow>
+        </mrow>
+      </mrow>
+      <mo id="p1.1.m1.1.26b" xref="p1.1.m1.1.26.cmml">.</mo>
+    </mrow>
+    <annotation-xml encoding="MathML-Content" id="p1.1.m1.1b">
+      <apply id="p1.1.m1.1.26.cmml" xref="p1.1.m1.1.26">
+        <eq id="p1.1.m1.1.7.cmml" xref="p1.1.m1.1.7"/>
+        <apply id="p1.1.m1.1.26.1.cmml" xref="p1.1.m1.1.26.1">
+          <apply id="p1.1.m1.1.26.1.1.1.cmml" xref="p1.1.m1.1.26.1.1.2">
+            <apply id="p1.1.m1.1.26.1.1.2.1.cmml" xref="p1.1.m1.1.26.1.1.2">
+              <csymbol cd="ambiguous" id="p1.1.m1.1.26.1.1.2.1.1.cmml">subscript</csymbol>
+              <partialdiff id="p1.1.m1.1.1.cmml" xref="p1.1.m1.1.1"/>
+              <ci id="p1.1.m1.1.2.1.cmml" xref="p1.1.m1.1.2.1">italic-t</ci>
+            </apply>
+            <matrix id="p1.1.m1.1.4.cmml" xref="p1.1.m1.1.26.1.1.2">
+              <matrixrow id="p1.1.m1.1.4a.cmml" xref="p1.1.m1.1.26.1.1.2">
+                <ci id="p1.1.m1.1.4.1.1.1.cmml" xref="p1.1.m1.1.4.1.1.1">script-P</ci>
+              </matrixrow>
+              <matrixrow id="p1.1.m1.1.4b.cmml" xref="p1.1.m1.1.26.1.1.2">
+                <ci id="p1.1.m1.1.4.2.1.1.cmml" xref="p1.1.m1.1.4.2.1.1">script-Q</ci>
+              </matrixrow>
+            </matrix>
+          </apply>
+          <ci id="p1.1.m1.1.6.cmml" xref="p1.1.m1.1.6">italic-ρ</ci>
+        </apply>
+        <apply id="p1.1.m1.1.26.2.cmml" xref="p1.1.m1.1.26.2">
+          <plus id="p1.1.m1.1.16.cmml" xref="p1.1.m1.1.16"/>
+          <apply id="p1.1.m1.1.26.2.1.cmml" xref="p1.1.m1.1.26.2.1">
+            <times id="p1.1.m1.1.26.2.1.1.cmml" xref="p1.1.m1.1.26.2.1.1"/>
+            <matrix id="p1.1.m1.1.9.cmml" xref="p1.1.m1.1.26.2.1.2">
+              <matrixrow id="p1.1.m1.1.9a.cmml" xref="p1.1.m1.1.26.2.1.2">
+                <ci id="p1.1.m1.1.9.1.1.1.cmml" xref="p1.1.m1.1.9.1.1.1">script-P</ci>
+              </matrixrow>
+              <matrixrow id="p1.1.m1.1.9b.cmml" xref="p1.1.m1.1.26.2.1.2">
+                <ci id="p1.1.m1.1.9.2.1.1.cmml" xref="p1.1.m1.1.9.2.1.1">script-Q</ci>
+              </matrixrow>
+            </matrix>
+            <ci id="p1.1.m1.1.11.cmml" xref="p1.1.m1.1.11">italic-L</ci>
+            <matrix id="p1.1.m1.1.13.cmml" xref="p1.1.m1.1.26.2.1.3">
+              <matrixrow id="p1.1.m1.1.13a.cmml" xref="p1.1.m1.1.26.2.1.3">
+                <ci id="p1.1.m1.1.13.1.1.1.cmml" xref="p1.1.m1.1.13.1.1.1">script-P</ci>
+              </matrixrow>
+              <matrixrow id="p1.1.m1.1.13b.cmml" xref="p1.1.m1.1.26.2.1.3">
+                <ci id="p1.1.m1.1.13.2.1.1.cmml" xref="p1.1.m1.1.13.2.1.1">script-Q</ci>
+              </matrixrow>
+            </matrix>
+            <ci id="p1.1.m1.1.15.cmml" xref="p1.1.m1.1.15">italic-ρ</ci>
+          </apply>
+          <apply id="p1.1.m1.1.26.2.2.cmml" xref="p1.1.m1.1.26.2.2">
+            <times id="p1.1.m1.1.26.2.2.1.cmml" xref="p1.1.m1.1.26.2.2.1"/>
+            <matrix id="p1.1.m1.1.18.cmml" xref="p1.1.m1.1.26.2.2.2">
+              <matrixrow id="p1.1.m1.1.18a.cmml" xref="p1.1.m1.1.26.2.2.2">
+                <ci id="p1.1.m1.1.18.1.1.1.cmml" xref="p1.1.m1.1.18.1.1.1">script-P</ci>
+              </matrixrow>
+              <matrixrow id="p1.1.m1.1.18b.cmml" xref="p1.1.m1.1.26.2.2.2">
+                <ci id="p1.1.m1.1.18.2.1.1.cmml" xref="p1.1.m1.1.18.2.1.1">script-Q</ci>
+              </matrixrow>
+            </matrix>
+            <ci id="p1.1.m1.1.20.cmml" xref="p1.1.m1.1.20">italic-L</ci>
+            <matrix id="p1.1.m1.1.22.cmml" xref="p1.1.m1.1.26.2.2.3">
+              <matrixrow id="p1.1.m1.1.22a.cmml" xref="p1.1.m1.1.26.2.2.3">
+                <ci id="p1.1.m1.1.22.1.1.1.cmml" xref="p1.1.m1.1.22.1.1.1">script-Q</ci>
+              </matrixrow>
+              <matrixrow id="p1.1.m1.1.22b.cmml" xref="p1.1.m1.1.26.2.2.3">
+                <ci id="p1.1.m1.1.22.2.1.1.cmml" xref="p1.1.m1.1.22.2.1.1">script-P</ci>
+              </matrixrow>
+            </matrix>
+            <ci id="p1.1.m1.1.24.cmml" xref="p1.1.m1.1.24">italic-ρ</ci>
+          </apply>
+        </apply>
+      </apply>
+    </annotation-xml>
+    <annotation encoding="application/x-tex" id="p1.1.m1.1c">{partial_{t}}left(begin{matrix}mathcal{P}\
+mathcal{Q}\
+end{matrix}right)rho=left(begin{matrix}mathcal{P}\
+mathcal{Q}\
+end{matrix}right)Lleft(begin{matrix}mathcal{P}\
+mathcal{Q}\
+end{matrix}right)rho+left(begin{matrix}mathcal{P}\
+mathcal{Q}\
+end{matrix}right)Lleft(begin{matrix}mathcal{Q}\
+mathcal{P}\
+end{matrix}right)rho.</annotation>
+  </semantics>
+</math>
+
+The second line is formally solved as<ref>To verify the equation it suffices to write the function under the integral as a derivative, ''de<sup>QLt'</sup>Qe<sup>L(t-t')</sup> = -e<sup>QLt'</sup>QLPe<sup>L(t-t')</sup>dt'''.</ref>
+:<math xmlns="http://www.w3.org/1998/Math/MathML" id="p1.1.m1.1" class="ltx_Math" alttext="mathcal{Q}rho={{e}^{mathcal{Q}Lt}}Qrho(t=0)+int_{0}^{t}dt^{prime}{e}^{%&#10;mathcal{Q}Lt^{prime}}mathcal{Q}Lmathcal{P}rho(t-{t}^{prime})." display="inline">
+  <semantics id="p1.1.m1.1a">
+    <mrow id="p1.1.m1.1b">
+      <mi class="ltx_font_mathcaligraphic" mathvariant="script" id="p1.1.m1.1.1">Q</mi>
+      <mi id="p1.1.m1.1.2">ρ</mi>
+      <mo id="p1.1.m1.1.3" xref="p1.1.m1.1.3.cmml">=</mo>
+      <msup id="p1.1.m1.1.33" xref="p1.1.m1.1.33.cmml">
+        <mi id="p1.1.m1.1.4" xref="p1.1.m1.1.4.cmml">e</mi>
+        <mrow id="p1.1.m1.1.5.1" xref="p1.1.m1.1.5.1.cmml">
+          <mi class="ltx_font_mathcaligraphic" mathvariant="script" id="p1.1.m1.1.5.1.1" xref="p1.1.m1.1.5.1.1.cmml">Q</mi>
+          <mo id="p1.1.m1.1.5.1.4" xref="p1.1.m1.1.5.1.4.cmml">⁢</mo>
+          <mi id="p1.1.m1.1.5.1.2" xref="p1.1.m1.1.5.1.2.cmml">L</mi>
+          <mo id="p1.1.m1.1.5.1.4a" xref="p1.1.m1.1.5.1.4.cmml">⁢</mo>
+          <mi id="p1.1.m1.1.5.1.3" xref="p1.1.m1.1.5.1.3.cmml">t</mi>
+        </mrow>
+      </msup>
+      <mi id="p1.1.m1.1.6">Q</mi>
+      <mi id="p1.1.m1.1.7">ρ</mi>
+      <mrow id="p1.1.m1.1.5" xref="p1.1.m1.1.5.cmml">
+        <mo stretchy="false" id="p1.1.m1.1.8" xref="p1.1.m1.1.8.cmml">(</mo>
+        <mi id="p1.1.m1.1.9">t</mi>
+        <mo id="p1.1.m1.1.10" xref="p1.1.m1.1.10.cmml">=</mo>
+        <mn id="p1.1.m1.1.11" xref="p1.1.m1.1.11.cmml">0</mn>
+        <mo stretchy="false" id="p1.1.m1.1.12" xref="p1.1.m1.1.12.cmml">)</mo>
+      </mrow>
+      <mo id="p1.1.m1.1.13" xref="p1.1.m1.1.13.cmml">+</mo>
+      <msubsup id="p1.1.m1.1.34" xref="p1.1.m1.1.34.cmml">
+        <mo largeop="true" symmetric="true" id="p1.1.m1.1.14" xref="p1.1.m1.1.14.cmml">∫</mo>
+        <mn id="p1.1.m1.1.15.1" xref="p1.1.m1.1.15.1.cmml">0</mn>
+        <mi id="p1.1.m1.1.16.1" xref="p1.1.m1.1.16.1.cmml">t</mi>
+      </msubsup>
+      <mi id="p1.1.m1.1.17">d</mi>
+      <msup id="p1.1.m1.1.35" xref="p1.1.m1.1.35.cmml">
+        <mi id="p1.1.m1.1.18" xref="p1.1.m1.1.18.cmml">t</mi>
+        <mo id="p1.1.m1.1.19.1" xref="p1.1.m1.1.19.1.cmml">′</mo>
+      </msup>
+      <msup id="p1.1.m1.1.36" xref="p1.1.m1.1.36.cmml">
+        <mi id="p1.1.m1.1.20" xref="p1.1.m1.1.20.cmml">e</mi>
+        <mrow id="p1.1.m1.1.21.1" xref="p1.1.m1.1.21.1.cmml">
+          <mi class="ltx_font_mathcaligraphic" mathvariant="script" id="p1.1.m1.1.21.1.1" xref="p1.1.m1.1.21.1.1.cmml">Q</mi>
+          <mo id="p1.1.m1.1.21.1.5" xref="p1.1.m1.1.21.1.5.cmml">⁢</mo>
+          <mi id="p1.1.m1.1.21.1.2" xref="p1.1.m1.1.21.1.2.cmml">L</mi>
+          <mo id="p1.1.m1.1.21.1.5a" xref="p1.1.m1.1.21.1.5.cmml">⁢</mo>
+          <msup id="p1.1.m1.1.21.1.6" xref="p1.1.m1.1.21.1.6.cmml">
+            <mi id="p1.1.m1.1.21.1.3" xref="p1.1.m1.1.21.1.3.cmml">t</mi>
+            <mo id="p1.1.m1.1.21.1.4.1" xref="p1.1.m1.1.21.1.4.1.cmml">′</mo>
+          </msup>
+        </mrow>
+      </msup>
+      <mi class="ltx_font_mathcaligraphic" mathvariant="script" id="p1.1.m1.1.22">Q</mi>
+      <mi id="p1.1.m1.1.23">L</mi>
+      <mi class="ltx_font_mathcaligraphic" mathvariant="script" id="p1.1.m1.1.24">P</mi>
+      <mi id="p1.1.m1.1.25">ρ</mi>
+      <mrow id="p1.1.m1.1.15" xref="p1.1.m1.1.15.cmml">
+        <mo stretchy="false" id="p1.1.m1.1.26" xref="p1.1.m1.1.26.cmml">(</mo>
+        <mi id="p1.1.m1.1.27">t</mi>
+        <mo id="p1.1.m1.1.28" xref="p1.1.m1.1.28.cmml">-</mo>
+        <msup id="p1.1.m1.1.37" xref="p1.1.m1.1.37.cmml">
+          <mi id="p1.1.m1.1.29" xref="p1.1.m1.1.29.cmml">t</mi>
+          <mo id="p1.1.m1.1.30.1" xref="p1.1.m1.1.30.1.cmml">′</mo>
+        </msup>
+        <mo stretchy="false" id="p1.1.m1.1.31" xref="p1.1.m1.1.31.cmml">)</mo>
+      </mrow>
+      <mo id="p1.1.m1.1.32" xref="p1.1.m1.1.32.cmml">.</mo>
+    </mrow>
+    <annotation-xml encoding="MathML-Content" id="p1.1.m1.1c">
+      <cerror id="p1.1.m1.1d">
+        <csymbol cd="ambiguous" id="p1.1.m1.1e">fragments</csymbol>
+        <csymbol cd="unknown" id="p1.1.m1.1f">Q</csymbol>
+        <csymbol cd="unknown" id="p1.1.m1.1g">ρ</csymbol>
+        <eq id="p1.1.m1.1.3.cmml" xref="p1.1.m1.1.3"/>
+        <apply id="p1.1.m1.1.33.cmml" xref="p1.1.m1.1.33">
+          <csymbol cd="ambiguous" id="p1.1.m1.1.33.1.cmml">superscript</csymbol>
+          <ci id="p1.1.m1.1.4.cmml" xref="p1.1.m1.1.4">italic-e</ci>
+          <apply id="p1.1.m1.1.5.1.cmml" xref="p1.1.m1.1.5.1">
+            <times id="p1.1.m1.1.5.1.4.cmml" xref="p1.1.m1.1.5.1.4"/>
+            <ci id="p1.1.m1.1.5.1.1.cmml" xref="p1.1.m1.1.5.1.1">script-Q</ci>
+            <ci id="p1.1.m1.1.5.1.2.cmml" xref="p1.1.m1.1.5.1.2">italic-L</ci>
+            <ci id="p1.1.m1.1.5.1.3.cmml" xref="p1.1.m1.1.5.1.3">italic-t</ci>
+          </apply>
+        </apply>
+        <csymbol cd="unknown" id="p1.1.m1.1h">Q</csymbol>
+        <csymbol cd="unknown" id="p1.1.m1.1i">ρ</csymbol>
+        <cerror id="p1.1.m1.1.5.cmml" xref="p1.1.m1.1.5">
+          <csymbol cd="ambiguous" id="p1.1.m1.1.5a.cmml" xref="p1.1.m1.1.5">fragments</csymbol>
+          <ci id="p1.1.m1.1.8.cmml" xref="p1.1.m1.1.8">(</ci>
+          <csymbol cd="unknown" id="p1.1.m1.1.5b.cmml" xref="p1.1.m1.1.5">t</csymbol>
+          <eq id="p1.1.m1.1.10.cmml" xref="p1.1.m1.1.10"/>
+          <cn type="integer" id="p1.1.m1.1.11.cmml" xref="p1.1.m1.1.11">0</cn>
+          <ci id="p1.1.m1.1.12.cmml" xref="p1.1.m1.1.12">)</ci>
+        </cerror>
+        <plus id="p1.1.m1.1.13.cmml" xref="p1.1.m1.1.13"/>
+        <apply id="p1.1.m1.1.34.cmml" xref="p1.1.m1.1.34">
+          <csymbol cd="ambiguous" id="p1.1.m1.1.34.1.cmml">superscript</csymbol>
+          <apply id="p1.1.m1.1.34.2.cmml">
+            <csymbol cd="ambiguous" id="p1.1.m1.1.34.2.1.cmml">subscript</csymbol>
+            <int id="p1.1.m1.1.14.cmml" xref="p1.1.m1.1.14"/>
+            <cn type="integer" id="p1.1.m1.1.15.1.cmml" xref="p1.1.m1.1.15.1">0</cn>
+          </apply>
+          <ci id="p1.1.m1.1.16.1.cmml" xref="p1.1.m1.1.16.1">italic-t</ci>
+        </apply>
+        <csymbol cd="unknown" id="p1.1.m1.1j">d</csymbol>
+        <apply id="p1.1.m1.1.35.cmml" xref="p1.1.m1.1.35">
+          <csymbol cd="ambiguous" id="p1.1.m1.1.35.1.cmml">superscript</csymbol>
+          <ci id="p1.1.m1.1.18.cmml" xref="p1.1.m1.1.18">italic-t</ci>
+          <ci id="p1.1.m1.1.19.1.cmml" xref="p1.1.m1.1.19.1">′</ci>
+        </apply>
+        <apply id="p1.1.m1.1.36.cmml" xref="p1.1.m1.1.36">
+          <csymbol cd="ambiguous" id="p1.1.m1.1.36.1.cmml">superscript</csymbol>
+          <ci id="p1.1.m1.1.20.cmml" xref="p1.1.m1.1.20">italic-e</ci>
+          <apply id="p1.1.m1.1.21.1.cmml" xref="p1.1.m1.1.21.1">
+            <times id="p1.1.m1.1.21.1.5.cmml" xref="p1.1.m1.1.21.1.5"/>
+            <ci id="p1.1.m1.1.21.1.1.cmml" xref="p1.1.m1.1.21.1.1">script-Q</ci>
+            <ci id="p1.1.m1.1.21.1.2.cmml" xref="p1.1.m1.1.21.1.2">italic-L</ci>
+            <apply id="p1.1.m1.1.21.1.6.cmml" xref="p1.1.m1.1.21.1.6">
+              <csymbol cd="ambiguous" id="p1.1.m1.1.21.1.6.1.cmml">superscript</csymbol>
+              <ci id="p1.1.m1.1.21.1.3.cmml" xref="p1.1.m1.1.21.1.3">italic-t</ci>
+              <ci id="p1.1.m1.1.21.1.4.1.cmml" xref="p1.1.m1.1.21.1.4.1">′</ci>
+            </apply>
+          </apply>
+        </apply>
+        <csymbol cd="unknown" id="p1.1.m1.1k">Q</csymbol>
+        <csymbol cd="unknown" id="p1.1.m1.1l">L</csymbol>
+        <csymbol cd="unknown" id="p1.1.m1.1m">P</csymbol>
+        <csymbol cd="unknown" id="p1.1.m1.1n">ρ</csymbol>
+        <cerror id="p1.1.m1.1.15.cmml" xref="p1.1.m1.1.15">
+          <csymbol cd="ambiguous" id="p1.1.m1.1.15a.cmml" xref="p1.1.m1.1.15">fragments</csymbol>
+          <ci id="p1.1.m1.1.26.cmml" xref="p1.1.m1.1.26">(</ci>
+          <csymbol cd="unknown" id="p1.1.m1.1.15b.cmml" xref="p1.1.m1.1.15">t</csymbol>
+          <minus id="p1.1.m1.1.28.cmml" xref="p1.1.m1.1.28"/>
+          <apply id="p1.1.m1.1.37.cmml" xref="p1.1.m1.1.37">
+            <csymbol cd="ambiguous" id="p1.1.m1.1.37.1.cmml">superscript</csymbol>
+            <ci id="p1.1.m1.1.29.cmml" xref="p1.1.m1.1.29">italic-t</ci>
+            <ci id="p1.1.m1.1.30.1.cmml" xref="p1.1.m1.1.30.1">′</ci>
+          </apply>
+          <ci id="p1.1.m1.1.31.cmml" xref="p1.1.m1.1.31">)</ci>
+        </cerror>
+        <ci id="p1.1.m1.1.32.cmml" xref="p1.1.m1.1.32">.</ci>
+      </cerror>
+    </annotation-xml>
+    <annotation encoding="application/x-tex" id="p1.1.m1.1o">mathcal{Q}rho={{e}^{mathcal{Q}Lt}}Qrho(t=0)+int_{0}^{t}dt^{prime}{e}^{%
+mathcal{Q}Lt^{prime}}mathcal{Q}Lmathcal{P}rho(t-{t}^{prime}).</annotation>
+  </semantics>
+</math>
+
+By plugging the solution into the first equation, we obtain the Nakajima–Zwanzig equation:
+
+:<math xmlns="http://www.w3.org/1998/Math/MathML" id="p1.1.m1.1" class="ltx_Math" alttext="partial_{t}mathcal{P}rho=mathcal{P}Lmathcal{P}rho+underbrace{mathcal{P%&#10;}L{{e}^{mathcal{Q}Lt}}Qrho(t=0)}_{=0}+mathcal{P}Lint_{0}^{t}{dt^{prime}{{%&#10;e}^{mathcal{Q}Lt^{prime}}}mathcal{Q}Lmathcal{P}rho(t-{t}^{prime})}." display="inline">
+  <semantics id="p1.1.m1.1a">
+    <mrow id="p1.1.m1.1b">
+      <msub id="p1.1.m1.1.35" xref="p1.1.m1.1.35.cmml">
+        <mo id="p1.1.m1.1.1" xref="p1.1.m1.1.1.cmml">∂</mo>
+        <mi id="p1.1.m1.1.2.1" xref="p1.1.m1.1.2.1.cmml">t</mi>
+      </msub>
+      <mi class="ltx_font_mathcaligraphic" mathvariant="script" id="p1.1.m1.1.3">P</mi>
+      <mi id="p1.1.m1.1.4">ρ</mi>
+      <mo id="p1.1.m1.1.5" xref="p1.1.m1.1.5.cmml">=</mo>
+      <mi class="ltx_font_mathcaligraphic" mathvariant="script" id="p1.1.m1.1.6">P</mi>
+      <mi id="p1.1.m1.1.7">L</mi>
+      <mi class="ltx_font_mathcaligraphic" mathvariant="script" id="p1.1.m1.1.8">P</mi>
+      <mi id="p1.1.m1.1.9">ρ</mi>
+      <mo id="p1.1.m1.1.10" xref="p1.1.m1.1.10.cmml">+</mo>
+      <munder id="p1.1.m1.1.36" xref="p1.1.m1.1.36.cmml">
+        <munder accentunder="true" id="p1.1.m1.1.11" xref="p1.1.m1.1.11.cmml">
+          <mrow id="p1.1.m1.1.11.2" xref="p1.1.m1.1.11.2.cmml">
+            <mi class="ltx_font_mathcaligraphic" mathvariant="script" id="p1.1.m1.1.11.2.1">P</mi>
+            <mi id="p1.1.m1.1.11.2.2">L</mi>
+            <msup id="p1.1.m1.1.11.2.12" xref="p1.1.m1.1.11.2.12.cmml">
+              <mi id="p1.1.m1.1.11.2.3" xref="p1.1.m1.1.11.2.3.cmml">e</mi>
+              <mrow id="p1.1.m1.1.11.2.4.1" xref="p1.1.m1.1.11.2.4.1.cmml">
+                <mi class="ltx_font_mathcaligraphic" mathvariant="script" id="p1.1.m1.1.11.2.4.1.1" xref="p1.1.m1.1.11.2.4.1.1.cmml">Q</mi>
+                <mo movablelimits="false" id="p1.1.m1.1.11.2.4.1.4" xref="p1.1.m1.1.11.2.4.1.4.cmml">⁢</mo>
+                <mi id="p1.1.m1.1.11.2.4.1.2" xref="p1.1.m1.1.11.2.4.1.2.cmml">L</mi>
+                <mo movablelimits="false" id="p1.1.m1.1.11.2.4.1.4a" xref="p1.1.m1.1.11.2.4.1.4.cmml">⁢</mo>
+                <mi id="p1.1.m1.1.11.2.4.1.3" xref="p1.1.m1.1.11.2.4.1.3.cmml">t</mi>
+              </mrow>
+            </msup>
+            <mi id="p1.1.m1.1.11.2.5">Q</mi>
+            <mi id="p1.1.m1.1.11.2.6">ρ</mi>
+            <mrow id="p1.1.m1.1.11.2.4" xref="p1.1.m1.1.11.2.4.cmml">
+              <mo movablelimits="false" stretchy="false" id="p1.1.m1.1.11.2.7" xref="p1.1.m1.1.11.2.7.cmml">(</mo>
+              <mi id="p1.1.m1.1.11.2.8">t</mi>
+              <mo movablelimits="false" id="p1.1.m1.1.11.2.9" xref="p1.1.m1.1.11.2.9.cmml">=</mo>
+              <mn id="p1.1.m1.1.11.2.10" xref="p1.1.m1.1.11.2.10.cmml">0</mn>
+              <mo movablelimits="false" stretchy="false" id="p1.1.m1.1.11.2.11" xref="p1.1.m1.1.11.2.11.cmml">)</mo>
+            </mrow>
+          </mrow>
+          <mo movablelimits="false" id="p1.1.m1.1.11.1" xref="p1.1.m1.1.11.1.cmml">⏟</mo>
+        </munder>
+        <mrow id="p1.1.m1.1.12.1" xref="p1.1.m1.1.12.1.cmml">
+          <mi id="p1.1.m1.1.12.1.3" xref="p1.1.m1.1.12.1.3.cmml"/>
+          <mo id="p1.1.m1.1.12.1.1" xref="p1.1.m1.1.12.1.1.cmml">=</mo>
+          <mn id="p1.1.m1.1.12.1.2" xref="p1.1.m1.1.12.1.2.cmml">0</mn>
+        </mrow>
+      </munder>
+      <mo id="p1.1.m1.1.13" xref="p1.1.m1.1.13.cmml">+</mo>
+      <mi class="ltx_font_mathcaligraphic" mathvariant="script" id="p1.1.m1.1.14" xref="p1.1.m1.1.1.cmml">P</mi>
+      <mi id="p1.1.m1.1.15" xref="p1.1.m1.1.1.cmml">L</mi>
+      <msubsup id="p1.1.m1.1.37" xref="p1.1.m1.1.37.cmml">
+        <mo largeop="true" symmetric="true" id="p1.1.m1.1.16" xref="p1.1.m1.1.16.cmml">∫</mo>
+        <mn id="p1.1.m1.1.17.1" xref="p1.1.m1.1.17.1.cmml">0</mn>
+        <mi id="p1.1.m1.1.18.1" xref="p1.1.m1.1.18.1.cmml">t</mi>
+      </msubsup>
+      <mi id="p1.1.m1.1.19" xref="p1.1.m1.1.1.cmml">d</mi>
+      <msup id="p1.1.m1.1.38" xref="p1.1.m1.1.38.cmml">
+        <mi id="p1.1.m1.1.20" xref="p1.1.m1.1.20.cmml">t</mi>
+        <mo id="p1.1.m1.1.21.1" xref="p1.1.m1.1.21.1.cmml">′</mo>
+      </msup>
+      <msup id="p1.1.m1.1.39" xref="p1.1.m1.1.39.cmml">
+        <mi id="p1.1.m1.1.22" xref="p1.1.m1.1.22.cmml">e</mi>
+        <mrow id="p1.1.m1.1.23.1" xref="p1.1.m1.1.23.1.cmml">
+          <mi class="ltx_font_mathcaligraphic" mathvariant="script" id="p1.1.m1.1.23.1.1" xref="p1.1.m1.1.23.1.1.cmml">Q</mi>
+          <mo id="p1.1.m1.1.23.1.5" xref="p1.1.m1.1.23.1.5.cmml">⁢</mo>
+          <mi id="p1.1.m1.1.23.1.2" xref="p1.1.m1.1.23.1.2.cmml">L</mi>
+          <mo id="p1.1.m1.1.23.1.5a" xref="p1.1.m1.1.23.1.5.cmml">⁢</mo>
+          <msup id="p1.1.m1.1.23.1.6" xref="p1.1.m1.1.23.1.6.cmml">
+            <mi id="p1.1.m1.1.23.1.3" xref="p1.1.m1.1.23.1.3.cmml">t</mi>
+            <mo id="p1.1.m1.1.23.1.4.1" xref="p1.1.m1.1.23.1.4.1.cmml">′</mo>
+          </msup>
+        </mrow>
+      </msup>
+      <mi class="ltx_font_mathcaligraphic" mathvariant="script" id="p1.1.m1.1.24" xref="p1.1.m1.1.2.cmml">Q</mi>
+      <mi id="p1.1.m1.1.25" xref="p1.1.m1.1.2.cmml">L</mi>
+      <mi class="ltx_font_mathcaligraphic" mathvariant="script" id="p1.1.m1.1.26" xref="p1.1.m1.1.2.cmml">P</mi>
+      <mi id="p1.1.m1.1.27" xref="p1.1.m1.1.2.cmml">ρ</mi>
+      <mrow id="p1.1.m1.1.2" xref="p1.1.m1.1.2.cmml">
+        <mo stretchy="false" id="p1.1.m1.1.28" xref="p1.1.m1.1.28.cmml">(</mo>
+        <mi id="p1.1.m1.1.29" xref="p1.1.m1.1.2.cmml">t</mi>
+        <mo id="p1.1.m1.1.30" xref="p1.1.m1.1.30.cmml">-</mo>
+        <msup id="p1.1.m1.1.40" xref="p1.1.m1.1.40.cmml">
+          <mi id="p1.1.m1.1.31" xref="p1.1.m1.1.31.cmml">t</mi>
+          <mo id="p1.1.m1.1.32.1" xref="p1.1.m1.1.32.1.cmml">′</mo>
+        </msup>
+        <mo stretchy="false" id="p1.1.m1.1.33" xref="p1.1.m1.1.33.cmml">)</mo>
+      </mrow>
+      <mo id="p1.1.m1.1.34" xref="p1.1.m1.1.34.cmml">.</mo>
+    </mrow>
+    <annotation-xml encoding="MathML-Content" id="p1.1.m1.1c">
+      <cerror id="p1.1.m1.1d">
+        <csymbol cd="ambiguous" id="p1.1.m1.1e">fragments</csymbol>
+        <apply id="p1.1.m1.1.35.cmml" xref="p1.1.m1.1.35">
+          <csymbol cd="ambiguous" id="p1.1.m1.1.35.1.cmml">subscript</csymbol>
+          <partialdiff id="p1.1.m1.1.1.cmml" xref="p1.1.m1.1.1"/>
+          <ci id="p1.1.m1.1.2.1.cmml" xref="p1.1.m1.1.2.1">italic-t</ci>
+        </apply>
+        <csymbol cd="unknown" id="p1.1.m1.1f">P</csymbol>
+        <csymbol cd="unknown" id="p1.1.m1.1g">ρ</csymbol>
+        <eq id="p1.1.m1.1.5.cmml" xref="p1.1.m1.1.5"/>
+        <csymbol cd="unknown" id="p1.1.m1.1h">P</csymbol>
+        <csymbol cd="unknown" id="p1.1.m1.1i">L</csymbol>
+        <csymbol cd="unknown" id="p1.1.m1.1j">P</csymbol>
+        <csymbol cd="unknown" id="p1.1.m1.1k">ρ</csymbol>
+        <plus id="p1.1.m1.1.10.cmml" xref="p1.1.m1.1.10"/>
+        <apply id="p1.1.m1.1.36.cmml" xref="p1.1.m1.1.36">
+          <csymbol cd="ambiguous" id="p1.1.m1.1.36.1.cmml">subscript</csymbol>
+          <apply id="p1.1.m1.1.11.cmml" xref="p1.1.m1.1.11">
+            <ci id="p1.1.m1.1.11.1.cmml" xref="p1.1.m1.1.11.1">⏟</ci>
+            <cerror id="p1.1.m1.1.11.2.cmml" xref="p1.1.m1.1.11.2">
+              <csymbol cd="ambiguous" id="p1.1.m1.1.11.2a.cmml" xref="p1.1.m1.1.11.2">fragments</csymbol>
+              <csymbol cd="unknown" id="p1.1.m1.1.11.2b.cmml" xref="p1.1.m1.1.11.2">P</csymbol>
+              <csymbol cd="unknown" id="p1.1.m1.1.11.2c.cmml" xref="p1.1.m1.1.11.2">L</csymbol>
+              <apply id="p1.1.m1.1.11.2.12.cmml" xref="p1.1.m1.1.11.2.12">
+                <csymbol cd="ambiguous" id="p1.1.m1.1.11.2.12.1.cmml">superscript</csymbol>
+                <ci id="p1.1.m1.1.11.2.3.cmml" xref="p1.1.m1.1.11.2.3">italic-e</ci>
+                <apply id="p1.1.m1.1.11.2.4.1.cmml" xref="p1.1.m1.1.11.2.4.1">
+                  <times id="p1.1.m1.1.11.2.4.1.4.cmml" xref="p1.1.m1.1.11.2.4.1.4"/>
+                  <ci id="p1.1.m1.1.11.2.4.1.1.cmml" xref="p1.1.m1.1.11.2.4.1.1">script-Q</ci>
+                  <ci id="p1.1.m1.1.11.2.4.1.2.cmml" xref="p1.1.m1.1.11.2.4.1.2">italic-L</ci>
+                  <ci id="p1.1.m1.1.11.2.4.1.3.cmml" xref="p1.1.m1.1.11.2.4.1.3">italic-t</ci>
+                </apply>
+              </apply>
+              <csymbol cd="unknown" id="p1.1.m1.1.11.2d.cmml" xref="p1.1.m1.1.11.2">Q</csymbol>
+              <csymbol cd="unknown" id="p1.1.m1.1.11.2e.cmml" xref="p1.1.m1.1.11.2">ρ</csymbol>
+              <cerror id="p1.1.m1.1.11.2.4.cmml" xref="p1.1.m1.1.11.2.4">
+                <csymbol cd="ambiguous" id="p1.1.m1.1.11.2.4a.cmml" xref="p1.1.m1.1.11.2.4">fragments</csymbol>
+                <ci id="p1.1.m1.1.11.2.7.cmml" xref="p1.1.m1.1.11.2.7">(</ci>
+                <csymbol cd="unknown" id="p1.1.m1.1.11.2.4b.cmml" xref="p1.1.m1.1.11.2.4">t</csymbol>
+                <eq id="p1.1.m1.1.11.2.9.cmml" xref="p1.1.m1.1.11.2.9"/>
+                <cn type="integer" id="p1.1.m1.1.11.2.10.cmml" xref="p1.1.m1.1.11.2.10">0</cn>
+                <ci id="p1.1.m1.1.11.2.11.cmml" xref="p1.1.m1.1.11.2.11">)</ci>
+              </cerror>
+            </cerror>
+          </apply>
+          <apply id="p1.1.m1.1.12.1.cmml" xref="p1.1.m1.1.12.1">
+            <eq id="p1.1.m1.1.12.1.1.cmml" xref="p1.1.m1.1.12.1.1"/>
+            <csymbol cd="latexml" id="p1.1.m1.1.12.1.3.cmml" xref="p1.1.m1.1.12.1.3">absent</csymbol>
+            <cn type="integer" id="p1.1.m1.1.12.1.2.cmml" xref="p1.1.m1.1.12.1.2">0</cn>
+          </apply>
+        </apply>
+        <plus id="p1.1.m1.1.13.cmml" xref="p1.1.m1.1.13"/>
+        <csymbol cd="unknown" id="p1.1.m1.1l">P</csymbol>
+        <csymbol cd="unknown" id="p1.1.m1.1m">L</csymbol>
+        <apply id="p1.1.m1.1.37.cmml" xref="p1.1.m1.1.37">
+          <csymbol cd="ambiguous" id="p1.1.m1.1.37.1.cmml">superscript</csymbol>
+          <apply id="p1.1.m1.1.37.2.cmml">
+            <csymbol cd="ambiguous" id="p1.1.m1.1.37.2.1.cmml">subscript</csymbol>
+            <int id="p1.1.m1.1.16.cmml" xref="p1.1.m1.1.16"/>
+            <cn type="integer" id="p1.1.m1.1.17.1.cmml" xref="p1.1.m1.1.17.1">0</cn>
+          </apply>
+          <ci id="p1.1.m1.1.18.1.cmml" xref="p1.1.m1.1.18.1">italic-t</ci>
+        </apply>
+        <csymbol cd="unknown" id="p1.1.m1.1n">d</csymbol>
+        <apply id="p1.1.m1.1.38.cmml" xref="p1.1.m1.1.38">
+          <csymbol cd="ambiguous" id="p1.1.m1.1.38.1.cmml">superscript</csymbol>
+          <ci id="p1.1.m1.1.20.cmml" xref="p1.1.m1.1.20">italic-t</ci>
+          <ci id="p1.1.m1.1.21.1.cmml" xref="p1.1.m1.1.21.1">′</ci>
+        </apply>
+        <apply id="p1.1.m1.1.39.cmml" xref="p1.1.m1.1.39">
+          <csymbol cd="ambiguous" id="p1.1.m1.1.39.1.cmml">superscript</csymbol>
+          <ci id="p1.1.m1.1.22.cmml" xref="p1.1.m1.1.22">italic-e</ci>
+          <apply id="p1.1.m1.1.23.1.cmml" xref="p1.1.m1.1.23.1">
+            <times id="p1.1.m1.1.23.1.5.cmml" xref="p1.1.m1.1.23.1.5"/>
+            <ci id="p1.1.m1.1.23.1.1.cmml" xref="p1.1.m1.1.23.1.1">script-Q</ci>
+            <ci id="p1.1.m1.1.23.1.2.cmml" xref="p1.1.m1.1.23.1.2">italic-L</ci>
+            <apply id="p1.1.m1.1.23.1.6.cmml" xref="p1.1.m1.1.23.1.6">
+              <csymbol cd="ambiguous" id="p1.1.m1.1.23.1.6.1.cmml">superscript</csymbol>
+              <ci id="p1.1.m1.1.23.1.3.cmml" xref="p1.1.m1.1.23.1.3">italic-t</ci>
+              <ci id="p1.1.m1.1.23.1.4.1.cmml" xref="p1.1.m1.1.23.1.4.1">′</ci>
+            </apply>
+          </apply>
+        </apply>
+        <csymbol cd="unknown" id="p1.1.m1.1o">Q</csymbol>
+        <csymbol cd="unknown" id="p1.1.m1.1p">L</csymbol>
+        <csymbol cd="unknown" id="p1.1.m1.1q">P</csymbol>
+        <csymbol cd="unknown" id="p1.1.m1.1r">ρ</csymbol>
+        <cerror id="p1.1.m1.1.2.cmml" xref="p1.1.m1.1.2">
+          <csymbol cd="ambiguous" id="p1.1.m1.1.2a.cmml" xref="p1.1.m1.1.2">fragments</csymbol>
+          <ci id="p1.1.m1.1.28.cmml" xref="p1.1.m1.1.28">(</ci>
+          <csymbol cd="unknown" id="p1.1.m1.1.2b.cmml" xref="p1.1.m1.1.2">t</csymbol>
+          <minus id="p1.1.m1.1.30.cmml" xref="p1.1.m1.1.30"/>
+          <apply id="p1.1.m1.1.40.cmml" xref="p1.1.m1.1.40">
+            <csymbol cd="ambiguous" id="p1.1.m1.1.40.1.cmml">superscript</csymbol>
+            <ci id="p1.1.m1.1.31.cmml" xref="p1.1.m1.1.31">italic-t</ci>
+            <ci id="p1.1.m1.1.32.1.cmml" xref="p1.1.m1.1.32.1">′</ci>
+          </apply>
+          <ci id="p1.1.m1.1.33.cmml" xref="p1.1.m1.1.33">)</ci>
+        </cerror>
+        <ci id="p1.1.m1.1.34.cmml" xref="p1.1.m1.1.34">.</ci>
+      </cerror>
+    </annotation-xml>
+    <annotation encoding="application/x-tex" id="p1.1.m1.1s">partial_{t}mathcal{P}rho=mathcal{P}Lmathcal{P}rho+underbrace{mathcal{P%
+}L{{e}^{mathcal{Q}Lt}}Qrho(t=0)}_{=0}+mathcal{P}Lint_{0}^{t}{dt^{prime}{{%
+e}^{mathcal{Q}Lt^{prime}}}mathcal{Q}Lmathcal{P}rho(t-{t}^{prime})}.</annotation>
+  </semantics>
+</math>
+
+Under the assumption that the inhomogeneous term vanishes<ref>Such an assumption can be made if we assume that the irrelevant part of the density matrix is 0 at the initial time, so that the projector for t=0 is the identity.</ref> and using
+:<math xmlns="http://www.w3.org/1998/Math/MathML" id="p1.1.m1.1" class="ltx_Math" alttext="mathcal{K}left(tright)equivmathcal{P}L{{e}^{mathcal{Q}Lt}}mathcal{Q}L%&#10;mathcal{P}," display="inline">
+  <semantics id="p1.1.m1.1a">
+    <mrow id="p1.1.m1.1.14" xref="p1.1.m1.1.14.cmml">
+      <mrow id="p1.1.m1.1.14a" xref="p1.1.m1.1.14.cmml">
+        <mrow id="p1.1.m1.1.14.1" xref="p1.1.m1.1.14.1.cmml">
+          <mi class="ltx_font_mathcaligraphic" mathvariant="script" id="p1.1.m1.1.1" xref="p1.1.m1.1.1.cmml">K</mi>
+          <mo id="p1.1.m1.1.14.1.1" xref="p1.1.m1.1.14.1.1.cmml">⁢</mo>
+          <mrow id="p1.1.m1.1.14.1.2">
+            <mo id="p1.1.m1.1.2">(</mo>
+            <mi id="p1.1.m1.1.3" xref="p1.1.m1.1.3.cmml">t</mi>
+            <mo id="p1.1.m1.1.4">)</mo>
+          </mrow>
+        </mrow>
+        <mo id="p1.1.m1.1.5" xref="p1.1.m1.1.5.cmml">≡</mo>
+        <mrow id="p1.1.m1.1.14.2" xref="p1.1.m1.1.14.2.cmml">
+          <mi class="ltx_font_mathcaligraphic" mathvariant="script" id="p1.1.m1.1.6" xref="p1.1.m1.1.6.cmml">P</mi>
+          <mo id="p1.1.m1.1.14.2.1" xref="p1.1.m1.1.14.2.1.cmml">⁢</mo>
+          <mi id="p1.1.m1.1.7" xref="p1.1.m1.1.7.cmml">L</mi>
+          <mo id="p1.1.m1.1.14.2.1a" xref="p1.1.m1.1.14.2.1.cmml">⁢</mo>
+          <msup id="p1.1.m1.1.14.2.2" xref="p1.1.m1.1.14.2.2.cmml">
+            <mi id="p1.1.m1.1.8" xref="p1.1.m1.1.8.cmml">e</mi>
+            <mrow id="p1.1.m1.1.9.1" xref="p1.1.m1.1.9.1.cmml">
+              <mi class="ltx_font_mathcaligraphic" mathvariant="script" id="p1.1.m1.1.9.1.1" xref="p1.1.m1.1.9.1.1.cmml">Q</mi>
+              <mo id="p1.1.m1.1.9.1.4" xref="p1.1.m1.1.9.1.4.cmml">⁢</mo>
+              <mi id="p1.1.m1.1.9.1.2" xref="p1.1.m1.1.9.1.2.cmml">L</mi>
+              <mo id="p1.1.m1.1.9.1.4a" xref="p1.1.m1.1.9.1.4.cmml">⁢</mo>
+              <mi id="p1.1.m1.1.9.1.3" xref="p1.1.m1.1.9.1.3.cmml">t</mi>
+            </mrow>
+          </msup>
+          <mo id="p1.1.m1.1.14.2.1b" xref="p1.1.m1.1.14.2.1.cmml">⁢</mo>
+          <mi class="ltx_font_mathcaligraphic" mathvariant="script" id="p1.1.m1.1.10" xref="p1.1.m1.1.10.cmml">Q</mi>
+          <mo id="p1.1.m1.1.14.2.1c" xref="p1.1.m1.1.14.2.1.cmml">⁢</mo>
+          <mi id="p1.1.m1.1.11" xref="p1.1.m1.1.11.cmml">L</mi>
+          <mo id="p1.1.m1.1.14.2.1d" xref="p1.1.m1.1.14.2.1.cmml">⁢</mo>
+          <mi class="ltx_font_mathcaligraphic" mathvariant="script" id="p1.1.m1.1.12" xref="p1.1.m1.1.12.cmml">P</mi>
+        </mrow>
+      </mrow>
+      <mo id="p1.1.m1.1.14b" xref="p1.1.m1.1.14.cmml">,</mo>
+    </mrow>
+    <annotation-xml encoding="MathML-Content" id="p1.1.m1.1b">
+      <apply id="p1.1.m1.1.14.cmml" xref="p1.1.m1.1.14">
+        <equivalent id="p1.1.m1.1.5.cmml" xref="p1.1.m1.1.5"/>
+        <apply id="p1.1.m1.1.14.1.cmml" xref="p1.1.m1.1.14.1">
+          <times id="p1.1.m1.1.14.1.1.cmml" xref="p1.1.m1.1.14.1.1"/>
+          <ci id="p1.1.m1.1.1.cmml" xref="p1.1.m1.1.1">script-K</ci>
+          <ci id="p1.1.m1.1.3.cmml" xref="p1.1.m1.1.3">italic-t</ci>
+        </apply>
+        <apply id="p1.1.m1.1.14.2.cmml" xref="p1.1.m1.1.14.2">
+          <times id="p1.1.m1.1.14.2.1.cmml" xref="p1.1.m1.1.14.2.1"/>
+          <ci id="p1.1.m1.1.6.cmml" xref="p1.1.m1.1.6">script-P</ci>
+          <ci id="p1.1.m1.1.7.cmml" xref="p1.1.m1.1.7">italic-L</ci>
+          <apply id="p1.1.m1.1.14.2.2.cmml" xref="p1.1.m1.1.14.2.2">
+            <csymbol cd="ambiguous" id="p1.1.m1.1.14.2.2.1.cmml">superscript</csymbol>
+            <ci id="p1.1.m1.1.8.cmml" xref="p1.1.m1.1.8">italic-e</ci>
+            <apply id="p1.1.m1.1.9.1.cmml" xref="p1.1.m1.1.9.1">
+              <times id="p1.1.m1.1.9.1.4.cmml" xref="p1.1.m1.1.9.1.4"/>
+              <ci id="p1.1.m1.1.9.1.1.cmml" xref="p1.1.m1.1.9.1.1">script-Q</ci>
+              <ci id="p1.1.m1.1.9.1.2.cmml" xref="p1.1.m1.1.9.1.2">italic-L</ci>
+              <ci id="p1.1.m1.1.9.1.3.cmml" xref="p1.1.m1.1.9.1.3">italic-t</ci>
+            </apply>
+          </apply>
+          <ci id="p1.1.m1.1.10.cmml" xref="p1.1.m1.1.10">script-Q</ci>
+          <ci id="p1.1.m1.1.11.cmml" xref="p1.1.m1.1.11">italic-L</ci>
+          <ci id="p1.1.m1.1.12.cmml" xref="p1.1.m1.1.12">script-P</ci>
+        </apply>
+      </apply>
+    </annotation-xml>
+    <annotation encoding="application/x-tex" id="p1.1.m1.1c">mathcal{K}left(tright)equivmathcal{P}L{{e}^{mathcal{Q}Lt}}mathcal{Q}L%
+mathcal{P},</annotation>
+  </semantics>
+</math>
+:<math xmlns="http://www.w3.org/1998/Math/MathML" id="p1.1.m1.1" class="ltx_Math" alttext="mathcal{P}rhoequiv{{rho}_{mathrm{rel}}}," display="inline">
+  <semantics id="p1.1.m1.1a">
+    <mrow id="p1.1.m1.1.7" xref="p1.1.m1.1.7.cmml">
+      <mrow id="p1.1.m1.1.7a" xref="p1.1.m1.1.7.cmml">
+        <mrow id="p1.1.m1.1.7.1" xref="p1.1.m1.1.7.1.cmml">
+          <mi class="ltx_font_mathcaligraphic" mathvariant="script" id="p1.1.m1.1.1" xref="p1.1.m1.1.1.cmml">P</mi>
+          <mo id="p1.1.m1.1.7.1.1" xref="p1.1.m1.1.7.1.1.cmml">⁢</mo>
+          <mi id="p1.1.m1.1.2" xref="p1.1.m1.1.2.cmml">ρ</mi>
+        </mrow>
+        <mo id="p1.1.m1.1.3" xref="p1.1.m1.1.3.cmml">≡</mo>
+        <msub id="p1.1.m1.1.7.2" xref="p1.1.m1.1.7.2.cmml">
+          <mi id="p1.1.m1.1.4" xref="p1.1.m1.1.4.cmml">ρ</mi>
+          <mi id="p1.1.m1.1.5.1" xref="p1.1.m1.1.5.1.cmml">rel</mi>
+        </msub>
+      </mrow>
+      <mo id="p1.1.m1.1.7b" xref="p1.1.m1.1.7.cmml">,</mo>
+    </mrow>
+    <annotation-xml encoding="MathML-Content" id="p1.1.m1.1b">
+      <apply id="p1.1.m1.1.7.cmml" xref="p1.1.m1.1.7">
+        <equivalent id="p1.1.m1.1.3.cmml" xref="p1.1.m1.1.3"/>
+        <apply id="p1.1.m1.1.7.1.cmml" xref="p1.1.m1.1.7.1">
+          <times id="p1.1.m1.1.7.1.1.cmml" xref="p1.1.m1.1.7.1.1"/>
+          <ci id="p1.1.m1.1.1.cmml" xref="p1.1.m1.1.1">script-P</ci>
+          <ci id="p1.1.m1.1.2.cmml" xref="p1.1.m1.1.2">italic-ρ</ci>
+        </apply>
+        <apply id="p1.1.m1.1.7.2.cmml" xref="p1.1.m1.1.7.2">
+          <csymbol cd="ambiguous" id="p1.1.m1.1.7.2.1.cmml">subscript</csymbol>
+          <ci id="p1.1.m1.1.4.cmml" xref="p1.1.m1.1.4">italic-ρ</ci>
+          <ci id="p1.1.m1.1.5.1.cmml" xref="p1.1.m1.1.5.1">rel</ci>
+        </apply>
+      </apply>
+    </annotation-xml>
+    <annotation encoding="application/x-tex" id="p1.1.m1.1c">mathcal{P}rhoequiv{{rho}_{mathrm{rel}}},</annotation>
+  </semantics>
+</math> as well as
+:<math xmlns="http://www.w3.org/1998/Math/MathML" id="p1.1.m1.1" class="ltx_Math" alttext="mathcal{P}^{2}=mathcal{P}," display="inline">
+  <semantics id="p1.1.m1.1a">
+    <mrow id="p1.1.m1.1.6" xref="p1.1.m1.1.6.cmml">
+      <mrow id="p1.1.m1.1.6a" xref="p1.1.m1.1.6.cmml">
+        <msup id="p1.1.m1.1.6.1" xref="p1.1.m1.1.6.1.cmml">
+          <mi class="ltx_font_mathcaligraphic" mathvariant="script" id="p1.1.m1.1.1" xref="p1.1.m1.1.1.cmml">P</mi>
+          <mn id="p1.1.m1.1.2.1" xref="p1.1.m1.1.2.1.cmml">2</mn>
+        </msup>
+        <mo id="p1.1.m1.1.3" xref="p1.1.m1.1.3.cmml">=</mo>
+        <mi class="ltx_font_mathcaligraphic" mathvariant="script" id="p1.1.m1.1.4" xref="p1.1.m1.1.4.cmml">P</mi>
+      </mrow>
+      <mo id="p1.1.m1.1.6b" xref="p1.1.m1.1.6.cmml">,</mo>
+    </mrow>
+    <annotation-xml encoding="MathML-Content" id="p1.1.m1.1b">
+      <apply id="p1.1.m1.1.6.cmml" xref="p1.1.m1.1.6">
+        <eq id="p1.1.m1.1.3.cmml" xref="p1.1.m1.1.3"/>
+        <apply id="p1.1.m1.1.6.1.cmml" xref="p1.1.m1.1.6.1">
+          <csymbol cd="ambiguous" id="p1.1.m1.1.6.1.1.cmml">superscript</csymbol>
+          <ci id="p1.1.m1.1.1.cmml" xref="p1.1.m1.1.1">script-P</ci>
+          <cn type="integer" id="p1.1.m1.1.2.1.cmml" xref="p1.1.m1.1.2.1">2</cn>
+        </apply>
+        <ci id="p1.1.m1.1.4.cmml" xref="p1.1.m1.1.4">script-P</ci>
+      </apply>
+    </annotation-xml>
+    <annotation encoding="application/x-tex" id="p1.1.m1.1c">mathcal{P}^{2}=mathcal{P},</annotation>
+  </semantics>
+</math>
+we obtain the final form
+:<math xmlns="http://www.w3.org/1998/Math/MathML" id="p1.1.m1.1" class="ltx_Math" alttext="partial_{t}{rho}_{mathrm{rel}}=mathcal{P}L{{rho}_{mathrm{rel}}}+int_{0}%&#10;^{t}{dt^{prime}mathcal{K}({t}^{prime}){{rho}_{mathrm{rel}}}(t-{t}^{prime%&#10;})}." display="inline">
+  <semantics id="p1.1.m1.1a">
+    <mrow id="p1.1.m1.1b">
+      <msub id="p1.1.m1.1.31" xref="p1.1.m1.1.31.cmml">
+        <mo id="p1.1.m1.1.1" xref="p1.1.m1.1.1.cmml">∂</mo>
+        <mi id="p1.1.m1.1.2.1" xref="p1.1.m1.1.2.1.cmml">t</mi>
+      </msub>
+      <msub id="p1.1.m1.1.32" xref="p1.1.m1.1.32.cmml">
+        <mi id="p1.1.m1.1.3" xref="p1.1.m1.1.3.cmml">ρ</mi>
+        <mi id="p1.1.m1.1.4.1" xref="p1.1.m1.1.4.1.cmml">rel</mi>
+      </msub>
+      <mo id="p1.1.m1.1.5" xref="p1.1.m1.1.5.cmml">=</mo>
+      <mi class="ltx_font_mathcaligraphic" mathvariant="script" id="p1.1.m1.1.6">P</mi>
+      <mi id="p1.1.m1.1.7">L</mi>
+      <msub id="p1.1.m1.1.33" xref="p1.1.m1.1.33.cmml">
+        <mi id="p1.1.m1.1.8" xref="p1.1.m1.1.8.cmml">ρ</mi>
+        <mi id="p1.1.m1.1.9.1" xref="p1.1.m1.1.9.1.cmml">rel</mi>
+      </msub>
+      <mo id="p1.1.m1.1.10" xref="p1.1.m1.1.10.cmml">+</mo>
+      <msubsup id="p1.1.m1.1.34" xref="p1.1.m1.1.34.cmml">
+        <mo largeop="true" symmetric="true" id="p1.1.m1.1.11" xref="p1.1.m1.1.11.cmml">∫</mo>
+        <mn id="p1.1.m1.1.12.1" xref="p1.1.m1.1.12.1.cmml">0</mn>
+        <mi id="p1.1.m1.1.13.1" xref="p1.1.m1.1.13.1.cmml">t</mi>
+      </msubsup>
+      <mi id="p1.1.m1.1.14" xref="p1.1.m1.1.1.cmml">d</mi>
+      <msup id="p1.1.m1.1.35" xref="p1.1.m1.1.35.cmml">
+        <mi id="p1.1.m1.1.15" xref="p1.1.m1.1.15.cmml">t</mi>
+        <mo id="p1.1.m1.1.16.1" xref="p1.1.m1.1.16.1.cmml">′</mo>
+      </msup>
+      <mi class="ltx_font_mathcaligraphic" mathvariant="script" id="p1.1.m1.1.17" xref="p1.1.m1.1.1.cmml">K</mi>
+      <mrow id="p1.1.m1.1.2" xref="p1.1.m1.1.2.cmml">
+        <mo stretchy="false" id="p1.1.m1.1.18" xref="p1.1.m1.1.18.cmml">(</mo>
+        <msup id="p1.1.m1.1.36" xref="p1.1.m1.1.36.cmml">
+          <mi id="p1.1.m1.1.19" xref="p1.1.m1.1.19.cmml">t</mi>
+          <mo id="p1.1.m1.1.20.1" xref="p1.1.m1.1.20.1.cmml">′</mo>
+        </msup>
+        <mo stretchy="false" id="p1.1.m1.1.21" xref="p1.1.m1.1.21.cmml">)</mo>
+      </mrow>
+      <msub id="p1.1.m1.1.37" xref="p1.1.m1.1.37.cmml">
+        <mi id="p1.1.m1.1.22" xref="p1.1.m1.1.22.cmml">ρ</mi>
+        <mi id="p1.1.m1.1.23.1" xref="p1.1.m1.1.23.1.cmml">rel</mi>
+      </msub>
+      <mrow id="p1.1.m1.1.4" xref="p1.1.m1.1.4.cmml">
+        <mo stretchy="false" id="p1.1.m1.1.24" xref="p1.1.m1.1.24.cmml">(</mo>
+        <mi id="p1.1.m1.1.25" xref="p1.1.m1.1.2.cmml">t</mi>
+        <mo id="p1.1.m1.1.26" xref="p1.1.m1.1.26.cmml">-</mo>
+        <msup id="p1.1.m1.1.38" xref="p1.1.m1.1.38.cmml">
+          <mi id="p1.1.m1.1.27" xref="p1.1.m1.1.27.cmml">t</mi>
+          <mo id="p1.1.m1.1.28.1" xref="p1.1.m1.1.28.1.cmml">′</mo>
+        </msup>
+        <mo stretchy="false" id="p1.1.m1.1.29" xref="p1.1.m1.1.29.cmml">)</mo>
+      </mrow>
+      <mo id="p1.1.m1.1.30" xref="p1.1.m1.1.30.cmml">.</mo>
+    </mrow>
+    <annotation-xml encoding="MathML-Content" id="p1.1.m1.1c">
+      <cerror id="p1.1.m1.1d">
+        <csymbol cd="ambiguous" id="p1.1.m1.1e">fragments</csymbol>
+        <apply id="p1.1.m1.1.31.cmml" xref="p1.1.m1.1.31">
+          <csymbol cd="ambiguous" id="p1.1.m1.1.31.1.cmml">subscript</csymbol>
+          <partialdiff id="p1.1.m1.1.1.cmml" xref="p1.1.m1.1.1"/>
+          <ci id="p1.1.m1.1.2.1.cmml" xref="p1.1.m1.1.2.1">italic-t</ci>
+        </apply>
+        <apply id="p1.1.m1.1.32.cmml" xref="p1.1.m1.1.32">
+          <csymbol cd="ambiguous" id="p1.1.m1.1.32.1.cmml">subscript</csymbol>
+          <ci id="p1.1.m1.1.3.cmml" xref="p1.1.m1.1.3">italic-ρ</ci>
+          <ci id="p1.1.m1.1.4.1.cmml" xref="p1.1.m1.1.4.1">rel</ci>
+        </apply>
+        <eq id="p1.1.m1.1.5.cmml" xref="p1.1.m1.1.5"/>
+        <csymbol cd="unknown" id="p1.1.m1.1f">P</csymbol>
+        <csymbol cd="unknown" id="p1.1.m1.1g">L</csymbol>
+        <apply id="p1.1.m1.1.33.cmml" xref="p1.1.m1.1.33">
+          <csymbol cd="ambiguous" id="p1.1.m1.1.33.1.cmml">subscript</csymbol>
+          <ci id="p1.1.m1.1.8.cmml" xref="p1.1.m1.1.8">italic-ρ</ci>
+          <ci id="p1.1.m1.1.9.1.cmml" xref="p1.1.m1.1.9.1">rel</ci>
+        </apply>
+        <plus id="p1.1.m1.1.10.cmml" xref="p1.1.m1.1.10"/>
+        <apply id="p1.1.m1.1.34.cmml" xref="p1.1.m1.1.34">
+          <csymbol cd="ambiguous" id="p1.1.m1.1.34.1.cmml">superscript</csymbol>
+          <apply id="p1.1.m1.1.34.2.cmml">
+            <csymbol cd="ambiguous" id="p1.1.m1.1.34.2.1.cmml">subscript</csymbol>
+            <int id="p1.1.m1.1.11.cmml" xref="p1.1.m1.1.11"/>
+            <cn type="integer" id="p1.1.m1.1.12.1.cmml" xref="p1.1.m1.1.12.1">0</cn>
+          </apply>
+          <ci id="p1.1.m1.1.13.1.cmml" xref="p1.1.m1.1.13.1">italic-t</ci>
+        </apply>
+        <csymbol cd="unknown" id="p1.1.m1.1h">d</csymbol>
+        <apply id="p1.1.m1.1.35.cmml" xref="p1.1.m1.1.35">
+          <csymbol cd="ambiguous" id="p1.1.m1.1.35.1.cmml">superscript</csymbol>
+          <ci id="p1.1.m1.1.15.cmml" xref="p1.1.m1.1.15">italic-t</ci>
+          <ci id="p1.1.m1.1.16.1.cmml" xref="p1.1.m1.1.16.1">′</ci>
+        </apply>
+        <csymbol cd="unknown" id="p1.1.m1.1i">K</csymbol>
+        <cerror id="p1.1.m1.1.2.cmml" xref="p1.1.m1.1.2">
+          <csymbol cd="ambiguous" id="p1.1.m1.1.2a.cmml" xref="p1.1.m1.1.2">fragments</csymbol>
+          <ci id="p1.1.m1.1.18.cmml" xref="p1.1.m1.1.18">(</ci>
+          <apply id="p1.1.m1.1.36.cmml" xref="p1.1.m1.1.36">
+            <csymbol cd="ambiguous" id="p1.1.m1.1.36.1.cmml">superscript</csymbol>
+            <ci id="p1.1.m1.1.19.cmml" xref="p1.1.m1.1.19">italic-t</ci>
+            <ci id="p1.1.m1.1.20.1.cmml" xref="p1.1.m1.1.20.1">′</ci>
+          </apply>
+          <ci id="p1.1.m1.1.21.cmml" xref="p1.1.m1.1.21">)</ci>
+        </cerror>
+        <apply id="p1.1.m1.1.37.cmml" xref="p1.1.m1.1.37">
+          <csymbol cd="ambiguous" id="p1.1.m1.1.37.1.cmml">subscript</csymbol>
+          <ci id="p1.1.m1.1.22.cmml" xref="p1.1.m1.1.22">italic-ρ</ci>
+          <ci id="p1.1.m1.1.23.1.cmml" xref="p1.1.m1.1.23.1">rel</ci>
+        </apply>
+        <cerror id="p1.1.m1.1.4.cmml" xref="p1.1.m1.1.4">
+          <csymbol cd="ambiguous" id="p1.1.m1.1.4a.cmml" xref="p1.1.m1.1.4">fragments</csymbol>
+          <ci id="p1.1.m1.1.24.cmml" xref="p1.1.m1.1.24">(</ci>
+          <csymbol cd="unknown" id="p1.1.m1.1.4b.cmml" xref="p1.1.m1.1.4">t</csymbol>
+          <minus id="p1.1.m1.1.26.cmml" xref="p1.1.m1.1.26"/>
+          <apply id="p1.1.m1.1.38.cmml" xref="p1.1.m1.1.38">
+            <csymbol cd="ambiguous" id="p1.1.m1.1.38.1.cmml">superscript</csymbol>
+            <ci id="p1.1.m1.1.27.cmml" xref="p1.1.m1.1.27">italic-t</ci>
+            <ci id="p1.1.m1.1.28.1.cmml" xref="p1.1.m1.1.28.1">′</ci>
+          </apply>
+          <ci id="p1.1.m1.1.29.cmml" xref="p1.1.m1.1.29">)</ci>
+        </cerror>
+        <ci id="p1.1.m1.1.30.cmml" xref="p1.1.m1.1.30">.</ci>
+      </cerror>
+    </annotation-xml>
+    <annotation encoding="application/x-tex" id="p1.1.m1.1j">partial_{t}{rho}_{mathrm{rel}}=mathcal{P}L{{rho}_{mathrm{rel}}}+int_{0}%
+^{t}{dt^{prime}mathcal{K}({t}^{prime}){{rho}_{mathrm{rel}}}(t-{t}^{prime%
+})}.</annotation>
+  </semantics>
+</math>
+
+== References ==
+* E. Fick, G. Sauermann: ''The Quantum Statistics of Dynamic Processes'' Springer-Verlag, 1983, ISBN {{ISSN|3-540-50824-4}}.
+* Heinz-Peter Breuer, Francesco Petruccione: ''Theory of Open Quantum Systems.'' Oxford, 2002  ISBN {{ISSN|970-0-19-852063-4}}
+* Hermann Grabert ''Projection operator techniques in nonequilibrium statistical mechanics'', Springer Tracts in Modern Physics, Band 95, 1982
+* R. Kühne, P. Reineker: ''Nakajima-Zwanzig's generalized master equation: Evaluation of the kernel of the integro-differential equation'', Zeitschrift für Physik B (Condensed Matter), Band 31, 1978, S. 105–110, [http://dx.doi.org/10.1007/BF01320131 Abstract]
+
+=== Original works ===
+*{{Literatur|Autor=Sadao Nakajima|Titel=On Quantum Theory of Transport Phenomena|Sammelwerk=Progress of Theoretical Physics|Band=20|Nummer=6|Seiten=948–959|Jahr=1958}}
+*{{Literatur|Autor=Robert Zwanzig|Titel=Ensemble Method in the Theory of Irreversibility|Sammelwerk=Journal of Chemical Physics|Band=33|Nummer=5|Seiten=1338–1341|Jahr=1960}}
+* [http://wiki.physikerwelt.de/wiki/Nakajima-Zwanzig-Gleichung original paper]
+
+== Notes ==
+<references />
+
+{{DEFAULTSORT:Nakajima-Zwanzig equation}}
+[[Category:Quantum mechanics]]
+[[Category:Statistical mechanics]]
