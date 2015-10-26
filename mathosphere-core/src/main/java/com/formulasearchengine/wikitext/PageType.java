@@ -237,6 +237,23 @@ public class PageType {
         return this.revisionOrUpload;
     }
 
+	/**
+	 * @return
+	 */
+	public RevisionType getLastRevision(){
+		final List<Object> revisionOrUpload = getRevisionOrUpload();
+		if(!revisionOrUpload.isEmpty()){
+			final Object lastElement = revisionOrUpload.get(revisionOrUpload.size() - 1);
+			if (lastElement.getClass()==RevisionType.class){
+				return (RevisionType) lastElement;
+			} else {
+				return null;
+			}
+		} else {
+			return null;
+		}
+	}
+
     /**
      * Gets the value of the discussionthreadinginfo property.
      * 
