@@ -1,0 +1,2256 @@
+<mediawiki xmlns="http://www.mediawiki.org/xml/export-0.10/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mediawiki.org/xml/export-0.10/ http://www.mediawiki.org/xml/export-0.10.xsd" version="0.10" xml:lang="en">
+  <siteinfo>
+    <sitename>Wikipedia</sitename>
+    <dbname>enwiki</dbname>
+    <base>https://en.wikipedia.org/wiki/Main_Page</base>
+    <generator>MediaWiki 1.27.0-wmf.3</generator>
+    <case>first-letter</case>
+    <namespaces>
+      <namespace key="-2" case="first-letter">Media</namespace>
+      <namespace key="-1" case="first-letter">Special</namespace>
+      <namespace key="0" case="first-letter" />
+      <namespace key="1" case="first-letter">Talk</namespace>
+      <namespace key="2" case="first-letter">User</namespace>
+      <namespace key="3" case="first-letter">User talk</namespace>
+      <namespace key="4" case="first-letter">Wikipedia</namespace>
+      <namespace key="5" case="first-letter">Wikipedia talk</namespace>
+      <namespace key="6" case="first-letter">File</namespace>
+      <namespace key="7" case="first-letter">File talk</namespace>
+      <namespace key="8" case="first-letter">MediaWiki</namespace>
+      <namespace key="9" case="first-letter">MediaWiki talk</namespace>
+      <namespace key="10" case="first-letter">Template</namespace>
+      <namespace key="11" case="first-letter">Template talk</namespace>
+      <namespace key="12" case="first-letter">Help</namespace>
+      <namespace key="13" case="first-letter">Help talk</namespace>
+      <namespace key="14" case="first-letter">Category</namespace>
+      <namespace key="15" case="first-letter">Category talk</namespace>
+      <namespace key="100" case="first-letter">Portal</namespace>
+      <namespace key="101" case="first-letter">Portal talk</namespace>
+      <namespace key="108" case="first-letter">Book</namespace>
+      <namespace key="109" case="first-letter">Book talk</namespace>
+      <namespace key="118" case="first-letter">Draft</namespace>
+      <namespace key="119" case="first-letter">Draft talk</namespace>
+      <namespace key="446" case="first-letter">Education Program</namespace>
+      <namespace key="447" case="first-letter">Education Program talk</namespace>
+      <namespace key="710" case="first-letter">TimedText</namespace>
+      <namespace key="711" case="first-letter">TimedText talk</namespace>
+      <namespace key="828" case="first-letter">Module</namespace>
+      <namespace key="829" case="first-letter">Module talk</namespace>
+      <namespace key="2300" case="first-letter">Gadget</namespace>
+      <namespace key="2301" case="first-letter">Gadget talk</namespace>
+      <namespace key="2302" case="case-sensitive">Gadget definition</namespace>
+      <namespace key="2303" case="case-sensitive">Gadget definition talk</namespace>
+      <namespace key="2600" case="first-letter">Topic</namespace>
+    </namespaces>
+  </siteinfo>
+  <page>
+    <title>Mean reciprocal rank</title>
+    <ns>0</ns>
+    <id>11184711</id>
+    <revision>
+      <id>130268320</id>
+      <timestamp>2007-05-12T05:42:55Z</timestamp>
+      <contributor>
+        <username>Cbogart2</username>
+        <id>372499</id>
+      </contributor>
+      <comment>Basic definition and example</comment>
+      <model>wikitext</model>
+      <format>text/x-wiki</format>
+      <text xml:space="preserve" bytes="983">== Definition ==
+Mean Reciprocal Rank is a statistic for evaluating any process which produces a list of possible responses to a query, ordered by likelihood of correctness.  The reciprocal rank of a query response is the multiplicative inverse of the rank of the correct answer.  The mean reciprocal rank is the average of the reciprocal ranks of a sample of queries.
+
+== Example ==
+For example suppose we have the following three sample queries for a system that tries to translate English words to their plurals.  In each case, the system makes three guesses, with the first one being the one it thinks is most likely correct:
+
+{| class=&quot;wikitable&quot;
+|-
+! Query
+! Results
+! Correct response
+! Rank
+! Reciprocal Rank
+|-
+| cat
+| catten, cati, cats
+| cats
+| 3
+| 1/3
+|-
+| torus
+| torii, tori, toruses
+| tori
+| 2
+| 1/2
+|-
+| virus
+| viruses, virii, viri
+| viruses
+| 1
+| 1
+|}
+
+Given those three samples, we could calculate the Mean Reciprocal Rank as (1/3 + 1/2 + 1)/3 = 11/18 or about .61</text>
+      <sha1>ry91ab457k1qs2zpmbehbx77e1pucn6</sha1>
+    </revision>
+    <revision>
+      <id>130268558</id>
+      <parentid>130268320</parentid>
+      <timestamp>2007-05-12T05:45:01Z</timestamp>
+      <contributor>
+        <username>Cbogart2</username>
+        <id>372499</id>
+      </contributor>
+      <minor/>
+      <comment>formatting</comment>
+      <model>wikitext</model>
+      <format>text/x-wiki</format>
+      <text xml:space="preserve" bytes="1001">== Definition ==
+Mean Reciprocal Rank is a statistic for evaluating any process which produces a list of possible responses to a query, ordered by likelihood of correctness.  The reciprocal rank of a query response is the multiplicative inverse of the rank of the correct answer.  The mean reciprocal rank is the average of the reciprocal ranks of a sample of queries.
+
+== Example ==
+For example suppose we have the following three sample queries for a system that tries to translate English words to their plurals.  In each case, the system makes three guesses, with the first one being the one it thinks is most likely correct:
+
+{| class=&quot;wikitable&quot;
+|-
+! Query
+! Results
+! Correct response
+! Rank
+! Reciprocal Rank
+|-
+| cat
+| catten, cati, '''cats'''
+| cats
+| 3
+| 1/3
+|-
+| torus
+| torii, '''tori''', toruses
+| tori
+| 2
+| 1/2
+|-
+| virus
+| '''viruses''', virii, viri
+| viruses
+| 1
+| 1
+|}
+
+Given those three samples, we could calculate the Mean Reciprocal Rank as (1/3 + 1/2 + 1)/3 = 11/18 or about .61</text>
+      <sha1>j4mric0sucddxnb2mumtaarcjaittsg</sha1>
+    </revision>
+    <revision>
+      <id>130268565</id>
+      <parentid>130268558</parentid>
+      <timestamp>2007-05-12T05:45:05Z</timestamp>
+      <contributor>
+        <username>Fg2</username>
+        <id>70428</id>
+      </contributor>
+      <comment>/* Example */ Leading zero</comment>
+      <model>wikitext</model>
+      <format>text/x-wiki</format>
+      <text xml:space="preserve" bytes="1002">== Definition ==
+Mean Reciprocal Rank is a statistic for evaluating any process which produces a list of possible responses to a query, ordered by likelihood of correctness.  The reciprocal rank of a query response is the multiplicative inverse of the rank of the correct answer.  The mean reciprocal rank is the average of the reciprocal ranks of a sample of queries.
+
+== Example ==
+For example suppose we have the following three sample queries for a system that tries to translate English words to their plurals.  In each case, the system makes three guesses, with the first one being the one it thinks is most likely correct:
+
+{| class=&quot;wikitable&quot;
+|-
+! Query
+! Results
+! Correct response
+! Rank
+! Reciprocal Rank
+|-
+| cat
+| catten, cati, '''cats'''
+| cats
+| 3
+| 1/3
+|-
+| torus
+| torii, '''tori''', toruses
+| tori
+| 2
+| 1/2
+|-
+| virus
+| '''viruses''', virii, viri
+| viruses
+| 1
+| 1
+|}
+
+Given those three samples, we could calculate the Mean Reciprocal Rank as (1/3 + 1/2 + 1)/3 = 11/18 or about 0.61</text>
+      <sha1>rma6t6bwewixsg85g17vywmhpk0f7u6</sha1>
+    </revision>
+    <revision>
+      <id>130269715</id>
+      <parentid>130268565</parentid>
+      <timestamp>2007-05-12T05:55:36Z</timestamp>
+      <contributor>
+        <username>Cbogart2</username>
+        <id>372499</id>
+      </contributor>
+      <comment>add category: statistics</comment>
+      <model>wikitext</model>
+      <format>text/x-wiki</format>
+      <text xml:space="preserve" bytes="1027">== Definition ==
+Mean Reciprocal Rank is a statistic for evaluating any process which produces a list of possible responses to a query, ordered by likelihood of correctness.  The reciprocal rank of a query response is the multiplicative inverse of the rank of the correct answer.  The mean reciprocal rank is the average of the reciprocal ranks of a sample of queries.
+
+== Example ==
+For example suppose we have the following three sample queries for a system that tries to translate English words to their plurals.  In each case, the system makes three guesses, with the first one being the one it thinks is most likely correct:
+
+{| class=&quot;wikitable&quot;
+|-
+! Query
+! Results
+! Correct response
+! Rank
+! Reciprocal Rank
+|-
+| cat
+| catten, cati, '''cats'''
+| cats
+| 3
+| 1/3
+|-
+| torus
+| torii, '''tori''', toruses
+| tori
+| 2
+| 1/2
+|-
+| virus
+| '''viruses''', virii, viri
+| viruses
+| 1
+| 1
+|}
+
+Given those three samples, we could calculate the Mean Reciprocal Rank as (1/3 + 1/2 + 1)/3 = 11/18 or about 0.61
+
+[[Category:Statistics]]</text>
+      <sha1>959l0s3ppkaske22zkkyspjoq26xdm5</sha1>
+    </revision>
+    <revision>
+      <id>131638597</id>
+      <parentid>130269715</parentid>
+      <timestamp>2007-05-17T21:41:52Z</timestamp>
+      <contributor>
+        <username>Michael Hardy</username>
+        <id>4626</id>
+      </contributor>
+      <minor/>
+      <comment>moved [[Mean Reciprocal Rank]] to [[Mean reciprocal rank]]</comment>
+      <model>wikitext</model>
+      <format>text/x-wiki</format>
+      <text xml:space="preserve" bytes="1027">== Definition ==
+Mean Reciprocal Rank is a statistic for evaluating any process which produces a list of possible responses to a query, ordered by likelihood of correctness.  The reciprocal rank of a query response is the multiplicative inverse of the rank of the correct answer.  The mean reciprocal rank is the average of the reciprocal ranks of a sample of queries.
+
+== Example ==
+For example suppose we have the following three sample queries for a system that tries to translate English words to their plurals.  In each case, the system makes three guesses, with the first one being the one it thinks is most likely correct:
+
+{| class=&quot;wikitable&quot;
+|-
+! Query
+! Results
+! Correct response
+! Rank
+! Reciprocal Rank
+|-
+| cat
+| catten, cati, '''cats'''
+| cats
+| 3
+| 1/3
+|-
+| torus
+| torii, '''tori''', toruses
+| tori
+| 2
+| 1/2
+|-
+| virus
+| '''viruses''', virii, viri
+| viruses
+| 1
+| 1
+|}
+
+Given those three samples, we could calculate the Mean Reciprocal Rank as (1/3 + 1/2 + 1)/3 = 11/18 or about 0.61
+
+[[Category:Statistics]]</text>
+      <sha1>959l0s3ppkaske22zkkyspjoq26xdm5</sha1>
+    </revision>
+    <revision>
+      <id>131639258</id>
+      <parentid>131638597</parentid>
+      <timestamp>2007-05-17T21:45:25Z</timestamp>
+      <contributor>
+        <username>Michael Hardy</username>
+        <id>4626</id>
+      </contributor>
+      <comment>conforming to conventions, mostly</comment>
+      <model>wikitext</model>
+      <format>text/x-wiki</format>
+      <text xml:space="preserve" bytes="1042">'''Mean reciprocal rank''' is a [[statistic]] for evaluating any process that produces a list of possible responses to a query, ordered by probability of correctness.  The reciprocal rank of a query response is the multiplicative inverse of the rank of the correct answer.  The mean reciprocal rank is the average of the reciprocal ranks of a sample of queries.
+
+== Example ==
+For example, suppose we have the following three sample queries for a system that tries to translate English words to their plurals.  In each case, the system makes three guesses, with the first one being the one it thinks is most likely correct:
+
+{| class=&quot;wikitable&quot;
+|-
+! Query
+! Results
+! Correct response
+! Rank
+! Reciprocal rank
+|-
+| cat
+| catten, cati, '''cats'''
+| cats
+| 3
+| 1/3
+|-
+| torus
+| torii, '''tori''', toruses
+| tori
+| 2
+| 1/2
+|-
+| virus
+| '''viruses''', virii, viri
+| viruses
+| 1
+| 1
+|}
+
+Given those three samples, we could calculate the mean reciprocal rank as (1/3&amp;nbsp;+&amp;nbsp;1/2&amp;nbsp;+&amp;nbsp;1)/3 = 11/18 or about 0.61.
+
+[[Category:Statistics]]</text>
+      <sha1>j59s7ox2hdefyf3q4e2mnedqjb96utr</sha1>
+    </revision>
+    <revision>
+      <id>139506330</id>
+      <parentid>131639258</parentid>
+      <timestamp>2007-06-20T20:41:11Z</timestamp>
+      <contributor>
+        <username>RedWolf</username>
+        <id>27822</id>
+      </contributor>
+      <minor/>
+      <comment>{{references|date=June 2007}}</comment>
+      <model>wikitext</model>
+      <format>text/x-wiki</format>
+      <text xml:space="preserve" bytes="1072">{{references|date=June 2007}}
+'''Mean reciprocal rank''' is a [[statistic]] for evaluating any process that produces a list of possible responses to a query, ordered by probability of correctness.  The reciprocal rank of a query response is the multiplicative inverse of the rank of the correct answer.  The mean reciprocal rank is the average of the reciprocal ranks of a sample of queries.
+
+== Example ==
+For example, suppose we have the following three sample queries for a system that tries to translate English words to their plurals.  In each case, the system makes three guesses, with the first one being the one it thinks is most likely correct:
+
+{| class=&quot;wikitable&quot;
+|-
+! Query
+! Results
+! Correct response
+! Rank
+! Reciprocal rank
+|-
+| cat
+| catten, cati, '''cats'''
+| cats
+| 3
+| 1/3
+|-
+| torus
+| torii, '''tori''', toruses
+| tori
+| 2
+| 1/2
+|-
+| virus
+| '''viruses''', virii, viri
+| viruses
+| 1
+| 1
+|}
+
+Given those three samples, we could calculate the mean reciprocal rank as (1/3&amp;nbsp;+&amp;nbsp;1/2&amp;nbsp;+&amp;nbsp;1)/3 = 11/18 or about 0.61.
+
+[[Category:Statistics]]</text>
+      <sha1>ascvwq4j8b4ucld8jduii6jwcd2512a</sha1>
+    </revision>
+    <revision>
+      <id>155732536</id>
+      <parentid>139506330</parentid>
+      <timestamp>2007-09-04T23:45:20Z</timestamp>
+      <contributor>
+        <ip>15.243.169.70</ip>
+      </contributor>
+      <comment>link to longer article on information retrieval which includes other statistics, plus state shortcomings of the basic method</comment>
+      <model>wikitext</model>
+      <format>text/x-wiki</format>
+      <text xml:space="preserve" bytes="1360">{{references|date=June 2007}}
+'''Mean reciprocal rank''' is a [[statistic]] for evaluating any process that produces a list of possible responses to a query, ordered by probability of correctness.  The reciprocal rank of a query response is the multiplicative inverse of the rank of the correct answer.  The mean reciprocal rank is the average of the reciprocal ranks of a sample of queries.
+
+== Example ==
+For example, suppose we have the following three sample queries for a system that tries to translate English words to their plurals.  In each case, the system makes three guesses, with the first one being the one it thinks is most likely correct:
+
+{| class=&quot;wikitable&quot;
+|-
+! Query
+! Results
+! Correct response
+! Rank
+! Reciprocal rank
+|-
+| cat
+| catten, cati, '''cats'''
+| cats
+| 3
+| 1/3
+|-
+| torus
+| torii, '''tori''', toruses
+| tori
+| 2
+| 1/2
+|-
+| virus
+| '''viruses''', virii, viri
+| viruses
+| 1
+| 1
+|}
+
+Given those three samples, we could calculate the mean reciprocal rank as (1/3&amp;nbsp;+&amp;nbsp;1/2&amp;nbsp;+&amp;nbsp;1)/3 = 11/18 or about 0.61.
+
+This basic definition does not specify what to do if (1) none of the proposed results are correct (use reciprocal rank 0), or if (2) there are multiple correct answers in the list (consider using Mean Average Preciions (MAP).
+
+[[Category:Statistics]]
+
+See also http://en.wikipedia.org/wiki/Information_retrieval</text>
+      <sha1>7o58pib9ygrimnd6vw49b8jm511z1re</sha1>
+    </revision>
+    <revision>
+      <id>155732691</id>
+      <parentid>155732536</parentid>
+      <timestamp>2007-09-04T23:46:18Z</timestamp>
+      <contributor>
+        <ip>15.243.169.70</ip>
+      </contributor>
+      <comment>typo</comment>
+      <model>wikitext</model>
+      <format>text/x-wiki</format>
+      <text xml:space="preserve" bytes="1360">{{references|date=June 2007}}
+'''Mean reciprocal rank''' is a [[statistic]] for evaluating any process that produces a list of possible responses to a query, ordered by probability of correctness.  The reciprocal rank of a query response is the multiplicative inverse of the rank of the correct answer.  The mean reciprocal rank is the average of the reciprocal ranks of a sample of queries.
+
+== Example ==
+For example, suppose we have the following three sample queries for a system that tries to translate English words to their plurals.  In each case, the system makes three guesses, with the first one being the one it thinks is most likely correct:
+
+{| class=&quot;wikitable&quot;
+|-
+! Query
+! Results
+! Correct response
+! Rank
+! Reciprocal rank
+|-
+| cat
+| catten, cati, '''cats'''
+| cats
+| 3
+| 1/3
+|-
+| torus
+| torii, '''tori''', toruses
+| tori
+| 2
+| 1/2
+|-
+| virus
+| '''viruses''', virii, viri
+| viruses
+| 1
+| 1
+|}
+
+Given those three samples, we could calculate the mean reciprocal rank as (1/3&amp;nbsp;+&amp;nbsp;1/2&amp;nbsp;+&amp;nbsp;1)/3 = 11/18 or about 0.61.
+
+This basic definition does not specify what to do if (1) none of the proposed results are correct (use reciprocal rank 0), or if (2) there are multiple correct answers in the list (consider using Mean Average Precision: MAP).
+
+[[Category:Statistics]]
+
+See also http://en.wikipedia.org/wiki/Information_retrieval</text>
+      <sha1>ivc7xof60puu1ryawgs9rwhcra10ejc</sha1>
+    </revision>
+    <revision>
+      <id>158177552</id>
+      <parentid>155732691</parentid>
+      <timestamp>2007-09-16T01:52:50Z</timestamp>
+      <contributor>
+        <username>SmackBot</username>
+        <id>433328</id>
+      </contributor>
+      <comment>Template Unreferenced to Template refimprove where appropriate and/or general fixes.</comment>
+      <model>wikitext</model>
+      <format>text/x-wiki</format>
+      <text xml:space="preserve" bytes="1360">{{references|date=June 2007}}
+'''Mean reciprocal rank''' is a [[statistic]] for evaluating any process that produces a list of possible responses to a query, ordered by probability of correctness.  The reciprocal rank of a query response is the multiplicative inverse of the rank of the correct answer.  The mean reciprocal rank is the average of the reciprocal ranks of a sample of queries.
+
+== Example ==
+For example, suppose we have the following three sample queries for a system that tries to translate English words to their plurals.  In each case, the system makes three guesses, with the first one being the one it thinks is most likely correct:
+
+{| class=&quot;wikitable&quot;
+|-
+! Query
+! Results
+! Correct response
+! Rank
+! Reciprocal rank
+|-
+| cat
+| catten, cati, '''cats'''
+| cats
+| 3
+| 1/3
+|-
+| torus
+| torii, '''tori''', toruses
+| tori
+| 2
+| 1/2
+|-
+| virus
+| '''viruses''', virii, viri
+| viruses
+| 1
+| 1
+|}
+
+Given those three samples, we could calculate the mean reciprocal rank as (1/3&amp;nbsp;+&amp;nbsp;1/2&amp;nbsp;+&amp;nbsp;1)/3 = 11/18 or about 0.61.
+
+This basic definition does not specify what to do if (1) none of the proposed results are correct (use reciprocal rank 0), or if (2) there are multiple correct answers in the list (consider using Mean Average Precision: MAP).
+
+See also http://en.wikipedia.org/wiki/Information_retrieval
+
+[[Category:Statistics]]</text>
+      <sha1>3m56yyl5j7fr5ge0ue177a2je2pugon</sha1>
+    </revision>
+    <revision>
+      <id>159987688</id>
+      <parentid>158177552</parentid>
+      <timestamp>2007-09-24T10:53:45Z</timestamp>
+      <contributor>
+        <username>SmackBot</username>
+        <id>433328</id>
+      </contributor>
+      <comment>Date/fix the maintenance tags or gen fixes</comment>
+      <model>wikitext</model>
+      <format>text/x-wiki</format>
+      <text xml:space="preserve" bytes="1362">{{Unreferenced|date=June 2007}}
+'''Mean reciprocal rank''' is a [[statistic]] for evaluating any process that produces a list of possible responses to a query, ordered by probability of correctness.  The reciprocal rank of a query response is the multiplicative inverse of the rank of the correct answer.  The mean reciprocal rank is the average of the reciprocal ranks of a sample of queries.
+
+== Example ==
+For example, suppose we have the following three sample queries for a system that tries to translate English words to their plurals.  In each case, the system makes three guesses, with the first one being the one it thinks is most likely correct:
+
+{| class=&quot;wikitable&quot;
+|-
+! Query
+! Results
+! Correct response
+! Rank
+! Reciprocal rank
+|-
+| cat
+| catten, cati, '''cats'''
+| cats
+| 3
+| 1/3
+|-
+| torus
+| torii, '''tori''', toruses
+| tori
+| 2
+| 1/2
+|-
+| virus
+| '''viruses''', virii, viri
+| viruses
+| 1
+| 1
+|}
+
+Given those three samples, we could calculate the mean reciprocal rank as (1/3&amp;nbsp;+&amp;nbsp;1/2&amp;nbsp;+&amp;nbsp;1)/3 = 11/18 or about 0.61.
+
+This basic definition does not specify what to do if (1) none of the proposed results are correct (use reciprocal rank 0), or if (2) there are multiple correct answers in the list (consider using Mean Average Precision: MAP).
+
+See also http://en.wikipedia.org/wiki/Information_retrieval
+
+[[Category:Statistics]]</text>
+      <sha1>i5mb8jfoyjf52chxaga3reo7dbk3uvv</sha1>
+    </revision>
+    <revision>
+      <id>197203282</id>
+      <parentid>159987688</parentid>
+      <timestamp>2008-03-10T10:48:42Z</timestamp>
+      <contributor>
+        <username>Shidzu</username>
+        <id>4881226</id>
+      </contributor>
+      <minor/>
+      <comment>fixed an incorrect link</comment>
+      <model>wikitext</model>
+      <format>text/x-wiki</format>
+      <text xml:space="preserve" bytes="1337">{{Unreferenced|date=June 2007}}
+'''Mean reciprocal rank''' is a [[statistic]] for evaluating any process that produces a list of possible responses to a query, ordered by probability of correctness.  The reciprocal rank of a query response is the multiplicative inverse of the rank of the correct answer.  The mean reciprocal rank is the average of the reciprocal ranks of a sample of queries.
+
+== Example ==
+For example, suppose we have the following three sample queries for a system that tries to translate English words to their plurals.  In each case, the system makes three guesses, with the first one being the one it thinks is most likely correct:
+
+{| class=&quot;wikitable&quot;
+|-
+! Query
+! Results
+! Correct response
+! Rank
+! Reciprocal rank
+|-
+| cat
+| catten, cati, '''cats'''
+| cats
+| 3
+| 1/3
+|-
+| torus
+| torii, '''tori''', toruses
+| tori
+| 2
+| 1/2
+|-
+| virus
+| '''viruses''', virii, viri
+| viruses
+| 1
+| 1
+|}
+
+Given those three samples, we could calculate the mean reciprocal rank as (1/3&amp;nbsp;+&amp;nbsp;1/2&amp;nbsp;+&amp;nbsp;1)/3 = 11/18 or about 0.61.
+
+This basic definition does not specify what to do if (1) none of the proposed results are correct (use reciprocal rank 0), or if (2) there are multiple correct answers in the list (consider using Mean Average Precision: MAP).
+
+See also [[Information_retrieval]]
+
+[[Category:Statistics]]</text>
+      <sha1>2tk6vu79kai301c2w7twyj8aiqkpmx9</sha1>
+    </revision>
+    <revision>
+      <id>209483836</id>
+      <parentid>197203282</parentid>
+      <timestamp>2008-05-01T16:22:38Z</timestamp>
+      <contributor>
+        <username>Melcombe</username>
+        <id>4682566</id>
+      </contributor>
+      <minor/>
+      <comment>revised category</comment>
+      <model>wikitext</model>
+      <format>text/x-wiki</format>
+      <text xml:space="preserve" bytes="1345">{{Unreferenced|date=June 2007}}
+'''Mean reciprocal rank''' is a [[statistic]] for evaluating any process that produces a list of possible responses to a query, ordered by probability of correctness.  The reciprocal rank of a query response is the multiplicative inverse of the rank of the correct answer.  The mean reciprocal rank is the average of the reciprocal ranks of a sample of queries.
+
+== Example ==
+For example, suppose we have the following three sample queries for a system that tries to translate English words to their plurals.  In each case, the system makes three guesses, with the first one being the one it thinks is most likely correct:
+
+{| class=&quot;wikitable&quot;
+|-
+! Query
+! Results
+! Correct response
+! Rank
+! Reciprocal rank
+|-
+| cat
+| catten, cati, '''cats'''
+| cats
+| 3
+| 1/3
+|-
+| torus
+| torii, '''tori''', toruses
+| tori
+| 2
+| 1/2
+|-
+| virus
+| '''viruses''', virii, viri
+| viruses
+| 1
+| 1
+|}
+
+Given those three samples, we could calculate the mean reciprocal rank as (1/3&amp;nbsp;+&amp;nbsp;1/2&amp;nbsp;+&amp;nbsp;1)/3 = 11/18 or about 0.61.
+
+This basic definition does not specify what to do if (1) none of the proposed results are correct (use reciprocal rank 0), or if (2) there are multiple correct answers in the list (consider using Mean Average Precision: MAP).
+
+See also [[Information_retrieval]]
+
+[[Category:Summary statistics]]</text>
+      <sha1>i7s1stfkvjaco8roiww4p8ln5p6kbgj</sha1>
+    </revision>
+    <revision>
+      <id>217016590</id>
+      <parentid>209483836</parentid>
+      <timestamp>2008-06-04T07:01:00Z</timestamp>
+      <contributor>
+        <ip>132.176.72.218</ip>
+      </contributor>
+      <model>wikitext</model>
+      <format>text/x-wiki</format>
+      <text xml:space="preserve" bytes="1357">{{Unreferenced|date=June 2007}}
+'''Mean reciprocal rank''' is a [[statistic]] for evaluating any process that produces a list of possible responses to a query, ordered by probability of correctness.  The reciprocal rank of a query response is the multiplicative inverse of the rank of the correct answer.  The mean reciprocal rank is the average of the reciprocal ranks of results for a sample of queries.
+
+== Example ==
+For example, suppose we have the following three sample queries for a system that tries to translate English words to their plurals.  In each case, the system makes three guesses, with the first one being the one it thinks is most likely correct:
+
+{| class=&quot;wikitable&quot;
+|-
+! Query
+! Results
+! Correct response
+! Rank
+! Reciprocal rank
+|-
+| cat
+| catten, cati, '''cats'''
+| cats
+| 3
+| 1/3
+|-
+| torus
+| torii, '''tori''', toruses
+| tori
+| 2
+| 1/2
+|-
+| virus
+| '''viruses''', virii, viri
+| viruses
+| 1
+| 1
+|}
+
+Given those three samples, we could calculate the mean reciprocal rank as (1/3&amp;nbsp;+&amp;nbsp;1/2&amp;nbsp;+&amp;nbsp;1)/3 = 11/18 or about 0.61.
+
+This basic definition does not specify what to do if (1) none of the proposed results are correct (use reciprocal rank 0), or if (2) there are multiple correct answers in the list (consider using Mean Average Precision: MAP).
+
+See also [[Information_retrieval]]
+
+[[Category:Summary statistics]]</text>
+      <sha1>14hn5149j09zif09gxa280jtmjnmkeg</sha1>
+    </revision>
+    <revision>
+      <id>217044754</id>
+      <parentid>217016590</parentid>
+      <timestamp>2008-06-04T11:10:57Z</timestamp>
+      <contributor>
+        <username>Melcombe</username>
+        <id>4682566</id>
+      </contributor>
+      <comment>/* References */  new section with a reference</comment>
+      <model>wikitext</model>
+      <format>text/x-wiki</format>
+      <text xml:space="preserve" bytes="1540">{{Unreferenced|date=June 2007}}
+'''Mean reciprocal rank''' is a [[statistic]] for evaluating any process that produces a list of possible responses to a query, ordered by probability of correctness.  The reciprocal rank of a query response is the multiplicative inverse of the rank of the correct answer.  The mean reciprocal rank is the average of the reciprocal ranks of results for a sample of queries.
+
+== Example ==
+For example, suppose we have the following three sample queries for a system that tries to translate English words to their plurals.  In each case, the system makes three guesses, with the first one being the one it thinks is most likely correct:
+
+{| class=&quot;wikitable&quot;
+|-
+! Query
+! Results
+! Correct response
+! Rank
+! Reciprocal rank
+|-
+| cat
+| catten, cati, '''cats'''
+| cats
+| 3
+| 1/3
+|-
+| torus
+| torii, '''tori''', toruses
+| tori
+| 2
+| 1/2
+|-
+| virus
+| '''viruses''', virii, viri
+| viruses
+| 1
+| 1
+|}
+
+Given those three samples, we could calculate the mean reciprocal rank as (1/3&amp;nbsp;+&amp;nbsp;1/2&amp;nbsp;+&amp;nbsp;1)/3 = 11/18 or about 0.61.
+
+This basic definition does not specify what to do if (1) none of the proposed results are correct (use reciprocal rank 0), or if (2) there are multiple correct answers in the list (consider using Mean Average Precision: MAP).
+
+See also [[Information_retrieval]]
+
+==References==
+
+Voorhees, E.M. (1999). &quot;The TREC-8 question answering track report&quot;. In ''Proceedings of the 8th Text Retrieval Conference'', Gaithersburg, Maryland, USA, pp. 77-82.
+
+[[Category:Summary statistics]]</text>
+      <sha1>af0eqgjrde9vnbnbk1xftnc7qofnbz5</sha1>
+    </revision>
+    <revision>
+      <id>217045255</id>
+      <parentid>217044754</parentid>
+      <timestamp>2008-06-04T11:15:27Z</timestamp>
+      <contributor>
+        <username>Melcombe</username>
+        <id>4682566</id>
+      </contributor>
+      <minor/>
+      <comment>added category</comment>
+      <model>wikitext</model>
+      <format>text/x-wiki</format>
+      <text xml:space="preserve" bytes="1575">{{Unreferenced|date=June 2007}}
+'''Mean reciprocal rank''' is a [[statistic]] for evaluating any process that produces a list of possible responses to a query, ordered by probability of correctness.  The reciprocal rank of a query response is the multiplicative inverse of the rank of the correct answer.  The mean reciprocal rank is the average of the reciprocal ranks of results for a sample of queries.
+
+== Example ==
+For example, suppose we have the following three sample queries for a system that tries to translate English words to their plurals.  In each case, the system makes three guesses, with the first one being the one it thinks is most likely correct:
+
+{| class=&quot;wikitable&quot;
+|-
+! Query
+! Results
+! Correct response
+! Rank
+! Reciprocal rank
+|-
+| cat
+| catten, cati, '''cats'''
+| cats
+| 3
+| 1/3
+|-
+| torus
+| torii, '''tori''', toruses
+| tori
+| 2
+| 1/2
+|-
+| virus
+| '''viruses''', virii, viri
+| viruses
+| 1
+| 1
+|}
+
+Given those three samples, we could calculate the mean reciprocal rank as (1/3&amp;nbsp;+&amp;nbsp;1/2&amp;nbsp;+&amp;nbsp;1)/3 = 11/18 or about 0.61.
+
+This basic definition does not specify what to do if (1) none of the proposed results are correct (use reciprocal rank 0), or if (2) there are multiple correct answers in the list (consider using Mean Average Precision: MAP).
+
+See also [[Information_retrieval]]
+
+==References==
+
+Voorhees, E.M. (1999). &quot;The TREC-8 question answering track report&quot;. In ''Proceedings of the 8th Text Retrieval Conference'', Gaithersburg, Maryland, USA, pp. 77-82.
+
+[[Category:Summary statistics]]
+[[Category:Information retrieval]]</text>
+      <sha1>gmsimo1f82ysy57h6z243qergu56p6a</sha1>
+    </revision>
+    <revision>
+      <id>223193122</id>
+      <parentid>217045255</parentid>
+      <timestamp>2008-07-03T00:00:33Z</timestamp>
+      <contributor>
+        <ip>207.47.98.129</ip>
+      </contributor>
+      <comment>took underscore out of internal link for consistency sake</comment>
+      <model>wikitext</model>
+      <format>text/x-wiki</format>
+      <text xml:space="preserve" bytes="1575">{{Unreferenced|date=June 2007}}
+'''Mean reciprocal rank''' is a [[statistic]] for evaluating any process that produces a list of possible responses to a query, ordered by probability of correctness.  The reciprocal rank of a query response is the multiplicative inverse of the rank of the correct answer.  The mean reciprocal rank is the average of the reciprocal ranks of results for a sample of queries.
+
+== Example ==
+For example, suppose we have the following three sample queries for a system that tries to translate English words to their plurals.  In each case, the system makes three guesses, with the first one being the one it thinks is most likely correct:
+
+{| class=&quot;wikitable&quot;
+|-
+! Query
+! Results
+! Correct response
+! Rank
+! Reciprocal rank
+|-
+| cat
+| catten, cati, '''cats'''
+| cats
+| 3
+| 1/3
+|-
+| torus
+| torii, '''tori''', toruses
+| tori
+| 2
+| 1/2
+|-
+| virus
+| '''viruses''', virii, viri
+| viruses
+| 1
+| 1
+|}
+
+Given those three samples, we could calculate the mean reciprocal rank as (1/3&amp;nbsp;+&amp;nbsp;1/2&amp;nbsp;+&amp;nbsp;1)/3 = 11/18 or about 0.61.
+
+This basic definition does not specify what to do if (1) none of the proposed results are correct (use reciprocal rank 0), or if (2) there are multiple correct answers in the list (consider using Mean Average Precision: MAP).
+
+See also [[Information retrieval]]
+
+==References==
+
+Voorhees, E.M. (1999). &quot;The TREC-8 question answering track report&quot;. In ''Proceedings of the 8th Text Retrieval Conference'', Gaithersburg, Maryland, USA, pp. 77-82.
+
+[[Category:Summary statistics]]
+[[Category:Information retrieval]]</text>
+      <sha1>r1en2em9oo6wmgxb0oivqn41h7j5i62</sha1>
+    </revision>
+    <revision>
+      <id>233566401</id>
+      <parentid>223193122</parentid>
+      <timestamp>2008-08-22T16:46:20Z</timestamp>
+      <contributor>
+        <username>Elif81</username>
+        <id>7696998</id>
+      </contributor>
+      <minor/>
+      <comment>added formula and one reference</comment>
+      <model>wikitext</model>
+      <format>text/x-wiki</format>
+      <text xml:space="preserve" bytes="1840">{{Unreferenced|date=June 2007}}
+'''Mean reciprocal rank''' is a [[statistic]] for evaluating any process that produces a list of possible responses to a query, ordered by probability of correctness.  The reciprocal rank of a query response is the multiplicative inverse of the rank of the first correct answer. The mean reciprocal rank is the average of the reciprocal ranks of results for a sample of queries Q:
+
+:&lt;math&gt; MRR = \frac{1}{|Q|} \sum_{i=1}^{Q} \frac{1}{rank_i} \!&lt;/math&gt;
+
+== Example ==
+For example, suppose we have the following three sample queries for a system that tries to translate English words to their plurals.  In each case, the system makes three guesses, with the first one being the one it thinks is most likely correct:
+
+{| class=&quot;wikitable&quot;
+|-
+! Query
+! Results
+! Correct response
+! Rank
+! Reciprocal rank
+|-
+| cat
+| catten, cati, '''cats'''
+| cats
+| 3
+| 1/3
+|-
+| torus
+| torii, '''tori''', toruses
+| tori
+| 2
+| 1/2
+|-
+| virus
+| '''viruses''', virii, viri
+| viruses
+| 1
+| 1
+|}
+
+Given those three samples, we could calculate the mean reciprocal rank as (1/3&amp;nbsp;+&amp;nbsp;1/2&amp;nbsp;+&amp;nbsp;1)/3 = 11/18 or about 0.61.
+
+This basic definition does not specify what to do if (1) none of the proposed results are correct (use reciprocal rank 0), or if (2) there are multiple correct answers in the list (consider using Mean Average Precision: MAP).
+
+See also [[Information retrieval]] and [[Question answering]].
+
+==References==
+
+Voorhees, E.M. (1999). &quot;The TREC-8 question answering track report&quot;. In ''Proceedings of the 8th Text Retrieval Conference'', Gaithersburg, Maryland, USA, pp. 77-82.
+Dragomir R. Radev, Hong Qi, Harris Wu, and Weiguo Fan. 2002. &quot;Evaluating web-based question answering systems&quot;. In ''Proceedings of LREC'', Las Palmas, Spain.
+
+[[Category:Summary statistics]]
+[[Category:Information retrieval]]</text>
+      <sha1>9k0sim4wefvx2f0n5y0w2b87jmphjar</sha1>
+    </revision>
+    <revision>
+      <id>233567676</id>
+      <parentid>233566401</parentid>
+      <timestamp>2008-08-22T16:54:25Z</timestamp>
+      <contributor>
+        <username>Elif81</username>
+        <id>7696998</id>
+      </contributor>
+      <minor/>
+      <comment>corrected reference</comment>
+      <model>wikitext</model>
+      <format>text/x-wiki</format>
+      <text xml:space="preserve" bytes="1841">{{Unreferenced|date=June 2007}}
+'''Mean reciprocal rank''' is a [[statistic]] for evaluating any process that produces a list of possible responses to a query, ordered by probability of correctness.  The reciprocal rank of a query response is the multiplicative inverse of the rank of the first correct answer. The mean reciprocal rank is the average of the reciprocal ranks of results for a sample of queries Q:
+
+:&lt;math&gt; MRR = \frac{1}{|Q|} \sum_{i=1}^{Q} \frac{1}{rank_i} \!&lt;/math&gt;
+
+== Example ==
+For example, suppose we have the following three sample queries for a system that tries to translate English words to their plurals.  In each case, the system makes three guesses, with the first one being the one it thinks is most likely correct:
+
+{| class=&quot;wikitable&quot;
+|-
+! Query
+! Results
+! Correct response
+! Rank
+! Reciprocal rank
+|-
+| cat
+| catten, cati, '''cats'''
+| cats
+| 3
+| 1/3
+|-
+| torus
+| torii, '''tori''', toruses
+| tori
+| 2
+| 1/2
+|-
+| virus
+| '''viruses''', virii, viri
+| viruses
+| 1
+| 1
+|}
+
+Given those three samples, we could calculate the mean reciprocal rank as (1/3&amp;nbsp;+&amp;nbsp;1/2&amp;nbsp;+&amp;nbsp;1)/3 = 11/18 or about 0.61.
+
+This basic definition does not specify what to do if (1) none of the proposed results are correct (use reciprocal rank 0), or if (2) there are multiple correct answers in the list (consider using Mean Average Precision: MAP).
+
+See also [[Information retrieval]] and [[Question answering]].
+
+==References==
+
+Voorhees, E.M. (1999). &quot;The TREC-8 question answering track report&quot;. In ''Proceedings of the 8th Text Retrieval Conference'', Gaithersburg, Maryland, USA, pp. 77-82.
+
+Dragomir R. Radev, Hong Qi, Harris Wu, and Weiguo Fan. 2002. &quot;Evaluating web-based question answering systems&quot;. In ''Proceedings of LREC'', Las Palmas, Spain.
+
+[[Category:Summary statistics]]
+[[Category:Information retrieval]]</text>
+      <sha1>8v1f7fjootuujl136fpe4lldszizscs</sha1>
+    </revision>
+    <revision>
+      <id>265526847</id>
+      <parentid>233567676</parentid>
+      <timestamp>2009-01-21T18:16:27Z</timestamp>
+      <contributor>
+        <username>Drmadskills</username>
+        <id>6332139</id>
+      </contributor>
+      <comment>improved references</comment>
+      <model>wikitext</model>
+      <format>text/x-wiki</format>
+      <text xml:space="preserve" bytes="1883">{{Unreferenced|date=June 2007}}
+'''Mean reciprocal rank''' is a [[statistic]] for evaluating any process that produces a list of possible responses to a query, ordered by probability of correctness. The reciprocal rank of a query response is the multiplicative inverse of the rank of the first correct answer. The mean reciprocal rank is the average of the reciprocal ranks of results for a sample of queries Q&lt;ref&gt;{{cite conference | title=Proceedings of the 8th Text Retrieval Conference | booktitle=TREC-8 Question Answering Track Report | author=E.M. Voorhees |year=1999 | pages=77-82}}&lt;/ref&gt;:
+
+:&lt;math&gt; MRR = \frac{1}{|Q|} \sum_{i=1}^{Q} \frac{1}{rank_i} \!&lt;/math&gt;
+
+== Example ==
+For example, suppose we have the following three sample queries for a system that tries to translate English words to their plurals.  In each case, the system makes three guesses, with the first one being the one it thinks is most likely correct:
+
+{| class=&quot;wikitable&quot;
+|-
+! Query
+! Results
+! Correct response
+! Rank
+! Reciprocal rank
+|-
+| cat
+| catten, cati, '''cats'''
+| cats
+| 3
+| 1/3
+|-
+| torus
+| torii, '''tori''', toruses
+| tori
+| 2
+| 1/2
+|-
+| virus
+| '''viruses''', virii, viri
+| viruses
+| 1
+| 1
+|}
+
+Given those three samples, we could calculate the mean reciprocal rank as (1/3&amp;nbsp;+&amp;nbsp;1/2&amp;nbsp;+&amp;nbsp;1)/3 = 11/18 or about 0.61.
+
+This basic definition does not specify what to do if (1) none of the proposed results are correct (use reciprocal rank 0), or if (2) there are multiple correct answers in the list (consider using Mean Average Precision: MAP).
+
+See also [[Information retrieval]] and [[Question answering]]&lt;ref&gt;{{cite conference | title=Evaluating web-based question answering systems | booktitle=Proceedings of LREC | author=D. R. Radev, H. Qi, H. Wu, W. Fan |year=2002 }}&lt;/ref&gt;
+
+==References==
+{{Reflist}}
+
+[[Category:Summary statistics]]
+[[Category:Information retrieval]]</text>
+      <sha1>mre5dr22dsepwk3uoi8msyg5914vjmp</sha1>
+    </revision>
+    <revision>
+      <id>277355460</id>
+      <parentid>265526847</parentid>
+      <timestamp>2009-03-15T07:02:35Z</timestamp>
+      <contributor>
+        <username>Michael Hardy</username>
+        <id>4626</id>
+      </contributor>
+      <model>wikitext</model>
+      <format>text/x-wiki</format>
+      <text xml:space="preserve" bytes="1904">{{Unreferenced|date=June 2007}}
+'''Mean reciprocal rank''' is a [[statistic]] for evaluating any process that produces a list of possible responses to a query, ordered by probability of correctness. The reciprocal rank of a query response is the multiplicative inverse of the rank of the first correct answer. The mean reciprocal rank is the average of the reciprocal ranks of results for a sample of queries Q&lt;ref&gt;{{cite conference | title=Proceedings of the 8th Text Retrieval Conference | booktitle=TREC-8 Question Answering Track Report | author=E.M. Voorhees |year=1999 | pages=77&amp;ndash;82}}&lt;/ref&gt;:
+
+:&lt;math&gt; \text{MRR} = \frac{1}{|Q|} \sum_{i=1}^{Q} \frac{1}{\text{rank}_i}. \!&lt;/math&gt;
+
+== Example ==
+For example, suppose we have the following three sample queries for a system that tries to translate English words to their plurals.  In each case, the system makes three guesses, with the first one being the one it thinks is most likely correct:
+
+{| class=&quot;wikitable&quot;
+|-
+! Query
+! Results
+! Correct response
+! Rank
+! Reciprocal rank
+|-
+| cat
+| catten, cati, '''cats'''
+| cats
+| 3
+| 1/3
+|-
+| torus
+| torii, '''tori''', toruses
+| tori
+| 2
+| 1/2
+|-
+| virus
+| '''viruses''', virii, viri
+| viruses
+| 1
+| 1
+|}
+
+Given those three samples, we could calculate the mean reciprocal rank as (1/3&amp;nbsp;+&amp;nbsp;1/2&amp;nbsp;+&amp;nbsp;1)/3 = 11/18 or about 0.61.
+
+This basic definition does not specify what to do if (1) none of the proposed results are correct (use reciprocal rank 0), or if (2) there are multiple correct answers in the list (consider using mean average precision: MAP).
+
+See also [[Information retrieval]] and [[Question answering]]&lt;ref&gt;{{cite conference | title=Evaluating web-based question answering systems | booktitle=Proceedings of LREC | author=D. R. Radev, H. Qi, H. Wu, W. Fan |year=2002 }}&lt;/ref&gt;
+
+==References==
+{{Reflist}}
+
+[[Category:Summary statistics]]
+[[Category:Information retrieval]]</text>
+      <sha1>glykkmlg0mtc7oqsldg5psc81313rjn</sha1>
+    </revision>
+    <revision>
+      <id>301875094</id>
+      <parentid>277355460</parentid>
+      <timestamp>2009-07-13T15:38:56Z</timestamp>
+      <contributor>
+        <username>Tappoz</username>
+        <id>7723475</id>
+      </contributor>
+      <comment>add interwiki</comment>
+      <model>wikitext</model>
+      <format>text/x-wiki</format>
+      <text xml:space="preserve" bytes="1934">{{Unreferenced|date=June 2007}}
+'''Mean reciprocal rank''' is a [[statistic]] for evaluating any process that produces a list of possible responses to a query, ordered by probability of correctness. The reciprocal rank of a query response is the multiplicative inverse of the rank of the first correct answer. The mean reciprocal rank is the average of the reciprocal ranks of results for a sample of queries Q&lt;ref&gt;{{cite conference | title=Proceedings of the 8th Text Retrieval Conference | booktitle=TREC-8 Question Answering Track Report | author=E.M. Voorhees |year=1999 | pages=77&amp;ndash;82}}&lt;/ref&gt;:
+
+:&lt;math&gt; \text{MRR} = \frac{1}{|Q|} \sum_{i=1}^{Q} \frac{1}{\text{rank}_i}. \!&lt;/math&gt;
+
+== Example ==
+For example, suppose we have the following three sample queries for a system that tries to translate English words to their plurals.  In each case, the system makes three guesses, with the first one being the one it thinks is most likely correct:
+
+{| class=&quot;wikitable&quot;
+|-
+! Query
+! Results
+! Correct response
+! Rank
+! Reciprocal rank
+|-
+| cat
+| catten, cati, '''cats'''
+| cats
+| 3
+| 1/3
+|-
+| torus
+| torii, '''tori''', toruses
+| tori
+| 2
+| 1/2
+|-
+| virus
+| '''viruses''', virii, viri
+| viruses
+| 1
+| 1
+|}
+
+Given those three samples, we could calculate the mean reciprocal rank as (1/3&amp;nbsp;+&amp;nbsp;1/2&amp;nbsp;+&amp;nbsp;1)/3 = 11/18 or about 0.61.
+
+This basic definition does not specify what to do if (1) none of the proposed results are correct (use reciprocal rank 0), or if (2) there are multiple correct answers in the list (consider using mean average precision: MAP).
+
+See also [[Information retrieval]] and [[Question answering]]&lt;ref&gt;{{cite conference | title=Evaluating web-based question answering systems | booktitle=Proceedings of LREC | author=D. R. Radev, H. Qi, H. Wu, W. Fan |year=2002 }}&lt;/ref&gt;
+
+==References==
+{{Reflist}}
+
+[[Category:Summary statistics]]
+[[Category:Information retrieval]]
+
+
+[[it:Mean reciprocal rank]]</text>
+      <sha1>n5s52zdi4d49cz6zk83q5zuzp1s3if1</sha1>
+    </revision>
+    <revision>
+      <id>346073805</id>
+      <parentid>301875094</parentid>
+      <timestamp>2010-02-24T11:53:08Z</timestamp>
+      <contributor>
+        <username>Waterjoe52</username>
+        <id>11774200</id>
+      </contributor>
+      <model>wikitext</model>
+      <format>text/x-wiki</format>
+      <text xml:space="preserve" bytes="1983">{{Unreferenced|date=June 2007}}
+'''Mean reciprocal rank''' is a [[statistic]] for evaluating any process that produces a list of possible responses to a query, ordered by probability of correctness. The reciprocal rank of a query response is the multiplicative inverse of the rank of the first correct answer. The mean reciprocal rank is the average of the reciprocal ranks of results for a sample of queries Q&lt;ref&gt;{{cite conference | title=Proceedings of the 8th Text Retrieval Conference | booktitle=TREC-8 Question Answering Track Report | author=E.M. Voorhees |year=1999 | pages=77&amp;ndash;82}}&lt;/ref&gt;:
+
+:&lt;math&gt; \text{MRR} = \frac{1}{|Q|} \sum_{i=1}^{Q} \frac{1}{\text{rank}_i}. \!&lt;/math&gt;
+
+== Example ==
+For example, suppose we have the following three sample queries for a system that tries to translate English words to their plurals.  In each case, the system makes three guesses, with the first one being the one it thinks is most likely correct:
+
+{| class=&quot;wikitable&quot;
+|-
+! Query
+! Results
+! Correct response
+! Rank
+! Reciprocal rank
+|-
+| cat
+| catten, cati, '''cats'''
+| cats
+| 3
+| 1/3
+|-
+| torus
+| torii, '''tori''', toruses
+| tori
+| 2
+| 1/2
+|-
+| virus
+| '''viruses''', virii, viri
+| viruses
+| 1
+| 1
+|}
+
+Given those three samples, we could calculate the mean reciprocal rank as (1/3&amp;nbsp;+&amp;nbsp;1/2&amp;nbsp;+&amp;nbsp;1)/3 = 11/18 or about 0.61.
+
+This basic definition does not specify what to do if...
+# none of the proposed results are correct (use reciprocal rank 0), or if
+# there are multiple correct answers in the list. Consider using [[Information_retrieval#Mean_Average_precision|mean average precision (MAP)]].
+
+See also [[Information retrieval]] and [[Question answering]]&lt;ref&gt;{{cite conference | title=Evaluating web-based question answering systems | booktitle=Proceedings of LREC | author=D. R. Radev, H. Qi, H. Wu, W. Fan |year=2002 }}&lt;/ref&gt;.
+
+==References==
+{{Reflist}}
+
+[[Category:Summary statistics]]
+[[Category:Information retrieval]]
+
+
+[[it:Mean reciprocal rank]]</text>
+      <sha1>mrk8fsj7e5smdi5d8agwl9pgec55bbx</sha1>
+    </revision>
+    <revision>
+      <id>346073841</id>
+      <parentid>346073805</parentid>
+      <timestamp>2010-02-24T11:53:36Z</timestamp>
+      <contributor>
+        <username>Waterjoe52</username>
+        <id>11774200</id>
+      </contributor>
+      <model>wikitext</model>
+      <format>text/x-wiki</format>
+      <text xml:space="preserve" bytes="1988">{{Unreferenced|date=June 2007}}
+'''Mean reciprocal rank''' is a [[statistic]] for evaluating any process that produces a list of possible responses to a query, ordered by probability of correctness. The reciprocal rank of a query response is the multiplicative inverse of the rank of the first correct answer. The mean reciprocal rank is the average of the reciprocal ranks of results for a sample of queries Q&lt;ref&gt;{{cite conference | title=Proceedings of the 8th Text Retrieval Conference | booktitle=TREC-8 Question Answering Track Report | author=E.M. Voorhees |year=1999 | pages=77&amp;ndash;82}}&lt;/ref&gt;:
+
+:&lt;math&gt; \text{MRR} = \frac{1}{|Q|} \sum_{i=1}^{Q} \frac{1}{\text{rank}_i}. \!&lt;/math&gt;
+
+== Example ==
+For example, suppose we have the following three sample queries for a system that tries to translate English words to their plurals.  In each case, the system makes three guesses, with the first one being the one it thinks is most likely correct:
+
+{| class=&quot;wikitable&quot;
+|-
+! Query
+! Results
+! Correct response
+! Rank
+! Reciprocal rank
+|-
+| cat
+| catten, cati, '''cats'''
+| cats
+| 3
+| 1/3
+|-
+| torus
+| torii, '''tori''', toruses
+| tori
+| 2
+| 1/2
+|-
+| virus
+| '''viruses''', virii, viri
+| viruses
+| 1
+| 1
+|}
+
+Given those three samples, we could calculate the mean reciprocal rank as (1/3&amp;nbsp;+&amp;nbsp;1/2&amp;nbsp;+&amp;nbsp;1)/3 = 11/18 or about 0.61.
+
+This basic definition does not specify what to do if...
+# none of the proposed results are correct (use mean reciprocal rank 0), or if
+# there are multiple correct answers in the list. Consider using [[Information_retrieval#Mean_Average_precision|mean average precision (MAP)]].
+
+See also [[Information retrieval]] and [[Question answering]]&lt;ref&gt;{{cite conference | title=Evaluating web-based question answering systems | booktitle=Proceedings of LREC | author=D. R. Radev, H. Qi, H. Wu, W. Fan |year=2002 }}&lt;/ref&gt;.
+
+==References==
+{{Reflist}}
+
+[[Category:Summary statistics]]
+[[Category:Information retrieval]]
+
+
+[[it:Mean reciprocal rank]]</text>
+      <sha1>ftjfegnhcerdxp3vpt8g1otpvk7p58u</sha1>
+    </revision>
+    <revision>
+      <id>357691440</id>
+      <parentid>346073841</parentid>
+      <timestamp>2010-04-22T20:35:48Z</timestamp>
+      <contributor>
+        <ip>129.110.241.131</ip>
+      </contributor>
+      <model>wikitext</model>
+      <format>text/x-wiki</format>
+      <text xml:space="preserve" bytes="1992">{{Unreferenced|date=June 2007}}
+'''Mean reciprocal rank''' is a [[statistic]] for evaluating any process that produces a list of possible responses to a query, ordered by probability of correctness. The reciprocal rank of a query response is the [[multiplicative inverse]] of the rank of the first correct answer. The mean reciprocal rank is the average of the reciprocal ranks of results for a sample of queries Q&lt;ref&gt;{{cite conference | title=Proceedings of the 8th Text Retrieval Conference | booktitle=TREC-8 Question Answering Track Report | author=E.M. Voorhees |year=1999 | pages=77&amp;ndash;82}}&lt;/ref&gt;:
+
+:&lt;math&gt; \text{MRR} = \frac{1}{|Q|} \sum_{i=1}^{Q} \frac{1}{\text{rank}_i}. \!&lt;/math&gt;
+
+== Example ==
+For example, suppose we have the following three sample queries for a system that tries to translate English words to their plurals.  In each case, the system makes three guesses, with the first one being the one it thinks is most likely correct:
+
+{| class=&quot;wikitable&quot;
+|-
+! Query
+! Results
+! Correct response
+! Rank
+! Reciprocal rank
+|-
+| cat
+| catten, cati, '''cats'''
+| cats
+| 3
+| 1/3
+|-
+| torus
+| torii, '''tori''', toruses
+| tori
+| 2
+| 1/2
+|-
+| virus
+| '''viruses''', virii, viri
+| viruses
+| 1
+| 1
+|}
+
+Given those three samples, we could calculate the mean reciprocal rank as (1/3&amp;nbsp;+&amp;nbsp;1/2&amp;nbsp;+&amp;nbsp;1)/3 = 11/18 or about 0.61.
+
+This basic definition does not specify what to do if...
+# none of the proposed results are correct (use mean reciprocal rank 0), or if
+# there are multiple correct answers in the list. Consider using [[Information_retrieval#Mean_Average_precision|mean average precision (MAP)]].
+
+See also [[Information retrieval]] and [[Question answering]]&lt;ref&gt;{{cite conference | title=Evaluating web-based question answering systems | booktitle=Proceedings of LREC | author=D. R. Radev, H. Qi, H. Wu, W. Fan |year=2002 }}&lt;/ref&gt;.
+
+==References==
+{{Reflist}}
+
+[[Category:Summary statistics]]
+[[Category:Information retrieval]]
+
+
+[[it:Mean reciprocal rank]]</text>
+      <sha1>22f9xf3z1uw9kdrm7bq8iskfbu8uair</sha1>
+    </revision>
+    <revision>
+      <id>363176723</id>
+      <parentid>357691440</parentid>
+      <timestamp>2010-05-20T10:55:07Z</timestamp>
+      <contributor>
+        <ip>88.105.252.116</ip>
+      </contributor>
+      <model>wikitext</model>
+      <format>text/x-wiki</format>
+      <text xml:space="preserve" bytes="2062">WARNING - you will not understand so dont waste your precious time
+
+
+
+{{Unreferenced|date=June 2007}}
+'''Mean reciprocal rank''' is a [[statistic]] for evaluating any process that produces a list of possible responses to a query, ordered by probability of correctness. The reciprocal rank of a query response is the [[multiplicative inverse]] of the rank of the first correct answer. The mean reciprocal rank is the average of the reciprocal ranks of results for a sample of queries Q&lt;ref&gt;{{cite conference | title=Proceedings of the 8th Text Retrieval Conference | booktitle=TREC-8 Question Answering Track Report | author=E.M. Voorhees |year=1999 | pages=77&amp;ndash;82}}&lt;/ref&gt;:
+
+:&lt;math&gt; \text{MRR} = \frac{1}{|Q|} \sum_{i=1}^{Q} \frac{1}{\text{rank}_i}. \!&lt;/math&gt;
+
+== Example ==
+For example, suppose we have the following three sample queries for a system that tries to translate English words to their plurals.  In each case, the system makes three guesses, with the first one being the one it thinks is most likely correct:
+
+{| class=&quot;wikitable&quot;
+|-
+! Query
+! Results
+! Correct response
+! Rank
+! Reciprocal rank
+|-
+| cat
+| catten, cati, '''cats'''
+| cats
+| 3
+| 1/3
+|-
+| torus
+| torii, '''tori''', toruses
+| tori
+| 2
+| 1/2
+|-
+| virus
+| '''viruses''', virii, viri
+| viruses
+| 1
+| 1
+|}
+
+Given those three samples, we could calculate the mean reciprocal rank as (1/3&amp;nbsp;+&amp;nbsp;1/2&amp;nbsp;+&amp;nbsp;1)/3 = 11/18 or about 0.61.
+
+This basic definition does not specify what to do if...
+# none of the proposed results are correct (use mean reciprocal rank 0), or if
+# there are multiple correct answers in the list. Consider using [[Information_retrieval#Mean_Average_precision|mean average precision (MAP)]].
+
+See also [[Information retrieval]] and [[Question answering]]&lt;ref&gt;{{cite conference | title=Evaluating web-based question answering systems | booktitle=Proceedings of LREC | author=D. R. Radev, H. Qi, H. Wu, W. Fan |year=2002 }}&lt;/ref&gt;.
+
+==References==
+{{Reflist}}
+
+[[Category:Summary statistics]]
+[[Category:Information retrieval]]
+
+
+[[it:Mean reciprocal rank]]</text>
+      <sha1>10aqh851n9qpihm3gkfy4fa4hd9sj2a</sha1>
+    </revision>
+    <revision>
+      <id>364668152</id>
+      <parentid>363176723</parentid>
+      <timestamp>2010-05-28T14:19:41Z</timestamp>
+      <contributor>
+        <username>Luisbrandao</username>
+        <id>3938518</id>
+      </contributor>
+      <model>wikitext</model>
+      <format>text/x-wiki</format>
+      <text xml:space="preserve" bytes="1992">{{Unreferenced|date=June 2007}}
+'''Mean reciprocal rank''' is a [[statistic]] for evaluating any process that produces a list of possible responses to a query, ordered by probability of correctness. The reciprocal rank of a query response is the [[multiplicative inverse]] of the rank of the first correct answer. The mean reciprocal rank is the average of the reciprocal ranks of results for a sample of queries Q&lt;ref&gt;{{cite conference | title=Proceedings of the 8th Text Retrieval Conference | booktitle=TREC-8 Question Answering Track Report | author=E.M. Voorhees |year=1999 | pages=77&amp;ndash;82}}&lt;/ref&gt;:
+
+:&lt;math&gt; \text{MRR} = \frac{1}{|Q|} \sum_{i=1}^{Q} \frac{1}{\text{rank}_i}. \!&lt;/math&gt;
+
+== Example ==
+For example, suppose we have the following three sample queries for a system that tries to translate English words to their plurals.  In each case, the system makes three guesses, with the first one being the one it thinks is most likely correct:
+
+{| class=&quot;wikitable&quot;
+|-
+! Query
+! Results
+! Correct response
+! Rank
+! Reciprocal rank
+|-
+| cat
+| catten, cati, '''cats'''
+| cats
+| 3
+| 1/3
+|-
+| torus
+| torii, '''tori''', toruses
+| tori
+| 2
+| 1/2
+|-
+| virus
+| '''viruses''', virii, viri
+| viruses
+| 1
+| 1
+|}
+
+Given those three samples, we could calculate the mean reciprocal rank as (1/3&amp;nbsp;+&amp;nbsp;1/2&amp;nbsp;+&amp;nbsp;1)/3 = 11/18 or about 0.61.
+
+This basic definition does not specify what to do if...
+# none of the proposed results are correct (use mean reciprocal rank 0), or if
+# there are multiple correct answers in the list. Consider using [[Information_retrieval#Mean_Average_precision|mean average precision (MAP)]].
+
+See also [[Information retrieval]] and [[Question answering]]&lt;ref&gt;{{cite conference | title=Evaluating web-based question answering systems | booktitle=Proceedings of LREC | author=D. R. Radev, H. Qi, H. Wu, W. Fan |year=2002 }}&lt;/ref&gt;.
+
+==References==
+{{Reflist}}
+
+[[Category:Summary statistics]]
+[[Category:Information retrieval]]
+
+
+[[it:Mean reciprocal rank]]</text>
+      <sha1>22f9xf3z1uw9kdrm7bq8iskfbu8uair</sha1>
+    </revision>
+    <revision>
+      <id>411081858</id>
+      <parentid>364668152</parentid>
+      <timestamp>2011-01-31T02:16:29Z</timestamp>
+      <contributor>
+        <ip>128.12.221.77</ip>
+      </contributor>
+      <comment>upper summation index is |Q|, not Q</comment>
+      <model>wikitext</model>
+      <format>text/x-wiki</format>
+      <text xml:space="preserve" bytes="1994">{{Unreferenced|date=June 2007}}
+'''Mean reciprocal rank''' is a [[statistic]] for evaluating any process that produces a list of possible responses to a query, ordered by probability of correctness. The reciprocal rank of a query response is the [[multiplicative inverse]] of the rank of the first correct answer. The mean reciprocal rank is the average of the reciprocal ranks of results for a sample of queries Q&lt;ref&gt;{{cite conference | title=Proceedings of the 8th Text Retrieval Conference | booktitle=TREC-8 Question Answering Track Report | author=E.M. Voorhees |year=1999 | pages=77&amp;ndash;82}}&lt;/ref&gt;:
+
+:&lt;math&gt; \text{MRR} = \frac{1}{|Q|} \sum_{i=1}^{|Q|} \frac{1}{\text{rank}_i}. \!&lt;/math&gt;
+
+== Example ==
+For example, suppose we have the following three sample queries for a system that tries to translate English words to their plurals.  In each case, the system makes three guesses, with the first one being the one it thinks is most likely correct:
+
+{| class=&quot;wikitable&quot;
+|-
+! Query
+! Results
+! Correct response
+! Rank
+! Reciprocal rank
+|-
+| cat
+| catten, cati, '''cats'''
+| cats
+| 3
+| 1/3
+|-
+| torus
+| torii, '''tori''', toruses
+| tori
+| 2
+| 1/2
+|-
+| virus
+| '''viruses''', virii, viri
+| viruses
+| 1
+| 1
+|}
+
+Given those three samples, we could calculate the mean reciprocal rank as (1/3&amp;nbsp;+&amp;nbsp;1/2&amp;nbsp;+&amp;nbsp;1)/3 = 11/18 or about 0.61.
+
+This basic definition does not specify what to do if...
+# none of the proposed results are correct (use mean reciprocal rank 0), or if
+# there are multiple correct answers in the list. Consider using [[Information_retrieval#Mean_Average_precision|mean average precision (MAP)]].
+
+See also [[Information retrieval]] and [[Question answering]]&lt;ref&gt;{{cite conference | title=Evaluating web-based question answering systems | booktitle=Proceedings of LREC | author=D. R. Radev, H. Qi, H. Wu, W. Fan |year=2002 }}&lt;/ref&gt;.
+
+==References==
+{{Reflist}}
+
+[[Category:Summary statistics]]
+[[Category:Information retrieval]]
+
+
+[[it:Mean reciprocal rank]]</text>
+      <sha1>oo26pbzky4knp7d0orrg6s5afy5vafk</sha1>
+    </revision>
+    <revision>
+      <id>412864915</id>
+      <parentid>411081858</parentid>
+      <timestamp>2011-02-09T05:48:32Z</timestamp>
+      <contributor>
+        <username>FrescoBot</username>
+        <id>9021902</id>
+      </contributor>
+      <minor/>
+      <comment>Bot: fixing section wikilinks</comment>
+      <model>wikitext</model>
+      <format>text/x-wiki</format>
+      <text xml:space="preserve" bytes="1994">{{Unreferenced|date=June 2007}}
+'''Mean reciprocal rank''' is a [[statistic]] for evaluating any process that produces a list of possible responses to a query, ordered by probability of correctness. The reciprocal rank of a query response is the [[multiplicative inverse]] of the rank of the first correct answer. The mean reciprocal rank is the average of the reciprocal ranks of results for a sample of queries Q&lt;ref&gt;{{cite conference | title=Proceedings of the 8th Text Retrieval Conference | booktitle=TREC-8 Question Answering Track Report | author=E.M. Voorhees |year=1999 | pages=77&amp;ndash;82}}&lt;/ref&gt;:
+
+:&lt;math&gt; \text{MRR} = \frac{1}{|Q|} \sum_{i=1}^{|Q|} \frac{1}{\text{rank}_i}. \!&lt;/math&gt;
+
+== Example ==
+For example, suppose we have the following three sample queries for a system that tries to translate English words to their plurals.  In each case, the system makes three guesses, with the first one being the one it thinks is most likely correct:
+
+{| class=&quot;wikitable&quot;
+|-
+! Query
+! Results
+! Correct response
+! Rank
+! Reciprocal rank
+|-
+| cat
+| catten, cati, '''cats'''
+| cats
+| 3
+| 1/3
+|-
+| torus
+| torii, '''tori''', toruses
+| tori
+| 2
+| 1/2
+|-
+| virus
+| '''viruses''', virii, viri
+| viruses
+| 1
+| 1
+|}
+
+Given those three samples, we could calculate the mean reciprocal rank as (1/3&amp;nbsp;+&amp;nbsp;1/2&amp;nbsp;+&amp;nbsp;1)/3 = 11/18 or about 0.61.
+
+This basic definition does not specify what to do if...
+# none of the proposed results are correct (use mean reciprocal rank 0), or if
+# there are multiple correct answers in the list. Consider using [[Information_retrieval#Mean_average_precision|mean average precision (MAP)]].
+
+See also [[Information retrieval]] and [[Question answering]]&lt;ref&gt;{{cite conference | title=Evaluating web-based question answering systems | booktitle=Proceedings of LREC | author=D. R. Radev, H. Qi, H. Wu, W. Fan |year=2002 }}&lt;/ref&gt;.
+
+==References==
+{{Reflist}}
+
+[[Category:Summary statistics]]
+[[Category:Information retrieval]]
+
+
+[[it:Mean reciprocal rank]]</text>
+      <sha1>qwyrerqrsshj7hthfobqfpbua6juprc</sha1>
+    </revision>
+    <revision>
+      <id>439904936</id>
+      <parentid>412864915</parentid>
+      <timestamp>2011-07-17T06:35:22Z</timestamp>
+      <contributor>
+        <username>John</username>
+        <id>764861</id>
+      </contributor>
+      <comment>[[WP:AWB/T|Typo fixing]] using [[Project:AWB|AWB]]</comment>
+      <model>wikitext</model>
+      <format>text/x-wiki</format>
+      <text xml:space="preserve" bytes="1991">{{Refimprove|date=June 2007}}
+'''Mean reciprocal rank''' is a [[statistic]] for evaluating any process that produces a list of possible responses to a query, ordered by probability of correctness. The reciprocal rank of a query response is the [[multiplicative inverse]] of the rank of the first correct answer. The mean reciprocal rank is the average of the reciprocal ranks of results for a sample of queries Q&lt;ref&gt;{{cite conference | title=Proceedings of the 8th Text Retrieval Conference | booktitle=TREC-8 Question Answering Track Report | author=E.M. Voorhees |year=1999 | pages=77&amp;ndash;82}}&lt;/ref&gt;:
+
+:&lt;math&gt; \text{MRR} = \frac{1}{|Q|} \sum_{i=1}^{|Q|} \frac{1}{\text{rank}_i}. \!&lt;/math&gt;
+
+== Example ==
+For example, suppose we have the following three sample queries for a system that tries to translate English words to their plurals.  In each case, the system makes three guesses, with the first one being the one it thinks is most likely correct:
+
+{| class=&quot;wikitable&quot;
+|-
+! Query
+! Results
+! Correct response
+! Rank
+! Reciprocal rank
+|-
+| cat
+| catten, cati, '''cats'''
+| cats
+| 3
+| 1/3
+|-
+| torus
+| torii, '''tori''', toruses
+| tori
+| 2
+| 1/2
+|-
+| virus
+| '''viruses''', virii, viri
+| viruses
+| 1
+| 1
+|}
+
+Given those three samples, we could calculate the mean reciprocal rank as (1/3&amp;nbsp;+&amp;nbsp;1/2&amp;nbsp;+&amp;nbsp;1)/3 = 11/18 or about 0.61.
+
+This basic definition does not specify what to do if...
+# none of the proposed results are correct (use mean reciprocal rank 0), or if
+# there are multiple correct answers in the list. Consider using [[Information_retrieval#Mean_average_precision|mean average precision (MAP)]].
+
+See also [[Information retrieval]] and [[Question answering]].&lt;ref&gt;{{cite conference | title=Evaluating web-based question answering systems | booktitle=Proceedings of LREC | author=D. R. Radev, H. Qi, H. Wu, W. Fan |year=2002 }}&lt;/ref&gt;
+
+==References==
+{{Reflist}}
+
+[[Category:Summary statistics]]
+[[Category:Information retrieval]]
+
+[[it:Mean reciprocal rank]]</text>
+      <sha1>ajzemm0hw03vif25ovursgxy9yalznn</sha1>
+    </revision>
+    <revision>
+      <id>455292028</id>
+      <parentid>439904936</parentid>
+      <timestamp>2011-10-12T23:50:54Z</timestamp>
+      <contributor>
+        <ip>171.64.75.61</ip>
+      </contributor>
+      <model>wikitext</model>
+      <format>text/x-wiki</format>
+      <text xml:space="preserve" bytes="2092">{{Refimprove|date=June 2007}}
+'''Mean reciprocal rank''' is a [[statistic]] for evaluating any process that produces a list of possible responses to a query, ordered by probability of correctness. The reciprocal rank of a query response is the [[multiplicative inverse]] of the rank of the first correct answer. The mean reciprocal rank is the average of the reciprocal ranks of results for a sample of queries Q&lt;ref&gt;{{cite conference | title=Proceedings of the 8th Text Retrieval Conference | booktitle=TREC-8 Question Answering Track Report | author=E.M. Voorhees |year=1999 | pages=77&amp;ndash;82}}&lt;/ref&gt;:
+
+:&lt;math&gt; \text{MRR} = \frac{1}{|Q|} \sum_{i=1}^{|Q|} \frac{1}{\text{rank}_i}. \!&lt;/math&gt;
+
+The reciprocal value of the mean reciprocal rank corresponds to the [[harmonic mean]] of the ranks.
+
+== Example ==
+For example, suppose we have the following three sample queries for a system that tries to translate English words to their plurals.  In each case, the system makes three guesses, with the first one being the one it thinks is most likely correct:
+
+{| class=&quot;wikitable&quot;
+|-
+! Query
+! Results
+! Correct response
+! Rank
+! Reciprocal rank
+|-
+| cat
+| catten, cati, '''cats'''
+| cats
+| 3
+| 1/3
+|-
+| torus
+| torii, '''tori''', toruses
+| tori
+| 2
+| 1/2
+|-
+| virus
+| '''viruses''', virii, viri
+| viruses
+| 1
+| 1
+|}
+
+Given those three samples, we could calculate the mean reciprocal rank as (1/3&amp;nbsp;+&amp;nbsp;1/2&amp;nbsp;+&amp;nbsp;1)/3 = 11/18 or about 0.61.
+
+This basic definition does not specify what to do if...
+# none of the proposed results are correct (use mean reciprocal rank 0), or if
+# there are multiple correct answers in the list. Consider using [[Information_retrieval#Mean_average_precision|mean average precision (MAP)]].
+
+See also [[Information retrieval]] and [[Question answering]].&lt;ref&gt;{{cite conference | title=Evaluating web-based question answering systems | booktitle=Proceedings of LREC | author=D. R. Radev, H. Qi, H. Wu, W. Fan |year=2002 }}&lt;/ref&gt;
+
+==References==
+{{Reflist}}
+
+[[Category:Summary statistics]]
+[[Category:Information retrieval]]
+
+[[it:Mean reciprocal rank]]</text>
+      <sha1>em9mw10a6tsbwtkiwv3dweemeu57phx</sha1>
+    </revision>
+    <revision>
+      <id>481810531</id>
+      <parentid>455292028</parentid>
+      <timestamp>2012-03-14T07:25:11Z</timestamp>
+      <contributor>
+        <username>Luckas-bot</username>
+        <id>7320905</id>
+      </contributor>
+      <minor/>
+      <comment>r2.7.1) (Robot: Adding [[zh:平均倒数排名]]</comment>
+      <model>wikitext</model>
+      <format>text/x-wiki</format>
+      <text xml:space="preserve" bytes="2118">{{Refimprove|date=June 2007}}
+'''Mean reciprocal rank''' is a [[statistic]] for evaluating any process that produces a list of possible responses to a query, ordered by probability of correctness. The reciprocal rank of a query response is the [[multiplicative inverse]] of the rank of the first correct answer. The mean reciprocal rank is the average of the reciprocal ranks of results for a sample of queries Q&lt;ref&gt;{{cite conference | title=Proceedings of the 8th Text Retrieval Conference | booktitle=TREC-8 Question Answering Track Report | author=E.M. Voorhees |year=1999 | pages=77&amp;ndash;82}}&lt;/ref&gt;:
+
+:&lt;math&gt; \text{MRR} = \frac{1}{|Q|} \sum_{i=1}^{|Q|} \frac{1}{\text{rank}_i}. \!&lt;/math&gt;
+
+The reciprocal value of the mean reciprocal rank corresponds to the [[harmonic mean]] of the ranks.
+
+== Example ==
+For example, suppose we have the following three sample queries for a system that tries to translate English words to their plurals.  In each case, the system makes three guesses, with the first one being the one it thinks is most likely correct:
+
+{| class=&quot;wikitable&quot;
+|-
+! Query
+! Results
+! Correct response
+! Rank
+! Reciprocal rank
+|-
+| cat
+| catten, cati, '''cats'''
+| cats
+| 3
+| 1/3
+|-
+| torus
+| torii, '''tori''', toruses
+| tori
+| 2
+| 1/2
+|-
+| virus
+| '''viruses''', virii, viri
+| viruses
+| 1
+| 1
+|}
+
+Given those three samples, we could calculate the mean reciprocal rank as (1/3&amp;nbsp;+&amp;nbsp;1/2&amp;nbsp;+&amp;nbsp;1)/3 = 11/18 or about 0.61.
+
+This basic definition does not specify what to do if...
+# none of the proposed results are correct (use mean reciprocal rank 0), or if
+# there are multiple correct answers in the list. Consider using [[Information_retrieval#Mean_average_precision|mean average precision (MAP)]].
+
+See also [[Information retrieval]] and [[Question answering]].&lt;ref&gt;{{cite conference | title=Evaluating web-based question answering systems | booktitle=Proceedings of LREC | author=D. R. Radev, H. Qi, H. Wu, W. Fan |year=2002 }}&lt;/ref&gt;
+
+==References==
+{{Reflist}}
+
+[[Category:Summary statistics]]
+[[Category:Information retrieval]]
+
+[[it:Mean reciprocal rank]]
+[[zh:平均倒数排名]]</text>
+      <sha1>awox53zkeamwka6e4ar0mhq6qmwgvt7</sha1>
+    </revision>
+    <revision>
+      <id>506243536</id>
+      <parentid>481810531</parentid>
+      <timestamp>2012-08-07T15:33:13Z</timestamp>
+      <contributor>
+        <username>Wileeam</username>
+        <id>12139272</id>
+      </contributor>
+      <minor/>
+      <model>wikitext</model>
+      <format>text/x-wiki</format>
+      <text xml:space="preserve" bytes="2126">{{Refimprove|date=June 2007}}
+'''Mean reciprocal rank''' is a [[statistic]] measure for evaluating any process that produces a list of possible responses to a query, ordered by probability of correctness. The reciprocal rank of a query response is the [[multiplicative inverse]] of the rank of the first correct answer. The mean reciprocal rank is the average of the reciprocal ranks of results for a sample of queries Q&lt;ref&gt;{{cite conference | title=Proceedings of the 8th Text Retrieval Conference | booktitle=TREC-8 Question Answering Track Report | author=E.M. Voorhees |year=1999 | pages=77&amp;ndash;82}}&lt;/ref&gt;:
+
+:&lt;math&gt; \text{MRR} = \frac{1}{|Q|} \sum_{i=1}^{|Q|} \frac{1}{\text{rank}_i}. \!&lt;/math&gt;
+
+The reciprocal value of the mean reciprocal rank corresponds to the [[harmonic mean]] of the ranks.
+
+== Example ==
+For example, suppose we have the following three sample queries for a system that tries to translate English words to their plurals.  In each case, the system makes three guesses, with the first one being the one it thinks is most likely correct:
+
+{| class=&quot;wikitable&quot;
+|-
+! Query
+! Results
+! Correct response
+! Rank
+! Reciprocal rank
+|-
+| cat
+| catten, cati, '''cats'''
+| cats
+| 3
+| 1/3
+|-
+| torus
+| torii, '''tori''', toruses
+| tori
+| 2
+| 1/2
+|-
+| virus
+| '''viruses''', virii, viri
+| viruses
+| 1
+| 1
+|}
+
+Given those three samples, we could calculate the mean reciprocal rank as (1/3&amp;nbsp;+&amp;nbsp;1/2&amp;nbsp;+&amp;nbsp;1)/3 = 11/18 or about 0.61.
+
+This basic definition does not specify what to do if...
+# none of the proposed results are correct (use mean reciprocal rank 0), or if
+# there are multiple correct answers in the list. Consider using [[Information_retrieval#Mean_average_precision|mean average precision (MAP)]].
+
+See also [[Information retrieval]] and [[Question answering]].&lt;ref&gt;{{cite conference | title=Evaluating web-based question answering systems | booktitle=Proceedings of LREC | author=D. R. Radev, H. Qi, H. Wu, W. Fan |year=2002 }}&lt;/ref&gt;
+
+==References==
+{{Reflist}}
+
+[[Category:Summary statistics]]
+[[Category:Information retrieval]]
+
+[[it:Mean reciprocal rank]]
+[[zh:平均倒数排名]]</text>
+      <sha1>ouyozbbid8oi7am29dop9crj53c409i</sha1>
+    </revision>
+    <revision>
+      <id>542603921</id>
+      <parentid>506243536</parentid>
+      <timestamp>2013-03-07T15:34:25Z</timestamp>
+      <contributor>
+        <username>Yobot</username>
+        <id>7328338</id>
+      </contributor>
+      <minor/>
+      <comment>[[WP:CHECKWIKI]] errors fixed + general fixes using [[Project:AWB|AWB]] (8961)</comment>
+      <model>wikitext</model>
+      <format>text/x-wiki</format>
+      <text xml:space="preserve" bytes="2126">{{Refimprove|date=June 2007}}
+'''Mean reciprocal rank''' is a [[statistic]] measure for evaluating any process that produces a list of possible responses to a query, ordered by probability of correctness. The reciprocal rank of a query response is the [[multiplicative inverse]] of the rank of the first correct answer. The mean reciprocal rank is the average of the reciprocal ranks of results for a sample of queries Q:&lt;ref&gt;{{cite conference | title=Proceedings of the 8th Text Retrieval Conference | booktitle=TREC-8 Question Answering Track Report | author=E.M. Voorhees |year=1999 | pages=77&amp;ndash;82}}&lt;/ref&gt;
+
+:&lt;math&gt; \text{MRR} = \frac{1}{|Q|} \sum_{i=1}^{|Q|} \frac{1}{\text{rank}_i}. \!&lt;/math&gt;
+
+The reciprocal value of the mean reciprocal rank corresponds to the [[harmonic mean]] of the ranks.
+
+== Example ==
+For example, suppose we have the following three sample queries for a system that tries to translate English words to their plurals.  In each case, the system makes three guesses, with the first one being the one it thinks is most likely correct:
+
+{| class=&quot;wikitable&quot;
+|-
+! Query
+! Results
+! Correct response
+! Rank
+! Reciprocal rank
+|-
+| cat
+| catten, cati, '''cats'''
+| cats
+| 3
+| 1/3
+|-
+| torus
+| torii, '''tori''', toruses
+| tori
+| 2
+| 1/2
+|-
+| virus
+| '''viruses''', virii, viri
+| viruses
+| 1
+| 1
+|}
+
+Given those three samples, we could calculate the mean reciprocal rank as (1/3&amp;nbsp;+&amp;nbsp;1/2&amp;nbsp;+&amp;nbsp;1)/3 = 11/18 or about 0.61.
+
+This basic definition does not specify what to do if...
+# none of the proposed results are correct (use mean reciprocal rank 0), or if
+# there are multiple correct answers in the list. Consider using [[Information_retrieval#Mean_average_precision|mean average precision (MAP)]].
+
+See also [[Information retrieval]] and [[Question answering]].&lt;ref&gt;{{cite conference | title=Evaluating web-based question answering systems | booktitle=Proceedings of LREC | author=D. R. Radev, H. Qi, H. Wu, W. Fan |year=2002 }}&lt;/ref&gt;
+
+==References==
+{{Reflist}}
+
+[[Category:Summary statistics]]
+[[Category:Information retrieval]]
+
+[[it:Mean reciprocal rank]]
+[[zh:平均倒数排名]]</text>
+      <sha1>40z7onsnvxvympnbn8tv5facsny6h3b</sha1>
+    </revision>
+    <revision>
+      <id>544798503</id>
+      <parentid>542603921</parentid>
+      <timestamp>2013-03-17T00:47:20Z</timestamp>
+      <contributor>
+        <username>Addbot</username>
+        <id>6569922</id>
+      </contributor>
+      <minor/>
+      <comment>[[User:Addbot|Bot:]] Migrating 2 interwiki links, now provided by [[Wikipedia:Wikidata|Wikidata]] on [[d:q3853443]]</comment>
+      <model>wikitext</model>
+      <format>text/x-wiki</format>
+      <text xml:space="preserve" bytes="2071">{{Refimprove|date=June 2007}}
+'''Mean reciprocal rank''' is a [[statistic]] measure for evaluating any process that produces a list of possible responses to a query, ordered by probability of correctness. The reciprocal rank of a query response is the [[multiplicative inverse]] of the rank of the first correct answer. The mean reciprocal rank is the average of the reciprocal ranks of results for a sample of queries Q:&lt;ref&gt;{{cite conference | title=Proceedings of the 8th Text Retrieval Conference | booktitle=TREC-8 Question Answering Track Report | author=E.M. Voorhees |year=1999 | pages=77&amp;ndash;82}}&lt;/ref&gt;
+
+:&lt;math&gt; \text{MRR} = \frac{1}{|Q|} \sum_{i=1}^{|Q|} \frac{1}{\text{rank}_i}. \!&lt;/math&gt;
+
+The reciprocal value of the mean reciprocal rank corresponds to the [[harmonic mean]] of the ranks.
+
+== Example ==
+For example, suppose we have the following three sample queries for a system that tries to translate English words to their plurals.  In each case, the system makes three guesses, with the first one being the one it thinks is most likely correct:
+
+{| class=&quot;wikitable&quot;
+|-
+! Query
+! Results
+! Correct response
+! Rank
+! Reciprocal rank
+|-
+| cat
+| catten, cati, '''cats'''
+| cats
+| 3
+| 1/3
+|-
+| torus
+| torii, '''tori''', toruses
+| tori
+| 2
+| 1/2
+|-
+| virus
+| '''viruses''', virii, viri
+| viruses
+| 1
+| 1
+|}
+
+Given those three samples, we could calculate the mean reciprocal rank as (1/3&amp;nbsp;+&amp;nbsp;1/2&amp;nbsp;+&amp;nbsp;1)/3 = 11/18 or about 0.61.
+
+This basic definition does not specify what to do if...
+# none of the proposed results are correct (use mean reciprocal rank 0), or if
+# there are multiple correct answers in the list. Consider using [[Information_retrieval#Mean_average_precision|mean average precision (MAP)]].
+
+See also [[Information retrieval]] and [[Question answering]].&lt;ref&gt;{{cite conference | title=Evaluating web-based question answering systems | booktitle=Proceedings of LREC | author=D. R. Radev, H. Qi, H. Wu, W. Fan |year=2002 }}&lt;/ref&gt;
+
+==References==
+{{Reflist}}
+
+[[Category:Summary statistics]]
+[[Category:Information retrieval]]</text>
+      <sha1>i3qe3h0ym9vea7zplsgnlzqrw0eqg2p</sha1>
+    </revision>
+    <revision>
+      <id>547334495</id>
+      <parentid>544798503</parentid>
+      <timestamp>2013-03-27T21:34:22Z</timestamp>
+      <contributor>
+        <ip>193.157.137.32</ip>
+      </contributor>
+      <model>wikitext</model>
+      <format>text/x-wiki</format>
+      <text xml:space="preserve" bytes="2083">{{Refimprove|date=June 2007}}
+'''Mean reciprocal rank''' is a [[statistic]] measure for evaluating any process that produces a list of possible responses to a sample of queries, ordered by probability of correctness. The reciprocal rank of a query response is the [[multiplicative inverse]] of the rank of the first correct answer. The mean reciprocal rank is the average of the reciprocal ranks of results for a sample of queries Q:&lt;ref&gt;{{cite conference | title=Proceedings of the 8th Text Retrieval Conference | booktitle=TREC-8 Question Answering Track Report | author=E.M. Voorhees |year=1999 | pages=77&amp;ndash;82}}&lt;/ref&gt;
+
+:&lt;math&gt; \text{MRR} = \frac{1}{|Q|} \sum_{i=1}^{|Q|} \frac{1}{\text{rank}_i}. \!&lt;/math&gt;
+
+The reciprocal value of the mean reciprocal rank corresponds to the [[harmonic mean]] of the ranks.
+
+== Example ==
+For example, suppose we have the following three sample queries for a system that tries to translate English words to their plurals.  In each case, the system makes three guesses, with the first one being the one it thinks is most likely correct:
+
+{| class=&quot;wikitable&quot;
+|-
+! Query
+! Results
+! Correct response
+! Rank
+! Reciprocal rank
+|-
+| cat
+| catten, cati, '''cats'''
+| cats
+| 3
+| 1/3
+|-
+| torus
+| torii, '''tori''', toruses
+| tori
+| 2
+| 1/2
+|-
+| virus
+| '''viruses''', virii, viri
+| viruses
+| 1
+| 1
+|}
+
+Given those three samples, we could calculate the mean reciprocal rank as (1/3&amp;nbsp;+&amp;nbsp;1/2&amp;nbsp;+&amp;nbsp;1)/3 = 11/18 or about 0.61.
+
+This basic definition does not specify what to do if...
+# none of the proposed results are correct (use mean reciprocal rank 0), or if
+# there are multiple correct answers in the list. Consider using [[Information_retrieval#Mean_average_precision|mean average precision (MAP)]].
+
+See also [[Information retrieval]] and [[Question answering]].&lt;ref&gt;{{cite conference | title=Evaluating web-based question answering systems | booktitle=Proceedings of LREC | author=D. R. Radev, H. Qi, H. Wu, W. Fan |year=2002 }}&lt;/ref&gt;
+
+==References==
+{{Reflist}}
+
+[[Category:Summary statistics]]
+[[Category:Information retrieval]]</text>
+      <sha1>cls9wwc2nq2ik1mg8nwpfjynyzkse57</sha1>
+    </revision>
+    <revision>
+      <id>598881551</id>
+      <parentid>547334495</parentid>
+      <timestamp>2014-03-09T20:15:42Z</timestamp>
+      <contributor>
+        <ip>84.24.185.157</ip>
+      </contributor>
+      <comment>/* Example */</comment>
+      <model>wikitext</model>
+      <format>text/x-wiki</format>
+      <text xml:space="preserve" bytes="2078">{{Refimprove|date=June 2007}}
+'''Mean reciprocal rank''' is a [[statistic]] measure for evaluating any process that produces a list of possible responses to a sample of queries, ordered by probability of correctness. The reciprocal rank of a query response is the [[multiplicative inverse]] of the rank of the first correct answer. The mean reciprocal rank is the average of the reciprocal ranks of results for a sample of queries Q:&lt;ref&gt;{{cite conference | title=Proceedings of the 8th Text Retrieval Conference | booktitle=TREC-8 Question Answering Track Report | author=E.M. Voorhees |year=1999 | pages=77&amp;ndash;82}}&lt;/ref&gt;
+
+:&lt;math&gt; \text{MRR} = \frac{1}{|Q|} \sum_{i=1}^{|Q|} \frac{1}{\text{rank}_i}. \!&lt;/math&gt;
+
+The reciprocal value of the mean reciprocal rank corresponds to the [[harmonic mean]] of the ranks.
+
+== Example ==
+For example, suppose we have the following three sample queries for a system that tries to translate English words to their plurals.  In each case, the system makes three guesses, with the first one being the one it thinks is most likely correct:
+
+{| class=&quot;wikitable&quot;
+|-
+! Query
+! Results
+! Correct response
+! Rank
+! Reciprocal rank
+|-
+| cat
+| catten, cati, '''cats'''
+| cats
+| 3
+| 1/3
+|-
+| torus
+| torii, '''tori''', toruses
+| tori
+| 2
+| 1/2
+|-
+| virus
+| '''viruses''', virii, viri
+| viruses
+| 1
+| 1
+|}
+
+Given those three samples, we could calculate the mean reciprocal rank as (1/3&amp;nbsp;+&amp;nbsp;1/2&amp;nbsp;+&amp;nbsp;1)/3 = 11/18 or about 0.61.
+
+This basic definition does not specify what to do if...
+# none of the proposed results are correct (use reciprocal rank 0), or if
+# there are multiple correct answers in the list. Consider using [[Information_retrieval#Mean_average_precision|mean average precision (MAP)]].
+
+See also [[Information retrieval]] and [[Question answering]].&lt;ref&gt;{{cite conference | title=Evaluating web-based question answering systems | booktitle=Proceedings of LREC | author=D. R. Radev, H. Qi, H. Wu, W. Fan |year=2002 }}&lt;/ref&gt;
+
+==References==
+{{Reflist}}
+
+[[Category:Summary statistics]]
+[[Category:Information retrieval]]</text>
+      <sha1>kobhmf2l1xfylau3z2d17bjk3q2d4fx</sha1>
+    </revision>
+    <revision>
+      <id>666713905</id>
+      <parentid>598881551</parentid>
+      <timestamp>2015-06-13T03:40:15Z</timestamp>
+      <contributor>
+        <username>Beland</username>
+        <id>57939</id>
+      </contributor>
+      <comment>Category:Information retrieval evaluation</comment>
+      <model>wikitext</model>
+      <format>text/x-wiki</format>
+      <text xml:space="preserve" bytes="2089">{{Refimprove|date=June 2007}}
+'''Mean reciprocal rank''' is a [[statistic]] measure for evaluating any process that produces a list of possible responses to a sample of queries, ordered by probability of correctness. The reciprocal rank of a query response is the [[multiplicative inverse]] of the rank of the first correct answer. The mean reciprocal rank is the average of the reciprocal ranks of results for a sample of queries Q:&lt;ref&gt;{{cite conference | title=Proceedings of the 8th Text Retrieval Conference | booktitle=TREC-8 Question Answering Track Report | author=E.M. Voorhees |year=1999 | pages=77&amp;ndash;82}}&lt;/ref&gt;
+
+:&lt;math&gt; \text{MRR} = \frac{1}{|Q|} \sum_{i=1}^{|Q|} \frac{1}{\text{rank}_i}. \!&lt;/math&gt;
+
+The reciprocal value of the mean reciprocal rank corresponds to the [[harmonic mean]] of the ranks.
+
+== Example ==
+For example, suppose we have the following three sample queries for a system that tries to translate English words to their plurals.  In each case, the system makes three guesses, with the first one being the one it thinks is most likely correct:
+
+{| class=&quot;wikitable&quot;
+|-
+! Query
+! Results
+! Correct response
+! Rank
+! Reciprocal rank
+|-
+| cat
+| catten, cati, '''cats'''
+| cats
+| 3
+| 1/3
+|-
+| torus
+| torii, '''tori''', toruses
+| tori
+| 2
+| 1/2
+|-
+| virus
+| '''viruses''', virii, viri
+| viruses
+| 1
+| 1
+|}
+
+Given those three samples, we could calculate the mean reciprocal rank as (1/3&amp;nbsp;+&amp;nbsp;1/2&amp;nbsp;+&amp;nbsp;1)/3 = 11/18 or about 0.61.
+
+This basic definition does not specify what to do if...
+# none of the proposed results are correct (use reciprocal rank 0), or if
+# there are multiple correct answers in the list. Consider using [[Information_retrieval#Mean_average_precision|mean average precision (MAP)]].
+
+See also [[Information retrieval]] and [[Question answering]].&lt;ref&gt;{{cite conference | title=Evaluating web-based question answering systems | booktitle=Proceedings of LREC | author=D. R. Radev, H. Qi, H. Wu, W. Fan |year=2002 }}&lt;/ref&gt;
+
+==References==
+{{Reflist}}
+
+[[Category:Summary statistics]]
+[[Category:Information retrieval evaluation]]</text>
+      <sha1>nbidqiajq1ysterlyvwii4mo7nq1c1r</sha1>
+    </revision>
+  </page>
+</mediawiki>

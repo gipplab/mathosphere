@@ -22,6 +22,12 @@ public class TextAnnotatorMapperTest {
 
   public static final TextAnnotatorMapper TEST_INSTANCE = createTestInstance();
 
+	@Test
+	public void readRecentPlainWikiDump() throws Exception {
+		List<RawWikiDocument> docs = readWikiTextDocuments("mrrFullHist.xml");
+		assertEquals(1,docs.size());
+	}
+
   @Test
   public void test() throws Exception {
     final String mathMLExtract = WikiTextUtilsTest.getTestResource("schrödinger_eq.xml").trim();
