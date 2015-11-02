@@ -22,7 +22,7 @@ public class AppModule {
 	@Provides
 	@Named("restx.admin.password")
 	public String restxAdminPassword() {
-		return System.getProperty( "password" , " " );
+		return System.getProperty( "password" , "mathosphere" );
 	}
 
 	@Provides

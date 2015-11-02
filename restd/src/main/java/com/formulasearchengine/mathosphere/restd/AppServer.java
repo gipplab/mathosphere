@@ -32,7 +32,7 @@ public class AppServer {
 		System.setProperty( "restx.app.package", "com.formulasearchengine.backend.basex" );
 		String path = System.getProperty( "path" , System.getProperty( "defaultPath" ) );
 		Server srv = null;
-		System.out.println("admin password is " + System.getProperty( "password" ) );
+		System.out.println("admin password is " + System.getProperty( "password" , "mathosphere" ) );
 		try {
 			File f = new File( path );
 			srv = Server.getInstance();
