@@ -122,6 +122,18 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+    <profiles>
+        <profile>
+            <id>tomcat-localhost</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <tomcat-server>localhost</tomcat-server>
+                <tomcat-url>http://localhost:8080/manager</tomcat-url>
+            </properties>
+        </profile>
+    </profiles>
     <build>
         <plugins>
             <plugin>
@@ -190,7 +202,8 @@
                 <artifactId>tomcat7-maven-plugin</artifactId>
                 <version>2.2</version>
                 <configuration>
-                    <server>mathosphere</server>
+                    <server>${tomcat-server}</server>
+                    <url>${tomcat-url}</url>
                 </configuration>
             </plugin>
         </plugins>
