@@ -38,6 +38,17 @@ public class FlinkMlpRelationFinder {
     env.execute("Relation Finder");
   }
 
+	public String runFromText(FlinkMlpCommandConfig config, String input) throws Exception {
+		final TextAnnotatorMapper textAnnotatorMapper = new TextAnnotatorMapper(config);
+		textAnnotatorMapper.open(null);
+		final CreateCandidatesMapper candidatesMapper = new CreateCandidatesMapper(config);
+		final JsonSerializerMapper<Object> serializerMapper = new JsonSerializerMapper<>();
+
+		final ParsedWikiDocument parsedWikiDocument = textAnnotatorMapper.parse(input);
+		final WikiDocumentOutput wikiDocumentOutput = candidatesMapper.map(parsedWikiDocument);
+		return serializerMapper.map(wikiDocumentOutput);
+	}
+
   public static DataSource<String> readWikiDump(FlinkMlpCommandConfig config, ExecutionEnvironment env) {
     Path filePath = new Path(config.getDataset());
     TextInputFormat inp = new TextInputFormat(filePath);

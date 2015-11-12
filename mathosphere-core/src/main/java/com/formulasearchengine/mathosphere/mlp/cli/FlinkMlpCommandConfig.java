@@ -16,7 +16,7 @@ public class FlinkMlpCommandConfig extends BaseConfig implements Serializable {
   private String outputdir;
 
 
-  FlinkMlpCommandConfig() {
+  public FlinkMlpCommandConfig() {
   }
 
   public static FlinkMlpCommandConfig test() {

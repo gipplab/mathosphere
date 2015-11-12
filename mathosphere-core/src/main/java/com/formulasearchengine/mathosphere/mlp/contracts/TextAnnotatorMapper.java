@@ -41,26 +41,35 @@ public class TextAnnotatorMapper extends RichMapFunction<RawWikiDocument, Parsed
   public ParsedWikiDocument map(RawWikiDocument doc) throws Exception {
     LOGGER.info("processing \"{}\"...", doc.title);
 
-    List<MathTag> mathTags = WikiTextUtils.findMathTags(doc.text);
-    List<Formula> formulas = toFormulas(mathTags,config.getUseTeXIdentifiers());
-
-    Multiset<String> allIdentifiers = HashMultiset.create();
-    for (Formula formula : formulas) {
-      for (Multiset.Entry<String> entry : formula.getIndentifiers().entrySet()) {
-        allIdentifiers.add(entry.getElement(), entry.getCount());
-      }
-    }
-
-    LOGGER.debug("identifiers in \"{}\" from {} formulas: {}", doc.title, formulas.size(), allIdentifiers);
-
-    String newText = WikiTextUtils.replaceAllFormulas(doc.text, mathTags);
-    String cleanText = WikiTextUtils.extractPlainText(newText);
-    List<Sentence> sentences = posTagger.process(cleanText, formulas);
-
-    return new ParsedWikiDocument(doc.title, allIdentifiers, formulas, sentences);
+	  final ParsedWikiDocument parse = parse(doc.text,doc.title);
+	  LOGGER.debug("identifiers in \"{}\" from {} formulas: {}", doc.title, parse.getFormulas().size(),
+			  parse.getIdentifiers());
+	  return parse;
   }
 
-  public static List<Formula> toFormulas(List<MathTag> mathTags, Boolean useTeXIdentifiers) {
+	public ParsedWikiDocument parse(String wikitext, String title) {
+		List<MathTag> mathTags = WikiTextUtils.findMathTags(wikitext);
+		List<Formula> formulas = toFormulas(mathTags,config.getUseTeXIdentifiers());
+
+		Multiset<String> allIdentifiers = HashMultiset.create();
+		for (Formula formula : formulas) {
+		  for (Multiset.Entry<String> entry : formula.getIndentifiers().entrySet()) {
+		    allIdentifiers.add(entry.getElement(), entry.getCount());
+		  }
+		}
+
+		String newText = WikiTextUtils.replaceAllFormulas(wikitext, mathTags);
+		String cleanText = WikiTextUtils.extractPlainText(newText);
+		List<Sentence> sentences = posTagger.process(cleanText, formulas);
+
+		return new ParsedWikiDocument(title, allIdentifiers, formulas, sentences);
+	}
+
+	public ParsedWikiDocument parse(String wikitext){
+		return parse(wikitext,"no title specified");
+	}
+
+	public static List<Formula> toFormulas(List<MathTag> mathTags, Boolean useTeXIdentifiers) {
     List<Formula> formulas = Lists.newArrayList();
     for (MathTag math : mathTags) {
       Multiset<String> identifiers = MathMLUtils.extractIdentifiers(math,useTeXIdentifiers);
