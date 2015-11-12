@@ -34,10 +34,10 @@ public class AppServer {
 		Server srv = null;
 		System.out.println("admin password is " + System.getProperty( "password" , "mathosphere" ) );
 		try {
+			System.out.println( "importing data from " + path );
 			File f = new File( path );
 			srv = Server.getInstance();
 			srv.startup(f);
-			System.out.println( "importing data from " + path );
 		} catch ( IOException e ) {
 			e.printStackTrace();
 		}

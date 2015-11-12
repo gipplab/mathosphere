@@ -1,0 +1,59 @@
+title: Analye wiki text 20151112 222455
+given:
+  - time: 2015-11-12T22:24:55.784+01:00
+wts:
+  - when: |
+       POST AnalyzeWikiText
+       Cookie: RestxSession={"principal":"admin","sessionKey":"3df6cf2e-15d1-4d71-adff-1d5c3038a781","_expires":"2015-12-12T22:24:55.784+01:00"}; RestxSessionSignature=2QhtoRlUVCh+2aXsz3UZjmY/vGc=
+
+        {"wikitext":"The mass energy equavalence <math>E=mc^{2}</math> describes how energy ''E'' relates to the mass ''m'' via the [[speed of light]] ''c''"}
+    then: |
+        {
+          "title" : "no title specified",
+          "relations" : [ {
+            "identifier" : "c",
+            "definition" : "speed of light",
+            "score" : 0.9869785463868026,
+            "identifierPosition" : 15,
+            "wordPosition" : 14,
+            "sentence" : null
+          }, {
+            "identifier" : "E",
+            "definition" : "energy",
+            "score" : 0.9869785463868026,
+            "identifierPosition" : 6,
+            "wordPosition" : 5,
+            "sentence" : null
+          }, {
+            "identifier" : "E",
+            "definition" : "mass",
+            "score" : 0.8293871184673581,
+            "identifierPosition" : 6,
+            "wordPosition" : 10,
+            "sentence" : null
+          }, {
+            "identifier" : "m",
+            "definition" : "mass",
+            "score" : 0.9869785463868026,
+            "identifierPosition" : 11,
+            "wordPosition" : 10,
+            "sentence" : null
+          }, {
+            "identifier" : "m",
+            "definition" : "speed of light",
+            "score" : 0.8948402760288094,
+            "identifierPosition" : 11,
+            "wordPosition" : 14,
+            "sentence" : null
+          } ],
+          "identifiers" : [ {
+            "count" : 1,
+            "element" : "c"
+          }, {
+            "count" : 1,
+            "element" : "E"
+          }, {
+            "count" : 1,
+            "element" : "m"
+          } ]
+        }

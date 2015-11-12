@@ -39,14 +39,17 @@ public class FlinkMlpRelationFinder {
   }
 
 	public String runFromText(FlinkMlpCommandConfig config, String input) throws Exception {
+		final JsonSerializerMapper<Object> serializerMapper = new JsonSerializerMapper<>();
+		return serializerMapper.map(outDocFromText(config,input));
+	}
+
+	public WikiDocumentOutput outDocFromText(FlinkMlpCommandConfig config, String input) throws Exception {
 		final TextAnnotatorMapper textAnnotatorMapper = new TextAnnotatorMapper(config);
 		textAnnotatorMapper.open(null);
 		final CreateCandidatesMapper candidatesMapper = new CreateCandidatesMapper(config);
-		final JsonSerializerMapper<Object> serializerMapper = new JsonSerializerMapper<>();
 
 		final ParsedWikiDocument parsedWikiDocument = textAnnotatorMapper.parse(input);
-		final WikiDocumentOutput wikiDocumentOutput = candidatesMapper.map(parsedWikiDocument);
-		return serializerMapper.map(wikiDocumentOutput);
+		return candidatesMapper.map(parsedWikiDocument);
 	}
 
   public static DataSource<String> readWikiDump(FlinkMlpCommandConfig config, ExecutionEnvironment env) {
