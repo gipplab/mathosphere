@@ -15,16 +15,17 @@ import restx.security.PermitAll;
 public class MlpResource {
 
 
+	private final FlinkMlpCommandConfig config = FlinkMlpCommandConfig.test();
+	private final FlinkMlpRelationFinder finder = new FlinkMlpRelationFinder();
+
 	@POST("/AnalyzeWikiText")
 	@PermitAll
 	public WikiDocumentOutput AnalyeWikiText(WikiTextRequest input) {
-		FlinkMlpCommandConfig config = FlinkMlpCommandConfig.test();
-		final FlinkMlpRelationFinder finder = new FlinkMlpRelationFinder();
 		try {
 			return finder.outDocFromText(config, input.wikitext);
 		} catch (Exception e) {
 			e.printStackTrace();
-			return new WikiDocumentOutput();
+			return new WikiDocumentOutput(false);
 		}
 	}
 }
