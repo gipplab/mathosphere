@@ -1,10 +1,10 @@
-title: Analye wiki text 20151112 222455
+title: Analye wiki text 20151115 204520
 given:
-  - time: 2015-11-12T22:24:55.784+01:00
+  - time: 2015-11-15T20:45:20.325+01:00
 wts:
   - when: |
        POST AnalyzeWikiText
-       Cookie: RestxSession={"principal":"admin","sessionKey":"3df6cf2e-15d1-4d71-adff-1d5c3038a781","_expires":"2015-12-12T22:24:55.784+01:00"}; RestxSessionSignature=2QhtoRlUVCh+2aXsz3UZjmY/vGc=
+       Cookie: RestxSession={"principal":"admin","sessionKey":"fa6349c8-7fbb-4569-9d5d-8cc3d0695d73","_expires":"2015-12-15T20:45:20.325+01:00"}; RestxSessionSignature=jYATOM5pw2r4Ek4n4nPLzqZ/WMI=
 
         {"wikitext":"The mass energy equavalence <math>E=mc^{2}</math> describes how energy ''E'' relates to the mass ''m'' via the [[speed of light]] ''c''"}
     then: |
@@ -55,5 +55,6 @@ wts:
           }, {
             "count" : 1,
             "element" : "m"
-          } ]
+          } ],
+          "success" : true
         }

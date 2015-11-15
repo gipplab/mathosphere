@@ -1,0 +1,16 @@
+title: Analye wiki text 20151115 204554
+given:
+  - time: 2015-11-15T20:45:54.630+01:00
+wts:
+  - when: |
+       POST AnalyzeWikiText
+       Cookie: RestxSession={"principal":"admin","sessionKey":"fa6349c8-7fbb-4569-9d5d-8cc3d0695d73","_expires":"2015-12-15T20:45:54.630+01:00"}; RestxSessionSignature=9Wjy3kO32Iuwi8oDZoaGoQLvEGQ=
+
+        {"wikitext":"This is a test without formulae."}
+    then: |
+        {
+          "title" : "no title specified",
+          "relations" : [ ],
+          "identifiers" : [ ],
+          "success" : true
+        }
