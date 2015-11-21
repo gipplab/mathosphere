@@ -1,0 +1,12 @@
+title: Info statement 20151121 091440
+given:
+  - time: 2015-11-21T09:14:40.119+01:00
+wts:
+  - when: |
+       GET _info
+       Cookie: RestxSession={"principal":"admin","sessionKey":"b86ec539-b604-46a5-8855-2faa0925d4d9","_expires":"2015-12-21T09:14:40.119+01:00"}; RestxSessionSignature=JWkAtXiuZup11J7r5YQpUTp+a0I=
+    then: |
+        {
+          "name" : "mathosphere",
+          "version" : "3.0.0-SNAPSHOT"
+        }

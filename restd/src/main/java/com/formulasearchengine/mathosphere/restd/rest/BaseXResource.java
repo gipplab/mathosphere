@@ -3,6 +3,7 @@ package com.formulasearchengine.mathosphere.restd.rest;
 import com.formulasearchengine.mathosphere.basex.Client;
 import com.formulasearchengine.mathosphere.restd.domain.MathRequest;
 import com.formulasearchengine.mathosphere.restd.domain.MathUpdate;
+import com.formulasearchengine.mathosphere.restd.domain.InfoStatement;
 import restx.annotations.GET;
 import restx.annotations.POST;
 import restx.annotations.RestxResource;
@@ -12,6 +13,11 @@ import restx.security.PermitAll;
 @Component
 @RestxResource
 public class BaseXResource {
+	@GET("/_info")
+	@PermitAll
+	public InfoStatement infoStatement() {
+		return new InfoStatement();
+	}
 	@GET("/texquery")
 	@PermitAll
 	public MathRequest texquery( String query ) {
