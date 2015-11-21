@@ -50,7 +50,7 @@ Afterwards you can start the server.
 ```
 cd /your/path/to/mathosphere/restd
 mvn clean install -DskipTests
-mvn mvn tomcat7:deploy 
+mvn tomcat7:deploy 
 mvn tomcat7:redeploy
 ```
 
