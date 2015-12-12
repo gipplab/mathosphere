@@ -32,10 +32,10 @@ We are using the [NTCIR-11 Wikipedia](http://ntcir11-wmc.nii.ac.jp/index.php/NTC
 training dataset.
 
 ### Master branch tests
-[![Build Status](https://drone.io/github.com/TU-Berlin/mathosphere/status.png)](https://drone.io/github.com/TU-Berlin/mathosphere/latest)
-
+[![Build Status](https://drone.io/github.com/TU-Berlin/mathosphere2/status.png)](https://drone.io/github.com/TU-Berlin/mathosphere2/latest)
+<!--
 [![Build Status](https://travis-ci.org/TU-Berlin/mathosphere.svg)](https://travis-ci.org/TU-Berlin/mathosphere)
-
+-->
 [![Coverage Status](https://coveralls.io/repos/TU-Berlin/mathosphere/badge.svg)](https://coveralls.io/r/TU-Berlin/mathosphere )
 
 ### Building this project
