@@ -1,7 +1,13 @@
 package com.formulasearchengine.mathosphere.mlp.rus;
 
 import com.formulasearchengine.mathosphere.mlp.rus.RuleBasedPosTagger.PosTag;
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVRecord;
+import org.junit.Before;
 import org.junit.Test;
+
+import java.io.FileReader;
+import java.util.HashMap;
 
 import static org.junit.Assert.assertEquals;
 
@@ -16,14 +22,27 @@ public class RuleBasedPosTaggerTest {
     + "доступные и хорошие Кроме того раз уж есть словарь то необязательно полагаться только на "
     + "предсказатель если слово есть в словаре то можно и точный разбор вернуть ну с учетом "
     + "неустранимой на уровне отдельных слов неоднозначности разбора";
+	HashMap<String,String> expecteTags;
+	@Before
+	public void setUp() throws Exception {
+		FileReader in = new FileReader(getClass().getResource("exp-tags.csv").getFile());
+		Iterable<CSVRecord> records = CSVFormat.RFC4180.parse(in);
+		expecteTags = new HashMap<>();
+		for (CSVRecord record : records) {
+			String word = record.get(0);
+			String type = record.get(1);
+			expecteTags.put(word,type);
+		}
 
-  @Test
+	}
+
+	@Test
   public void testPosTag() {
     String[] split = text.split("\\s+");
 
     for (String token : split) {
       String tag = tagger.posTag(token).getPennTag();
-      System.out.println(token + " " + tag);
+	    assertEquals(expecteTags.get(token),tag);
     }
 
   }
