@@ -24,7 +24,11 @@ public class BaseConfig {
   @Parameter(names = {"-t", "--threshold"})
   private double threshold = 0.8;
 
-  @Parameter(names = {"-T", "--TeX"})
+	public void setUseTeXIdentifiers(Boolean useTeXIdentifiers) {
+		this.useTeXIdentifiers = useTeXIdentifiers;
+	}
+
+	@Parameter(names = {"-T", "--TeX"})
   private Boolean useTeXIdentifiers = false;
 
   public BaseConfig() {

@@ -1,5 +1,7 @@
 package com.formulasearchengine.mathosphere.mlp.text;
 
+import com.google.common.collect.HashMultiset;
+import com.google.common.collect.Multiset;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import net.sf.json.JSONSerializer;
@@ -47,8 +49,8 @@ public class TexInfo {
     return "";
   }
 
-  public static List<String> getIdentifiers(String tex) throws XPathExpressionException, ParserConfigurationException, SAXException, IOException, TransformerException {
-	  final List<String> strings = new ArrayList<>();
+  public static Multiset<String> getIdentifiers(String tex) throws XPathExpressionException, ParserConfigurationException, SAXException, IOException, TransformerException {
+	  final Multiset<String> strings = HashMultiset.create();
 	  String json = makeRequest(tex);
 	  try {
 		  JSONObject Ojson = (JSONObject) JSONSerializer.toJSON(json);

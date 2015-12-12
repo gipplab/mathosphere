@@ -12,10 +12,15 @@ import com.formulasearchengine.mathosphere.mlp.text.WikiTextUtils.MathMarkUpType
 import org.apache.commons.lang3.CharUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.xml.sax.SAXException;
 import uk.ac.ed.ph.snuggletex.SnuggleEngine;
 import uk.ac.ed.ph.snuggletex.SnuggleInput;
 import uk.ac.ed.ph.snuggletex.SnuggleSession;
 
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.xpath.XPathExpressionException;
+import java.io.IOException;
 import java.util.List;
 import java.util.Set;
 import java.util.regex.Matcher;
@@ -112,13 +117,21 @@ public class MathMLUtils {
 
   private static Multiset<String> tryExtractIdentifiers(MathTag math, Boolean useTeXIdentifiers) {
     if (math.getMarkUpType() == MathMarkUpType.LATEX) {
-      return extractIdentifiersFromTex(math.getTagContent());
+      return extractIdentifiersFromTex(math.getTagContent(),useTeXIdentifiers);
     } else {
       return extractIdentifiersFromMathML(math.getContent(),useTeXIdentifiers,false);
     }
   }
 
-  public static Multiset<String> extractIdentifiersFromTex(String tex) {
+  public static Multiset<String> extractIdentifiersFromTex(String tex, boolean useTeX) {
+	  if ( useTeX ){
+		  try {
+			  return TexInfo.getIdentifiers(tex);
+		  } catch (XPathExpressionException | ParserConfigurationException | IOException | SAXException | TransformerException e) {
+			  e.printStackTrace();
+			  return  HashMultiset.create();
+		  }
+	  }
     String mathML = texToMathML(tex);
     LOGGER.debug("converted {} to {}", tex.replaceAll("\\s+", " "), mathML);
     return extractIdentifiersFromMathML(mathML, false,false);
