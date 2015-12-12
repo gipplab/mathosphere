@@ -43,6 +43,7 @@ public class PosTagger {
     props.put("tokenize.options", "untokenizable=firstKeep,strictTreebank3=true,"
       + "ptb3Escaping=true,escapeForwardSlashAsterisk=false");
     props.put("ssplit.newlineIsSentenceBreak", "two");
+	  props.put("maxLength",50);
     StanfordCoreNLP pipeline = new StanfordCoreNLP(props);
 
     if ("en".equals(language)) {
