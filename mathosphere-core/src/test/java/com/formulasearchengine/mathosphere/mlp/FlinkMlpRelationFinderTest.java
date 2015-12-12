@@ -25,8 +25,17 @@ public class FlinkMlpRelationFinderTest {
 		FlinkMlpCommandConfig config = FlinkMlpCommandConfig.test();
 		config.setUseTeXIdentifiers(true);
 		final FlinkMlpRelationFinder finder = new FlinkMlpRelationFinder();
-		String input = "The symbol <math>\\mathbb{R}</math> denotes real numbers.";
+		String input = "The symbol ''r'' i.e. <math>r\\in\\mathbb{R}</math> denotes a real numbers.";
 		final String s = finder.runFromText(config, input);
-		assertThat(s, containsString("\\mathbb{R}"));
+		assertThat(s, containsString("real numbers"));
+	}
+	@Test
+	public void testRunFromText3() throws Exception {
+		FlinkMlpCommandConfig config = FlinkMlpCommandConfig.test();
+		config.setUseTeXIdentifiers(true);
+		final FlinkMlpRelationFinder finder = new FlinkMlpRelationFinder();
+		String input = "The symbol <math>\\mu</math> denotes the magnetic moment.";
+		final String s = finder.runFromText(config, input);
+		assertThat(s, containsString("magnetic moment"));
 	}
 }
