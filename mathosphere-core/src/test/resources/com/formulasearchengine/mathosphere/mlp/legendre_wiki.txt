@@ -1,0 +1,428 @@
+[[Image:Legendre transformation.png|thumb|256px|right|The function {{math|''f''(''x'')}} is defined on the interval {{math|[''a'', ''b'']}}. The difference {{math|''px'' − ''f''(''x'')}} takes a maximum at {{math|''x'''}}. Thus, {{math|''f''*(''p'') {{=}} ''px' − f(x')''}}.]]
+
+In [[mathematics]] and [[physics]], the '''Legendre transformation''' or '''Legendre transform''', named after [[Adrien-Marie Legendre]], is an [[involution (mathematics)|involutive]] [[List of transforms|transformation]] on the [[real number|real]]-valued [[convex function]]s of one real variable. Its generalization to convex functions of affine spaces is sometimes called the [[convex conjugate|Legendre–Fenchel transformation]].
+
+It is commonly used in [[classical mechanics]] to derive the [[Hamiltonian mechanics|Hamiltonian]] formalism out of the [[Lagrangian mechanics|Lagrangian]] formalism and in [[thermodynamics]] to derive the [[thermodynamic potential]]s, as well as in the solution of [[differential equation]]s of several variables.
+
+For sufficiently smooth functions on the real line, the Legendre transform {{mvar|g}} of a function {{mvar|f}} can be specified, up to an additive constant, by the condition that the functions' first derivatives are inverse functions of each other,
+:<math>Df = \left( Dg \right)^{-1}~.</math>
+
+==Definition==
+Let {{math|''I'' ⊂ '''R'''}} be an interval, and {{math|''f'' : ''I'' → '''R'''}} a [[convex function]]; then its ''Legendre transform'' is the function {{math|''f*'' : ''I*'' → '''R'''}} defined by
+:<math>f^*(x^*) = \sup_{x\in I}(x^*x-f(x)),\quad x^*\in I^*</math>
+with domain
+:<math>I^*= \left \{x^*\in \mathbf{R}:\sup_{x\in I}(x^*x-f(x))<\infty \right \} ~.</math>
+
+The transform is always well-defined when {{math|''f''(''x'')}} is [[convex function|convex]].
+
+The generalization to convex functions {{math|''f'' : ''X'' → '''R'''}} on a convex set {{math|''X'' ⊂ '''R'''<sup>''n''</sup>}} is straightforward: {{math|''f*'' : ''X*'' → '''R'''<sup>''n''</sup>}} has domain
+:<math>X^*= \left \{x^* \in \mathbf{R}^n:\sup_{x\in X}(\langle x^*,x\rangle-f(x))<\infty \right \}</math>
+and is defined by
+:<math>f^*(x^*) = \sup_{x\in X}(\langle x^*,x\rangle-f(x)),\quad x^*\in X^*   ~,</math>
+where <math>\langle x^*,x \rangle</math> denotes the [[dot product]] of {{math|''x''*}} and {{mvar|x}}.
+
+The function {{math|''f'' *}} is called the [[convex conjugate]] function of {{mvar|f}}. For historical reasons (rooted in analytic mechanics), the conjugate variable is often denoted {{mvar|p}}, instead of {{math|''x''*}}.  If the convex function {{mvar|f}} is defined on the whole line and is everywhere [[differentiable]], then
+:<math>f^*(p)=\sup_{x\in I}(px-f(x))</math>
+can be interpreted as the negative of the [[y-intercept|{{math|''y''}}-intercept]] of the [[tangent line]] to the [[Graph of a function|graph]] of {{mvar|f}} that has slope {{mvar|p}}.
+
+The Legendre transformation is an application of the [[Duality (projective geometry)|duality]] relationship between points and lines. The functional relationship specified by {{mvar|f}} can be represented equally well as a set of {{math|(''x'', ''y'')}} points, or as a set of tangent lines specified by their slope and intercept values.
+
+==Properties==
+The Legendre transform of a convex function is convex.
+
+Let us show this for the case of a doubly differentiable {{mvar|f}} with a non zero (and hence positive, due to convexity) double derivative.
+
+For a fixed {{mvar|p}}, let {{mvar|x}} maximize {{math|''px'' − ''f''(''x'')}}. Then {{math|''f'' *(''p'') {{=}} ''px'' − ''f''(''x'')}}, noting that {{mvar|x}} depends on {{mvar|p}}.  Thus,
+:<math>f^\prime(x) = p ~.</math>
+
+The derivative of {{mvar|f}} is itself differentiable with a positive derivative and hence strictly monotonic and invertible. Thus {{math|''x'' {{=}} ''g''(''p'')}} where <math>g \equiv (f^{\prime})^{-1}(p)</math>, meaning that {{math|''g''}} is defined so that <math>f'(g(p))= p</math>.
+
+Note that {{mvar|g}} is also differentiable with the following derivative,
+:<math>\frac{dg(p)}{dp} = \frac{1}{f''(g(p))} ~.</math>
+Thus {{math|''f'' *(''p'') {{=}} ''pg''(''p'') − ''f''(''g''(''p''))}} is the composition of differentiable functions, hence differentiable.
+
+Applying the product rule and the chain rule yields
+:<math>\begin{align}
+\frac{d(f^{*})}{dp} &= g(p) +  \left(p - f'(g(p))\right)\cdot \frac{dg(p)}{dp}\\
+& =  g(p),
+\end{align}    ~,</math>
+giving
+:<math>\begin{align}
+\frac{d^2(f^{*})}{dp^2} &= \frac{dg(p)}{dp} \\
+&{} =  \frac{1}{f''(g(p))} \\
+&{} > 0 ,
+\end{align}</math>
+so {{math|''f'' *}} is convex.
+
+It follows that the Legendre transformation is an [[Involution (mathematics)|involution]], i.e., {{math|''f'' ** {{=}} ''f''}}:
+
+By using the above equalities for {{math|''g''(''p'')}}, {{math|''f'' *(''p'')}} and its derivative,
+:<math>\begin{align}
+f^{**}(x) &{} = {\left(x\cdot p_s - f^{*}(p_s)\right)}_{|\frac{d}{dp}f^{*}(p=p_s) = x} \\
+&{} = g(p_s)\cdot p_s - f^{*}(p_s) \\
+&{} = f(g(p_s)) \\
+&{} =  f(x)~.
+\end{align}  </math>
+
+==Examples==
+===Example 1===
+Let {{math|''f''(''x'') {{=}} ''cx''<sup>2</sup>}} defined on {{math|'''R'''}}, where {{math|''c'' > 0}} is a fixed constant.
+
+For {{math|''x''*}} fixed, the function {{math|''x''*''x'' – ''f''(''x'') {{=}} ''x''*''x'' – ''cx''<sup>2</sup>}} of {{mvar|x}} has the first derivative {{math|''x''* – 2''cx''}} and second derivative {{math|−2''c''}}; there is one stationary point at {{math|''x'' {{=}} ''x''*/2''c''}}, which is always a maximum. Thus, {{math|''I''* {{=}} '''R'''}} and
+
+:<math>f^*(x^*)=\frac{{x^*}^2}{4c}</math>
+
+
+Clearly,
+
+:<math>f^{**}(x)=\frac{1}{4 (1/4c)}x^2=cx^2,</math>
+
+namely {{math|''f'' ** {{=}} ''f''}}.
+
+===Example 2===
+Let {{math|''f''(''x'') {{=}} ''x''<sup>2</sup>}} for {{math|''x'' ∈ ''I'' {{=}} [2, 3]}}.
+
+For {{math|''x''*}} fixed, {{math|''x''*''x'' − ''f''(''x'')}} is continuous on {{mvar|I}} [[compact space|compact]], hence it always takes a finite maximum on it; it follows that {{math|''I''* {{=}} '''R'''}}. The stationary point at {{math|''x'' {{=}} ''x''*/2}} is in the domain {{math|[2, 3]}} if and only if {{math|4 ≤ ''x''* ≤ 6}}, otherwise the maximum is taken either at {{math|''x'' {{=}} 2}}, or {{math|''x'' {{=}} 3}}. It follows that
+
+:<math>f^*(x^*)=\begin{cases}2x^*-4,\quad&x^*<4\\ \frac{{x^*}^2}{4},&4\leqslant x^*\leqslant 6,\\3x^*-9,&x^*>6\end{cases}</math> .
+
+===Example 3===
+The function {{math|''f''(''x'') {{=}} ''cx''}} is convex, for every {{mvar|x}} (strict convexity is not required for the Legendre transformation to be well defined). Clearly {{math|''x''*''x'' − ''f''(''x'') {{=}} (''x''* − ''c'')''x''}} is never bounded from above as a function of {{mvar|x}}, unless {{math|''x''* − ''c'' {{=}} 0}}. Hence {{math|''f''*}} is defined on {{math|''I''* {{=}} {''c''}}} and {{math|''f''*(''c'') {{=}} 0}}.
+
+One may check involutivity: of course {{math|''x''*''x'' − ''f''*(''x''*)}} is always bounded as a function of {{math|''x''* ∈ {''c''}}}, hence  {{math|''I'' ** {{=}} '''R'''}}. Then, for all {{mvar|x}} one has
+
+:<math>\sup_{x^*\in\{c\}}(xx^*-f^*(x^*))=xc,</math>
+and hence {{math|''f'' **(''x'') {{=}} ''cx'' {{=}} ''f''(''x'')}}.
+
+===Example 4 (many variables)===
+Let
+
+:<math>f(x)=\langle x,Ax\rangle+c</math>
+
+be defined on {{math|''X'' {{=}} '''R'''<sup>''n''</sup>}}, where {{mvar|A}} is a real, positive definite matrix. Then {{mvar|f}} is convex, and
+
+:<math>\langle p,x\rangle-f(x)=\langle p,x \rangle-\langle x,Ax\rangle-c,</math>
+
+has gradient {{math|''p'' − 2''Ax''}} and [[Hessian matrix|Hessian]] {{math|−2''A''}}, which is negative; hence the stationary point {{math|''x'' {{=}} ''A''<sup>−1</sup>''p''/2}} is a maximum. We have {{math|''X''* {{=}} '''R'''<sup>''n''</sup>}}, and
+
+:<math>f^*(p)=\frac14\langle p,A^{-1}p\rangle-c</math> .
+
+==An equivalent definition in the differentiable case==
+Equivalently, two convex functions {{mvar|f}} and {{mvar|g}} defined on the whole line are said to be Legendre transforms of each other if their first [[derivative]]s are [[inverse function]]s of each other,
+:<math>Df = \left( Dg \right)^{-1}~,</math>
+in which case one writes equivalently {{math|''f'' * {{=}} ''g''}} and  {{math|''g''* {{=}} ''f''}}.
+
+One may see this by first taking the derivative of {{math|''f'' *}},  (with ''x'' here understood to denote the point at which the supremum is attained,  therefore a function of ''p''),
+:<math>{df^\star(p) \over dp} = {d \over dp}(xp-f(x)) = x + p {dx \over dp} - {df \over dx} {dx \over dp} = x~.</math>
+
+This equation, taken together with the previous equation resulting from the maximization condition, results in the following pair of reciprocal equations,
+:<math>p = {df \over dx}(x),</math>
+:<math>x = {df^\star \over dp}(p).</math>
+
+From these, it is evident that {{math|''Df''}} and {{math|''Df'' *}} are inverses, as stated.
+
+One may exemplify this by considering  {{math| ''f''(''x'') {{=}} exp ''x''}} and hence {{math|''f'' *(''p'') {{=}} ''p'' log ''p'' − ''p''}}.
+
+They are unique, up to an additive constant, which is fixed by the additional requirement that
+:<math>f(x) + f^\star(p) = x\,p ~,</math>
+for any pair ''(x,p)'' in the relation above; more explicitly put, with prime denoting derivative
+:<math>f(x) + f^\star(f'(x)) = x\,f'(x) ~,</math>
+and
+:<math>f^\star(p) + f((f^\star)'(p)) = p ~(f^\star)'(p) ~.</math>
+
+The symmetry of this expression underscores that the Legendre transformation is its own inverse (involutive).
+
+In practical terms, given {{math|''f''(''x'')}}, the parametric plot of {{math|''xf'' '(''x'') − ''f''(''x'')}} versus {{math|''f'' '(''x'')}} amounts to the graph of  {{math| ''g''(''p'')}} versus {{mvar|p}}.
+
+In some cases (e.g. thermodynamic potentials, below), a non-standard requirement is used, amounting to an alternative definition of {{math|''f'' *}} with a ''minus sign'',
+:<math>f(x) - f^\star(p) = xp.</math>
+
+==Behavior of differentials under Legendre transforms==
+The Legendre transform  is linked to [[integration by parts]], {{math|''pdx'' {{=}} ''d''(''px'') − ''xdp''}}.
+
+Let {{mvar|f}} be a function of two independent variables {{mvar|x}} and {{mvar|y}}, with the differential
+
+:<math>df = {\partial f \over \partial x}dx + {\partial f \over \partial y}dy = pdx + vdy</math> .
+
+Assume that it is convex in {{mvar|x}} for all {{mvar|y}}, so that one may perform the Legendre transform in {{mvar|x}}, with {{mvar|p}} the variable conjugate to {{mvar|x}}. Since the new independent variable is {{mvar|p}}, the differentials {{math|''dx''}} and {{math|''dy''}}  devolve to {{math|''dp''}} and {{math|''dy''}}, i.e., we build another function with its differential expressed in terms of the new basis {{math|''dp''}} and {{math|''dy''}}. We thus consider the function {{math|''g''(''p'', ''y'') {{=}} ''f'' − ''px''}}  so that
+
+:<math>dg = df - pdx - xdp = -xdp + vdy</math>
+:<math>x = -\frac{\partial g}{\partial p}</math>
+:<math>v = \frac{\partial g}{\partial y}.</math>
+
+The function {{math|''-g''(''p'', ''y'')}} is the Legendre transform of {{math|''f''(''x'', ''y'')}}, where only the independent variable {{mvar|x}} has been supplanted by {{mvar|p}}. This is widely used in thermodynamics, as illustrated below.
+
+==Applications==
+===Hamilton–Lagrange mechanics===
+A Legendre transform is used in [[classical mechanics]] to derive the [[Hamiltonian mechanics|Hamiltonian formulation]] from the [[Lagrangian mechanics|Lagrangian formulation]], and conversely. A typical Lagrangian has the form
+
+:<math>L(v,q)=\tfrac{1}2\langle v,Mv\rangle-V(q)</math>,
+
+where <math>(v,q)</math>  are coordinates on {{math|'''R'''<sup>''n''</sup> × '''R'''<sup>''n''</sup>}}, {{mvar|M}} is a positive real matrix, and
+
+:<math>\langle x,y\rangle=\sum_jx_jy_j.</math>
+
+For every {{mvar|q}} fixed, <math>L(v, q)</math> is a convex function of <math>v</math>, while <math>V(q)</math> plays the role of a constant.
+
+Hence the Legendre transform of <math>L(v, q)</math> as a function of {{mvar|v}}  is the Hamiltonian function,
+
+:<math>H(p,q)=\tfrac 12\langle p,M^{-1}p\rangle+V(q)</math>.
+
+In a more general setting, <math>(v, q)</math> are local coordinates on the tangent bundle <math>T\mathcal M</math> of a manifold <math>\mathcal M</math>. For each {{mvar|q}}, <math>L(v, q)</math> is a convex function of the tangent space {{math|''V<sub>q</sub>''}}. The Legendre transform gives the Hamiltonian <math>H(p, q)</math> as a function of the coordinates {{math|(''p'', ''q'')}} of the cotangent bundle <math>T^*\mathcal M</math>; the inner product used to define the Legendre transform is inherited from the pertinent canonical [[symplectic vector space|symplectic structure]].
+
+===Thermodynamics===
+The strategy behind the use of Legendre transforms in thermodynamics is to shift from a function that depends on a variable to a new (conjugate) function that depends on a new variable, the conjugate of the original one. The new variable is the partial derivative of the original function with respect to the original variable. The new function is the difference between the original function and the product of the old and new variables. Typically, this transformation is useful because it shifts the dependence of, e.g., the energy from an [[Intensive and extensive properties|extensive variable]] to its conjugate intensive variable, which can usually be controlled more easily in a physical experiment.
+
+For example, the [[internal energy]] is an explicit function of the ''[[extensive quantity|extensive variables]]'' [[entropy]], [[volume]], and [[chemical composition]]
+
+:<math> U = U \left (S,V,\{N_i\} \right ),</math>
+
+which has a total differential
+
+:<math> dU = TdS - PdV + \sum \mu _i dN _i</math>.
+
+By using the (non standard) Legendre transform of the internal energy, {{mvar|U}}, with respect to volume, {{mvar|V}}, it is possible to define the [[enthalpy]] as
+
+:<math> H = U + PV \, = H \left (S,P,\{N_i\} \right ),</math>
+
+which is an explicit function of the pressure, {{mvar|P}}. The enthalpy contains all of the same information as the internal energy, but is often easier to work with in situations where the pressure is constant.
+
+It is likewise possible to shift the dependence of the energy from the extensive variable of entropy, {{mvar|S}}, to the (often more convenient) intensive variable {{mvar|T}}, resulting in the [[Helmholtz energy|Helmholtz]] and [[Gibbs energy|Gibbs]] [[thermodynamic free energy|free energies]]. The Helmholtz free energy, {{mvar|A}}, and Gibbs energy, {{mvar|G}}, are obtained by performing Legendre transforms of the internal energy and enthalpy, respectively,
+
+:<math> A = U - TS ~,</math>
+:<math> G = H - TS = U + PV - TS ~.</math>
+
+The Helmholtz free energy is often the most useful thermodynamic potential when temperature and volume are held constant, while the Gibbs energy is often the most useful when temperature and pressure are held constant.
+
+===An example – variable capacitor===
+As another example from [[physics]], consider a parallel-plate [[capacitor]], in which the plates can move relative to one another. Such a capacitor would allow  transfer of the electric energy which  is stored in the capacitor into external mechanical work, done by the [[force]] acting on the plates. One may think of the electric charge as analogous to the "charge" of a [[gas]] in a [[cylinder (engine)|cylinder]], with the resulting mechanical [[force]] exerted on a [[piston]].
+
+Compute the force on the plates as a function of {{math|'''x'''}}, the distance which separates them. To find the force, compute the potential energy, and then apply the definition of force as the gradient of the potential energy function.
+
+The energy stored in a capacitor of [[capacitance]] {{math|''C''('''x''')}} and charge {{math|''Q''}} is
+
+:<math> U (Q, \mathbf{x}) = \frac{1}{2} QV = \frac{1}{2} \frac{Q^2}{C(\mathbf{x})}~</math> ,
+
+where the dependence on the area of the plates, the dielectric constant of the material between the plates, and the separation {{math|'''x'''}} are abstracted away as the [[capacitance]] {{math|''C''('''x''')}}. (For a parallel plate capacitor, this is proportional to the area of the plates and inversely proportional to the separation.)
+
+The force {{math|'''F'''}} between the plates due to the electric field is then
+
+:<math> \mathbf{F}(\mathbf{x}) = -\frac{dU}{d\mathbf{x}} ~. </math>
+
+If the capacitor is not connected to any circuit, then the ''[[electric charge|charges]]'' on the plates remain constant as they move, and the force is the negative [[gradient]] of the [[electrostatics|electrostatic]] energy
+
+:<math> \mathbf{F}(\mathbf{x}) = \frac{1}{2} \frac{dC}{d\mathbf{x}} \frac{Q^2}{C^2}. </math>
+
+However, suppose, instead, that  the ''[[volt]]age'' between the plates {{math|''V''}} is maintained constant by connection to a [[battery (electricity)|battery]], which is a reservoir for charge at constant potential difference; now the ''charge is variable'' instead of the voltage, its Legendre conjugate. To find the force, first compute the non-standard Legendre transform,
+
+:<math>U^*  = U - \left(\frac{\partial U}{\partial Q} \right)\bigg|_\mathbf{x} \cdot Q =U - \frac{1}{2C(\mathbf{x})} \left( \frac{\partial Q^2}{\partial Q} \right)\bigg|_\mathbf{x} \cdot Q = U - QV = \frac{1}{2} QV - QV = -\frac{1}{2} QV= - \tfrac{1}{2} V^2 C(\mathbf{x}).</math>
+
+The force now becomes the negative gradient of this Legendre transform, still pointing in the same direction,
+
+:<math>  \mathbf{F}(\mathbf{x}) = -\frac{dU^*}{d\mathbf{x}}~.</math>
+
+The two conjugate energies happen to stand opposite to each other, only because of the [[linear]]ity of the [[capacitance]]—except now {{math|''Q''}} is no longer a constant. They reflect the two different pathways of storing energy into the capacitor, resulting in, for instance, the same "pull" between a capacitor's plates.
+
+===Probability theory===
+In [[large deviations theory]], the ''rate function'' is defined as the Legendre transformation of the logarithm of the [[moment generating function]] of a random variable. An important application of the rate function is in the calculation of tail probabilities of sums of i.i.d. random variables.
+<!--***** I remove since it is a repetition ****
+==Examples==
+[[Image:LegendreExample.svg|right|thumb|200px|e<sup>''x''</sup> is plotted in red and its Legendre transform in dashed blue.]]
+The [[exponential function]]
+
+<math> f(x) = e^x </math> has <math> f^\star(p) = p ( \ln p - 1 ) </math>
+
+as a Legendre transform since their respective first derivatives e<sup>''x''</sup> and &nbsp;ln&nbsp;''x'' are inverse to each other. This example shows that the respective [[domain (mathematics)|domain]]s of a function and its Legendre transform need not agree. As another easy example, for
+
+<math> f(x) = x^2, </math> the Legendre transform is <math> f^\star(p) = \frac{p^2}{4}. </math>
+
+Similarly, the [[quadratic form]]
+
+:<math> f(x) = \begin{matrix} \frac{1}{2} \end{matrix} \, x^T \, A \, x </math>
+
+with ''A'' a [[symmetric matrix|symmetric]] [[invertible matrix|invertible]] ''n''-by-''n''-[[Matrix (mathematics)|matrix]] has
+
+:<math> f^\star(p) = \begin{matrix} \frac{1}{2} \end{matrix} \, p^T \, A^{-1} \, p </math>
+
+as a Legendre transform.
+
+==Legendre transformation in one dimension==
+In one dimension, a Legendre transform to a function {{math|''f'' : '''R''' → '''R'''}} with an invertible first derivative may be found using the formula
+
+:<math> f^\star(y) = y \, x - f(x), \, x = \dot{f}^{-1}(y). </math>
+
+This can be seen by integrating both sides of the defining condition restricted to one-dimension
+
+:<math> \dot{f}(x) = \dot{f}^{\star-1}(x) </math>
+
+from <math>x_0</math> to <math>x_1</math>, making use of the [[fundamental theorem of calculus]] on the left hand side and [[Substitution rule|substituting]]
+
+:<math> y = \dot{f}^{\star-1}(x) </math>
+
+on the right hand side to find
+
+:<math> f(x_1) - f(x_0) = \int_{y_0}^{y_1} y \, \ddot{f}^\star(y) \, dy </math>
+
+with <math>f^\star(y_0)=x_0, f^\star(y_1)=x_1</math>. Using [[integration by parts]] the last integral simplifies to
+
+:<math> y_1 \, \dot{f}^\star(y_1) - y_0 \, \dot{f}^\star(y_0) - \int_{y_0}^{y_1} \dot{f}^\star(y) \, dy = y_1 \, x_1 - y_0 \, x_0 - f^\star(y_1) + f^\star(y_0). </math>
+
+Therefore,
+
+:<math> f(x_1) + f^\star(y_1) - y_1 \, x_1 = f(x_0) + f^\star(y_0) - y_0 \, x_0. </math>
+
+Since the left hand side of this equation does only depend on <math>x_1</math> and the right hand side only on <math>x_0</math>, they have to evaluate to the same constant.
+
+:<math> f(x) + f^\star(y) - y \, x = C,\, x = \dot{f}^\star(y) = \dot{f}^{-1}(y). </math>
+
+Solving for <math>f^\star</math> and choosing {{math|''C''}} to be zero results in the above-mentioned formula.
+-->
+
+==Geometric interpretation==
+For a [[strictly convex function]], the Legendre transformation can be interpreted as a mapping between the [[graph of a function|graph]] of the function and the family of [[tangent]]s of the graph. (For a function of one variable, the tangents are well-defined at all but at most [[countable set|countably many]] points, since a convex function is [[derivative|differentiable]] at all but at most countably many points.)
+
+The equation of a line with [[slope]] {{math|''p''}} and [[y-intercept|{{math|''y''}}-intercept]] {{math|''b''}} is given by {{math|''y'' {{=}} ''px'' + ''b''}}. For this line to be tangent to the graph of a function {{mvar|f}} at the point {{math|(''x''<sub>0</sub>, ''f''(''x''<sub>0</sub>))}} requires
+
+:<math>f\left(x_0\right) = p x_0 + b</math>
+
+and
+
+:<math>p = \dot{f}\left(x_0\right).</math>
+
+{{math|''f'''}} is strictly monotone as the derivative of a strictly convex function. The second equation can be solved for {{math|''x''<sub>0</sub>}}, allowing elimination of {{math|''x''<sub>0</sub>}} from the first, giving the {{math|''y''}}-intercept {{math|''b''}} of the tangent as a function of its slope {{math|''p''}},
+
+:<math>b = f\left(\dot{f}^{-1}\left(p\right)\right) - p \cdot \dot{f}^{-1}\left(p\right) = -f^\star(p).</math>
+
+Here, <math>f^\star</math> denotes the Legendre transform of {{mvar|f}}.
+
+The [[indexed family|family]] of tangents of the graph of {{mvar|f}} parameterized by {{mvar|p}} is therefore given by
+
+:<math>y = px - f^\star(p)</math> ,
+
+or, written implicitly, by the solutions of the equation
+
+:<math>F(x,y,p) = y + f^\star(p) - px = 0~.</math>
+
+The graph of the original function can be reconstructed from this family of lines as the [[envelope (mathematics)|envelope]] of this family by demanding
+
+: <math>{\partial F(x,y,p)\over\partial p} = \dot{f}^\star(p) - x = 0~.</math>
+
+Eliminating {{math|''p''}} from these two equations gives
+
+: <math>y = x \cdot \dot{f}^{\star-1}(x) - f^\star\left(\dot{f}^{\star-1}(x)\right).</math>
+
+Identifying {{math|''y''}} with {{math|''f''(''x'')}} and recognizing the right side of the preceding equation as the Legendre transform of {{math|''f''*}},  yields
+
+: <math>f(x) = f^{\star\star}(x) ~.</math>
+
+==Legendre transformation in more than one dimension==
+For a differentiable real-valued function on an [[open set|open]] subset {{mvar|U}} of {{math|'''R'''<sup>''n''</sup>}} the Legendre conjugate of the pair {{math|(''U'', ''f'')}} is defined to be the pair {{math|(''V'', ''g'')}}, where {{mvar|V}} is the image of {{mvar|U}} under the [[gradient]] mapping {{math|''Df''}}, and {{mvar|g}} is the function on {{mvar|V}} given by the formula
+
+:<math>g(y) = \left\langle y, x \right\rangle - f(x), \qquad x = \left(Df\right)^{-1}(y)</math>
+
+where
+
+:<math>\left\langle u,v\right\rangle = \sum_{k=1}^{n}u_{k} \cdot v_{k}</math>
+
+is the [[scalar product]] on {{math|'''R'''<sup>''n''</sup>}}. The multidimensional transform can be interpreted as an encoding of the [[convex hull]] of the function's [[epigraph (mathematics)|epigraph]] in terms of its [[supporting hyperplane]]s.<ref>http://maze5.net/?page_id=733</ref>
+
+Alternatively, if {{mvar|X}} is a [[vector space]] and {{math|''Y''}} is its [[dual space|dual vector space]], then for each point {{mvar|x}} of {{math|''X''}} and {{math|''y''}} of {{math|''Y''}}, there is a natural identification of the [[cotangent space]]s {{math|T*''X<sub>x</sub>''}} with {{math|''Y''}} and {{math|T*''Y<sub>y</sub>''}} with {{math|''X''}}. If {{mvar|f}} is a real differentiable function over {{math|''X''}}, then {{math|∇''f''}} is a section of the [[cotangent bundle]] {{math|T*''X''}} and as such, we can construct a map from {{math|''X''}} to {{math|''Y''}}. Similarly, if {{mvar|g}} is a real differentiable function over {{math|''Y''}}, {{math|∇''g''}} defines a map from {{math|''Y''}} to {{math|''X'''}}. If both maps happen to be inverses of each other, we say we have a Legendre transform.
+<!-- section on convex conjugation moved to own page -->
+
+When the function is not differentiable, the Legendre transform can still be extended, and is known as the [[Legendre-Fenchel transformation]]. In this more general setting, a few properties are lost: for example, the Legendre transform is no longer its own inverse (unless there are extra assumptions, like [[convex function|convexity]]).
+
+==Further properties==
+===Scaling properties===
+The Legendre transformation has the following scaling properties: For {{math|''a'' > 0}},
+
+:<math>f(x) = a \cdot g(x) \Rightarrow f^\star(p) = a \cdot g^\star\left(\frac{p}{a}\right) </math>
+:<math>f(x) = g(a \cdot x) \Rightarrow f^\star(p) = g^\star\left(\frac{p}{a}\right).</math>
+
+It follows that if a function is [[homogeneous function|homogeneous of degree {{mvar|r}}]] then its image under the Legendre transformation is a homogeneous function of degree {{mvar|s}}, where {{math|1/''r'' + 1/''s'' {{=}} 1}}. (Since {{math|''f''(''x'') {{=}} ''x<sup>r</sup>''/''r''}}, with {{math|''r'' > 1}}, implies {{math|''f''*(''p'') {{=}} ''p<sup>s</sup>''/''s''}}.)  Thus, the only monomial whose degree is invariant under Legendre transform is the quadratic.
+
+===Behavior under translation===
+:<math> f(x) = g(x) + b \Rightarrow f^\star(p) = g^\star(p) - b</math>
+:<math> f(x) = g(x + y) \Rightarrow f^\star(p) = g^\star(p) - p \cdot y </math>
+
+===Behavior under inversion===
+:<math> f(x) = g^{-1}(x) \Rightarrow f^\star(p) = - p \cdot g^\star\left(\frac{1}{p}\right)</math>
+
+===Behavior under linear transformations===
+Let {{math|''A'' : '''R'''<sup>''n''</sup> → '''R'''<sup>''m''</sup>}} be a [[linear transformation]]. For any convex function {{mvar|f}} on {{math|'''R'''<sup>''n''</sup>}}, one has
+
+:<math> (A f)^\star = f^\star A^\star </math>
+
+where {{math|''A''*}} is the [[adjoint operator]] of {{mvar|A}} defined by
+
+:<math> \left \langle Ax, y^\star \right \rangle = \left \langle x, A^\star y^\star \right \rangle, </math>
+
+and {{math|''Af''}} is the ''push-forward'' of {{mvar|f}} along {{mvar|A}}
+
+:<math> (A f)(y) = \inf\{ f(x) : x \in X , A x = y \}. </math>
+
+A closed convex function {{mvar|f}} is symmetric with respect to a given set {{mvar|G}} of [[orthogonal matrix|orthogonal linear transformation]]s,
+
+:<math>f(A x) = f(x), \; \forall x, \; \forall A \in G </math>
+
+[[if and only if]] {{math|''f''*}} is symmetric with respect to {{mvar|G}}.
+
+===Infimal convolution===
+The '''infimal convolution''' of two functions {{mvar|f}} and {{mvar|g}} is defined as
+
+:<math> \left(f \star_\inf  g\right)(x) = \inf \left \{ f(x-y) + g(y) \, | \, y \in \mathbf{R}^n \right \}. </math>
+
+Let {{math|''f''<sub>1</sub>, ..., ''f<sub>m</sub>''}} be proper convex functions on {{math|'''R'''<sup>''n''</sup>}}. Then
+
+:<math> \left( f_1 \star_\inf \cdots \star_\inf f_m \right)^\star = f_1^\star + \cdots + f_m^\star. </math>
+
+===Fenchel's inequality===
+For any function {{mvar|f}} and its convex conjugate {{math|''f''*}} ''Fenchel's inequality'' (also known as the ''Fenchel–Young inequality'') holds for every {{math|''x'' ∈ ''X''}}  and {{math|''p'' ∈ ''X''*}}, i.e., ''independent'' {{math|''x'', ''p''}} pairs,
+
+:<math>\left\langle p,x \right\rangle \le f(x) + f^\star(p).</math>
+
+==See also==
+* [[Dual curve]]
+* [[Projective duality]]
+* [[Young's inequality]]
+* [[Convex conjugate]]
+* [[Moreau's theorem]]
+* [[Integration by parts]]
+* [[Fenchel's duality theorem]]
+
+==References==
+{{reflist}}
+* {{cite book | last1=Courant |first1=Richard |authorlink1=Richard Courant |last2=Hilbert |first2=David |authorlink2=David Hilbert | title=Methods of Mathematical Physics |volume=2 |year=2008 | publisher=John Wiley & Sons |isbn=0471504394}}
+* {{cite book | last=Arnol'd |first=Vladimir Igorevich |authorlink=Vladimir Igorevich Arnol'd | title=Mathematical Methods of Classical Mechanics |edition=2nd | publisher=Springer | year=1989 | isbn=0-387-96890-3}}
+* Fenchel, W. (1949). "On conjugate convex functions", ''Canad. J. Math''  '''1''': 73-77.
+* {{cite book | last=Rockafellar |first=R. Tyrrell | authorlink=R. Tyrrell Rockafellar |title=Convex Analysis |publisher=Princeton University Press |year=1996 |origyear=1970 |isbn=0-691-01586-4}}
+* {{Cite journal| last1   = Zia    | first1 = R. K. P.| last2   = Redish | first2 = E. F.| last3   = McKay  | first3 = S. R.| doi     = 10.1119/1.3119512| title   = Making sense of the Legendre transform| journal = American Journal of Physics| volume  = 77| issue   = 7| pages   = 614| year    = 2009| pmid    = | pmc     = | arxiv   = 0806.1147}}
+
+==Further reading==
+*{{cite web
+|url = http://www.physics.sun.ac.za/~htouchette/archive/lfth2.pdf
+|title = Legendre-Fenchel transforms in a nutshell
+|accessdate = 2014-09-15
+|last = Touchette
+|first = Hugo
+|date = 2005-07-27
+|format = PDF
+}}
+*{{cite web
+|url = http://www.physics.sun.ac.za/~htouchette/archive/convex1.pdf
+|title = Elements of convex analysis
+|accessdate = 2013-10-13
+|last = Touchette
+|first = Hugo
+|date = 2006-11-21
+|format = PDF
+}}
+
+==External links==
+{{commons category}}
+*[http://maze5.net/?page_id=733 Legendre transform with figures] at maze5.net
+*[http://www.onmyphd.com/?p=legendre.fenchel.transform Legendre and Legendre-Fenchel transforms in a step-by-step explanation] at onmyphd.com
+
+[[Category:Transforms]]
+[[Category:Duality theories]]
+[[Category:Concepts in physics]]
+[[Category:Convex analysis]]
