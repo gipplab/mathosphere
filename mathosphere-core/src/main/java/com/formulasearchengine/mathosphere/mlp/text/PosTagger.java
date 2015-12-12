@@ -194,6 +194,7 @@ public class PosTagger {
     result = concatenateSuccessiveNounsToNounSequence(result);
 
     result = contatenateSuccessive2Tags(result, PosTag.ADJECTIVE, PosTag.NOUN, PosTag.NOUN_PHRASE);
+    result = contatenateSuccessive2Tags(result, PosTag.ADJECTIVE, PosTag.NOUN_PLURAL, PosTag.NOUN_PHRASE);
     result = contatenateSuccessive2Tags(result, PosTag.ADJECTIVE, PosTag.NOUN_SEQUENCE,
       PosTag.NOUN_SEQUENCE_PHRASE);
 
