@@ -22,7 +22,7 @@ public class BaseConfig {
   private double gamma = 0.1;
 
   @Parameter(names = {"-t", "--threshold"})
-  private double threshold = 0.8;
+  private double threshold = 0.4;
 
 	public void setUseTeXIdentifiers(Boolean useTeXIdentifiers) {
 		this.useTeXIdentifiers = useTeXIdentifiers;
