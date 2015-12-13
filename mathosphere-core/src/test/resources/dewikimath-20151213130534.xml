@@ -1,0 +1,114 @@
+<mediawiki xmlns="http://www.mediawiki.org/xml/export-0.10/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mediawiki.org/xml/export-0.10/ http://www.mediawiki.org/xml/export-0.10.xsd" version="0.10" xml:lang="de">
+  <siteinfo>
+    <sitename>dewikimath</sitename>
+    <dbname>de_wiki</dbname>
+    <base>https://de.formulasearchengine.com/wiki/Hauptseite</base>
+    <generator>MediaWiki 1.27alpha</generator>
+    <case>first-letter</case>
+    <namespaces>
+      <namespace key="-2" case="first-letter">Medium</namespace>
+      <namespace key="-1" case="first-letter">Spezial</namespace>
+      <namespace key="0" case="first-letter" />
+      <namespace key="1" case="first-letter">Diskussion</namespace>
+      <namespace key="2" case="first-letter">Benutzer</namespace>
+      <namespace key="3" case="first-letter">Benutzer Diskussion</namespace>
+      <namespace key="4" case="first-letter">demath</namespace>
+      <namespace key="5" case="first-letter">demath Diskussion</namespace>
+      <namespace key="6" case="first-letter">Datei</namespace>
+      <namespace key="7" case="first-letter">Datei Diskussion</namespace>
+      <namespace key="8" case="first-letter">MediaWiki</namespace>
+      <namespace key="9" case="first-letter">MediaWiki Diskussion</namespace>
+      <namespace key="10" case="first-letter">Vorlage</namespace>
+      <namespace key="11" case="first-letter">Vorlage Diskussion</namespace>
+      <namespace key="12" case="first-letter">Hilfe</namespace>
+      <namespace key="13" case="first-letter">Hilfe Diskussion</namespace>
+      <namespace key="14" case="first-letter">Kategorie</namespace>
+      <namespace key="15" case="first-letter">Kategorie Diskussion</namespace>
+      <namespace key="828" case="first-letter">Modul</namespace>
+      <namespace key="829" case="first-letter">Modul Diskussion</namespace>
+    </namespaces>
+  </siteinfo>
+  <page>
+    <title>Clapeyron-Gleichung</title>
+    <ns>0</ns>
+    <id>3843</id>
+    <revision>
+      <id>3845</id>
+      <timestamp>2015-09-17T09:45:30Z</timestamp>
+      <contributor>
+        <username>Acky69</username>
+        <id>0</id>
+      </contributor>
+      <minor/>
+      <comment>zus. Link</comment>
+      <model>wikitext</model>
+      <format>text/x-wiki</format>
+      <text xml:space="preserve" bytes="3925">Die '''Clapeyron-Gleichung,''' die [[Émile Clapeyron]] [[1834]] entwickelte, liefert die [[Steigung]] aller [[Phasengrenzlinie]]n im [[p-T-Diagramm]] eines [[Reinstoff]]es, d.&amp;nbsp;h. z.&amp;nbsp;B. auch zwischen zwei festen [[Phase (Materie)|Phasen]]. Sie lautet:
+
+:&lt;math&gt; \frac{ \mathrm{d} p } { \mathrm{d} T } = \frac{ \Delta S_\mathrm{m} } { \Delta V_\mathrm{m}} &lt;/math&gt;
+
+mit
+* ''p'' – [[Druck (Physik)|Druck]]
+* ''T'' – [[Temperatur]] in [[Kelvin|K]]
+* &lt;math&gt;\Delta S_\mathrm{m}&lt;/math&gt; – Änderung der [[molare Größe|molaren]] [[Entropie (Thermodynamik)|Entropie]], d.&amp;nbsp;h. der Entropie pro [[Stoffmenge]], beim [[Phasenübergang]]
+* &lt;math&gt;\Delta V_\mathrm{m}&lt;/math&gt; – Änderung des [[molares Volumen|molaren Volumens]]
+
+== Spezifizierung für einzelne Phasenübergänge ==
+Die Clapeyron-Gleichung lässt sich für verschiedene Phasengrenzen spezifizieren; insbesondere folgende [[Phasenübergang|Übergänge]] werden durch sie bestimmt:
+
+* fest/flüssig, siehe [[Schmelzpunkt]]
+
+* flüssig/gasförmig ([[Clausius-Clapeyron-Gleichung]], Temperaturabhängigkeit des [[Sättigungsdampfdruck]]s):
+
+
+:&lt;math&gt;\frac{\mathrm{d}p}{\mathrm{d}T} \approx \frac{\Delta H_{\mathrm{m},\mathrm{v}} \cdot p}{R \cdot T^2}&lt;/math&gt;
+
+
+:mit &lt;math&gt;H_{\mathrm{m},\mathrm{v}}&lt;/math&gt; - molare [[Verdampfungsenthalpie]]&lt;/br&gt;
+:und &lt;math&gt;R&lt;/math&gt; - [[universelle Gaskonstante]]
+
+* fest / gasförmig (Temperaturabhängigkeit des [[Sublimationsdruck (Physik)|Sublimationsdampfdrucks]]):
+
+
+:&lt;math&gt;\frac{\mathrm{d} \ln p}{\mathrm{d} T} \approx \frac{\Delta H_{\mathrm{m},\mathrm{Sub}}}{R \cdot T^2}&lt;/math&gt;
+
+
+:mit &lt;math&gt;H_{\mathrm{m},\mathrm{Sub}}&lt;/math&gt; - molare [[Sublimierung (Physik)|Sublimationsenthalpie]]
+
+== Herleitung ==
+Die gesuchte Steigung der Phasengrenzlinien im ''p''-''T''-Diagramm wird durch die noch unbekannte Funktion &lt;math&gt;\mathrm {d}p/\mathrm {d}T&lt;/math&gt; beschrieben.
+
+An einer Phasengrenzlinie, d.&amp;nbsp;h. bei dem Wertepaar aus Druck&amp;nbsp;''p'' und Temperatur&amp;nbsp;''T'', in dem zwei Phasen&amp;nbsp;''α'' und ''β'' im [[Gleichgewicht (Thermodynamik)|Gleichgewicht]] koexistieren, besitzen diese beiden Phasen die gleichen [[Chemisches Potential|chemischen Potentiale]]&amp;nbsp;''μ'':
+
+{{NumBlk|:|&lt;math&gt; \mu_{ \alpha}\left( p,T \right)=\mu_{ \beta}\left( p,T \right)&lt;/math&gt;|1|LnSty=none}}
+
+Da auf der gesamten Phasengrenzlinie auch bei [[infinitesimal]]en Veränderungen von&amp;nbsp;''p'' oder&amp;nbsp;''T'' Gleichung&amp;nbsp;1 gilt, muss auch die Veränderung der Potentiale immer gleich bleiben:
+
+{{NumBlk|:|&lt;math&gt; \mathrm {d}\mu_{\alpha} = \mathrm {d}\mu_{\beta} &lt;/math&gt;|2|LnSty=none}}
+
+Aus der [[Gibbs-Duhem-Gleichung]] ist bekannt, dass
+
+{{NumBlk|:|&lt;math&gt; \mathrm {d}\mu = -S_\mathrm{m} \cdot \mathrm {d}T + V_\mathrm{m} \cdot \mathrm {d}p &lt;/math&gt;|3|LnSty=none}}
+
+Einsetzen in Gleichung&amp;nbsp;2 liefert
+
+{{NumBlk|:|&lt;math&gt; \Rightarrow -S_{\alpha,\mathrm{m}} \mathrm {d}T + V_{\alpha,\mathrm{m}} \mathrm {d}p = -S_{\beta,\mathrm{m}} \mathrm {d}T + V_{\beta,\mathrm{m}} \mathrm {d}p &lt;/math&gt;.|4|LnSty=none}}
+
+Ausklammern von d''p'' und d''T'' sowie anschließende Umformung liefert die Clapeyron-Gleichung:
+
+{{NumBlk|:|&lt;math&gt; \Leftrightarrow \frac{ \mathrm{d} p } { \mathrm{d} T } = \frac{ \Delta S_\mathrm{m} } { \Delta V_\mathrm{m}} &lt;/math&gt;|5|LnSty=none}}
+
+mit  &lt;math&gt;\Delta S_\mathrm{m} = S_{\beta,\mathrm{m}} - S_{\alpha,\mathrm{m}}&lt;/math&gt; &lt;/br&gt;
+bzw. &lt;math&gt;\Delta V_\mathrm{m} = V_{\beta,\mathrm{m}} - V_{\alpha,\mathrm{m}}&lt;/math&gt;
+
+Für [[Reversibler Prozess|reversible Vorgänge]] kann die Umwandlungsentropie aus der dabei umgesetzten [[Wärmemenge]]&amp;nbsp;''Q''&lt;sub&gt;rev&lt;/sub&gt; berechnet werden, die bei [[Isobare Zustandsänderung|isobaren Vorgängen]] gleich der Änderung der molaren [[Enthalpie]]&amp;nbsp;''H''&lt;sub&gt;m&lt;/sub&gt; ist:
+
+{{NumBlk|:|&lt;math&gt; \Delta S_\mathrm{m} = \frac{Q_\mathrm{rev}}{T} = \frac{\Delta H_\mathrm{m}}{T}&lt;/math&gt;|6|LnSty=none}}
+
+Damit erhält man die Clausius-Clapeyron-Gleichung.
+
+[[Kategorie: Thermodynamik]]</text>
+      <sha1>lwyd2lxsd5kmv2vqo2jmbk58juaa6p2</sha1>
+    </revision>
+  </page>
+</mediawiki>

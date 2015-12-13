@@ -116,13 +116,21 @@
         <dependency>
             <groupId>edu.stanford.nlp</groupId>
             <artifactId>stanford-corenlp</artifactId>
-            <version>3.5.1</version>
+            <version>3.5.2</version>
         </dependency>
+
         <dependency>
             <groupId>edu.stanford.nlp</groupId>
             <artifactId>stanford-corenlp</artifactId>
-            <version>3.5.1</version>
-            <classifier>models</classifier>
+            <version>3.5.2</version>
+            <classifier>models</classifier>         <!-- English models -->
+        </dependency>
+
+        <dependency>
+            <groupId>edu.stanford.nlp</groupId>
+            <artifactId>stanford-corenlp</artifactId>
+            <version>3.5.2</version>
+            <classifier>models-german</classifier>  <!-- German models -->
         </dependency>
 
         <dependency>
