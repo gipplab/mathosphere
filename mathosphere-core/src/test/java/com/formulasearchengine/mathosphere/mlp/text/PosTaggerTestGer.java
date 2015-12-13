@@ -22,8 +22,14 @@ import static org.junit.Assert.assertEquals;
 public class PosTaggerTestGer {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(PosTaggerTestGer.class);
+	/**
+	 * other models
+	 * "edu/stanford/nlp/models/pos-tagger/german/german-fast.tagger",
+	 * "edu/stanford/nlp/models/pos-tagger/german/german-fast-caseless.tagger",
+	 * "edu/stanford/nlp/models/pos-tagger/german/german-hgc.tagger"
+	 */
 	private static final String GER = "edu/stanford/nlp/models/pos-tagger/german/german-hgc.tagger";
-
+// other models
   @Test
   public void simpleGermanTest() throws Exception {
     FlinkMlpCommandConfig cfg = FlinkMlpCommandConfig.test();

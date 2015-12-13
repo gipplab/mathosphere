@@ -9,6 +9,8 @@ import org.junit.Test;
 import java.io.InputStream;
 import java.util.List;
 
+import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.*;
 
 public class TextExtractorMapperTest {
@@ -37,6 +39,30 @@ public class TextExtractorMapperTest {
 
     RawWikiDocument doc2 = output.get(1);
     assertEquals(doc2.title, "Gas constant");
+  }
+	@Test
+  public void testGer() throws Exception {
+    InputStream stream = PatternMatchingRelationFinder.class.getResourceAsStream("dewikimath-20151213130534.xml");
+    String rawImput = IOUtils.toString(stream);
+		final String expected = IOUtils.toString(PatternMatchingRelationFinder.class.getResourceAsStream("text/deText.txt"));
+		assertTrue(rawImput.contains("&lt;math"));
+
+    String[] pages = rawImput.split("</page>");
+    TextExtractorMapper textExtractor = new TextExtractorMapper();
+
+    ListCollector<RawWikiDocument> out = new ListCollector<>();
+    for (String page : pages) {
+      textExtractor.flatMap(page, out);
+    }
+
+    List<RawWikiDocument> output = out.getList();
+    assertEquals(1, output.size());
+
+    RawWikiDocument doc1 = output.get(0);
+    assertEquals("Clapeyron-Gleichung", doc1.title);
+	assertThat(doc1.text, not(containsString("&lt;math")));
+	assertThat(doc1.text, containsString("<math"));
+		assertEquals(expected,doc1.text );
   }
 
 }

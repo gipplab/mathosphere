@@ -1,0 +1,65 @@
+Die '''Clapeyron-Gleichung,''' die [[Émile Clapeyron]] [[1834]] entwickelte, liefert die [[Steigung]] aller [[Phasengrenzlinie]]n im [[p-T-Diagramm]] eines [[Reinstoff]]es, d.&nbsp;h. z.&nbsp;B. auch zwischen zwei festen [[Phase (Materie)|Phasen]]. Sie lautet:
+
+:<math> \frac{ \mathrm{d} p } { \mathrm{d} T } = \frac{ \Delta S_\mathrm{m} } { \Delta V_\mathrm{m}} </math>
+
+mit
+* ''p'' – [[Druck (Physik)|Druck]]
+* ''T'' – [[Temperatur]] in [[Kelvin|K]]
+* <math>\Delta S_\mathrm{m}</math> – Änderung der [[molare Größe|molaren]] [[Entropie (Thermodynamik)|Entropie]], d.&nbsp;h. der Entropie pro [[Stoffmenge]], beim [[Phasenübergang]]
+* <math>\Delta V_\mathrm{m}</math> – Änderung des [[molares Volumen|molaren Volumens]]
+
+== Spezifizierung für einzelne Phasenübergänge ==
+Die Clapeyron-Gleichung lässt sich für verschiedene Phasengrenzen spezifizieren; insbesondere folgende [[Phasenübergang|Übergänge]] werden durch sie bestimmt:
+
+* fest/flüssig, siehe [[Schmelzpunkt]]
+
+* flüssig/gasförmig ([[Clausius-Clapeyron-Gleichung]], Temperaturabhängigkeit des [[Sättigungsdampfdruck]]s):
+
+
+:<math>\frac{\mathrm{d}p}{\mathrm{d}T} \approx \frac{\Delta H_{\mathrm{m},\mathrm{v}} \cdot p}{R \cdot T^2}</math>
+
+
+:mit <math>H_{\mathrm{m},\mathrm{v}}</math> - molare [[Verdampfungsenthalpie]]</br>
+:und <math>R</math> - [[universelle Gaskonstante]]
+
+* fest / gasförmig (Temperaturabhängigkeit des [[Sublimationsdruck (Physik)|Sublimationsdampfdrucks]]):
+
+
+:<math>\frac{\mathrm{d} \ln p}{\mathrm{d} T} \approx \frac{\Delta H_{\mathrm{m},\mathrm{Sub}}}{R \cdot T^2}</math>
+
+
+:mit <math>H_{\mathrm{m},\mathrm{Sub}}</math> - molare [[Sublimierung (Physik)|Sublimationsenthalpie]]
+
+== Herleitung ==
+Die gesuchte Steigung der Phasengrenzlinien im ''p''-''T''-Diagramm wird durch die noch unbekannte Funktion <math>\mathrm {d}p/\mathrm {d}T</math> beschrieben.
+
+An einer Phasengrenzlinie, d.&nbsp;h. bei dem Wertepaar aus Druck&nbsp;''p'' und Temperatur&nbsp;''T'', in dem zwei Phasen&nbsp;''α'' und ''β'' im [[Gleichgewicht (Thermodynamik)|Gleichgewicht]] koexistieren, besitzen diese beiden Phasen die gleichen [[Chemisches Potential|chemischen Potentiale]]&nbsp;''μ'':
+
+{{NumBlk|:|<math> \mu_{ \alpha}\left( p,T \right)=\mu_{ \beta}\left( p,T \right)</math>|1|LnSty=none}}
+
+Da auf der gesamten Phasengrenzlinie auch bei [[infinitesimal]]en Veränderungen von&nbsp;''p'' oder&nbsp;''T'' Gleichung&nbsp;1 gilt, muss auch die Veränderung der Potentiale immer gleich bleiben:
+
+{{NumBlk|:|<math> \mathrm {d}\mu_{\alpha} = \mathrm {d}\mu_{\beta} </math>|2|LnSty=none}}
+
+Aus der [[Gibbs-Duhem-Gleichung]] ist bekannt, dass
+
+{{NumBlk|:|<math> \mathrm {d}\mu = -S_\mathrm{m} \cdot \mathrm {d}T + V_\mathrm{m} \cdot \mathrm {d}p </math>|3|LnSty=none}}
+
+Einsetzen in Gleichung&nbsp;2 liefert
+
+{{NumBlk|:|<math> \Rightarrow -S_{\alpha,\mathrm{m}} \mathrm {d}T + V_{\alpha,\mathrm{m}} \mathrm {d}p = -S_{\beta,\mathrm{m}} \mathrm {d}T + V_{\beta,\mathrm{m}} \mathrm {d}p </math>.|4|LnSty=none}}
+
+Ausklammern von d''p'' und d''T'' sowie anschließende Umformung liefert die Clapeyron-Gleichung:
+
+{{NumBlk|:|<math> \Leftrightarrow \frac{ \mathrm{d} p } { \mathrm{d} T } = \frac{ \Delta S_\mathrm{m} } { \Delta V_\mathrm{m}} </math>|5|LnSty=none}}
+
+mit  <math>\Delta S_\mathrm{m} = S_{\beta,\mathrm{m}} - S_{\alpha,\mathrm{m}}</math> </br>
+bzw. <math>\Delta V_\mathrm{m} = V_{\beta,\mathrm{m}} - V_{\alpha,\mathrm{m}}</math>
+
+Für [[Reversibler Prozess|reversible Vorgänge]] kann die Umwandlungsentropie aus der dabei umgesetzten [[Wärmemenge]]&nbsp;''Q''<sub>rev</sub> berechnet werden, die bei [[Isobare Zustandsänderung|isobaren Vorgängen]] gleich der Änderung der molaren [[Enthalpie]]&nbsp;''H''<sub>m</sub> ist:
+
+{{NumBlk|:|<math> \Delta S_\mathrm{m} = \frac{Q_\mathrm{rev}}{T} = \frac{\Delta H_\mathrm{m}}{T}</math>|6|LnSty=none}}
+
+Damit erhält man die Clausius-Clapeyron-Gleichung.
+
+[[Kategorie: Thermodynamik]]
