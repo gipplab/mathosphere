@@ -51,6 +51,22 @@ public class PosTaggerTestGer {
     assertEquals(expected, sentence.subList(0, expected.size()));
     LOGGER.debug("full result: {}", result);
   }
+	@Test
+  public void mediumGermanTest() throws Exception {
+		final String text = IOUtils.toString(PosTaggerTest.class.getResourceAsStream("deText.txt"));
+
+    FlinkMlpCommandConfig cfg = FlinkMlpCommandConfig.test();
+    PosTagger nlpProcessor = PosTagger.create(cfg.getLanguage(), GER);
+
+
+    List<MathTag> mathTags = WikiTextUtils.findMathTags(text);
+    List<Formula> formulas = TextAnnotatorMapper.toFormulas(mathTags, false);
+
+    String newText = WikiTextUtils.replaceAllFormulas(text, mathTags);
+    String cleanText = WikiTextUtils.extractPlainText(newText);
+
+    List<Sentence> result = nlpProcessor.process(cleanText, formulas);
+  }
 
   public static Word w(String word, String tag) {
     return new Word(word, tag);
