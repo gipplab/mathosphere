@@ -10,13 +10,14 @@ import java.io.Serializable;
 public class FlinkMlpCommandConfig extends BaseConfig implements Serializable {
 
   @Parameter(names = {"-in", "--inputDir"}, description = "path to the directory with wikidump")
-  private String dataset;
+  protected String dataset;
 
   @Parameter(names = {"-out", "--outputDir"}, description = "path to output directory")
-  private String outputdir;
+  protected String outputdir;
 
 
   public FlinkMlpCommandConfig() {
+	  String s = "";
   }
 
   public static FlinkMlpCommandConfig test() {
@@ -44,8 +45,8 @@ public class FlinkMlpCommandConfig extends BaseConfig implements Serializable {
   }
 
   public FlinkMlpCommandConfig(String dataset, String outputdir, String model, String language, double alpha, double beta,
-                double gamma, double threshold) {
-    super(model, language, alpha, beta, gamma, threshold);
+                double gamma, double threshold, Boolean useTex) {
+    super(model, language, alpha, beta, gamma, threshold, useTex);
     this.dataset = dataset;
     this.outputdir = outputdir;
   }

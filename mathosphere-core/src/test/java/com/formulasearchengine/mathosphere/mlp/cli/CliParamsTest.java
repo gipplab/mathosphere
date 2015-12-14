@@ -12,6 +12,14 @@ public class CliParamsTest {
     CliParams params = CliParams.from(args);
     assertEquals("help", params.getCommand());
   }
+	@Test
+  public void useTex() {
+    String[] args = { "mlp","-T" };
+    CliParams params = CliParams.from(args);
+    assertEquals("mlp", params.getCommand() );
+    assertEquals(true, params.getFlinkMlp().getUseTeXIdentifiers());
+		assertEquals(true, params.getMlp().getUseTeXIdentifiers());
+  }
 
   @Test
   public void count() {

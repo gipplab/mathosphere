@@ -1,0 +1,21 @@
+By analogy with [[classical mechanics]], the Hamiltonian is commonly expressed as the sum of [[Hermitian operators|operators]] corresponding to the [[kinetic energy|kinetic]] and [[potential energy|potential]] energies of a system, in the form
+
+:<math> \hat{H} = \hat{T} + \hat{V} </math>
+
+where
+:<math>\hat{V}</math>
+is the [[potential energy]] operator;
+:<math>\hat{T}</math>
+is the [[kinetic energy]] operator, where ''m'' is the [[mass]] of the particle, the dot denotes the [[dot product]] of vectors, and;
+:<math>\hat{p}</math>
+is the [[momentum operator]], wherein ∇ is the [[del|gradient]] [[operator (mathematics)|operator]]. The [[dot product]] of ∇ with itself is the [[laplacian]] ∇<sup>2</sup>, in three dimensions using [[Cartesian coordinates]] the Laplace operator is
+:<math>\nabla^2 = \frac{\partial^2}{{\partial x}^2} + \frac{\partial^2}{{\partial y}^2} + \frac{\partial^2}{{\partial z}^2}</math>
+
+Although this is not the technical definition of the [[Hamiltonian mechanics|Hamiltonian in classical mechanics]], it is the form it most commonly takes. Combining these together yields the familiar form used in the [[Schrödinger equation]]:
+
+:<math>\begin{align} \hat{H} & = \hat{T} + V \\
+ & = \frac{\bold\hat{p}\cdot\bold\hat{p}}{2m}+ V(\mathbf{r},t) \\
+ & = -\frac{\hbar^2}{2m}\nabla^2+ V(\mathbf{r},t)
+\end{align} </math>
+
+which allows one to apply the Hamiltonian to systems described by a [[wave function]] ''Ψ''('''r''', ''t''). This is the approach commonly taken in introductory treatments of quantum mechanics, using the formalism of Schrödinger's wave mechanics.

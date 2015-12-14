@@ -1,6 +1,7 @@
 package com.formulasearchengine.mathosphere.mlp;
 
 import com.formulasearchengine.mathosphere.mlp.cli.FlinkMlpCommandConfig;
+import org.apache.commons.io.IOUtils;
 import org.junit.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -37,5 +38,15 @@ public class FlinkMlpRelationFinderTest {
 		String input = "The symbol <math>\\mu</math> denotes the magnetic moment.";
 		final String s = finder.runFromText(config, input);
 		assertThat(s, containsString("magnetic moment"));
+	}
+	@Test
+	public void testRunFromHamText() throws Exception {
+		FlinkMlpCommandConfig config = FlinkMlpCommandConfig.test();
+		config.setUseTeXIdentifiers(true);
+
+		final FlinkMlpRelationFinder finder = new FlinkMlpRelationFinder();
+		String input = IOUtils.toString(FlinkMlpRelationFinderTest.class.getResourceAsStream("ham_optimized_wiki.txt"));
+		final String s = finder.runFromText(config, input);
+		assertThat(s, containsString("kinetic Energy"));
 	}
 }

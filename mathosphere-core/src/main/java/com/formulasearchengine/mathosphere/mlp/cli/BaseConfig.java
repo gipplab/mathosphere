@@ -35,13 +35,14 @@ public class BaseConfig {
   }
 
   public BaseConfig(String model, String language, double alpha, double beta, double gamma,
-      double threshold) {
+      double threshold,Boolean useTeXIdentifiers) {
     this.model = model;
     this.language = language;
     this.alpha = alpha;
     this.beta = beta;
     this.gamma = gamma;
     this.threshold = threshold;
+	  this.useTeXIdentifiers = useTeXIdentifiers;
   }
 
   public String getModel() {
