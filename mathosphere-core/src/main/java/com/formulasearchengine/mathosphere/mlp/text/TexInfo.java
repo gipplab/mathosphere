@@ -51,7 +51,9 @@ public class TexInfo {
 
   public static Multiset<String> getIdentifiers(String tex) throws XPathExpressionException, ParserConfigurationException, SAXException, IOException, TransformerException {
 	  final Multiset<String> strings = HashMultiset.create();
+	  //long t0 = System.nanoTime();
 	  String json = makeRequest(tex);
+	  //System.out.println((System.nanoTime()-t0)/1000000+"ms for "+tex);
 	  try {
 		  JSONObject Ojson = (JSONObject) JSONSerializer.toJSON(json);
 		  JSONArray identifiers = Ojson.getJSONArray("identifiers");

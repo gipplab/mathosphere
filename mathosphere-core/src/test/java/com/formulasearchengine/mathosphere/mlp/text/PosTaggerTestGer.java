@@ -28,7 +28,7 @@ public class PosTaggerTestGer {
 	 * "edu/stanford/nlp/models/pos-tagger/german/german-fast-caseless.tagger",
 	 * "edu/stanford/nlp/models/pos-tagger/german/german-hgc.tagger"
 	 */
-	private static final String GER = "edu/stanford/nlp/models/pos-tagger/german/german-hgc.tagger";
+	private static final String GER = "edu/stanford/nlp/models/pos-tagger/german/german-fast.tagger";
 // other models
   @Test
   public void simpleGermanTest() throws Exception {
@@ -60,12 +60,13 @@ public class PosTaggerTestGer {
 
 
     List<MathTag> mathTags = WikiTextUtils.findMathTags(text);
-    List<Formula> formulas = TextAnnotatorMapper.toFormulas(mathTags, false);
+    List<Formula> formulas = TextAnnotatorMapper.toFormulas(mathTags, true);
 
     String newText = WikiTextUtils.replaceAllFormulas(text, mathTags);
+		long t0 = System.nanoTime();
     String cleanText = WikiTextUtils.extractPlainText(newText);
-
-    List<Sentence> result = nlpProcessor.process(cleanText, formulas);
+		System.out.println((System.nanoTime()-t0)/1000000+"ms for cleaning.");
+		List<Sentence> result = nlpProcessor.process(cleanText, formulas);
   }
 
   public static Word w(String word, String tag) {

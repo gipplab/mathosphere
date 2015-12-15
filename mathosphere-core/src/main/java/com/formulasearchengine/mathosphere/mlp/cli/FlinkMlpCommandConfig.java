@@ -24,7 +24,9 @@ public class FlinkMlpCommandConfig extends BaseConfig implements Serializable {
     String dataset = "c:/tmp/mlp/input/";
     String outputdir = "c:/tmp/mlp/output/";
 
-    return new FlinkMlpCommandConfig(dataset, outputdir);
+	  FlinkMlpCommandConfig cfg = new FlinkMlpCommandConfig(dataset, outputdir);
+	  cfg.setUseTeXIdentifiers(false);
+	  return  cfg;
   }
 
   public static FlinkMlpCommandConfig from(String[] args) {

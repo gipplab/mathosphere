@@ -47,6 +47,6 @@ public class FlinkMlpRelationFinderTest {
 		final FlinkMlpRelationFinder finder = new FlinkMlpRelationFinder();
 		String input = IOUtils.toString(FlinkMlpRelationFinderTest.class.getResourceAsStream("ham_optimized_wiki.txt"));
 		final String s = finder.runFromText(config, input);
-		assertThat(s, containsString("kinetic Energy"));
+		assertThat(s, containsString("kinetic energy"));
 	}
 }

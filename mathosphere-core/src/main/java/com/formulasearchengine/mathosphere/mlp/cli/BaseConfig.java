@@ -28,8 +28,8 @@ public class BaseConfig {
 		this.useTeXIdentifiers = useTeXIdentifiers;
 	}
 
-	@Parameter(names = {"-T", "--TeX"})
-  private Boolean useTeXIdentifiers = false;
+	@Parameter(names = {"-T", "--TeX"},arity = 0)
+  private boolean useTeXIdentifiers = true;
 
   public BaseConfig() {
   }

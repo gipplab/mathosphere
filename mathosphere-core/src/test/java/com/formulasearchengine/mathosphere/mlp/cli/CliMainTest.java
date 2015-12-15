@@ -33,7 +33,7 @@ public class CliMainTest {
 
 	@Test
 	public void testMlpRusPlain() throws Exception {
-		String[] args = new String[10];
+		String[] args = new String[11];
 		final ClassLoader classLoader = getClass().getClassLoader();
 		final File temp;
 		temp = File.createTempFile("temp", Long.toString(System.nanoTime()));
@@ -47,12 +47,13 @@ public class CliMainTest {
 		args[7] = "-pos";
 		args[8] = "";
 		args[9] = "-T";
+		args[10] = "";
 		System.out.println(temp.getAbsolutePath());
-		runTest(args);
-		// System.out.println(standardOutput);
+		String res = runTest(args);
+		System.out.println(res);
 	}
 
-	public void runTest(String[] args) throws Exception {
+	public String runTest(String[] args) throws Exception {
 		final PrintStream stdout = System.out;
 		final ByteArrayOutputStream myOut = new ByteArrayOutputStream();
 		System.setOut(new PrintStream(myOut));
@@ -61,6 +62,7 @@ public class CliMainTest {
 		final String standardOutput = myOut.toString();
 		System.setOut(stdout);
 		System.out.println((System.nanoTime()-t0)/1000000000+"s");
+		return standardOutput;
 	}
 
 	@Test

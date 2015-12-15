@@ -16,7 +16,7 @@ public class WikiTextUtils {
 
 
   public enum MathMarkUpType {
-    LATEX, MATHML;
+    LATEX, MATHML, MATH_TEMPLATE, MVAR_TEMPLATE
   }
 
 
