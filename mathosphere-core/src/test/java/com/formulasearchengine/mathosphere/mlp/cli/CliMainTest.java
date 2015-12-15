@@ -54,6 +54,23 @@ public class CliMainTest {
 		System.out.println(res);
 	}
 
+	@Test
+	public void testMlpEngPlain() throws Exception {
+		String[] args = new String[5];
+		final ClassLoader classLoader = getClass().getClassLoader();
+		final File temp;
+		temp = File.createTempFile("temp", Long.toString(System.nanoTime()));
+		args[0] = "mlp";
+		args[1] = "-in";
+		args[2] = classLoader.getResource("com/formulasearchengine/mathosphere/mlp/sample.xml").getFile();
+		args[3] = "-out";
+		args[4] = temp.getAbsolutePath();
+		System.out.println(temp.getAbsolutePath());
+		String res = runTest(args);
+		System.out.println(res);
+	}
+
+
 	public String runTest(String[] args) throws Exception {
 		final PrintStream stdout = System.out;
 		final ByteArrayOutputStream myOut = new ByteArrayOutputStream();
