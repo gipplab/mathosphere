@@ -245,8 +245,13 @@ public class MathConverter
 		newline(2);
 
 		noWrap = saveNoWrap;
+		try{
+			// Don't care about errors
+			iterate(s.getBody());
+		} catch (Exception e){
+			e.printStackTrace();
+		}
 
-		iterate(s.getBody());
 
 		while (sections.size() > s.getLevel())
 			sections.removeLast();

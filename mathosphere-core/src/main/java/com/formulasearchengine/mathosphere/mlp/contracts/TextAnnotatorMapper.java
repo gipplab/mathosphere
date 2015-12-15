@@ -13,8 +13,6 @@ import org.apache.flink.api.common.functions.RichMapFunction;
 import org.apache.flink.configuration.Configuration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.sweble.wikitext.engine.EngineException;
-import org.sweble.wikitext.parser.parser.LinkTargetException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,7 +66,7 @@ public class TextAnnotatorMapper extends RichMapFunction<RawWikiDocument, Parsed
 			}
 			formulas = toFormulas(mathTags, config.getUseTeXIdentifiers());
 			sentences = posTagger.process(cleanText, formulas);
-		} catch (LinkTargetException | EngineException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			formulas = new ArrayList<>();
 			sentences = new ArrayList<>();
