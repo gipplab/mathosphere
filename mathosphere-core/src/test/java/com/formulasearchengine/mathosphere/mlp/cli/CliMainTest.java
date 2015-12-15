@@ -1,6 +1,7 @@
 package com.formulasearchengine.mathosphere.mlp.cli;
 
 import com.formulasearchengine.mathosphere.mlp.Main;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.ByteArrayOutputStream;
@@ -66,6 +67,7 @@ public class CliMainTest {
 	}
 
 	@Test
+	@Ignore
   public void testExtract() throws Exception {
 
     String[] args = new String[3];
@@ -84,6 +86,7 @@ public class CliMainTest {
   }
 
   @Test
+  @Ignore
   public void testList() throws Exception {
     String[] args = new String[4];
     final ClassLoader classLoader = getClass().getClassLoader();
