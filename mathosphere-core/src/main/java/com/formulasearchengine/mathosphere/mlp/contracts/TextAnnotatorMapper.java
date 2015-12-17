@@ -56,7 +56,7 @@ public class TextAnnotatorMapper extends RichMapFunction<RawWikiDocument, Parsed
 			String cleanText;
 			List<MathTag> mathTags;
 			if (config.getUseTeXIdentifiers()) {
-				MathConverter c = new MathConverter(wikitext);
+				MathConverter c = new MathConverter(wikitext,title);
 				cleanText = c.getStrippedOutput();
 				mathTags = c.getMathTags();
 			} else {
@@ -67,7 +67,7 @@ public class TextAnnotatorMapper extends RichMapFunction<RawWikiDocument, Parsed
 			formulas = toFormulas(mathTags, config.getUseTeXIdentifiers());
 			sentences = posTagger.process(cleanText, formulas);
 		} catch (Exception e) {
-			e.printStackTrace();
+			LOGGER.warn("Problem with text processing", title, e);
 			formulas = new ArrayList<>();
 			sentences = new ArrayList<>();
 		}

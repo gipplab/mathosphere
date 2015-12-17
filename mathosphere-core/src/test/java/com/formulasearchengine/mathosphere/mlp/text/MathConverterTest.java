@@ -16,6 +16,14 @@ public class MathConverterTest {
 		 String wikiText = IOUtils.toString(getClass().getResourceAsStream("legendre_wiki.txt"));
 		final MathConverter mathConverter = new MathConverter(wikiText);
 		final String real = mathConverter.getStrippedOutput();
-		assertThat(real, containsString("Let FORMULA_1c4a3ef561cb589e6167b602c2e61976"));
+		assertThat(real, containsString("Let FORMULA_"));
+	}
+
+	@Test
+	public void testGo2() throws Exception {
+		String wikiText = IOUtils.toString(getClass().getResourceAsStream("../hamiltonian_wiki.txt"));
+		final MathConverter mathConverter = new MathConverter(wikiText);
+		final String real = mathConverter.getOutput();
+		assertThat(real, containsString("denoted by <math>H</math>, also \"Ȟ\" or <math>\\hat{H}</math>. "));
 	}
 }

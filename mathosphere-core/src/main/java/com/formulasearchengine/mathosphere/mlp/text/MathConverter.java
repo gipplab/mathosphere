@@ -17,6 +17,8 @@ package com.formulasearchengine.mathosphere.mlp.text;
  */
 
 import com.formulasearchengine.mathosphere.mlp.pojos.MathTag;
+import com.formulasearchengine.mathosphere.mlp.pojos.WikidataLink;
+import com.jcabi.log.Logger;
 import de.fau.cs.osr.ptk.common.AstVisitor;
 import de.fau.cs.osr.utils.StringUtils;
 import org.sweble.wikitext.engine.EngineException;
@@ -28,6 +30,7 @@ import org.sweble.wikitext.engine.nodes.EngPage;
 import org.sweble.wikitext.engine.nodes.EngProcessedPage;
 import org.sweble.wikitext.engine.utils.DefaultConfigEnWp;
 import org.sweble.wikitext.parser.nodes.*;
+import org.sweble.wikitext.parser.nodes.WtContentNode.WtContentNodeImpl;
 import org.sweble.wikitext.parser.parser.LinkTargetException;
 
 import java.util.ArrayList;
@@ -65,11 +68,13 @@ import java.util.regex.Pattern;
 public class MathConverter
 		extends
 		AstVisitor<WtNode> {
+	private final static Pattern subMatch = Pattern.compile("[{<]sub[}>](.+?)[{<]/sub[}>]");
 	private final static WikiConfig config = DefaultConfigEnWp.generate();
 	private final static WtEngineImpl engine = new WtEngineImpl(config);
 	private static final Pattern ws = Pattern.compile("\\s+");
 	private final EngProcessedPage page;
 	private List<MathTag> mathTags = new ArrayList<>();
+	private List<WikidataLink> Links = new ArrayList<>();
 	private StringBuilder sb;
 	private StringBuilder line;
 	private int extLinkNum;
@@ -81,11 +86,15 @@ public class MathConverter
 	private boolean needSpace;
 	private boolean noWrap;
 	private LinkedList<Integer> sections;
+	private PageTitle pageTitle;
 
-	public MathConverter(String wikiText) throws LinkTargetException, EngineException {
-		PageTitle pageTitle = PageTitle.make(config, "Ham");
+	public MathConverter(String wikiText, String name) throws LinkTargetException, EngineException {
+		pageTitle = PageTitle.make(config, name);
 		PageId pageId = new PageId(pageTitle, -1);
 		page = engine.postprocess(pageId, wikiText, null);
+	}
+	public MathConverter(String wikiText) throws LinkTargetException, EngineException {
+		this(wikiText,"noname");
 	}
 
 	public List<MathTag> getMathTags() {
@@ -140,7 +149,7 @@ public class MathConverter
 	}
 
 	public void visit(WtListItem item) {
-		newline(1);
+		writeNewlines(1);
 		iterate(item);
 	}
 
@@ -157,15 +166,43 @@ public class MathConverter
 	}
 
 	public void visit(WtBold b) {
+		if(detectHiddenMath( b )){
+			return;
+		}
 		write("\"");
 		iterate(b);
 		write("\"");
 	}
 
 	public void visit(WtItalics i) {
+		if (detectHiddenMath( i )) return;
 		write("\"");
 		iterate(i);
 		write("\"");
+	}
+
+	public boolean detectHiddenMath(WtContentNodeImpl i) {
+		if ( i.size() == 1 && i.get(0) instanceof WtText){
+			String content = ((WtText) i.get( 0 )).getContent();
+			String tex = wiki2Tex( content );
+			if (tex.length()>0 && (content.length()==1 ||
+					( content.length() <10 && tex.length()>content.length()) )){
+				int location;
+				try{
+					location = i.getLocation().line;
+				} catch (NullPointerException n){
+					location =0;
+				}
+				if (i instanceof WtBold){
+					tex = "\\mathbf{"+tex+"}";
+				}
+				MathTag tag = new MathTag(location,tex , WikiTextUtils.MathMarkUpType.MATH_TEMPLATE);
+				mathTags.add(tag);
+				write( tag.placeholder() );
+				return true;
+			}
+		}
+		return false;
 	}
 
 	public void visit(WtXmlCharRef cr) {
@@ -249,6 +286,7 @@ public class MathConverter
 			// Don't care about errors
 			iterate(s.getBody());
 		} catch (Exception e){
+			Logger.info(e,"Problem prcessing page", pageTitle.getTitle());
 			e.printStackTrace();
 		}
 
@@ -290,7 +328,7 @@ public class MathConverter
 	}
 
 	public void visit(WtNewline n) {
-		newline(1);
+		writeNewlines(1);
 	}
 
 	public void visit(WtTemplate n) {
@@ -300,14 +338,11 @@ public class MathConverter
 					WtTemplateArgument arg0 = (WtTemplateArgument) n.getArgs().get(0);
 					String content = ((WtText) arg0.getValue().get(0)).getContent().trim();
 					//content = content.replaceAll("'''([a-zA-Z]+)'''","\\mathbf{$1}");
-					content = content.replaceAll("[{<]sub[}>](.+?)[{<]/sub[}>]", "_{$1}")
-							.replaceAll("[{<]sup[}>](.+?)[{<]/sup[}>]", "^{$1}")
-							.replaceAll("'''(.+?)'''", "\\\\mathbf{$1}")
-							.replaceAll("''(.+?)''", "$1");
+					content = wiki2Tex( content );
 					MathTag tag = new MathTag(n.getLocation().line, content, WikiTextUtils.MathMarkUpType.MATH_TEMPLATE);
 					mathTags.add(tag);
 					write(tag.placeholder());
-				} catch (Exception e) {
+				} catch (Exception ignored) {
 
 				}
 				break;
@@ -318,10 +353,27 @@ public class MathConverter
 					MathTag tag = new MathTag(n.getLocation().line, content, WikiTextUtils.MathMarkUpType.MVAR_TEMPLATE);
 					mathTags.add(tag);
 					write(tag.placeholder());
-				} catch (Exception e) {
-
+				} catch (Exception ignored) {
 				}
 		}
+	}
+
+	public String wiki2Tex(String content) {
+		content = subMatch.matcher( content ).replaceAll( "_{$1}" )
+				.replaceAll( "[{<]sup[}>](.+?)[{<]/sup[}>]", "^{$1}" )
+				.replaceAll( "'''(.+?)'''", "\\\\mathbf{$1}" )
+				.replaceAll( "''(.+?)''", "$1" );
+		int[] chars = content.codePoints().toArray();
+		StringBuilder res = new StringBuilder();
+
+		for (int code : chars) {
+				if(code>128){
+					res.append(UnicodeMap.char2TeX( code ));
+				} else {
+					res.append( (char) code);
+				}
+		}
+		return res.toString().trim();
 	}
 
 	public void visit(WtTemplateArgument n) {
@@ -417,6 +469,16 @@ public class MathConverter
 
 	public String getStrippedOutput(){
 		return (String) this.go(page.getPage());
+	}
+
+	public String getOutput(){
+		String output = getStrippedOutput();
+		for (MathTag tag : mathTags) {
+			output = output.replace("FORMULA_"+tag.getContentHash(),"<math>"+tag.getContent()+"</math>");
+		}
+		return output;
+
+
 	}
 }
 

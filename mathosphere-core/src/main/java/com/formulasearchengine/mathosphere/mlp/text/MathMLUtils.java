@@ -116,7 +116,7 @@ public class MathMLUtils {
   }
 
   private static Multiset<String> tryExtractIdentifiers(MathTag math, Boolean useTeXIdentifiers) {
-    if (math.getMarkUpType() == MathMarkUpType.LATEX) {
+    if (math.getMarkUpType() != MathMarkUpType.MATHML) {
       return extractIdentifiersFromTex(math.getTagContent(),useTeXIdentifiers);
     } else {
       return extractIdentifiersFromMathML(math.getContent(),useTeXIdentifiers,false);
