@@ -10,7 +10,7 @@ import static net.sf.ezmorph.test.ArrayAssertions.assertEquals;
 /**
  * Created by Moritz on 18.12.2015.
  */
-public class WikdataLinkMapTest {
+public class WikidataLinkMapTest {
 
   @Test
   public void testTitle2Data() throws Exception {
@@ -30,7 +30,7 @@ public class WikdataLinkMapTest {
     testcases.put("[[Electrostatics]]", "Q26336");
     testcases.put("[[Electric field]]", "Q46221");
     testcases.put("[[Magnetic field]]", "Q11480");
-    WikdataLinkMap map = new WikdataLinkMap(getClass().getResource("title2Data.csv").getFile(), false);
+    WikidataLinkMap map = new WikidataLinkMap(getClass().getResource("title2Data.csv").getFile(), false);
     for (Map.Entry<String, String> entry : testcases.entrySet()) {
       assertEquals("Test for " + entry.getKey(),entry.getValue(), map.title2Data(entry.getKey()));
     }

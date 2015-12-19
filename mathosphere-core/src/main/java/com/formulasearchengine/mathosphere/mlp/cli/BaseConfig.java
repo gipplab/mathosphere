@@ -24,25 +24,28 @@ public class BaseConfig {
   @Parameter(names = {"-t", "--threshold"})
   private double threshold = 0.4;
 
-	public void setUseTeXIdentifiers(Boolean useTeXIdentifiers) {
-		this.useTeXIdentifiers = useTeXIdentifiers;
-	}
+  @Parameter(names = {"-w", "--wikiDataList"})
+  private String wikiDataFile = null;
 
-	@Parameter(names = {"-T", "--TeX"},arity = 0)
+  public void setUseTeXIdentifiers(Boolean useTeXIdentifiers) {
+    this.useTeXIdentifiers = useTeXIdentifiers;
+  }
+
+  @Parameter(names = {"-T", "--TeX"}, arity = 0)
   private boolean useTeXIdentifiers = true;
 
   public BaseConfig() {
   }
 
   public BaseConfig(String model, String language, double alpha, double beta, double gamma,
-      double threshold,Boolean useTeXIdentifiers) {
+                    double threshold, Boolean useTeXIdentifiers) {
     this.model = model;
     this.language = language;
     this.alpha = alpha;
     this.beta = beta;
     this.gamma = gamma;
     this.threshold = threshold;
-	  this.useTeXIdentifiers = useTeXIdentifiers;
+    this.useTeXIdentifiers = useTeXIdentifiers;
   }
 
   public String getModel() {
@@ -71,5 +74,9 @@ public class BaseConfig {
 
   public Boolean getUseTeXIdentifiers() {
     return useTeXIdentifiers;
+  }
+
+  public String getWikiDataFile() {
+    return wikiDataFile;
   }
 }

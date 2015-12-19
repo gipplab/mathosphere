@@ -11,16 +11,16 @@ import java.io.FileReader;
 import java.util.HashMap;
 import java.util.Map;
 
-public class WikdataLinkMap {
+public class WikidataLinkMap {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(WikdataLinkMap.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(WikidataLinkMap.class);
   private final Map<String, String> map;
 
-  public WikdataLinkMap(String fn) {
+  public WikidataLinkMap(String fn) {
     map = buildMap(fn, true);
   }
 
-  public WikdataLinkMap(String fn, boolean unique) {
+  public WikidataLinkMap(String fn, boolean unique) {
     map = buildMap(fn, unique);
   }
 
