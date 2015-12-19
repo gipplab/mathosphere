@@ -2,6 +2,7 @@ package com.formulasearchengine.mathosphere.mlp.text;
 
 import org.junit.Test;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -35,5 +36,15 @@ public class WikidataLinkMapTest {
       assertEquals("Test for " + entry.getKey(),entry.getValue(), map.title2Data(entry.getKey()));
     }
 
+  }
+
+  @Test
+  public void testWriteFile() throws Exception {
+    final File temp = File.createTempFile("temp", Long.toString(System.nanoTime()));
+    WikidataLinkMap map = new WikidataLinkMap(getClass().getResource("title2Data.csv").getFile(), false);
+    // WikidataLinkMap map = new WikidataLinkMap("D:/wiki-en-titles-2.csv", false); 325M input --> 3.4G jvm memory
+    // WikidataLinkMap map = new WikidataLinkMap("D:/wiki-en-titles-no-dup.csv", true); //306M input --> 3.4G jvm memory
+    map.writeFile(temp.getAbsolutePath());
+    System.out.println(temp.getAbsolutePath());
   }
 }
