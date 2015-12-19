@@ -29,8 +29,6 @@ public class WikidataLinkMap {
   }
 
   private static Map<String, String> buildMap(String fn, boolean unique) {
-    // see table here
-    // http://unicode-table.com/en/blocks/letterlike-symbols/
     Map<String, String> keys = new HashMap<>();
     ImmutableMap.Builder<String, String> title2Data = ImmutableMap.builder();
     try {

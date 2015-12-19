@@ -40,7 +40,7 @@ public class TextAnnotatorMapper extends RichMapFunction<RawWikiDocument, Parsed
     this.language = config.getLanguage();
     this.model = config.getModel();
     if (config.getWikiDataFile() != null) {
-      wl = new WikidataLinkMap(config.getWikiDataFile(), false);
+      wl = new WikidataLinkMap(config.getWikiDataFile());
     } else {
       wl = null;
     }

@@ -85,7 +85,7 @@ public class MathConverter
 
   public MathConverter(String wikitext, String title, WikidataLinkMap wl) throws LinkTargetException, EngineException {
     this(wikitext, title);
-    wl = wl;
+    this.wl = wl;
   }
 
   public List<MathTag> getMathTags() {
@@ -231,6 +231,7 @@ public class MathConverter
       String newName = wl.title2Data(linkName);
       if (newName != null) {
         write("LINK_" + newName);
+        return;
       }
     }
     write("\"");
