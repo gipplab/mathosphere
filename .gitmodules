@@ -10,3 +10,6 @@
 [submodule "lib/flink"]
 	path = lib/flink
 	url = https://github.com/apache/flink.git
+[submodule "lib/WikidataIdListGenerator"]
+	path = lib/WikidataIdListGenerator
+	url = git@github.com:physikerwelt/WikidataListGenerator.git
