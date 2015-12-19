@@ -12,4 +12,4 @@
 	url = https://github.com/apache/flink.git
 [submodule "lib/WikidataIdListGenerator"]
 	path = lib/WikidataIdListGenerator
-	url = git@github.com:physikerwelt/WikidataListGenerator.git
+	url = https://github.com/physikerwelt/WikidataListGenerator.git
