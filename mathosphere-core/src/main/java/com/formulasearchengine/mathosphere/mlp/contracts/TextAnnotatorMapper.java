@@ -28,12 +28,12 @@ public class TextAnnotatorMapper extends RichMapFunction<RawWikiDocument, Parsed
 
   private static final Logger LOGGER = LoggerFactory.getLogger(TextAnnotatorMapper.class);
 
-  private static BaseConfig config;
-  private static String language;
-  private static String model;
+  private final BaseConfig config;
+  private final String language;
+  private final String model;
+  private final WikidataLinkMap wl;
 
   private PosTagger posTagger;
-  private final WikidataLinkMap wl;
 
   public TextAnnotatorMapper(BaseConfig config) {
     this.config = config;
@@ -49,7 +49,6 @@ public class TextAnnotatorMapper extends RichMapFunction<RawWikiDocument, Parsed
   @Override
   public void open(Configuration cfg) throws Exception {
     posTagger = PosTagger.create(language, model);
-    //posTagger = PosTagger.create(config.getLanguage(), config.getModel());
   }
 
   @Override
@@ -65,6 +64,7 @@ public class TextAnnotatorMapper extends RichMapFunction<RawWikiDocument, Parsed
   public ParsedWikiDocument parse(String wikitext, String title) {
     List<Formula> formulas;
     List<Sentence> sentences;
+    System.out.println("language is "+config.getLanguage());
     try {
       String cleanText;
       List<MathTag> mathTags;
