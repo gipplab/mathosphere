@@ -28,9 +28,9 @@ public class TextAnnotatorMapper extends RichMapFunction<RawWikiDocument, Parsed
 
   private static final Logger LOGGER = LoggerFactory.getLogger(TextAnnotatorMapper.class);
 
-  private final BaseConfig config;
-  private final String language;
-  private final String model;
+  private static BaseConfig config;
+  private static String language;
+  private static String model;
 
   private PosTagger posTagger;
   private final WikidataLinkMap wl;

@@ -76,7 +76,7 @@ public class CliMainTest {
 		final String file = getClass().getResource("../sample.xml").getFile();
 		final String wikiDataList = getClass().getResource("../text/test-map-no-dup.csv").getFile();
 		temp = File.createTempFile("temp", Long.toString(System.nanoTime()));
-		String[] args = {"mlp","-in",file,"-out",temp.getAbsolutePath(),"-w",wikiDataList};
+		String[] args = {"mlp","-in",file,"-out",temp.getAbsolutePath(),"--tex","-w",wikiDataList};
 		System.out.println(temp.getAbsolutePath());
 		String res = runTest(args);
 		System.out.println(res);
