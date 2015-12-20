@@ -34,7 +34,8 @@ public class FlinkMlpRelationFinder {
 
     result.map(new JsonSerializerMapper<>())
         .writeAsText(config.getOutputDir(), WriteMode.OVERWRITE);
-
+    //int cores = Runtime.getRuntime().availableProcessors();
+    //env.setParallelism(1); // rounds down
     env.execute("Relation Finder");
   }
 

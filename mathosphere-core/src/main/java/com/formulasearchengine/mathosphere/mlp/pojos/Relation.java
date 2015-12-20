@@ -1,6 +1,8 @@
 package com.formulasearchengine.mathosphere.mlp.pojos;
 
 
+import com.formulasearchengine.mathosphere.mlp.text.PosTag;
+
 public class Relation {
 
   private String identifier;
@@ -34,7 +36,11 @@ public class Relation {
   }
 
   public void setDefinition(Word word) {
-    this.definition = word.getWord();
+    if (word.getPosTag().equals(PosTag.LINK)) {
+      this.definition = "[[" + word.getWord() + "]]";
+    } else {
+      this.definition = word.getWord();
+    }
   }
 
   public void setDefinition(String definition) {

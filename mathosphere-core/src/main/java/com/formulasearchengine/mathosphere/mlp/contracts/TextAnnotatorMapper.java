@@ -90,8 +90,6 @@ public class TextAnnotatorMapper extends RichMapFunction<RawWikiDocument, Parsed
         allIdentifiers.add(entry.getElement(), entry.getCount());
       }
     }
-
-
     return new ParsedWikiDocument(title, allIdentifiers, formulas, sentences);
   }
 
