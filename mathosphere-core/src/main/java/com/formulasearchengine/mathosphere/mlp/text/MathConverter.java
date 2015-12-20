@@ -367,7 +367,7 @@ public class MathConverter
 
     for (int code : chars) {
       if (code > 128) {
-        res.append(UnicodeMap.char2TeX(code));
+        res.append("{").append(UnicodeMap.char2TeX(code)).append("}");
       } else {
         res.append((char) code);
       }
