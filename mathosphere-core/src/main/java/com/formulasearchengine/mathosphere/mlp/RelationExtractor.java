@@ -22,7 +22,7 @@ public class RelationExtractor {
 
   public static void main(String[] args) throws Exception {
     String params[] = {"extract", "-in", "C:/tmp/mlp/linear_regression.txt"};
-    MlpCommandConfig config = CliParams.from(params).getMlp();
+    MlpCommandConfig config = CliParams.from(params).getExtractCommandConfig();
     run(config);
   }
 
