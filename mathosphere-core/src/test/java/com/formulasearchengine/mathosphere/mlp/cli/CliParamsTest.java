@@ -23,6 +23,15 @@ public class CliParamsTest {
   }
 
   @Test
+  public void NotUseTex() {
+    String[] args = { "mlp", "" };
+    CliParams params = CliParams.from(args);
+    assertEquals("mlp", params.getCommand());
+    assertFalse(params.getFlinkMlp().getUseTeXIdentifiers());
+    assertFalse(params.getMlp().getUseTeXIdentifiers());
+  }
+
+  @Test
   public void count() {
     String[] args = { "count", "--formulae", "-in", "c:/tmp/mlp/input/" };
     CliParams params = CliParams.from(args);

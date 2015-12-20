@@ -28,7 +28,7 @@ public class BaseConfig {
   private String wikiDataFile = null;
 
   @Parameter(names = {"--tex"})
-  private boolean useTeXIdentifiers = true;
+  private boolean useTeXIdentifiers = false;
 
   public BaseConfig() {
   }
