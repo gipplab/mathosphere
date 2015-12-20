@@ -70,6 +70,17 @@ public class CliMainTest {
 		System.out.println(res);
 	}
 
+	@Test
+	public void testMlpEngPlainWithWikidata() throws Exception {
+		final File temp;
+		final String file = getClass().getResource("../sample.xml").getFile();
+		final String wikiDataList = getClass().getResource("../text/test-map-no-dup.csv").getFile();
+		temp = File.createTempFile("temp", Long.toString(System.nanoTime()));
+		String[] args = {"mlp","-in",file,"-out",temp.getAbsolutePath(),"-w",wikiDataList};
+		System.out.println(temp.getAbsolutePath());
+		String res = runTest(args);
+		System.out.println(res);
+	}
 
 	public String runTest(String[] args) throws Exception {
 		final PrintStream stdout = System.out;
