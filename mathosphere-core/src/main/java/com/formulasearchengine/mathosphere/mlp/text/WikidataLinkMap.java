@@ -10,12 +10,14 @@ import org.slf4j.LoggerFactory;
 
 import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-public class WikidataLinkMap {
+public class WikidataLinkMap implements Serializable {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(WikidataLinkMap.class);
   private final Map<String, String> map;
@@ -72,28 +74,45 @@ public class WikidataLinkMap {
   }
 
 
-
   /**
    * Writes the list in memory to a file.
+   *
    * @param fn Filename of the output file
    * @return boolean if the writing process was successful
    */
   public boolean writeFile(String fn) {
     try {
       OutputStream out = new FileOutputStream(fn);
-      OutputStreamWriter writer = new OutputStreamWriter(out);
-      CSVPrinter printer = CSVFormat.DEFAULT.withRecordSeparator("\n").print(writer);
-      for (Map.Entry<String, String> m : map.entrySet()) {
-        String[] output = {m.getKey(), m.getValue()};
-        printer.printRecord(output);
-      }
-      writer.flush();
-      out.flush();
+      writeObject(out);
     } catch (Exception e) {
       e.printStackTrace();
       return false;
     }
     return true;
   }
+
+  private void writeObject(OutputStream out) throws IOException {
+    OutputStreamWriter writer = new OutputStreamWriter(out);
+    CSVPrinter printer = CSVFormat.DEFAULT.withRecordSeparator("\n").print(writer);
+    for (Map.Entry<String, String> m : map.entrySet()) {
+      String[] output = {m.getKey(), m.getValue()};
+      printer.printRecord(output);
+    }
+    writer.flush();
+    out.flush();
+  }
+
+//  private void writeObject(java.io.ObjectOutputStream out)
+//      throws IOException{
+//    this.writeObject((OutputStream) out);
+//  }
+//  private void readObject(java.io.ObjectInputStream in)
+//      throws IOException, ClassNotFoundException{
+//
+//  }
+//  private void readObjectNoData()
+//      throws ObjectStreamException{
+//
+//  }
 
 }
