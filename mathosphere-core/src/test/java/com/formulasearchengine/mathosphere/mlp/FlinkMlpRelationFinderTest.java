@@ -43,10 +43,11 @@ public class FlinkMlpRelationFinderTest {
 	public void testRunFromHamText() throws Exception {
 		FlinkMlpCommandConfig config = FlinkMlpCommandConfig.test();
 		config.setUseTeXIdentifiers(true);
+		config.setWikiDataFile(getClass().getResource("text/test-map-no-dup.csv").getFile());
 
 		final FlinkMlpRelationFinder finder = new FlinkMlpRelationFinder();
 		String input = IOUtils.toString(FlinkMlpRelationFinderTest.class.getResourceAsStream("ham_optimized_wiki.txt"));
 		final String s = finder.runFromText(config, input);
-		assertThat(s, containsString("kinetic energy"));
+		assertThat(s, containsString("Q155640"));
 	}
 }
