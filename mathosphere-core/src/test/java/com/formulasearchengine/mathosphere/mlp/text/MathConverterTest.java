@@ -24,6 +24,6 @@ public class MathConverterTest {
 		String wikiText = IOUtils.toString(getClass().getResourceAsStream("../hamiltonian_wiki.txt"));
 		final MathConverter mathConverter = new MathConverter(wikiText);
 		final String real = mathConverter.getOutput();
-		assertThat(real, containsString("denoted by <math>H</math>, also \"Ȟ\" or <math>\\hat{H}</math>. "));
+		assertThat(real, containsString("denoted by <math>H</math>, also \"Ȟ\" or <math>{\\hat{H}}</math>. "));
 	}
 }

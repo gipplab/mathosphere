@@ -64,7 +64,6 @@ public class TextAnnotatorMapper extends RichMapFunction<RawWikiDocument, Parsed
   public ParsedWikiDocument parse(String wikitext, String title) {
     List<Formula> formulas;
     List<Sentence> sentences;
-    System.out.println("language is "+config.getLanguage());
     try {
       String cleanText;
       List<MathTag> mathTags;

@@ -49,7 +49,7 @@ public class UnicodeMap {
 
   public static String char2TeX(int codePoint) {
     if (MAP.containsKey(codePoint)) {
-      return MAP.get(codePoint);
+      return "{" + MAP.get(codePoint) + "}";
     } else {
       if (CharUtils.isAsciiPrintable((char)codePoint)){
         return CharUtils.toString((char) codePoint);
