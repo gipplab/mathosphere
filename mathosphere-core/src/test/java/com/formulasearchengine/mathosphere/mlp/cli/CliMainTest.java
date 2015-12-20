@@ -1,6 +1,7 @@
 package com.formulasearchengine.mathosphere.mlp.cli;
 
 import com.formulasearchengine.mathosphere.mlp.Main;
+
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -8,6 +9,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.PrintStream;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 public class CliMainTest {
@@ -28,7 +30,9 @@ public class CliMainTest {
 		args[7] = "-pos";
 		args[8] = "";
 		System.out.println(temp.getAbsolutePath());
-		runTest(args);
+		String standardOutput = runTest(args);
+		assertFalse(standardOutput.contains("language is en"));
+		assertTrue(standardOutput.contains("language is ru"));
 		// System.out.println(standardOutput);
 	}
 
