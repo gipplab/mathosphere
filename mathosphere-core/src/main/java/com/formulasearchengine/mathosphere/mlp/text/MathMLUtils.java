@@ -5,26 +5,30 @@ import com.google.common.collect.HashMultiset;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multiset;
-import com.jcabi.xml.XML;
-import com.jcabi.xml.XMLDocument;
+
 import com.formulasearchengine.mathosphere.mlp.pojos.MathTag;
 import com.formulasearchengine.mathosphere.mlp.text.WikiTextUtils.MathMarkUpType;
+import com.jcabi.xml.XML;
+import com.jcabi.xml.XMLDocument;
+
 import org.apache.commons.lang3.CharUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
+
 import uk.ac.ed.ph.snuggletex.SnuggleEngine;
 import uk.ac.ed.ph.snuggletex.SnuggleInput;
 import uk.ac.ed.ph.snuggletex.SnuggleSession;
 
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.TransformerException;
-import javax.xml.xpath.XPathExpressionException;
 import java.io.IOException;
 import java.util.List;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.xpath.XPathExpressionException;
 
 public class MathMLUtils {
 
@@ -35,8 +39,17 @@ public class MathMLUtils {
    * list of false positive identifiers
    */
   public final static Set<String> BLACKLIST = prepareBlacklist();
+
+  public static String getEngine() {
+    return engine;
+  }
+
+  public static void setEngine(String engine) {
+    MathMLUtils.engine = engine;
+  }
+
   //@TODO: Make this configurable
-  private static String engine = "";
+  private static String engine = "snuggle";
 
   private static Set<String> prepareBlacklist() {
     ImmutableSet.Builder<String> builder = ImmutableSet.builder();
