@@ -1,9 +1,11 @@
 package com.formulasearchengine.mathosphere.mlp.cli;
 
 
+import java.io.Serializable;
+
 import com.beust.jcommander.Parameter;
 
-public class BaseConfig {
+public class BaseConfig implements Serializable {
   private static final String DEFAULT_POS_MODEL =
       "edu/stanford/nlp/models/pos-tagger/english-left3words/english-left3words-distsim.tagger";
   @Parameter(names = {"-pos", "--posModel"}, description = "POS model to use")
