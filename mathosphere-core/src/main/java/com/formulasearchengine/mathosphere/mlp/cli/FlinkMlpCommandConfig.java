@@ -17,16 +17,15 @@ public class FlinkMlpCommandConfig extends BaseConfig implements Serializable {
 
 
   public FlinkMlpCommandConfig() {
-	  String s = "";
   }
 
   public static FlinkMlpCommandConfig test() {
     String dataset = "c:/tmp/mlp/input/";
     String outputdir = "c:/tmp/mlp/output/";
 
-	  FlinkMlpCommandConfig cfg = new FlinkMlpCommandConfig(dataset, outputdir);
-	  cfg.setUseTeXIdentifiers(false);
-	  return  cfg;
+    FlinkMlpCommandConfig cfg = new FlinkMlpCommandConfig(dataset, outputdir);
+    cfg.setUseTeXIdentifiers(false);
+    return  cfg;
   }
 
   public static FlinkMlpCommandConfig from(String[] args) {

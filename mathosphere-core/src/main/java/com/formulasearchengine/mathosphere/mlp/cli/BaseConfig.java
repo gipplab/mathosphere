@@ -27,18 +27,14 @@ public class BaseConfig {
   @Parameter(names = {"-w", "--wikiDataList"})
   private String wikiDataFile = null;
 
-  public void setUseTeXIdentifiers(Boolean useTeXIdentifiers) {
-    this.useTeXIdentifiers = useTeXIdentifiers;
-  }
-
-  @Parameter(names = {"-T", "--TeX"}, arity = 0)
+  @Parameter(names = {"--tex"})
   private boolean useTeXIdentifiers = true;
 
   public BaseConfig() {
   }
 
   public BaseConfig(String model, String language, double alpha, double beta, double gamma,
-                    double threshold, Boolean useTeXIdentifiers) {
+                    double threshold, boolean useTeXIdentifiers) {
     this.model = model;
     this.language = language;
     this.alpha = alpha;
@@ -72,11 +68,16 @@ public class BaseConfig {
     return language;
   }
 
-  public Boolean getUseTeXIdentifiers() {
+  public boolean getUseTeXIdentifiers() {
     return useTeXIdentifiers;
+  }
+
+  public void setUseTeXIdentifiers(boolean useTeXIdentifiers) {
+    this.useTeXIdentifiers = useTeXIdentifiers;
   }
 
   public String getWikiDataFile() {
     return wikiDataFile;
   }
+
 }
