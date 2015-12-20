@@ -13,10 +13,10 @@ public class CliParams implements Serializable {
 
   private JCommander jc;
 
-  private CountCommandConfig count;
-  private ListCommandConfig list;
-  private MlpCommandConfig mlp;
-  private FlinkMlpCommandConfig flinkMlp;
+  private CountCommandConfig countCommand;
+  private ListCommandConfig listCommand;
+  private MlpCommandConfig extractCommand;
+  private FlinkMlpCommandConfig mlpCommand;
 
   private String command;
 
@@ -27,15 +27,15 @@ public class CliParams implements Serializable {
     JCommander jc = new JCommander();
 
     CliParams params = new CliParams();
-    params.count = new CountCommandConfig();
-    params.list = new ListCommandConfig();
-    params.flinkMlp = new FlinkMlpCommandConfig();
-    params.mlp = new MlpCommandConfig();
+    params.countCommand = new CountCommandConfig();
+    params.listCommand = new ListCommandConfig();
+    params.mlpCommand = new FlinkMlpCommandConfig();
+    params.extractCommand = new MlpCommandConfig();
 
-    jc.addCommand("count", params.count);
-    jc.addCommand("list", params.list);
-    jc.addCommand("extract", params.mlp);
-    jc.addCommand("mlp", params.flinkMlp);
+    jc.addCommand("count", params.countCommand);
+    jc.addCommand("list", params.listCommand);
+    jc.addCommand("extract", params.extractCommand);
+    jc.addCommand("mlp", params.mlpCommand);
     jc.addCommand("help", new HelpCommand());
 
     jc.parse(args);
@@ -54,18 +54,18 @@ public class CliParams implements Serializable {
   }
 
   public CountCommandConfig getCount() {
-    return count;
+    return countCommand;
   }
 
-  public ListCommandConfig getList() {
-    return list;
+  public ListCommandConfig getListCommandConfig() {
+    return listCommand;
   }
 
-  public FlinkMlpCommandConfig getFlinkMlp() {
-    return flinkMlp;
+  public FlinkMlpCommandConfig getMlpCommandConfig() {
+    return mlpCommand;
   }
 
-  public MlpCommandConfig getMlp() {
-    return mlp;
+  public MlpCommandConfig getExtractCommandConfig() {
+    return extractCommand;
   }
 }
