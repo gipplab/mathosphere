@@ -27,30 +27,30 @@ public class FlinkMlpRelationFinder {
 
     DataSource<String> source = readWikiDump(config, env);
     DataSet<ParsedWikiDocument> documents =
-      source.flatMap(new TextExtractorMapper())
+        source.flatMap(new TextExtractorMapper())
             .map(new TextAnnotatorMapper(config));
 
     DataSet<WikiDocumentOutput> result = documents.map(new CreateCandidatesMapper(config));
 
     result.map(new JsonSerializerMapper<>())
-          .writeAsText(config.getOutputDir(), WriteMode.OVERWRITE);
+        .writeAsText(config.getOutputDir(), WriteMode.OVERWRITE);
 
     env.execute("Relation Finder");
   }
 
-	public String runFromText(FlinkMlpCommandConfig config, String input) throws Exception {
-		final JsonSerializerMapper<Object> serializerMapper = new JsonSerializerMapper<>();
-		return serializerMapper.map(outDocFromText(config,input));
-	}
+  public String runFromText(FlinkMlpCommandConfig config, String input) throws Exception {
+    final JsonSerializerMapper<Object> serializerMapper = new JsonSerializerMapper<>();
+    return serializerMapper.map(outDocFromText(config, input));
+  }
 
-	public WikiDocumentOutput outDocFromText(FlinkMlpCommandConfig config, String input) throws Exception {
-		final TextAnnotatorMapper textAnnotatorMapper = new TextAnnotatorMapper(config);
-		textAnnotatorMapper.open(null);
-		final CreateCandidatesMapper candidatesMapper = new CreateCandidatesMapper(config);
+  public WikiDocumentOutput outDocFromText(FlinkMlpCommandConfig config, String input) throws Exception {
+    final TextAnnotatorMapper textAnnotatorMapper = new TextAnnotatorMapper(config);
+    textAnnotatorMapper.open(null);
+    final CreateCandidatesMapper candidatesMapper = new CreateCandidatesMapper(config);
 
-		final ParsedWikiDocument parsedWikiDocument = textAnnotatorMapper.parse(input);
-		return candidatesMapper.map(parsedWikiDocument);
-	}
+    final ParsedWikiDocument parsedWikiDocument = textAnnotatorMapper.parse(input);
+    return candidatesMapper.map(parsedWikiDocument);
+  }
 
   public static DataSource<String> readWikiDump(FlinkMlpCommandConfig config, ExecutionEnvironment env) {
     Path filePath = new Path(config.getDataset());

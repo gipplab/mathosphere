@@ -69,7 +69,7 @@ public class TextAnnotatorMapper extends RichMapFunction<RawWikiDocument, Parsed
       String cleanText;
       List<MathTag> mathTags;
       if (config.getUseTeXIdentifiers()) {
-        MathConverter c = new MathConverter(wikitext, title,wl);
+        MathConverter c = new MathConverter(wikitext, title, wl);
         cleanText = c.getStrippedOutput();
         mathTags = c.getMathTags();
       } else {

@@ -1,18 +1,19 @@
 package com.formulasearchengine.mathosphere.mlp.text;
 
-import com.alexeygrigorev.rseq.*;
-import com.google.common.collect.*;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import com.google.common.collect.Multiset;
+import com.google.common.collect.Sets;
 
-import edu.stanford.nlp.ling.CoreAnnotations.PartOfSpeechAnnotation;
-import edu.stanford.nlp.ling.CoreAnnotations.SentencesAnnotation;
-import edu.stanford.nlp.ling.CoreAnnotations.TextAnnotation;
-import edu.stanford.nlp.ling.CoreAnnotations.TokensAnnotation;
-import edu.stanford.nlp.ling.CoreLabel;
-import edu.stanford.nlp.pipeline.Annotation;
-import edu.stanford.nlp.pipeline.POSTaggerAnnotator;
-import edu.stanford.nlp.pipeline.StanfordCoreNLP;
-import edu.stanford.nlp.util.CoreMap;
-
+import com.alexeygrigorev.rseq.BeanMatchers;
+import com.alexeygrigorev.rseq.Match;
+import com.alexeygrigorev.rseq.Matchers;
+import com.alexeygrigorev.rseq.Pattern;
+import com.alexeygrigorev.rseq.TransformerToElement;
+import com.alexeygrigorev.rseq.XMatcher;
 import com.formulasearchengine.mathosphere.mlp.pojos.Formula;
 import com.formulasearchengine.mathosphere.mlp.pojos.Sentence;
 import com.formulasearchengine.mathosphere.mlp.pojos.Word;
@@ -26,6 +27,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
+
+import edu.stanford.nlp.ling.CoreAnnotations.PartOfSpeechAnnotation;
+import edu.stanford.nlp.ling.CoreAnnotations.SentencesAnnotation;
+import edu.stanford.nlp.ling.CoreAnnotations.TextAnnotation;
+import edu.stanford.nlp.ling.CoreAnnotations.TokensAnnotation;
+import edu.stanford.nlp.ling.CoreLabel;
+import edu.stanford.nlp.pipeline.Annotation;
+import edu.stanford.nlp.pipeline.POSTaggerAnnotator;
+import edu.stanford.nlp.pipeline.StanfordCoreNLP;
+import edu.stanford.nlp.util.CoreMap;
 
 public class PosTagger {
 
@@ -96,6 +107,8 @@ public class PosTagger {
           words.add(new Word(textToken, PosTag.SYMBOL));
         } else if (BRACKET_CODES.containsKey(textToken)) {
           words.add(new Word(BRACKET_CODES.get(textToken), pos));
+        } else if (textToken.startsWith("LINK_")) {
+          words.add(new Word(textToken, PosTag.LINK));
         } else {
           words.add(new Word(textToken, pos));
         }

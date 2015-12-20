@@ -10,10 +10,8 @@ import com.formulasearchengine.mathosphere.mlp.pojos.WikiDocumentOutput;
 
 import org.apache.flink.api.java.DataSet;
 import org.apache.flink.api.java.ExecutionEnvironment;
-import org.apache.flink.api.java.io.TextInputFormat;
 import org.apache.flink.api.java.operators.DataSource;
 import org.apache.flink.core.fs.FileSystem.WriteMode;
-import org.apache.flink.core.fs.Path;
 
 public class PatternMatchingRelationFinder {
 
@@ -34,11 +32,7 @@ public class PatternMatchingRelationFinder {
   }
 
   public static DataSource<String> readWikiDump(FlinkMlpCommandConfig config, ExecutionEnvironment env) {
-    Path filePath = new Path(config.getDataset());
-    TextInputFormat inp = new TextInputFormat(filePath);
-    inp.setCharsetName("UTF-8");
-    inp.setDelimiter("</page>");
-    return env.readFile(inp, config.getDataset());
+    return FlinkMlpRelationFinder.readWikiDump(config,env);
   }
 
 }

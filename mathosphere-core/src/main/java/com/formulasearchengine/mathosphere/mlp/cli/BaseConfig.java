@@ -80,4 +80,8 @@ public class BaseConfig {
     return wikiDataFile;
   }
 
+  public BaseConfig setWikiDataFile(String wikiDataFile) {
+    this.wikiDataFile = wikiDataFile;
+    return this;
+  }
 }
