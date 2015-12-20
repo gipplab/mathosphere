@@ -47,7 +47,7 @@ public class CliMainTest {
 		args[6] = "ru";
 		args[7] = "-pos";
 		args[8] = "";
-		args[9] = "-T";
+		args[9] = "--tex";
 		args[10] = "";
 		System.out.println(temp.getAbsolutePath());
 		String res = runTest(args);
