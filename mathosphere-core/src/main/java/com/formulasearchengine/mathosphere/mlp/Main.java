@@ -18,11 +18,11 @@ public class Main {
     } else if ("count".equals(command)) {
       TokenCounter.run(params.getCount());
     } else if ("list".equals(command)) {
-      RelationExtractor.list(params.getList());
+      RelationExtractor.list(params.getListCommandConfig());
     } else if ("extract".equals(command)) {
-      RelationExtractor.run(params.getMlp());
+      RelationExtractor.run(params.getExtractCommandConfig());
     } else if ("mlp".equals(command)) {
-      FlinkMlpRelationFinder.run(params.getFlinkMlp());
+      FlinkMlpRelationFinder.run(params.getMlpCommandConfig());
     } else {
       params.printHelp();
     }

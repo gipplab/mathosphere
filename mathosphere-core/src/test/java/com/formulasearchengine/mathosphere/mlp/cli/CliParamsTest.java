@@ -18,17 +18,15 @@ public class CliParamsTest {
     String[] args = { "mlp", "--tex" };
     CliParams params = CliParams.from(args);
     assertEquals("mlp", params.getCommand());
-    assertTrue(params.getFlinkMlp().getUseTeXIdentifiers());
-    assertTrue(params.getMlp().getUseTeXIdentifiers());
+    assertTrue(params.getMlpCommandConfig().getUseTeXIdentifiers());
   }
 
   @Test
-  public void NotUseTex() {
-    String[] args = { "mlp", "" };
+  public void notUseTex() {
+    String[] args = { "mlp" };
     CliParams params = CliParams.from(args);
     assertEquals("mlp", params.getCommand());
-    assertFalse(params.getFlinkMlp().getUseTeXIdentifiers());
-    assertFalse(params.getMlp().getUseTeXIdentifiers());
+    assertFalse(params.getMlpCommandConfig().getUseTeXIdentifiers());
   }
 
   @Test
