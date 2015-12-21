@@ -1,14 +1,24 @@
 package com.formulasearchengine.mathosphere.mlp.contracts;
 
-import com.formulasearchengine.mathosphere.mlp.cli.BaseConfig;
-import com.formulasearchengine.mathosphere.mlp.pojos.*;
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multiset;
 import com.google.common.collect.Multiset.Entry;
+
+import com.formulasearchengine.mathosphere.mlp.cli.BaseConfig;
+import com.formulasearchengine.mathosphere.mlp.pojos.ParsedWikiDocument;
+import com.formulasearchengine.mathosphere.mlp.pojos.Relation;
+import com.formulasearchengine.mathosphere.mlp.pojos.Sentence;
+import com.formulasearchengine.mathosphere.mlp.pojos.WikiDocumentOutput;
+import com.formulasearchengine.mathosphere.mlp.pojos.Word;
+
 import org.apache.flink.api.common.functions.MapFunction;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 
 public class CreateCandidatesMapper implements MapFunction<ParsedWikiDocument, WikiDocumentOutput> {
 
@@ -16,6 +26,7 @@ public class CreateCandidatesMapper implements MapFunction<ParsedWikiDocument, W
   private double alpha;
   private double beta;
   private double gamma;
+  private static final int MAX_CANDIDATES = 20;
 
   public CreateCandidatesMapper(BaseConfig config) {
     this.config = config;
@@ -28,13 +39,18 @@ public class CreateCandidatesMapper implements MapFunction<ParsedWikiDocument, W
   @Override
   public WikiDocumentOutput map(ParsedWikiDocument doc) throws Exception {
     Set<String> identifiers = doc.getIdentifiers().elementSet();
-
     List<Relation> relations = Lists.newArrayList();
     for (String identifier : identifiers) {
       List<Relation> candidates = generateCandidates(doc, identifier);
+      Collections.sort(candidates);
+      int count = 0;
       for (Relation rel : candidates) {
         if (rel.getScore() >= config.getThreshold()) {
+          count++;
           relations.add(rel);
+        }
+        if (count >= MAX_CANDIDATES) {
+          break;
         }
       }
     }
@@ -138,7 +154,7 @@ public class CreateCandidatesMapper implements MapFunction<ParsedWikiDocument, W
 
   public static int calculateMax(Multiset<String> frequencies) {
     Entry<String> max = Collections.max(frequencies.entrySet(),
-      (e1, e2) -> Integer.compare(e1.getCount(), e2.getCount()));
+        (e1, e2) -> Integer.compare(e1.getCount(), e2.getCount()));
     return max.getCount();
   }
 

@@ -3,7 +3,7 @@ package com.formulasearchengine.mathosphere.mlp.pojos;
 
 import com.formulasearchengine.mathosphere.mlp.text.PosTag;
 
-public class Relation {
+public class Relation implements Comparable<Relation>{
 
   private String identifier;
   private String definition;
@@ -76,4 +76,9 @@ public class Relation {
     return "Relation [" + identifier + ", score=" + score + ", word=" + definition + "]";
   }
 
+
+  @Override
+  public int compareTo(Relation o) {
+    return ((Double) getScore()).compareTo(o.getScore());
+  }
 }
