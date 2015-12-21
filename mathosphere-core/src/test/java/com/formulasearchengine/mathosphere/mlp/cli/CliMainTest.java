@@ -1,7 +1,12 @@
 package com.formulasearchengine.mathosphere.mlp.cli;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import com.google.common.base.Throwables;
+
+import com.formulasearchengine.mathosphere.mlp.Main;
+
+import org.apache.commons.io.output.TeeOutputStream;
+import org.junit.Ignore;
+import org.junit.Test;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -10,12 +15,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLDecoder;
 
-import org.apache.commons.io.output.TeeOutputStream;
-import org.junit.Ignore;
-import org.junit.Test;
-
-import com.formulasearchengine.mathosphere.mlp.Main;
-import com.google.common.base.Throwables;
+import static org.junit.Assert.assertTrue;
 
 public class CliMainTest {
 
@@ -34,9 +34,7 @@ public class CliMainTest {
     args[7] = "-pos";
     args[8] = "";
     System.out.println(temp.getAbsolutePath());
-    String standardOutput = runTest(args);
-    assertFalse(standardOutput.contains("language is en"));
-    assertTrue(standardOutput.contains("language is ru"));
+    runTest(args);
   }
 
   private String resoucePath(String resorseName) {
@@ -85,8 +83,7 @@ public class CliMainTest {
     args[3] = "-out";
     args[4] = temp.getAbsolutePath();
     System.out.println(temp.getAbsolutePath());
-    String res = runTest(args);
-    System.out.println(res);
+    runTest(args);
   }
 
   @Test

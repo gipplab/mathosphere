@@ -48,13 +48,17 @@ public class UnicodeMap {
   }
 
   public static String char2TeX(int codePoint) {
-    if (MAP.containsKey(codePoint)) {
-      return "{" + MAP.get(codePoint) + "}";
+    final String tex = MAP.get(codePoint);
+    if (tex != null) {
+      if (tex.endsWith("}") || tex.length() == 1) {
+        return tex;
+      }
+      return "{" + tex + "}";
     } else {
-      if (CharUtils.isAsciiPrintable((char)codePoint)){
+      if (CharUtils.isAsciiPrintable((char) codePoint)) {
         return CharUtils.toString((char) codePoint);
       }
-      LOGGER.debug("invalid char",codePoint);
+      LOGGER.debug("invalid char", codePoint);
       return "";
     }
   }

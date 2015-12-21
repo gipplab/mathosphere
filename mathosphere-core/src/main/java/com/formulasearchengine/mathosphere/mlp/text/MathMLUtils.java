@@ -196,6 +196,7 @@ public class MathMLUtils {
       String id;
       if ( useTeX ){
         id = UnicodeMap.string2TeX(rawId);
+        id = id.replaceAll("^\\{(.*)\\}$","$1");
       } else {
         id = UnicodeUtils.normalizeString(rawId);
       }
