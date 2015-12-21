@@ -30,7 +30,7 @@ public class PosTaggerTest {
     String text = readText("escaped.txt");
 
     List<MathTag> mathTags = WikiTextUtils.findMathTags(text);
-    List<Formula> formulas = TextAnnotatorMapper.toFormulas(mathTags, false);
+    List<Formula> formulas = TextAnnotatorMapper.toFormulas(mathTags, false,cfg.getTexvcinfoUrl());
 
     String newText = WikiTextUtils.replaceAllFormulas(text, mathTags);
     String cleanText = WikiTextUtils.extractPlainText(newText);

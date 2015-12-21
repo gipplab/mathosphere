@@ -30,10 +30,10 @@ import javax.xml.xpath.XPathExpressionException;
  * Created by Moritz on 28.09.2015.
  */
 public class TexInfo {
-  private static String makeRequest(String tex) {
+  private static String makeRequest(String tex, String url) {
     HttpClient client = new DefaultHttpClient();
     //HttpPost post = new HttpPost("http://localhost/convert");
-    HttpPost post = new HttpPost("http://api.formulasearchengine.com/v1/media/math/check/tex");
+    HttpPost post = new HttpPost(url);
     try {
       List<NameValuePair> nameValuePairs = new ArrayList<>(1);
       nameValuePairs.add(new BasicNameValuePair("q", tex));
@@ -52,10 +52,10 @@ public class TexInfo {
     return "";
   }
 
-  public static Multiset<String> getIdentifiers(String tex) throws XPathExpressionException, ParserConfigurationException, SAXException, IOException, TransformerException {
+  public static Multiset<String> getIdentifiers(String tex,String url) throws XPathExpressionException, ParserConfigurationException, SAXException, IOException, TransformerException {
     final Multiset<String> strings = HashMultiset.create();
     //long t0 = System.nanoTime();
-    String json = makeRequest(tex);
+    String json = makeRequest(tex,url);
     //System.out.println((System.nanoTime()-t0)/1000000+"ms for "+tex);
     try {
       JSONObject jsonObject = (JSONObject) JSONSerializer.toJSON(json);

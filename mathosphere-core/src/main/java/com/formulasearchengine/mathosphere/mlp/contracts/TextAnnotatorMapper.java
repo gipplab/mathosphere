@@ -76,7 +76,7 @@ public class TextAnnotatorMapper extends RichMapFunction<RawWikiDocument, Parsed
         String newText = WikiTextUtils.replaceAllFormulas(wikitext, mathTags);
         cleanText = WikiTextUtils.extractPlainText(newText);
       }
-      formulas = toFormulas(mathTags, config.getUseTeXIdentifiers());
+      formulas = toFormulas(mathTags, config.getUseTeXIdentifiers(),config.getTexvcinfoUrl());
       sentences = posTagger.process(cleanText, formulas);
     } catch (Exception e) {
       LOGGER.warn("Problem with text processing", title, e);
@@ -96,10 +96,10 @@ public class TextAnnotatorMapper extends RichMapFunction<RawWikiDocument, Parsed
     return parse(wikitext, "no title specified");
   }
 
-  public static List<Formula> toFormulas(List<MathTag> mathTags, Boolean useTeXIdentifiers) {
+  public static List<Formula> toFormulas(List<MathTag> mathTags, Boolean useTeXIdentifiers,String url) {
     List<Formula> formulas = Lists.newArrayList();
     for (MathTag math : mathTags) {
-      Multiset<String> identifiers = MathMLUtils.extractIdentifiers(math, useTeXIdentifiers);
+      Multiset<String> identifiers = MathMLUtils.extractIdentifiers(math, useTeXIdentifiers,url);
       formulas.add(new Formula(math.placeholder(), math.getContent(), identifiers));
     }
     return formulas;

@@ -37,7 +37,7 @@ public class PosTaggerTestGer {
     String text = "Dies ist ein simpler Beispieltext.";
 
     List<MathTag> mathTags = WikiTextUtils.findMathTags(text);
-    List<Formula> formulas = TextAnnotatorMapper.toFormulas(mathTags, false);
+    List<Formula> formulas = TextAnnotatorMapper.toFormulas(mathTags, false,cfg.getTexvcinfoUrl());
 
     String newText = WikiTextUtils.replaceAllFormulas(text, mathTags);
     String cleanText = WikiTextUtils.extractPlainText(newText);
@@ -60,7 +60,7 @@ public class PosTaggerTestGer {
 
 
     List<MathTag> mathTags = WikiTextUtils.findMathTags(text);
-    List<Formula> formulas = TextAnnotatorMapper.toFormulas(mathTags, true);
+    List<Formula> formulas = TextAnnotatorMapper.toFormulas(mathTags, true,cfg.getTexvcinfoUrl());
 
     String newText = WikiTextUtils.replaceAllFormulas(text, mathTags);
 		long t0 = System.nanoTime();

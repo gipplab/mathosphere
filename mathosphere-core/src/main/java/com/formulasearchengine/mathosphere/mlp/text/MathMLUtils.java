@@ -56,12 +56,12 @@ public class MathMLUtils {
 
     // operators
     builder.add("sin", "cos", "tan", "min", "max", "argmax", "arg max", "argmin", "arg min", "inf",
-      "lim", "log", "lg", "ln", "exp", "sup", "supp", "lim sup", "lim inf", "arg", "dim",
-      "dimension", "cosh", "arccos", "arcsin", "arctan", "atan", "arcsec", "rank", "nullity",
-      "det", "Det", "ker", "sec", "cot", "csc", "sinh", "coth", "tanh", "arcsinh", "arccosh",
-      "arctanh", "atanh", "def", "image", "avg", "average", "mean", "var", "Var", "cov", "Cov",
-      "diag", "span", "floor", "ceil", "head", "tail", "tr", "trace", "div", "mod", "round", "sum",
-      "Re", "Im", "gcd", "sng", "sign", "length");
+        "lim", "log", "lg", "ln", "exp", "sup", "supp", "lim sup", "lim inf", "arg", "dim",
+        "dimension", "cosh", "arccos", "arcsin", "arctan", "atan", "arcsec", "rank", "nullity",
+        "det", "Det", "ker", "sec", "cot", "csc", "sinh", "coth", "tanh", "arcsinh", "arccosh",
+        "arctanh", "atanh", "def", "image", "avg", "average", "mean", "var", "Var", "cov", "Cov",
+        "diag", "span", "floor", "ceil", "head", "tail", "tr", "trace", "div", "mod", "round", "sum",
+        "Re", "Im", "gcd", "sng", "sign", "length");
 
     // math symbols
     // http://unicode-table.com/en/blocks/mathematical-operators/
@@ -90,17 +90,17 @@ public class MathMLUtils {
 
     // false identifiers
     builder.add("constant", "const", "true", "false", "new", "even", "odd", "subject", "vs", "versus",
-      "iff");
+        "iff");
     builder.add("where", "unless", "otherwise", "else", "on", "of", "or", "with", "if", "then", "from",
-      "to", "by", "has", "within", "when", "out", "and", "for", "as", "is", "at", "such", "that",
-      "before", "after");
+        "to", "by", "has", "within", "when", "out", "and", "for", "as", "is", "at", "such", "that",
+        "before", "after");
 
     // identifier that are also English (stop-)words
     builder.add("a", "A", "i", "I");
 
     // punctuation
     builder.add("%", "?", "!", ":", "'", "…", ";", "(", ")", "\"", "′′′′′", "′′′′", "′′′", "′′", "′",
-      " ", " ");
+        " ", " ");
 
     // special chars
     builder.add("_", "|", "*", "#", "{", "}", "[", "]", "$", "&", "/", "\\");
@@ -119,43 +119,43 @@ public class MathMLUtils {
     return result;
   }
 
-  public static Multiset<String> extractIdentifiers(MathTag math, Boolean useTeXIdentifiers) {
+  public static Multiset<String> extractIdentifiers(MathTag math, Boolean useTeXIdentifiers, String url) {
     try {
-      return tryExtractIdentifiers(math,useTeXIdentifiers);
+      return tryExtractIdentifiers(math, useTeXIdentifiers,url);
     } catch (Exception e) {
       LOGGER.warn("exception occurred during 'extractIdentifiers'. Returning an empty set", e);
       return HashMultiset.create();
     }
   }
 
-  private static Multiset<String> tryExtractIdentifiers(MathTag math, Boolean useTeXIdentifiers) {
+  private static Multiset<String> tryExtractIdentifiers(MathTag math, Boolean useTeXIdentifiers, String url) {
     if (math.getMarkUpType() != MathMarkUpType.MATHML) {
-      return extractIdentifiersFromTex(math.getTagContent(),useTeXIdentifiers);
+      return extractIdentifiersFromTex(math.getTagContent(), useTeXIdentifiers,url);
     } else {
-      return extractIdentifiersFromMathML(math.getContent(),useTeXIdentifiers,false);
+      return extractIdentifiersFromMathML(math.getContent(), useTeXIdentifiers, false);
     }
   }
 
-  public static Multiset<String> extractIdentifiersFromTex(String tex, boolean useTeX) {
-	  if ( useTeX ){
-		  try {
-			  return TexInfo.getIdentifiers(tex);
-		  } catch (XPathExpressionException | ParserConfigurationException | IOException | SAXException | TransformerException e) {
-			  e.printStackTrace();
-			  return  HashMultiset.create();
-		  }
-	  }
+  public static Multiset<String> extractIdentifiersFromTex(String tex, boolean useTeX, String url) {
+    if (useTeX) {
+      try {
+        return TexInfo.getIdentifiers(tex,url);
+      } catch (XPathExpressionException | ParserConfigurationException | IOException | SAXException | TransformerException e) {
+        e.printStackTrace();
+        return HashMultiset.create();
+      }
+    }
     String mathML = texToMathML(tex);
     LOGGER.debug("converted {} to {}", tex.replaceAll("\\s+", " "), mathML);
-    return extractIdentifiersFromMathML(mathML, false,false);
+    return extractIdentifiersFromMathML(mathML, false, false);
   }
 
   public static Multiset<String> extractIdentifiersFromMathML(String mathML, Boolean useTeXIdentifiers, boolean useBlacklist) {
     try {
-      return tryParseWithXpath(mathML,useTeXIdentifiers, useBlacklist);
+      return tryParseWithXpath(mathML, useTeXIdentifiers, useBlacklist);
     } catch (Exception e) {
       LOGGER.warn("exception occurred while trying to parse mathML with xpath... "
-        + "backing off to the regexp parser.", e);
+          + "backing off to the regexp parser.", e);
       return parseWithRegex(mathML);
     }
   }
@@ -174,8 +174,9 @@ public class MathMLUtils {
         LOGGER.debug("unexpected input: {} for {}", debugText, nmsubMathMl);
         continue;
       }
-      String id;      String sub;
-      if ( useTeX ){
+      String id;
+      String sub;
+      if (useTeX) {
         id = UnicodeMap.string2TeX(text.get(0));
         sub = "{" + UnicodeMap.string2TeX(text.get(1)) + "}";
       } else {
@@ -194,9 +195,9 @@ public class MathMLUtils {
     List<String> allIdentifiers = xml.xpath("//m:mi[not(ancestor::m:msub)]/text()");
     for (String rawId : allIdentifiers) {
       String id;
-      if ( useTeX ){
+      if (useTeX) {
         id = UnicodeMap.string2TeX(rawId);
-        id = id.replaceAll("^\\{(.*)\\}$","$1");
+        id = id.replaceAll("^\\{(.*)\\}$", "$1");
       } else {
         id = UnicodeUtils.normalizeString(rawId);
       }
@@ -233,18 +234,19 @@ public class MathMLUtils {
 
   public static String texToMathML(String tex) {
 
-      try {
-        if (engine.equals("snuggle")) {
+    try {
+      if (engine.equals("snuggle")) {
         SnuggleSession session = SNUGGLE_ENGINE.createSession();
         String cleanTexString = cleanTexString(tex);
         session.parseInput(new SnuggleInput("$$ " + cleanTexString + " $$"));
         String xmlString = session.buildXMLString();
-        return xmlString;    } else {
-          return TeX2MathML.TeX2MML(tex);
-        }
-      } catch (Exception e) {
-        throw Throwables.propagate(e);
+        return xmlString;
+      } else {
+        return TeX2MathML.TeX2MML(tex);
       }
+    } catch (Exception e) {
+      throw Throwables.propagate(e);
+    }
 
 
   }

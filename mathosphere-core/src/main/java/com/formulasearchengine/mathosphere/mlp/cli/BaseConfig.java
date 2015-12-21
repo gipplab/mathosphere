@@ -1,9 +1,9 @@
 package com.formulasearchengine.mathosphere.mlp.cli;
 
 
-import java.io.Serializable;
-
 import com.beust.jcommander.Parameter;
+
+import java.io.Serializable;
 
 public class BaseConfig implements Serializable {
   private static final String DEFAULT_POS_MODEL =
@@ -32,6 +32,8 @@ public class BaseConfig implements Serializable {
   @Parameter(names = {"--tex"})
   private boolean useTeXIdentifiers = false;
 
+  @Parameter(names = {"--texvcinfo"})
+  private String texvcinfoUrl = "http://api.formulasearchengine.com/v1/media/math/check/tex";
   public BaseConfig() {
   }
 
@@ -85,5 +87,9 @@ public class BaseConfig implements Serializable {
   public BaseConfig setWikiDataFile(String wikiDataFile) {
     this.wikiDataFile = wikiDataFile;
     return this;
+  }
+
+  public String getTexvcinfoUrl() {
+    return texvcinfoUrl;
   }
 }

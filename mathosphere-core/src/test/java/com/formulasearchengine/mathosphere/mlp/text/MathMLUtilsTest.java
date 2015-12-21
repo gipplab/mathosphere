@@ -20,7 +20,7 @@ public class MathMLUtilsTest {
   @Test
   public void extractFromTex_simple() {
     String tex = "x^2 + y^2 = z^2";
-    Set<String> identifiers = MathMLUtils.extractIdentifiersFromTex(tex,false).elementSet();
+    Set<String> identifiers = MathMLUtils.extractIdentifiersFromTex(tex,false,"").elementSet();
     Set<String> expected = ImmutableSet.of("x", "y", "z");
     assertEquals(expected, identifiers);
   }
@@ -30,7 +30,7 @@ public class MathMLUtilsTest {
   public void extractFromTex_moreComplex() {
     String tex = "\\sqrt{x + y} = \\cfrac{\\varphi + \\rho}{\\Theta \\cdot \\Phi}";
     MathMLUtils.setEngine("");
-    Set<String> identifiers = MathMLUtils.extractIdentifiersFromTex(tex,false).elementSet();
+    Set<String> identifiers = MathMLUtils.extractIdentifiersFromTex(tex,false,"").elementSet();
     Set<String> expected = ImmutableSet.of("x", "y", "φ", "ρ", "Θ", "Φ");
     assertEquals(expected, identifiers);
     MathMLUtils.setEngine("snuggle");
@@ -39,7 +39,7 @@ public class MathMLUtilsTest {
   @Test
   public void extractFromTex_subscripts() {
     String tex = "\\sigma_1 + \\sigma_2 = r_1";
-    Set<String> identifiers = MathMLUtils.extractIdentifiersFromTex(tex,false).elementSet();
+    Set<String> identifiers = MathMLUtils.extractIdentifiersFromTex(tex,false,"").elementSet();
     Set<String> expected = ImmutableSet.of("σ_1", "σ_2", "r_1");
     assertTrue(identifiers.containsAll(expected));
   }
@@ -47,7 +47,7 @@ public class MathMLUtilsTest {
   @Test
   public void extractFromTex_superscriptIndentifier() {
     String tex = "\\sigma^x";
-    Set<String> identifiers = MathMLUtils.extractIdentifiersFromTex(tex,false).elementSet();
+    Set<String> identifiers = MathMLUtils.extractIdentifiersFromTex(tex,false,"").elementSet();
     Set<String> expected = ImmutableSet.of("σ", "x");
     assertTrue(identifiers.containsAll(expected));
   }
@@ -55,7 +55,7 @@ public class MathMLUtilsTest {
   @Test
   public void extractFromTex_capturesMultipleOccurrences() {
     String tex = "\\sigma^2 + \\sigma + b";
-    Multiset<String> identifiers = MathMLUtils.extractIdentifiersFromTex(tex,false);
+    Multiset<String> identifiers = MathMLUtils.extractIdentifiersFromTex(tex,false,"");
     Multiset<String> expected = HashMultiset.create(Arrays.asList("σ", "σ", "b"));
     assertEquals(expected, identifiers);
   }
@@ -63,14 +63,14 @@ public class MathMLUtilsTest {
   @Test
   public void extractFromTex_oneIdTwoOccurrences_sizeIs2() {
     String tex = "\\sigma + \\sigma";
-    Multiset<String> identifiers = MathMLUtils.extractIdentifiersFromTex(tex,false);
+    Multiset<String> identifiers = MathMLUtils.extractIdentifiersFromTex(tex,false,"");
     assertEquals(2, identifiers.size());
   }
 
   @Test
   public void extractFromTex_boldText() {
     String tex = "\\mathbf r";
-    Set<String> identifiers = MathMLUtils.extractIdentifiersFromTex(tex,false).elementSet();
+    Set<String> identifiers = MathMLUtils.extractIdentifiersFromTex(tex,false,"").elementSet();
     Set<String> expected = ImmutableSet.of("r");
     assertTrue(identifiers.containsAll(expected));
   }
