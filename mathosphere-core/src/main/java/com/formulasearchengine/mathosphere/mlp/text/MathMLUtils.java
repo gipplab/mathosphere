@@ -39,6 +39,7 @@ public class MathMLUtils {
    * list of false positive identifiers
    */
   public final static Set<String> BLACKLIST = prepareBlacklist();
+  private static boolean summarizeSubscripts = true;
 
   public static String getEngine() {
     return engine;
@@ -121,7 +122,7 @@ public class MathMLUtils {
 
   public static Multiset<String> extractIdentifiers(MathTag math, Boolean useTeXIdentifiers, String url) {
     try {
-      return tryExtractIdentifiers(math, useTeXIdentifiers,url);
+      return tryExtractIdentifiers(math, useTeXIdentifiers, url);
     } catch (Exception e) {
       LOGGER.warn("exception occurred during 'extractIdentifiers'. Returning an empty set", e);
       return HashMultiset.create();
@@ -130,7 +131,7 @@ public class MathMLUtils {
 
   private static Multiset<String> tryExtractIdentifiers(MathTag math, Boolean useTeXIdentifiers, String url) {
     if (math.getMarkUpType() != MathMarkUpType.MATHML) {
-      return extractIdentifiersFromTex(math.getTagContent(), useTeXIdentifiers,url);
+      return extractIdentifiersFromTex(math.getTagContent(), useTeXIdentifiers, url);
     } else {
       return extractIdentifiersFromMathML(math.getContent(), useTeXIdentifiers, false);
     }
@@ -139,7 +140,17 @@ public class MathMLUtils {
   public static Multiset<String> extractIdentifiersFromTex(String tex, boolean useTeX, String url) {
     if (useTeX) {
       try {
-        return TexInfo.getIdentifiers(tex,url);
+        Multiset<String> identifiers = TexInfo.getIdentifiers(tex, url);
+        if ( summarizeSubscripts ){
+          for (String identifier : identifiers.elementSet()) {
+            if (identifier.matches("(.*?)_\\{[a-zA-Z0-9]\\}$")) {
+              identifiers.remove(identifier, Integer.MAX_VALUE);
+              identifiers.add(identifier.replaceAll("(.*?)_\\{[a-zA-Z0-9]\\}$","$1_"));
+            }
+          }
+        }
+        return identifiers;
+
       } catch (XPathExpressionException | ParserConfigurationException | IOException | SAXException | TransformerException e) {
         e.printStackTrace();
         return HashMultiset.create();
