@@ -1,114 +1,57 @@
 In [[mathematics]], the '''harmonic mean''' (sometimes called the '''subcontrary mean''') is one of several kinds of [[average]].  Typically, it is appropriate for situations when the average of [[rate (mathematics)|rate]]s is desired.
 
-It is the special case (''M''<sup>-1</sup>) of the [[power mean]]. As it tends strongly toward the least elements of the list, it may (compared to the arithmetic mean) mitigate the influence of large outliers and increase the influence of small values.
+The harmonic mean ''H'' of the positive [[real number]]s ''x''<sub>1</sub>,&nbsp;''x''<sub>2</sub>,&nbsp;...,&nbsp;''x''<sub>''n''</sub>&nbsp;>&nbsp;0 is defined to be
 
-==Definition==
+:<math>H = \frac{n}{\frac{1}{x_1} + \frac{1}{x_2} + \cdots + \frac{1}{x_n}} = \frac{n}{\sum_{i=1}^n \frac{1}{x_i}} = \frac{n \cdot \prod_{j=1}^n x_j }{ \sum_{i=1}^n \frac{\prod_{j=1}^n x_j}{x_i}}.</math>
 
-The harmonic mean ''H'' of the positive [[real number]]s ''x''<sub>1</sub>, ''x''<sub>2</sub>, ..., ''x''<sub>''n''</sub> is defined to be
+From the third formula in the above equation it is more apparent that the harmonic mean is related to the [[arithmetic mean]] and [[geometric mean]].
 
-:<math>H = \frac{ n }{ \frac{ 1 }{ x_1 } + \frac{ 1 }{ x_2 } + \cdots + \frac{ 1 }{ x_n } } = \frac{ n }{ \sum_{ i = 1 }^n \frac{ 1 }{ x_i } } = \frac{ n \cdot \prod_{ j = 1 }^n x_j }{ \sum_{ i = 1 }^n \frac{ \prod_{ j = 1 }^n x_j }{ x_i } }.</math>
-
-Equivalently the harmonic mean is the [[Multiplicative inverse|reciprocal]] of the [[arithmetic mean]] of the reciprocals.
-
-; Example
-
-The harmonic mean of 1, 2, and 4 is
-
-<math> \frac{ 3 }{ \frac{ 1 }{ 1 } + \frac{ 1 }{ 2 } + \frac{ 1 }{ 4 } }  = \frac{ 1 } { \frac{ 1 }{ 3 }( \frac{ 1 }{ 1 } + \frac{ 1 }{ 2 } + \frac{ 1 }{ 4 } ) } = \frac{ 12 }{ 7 } </math>
-
-===Weighted harmonic mean===
-
-If a set of [[weight function|weights]] <math>w_1</math>, ..., <math>w_n</math> is associated to the dataset <math>x_1</math>, ..., <math>x_n</math>, the '''weighted harmonic mean''' is defined by
-
-: <math> \frac{ \sum_{ i = 1 }^n w_i }{ \sum_{ i = 1 }^n \frac{ w_i }{ x_i} }. </math>
-
-The harmonic mean is a special case where all of the weights are equal to 1. It is also equivalent to any weighted harmonic mean where all weights are equal.
-
-===Recursive calculation===
-
-It is possible to recursively calculate the harmonic mean (''H'') of ''n'' variates. This method may be of use in computations.
-
-: <math> H( x_1, x_2, x_3, ... ) = \frac{ n }{ \sum \frac{ 1 } { x_i} } = ( \frac{ 1 }{ n }x_1^{ -1 } + \frac{ n - 1 }{ n } H( x_2, x_3, ...)^{ -1 } )^{ -1 } </math>
-
-==Harmonic mean of two numbers==
-
-For the special case of just two numbers <math>x_1</math> and <math>x_2</math>, the harmonic mean can be written
-
-: <math>H = \frac{ 2 x_1 x_2 }{ x_1 + x_2 }.</math>
-
-In this special case, the harmonic mean is related to the [[arithmetic mean]] <math>A = \frac{x_1 + x_2}{2}</math>
-and the [[geometric mean]] <math>G = \sqrt{x_1 x_2},</math> by
-
-: <math>H = \frac{ G^2 } { A }.</math>
-
-So
-
-: <math>G = \sqrt{ A H }</math>
-
-meaning the two numbers' geometric mean equals the geometric mean of their arithmetic and harmonic means.
-
-As noted above this relationship between the three Pythagorean means is not limited to ''n'' equals 1 or 2; there is a relationship for all ''n''. However, for ''n'' = 1 all means are equal and for ''n'' = 2 we have the above relationship between the means. For arbitrary ''n'' ≥ 2 we may generalize this formula, as noted above, by interpreting the third equation for the harmonic mean differently. The generalized relationship was already explained above. If one carefully observes the third equation one will notice it also works for ''n'' = 1. That is, it predicts the equivalence between the harmonic and geometric means but it falls short by not predicting the equivalence between the harmonic and arithmetic means.
-
-The general formula, which can be derived from the third formula for the harmonic mean by the reinterpretation as explained in relationship with other means, is
-
-:<math> H( x_1, \ldots , x_n ) = \frac{ ( G( x_1, \ldots , x_n ) )^n }{ A( x_2x_3 \cdots x_n, x_1x_3 \cdots x_n, \ldots , x_1x_2 \cdots x_{ n - 1 })} = \frac{ ( G( x_1, \ldots , x_n ))^n }{ A \left( \frac{ \prod_{ i = 1 }^n x_i }{ x_1 }, \frac{ \prod_{ i = 1 }^n x_i }{ x_2 }, \ldots , \frac{ \prod_{ i = 1 }^n x_i }{ x_n } \right ) }.</math>
-
-Notice that for ''n'' = 2 we have
-
-:<math> H( x_1, x_2 )= \frac{ ( G( x_1, x_2 ) )^2 }{ A( x_2, x_1 ) } = \frac{ ( G( x_2, x_1 ) )^2}{ A( x_2, x_1 ) }</math>
-
-where we used the fact that the arithmetic mean evaluates to the same number independent of the order of the terms. This equation can be reduced to the original equation if we reinterpret this result in terms of the operators themselves. If we do this we get the symbolic equation
-
-:<math>H = \frac { G^2 } { A }</math>
-
-because each function was evaluated at
-
-:<math> ( x_1, x_2 ).</math>
+Equivalently, the harmonic mean is the [[Multiplicative inverse|reciprocal]] of the [[arithmetic mean]] of the reciprocals. As a simple example, the harmonic mean of 1, 2, and 4 is <math>\frac{3}{\frac{1}{1}+\frac{1}{2}+\frac{1}{4}}  = \frac{1}{\frac{1}{3}(\frac{1}{1}+\frac{1}{2}+\frac{1}{4})} = \frac{12}{7}\,.</math>
 
 ==Relationship with other means==
-
 [[Image:MathematicalMeans.svg|thumb|right|A geometric construction of the three [[Pythagorean means]] of two numbers, ''a'' and ''b''. Harmonic mean is denoted by ''H'' in purple color. The ''Q'' denotes a fourth mean, the [[quadratic mean]]. ]]
+The harmonic mean is one of the three [[Pythagorean means]]. For all positive data sets ''containing at least one pair of nonequal values'', the harmonic mean is always the least of the three means, while the [[arithmetic mean]] is always the greatest of the three and the [[geometric mean]] is always in between.  (If all values in a nonempty dataset are equal, the three means are always equal to one another; e.g. the harmonic, geometric, and arithmetic means of {2,&nbsp;2,&nbsp;2} are all&nbsp;2.)
 
-If a set of non-identical numbers is subjected to a [[mean-preserving spread]] — that is, two or more elements of the set are "spread apart" from each other while leaving the arithmetic mean unchanged — then the harmonic mean always decreases.<ref name=Mitchell2004>Mitchell DW (2004) More on spreads and non-arithmetic means. [[The Mathematical Gazette]] 88: 142-144</ref>
+It is the special case ''M''<sub>&minus;1</sub> of the [[power mean]].
 
+Since the harmonic mean of a list of numbers tends strongly toward the least elements of the list, it tends (compared to the arithmetic mean) to mitigate the impact of large outliers and aggravate the impact of small ones.
 
-Let ''r'' be a non zero real number and let the ''r''<sup>th</sup> power mean ( ''M''<sup>r</sup> ) of a series of real variables ( ''a''<sub>1</sub>, ''a''<sub>2</sub>, ''a''<sub>3</sub>, ... ) be defined as
+The arithmetic mean is often mistakenly used in places calling for the harmonic mean.<ref>*''Statistical Analysis'', Ya-lun Chou, Holt International, 1969, ISBN 0030730953</ref>  In the speed example [[#Examples|below]] for instance the arithmetic mean 50 is incorrect, and too big.
 
-: <math> M^r( a_1, a_2, a_3, ... ) = ( \frac{ 1 }{ n } \sum ( a_i )^r )^{ \frac{ 1 } { r } } </math>
+The harmonic mean is related to the other Pythagorean means, as seen in the third formula in the above equation. This is noticed if we interpret the denominator to be the arithmetic mean of the product of numbers ''n'' times but each time we omit the ''j''th term.  That is, for the first term we multiply all ''n'' numbers but omit the first, for the second we multiply all ''n'' numbers but omit the second and so on.  The numerator, excluding the ''n'', which goes with the arithmetic mean, is the geometric mean to the power&nbsp;''n''. Thus the ''n''th harmonic mean is related to the ''n''th geometric and arithmetic means.
 
-For ''r'' = -1, 1 and 2 we have the harmonic, the arithmetic and the [[quadratic mean]]s respectively. Define ''r'' = 0,-∞ and +∞ to be the geometric mean, the minimum of the variates and the maximum of the variates respectively. Then for any two real numbers ''s'' and ''t'' such that ''s'' < ''t'' we have
+If a set of non-identical numbers is subjected to a [[mean-preserving spread]] — that is, two or more elements of the set are "spread apart" from each other while leaving the arithmetic mean unchanged — then the harmonic mean always decreases.<ref>Mitchell, Douglas W., "More on spreads and non-arithmetic means," ''[[The Mathematical Gazette]]'' 88, March 2004, 142-144.</ref>
 
-: <math> M^s( a_1, a_2, a_3, ... ) \le M^t( a_1, a_2, a_3, ... ) </math>
-
-with equality only if all the ''a''<sub>i</sub> are equal.
-
-
-Let ''A'' be the the arithmetic mean and ''H'' be the harmonic mean of ''n'' positive real numbers. The ''AH'' ≥ ''n''<sup>2</sup> with equality only if all the variates are equal.
-
-
-Let ''R'' be the quadratic mean (or root mean square). Then<ref name=Taneja2012>Taneja IJ (2012) Inequalities having seven means and proportionality relations. arXiv:1203.2288v1 [math.HO] 8 Mar 2012</ref>
-
-: <math> \frac{ 2 R + H }{ 3 } \le A </math>
-
-==Inequalities==
-
-For a set of real variables lying within the interval [ ''m'', ''M'' ] it has been shown that
-
-: <math> A - H \ge \frac{ s^2 } { 2M } </math>
-
-where ''A'' is the arithmetic mean, ''H'' is the harmonic mean, ''M'' is the maximum of the interval and ''s''<sup>2</sup> is the variance of the set.<ref name=Mercer2000>Mercer A McD, (2000) Bounds for A-G, A-H, G-H, and a family of inequalities of Ky Fan’s type, using a general method. J Math Anal Appl 243: 163–173</ref>
-
-Several other inequalities are also known:<ref name=Sharma2008>Sharma R (2008) Some more inequalities for arithemtic mean, harmonic mean and variance. J Math Inequal 2 (1) 109–114</ref>
-
-: <math> \frac{ m ( A - m ) ( A - H ) }{ H - m } \le s^2 \le \frac{ M ( A - H ) ( M - A ) }{ M - H } </math>
-
-: <math> \frac{ ( M - s )^2 } { M ( M - 2s ) } \le \frac{ A } { H } \le \frac{ ( m + s )^2 }{ m ( m + 2s ) } </math>
-
-: <math> \frac{ ( M - m ) s^2 } { M ( M - m ) - s^2 } \le A - H \le \frac{ ( M - m ) s^2 } { m ( M - m ) + s^2 }  </math>
+==Weighted harmonic mean==
+If a set of [[weight function|weights]] <math>w_1</math>, ..., <math>w_n</math> is associated to the dataset <math>x_1</math>, ..., <math>x_n</math>, the '''weighted harmonic mean''' is defined by
+:<math>\frac{\sum_{i=1}^n w_i }{ \sum_{i=1}^n \frac{w_i}{x_i}}. </math>
+The harmonic mean as defined is the special case where all of the weights are equal to 1, and is equivalent to any weighted harmonic mean where all weights are equal
 
 ==Examples==
+===In physics===
+In certain situations, especially many situations involving [[rate (mathematics)|rate]]s and [[ratio]]s, the harmonic mean provides the truest [[average]]. For instance, if a vehicle travels a certain distance at a speed ''x'' (e.g. 60 kilometres per hour) and then the same distance again at a speed ''y'' (e.g. 40 kilometres per hour), then its average speed is the harmonic mean of ''x'' and ''y'' (48 kilometres per hour), and its total travel time is the same as if it had traveled the whole distance at that average speed. However, if the vehicle travels for a certain amount of ''time'' at a speed ''x'' and then the same amount of time at a speed ''y'', then its average speed is the [[arithmetic mean]] of ''x'' and ''y'', which in the above example is 50 kilometres per hour. The same principle applies to more than two segments: given a series of sub-trips at different speeds, if each sub-trip covers the same ''distance'', then the average speed is the ''harmonic'' mean of all the sub-trip speeds, and if each sub-trip takes the same amount of ''time'', then the average speed is the ''arithmetic'' mean of all the sub-trip speeds. (If neither is the case, then a [[weighted harmonic mean]] or [[weighted arithmetic mean]] is needed.)
 
-===Geometry===
+Similarly, if one connects two electrical [[resistor]]s in parallel, one having resistance ''x'' (e.g. 60[[Ohm (unit)|Ω]]) and one having resistance ''y'' (e.g. 40Ω), then the effect is the same as if one had used two resistors with the same resistance, both equal to the harmonic mean of ''x'' and ''y'' (48Ω): the equivalent resistance in either case is 24Ω (one-half of the harmonic mean). However, if one connects the resistors in series, then the average resistance is the arithmetic mean of ''x'' and ''y'' (with total resistance equal to the sum of x and y). And, as with previous example, the same principle applies when more than two resistors are connected, provided that all are in parallel or all are in series.
+
+===In other sciences===
+
+In [[computer science]], specifically [[information retrieval]] and [[machine learning]], the harmonic mean of the [[precision (information retrieval)|precision]] and the [[recall (information retrieval)|recall]] is often used as an aggregated performance score for the evaluation of algorithms and systems: the [[F-score]] (or F-measure).
+
+An interesting consequence arises from basic algebra in problems of working together. As an example, if a gas-powered pump can drain a pool in 4 hours and a battery-powered pump can drain the same pool in 6 hours, then it will take both pumps (6&nbsp;·&nbsp;4)/(6&nbsp;+&nbsp;4), which is equal to 2.4 hours, to drain the pool together. Interestingly, this is one-half of the harmonic mean of 6 and 4.
+
+In [[hydrology]] the harmonic mean is used to average [[hydraulic conductivity]] values for flow that is perpendicular to layers (e.g. geologic or soil) while flow parallel to layers uses the arithmetic mean. This apparent difference in averaging is explained by the fact that hydrology uses conductivity, which is the inverse of resistivity.
+
+
+In [[sabermetrics]], the [[Power-speed number]] of a player is the harmonic mean of his [[home run]] and [[stolen base]] totals.
+
+In [[population genetics]] the harmonic mean is used when calculating the effects of fluctuations in generation size on the effective breeding population. This is to take into account the fact that a very small generation is effectively like a [[bottleneck]] and means that a very small number of individuals are contributing disproportionately to the [[gene pool]] which can result in higher levels of [[inbreeding]].
+
+When considering [[fuel economy in automobiles]] two measures are commonly used – miles per gallon (mpg), and litres per 100&nbsp;km. As the dimensions of these quantities are the inverse of each other (one is distance per volume, the other volume per distance) when taking the mean value of the fuel-economy of a range of cars one measure will produce the harmonic mean of the other – i.e. converting the mean value of fuel economy expressed in litres per 100&nbsp;km to miles per gallon will produce the harmonic mean of the fuel economy expressed in miles-per-gallon.
+
+===In finance===
+The harmonic mean is the preferable method for averaging multiples, such as the [[price/earning ratio]], in which price is in the numerator.  If these ratios are averaged using an arithmetic mean (a common error), high data points are given greater weights than low data points.  The harmonic mean, on the other hand, gives equal weight to each data point.<ref>"Fairness Opinions: Common Errors and Omissions", ''The Handbook of Business Valuation and Intellectual Property Analysis'', McGraw Hill, 2004. ISBN 0071429670</ref>
+
+===In geometry===
 
 In any [[triangle]], the radius of the [[Incircle and excircles of a triangle|incircle]] is one-third the harmonic mean of the [[Altitude (triangle)|altitudes]].
 
@@ -120,328 +63,74 @@ Let ''t'' and ''s'' (''t'' > ''s'') be the sides of the two inscribed squares in
 
 Let a [[trapezoid]] have vertices A, B, C, and D in sequence and have parallel sides AB and CD.  Let E be the intersection of the [[diagonal]]s, and let F be on side DA and G be on side BC such that FEG is parallel to AB and CD.  Then FG is the harmonic mean of AB and DC. (This is provable using similar triangles.)
 
+
 [[File:CrossedLadders.png|thumb|right|Crossed ladders. ''h'' is half the harmonic mean of ''A'' and ''B'']]
 In the [[crossed ladders problem]], two ladders lie oppositely across an alley, each with feet at the base of one sidewall, with one leaning against a wall at height ''A'' and the other leaning against the opposite wall at height ''B'', as shown. The ladders cross at a height of ''h'' above the alley floor. Then ''h'' is half the harmonic mean of ''A'' and ''B''. This result still holds if the walls are slanted but still parallel and the "heights" ''A'', ''B'', and ''h'' are measured as distances from the floor along lines parallel to the walls.
 
 In an [[ellipse]], the [[Kepler's laws of planetary motion#Mathematics of the three laws|semi-latus rectum]] (the distance from a focus to the ellipse along a line parallel to the minor axis) is the harmonic mean of the maximum and minimum distances of the ellipse from a focus.
 
-===Trigonometry===
+===In trigonometry===
 
-In the case of the [[Trigonometric identities#Double-, triple-, and half-angle formulae|double-angle tangent identity]], if the [[Trigonometric functions#Sine, cosine, and tangent|tangent]] of an angle ''A'' is given as ''a'' / ''b'' then the tangent of 2''A'' is the product of
-*(1) the harmonic mean of the numerator and denominator of tan ''A''; and
-*(2) the reciprocal of the denominator less the numerator of tan ''A''.
+In the case of the [[Trigonometric identities#Double-, triple-, and half-angle formulae|double-angle tangent identity]], if the [[Trigonometric functions#Sine, cosine, and tangent|tangent]] of an angle ''A'' is given as ''a''/''b'', then the tangent of 2''A'' is the product of (1) the harmonic mean of the numerator and denominator of tan ''A'' and (2) the reciprocal of (the denominator minus the numerator of tan ''A'').
 
-In symbols if ''a'' and ''b'' are real numbers and
+In general the double-angle formula can be written as
 
-: <math>\tan A = \frac{ a }{ b }</math>
+:<math>\tan 2A = \frac{2 a b}{a + b} * \frac{1}{b - a}</math>
 
-the double angle formula for the tangent can be written as
+if <math>\tan A = \frac{a}{b}</math> and <math>a</math> and <math>b</math> are real numbers.
 
-: <math>\tan 2A = H( a, b ) * \frac{ 1 }{ b - a } = \frac{ 2 a b }{ a + b } * \frac{ 1 }{ b - a }  </math>
+For example, if
+:<math>\tan A = \frac{3}{7},</math>
+then the most familiar form of the double-angle formula is
 
-where ''H''( ''a'', ''b'' ) is the harmonic mean of ''a'' and ''b''.
+:<math>\tan 2A = \frac{2 * \frac{3}{7}}{1 - (\frac{3}{7})^2}= \frac{21}{20};</math>
 
-;Example
+but this can also be written as
+:<math>\frac{2 * 3 * 7}{3 + 7} * \frac{1}{7 - 3} = \frac{21}{20}.</math>
 
-Let
+==Harmonic mean of two numbers==
+For the special case of just two numbers <math>x_1</math> and <math>x_2</math>, the harmonic mean can be written
+:<math>H = \frac{2 x_1 x_2}{x_1 + x_2}.</math>
 
-: <math> \tan A = \frac{ 3 }{ 7 } </math>
+In this special case, the harmonic mean is related to the [[arithmetic mean]] <math>A = \frac{x_1 + x_2}{2}</math>
+and the [[geometric mean]] <math>G = \sqrt{x_1 x_2},</math> by
+:<math>H = \frac {G^2} {A}.</math>
 
-The harmonic mean of 3 and 7 is
+So <math>G = \sqrt{A H}</math>, meaning the two numbers' geometric mean equals the geometric mean of their arithmetic and harmonic means.
 
-: <math> H( 3,7 ) = \frac{ 42 }{ 10 } = 4.2 </math>
+As noted above this relationship between the three Pythagorean means is not limited to ''n'' equals 1 or 2; there is a relationship for all ''n''. However it should be noted that for ''n'' equals 1 all means are equal and for ''n'' equals 2 we have the above relationship between the means. For arbitrary ''n'' ≥ 2 we may generalize this formula, as noted above, by interpreting the third equation for the harmonic mean differently. The generalized relationship was already explained above. If one carefully observes the third equation one will notice it also works for ''n'' = 1. That is, it predicts the equivalence between the harmonic and geometric means but it falls short by not predicting the equivalence between the harmonic and arithmetic means.
 
-The most familiar form of the double angle formula is
+The general formula, which can be derived from the third formula for the harmonic mean by the reinterpretation as explained in relationship with other means, is
 
-: <math> \tan 2A = \frac{ 2 * \frac{ 3 }{ 7 }}{ 1 - ( \frac{ 3 }{ 7 } )^2 }= \frac{ 21 }{ 20 };</math>
+:<math> H(x_1, \ldots , x_n)= \frac{(G(x_1, \ldots , x_n))^n}{A(x_2x_3 \cdots x_n, x_1x_3 \cdots x_n, \ldots , x_1x_2 \cdots x_{n-1})} = \frac{(G(x_1, \ldots , x_n))^n}{A\left( \frac{\prod_{i=1}^n x_i}{x_1}, \frac{\prod_{i=1}^n x_i}{x_2}, \ldots , \frac{\prod_{i=1}^n x_i}{x_n} \right)} .</math>
 
-The double angle formula can also be written as
+Notice that for <math>n=2</math> we have
 
-: <math> \frac{ 2 * 3 * 7 }{ 3 + 7 } * \frac{ 1 }{ 7 - 3 } = \frac{ 42 }{ 10 } *  \frac{ 1 }{ 4 } = \frac{ 21 }{ 20 } = 1.05 </math>
+:<math>H(x_1, x_2)= \frac{(G(x_1, x_2))^2}{A(x_2, x_1)}=\frac{(G(x_2, x_1))^2}{A(x_2, x_1)}</math>
 
-===Algebra===
+where we used the fact that the arithmetic mean evaluates to the same number independent of the order of the terms. This equation can be reduced to the original equation if we reinterpret this result in terms of the operators themselves. If we do this we get the symbolic equation
 
-The harmonic mean also features in elementary algebra when considering problems of working in [[http://en.wikipedia.org/wiki/Parallel_circuits#Parallel_circuits|parallel]].
+:<math>H = \frac {G^2} {A}</math>
 
-;Example
+because each function was evaluated at
 
-If a gas powered pump can drain a pool in 4 hours and a battery powered pump can drain the same pool in 6 hours, then it will take both pumps
-
-: <math>( 6 * 4 ) / ( 6 + 4 ) = \frac {1}{2} H( 4, 6 ) = 2.4 </math>
-
-hours to drain the pool working together.
-
-===Physics===
-
-In certain situations, especially many situations involving [[rate (mathematics)|rate]]s and [[ratio]]s, the harmonic mean provides the truest [[average]]. For instance, if a vehicle travels a certain distance at a speed ''x'' (e.g. 60 kilometres per hour) and then the same distance again at a speed ''y'' (e.g. 40 kilometres per hour), then its average speed is the harmonic mean of ''x'' and ''y'' (48 kilometres per hour), and its total travel time is the same as if it had traveled the whole distance at that average speed. However, if the vehicle travels for a certain amount of ''time'' at a speed ''x'' and then the same amount of time at a speed ''y'', then its average speed is the [[arithmetic mean]] of ''x'' and ''y'', which in the above example is 50 kilometres per hour. The same principle applies to more than two segments: given a series of sub-trips at different speeds, if each sub-trip covers the same ''distance'', then the average speed is the ''harmonic'' mean of all the sub-trip speeds, and if each sub-trip takes the same amount of ''time'', then the average speed is the ''arithmetic'' mean of all the sub-trip speeds. (If neither is the case, then a [[weighted harmonic mean]] or [[weighted arithmetic mean]] is needed.)
-
-Similarly, if one connects two electrical [[resistor]]s in parallel, one having resistance ''x'' (e.g. 60[[Ohm (unit)|Ω]]) and one having resistance ''y'' (e.g. 40Ω), then the effect is the same as if one had used two resistors with the same resistance, both equal to the harmonic mean of ''x'' and ''y'' (48Ω): the equivalent resistance in either case is 24Ω (one-half of the harmonic mean). However, if one connects the resistors in series, then the average resistance is the arithmetic mean of ''x'' and ''y'' (with total resistance equal to the sum of x and y). And, as with previous example, the same principle applies when more than two resistors are connected, provided that all are in parallel or all are in series.
-
-The weighted harmonic mean is the correct approach to determine the average [[specific gravity]] of a mixture when the composition by weight is known.  Note however that this is only correct for [[ideal solution]]s.
-
-===Other sciences===
-
-In [[computer science]], specifically [[information retrieval]] and [[machine learning]], the harmonic mean of the [[precision (information retrieval)|precision]] and the [[recall (information retrieval)|recall]] is often used as an aggregated performance score for the evaluation of algorithms and systems: the [[F-score]] (or F-measure).
-
-In [[hydrology]] the harmonic mean is used to average [[hydraulic conductivity]] values for flow that is perpendicular to layers (e.g. geologic or soil) while flow parallel to layers uses the arithmetic mean. This apparent difference in averaging is explained by the fact that hydrology uses conductivity, which is the inverse of resistivity.
-
-In [[population genetics]] the harmonic mean is used when calculating the effects of fluctuations in generation size on the effective breeding population. This is to take into account the fact that a very small generation is effectively like a [[bottleneck]] and means that a very small number of individuals are contributing disproportionately to the [[gene pool]] which can result in higher levels of [[inbreeding]].
-
-When considering [[fuel economy in automobiles]] two measures are commonly used – miles per gallon (mpg), and litres per 100&nbsp;km. As the dimensions of these quantities are the inverse of each other (one is distance per volume, the other volume per distance) when taking the mean value of the fuel-economy of a range of cars one measure will produce the harmonic mean of the other – i.e. converting the mean value of fuel economy expressed in litres per 100&nbsp;km to miles per gallon will produce the harmonic mean of the fuel economy expressed in miles-per-gallon.
-
-===Finance===
-
-The harmonic mean is the preferable method for averaging multiples, such as the [[price/earning ratio]], in which price is in the numerator.  If these ratios are averaged using an arithmetic mean (a common error), high data points are given greater weights than low data points.  The harmonic mean, on the other hand, gives equal weight to each data point.<ref>"Fairness Opinions: Common Errors and Omissions", ''The Handbook of Business Valuation and Intellectual Property Analysis'', McGraw Hill, 2004. ISBN 0-07-142967-0</ref>
-
-==Statistics==
-
-For a random sample the harmonic mean is calculated as above. Both the mean and the variance may be [[Infinity|infinite]] (if it includes at least one term of the form 1/0).
-
-===Theoretical value===
-
-The variance of the harmonic mean is<ref name=Zelen1972>Zelen M (1972) Length-biased sampling and biomedical problems. In Biometric Society Meeting, Dallas, Texas</ref>
-
-: <math> var( \frac { 1 } { x } ) = \frac { m [ E( 1 / x - 1 ) ] } { n m^2 } </math>
-
-where ''m'' is the arthmetic mean of the reciprocals, ''x'' are the variates, ''n'' is the population size and ''E''() is the expectation operator. Asymptotically ''E''( 1 / ''x'' ) is distributed normally.
-
-The mean of the sample ( ''m'' ) is also distributed normally with variance ''s''<sup>2</sup>
-
-: <math> s^2 = m^2 \frac  { m [ E( 1 / x - 1 ) ] }{ n } </math>
-
-===Delta method===
-
-Assuming that the variance is not infinite and that the [[central limit theorem]] applies to the sample then using the [[delta method]], the variance is
-
-: <math> var( H ) = \frac { 1 }{ n }\frac{ s^2 } { m^4 } </math>
-
-where ''H'' is the harmonic mean, ''m'' is the arithmetic mean of the reciprocals
-
-: <math> m = \frac{ 1 } { n } \sum{ \frac{ 1 } { x } } </math>
-
-''s''<sup>2</sup> is the variance of the reciprocals of the data
-
-: <math> s^2 = var( \frac { 1 } { x } ) </math>
-
-and ''n'' is the number of data points in the sample.
-
-===Jackknife method===
-
-A [[Resampling_(statistics)#Jackknife|jackknife]] method of estimating the variance is possible if the mean is known.<ref name=Lam1985>Lam FC (1985) Estimate of variance for harmonic mean half lives. J Pharm Sci 74(2) 229-231</ref> This method is the usual 'delete 1' rather than the 'delete m' version.
-
-This method first requires the computation of the mean of the sample (''m'')
-
-<math> m = \frac{ n }{ \sum { \frac{ 1 }{ x } } }</math>
-
-where ''x'' are the sample values.
-
-
-A series of value ''w<sub>i</sub>'' is then computed where
-
-<math> w_i = \frac{ n - 1 }{ \sum_{j \neq i} { \frac{ 1 }{ x } } }</math>
-
-
-The mean (''h'') of the ''w''<sub>i</sub> is then taken
-
-<math> h = \frac{ 1 }{ n } \sum{ w_i } </math>
-
-
-The variance of the mean is
-
-<math> \frac{ n - 1 }{ n } \sum{ ( m - h ) }^2  </math>
-
-
-Significance testing and [[confidence interval]]s for the mean can then be estimated with the [[t test]].
-
-===Size biased sampling===
-
-Assume a random variate has a distribution ''f''( ''x'' ). Assume also that the likelihood of a variate being chosen is proportional to its value. This is known as length based or size biased sampling.
-
-Let ''μ'' be the mean of the population. Then the [[probability density function]] ''f''*( ''x'' ) of the size biased population is
-
-: <math> f^*(x) = \frac{ x f( x ) }{ \mu } </math>
-
-The expectation of this length biased distribution ''E''<sup>*</sup>( ''x'' ) is <ref name=Zelen1972>Zelen M (1972) Length-biased sampling and biomedical problems. In Biometric Society Meeting, Dallas, Texas</ref>
-
-: <math> E^*( x ) = \mu [ 1 + \frac{ \sigma^2 }{ \mu^2 } ] </math>
-
-where ''σ''<sup>2</sup> is the variance.
-
-The expectation of the harmonic mean is the same as the non length biased version ''E''( ''x'' )
-
-: <math> E^*( \frac{ 1 }{ x } ) = E( \frac{ 1 }{ x } ) </math>
-
-The problem of length biased sampling arises in a number of areas including textile manufacture<ref name=Cox1969>Cox DR (1969) Some sampling problems in technology. In: New developments in survey sampling. U L Johnson, H Smith eds. New York: Wiley Interscience</ref> pedigree analysis<ref name=Davidov2001>Davidov O, Zelen M (2001) Referent sampling, family history and relative risk: the role of length‐biased sampling. Biostat 2(2): 173-181 doi: 10.1093/biostatistics/2.2.173 </ref> and survival analysis<ref name=Zelen1969>Zelen M, Feinleib M (1969) On the theory of screening for chronic diseases. Boimetrika 56: 601-614</ref>
-
-===Shifted variables===
-
-If ''X'' is a positive random variable and ''q'' > 0 then for all ''ε'' > 0<ref name=Chuen-Teck2008>Chuen-Teck See, Chen J (2008) Convex functions of random variables. J Inequal Pure Appl Math 9 (3) Art 80 </ref>
-
-: <math> variance[ \frac{ 1 }{( X + \epsilon )^q } ] < variance( \frac{ 1 }{ X^q } ) </math>
-
-===Moments===
-
-Assuming that ''X'' and E(''X'') are > 0 then<ref name=Chuen-Teck2008>Chuen-Teck See, Chen J (2008) Convex functions of random variables. J Inequal Pure Appl Math 9 (3) Art 80 </ref>
-
-: <math> E[ \frac{ 1 }{ X } ] \ge \frac{ 1 }{ E( X ) }</math>
-
-This follows from [[Jensen's inequality]].
-
-
-Gurland has shown that<ref name=Gurland1967>Gurland J (1967) An inequality satisfied by the expectation of the reciprocal of a random variable. The American Statistician. 21 (2) 24 </ref> for a distribution that takes only positive values, for any ''n'' > 0
-
-: <math> E( X^{ -1 } ) \ge \frac{ E( X^{ n - 1 } ) }{ E( X^n ) } </math>
-
-
-Under some conditions<ref name=Sung2010>Sung SH (2010) On inverse moments for a class of nonnegative random variables. J Inequal Applic  doi:10.1155/2010/823767</ref>
-
-: <math> E( a + X )^{ -n }  \sim E( a + X^{ -n } ) </math>
-
-where ~ means approximately.
-
-==Lognormal distribution==
-
-The harmonic mean ( ''H'' ) of a [[lognormal distribution]] is<ref name=Aitchison1969>Aitchison J, Brown JAC (1969). The lognormal distribution with special reference to its uses in economics. Cambridge University Press, New York</ref>
-
-: <math> H = exp( \mu -\frac{ 1 }{ 2 } \sigma^2 ) </math>
-
-where ''μ'' is the arithmetic mean and ''σ''<sup>2</sup> is the variance of the distribution.
-
-The harmonic and arithmetic means are related
-
-: <math> \frac{ \mu }{ H } = 1 + C_v </math>
-
-where ''C''<sub>v</sub> is the [[coefficient of variation]].
-
-The geometric ( ''G'' ), arithmetic and harmonic means are related<ref name=Rossman1990>Rossman LA (1990) Design stream flows based on harmonic means. J Hydr Eng ASCE 116(7) 946–950</ref>
-
-: <math> H \mu = G^2 </math>
-
-
-===Sampling properties===
-
-Assuming that the variates (''x'') are drawn from a lognormal distribution there are several possible estimators for ''H'':
-
-
-: <math> H_1 = \frac{ n }{ \sum( \frac{ 1 }{ x } ) } </math>
-
-
-: <math> H_2 = \frac{ [ exp( \frac{ 1 }{ n } \sum log_e( x ) ) ]^2 }{ \frac{ 1 }{ n } \sum(  x  ) } </math>
-
-
-: <math> H_3 = exp( m - \frac{ 1 }{ 2 } s^2 )  </math>
-
-where
-
-: <math> m = \frac{ 1 }{ n } \sum log_e( x )</math>
-
-: <math> s^2 = \frac{ 1 }{ n } \sum ( log_e( x ) - m )^2 </math>
-
-
-Of these ''H''<sub>3</sub> is probably the best estimator for samples of 25 or more.<ref name=Stedinger1980>Stedinger JR (1980) Fitting lognormal distributions to hydrologic data. Water Resour Res 16(3) 481–490</ref>
-
-===Bias and variance estimators===
-
-A first order approximation to the [[bias]] and variance of ''H''<sub>1</sub> are<ref name=Limbrunner2000>Limbrunner JF, Vogel RM, Brown LC (2000) Estimation of harmonic mean of a lognormal variable. J Hydrol Eng 5(1) 59-66</ref>
-
-
-: <math> bias[ H_1 ] = \frac{ H C_v }{ n }</math>
-
-
-: <math> var[ H_1 ] = \frac{ H^2 C_v }{ n }</math>
-
-
-where ''C''<sub>v</sub> is the coefficient of variation.
-
-
-Similarly a first order approximation to the bias and variance of ''H''<sub>3</sub> are<ref name=Limbrunner2000>Limbrunner JF, Vogel RM, Brown LC (2000) Estimation of harmonic mean of a lognormal variable. J Hydrol Eng 5(1) 59-66</ref>
-
-
-: <math> \frac{ H log_e( 1 + C_v ) }{ 2n } [ 1 + \frac{ 1 + C_v^2 }{ 2 } ] </math>
-
-
-: <math> \frac{ H log_e( 1 + C_v ) }{ n } [ 1 + \frac{ 1 + C_v^2 }{ 4 } ] </math>
-
-
-It has been found in numerical experiments that ''H''<sub>3</sub> is generally a superior estimator of the harmonic mean than ''H''<sub>1</sub>.<ref name=Limbrunner2000>Limbrunner JF, Vogel RM, Brown LC (2000) Estimation of harmonic mean of a lognormal variable. J Hydrol Eng 5(1) 59-66</ref> ''H''<sub>2</sub> produces estimates are are largely similar to ''H''<sub>2</sub>.
-
-==Pareto distribution==
-
-The harmonic mean of a type 1 [[Pareto distribution]] is<ref name=Johnson1994>Johnson NL, Kotz S, Balakrishnan N (1994) Continuous univariate distributions Vol 1. Wiley Series in Probability and Statistics. </ref>
-
-
-: <math> H = k ( 1 + \frac{ 1 }{ \alpha } ) </math>
-
-
-where ''k'' is the scale parameter and ''α'' is the shape parameter.
-
-==Notes==
-
-The [[Environmental Protection Agency]] recommend the use of the harmonic mean in setting maximum toxin levels in water.<ref name=EPA1991>EPA (1991) Technical support document for water quality-based toxics control. EPA/505/2-90-001. Office of Water</ref>
-
-In geophysical reservoir engineering studies, the harmonic mean is widely used.<ref name=Muskat1937>Muskat M (1937) The flow of homogeneous fluids through porous media. McGraw-Hill, New York</ref>
-
-The [[F1 score]] is the harmonic mean of [[precision]] and [[recall]].
-
-In [[sabermetrics]], the [[power-speed number]] of a player is the harmonic mean of his [[home run]] and [[stolen base]] totals.
+:<math> (x_1, x_2).</math>
 
 ==See also==
-
 {{Portal box|Statistics|Mathematics}}
-* [[Contraharmonic mean]]
 * [[Generalized mean]]
 * [[Harmonic number]]
 * [[Rate (mathematics)]]
 * [[Weighted mean]]
+
 ==References==
-
-
 <references/>
 
 ==External links==
-
 * {{Mathworld |id=HarmonicMean |title=Harmonic Mean}}
 * [http://www.cut-the-knot.org/arithmetic/HarmonicMean.shtml Averages, Arithmetic and Harmonic Means] at [[cut-the-knot]]
-* Use of the harmonic mean in political science [http://halshs.archives-ouvertes.fr/docs/00/56/53/15/PDF/11006.pdf]
 
 {{Statistics|descriptive}}
 
 {{DEFAULTSORT:Harmonic Mean}}
-
 [[Category:Means]]
-[[bg:Средно хармонично]]
-[[ca:Mitjana harmònica]]
-[[cs:Harmonický průměr]]
-[[da:Harmonisk gennemsnit]]
-[[de:Harmonisches Mittel]]
-[[et:Harmooniline keskmine]]
-[[es:Media armónica]]
-[[eo:Harmona meznombro]]
-[[eu:Batezbesteko harmoniko]]
-[[fa:میانگین توافقی]]
-[[fr:Moyenne harmonique]]
-[[gl:Media harmónica]]
-[[ko:조화 평균]]
-[[hi:हरात्मक माध्य]]
-[[he:ממוצע הרמוני]]
-[[kk:Гармоникалық орта мән]]
-[[lt:Harmoninis vidurkis]]
-[[hu:Harmonikus közép]]
-[[nl:Harmonisch gemiddelde]]
-[[no:Harmonisk gjennomsnitt]]
-[[nn:Harmonisk gjennomsnitt]]
-[[pms:Media armònica]]
-[[pl:Średnia harmoniczna]]
-[[pt:Média harmônica]]
-[[ru:Среднее гармоническое]]
-[[sk:Harmonický priemer]]
-[[sl:Harmonična sredina]]
-[[sr:Хармонијска средина]]
-[[sh:Harmonijska sredina]]
-[[fi:Harmoninen keskiarvo]]
-[[sv:Harmoniskt medelvärde]]
-[[ta:இசைச் சராசரி]]
-[[tr:Harmonik ortalama]]
-[[ur:ایقاعی اوسط]]
-[[vi:Trung bình điều hòa]]
-[[zh:调和平均数]]
