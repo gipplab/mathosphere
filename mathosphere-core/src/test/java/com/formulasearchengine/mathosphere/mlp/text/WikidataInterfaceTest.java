@@ -14,6 +14,6 @@ public class WikidataInterfaceTest {
 	@Test
 	public void testGetEntities() throws Exception {
 		final ArrayList<String> expected = Lists.newArrayList("Q12916");
-		Assert.assertEquals(expected, WikidataInterface.getEntities("real number"));
+		Assert.assertEquals(expected.get(0), WikidataInterface.getEntities("real number").get(0));
 	}
 }
