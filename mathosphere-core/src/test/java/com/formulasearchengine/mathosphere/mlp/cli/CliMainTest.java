@@ -4,25 +4,17 @@ import com.google.common.base.Throwables;
 
 import com.formulasearchengine.mathosphere.mlp.Main;
 
-import org.apache.commons.csv.CSVFormat;
-import org.apache.commons.csv.CSVRecord;
 import org.apache.commons.io.output.TeeOutputStream;
-import org.hamcrest.Matchers;
 import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileReader;
 import java.io.PrintStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLDecoder;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
 
-import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 public class CliMainTest {
@@ -133,39 +125,6 @@ public class CliMainTest {
     final String standardOutput = myOut.toString();
     assertTrue(standardOutput.contains("magnetic dipole moment"));
     System.setOut(stdout);
-  }
-
-  @Test
-  public void testList() throws Exception {
-    FileReader in = new FileReader(getClass().getResource("../mean_gold.csv").getFile());
-      Iterable<CSVRecord> records = CSVFormat.RFC4180.withHeader().parse(in);
-    Set<String> expected = new HashSet<>();
-      for (CSVRecord record : records) {
-        expected.add(record.get("identifier"));
-      }
-    String[] args = new String[4];
-    args[0] = "list";
-    args[1] = "-in";
-    args[2] = resoucePath("com/formulasearchengine/mathosphere/mlp/mean_wiki.txt");
-    args[3] = "--tex";
-    final PrintStream stdout = System.out;
-    final ByteArrayOutputStream myOut = new ByteArrayOutputStream();
-    System.setOut(new PrintStream(myOut));
-    Main.main(args);
-    final String standardOutput = myOut.toString();
-    //    assertTrue(standardOutput.contains("\\epsilon_{0}"));
-    System.setOut(stdout);
-    Set<String> real = new HashSet<>(Arrays.asList(standardOutput.split(System.getProperty("line.separator"))));
-    Set<String> tp = new HashSet<>(expected);
-    Set<String> fn = new HashSet<>(expected);
-    Set<String> fp = new HashSet<>(real);
-    fn.removeAll(real);
-    fp.removeAll(expected);
-    tp.retainAll(real);
-    double rec = ((double) tp.size() ) / (tp.size() + fn.size());
-    double prec = ((double) tp.size() ) / (tp.size() + fp.size());
-    assertThat("precision",prec,Matchers.greaterThan(.99));
-    assertThat("precision",rec,Matchers.greaterThan(.99));
   }
 
   @Test
