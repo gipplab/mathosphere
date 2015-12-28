@@ -229,7 +229,7 @@ unicode,latex
 00124,\hat{H}
 00125,\hat{h}
 00126,"{\fontencoding{LELA}\selectfont\char40}"
-00127,"\hbar"
+00127,"\Elzxh"
 00128,"\~{I}"
 00129,"\~{\i}"
 0012A,"\={I}"
@@ -744,7 +744,7 @@ unicode,latex
 02110,"\mathscr{I}"
 02111,"\mathfrak{I}"
 02112,"\mathscr{L}"
-02113,"\ell"
+02113,"\mathscr{l}"
 02115,"\mathbb{N}"
 02116,"\cyrchar\textnumero"
 02118,"\wp"
