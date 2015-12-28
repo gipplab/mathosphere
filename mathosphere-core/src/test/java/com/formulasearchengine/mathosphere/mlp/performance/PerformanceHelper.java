@@ -8,7 +8,6 @@ import net.sf.json.JSONSerializer;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
 import org.hamcrest.Matchers;
-import org.junit.Test;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -23,10 +22,14 @@ import java.util.Set;
 import static junit.framework.TestCase.fail;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-public class IdentifierExtraction {
+/**
+ * Created by Moritz on 28.12.2015.
+ */
+public class PerformanceHelper {
 
-  private File getResources(String resourceName) {
-    URL url = getClass().getClassLoader().getResource(resourceName);
+  private static File getResources(String resourceName) throws Exception {
+    PerformanceHelper instance = new PerformanceHelper();
+    URL url = instance.getClass().getClassLoader().getResource(resourceName);
     File dir = null;
     try {
       assert url != null;
@@ -37,27 +40,22 @@ public class IdentifierExtraction {
     return dir;
   }
 
-  private void runTestCollection(String resourceName) throws Exception {
-    runTestCollection(getResources(resourceName));
+  static void runTestCollection(String resourceName, String command) throws Exception {
+    runTestCollection(getResources(resourceName),command);
   }
 
-  private void runTestCollection(File dir) throws Exception {
+  private static void runTestCollection(File dir,String command) throws Exception {
     //noinspection ConstantConditions
     for (File nextFile : dir.listFiles()) {
       if (nextFile.getName().endsWith("_wiki.txt")) {
         File resultPath = new File(nextFile.getAbsolutePath().replace("_wiki.txt", "_gold.csv"));
         File expectationPath = new File(nextFile.getAbsolutePath().replace("_wiki.txt", "_exp.json"));
-        runTest(nextFile, resultPath, expectationPath);
+        runTest(nextFile, resultPath, expectationPath, command);
       }
     }
   }
 
-  @Test
-  public void runTest() throws Exception {
-    runTestCollection("com/formulasearchengine/mathosphere/mlp/performance");
-  }
-
-  private void runTest(File source, File gold, File expectations) throws Exception {
+  private static void runTest(File source, File gold, File expectations, String command) throws Exception {
     FileReader in = new FileReader(gold);
     Iterable<CSVRecord> records = CSVFormat.RFC4180.withHeader().parse(in);
     Set<String> expected = new HashSet<>();
@@ -72,11 +70,12 @@ public class IdentifierExtraction {
     double expRec = identifiers.getDouble("recall");
 
 
-    String[] args = new String[4];
-    args[0] = "list";
-    args[1] = "-in";
-    args[2] = source.getAbsolutePath();
-    args[3] = "--tex";
+    String[] args = {
+        command,
+        "-in", source.getAbsolutePath(),
+        "--tex",
+        "--texvcinfo", "http://127.0.0.1:10042/texvcinfo"
+    };
     final PrintStream stdout = System.out;
     final ByteArrayOutputStream myOut = new ByteArrayOutputStream();
     System.setOut(new PrintStream(myOut));
