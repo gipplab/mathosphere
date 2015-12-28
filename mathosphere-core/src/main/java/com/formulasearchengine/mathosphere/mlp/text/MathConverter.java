@@ -174,23 +174,43 @@ public class MathConverter
 
   public boolean detectHiddenMath(WtContentNodeImpl i) {
     if (i.size() == 1 && i.get(0) instanceof WtText) {
-      String content = ((WtText) i.get(0)).getContent();
-      String tex = wiki2Tex(content);
-      if (tex.length() > 0 && (content.length() == 1 ||
-          (content.length() < 10 && tex.length() > content.length()))) {
+      final String tex = getTex(i, false);
+      if (tex != null) {
         int location;
         try {
           location = i.getLocation().line;
         } catch (NullPointerException n) {
           location = 0;
         }
-        if (i instanceof WtBold) {
-          tex = "\\mathbf{" + tex + "}";
-        }
         MathTag tag = new MathTag(location, tex, WikiTextUtils.MathMarkUpType.MATH_TEMPLATE);
         mathTags.add(tag);
         write(tag.placeholder());
         return true;
+      }
+    } else {
+      if (i.size() == 2 && i.get(0) instanceof WtText && i.get(1) instanceof WtXmlElement) {
+        //discover hidden subscripts
+        final WtXmlElement xml = (WtXmlElement) i.get(1);
+        if (xml.getName().matches("sub") &&
+            xml.getBody().size() == 1 &&
+            xml.getBody().get(0) instanceof WtText) {
+          //String subtext = ((WtText) ((WtXmlElement) i.get(1)).getBody().get(0)).getContent();
+          final String subTex = getTex((WtContentNodeImpl) xml.getBody(),true);
+          final String mainTex = getTex(i,true);
+          if (mainTex != null) {
+            String tex = mainTex + "_{" + subTex +"}";
+            int location;
+            try {
+              location = i.getLocation().line;
+            } catch (NullPointerException n) {
+              location = 0;
+            }
+            MathTag tag = new MathTag(location, tex, WikiTextUtils.MathMarkUpType.MATH_TEMPLATE);
+            mathTags.add(tag);
+            write(tag.placeholder());
+            return true;
+          }
+        }
       }
     }
     return false;
@@ -487,6 +507,23 @@ public class MathConverter
   public List<WikidataLink> getLinks() {
     return links;
   }
-}
 
+  private String getTex(WtContentNodeImpl i, boolean force) {
+    if (i.get(0) instanceof WtText) {
+      String content = ((WtText) i.get(0)).getContent();
+      String tex = wiki2Tex(content);
+      if (tex.length() > 0 && (content.length() == 1 ||
+          (content.length() < 10 && tex.length() > content.length()))) {
+        if (i instanceof WtBold) {
+          tex = "\\mathbf{" + tex + "}";
+        }
+        return tex;
+      }
+      if (force) {
+        return tex;
+      }
+    }
+    return null;
+  }
+}
 
