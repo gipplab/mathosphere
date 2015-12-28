@@ -1,6 +1,7 @@
 package com.formulasearchengine.mathosphere.mlp;
 
 import com.google.common.collect.Multiset;
+
 import com.formulasearchengine.mathosphere.mlp.cli.CliParams;
 import com.formulasearchengine.mathosphere.mlp.cli.ListCommandConfig;
 import com.formulasearchengine.mathosphere.mlp.cli.MlpCommandConfig;
@@ -10,6 +11,9 @@ import com.formulasearchengine.mathosphere.mlp.pojos.ParsedWikiDocument;
 import com.formulasearchengine.mathosphere.mlp.pojos.RawWikiDocument;
 import com.formulasearchengine.mathosphere.mlp.pojos.Relation;
 import com.formulasearchengine.mathosphere.mlp.pojos.WikiDocumentOutput;
+
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -31,10 +35,12 @@ public class RelationExtractor {
 
     try (PrintWriter pw = createPrinter(config)) {
       List<Relation> relations = output.getRelations();
-
+      CSVPrinter printer = CSVFormat.DEFAULT.withRecordSeparator("\n").print(pw);
       for (Relation r : relations) {
-        pw.println(r.getIdentifier() + "\t" + r.getDefinition() + "\t" + r.getScore());
+        String[] record = {r.getIdentifier(), r.getDefinition(), Double.toString(r.getScore())};
+        printer.printRecord(record);
       }
+      printer.flush();
       pw.flush();
     }
   }
