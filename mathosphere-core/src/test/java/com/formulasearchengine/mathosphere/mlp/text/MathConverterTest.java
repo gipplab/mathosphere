@@ -21,7 +21,7 @@ public class MathConverterTest {
 
 	@Test
 	public void testGo2() throws Exception {
-		String wikiText = IOUtils.toString(getClass().getResourceAsStream("../hamiltonian_wiki.txt"));
+		String wikiText = IOUtils.toString(getClass().getResourceAsStream("../performance/hamiltonian_wiki.txt"));
 		final MathConverter mathConverter = new MathConverter(wikiText);
 		final String real = mathConverter.getOutput();
 		assertThat(real, containsString("denoted by <math>H</math>, also \"Ȟ\" or <math>\\hat{H}</math>. "));

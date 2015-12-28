@@ -54,7 +54,7 @@ public class IdentifierExtraction {
 
   @Test
   public void runTest() throws Exception {
-    runTestCollection("com/formulasearchengine/mathosphere/mlp/perfromance");
+    runTestCollection("com/formulasearchengine/mathosphere/mlp/performance");
   }
 
   private void runTest(File source, File gold, File expectations) throws Exception {
@@ -82,9 +82,9 @@ public class IdentifierExtraction {
     System.setOut(new PrintStream(myOut));
     final long t0 = System.nanoTime();
     Main.main(args);
-    System.out.println((System.nanoTime() - t0) / 1000000000 + "s");
     final String standardOutput = myOut.toString();
     System.setOut(stdout);
+    System.out.println((System.nanoTime() - t0) / 1000000000 + "s");
     Set<String> real = new HashSet<>(Arrays.asList(standardOutput.split(System.getProperty("line.separator"))));
     Set<String> tp = new HashSet<>(expected);
     Set<String> fn = new HashSet<>(expected);
