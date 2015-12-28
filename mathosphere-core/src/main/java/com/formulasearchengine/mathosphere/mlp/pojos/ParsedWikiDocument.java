@@ -13,7 +13,7 @@ public class ParsedWikiDocument {
   private Multiset<String> identifiers;
   private List<Formula> formulas;
   private List<Sentence> sentences;
-  private Map<String,WikidataLink> linkMap = null;
+  private Map<String, WikidataLink> linkMap = null;
 
   public ParsedWikiDocument() {
   }
@@ -77,10 +77,12 @@ public class ParsedWikiDocument {
   }
 
   public Map<String, WikidataLink> getLinkMap() {
-    if ( linkMap == null ){
+    if (linkMap == null) {
       linkMap = new HashMap<>();
-      for (WikidataLink i : links){
-        linkMap.put(i.getContentHash(),i);
+      if (links != null) {
+        for (WikidataLink i : links) {
+          linkMap.put(i.getContentHash(), i);
+        }
       }
     }
     return linkMap;

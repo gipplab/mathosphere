@@ -74,7 +74,7 @@ public class PerformanceHelper {
         command,
         "-in", source.getAbsolutePath(),
         "--tex",
-        "--texvcinfo", "http://127.0.0.1:10042/texvcinfo"
+    //    "--texvcinfo", "http://127.0.0.1:10042/texvcinfo"
     };
     final PrintStream stdout = System.out;
     final ByteArrayOutputStream myOut = new ByteArrayOutputStream();
