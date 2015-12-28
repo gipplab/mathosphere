@@ -36,11 +36,11 @@ public class PlaintextDocumentBuilderTest {
 				+ "In the [[Copenhagen interpretation|standard interpretation of quantum mechanics]], "
 				+ "the wavefunction is the most complete description that can be given to a physical system.";
 		WikidataLinkMap wl = new WikidataLinkMap(getClass().getResource("test-map-no-dup.csv").getFile());
-		String actual = (new MathConverter(input,"hamiltonian",wl)).getStrippedOutput();
-		String expected = "In \"quantum mechanics\", the \"Schrödinger equation\" is a " +
-				"\"partial differential equation\" that describes how the LINK_Q230883 of a " +
-				"\"physical system\" changes with \"time\". It was formulated in late 1925, and published in" +
-				" 1926, by the \"Austria\" \"physicist\" \"Erwin Schrödinger\". In the LINK_Q46079, " +
+		String actual = (new MathConverter(input,"hamiltonian",wl)).getOutput();
+		String expected = "In [[quantum mechanics]], the \"Schrödinger equation\" is a " +
+				"[[partial differential equation]] that describes how the LINK_Q230883 of a " +
+				"[[physical system]] changes with [[time]]. It was formulated in late 1925, and published in" +
+				" 1926, by the [[Austria]] [[physicist]] [[Erwin Schrödinger]]. In the LINK_Q46079, " +
 				"the wavefunction is the most complete description that can be given to a physical system.";
 		assertEquals(expected, actual);
 	}

@@ -58,7 +58,7 @@ public class MathConverter
   private static final Pattern ws = Pattern.compile("\\s+");
   private final EngProcessedPage page;
   private List<MathTag> mathTags = new ArrayList<>();
-  private List<WikidataLink> Links = new ArrayList<>();
+  private List<WikidataLink> links = new ArrayList<>();
   private StringBuilder sb;
   private StringBuilder line;
   private int extLinkNum;
@@ -226,7 +226,7 @@ public class MathConverter
   }
 
   public void visit(WtInternalLink link) {
-    final String linkName = link.getTarget().getAsString();
+    String linkName = link.getTarget().getAsString().split("#")[0];
     if (wl != null) {
       String newName = wl.title2Data(linkName);
       if (newName != null) {
@@ -234,9 +234,11 @@ public class MathConverter
         return;
       }
     }
-    write("\"");
-    write(linkName);
-    write("\"");
+    WikidataLink wl = new WikidataLink(linkName);
+    links.add(wl);
+    write("LINK_" + wl.getContentHash());
+
+
   }
 
   public void visit(WtSection s) {
@@ -473,11 +475,17 @@ public class MathConverter
   public String getOutput() {
     String output = getStrippedOutput();
     for (MathTag tag : mathTags) {
-      output = output.replace("FORMULA_" + tag.getContentHash(), "<math>" + tag.getContent() + "</math>");
+      output = output.replace("FORMULA_" + tag.getContentHash(),
+          "<math>" + tag.getContent() + "</math>");
+    }
+    for (WikidataLink link : links) {
+      output = output.replace("LINK_" + link.getContentHash(), "[[" + link.getContent() + "]]");
     }
     return output;
+  }
 
-
+  public List<WikidataLink> getLinks() {
+    return links;
   }
 }
 

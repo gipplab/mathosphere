@@ -96,7 +96,8 @@ public class PosTagger {
     for (CoreMap sentence : document.get(SentencesAnnotation.class)) {
       List<Word> words = Lists.newArrayList();
 
-      for (CoreLabel token : sentence.get(TokensAnnotation.class)) {
+      final List<CoreLabel> coreLabels = sentence.get(TokensAnnotation.class);
+      for (CoreLabel token : coreLabels) {
         String textToken = token.get(TextAnnotation.class);
         String pos = token.get(PartOfSpeechAnnotation.class);
         if (textToken.startsWith("FORMULA_")) {

@@ -1,8 +1,8 @@
 package com.formulasearchengine.mathosphere.mlp.pojos;
 
-import com.formulasearchengine.mathosphere.mlp.text.WikiTextUtils.MathMarkUpType;
 import com.google.common.hash.HashFunction;
 import com.google.common.hash.Hashing;
+
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
@@ -14,9 +14,14 @@ public class WikidataLink {
   private final int position;
   private final String content;
 
-  public WikidataLink(int position, String content, MathMarkUpType markUp) {
+  public WikidataLink(int position, String content) {
     this.position = position;
     this.content = content;
+  }
+
+  public WikidataLink(String linkName) {
+    content = linkName;
+    position =0;
   }
 
   public int getPosition() {
