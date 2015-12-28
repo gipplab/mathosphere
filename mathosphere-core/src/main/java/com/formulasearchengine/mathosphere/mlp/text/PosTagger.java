@@ -14,6 +14,7 @@ import com.alexeygrigorev.rseq.Matchers;
 import com.alexeygrigorev.rseq.Pattern;
 import com.alexeygrigorev.rseq.TransformerToElement;
 import com.alexeygrigorev.rseq.XMatcher;
+import com.formulasearchengine.mathosphere.mlp.cli.BaseConfig;
 import com.formulasearchengine.mathosphere.mlp.pojos.Formula;
 import com.formulasearchengine.mathosphere.mlp.pojos.Sentence;
 import com.formulasearchengine.mathosphere.mlp.pojos.Word;
@@ -39,6 +40,7 @@ import edu.stanford.nlp.pipeline.StanfordCoreNLP;
 import edu.stanford.nlp.util.CoreMap;
 
 public class PosTagger {
+  private static BaseConfig config;
 
   private static final Logger LOGGER = LoggerFactory.getLogger(PosTagger.class);
 
@@ -48,7 +50,8 @@ public class PosTagger {
     .put("-LRB-", "(").put("-RRB-", ")").put("-LCB-", "{").put("-RCB-", "}").put("-LSB-", "[")
     .put("-RSB-", "]").build();
 
-  public static PosTagger create(String language, String model) {
+  public static PosTagger create(BaseConfig cfg) {
+    config = cfg;
     Properties props = new Properties();
     props.put("annotators", "tokenize, ssplit");
     props.put("tokenize.options", "untokenizable=firstKeep,strictTreebank3=true,"
@@ -57,13 +60,13 @@ public class PosTagger {
 	  props.put("maxLength",50);
     StanfordCoreNLP pipeline = new StanfordCoreNLP(props);
 
-    if ("en".equals(language)) {
-      POSTaggerAnnotator modelBasedPosAnnotator = new POSTaggerAnnotator(model, false);
+    if ("en".equals(cfg.getLanguage())) {
+      POSTaggerAnnotator modelBasedPosAnnotator =   new POSTaggerAnnotator(config.getModel(), false);
       pipeline.addAnnotator(modelBasedPosAnnotator);
-    } else if ("ru".equals(language)) {
+    } else if ("ru".equals(cfg.getLanguage())) {
       pipeline.addAnnotator(new RusPosAnnotator());
     } else {
-      throw new IllegalArgumentException("Cannot deal with language " + language);
+      throw new IllegalArgumentException("Cannot deal with language " + config.getLanguage());
     }
 
     return new PosTagger(pipeline);
@@ -202,7 +205,12 @@ public class PosTagger {
 
   private static List<Word> postprocessSentence(List<Word> sentence) {
     // links
-    List<Word> result = concatenateLinks(sentence);
+    List<Word> result;
+    if ( config.getUseTeXIdentifiers() ){
+      result = sentence;
+    } else {
+      result = concatenateLinks(sentence);
+    }
 
     // noun phrases
     result = concatenateSuccessiveNounsToNounSequence(result);

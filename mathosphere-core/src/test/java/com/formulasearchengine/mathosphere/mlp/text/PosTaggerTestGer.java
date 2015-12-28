@@ -33,7 +33,8 @@ public class PosTaggerTestGer {
   @Test
   public void simpleGermanTest() throws Exception {
     FlinkMlpCommandConfig cfg = FlinkMlpCommandConfig.test();
-    PosTagger nlpProcessor = PosTagger.create(cfg.getLanguage(), GER);
+    cfg.setModel(GER);
+    PosTagger nlpProcessor = PosTagger.create(cfg);
     String text = "Dies ist ein simpler Beispieltext.";
 
     List<MathTag> mathTags = WikiTextUtils.findMathTags(text);
@@ -56,7 +57,8 @@ public class PosTaggerTestGer {
 		final String text = IOUtils.toString(PosTaggerTest.class.getResourceAsStream("deText.txt"));
 
     FlinkMlpCommandConfig cfg = FlinkMlpCommandConfig.test();
-    PosTagger nlpProcessor = PosTagger.create(cfg.getLanguage(), GER);
+    cfg.setModel(GER);
+    PosTagger nlpProcessor = PosTagger.create(cfg);
 
 
     List<MathTag> mathTags = WikiTextUtils.findMathTags(text);

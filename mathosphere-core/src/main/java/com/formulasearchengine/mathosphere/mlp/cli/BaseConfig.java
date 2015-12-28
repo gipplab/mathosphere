@@ -92,4 +92,8 @@ public class BaseConfig implements Serializable {
   public String getTexvcinfoUrl() {
     return texvcinfoUrl;
   }
+
+  public void setModel(String model) {
+    this.model = model;
+  }
 }

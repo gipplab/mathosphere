@@ -48,7 +48,7 @@ public class TextAnnotatorMapper extends RichMapFunction<RawWikiDocument, Parsed
 
   @Override
   public void open(Configuration cfg) throws Exception {
-    posTagger = PosTagger.create(language, model);
+    posTagger = PosTagger.create(config);
   }
 
   @Override

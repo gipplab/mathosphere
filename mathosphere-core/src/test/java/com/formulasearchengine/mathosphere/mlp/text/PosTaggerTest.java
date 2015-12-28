@@ -26,7 +26,7 @@ public class PosTaggerTest {
   @Test
   public void annotation() throws Exception {
     FlinkMlpCommandConfig cfg = FlinkMlpCommandConfig.test();
-    PosTagger nlpProcessor = PosTagger.create(cfg.getLanguage(), cfg.getModel());
+    PosTagger nlpProcessor = PosTagger.create(cfg);
     String text = readText("escaped.txt");
 
     List<MathTag> mathTags = WikiTextUtils.findMathTags(text);
