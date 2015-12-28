@@ -3,7 +3,7 @@ package com.formulasearchengine.mathosphere.mlp.pojos;
 
 import com.formulasearchengine.mathosphere.mlp.text.PosTag;
 
-public class Relation implements Comparable<Relation>{
+public class Relation implements Comparable<Relation> {
 
   private String identifier;
   private String definition;
@@ -80,5 +80,19 @@ public class Relation implements Comparable<Relation>{
   @Override
   public int compareTo(Relation o) {
     return ((Double) getScore()).compareTo(o.getScore());
+  }
+
+  public void setDefinition(Word word, ParsedWikiDocument doc) {
+    if (word.getPosTag().equals(PosTag.LINK)) {
+      String hash = word.getWord().replaceAll("^LINK_", "");
+      WikidataLink link = doc.getLinkMap().get(hash);
+      if (link != null) {
+        this.definition = "[[" + link.getContent() + "]]";
+      } else {
+        this.definition = "[[" + word.getWord() + "]]";
+      }
+    } else {
+      this.definition = word.getWord();
+    }
   }
 }

@@ -10,6 +10,7 @@ import com.formulasearchengine.mathosphere.mlp.pojos.MathTag;
 import com.formulasearchengine.mathosphere.mlp.pojos.ParsedWikiDocument;
 import com.formulasearchengine.mathosphere.mlp.pojos.RawWikiDocument;
 import com.formulasearchengine.mathosphere.mlp.pojos.Sentence;
+import com.formulasearchengine.mathosphere.mlp.pojos.WikidataLink;
 import com.formulasearchengine.mathosphere.mlp.text.MathConverter;
 import com.formulasearchengine.mathosphere.mlp.text.MathMLUtils;
 import com.formulasearchengine.mathosphere.mlp.text.PosTagger;
@@ -64,6 +65,7 @@ public class TextAnnotatorMapper extends RichMapFunction<RawWikiDocument, Parsed
   public ParsedWikiDocument parse(String wikitext, String title) {
     List<Formula> formulas;
     List<Sentence> sentences;
+    List<WikidataLink> links = null;
     try {
       String cleanText;
       List<MathTag> mathTags;
@@ -71,6 +73,7 @@ public class TextAnnotatorMapper extends RichMapFunction<RawWikiDocument, Parsed
         MathConverter c = new MathConverter(wikitext, title, wl);
         cleanText = c.getStrippedOutput();
         mathTags = c.getMathTags();
+        links = c.getLinks();
       } else {
         mathTags = WikiTextUtils.findMathTags(wikitext);
         String newText = WikiTextUtils.replaceAllFormulas(wikitext, mathTags);
@@ -89,7 +92,7 @@ public class TextAnnotatorMapper extends RichMapFunction<RawWikiDocument, Parsed
         allIdentifiers.add(entry.getElement(), entry.getCount());
       }
     }
-    return new ParsedWikiDocument(title, allIdentifiers, formulas, sentences);
+    return new ParsedWikiDocument(title, allIdentifiers, formulas, sentences, links);
   }
 
   public ParsedWikiDocument parse(String wikitext) {
