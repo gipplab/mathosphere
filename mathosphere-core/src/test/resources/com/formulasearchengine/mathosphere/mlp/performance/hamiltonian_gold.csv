@@ -1,22 +1,57 @@
 identifier,definition
-x_,[[real numbers]]
-x_,numbers
-x_,dataset
-H,[[harmonic mean]]
-A,[[arithmetic mean]]
-A,tangent of an angle
-G,[[geometric mean]]
-a,[[real numbers]]
-b,[[real numbers]]
-w_,[[weights]]
-c,hypotenuse
-h,[[Altitude (triangle)]]
-n,number
-B,height
-M,[[power mean]]
-q,distances
-s,sides
-t,distances
-x,speed
-y,speed
-j,number
+\boldsymbol{\mu},
+\delta_{nn'},
+\epsilon,
+\hat{H},
+\hat{J},
+\hat{J}_,
+\hat{p},
+\hat{T},
+\hat{V},
+\mathbf{\hat{\Pi}},
+\mathbf{\hat{d}},
+\mathbf{\hat{P}},
+\mathbf{\hat{p}},
+\mathbf{\hat{r}},
+\mathbf{\mu},
+\mathbf{A},
+\mathbf{B},
+\mathbf{d},
+\mathbf{E},
+\mathbf{r},
+\mathbf{S},
+\mathrm{def},
+\omega,
+\phi,
+\pi_,
+\psi,
+\Psi,
+\varphi,
+a,
+a_,
+a_{n'},
+E,
+e,
+G,
+H,
+I,
+i,
+I_{xx},
+I_{yy},
+I_{zz},
+j,
+k,
+M,
+m,
+N,
+n,
+n',
+O,
+q,
+r,
+t,
+U,
+V,
+x,
+y,
+z,
