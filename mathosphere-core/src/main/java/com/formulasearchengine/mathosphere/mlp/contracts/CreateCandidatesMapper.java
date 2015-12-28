@@ -184,13 +184,12 @@ public class CreateCandidatesMapper implements MapFunction<ParsedWikiDocument, W
     if ("ID".equals(posTag)) {
       return false;
     }*/
-
-    // we're only interested in nouns, entities and links
-    if (posTag.matches("NN[PS]{0,2}|NP\\+?|NN\\+|LNK")) {
-      return true;
+    if (word.length() < 2) {
+      return false;
     }
+    // we're only interested in nouns, entities and links
+    return posTag.matches("NN[PS]{0,2}|NP\\+?|NN\\+|LNK");
 
-    return false;
   }
 
   public static List<Sentence> findSentencesWithIdentifier(List<Sentence> sentences, String identifier) {
