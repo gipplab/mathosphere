@@ -11,14 +11,14 @@ public class ParsedWikiDocument {
   private List<WikidataLink> links;
   private String title;
   private Multiset<String> identifiers;
-  private List<Formula> formulas;
+  private List<MathTag> formulas;
   private List<Sentence> sentences;
   private Map<String, WikidataLink> linkMap = null;
 
   public ParsedWikiDocument() {
   }
 
-  public ParsedWikiDocument(String title, Multiset<String> identifiers, List<Formula> formulas,
+  public ParsedWikiDocument(String title, Multiset<String> identifiers, List<MathTag> formulas,
                             List<Sentence> sentences) {
     this.title = title;
     this.identifiers = identifiers;
@@ -26,13 +26,15 @@ public class ParsedWikiDocument {
     this.sentences = sentences;
   }
 
-  public ParsedWikiDocument(String title, Multiset<String> identifiers, List<Formula> formulas, List<Sentence> sentences, List<WikidataLink> links) {
+  public ParsedWikiDocument(String title, Multiset<String> identifiers, List<MathTag> formulas, List<Sentence> sentences, List<WikidataLink> links) {
     this.title = title;
     this.identifiers = identifiers;
     this.formulas = formulas;
     this.sentences = sentences;
     this.links = links;
   }
+
+
 
   public String getTitle() {
     return title;
@@ -54,11 +56,11 @@ public class ParsedWikiDocument {
     this.identifiers = identifiers;
   }
 
-  public List<Formula> getFormulas() {
+  public List<MathTag> getFormulas() {
     return formulas;
   }
 
-  public void setFormulas(List<Formula> formulas) {
+  public void setFormulas(List<MathTag> formulas) {
     this.formulas = formulas;
   }
 

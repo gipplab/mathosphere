@@ -7,9 +7,9 @@ public class Sentence {
 
   private List<Word> words;
   private Set<String> identifiers;
-  private List<Formula> formulas;
+  private List<MathTag> formulas;
 
-  public Sentence(List<Word> words, Set<String> identifiers, List<Formula> formulas) {
+  public Sentence(List<Word> words, Set<String> identifiers, List<MathTag> formulas) {
     this.words = words;
     this.identifiers = identifiers;
     this.formulas = formulas;
@@ -27,11 +27,11 @@ public class Sentence {
     return identifiers;
   }
 
-  public List<Formula> getFormulas() {
+  public List<MathTag> getFormulas() {
     return formulas;
   }
 
-  public void setFormulas(List<Formula> formulas) {
+  public void setFormulas(List<MathTag> formulas) {
     this.formulas = formulas;
   }
 

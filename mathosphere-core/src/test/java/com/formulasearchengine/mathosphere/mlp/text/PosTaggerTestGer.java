@@ -2,11 +2,10 @@ package com.formulasearchengine.mathosphere.mlp.text;
 
 import com.formulasearchengine.mathosphere.mlp.PatternMatchingRelationFinder;
 import com.formulasearchengine.mathosphere.mlp.cli.FlinkMlpCommandConfig;
-import com.formulasearchengine.mathosphere.mlp.contracts.TextAnnotatorMapper;
-import com.formulasearchengine.mathosphere.mlp.pojos.Formula;
 import com.formulasearchengine.mathosphere.mlp.pojos.MathTag;
 import com.formulasearchengine.mathosphere.mlp.pojos.Sentence;
 import com.formulasearchengine.mathosphere.mlp.pojos.Word;
+
 import org.apache.commons.io.IOUtils;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -38,12 +37,11 @@ public class PosTaggerTestGer {
     String text = "Dies ist ein simpler Beispieltext.";
 
     List<MathTag> mathTags = WikiTextUtils.findMathTags(text);
-    List<Formula> formulas = TextAnnotatorMapper.toFormulas(mathTags, false,cfg.getTexvcinfoUrl());
 
     String newText = WikiTextUtils.replaceAllFormulas(text, mathTags);
     String cleanText = WikiTextUtils.extractPlainText(newText);
 
-    List<Sentence> result = nlpProcessor.process(cleanText, formulas);
+    List<Sentence> result = nlpProcessor.process(cleanText, mathTags);
 
     List<Word> expected = Arrays.asList(w("Dies", "PDS"), w("ist", "VAFIN"), w("ein", "ART"), w("simpler","ADJA"), w("Beispieltext", "NN"),
       w(".", "$."));
@@ -62,13 +60,12 @@ public class PosTaggerTestGer {
 
 
     List<MathTag> mathTags = WikiTextUtils.findMathTags(text);
-    List<Formula> formulas = TextAnnotatorMapper.toFormulas(mathTags, true,cfg.getTexvcinfoUrl());
 
     String newText = WikiTextUtils.replaceAllFormulas(text, mathTags);
 		long t0 = System.nanoTime();
     String cleanText = WikiTextUtils.extractPlainText(newText);
 		System.out.println((System.nanoTime()-t0)/1000000+"ms for cleaning.");
-		List<Sentence> result = nlpProcessor.process(cleanText, formulas);
+		List<Sentence> result = nlpProcessor.process(cleanText, mathTags);
   }
 
   public static Word w(String word, String tag) {

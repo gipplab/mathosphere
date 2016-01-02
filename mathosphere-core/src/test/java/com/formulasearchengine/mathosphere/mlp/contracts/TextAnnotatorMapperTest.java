@@ -42,9 +42,9 @@ public class TextAnnotatorMapperTest {
     Set<String> identifiers = shroedingerOut.getIdentifiers().elementSet();
     assertTrue(identifiers.containsAll(Arrays.asList("Ψ", "V", "h", "λ", "ρ", "τ")));
 
-    List<Formula> formulas = shroedingerOut.getFormulas();
-    Formula formula = null;
-    for (Formula f : formulas) {
+    List<MathTag> formulas = shroedingerOut.getFormulas();
+    MathTag formula = null;
+    for (MathTag f : formulas) {
       if (placeholder.equals(f.getKey())) {
         formula = f;
         break;
@@ -55,7 +55,7 @@ public class TextAnnotatorMapperTest {
     assertTrue("the placeholder was not part of the sentence", contains(formula, shroedingerOut.getSentences()));
   }
 
-  private static boolean contains(Formula formula, List<Sentence> sentences) {
+  private static boolean contains(MathTag formula, List<Sentence> sentences) {
     Word mathWord = new Word(formula.getKey(), PosTag.MATH);
     for (Sentence sentence : sentences) {
       List<Word> words = sentence.getWords();
@@ -66,7 +66,7 @@ public class TextAnnotatorMapperTest {
     return false;
   }
 
-  public static Formula randomElement(List<Formula> formulas) {
+  public static MathTag randomElement(List<MathTag> formulas) {
     int idx = RND.nextInt(formulas.size());
     return formulas.get(idx);
   }
@@ -100,7 +100,7 @@ public class TextAnnotatorMapperTest {
     RawWikiDocument doc = new RawWikiDocument("some doc", 1, text);
     ParsedWikiDocument result = TEST_INSTANCE.map(doc);
 
-    List<Formula> formulas = result.getFormulas();
+    List<MathTag> formulas = result.getFormulas();
     assertEquals(1, formulas.size());
 
     Sentence sentence = result.getSentences().get(0);

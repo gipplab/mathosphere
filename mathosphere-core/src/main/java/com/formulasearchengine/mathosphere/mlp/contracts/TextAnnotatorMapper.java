@@ -1,21 +1,18 @@
 package com.formulasearchengine.mathosphere.mlp.contracts;
 
 import com.google.common.collect.HashMultiset;
-import com.google.common.collect.Lists;
 import com.google.common.collect.Multiset;
 
 import com.formulasearchengine.mathosphere.mlp.cli.BaseConfig;
-import com.formulasearchengine.mathosphere.mlp.pojos.Formula;
 import com.formulasearchengine.mathosphere.mlp.pojos.MathTag;
 import com.formulasearchengine.mathosphere.mlp.pojos.ParsedWikiDocument;
 import com.formulasearchengine.mathosphere.mlp.pojos.RawWikiDocument;
 import com.formulasearchengine.mathosphere.mlp.pojos.Sentence;
 import com.formulasearchengine.mathosphere.mlp.pojos.WikidataLink;
 import com.formulasearchengine.mathosphere.mlp.text.MathConverter;
-import com.formulasearchengine.mathosphere.mlp.text.MathMLUtils;
 import com.formulasearchengine.mathosphere.mlp.text.PosTagger;
-import com.formulasearchengine.mathosphere.mlp.text.WikidataLinkMap;
 import com.formulasearchengine.mathosphere.mlp.text.WikiTextUtils;
+import com.formulasearchengine.mathosphere.mlp.text.WikidataLinkMap;
 
 import org.apache.flink.api.common.functions.RichMapFunction;
 import org.apache.flink.configuration.Configuration;
@@ -63,12 +60,11 @@ public class TextAnnotatorMapper extends RichMapFunction<RawWikiDocument, Parsed
   }
 
   public ParsedWikiDocument parse(String wikitext, String title) {
-    List<Formula> formulas;
     List<Sentence> sentences;
     List<WikidataLink> links = null;
+    List<MathTag> mathTags;
     try {
       String cleanText;
-      List<MathTag> mathTags;
       if (config.getUseTeXIdentifiers()) {
         MathConverter c = new MathConverter(wikitext, title, wl);
         cleanText = c.getStrippedOutput();
@@ -79,33 +75,25 @@ public class TextAnnotatorMapper extends RichMapFunction<RawWikiDocument, Parsed
         String newText = WikiTextUtils.replaceAllFormulas(wikitext, mathTags);
         cleanText = WikiTextUtils.extractPlainText(newText);
       }
-      formulas = toFormulas(mathTags, config.getUseTeXIdentifiers(),config.getTexvcinfoUrl());
-      sentences = posTagger.process(cleanText, formulas);
+      //formulas = toFormulas(mathTags, config.getUseTeXIdentifiers(),config.getTexvcinfoUrl());
+      sentences = posTagger.process(cleanText, mathTags);
     } catch (Exception e) {
       LOGGER.warn("Problem with text processing", title, e);
-      formulas = new ArrayList<>();
+      mathTags = new ArrayList<>();
       sentences = new ArrayList<>();
     }
     Multiset<String> allIdentifiers = HashMultiset.create();
-    for (Formula formula : formulas) {
-      for (Multiset.Entry<String> entry : formula.getIndentifiers().entrySet()) {
+    for (MathTag formula : mathTags) {
+      for (Multiset.Entry<String> entry : formula.getIdentifiers(config).entrySet()) {
         allIdentifiers.add(entry.getElement(), entry.getCount());
       }
     }
-    return new ParsedWikiDocument(title, allIdentifiers, formulas, sentences, links);
+    return new ParsedWikiDocument(title, allIdentifiers, mathTags, sentences, links);
   }
 
   public ParsedWikiDocument parse(String wikitext) {
     return parse(wikitext, "no title specified");
   }
 
-  public static List<Formula> toFormulas(List<MathTag> mathTags, Boolean useTeXIdentifiers,String url) {
-    List<Formula> formulas = Lists.newArrayList();
-    for (MathTag math : mathTags) {
-      Multiset<String> identifiers = MathMLUtils.extractIdentifiers(math, useTeXIdentifiers,url);
-      formulas.add(new Formula(math.placeholder(), math.getContent(), identifiers));
-    }
-    return formulas;
-  }
 
 }

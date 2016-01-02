@@ -2,11 +2,10 @@ package com.formulasearchengine.mathosphere.mlp.text;
 
 import com.formulasearchengine.mathosphere.mlp.PatternMatchingRelationFinder;
 import com.formulasearchengine.mathosphere.mlp.cli.FlinkMlpCommandConfig;
-import com.formulasearchengine.mathosphere.mlp.contracts.TextAnnotatorMapper;
-import com.formulasearchengine.mathosphere.mlp.pojos.Formula;
 import com.formulasearchengine.mathosphere.mlp.pojos.MathTag;
 import com.formulasearchengine.mathosphere.mlp.pojos.Sentence;
 import com.formulasearchengine.mathosphere.mlp.pojos.Word;
+
 import org.apache.commons.io.IOUtils;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -30,12 +29,11 @@ public class PosTaggerTest {
     String text = readText("escaped.txt");
 
     List<MathTag> mathTags = WikiTextUtils.findMathTags(text);
-    List<Formula> formulas = TextAnnotatorMapper.toFormulas(mathTags, false,cfg.getTexvcinfoUrl());
 
     String newText = WikiTextUtils.replaceAllFormulas(text, mathTags);
     String cleanText = WikiTextUtils.extractPlainText(newText);
 
-    List<Sentence> result = nlpProcessor.process(cleanText, formulas);
+    List<Sentence> result = nlpProcessor.process(cleanText, mathTags);
 
     List<Word> expected = Arrays.asList(w("where", "WRB"), w("Ψ", "ID"), w("is", "VBZ"), w("the", "DT"),
       w("wave function", "LNK"), w("of", "IN"), w("the", "DT"), w("quantum system", "NN+"),

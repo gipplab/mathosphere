@@ -15,7 +15,7 @@ import com.alexeygrigorev.rseq.Pattern;
 import com.alexeygrigorev.rseq.TransformerToElement;
 import com.alexeygrigorev.rseq.XMatcher;
 import com.formulasearchengine.mathosphere.mlp.cli.BaseConfig;
-import com.formulasearchengine.mathosphere.mlp.pojos.Formula;
+import com.formulasearchengine.mathosphere.mlp.pojos.MathTag;
 import com.formulasearchengine.mathosphere.mlp.pojos.Sentence;
 import com.formulasearchengine.mathosphere.mlp.pojos.Word;
 import com.formulasearchengine.mathosphere.mlp.rus.RusPosAnnotator;
@@ -78,19 +78,19 @@ public class PosTagger {
     this.nlpPipeline = nlpPipeline;
   }
 
-  public List<Sentence> process(String cleanText, List<Formula> formulas) {
-    Map<String, Formula> formulaIndex = Maps.newHashMap();
+  public List<Sentence> process(String cleanText, List<MathTag> formulas) {
+    Map<String, MathTag> formulaIndex = Maps.newHashMap();
     Set<String> allIdentifiers = Sets.newHashSet();
 
     formulas.forEach(f -> formulaIndex.put(f.getKey(), f));
-    formulas.forEach(f -> allIdentifiers.addAll(f.getIndentifiers()));
+    formulas.forEach(f -> allIdentifiers.addAll(f.getIdentifiers(config)));
 
     List<List<Word>> annotated = annotate(cleanText, formulaIndex, allIdentifiers);
     List<List<Word>> concatenated = concatenateTags(annotated);
     return postprocess(concatenated, formulaIndex, allIdentifiers);
   }
 
-  public List<List<Word>> annotate(String cleanText, Map<String, Formula> formulas,
+  public List<List<Word>> annotate(String cleanText, Map<String, MathTag> formulas,
                                    Set<String> allIdentifiers) {
     Annotation document = new Annotation(cleanText);
     nlpPipeline.annotate(document);
@@ -124,7 +124,7 @@ public class PosTagger {
     return result;
   }
 
-  public static List<Sentence> postprocess(List<List<Word>> input, Map<String, Formula> formulaIndex,
+  public static List<Sentence> postprocess(List<List<Word>> input, Map<String, MathTag> formulaIndex,
                                            Set<String> allIdentifiers) {
     List<Sentence> result = Lists.newArrayListWithCapacity(input.size());
 
@@ -136,11 +136,11 @@ public class PosTagger {
     return result;
   }
 
-  public static Sentence toSentence(List<Word> input, Map<String, Formula> formulaIndex,
+  public static Sentence toSentence(List<Word> input, Map<String, MathTag> formulaIndex,
                                     Set<String> allIdentifiers) {
     List<Word> words = Lists.newArrayListWithCapacity(input.size());
     Set<String> sentenceIdentifiers = Sets.newHashSet();
-    List<Formula> formulas = Lists.newArrayList();
+    List<MathTag> formulas = Lists.newArrayList();
 
     for (Word w : input) {
       String word = w.getWord();
@@ -158,7 +158,7 @@ public class PosTagger {
           formulaKey = word.substring(0, 40);
         }
 
-        Formula formula = formulaIndex.get(formulaKey);
+        MathTag formula = formulaIndex.get(formulaKey);
         if (formula == null) {
           LOGGER.warn("formula {} does not exist", word);
           words.add(w);
@@ -167,7 +167,7 @@ public class PosTagger {
 
         formulas.add(formula);
 
-        Multiset<String> formulaIdentifiers = formula.getIndentifiers();
+        Multiset<String> formulaIdentifiers = formula.getIdentifiers(config);
         // only one occurrence of one single idendifier
         if (formulaIdentifiers.size() == 1) {
           String id = Iterables.get(formulaIdentifiers, 0);
