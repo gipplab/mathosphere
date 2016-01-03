@@ -3,7 +3,10 @@ package com.formulasearchengine.mathosphere.mlp.cli;
 
 import com.beust.jcommander.Parameter;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.Serializable;
+import java.util.Properties;
 
 public class BaseConfig implements Serializable {
   private static final String DEFAULT_POS_MODEL =
@@ -34,7 +37,24 @@ public class BaseConfig implements Serializable {
 
   @Parameter(names = {"--texvcinfo"})
   private String texvcinfoUrl = "http://api.formulasearchengine.com/v1/media/math/check/tex";
+
   public BaseConfig() {
+    Properties prop = new Properties();
+    String propFileName = "mathosphere.properties";
+
+    InputStream inputStream = getClass().getClassLoader().getResourceAsStream(propFileName);
+
+    if (inputStream != null) {
+      try {
+        prop.load(inputStream);
+        final String texvcinfo = prop.getProperty("texvcinfo");
+        if (texvcinfo.length() > 0) {
+          texvcinfoUrl = texvcinfo;
+        }
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+    }
   }
 
   public BaseConfig(String model, String language, double alpha, double beta, double gamma,
