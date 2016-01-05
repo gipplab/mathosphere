@@ -12,7 +12,7 @@ public class RussianWikiPipelineTest {
 
   @Test
   public void fullPipeline() throws Exception {
-    String wikiRuFile = "wikirusample.xml";
+    String wikiRuFile = "com/formulasearchengine/mathosphere/mlp/wikirusample.xml";
 
     TextAnnotatorMapper textAnnotator = ruTextAnnotator();
 

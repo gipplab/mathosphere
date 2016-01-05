@@ -24,14 +24,14 @@ public class TextAnnotatorMapperTest {
 
 	@Test
 	public void readRecentPlainWikiDump() throws Exception {
-		List<RawWikiDocument> docs = readWikiTextDocuments("mrrFullHist.xml");
+		List<RawWikiDocument> docs = readWikiTextDocuments("com/formulasearchengine/mathosphere/mlp/mrrFullHist.xml");
 		assertEquals(1,docs.size());
 	}
 
   @Test
   public void test() throws Exception {
-    final String mathMLExtract = WikiTextUtilsTest.getTestResource("schrödinger_eq.xml").trim();
-    List<RawWikiDocument> docs = readWikiTextDocuments("augmentendwikitext.xml");
+    final String mathMLExtract = WikiTextUtilsTest.getTestResource("com/formulasearchengine/mathosphere/mlp/schrödinger_eq.xml").trim();
+    List<RawWikiDocument> docs = readWikiTextDocuments("com/formulasearchengine/mathosphere/mlp/augmentendwikitext.xml");
 
     RawWikiDocument schroedingerIn = docs.get(0);
     assertTrue( "the seed math tag was not found", schroedingerIn.text.contains(mathMLExtract) );

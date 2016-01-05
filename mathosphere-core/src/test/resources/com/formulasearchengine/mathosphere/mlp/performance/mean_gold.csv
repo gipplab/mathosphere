@@ -20,3 +20,5 @@ t,distances
 x,speed
 y,speed
 j,number
+d,dimension
+Q,four mean

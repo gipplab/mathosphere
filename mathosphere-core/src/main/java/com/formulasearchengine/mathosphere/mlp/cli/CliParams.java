@@ -7,6 +7,8 @@ import java.io.Serializable;
 
 public class CliParams implements Serializable {
 
+  private EvalCommandConfig evalCommand;
+
   @Parameters(commandDescription = "Prints this help message")
   static private class HelpCommand {
   }
@@ -31,11 +33,13 @@ public class CliParams implements Serializable {
     params.listCommand = new ListCommandConfig();
     params.mlpCommand = new FlinkMlpCommandConfig();
     params.extractCommand = new MlpCommandConfig();
+    params.evalCommand = new EvalCommandConfig();
 
     jc.addCommand("count", params.countCommand);
     jc.addCommand("list", params.listCommand);
     jc.addCommand("extract", params.extractCommand);
     jc.addCommand("mlp", params.mlpCommand);
+    jc.addCommand("eval", params.evalCommand);
     jc.addCommand("help", new HelpCommand());
 
     jc.parse(args);
@@ -67,5 +71,9 @@ public class CliParams implements Serializable {
 
   public MlpCommandConfig getExtractCommandConfig() {
     return extractCommand;
+  }
+
+  public EvalCommandConfig getEvalCommandConfig() {
+    return evalCommand;
   }
 }

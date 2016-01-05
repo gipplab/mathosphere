@@ -9,6 +9,7 @@ package com.formulasearchengine.mathosphere.mlp.text;
  * limitations under the License.
  */
 
+import com.formulasearchengine.mathosphere.mlp.contracts.TextExtractorMapper;
 import com.formulasearchengine.mathosphere.mlp.pojos.MathTag;
 import com.formulasearchengine.mathosphere.mlp.pojos.WikidataLink;
 import com.jcabi.log.Logger;
@@ -63,6 +64,7 @@ public class MathConverter
   private StringBuilder line;
   private int extLinkNum;
   private WikidataLinkMap wl = null;
+  private static int i = 0;
   /**
    * Becomes true if we are no long at the Beginning Of the whole Document.
    */
@@ -195,10 +197,10 @@ public class MathConverter
             xml.getBody().size() == 1 &&
             xml.getBody().get(0) instanceof WtText) {
           //String subtext = ((WtText) ((WtXmlElement) i.get(1)).getBody().get(0)).getContent();
-          final String subTex = getTex((WtContentNodeImpl) xml.getBody(),true);
-          final String mainTex = getTex(i,true);
+          final String subTex = getTex((WtContentNodeImpl) xml.getBody(), true);
+          final String mainTex = getTex(i, true);
           if (mainTex != null) {
-            String tex = mainTex + "_{" + subTex +"}";
+            String tex = mainTex + "_{" + subTex + "}";
             int location;
             try {
               location = i.getLocation().line;
@@ -255,9 +257,15 @@ public class MathConverter
       }
     }
     WikidataLink wl = new WikidataLink(linkName);
-    links.add(wl);
     write("LINK_" + wl.getContentHash());
-
+    if (link.getTitle().size() > 0) {
+      StringBuilder tmp = this.line;
+      this.line = new StringBuilder();
+      iterate(link.getTitle());
+      wl.setTitle(this.line.toString());
+      this.line = tmp;
+    }
+    links.add(wl);
 
   }
 
@@ -340,6 +348,7 @@ public class MathConverter
   // Stuff we want to hide
 
   public void visit(WtImageLink n) {
+    iterate(n.getTitle());
   }
 
   public void visit(WtIllegalCodePoint n) {
@@ -348,34 +357,67 @@ public class MathConverter
   public void visit(WtXmlComment n) {
   }
 
+  public void visit(WtTable b) {
+    iterate(b.getBody());
+  }
+
+  public void visit(WtTableRow b) {
+    iterate(b);
+  }
+
+  public void visit(WtTableCell b) {
+    iterate(b);
+  }
+
+  public void visit(WtTableImplicitTableBody b) {
+    iterate(b);
+  }
+
+  public void visit(WtTableHeader b) {
+    iterate(b);
+  }
+
+  public void visit(WtTableCaption b) {
+    iterate(b);
+  }
+
   public void visit(WtNewline n) {
     writeNewlines(1);
   }
 
   public void visit(WtTemplate n) {
-    switch (n.getName().getAsString().toLowerCase()) {
-      case "math":
-        try {
-          WtTemplateArgument arg0 = (WtTemplateArgument) n.getArgs().get(0);
-          String content = ((WtText) arg0.getValue().get(0)).getContent().trim();
-          //content = content.replaceAll("'''([a-zA-Z]+)'''","\\mathbf{$1}");
-          content = wiki2Tex(content);
-          MathTag tag = new MathTag(n.getLocation().line, content, WikiTextUtils.MathMarkUpType.MATH_TEMPLATE);
-          mathTags.add(tag);
-          write(tag.placeholder());
-        } catch (Exception ignored) {
+    try {
+      switch (n.getName().getAsString().toLowerCase()) {
+        case "math":
+          try {
+            WtTemplateArgument arg0 = (WtTemplateArgument) n.getArgs().get(0);
+            String content = ((WtText) arg0.getValue().get(0)).getContent().trim();
+            content = TextExtractorMapper.unescape(content);
+            //content = content.replaceAll("'''([a-zA-Z]+)'''","\\mathbf{$1}");
+            content = wiki2Tex(content);
+            MathTag tag = new MathTag(n.getLocation().line, content, WikiTextUtils.MathMarkUpType.MATH_TEMPLATE);
+            mathTags.add(tag);
+            write(tag.placeholder());
+          } catch (Exception ignored) {
 
-        }
-        break;
-      case "mvar":
-        try {
-          WtTemplateArgument arg0 = (WtTemplateArgument) n.getArgs().get(0);
-          String content = ((WtText) arg0.getValue().get(0)).getContent().trim();
-          MathTag tag = new MathTag(n.getLocation().line, content, WikiTextUtils.MathMarkUpType.MVAR_TEMPLATE);
-          mathTags.add(tag);
-          write(tag.placeholder());
-        } catch (Exception ignored) {
-        }
+          }
+          break;
+        case "mvar":
+          try {
+            WtTemplateArgument arg0 = (WtTemplateArgument) n.getArgs().get(0);
+            String content = ((WtText) arg0.getValue().get(0)).getContent().trim();
+            content = wiki2Tex(content);
+            MathTag tag = new MathTag(n.getLocation().line, content, WikiTextUtils.MathMarkUpType.MVAR_TEMPLATE);
+            mathTags.add(tag);
+            write(tag.placeholder());
+          } catch (Exception ignored) {
+          }
+          break;
+        default:
+          iterate(n.getArgs());
+      }
+    } catch (Exception e) {
+      Logger.info(e, "Problem prcessing page", pageTitle.getTitle());
     }
   }
 
@@ -384,17 +426,18 @@ public class MathConverter
         .replaceAll("[{<]sup[}>](.+?)[{<]/sup[}>]", "^{$1}")
         .replaceAll("'''(.+?)'''", "\\\\mathbf{$1}")
         .replaceAll("''(.+?)''", "$1");
-    int[] chars = content.codePoints().toArray();
-    StringBuilder res = new StringBuilder();
-
-    for (int code : chars) {
-      if (code > 128) {
-        res.append(UnicodeMap.char2TeX(code));
-      } else {
-        res.append((char) code);
-      }
-    }
-    return res.toString().trim();
+    return UnicodeMap.string2TeX(content);
+//    int[] chars = content.codePoints().toArray();
+//    StringBuilder res = new StringBuilder();
+//
+//    for (int code : chars) {
+//      if (code > 128) {
+//        res.append(UnicodeMap.char2TeX(code));
+//      } else {
+//        res.append((char) code);
+//      }
+//    }
+//    return res.toString().trim();
   }
 
   public void visit(WtTemplateArgument n) {
@@ -405,12 +448,26 @@ public class MathConverter
   }
 
   public void visit(WtTagExtension n) {
+
     if (n.getName().equals("math")) {
       MathTag tag = new MathTag(n.getLocation().line, n.getBody().getContent(), WikiTextUtils.MathMarkUpType.LATEX);
+      // System.err.println(i+++" : "+ n.getBody().getContent());
       mathTags.add(tag);
       write(tag.placeholder());
+    } else if (n.getName().equals("ref")) {
+      String content = n.getBody().getContent();
+      if (!content.contains("<math")) {
+        return;
+      }
+      final List<MathTag> tags = WikiTextUtils.findMathTags(content);
+      content = WikiTextUtils.replaceAllFormulas(content, tags);
+      mathTags.addAll(tags);
+      write("(");
+      write(content);
+      write("}");
     }
   }
+
 
   public void visit(WtPageSwitch n) {
   }
@@ -494,12 +551,16 @@ public class MathConverter
 
   public String getOutput() {
     String output = getStrippedOutput();
+    for (WikidataLink link : links) {
+      if ( link.getTitle() == null ) {
+        output = output.replace("LINK_" + link.getContentHash(), "[[" + link.getContent() + "]]");
+      } else {
+        output = output.replace("LINK_" + link.getContentHash(), "[[" + link.getContent() + "|" + link.getTitle()+"]]");
+      }
+    }
     for (MathTag tag : mathTags) {
       output = output.replace("FORMULA_" + tag.getContentHash(),
           "<math>" + tag.getContent() + "</math>");
-    }
-    for (WikidataLink link : links) {
-      output = output.replace("LINK_" + link.getContentHash(), "[[" + link.getContent() + "]]");
     }
     return output;
   }
@@ -511,6 +572,7 @@ public class MathConverter
   private String getTex(WtContentNodeImpl i, boolean force) {
     if (i.get(0) instanceof WtText) {
       String content = ((WtText) i.get(0)).getContent();
+      //content = TextExtractorMapper.unescape(content);
       String tex = wiki2Tex(content);
       if (tex.length() > 0 && (content.length() == 1 ||
           (content.length() < 10 && tex.length() > content.length()))) {

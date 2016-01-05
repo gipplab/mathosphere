@@ -23,6 +23,8 @@ public class Main {
       RelationExtractor.run(params.getExtractCommandConfig());
     } else if ("mlp".equals(command)) {
       FlinkMlpRelationFinder.run(params.getMlpCommandConfig());
+    } else if ("eval".equals(command)) {
+      FlinkMlpRelationFinder.evaluate(params.getEvalCommandConfig());
     } else {
       params.printHelp();
     }

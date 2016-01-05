@@ -1,8 +1,10 @@
 package com.formulasearchengine.mathosphere.mlp.text;
 
 import com.formulasearchengine.mathosphere.mlp.PatternMatchingRelationFinder;
+import com.formulasearchengine.mathosphere.mlp.contracts.TextExtractorMapper;
 import com.formulasearchengine.mathosphere.mlp.pojos.MathTag;
 import com.formulasearchengine.mathosphere.mlp.text.WikiTextUtils.MathMarkUpType;
+
 import org.apache.commons.io.IOUtils;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -11,14 +13,16 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
+import static junit.framework.TestCase.assertEquals;
+
 
 public class WikiTextUtilsTest {
 
   public static String getTestResource(String testFile) throws IOException {
-    InputStream stream = PatternMatchingRelationFinder.class.getResourceAsStream(testFile);
+    InputStream stream = PatternMatchingRelationFinder.class.getClassLoader().getResourceAsStream(testFile);
     return IOUtils.toString(stream, "utf-8");
   }
 
@@ -28,9 +32,9 @@ public class WikiTextUtilsTest {
       + "Text <math>V = V_2</math>.";
     List<MathTag> actual = WikiTextUtils.findMathTags(input);
     List<MathTag> expected = Arrays.asList(
-      new MathTag(10, "<math>V = V_0</math>", MathMarkUpType.LATEX),
-      new MathTag(41, "<math>V = V_1</math>", MathMarkUpType.LATEX),
-      new MathTag(73, "<math>V = V_2</math>", MathMarkUpType.LATEX));
+      new MathTag(10, "V = V_0", MathMarkUpType.LATEX),
+      new MathTag(41, "V = V_1", MathMarkUpType.LATEX),
+      new MathTag(73, "V = V_2", MathMarkUpType.LATEX));
     assertEquals(expected, actual);
   }
 
@@ -38,8 +42,8 @@ public class WikiTextUtilsTest {
   public void findMathTags_first() {
     String input = "<math>V = V_0</math> text text.";
     List<MathTag> actual = WikiTextUtils.findMathTags(input);
-    List<MathTag> expected = Arrays.asList(new MathTag(0, "<math>V = V_0</math>", MathMarkUpType.LATEX));
-    assertEquals(expected, actual);
+    List<MathTag> expected = Collections.singletonList(new MathTag(0, "V = V_0", MathMarkUpType.LATEX));
+    assertEquals((List)expected,(List) actual);
   }
 
   @Test
@@ -84,6 +88,13 @@ public class WikiTextUtilsTest {
   }
 
   @Test
+  public void findFormulaFromWikiText() throws Exception{
+    String text = getTestResource("com/formulasearchengine/mathosphere/mlp/gold/eval_dataset_sample.xml");
+    text = TextExtractorMapper.unescape(text);
+    WikiTextUtils.findMathTags(text);
+  }
+
+  @Test
   public void guessMarkupType_isMathML() {
     String text = "<math><mi>x</mi></math>";
     MathTag tag = WikiTextUtils.findMathTags(text).get(0);
@@ -96,21 +107,21 @@ public class WikiTextUtilsTest {
   }
 
   @Test
+  @Ignore
   public void testRenderAllFormulae() throws Exception {
     //final ClassLoader classLoader = getClass().getClassLoader();
     //String testString = PosTaggerTest.readText("mean_wiki.txt");
     String testString = "The energy <math>E</math>,";
-    String out = WikiTextUtils.renderAllFormulae(testString);
-    assertEquals("The energy <math xmlns=\"http://www.w3.org/1998/Math/MathML\" id=\"p1.1.m1.1\" class=\"ltx_Math\" alttext=\"E\" display=\"inline\">\n" +
-      "  <semantics id=\"p1.1.m1.1a\">\n" +
-      "    <mi id=\"p1.1.m1.1.1\" xref=\"p1.1.m1.1.1.cmml\">E</mi>\n" +
-      "    <annotation-xml encoding=\"MathML-Content\" id=\"p1.1.m1.1b\">\n" +
-      "      <ci id=\"p1.1.m1.1.1.cmml\" xref=\"p1.1.m1.1.1\">E</ci>\n" +
-      "    </annotation-xml>\n" +
-      "    <annotation encoding=\"application/x-tex\" id=\"p1.1.m1.1c\">E</annotation>\n" +
-      "  </semantics>\n" +
-      "</math>,", out);
-
+      String out = WikiTextUtils.renderAllFormulae(testString);
+      assertEquals("The energy <math xmlns=\"http://www.w3.org/1998/Math/MathML\" id=\"p1.1.m1.1\" class=\"ltx_Math\" alttext=\"E\" display=\"inline\">\n" +
+          "  <semantics id=\"p1.1.m1.1a\">\n" +
+          "    <mi id=\"p1.1.m1.1.1\" xref=\"p1.1.m1.1.1.cmml\">E</mi>\n" +
+          "    <annotation-xml encoding=\"MathML-Content\" id=\"p1.1.m1.1b\">\n" +
+          "      <ci id=\"p1.1.m1.1.1.cmml\" xref=\"p1.1.m1.1.1\">E</ci>\n" +
+          "    </annotation-xml>\n" +
+          "    <annotation encoding=\"application/x-tex\" id=\"p1.1.m1.1c\">E</annotation>\n" +
+          "  </semantics>\n" +
+          "</math>,", out);
   }
 
   @Ignore

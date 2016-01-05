@@ -1,6 +1,7 @@
 package com.formulasearchengine.mathosphere.mlp.text;
 
 import com.formulasearchengine.mathosphere.mlp.pojos.MathTag;
+
 import org.eclipse.mylyn.wikitext.core.parser.MarkupParser;
 import org.eclipse.mylyn.wikitext.mediawiki.core.MediaWikiLanguage;
 
@@ -10,13 +11,13 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class WikiTextUtils {
+  private static int i = 0;
 
   private static final Pattern MATH_TAG_PATTERN = Pattern.compile("<math.+?</math>", Pattern.DOTALL);
 
 
-
   public enum MathMarkUpType {
-    LATEX, MATHML, MATH_TEMPLATE, MVAR_TEMPLATE
+    LATEX, MATHML, MATH_TEMPLATE, MVAR_TEMPLATE, LATEXII
   }
 
 
@@ -28,7 +29,11 @@ public class WikiTextUtils {
     while (matcher.find()) {
       String tag = matcher.group();
       MathMarkUpType markUp = guessMarkupType(tag);
+      if (markUp == MathMarkUpType.LATEX) {
+        tag = tag.replaceAll("<math>", "").replaceAll("</math>", "");
+      }
       results.add(new MathTag(matcher.start(), tag, markUp));
+      // System.err.println(i+++":"+tag);
     }
 
     return results;
@@ -52,6 +57,9 @@ public class WikiTextUtils {
       newText.append(text.substring(offset, tag.getPosition()));
       newText.append(tag.placeholder());
       offset = tag.getPosition() + tag.getContent().length();
+      if (tag.getMarkUpType() == MathMarkUpType.LATEX && !tag.getContent().startsWith("<math")) {
+        offset+=13; //<math></math>
+      }
     }
 
     newText.append(text.substring(offset, text.length()));
@@ -60,20 +68,20 @@ public class WikiTextUtils {
 
   public static String renderAllFormulae(String text) {
     return StringReplacer.replace(text, MATH_TAG_PATTERN, (Matcher m) ->
-      {
-        try {
-          return TeX2MathML.TeX2MML(m.group(0).replaceAll("<math.*?>", "").replaceAll("</math>", ""));
-        } catch (Exception e) {
-          e.printStackTrace();
-          return m.group(0);
+        {
+          try {
+            return TeX2MathML.TeX2MML(m.group(0).replaceAll("<math.*?>", "").replaceAll("</math>", ""));
+          } catch (Exception e) {
+            e.printStackTrace();
+            return m.group(0);
+          }
         }
-      }
     );
   }
 
   public static String subsup(String markup) {
     return markup.replaceAll("[{<]sub[}>](.+?)[{<]/sub[}>]", "_$1")
-      .replaceAll("[{<]sup[}>](.+?)[{<]/sup[}>]", "^$1");
+        .replaceAll("[{<]sup[}>](.+?)[{<]/sup[}>]", "^$1");
   }
 
   public static String extractPlainText(String wikiMarkup) {

@@ -27,35 +27,30 @@ import javax.xml.xpath.XPathExpressionException;
  * Created by Moritz on 28.09.2015.
  */
 public class WikidataInterface {
-  private static String makeRequest(String term, String lang) {
+  private static String makeRequest(String term, String lang) throws URISyntaxException, IOException {
     HttpClient client = new DefaultHttpClient();
-    try {
-      URI uri = new URIBuilder()
-          .setScheme("http")
-          .setHost("www.wikidata.org")
-          .setPath("/w/api.php")
-          .setParameter("format", "json")
-          .setParameter("action", "wbsearchentities")
-          .setParameter("uselang", "en")
-          .setParameter("language", lang)
-          .setParameter("search", term)
-          .build();
-      HttpGet get = new HttpGet(uri);
-      HttpResponse response = client.execute(get);
-      BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
-      String line;
-      String result = "";
-      while ((line = rd.readLine()) != null) {
-        result += line;
-      }
-      return result;
-    } catch (IOException | URISyntaxException e) {
-      e.printStackTrace();
+    URI uri = new URIBuilder()
+        .setScheme("http")
+        .setHost("www.wikidata.org")
+        .setPath("/w/api.php")
+        .setParameter("format", "json")
+        .setParameter("action", "wbsearchentities")
+        .setParameter("uselang", "en")
+        .setParameter("language", lang)
+        .setParameter("search", term)
+        .build();
+    HttpGet get = new HttpGet(uri);
+    HttpResponse response = client.execute(get);
+    BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
+    String line;
+    String result = "";
+    while ((line = rd.readLine()) != null) {
+      result += line;
     }
-    return "";
+    return result;
   }
 
-  public static List<String> getEntities(String text) throws XPathExpressionException, ParserConfigurationException, SAXException, IOException, TransformerException {
+  public static List<String> getEntities(String text) throws XPathExpressionException, ParserConfigurationException, SAXException, IOException, TransformerException, URISyntaxException {
     final ArrayList<String> strings = new ArrayList<>();
     long t1 = System.nanoTime();
     String json = makeRequest(text, "en");

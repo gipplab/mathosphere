@@ -24,7 +24,7 @@ public class CreateCandidatesMapperTest {
 
   @Test
   public void test() throws Exception {
-    ParsedWikiDocument doc = read("augmentendwikitext.xml");
+    ParsedWikiDocument doc = read("com/formulasearchengine/mathosphere/mlp/augmentendwikitext.xml");
     CreateCandidatesMapper candidatesMapper = new CreateCandidatesMapper(config);
     WikiDocumentOutput output = candidatesMapper.map(doc);
 

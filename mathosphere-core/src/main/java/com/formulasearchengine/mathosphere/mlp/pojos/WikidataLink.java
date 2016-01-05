@@ -13,6 +13,16 @@ public class WikidataLink {
   private static final HashFunction HASHER = Hashing.md5();
   private final int position;
   private final String content;
+  private String title;
+
+  public String getTitle() {
+    return title;
+  }
+
+  public WikidataLink setTitle(String title) {
+    this.title = title;
+    return this;
+  }
 
   public WikidataLink(int position, String content) {
     this.position = position;

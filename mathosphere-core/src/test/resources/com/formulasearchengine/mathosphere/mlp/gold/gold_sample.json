@@ -1,0 +1,23 @@
+[
+  {
+    "definitions": {
+      "k": [
+        {
+          "Q2095069": "normalizing constant"
+        }
+      ],
+      "n": [
+        {
+          "Q21199": "natural number (numbers used for counting and ordering)"
+        }
+      ]
+    },
+    "formula": {
+      "qID": "35",
+      "oldId": "5626",
+      "fid": "4",
+      "math_inputtex": "= \\frac{k}{n}.",
+      "title": "Doomsday_argument"
+    }
+  }
+]

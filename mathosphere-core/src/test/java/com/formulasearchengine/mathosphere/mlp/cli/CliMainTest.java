@@ -92,7 +92,7 @@ public class CliMainTest {
     final String file = decodePath(getClass().getResource("../sample.xml").getFile());
     final String wikiDataList = decodePath(getClass().getResource("../text/test-map-no-dup.csv").getFile());
     temp = File.createTempFile("temp", Long.toString(System.nanoTime()));
-    String[] args = { "mlp", "-in", file, "-out", temp.getAbsolutePath(), "--tex", "-w", wikiDataList };
+    String[] args = {"mlp", "-in", file, "-out", temp.getAbsolutePath(), "--tex", "-w", wikiDataList};
     System.out.println(temp.getAbsolutePath());
     String res = runTest(args);
     System.out.println(res);
@@ -160,4 +160,25 @@ public class CliMainTest {
     System.setOut(stdout);
     // System.out.println(standardOutput);
   }
+
+  @Test
+  public void testEval() throws Exception {
+    final File temp;
+    temp = File.createTempFile("temp", Long.toString(System.nanoTime()));
+    String[] args = {"eval",
+        "-in", resoucePath("com/formulasearchengine/mathosphere/mlp/gold/eval_dataset_sample.xml"),
+        "-out", temp.getAbsolutePath(),
+        "--queries", resoucePath("com/formulasearchengine/mathosphere/mlp/gold/gold_sample.json"),
+        "--tex"};
+    final PrintStream stdout = System.out;
+    final ByteArrayOutputStream myOut = new ByteArrayOutputStream();
+    System.setOut(new PrintStream(myOut));
+    Main.main(args);
+    final String standardOutput = myOut.toString();
+    //assertThat(standardOutput, containsString ("W(2, k) > 2^k/k^\\varepsilon"));
+    System.setOut(stdout);
+    System.out.println(standardOutput);
+  }
+
+
 }

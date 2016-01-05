@@ -73,8 +73,7 @@ public class PerformanceHelper {
     String[] args = {
         command,
         "-in", source.getAbsolutePath(),
-        "--tex",
-    //    "--texvcinfo", "http://127.0.0.1:10042/texvcinfo"
+        "--tex"
     };
     final PrintStream stdout = System.out;
     final ByteArrayOutputStream myOut = new ByteArrayOutputStream();
@@ -99,5 +98,6 @@ public class PerformanceHelper {
     assertThat("precision", prec, Matchers.greaterThan(expPrec));
     assertThat("recall", rec, Matchers.greaterThan(expRec));
   }
+
 
 }

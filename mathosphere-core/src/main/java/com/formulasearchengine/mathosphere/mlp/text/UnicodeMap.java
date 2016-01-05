@@ -40,26 +40,29 @@ public class UnicodeMap {
     StringBuilder res = new StringBuilder();
 
     for (int code : chars) {
-
       res.append(char2TeX(code));
     }
+    String s = res.toString().trim();
+    if (chars.length==1){
+      s=s.replaceAll("^\\{(.*)\\}$","$1");
+    }
 
-    return res.toString().trim();
+    return s;
   }
 
   public static String char2TeX(int codePoint) {
+    if (CharUtils.isAsciiPrintable((char) codePoint)) {
+      return CharUtils.toString((char) codePoint);
+    }
     final String tex = MAP.get(codePoint);
     if (tex != null) {
       if (tex.endsWith("}") || tex.length() == 1) {
         return tex;
       }
       return "{" + tex + "}";
-    } else {
-      if (CharUtils.isAsciiPrintable((char) codePoint)) {
-        return CharUtils.toString((char) codePoint);
-      }
+    }
+
       LOGGER.debug("invalid char", codePoint);
       return "";
-    }
   }
 }

@@ -18,7 +18,7 @@ public class PatternMatcherMapperTest {
 
   @Test
   public void testShodingerFull() throws Exception {
-    ParsedWikiDocument doc = CreateCandidatesMapperTest.read("augmentendwikitext.xml", 1);
+    ParsedWikiDocument doc = CreateCandidatesMapperTest.read("com/formulasearchengine/mathosphere/mlp/augmentendwikitext.xml", 1);
 
     PatternMatcherMapper patternMatcher = new PatternMatcherMapper();
     WikiDocumentOutput identifiers = patternMatcher.map(doc);
