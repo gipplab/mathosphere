@@ -83,7 +83,11 @@ public class PerformanceHelper {
     final String standardOutput = myOut.toString();
     System.setOut(stdout);
     System.out.println((System.nanoTime() - t0) / 1000000000 + "s");
-    Set<String> real = new HashSet<>(Arrays.asList(standardOutput.split(System.getProperty("line.separator"))));
+    Set<String> sysOut = new HashSet<>(Arrays.asList(standardOutput.split(System.getProperty("line.separator"))));
+    Set<String> real = new HashSet<>();
+    for (String s : sysOut) {
+      real.add(s.replaceAll("_\\{(.*?)\\}$","_"));
+    }
     Set<String> tp = new HashSet<>(expected);
     Set<String> fn = new HashSet<>(expected);
     Set<String> fp = new HashSet<>(real);

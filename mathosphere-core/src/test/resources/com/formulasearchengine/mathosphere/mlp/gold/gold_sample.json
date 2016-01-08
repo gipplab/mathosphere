@@ -1,23 +1,29 @@
 [
   {
     "definitions": {
-      "k": [
+      "W": [
         {
-          "Q2095069": "normalizing constant"
+          "Q7913892": "Van der Waerden number"
         }
       ],
-      "n": [
+      "k": [
         {
-          "Q21199": "natural number (numbers used for counting and ordering)"
+          "Q12503": "integer (number that can be written without a fractional or decimal component)"
+        }
+      ],
+      "\\varepsilon": [
+        {
+          "Q3176558": "positive number (real number strictly greater than zero)"
         }
       ]
     },
     "formula": {
-      "qID": "35",
-      "oldId": "5626",
-      "fid": "4",
-      "math_inputtex": "= \\frac{k}{n}.",
-      "title": "Doomsday_argument"
+      "qID": "1",
+      "oldId": "2459",
+      "fid": "3",
+      "math_inputtex": "W(2, k) > 2^k/k^\\varepsilon",
+      "title": "Van_der_Waerden's_theorem"
     }
   }
+
 ]
