@@ -184,7 +184,7 @@ public class CreateCandidatesMapper implements MapFunction<ParsedWikiDocument, W
     if ("ID".equals(posTag)) {
       return false;
     }*/
-    if (word.length() < 2) {
+    if (word.length() < 3) {
       return false;
     }
     // we're only interested in nouns, entities and links
