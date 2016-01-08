@@ -120,10 +120,27 @@ public class MathConverterTest {
   }
 
   @Test
+  public void testGo9() throws Exception{
+    String wikiText = "Word\n<math>x</math>\nend.";
+    //wikiText = TextExtractorMapper.unescape(wikiText);
+    final MathConverter mathConverter = new MathConverter(wikiText);
+    final String real = mathConverter.getOutput();
+    assertThat(real, containsString ("Word <math>x</math> end."));
+  }
+  @Test
+  public void testGo10() throws Exception{
+    String wikiText = "''a''<sub>x</sub>.";
+    //wikiText = TextExtractorMapper.unescape(wikiText);
+    final MathConverter mathConverter = new MathConverter(wikiText);
+    final String real = mathConverter.getOutput();
+    assertThat(real, containsString ("<math>a</math> x"));
+  }
+  @Test
   public void findFormulaFromWikiText() throws Exception{
     String text = WikiTextUtilsTest.getTestResource("com/formulasearchengine/mathosphere/mlp/gold/eval_dataset_sample.xml");
     text = TextExtractorMapper.unescape(text);
     final MathConverter mathConverter = new MathConverter(text);
-    final String real = mathConverter.getOutput();
-  }
+    final String real = mathConverter.getStrippedOutput();
+		System.out.println(real);
+	}
 }

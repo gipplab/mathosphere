@@ -39,7 +39,7 @@ public class MathMLUtils {
    * list of false positive identifiers
    */
   public final static Set<String> BLACKLIST = prepareBlacklist();
-  private static boolean summarizeSubscripts = true;
+  private static boolean summarizeSubscripts = false;
 
   public static String getEngine() {
     return engine;
@@ -141,6 +141,8 @@ public class MathMLUtils {
     if (useTeX) {
       try {
         Multiset<String> identifiers = TexInfo.getIdentifiers(tex, url);
+        //TODO: Migrate to texvcinfo
+        identifiers.removeIf(x->x.equals("\\infty")||x.startsWith("\\operatorname"));
         if ( summarizeSubscripts ){
           for (String identifier : identifiers.elementSet()) {
             if (identifier.matches("(.*?)_\\{[a-zA-Z0-9]\\}$")) {

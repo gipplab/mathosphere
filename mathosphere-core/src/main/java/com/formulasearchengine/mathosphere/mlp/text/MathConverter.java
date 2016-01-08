@@ -186,7 +186,9 @@ public class MathConverter
         }
         MathTag tag = new MathTag(location, tex, WikiTextUtils.MathMarkUpType.MATH_TEMPLATE);
         mathTags.add(tag);
-        write(tag.placeholder());
+        needSpace = true;
+        writeWord(tag.placeholder());
+        needSpace = true;
         return true;
       }
     } else {
@@ -209,7 +211,9 @@ public class MathConverter
             }
             MathTag tag = new MathTag(location, tex, WikiTextUtils.MathMarkUpType.MATH_TEMPLATE);
             mathTags.add(tag);
-            write(tag.placeholder());
+            needSpace = true;
+            writeWord(tag.placeholder());
+            needSpace = true;
             return true;
           }
         }
@@ -258,6 +262,7 @@ public class MathConverter
     }
     WikidataLink wl = new WikidataLink(linkName);
     write("LINK_" + wl.getContentHash());
+    needSpace=true;
     if (link.getTitle().size() > 0) {
       StringBuilder tmp = this.line;
       this.line = new StringBuilder();
@@ -397,7 +402,9 @@ public class MathConverter
             content = wiki2Tex(content);
             MathTag tag = new MathTag(n.getLocation().line, content, WikiTextUtils.MathMarkUpType.MATH_TEMPLATE);
             mathTags.add(tag);
-            write(tag.placeholder());
+            needSpace = true;
+            writeWord(tag.placeholder());
+            needSpace = true;
           } catch (Exception ignored) {
 
           }
@@ -409,7 +416,9 @@ public class MathConverter
             content = wiki2Tex(content);
             MathTag tag = new MathTag(n.getLocation().line, content, WikiTextUtils.MathMarkUpType.MVAR_TEMPLATE);
             mathTags.add(tag);
-            write(tag.placeholder());
+            needSpace = true;
+            writeWord(tag.placeholder());
+            needSpace = true;
           } catch (Exception ignored) {
           }
           break;
@@ -448,12 +457,16 @@ public class MathConverter
   }
 
   public void visit(WtTagExtension n) {
-
     if (n.getName().equals("math")) {
       MathTag tag = new MathTag(n.getLocation().line, n.getBody().getContent(), WikiTextUtils.MathMarkUpType.LATEX);
       // System.err.println(i+++" : "+ n.getBody().getContent());
       mathTags.add(tag);
-      write(tag.placeholder());
+      if (needNewlines > 0) {
+        write(" ");
+      }
+      needSpace = true;
+      writeWord(tag.placeholder());
+      needSpace = true;
     } else if (n.getName().equals("ref")) {
       String content = n.getBody().getContent();
       if (!content.contains("<math")) {
@@ -488,6 +501,7 @@ public class MathConverter
 
   private void finishLine() {
     sb.append(line.toString());
+    sb.append(" ");
     line.setLength(0);
   }
 
@@ -528,7 +542,8 @@ public class MathConverter
         wantSpace();
     }
 
-    if (Character.isSpaceChar(s.charAt(s.length() - 1)))
+    final char lastChar = s.charAt(s.length() - 1);
+    if (Character.isSpaceChar(lastChar) || lastChar == '\n')
       wantSpace();
   }
 
@@ -552,10 +567,10 @@ public class MathConverter
   public String getOutput() {
     String output = getStrippedOutput();
     for (WikidataLink link : links) {
-      if ( link.getTitle() == null ) {
+      if (link.getTitle() == null) {
         output = output.replace("LINK_" + link.getContentHash(), "[[" + link.getContent() + "]]");
       } else {
-        output = output.replace("LINK_" + link.getContentHash(), "[[" + link.getContent() + "|" + link.getTitle()+"]]");
+        output = output.replace("LINK_" + link.getContentHash(), "[[" + link.getContent() + "|" + link.getTitle() + "]]");
       }
     }
     for (MathTag tag : mathTags) {
