@@ -12,7 +12,8 @@ import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.message.BasicNameValuePair;
 import org.xml.sax.SAXException;
 
@@ -30,8 +31,16 @@ import javax.xml.xpath.XPathExpressionException;
  * Created by Moritz on 28.09.2015.
  */
 public class TexInfo {
+
+  private static HttpClient client = null;
+
   private static String makeRequest(String tex, String url) {
-    HttpClient client = new DefaultHttpClient();
+    if (client == null) {
+      PoolingHttpClientConnectionManager cm = new PoolingHttpClientConnectionManager();
+      client = HttpClients.custom()
+          .setConnectionManager(cm)
+          .build();
+    }
     //HttpPost post = new HttpPost("http://localhost/convert");
     HttpPost post = new HttpPost(url);
     try {
@@ -45,9 +54,12 @@ public class TexInfo {
       while ((line = rd.readLine()) != null) {
         result += line;
       }
+      post.releaseConnection();
       return result;
     } catch (IOException e) {
       e.printStackTrace();
+    } finally {
+      post.releaseConnection();
     }
     return "";
   }
@@ -56,6 +68,9 @@ public class TexInfo {
     final Multiset<String> strings = HashMultiset.create();
     //long t0 = System.nanoTime();
     String json = makeRequest(tex, url);
+    if (tex.length() == 0) {
+      return strings;
+    }
     //System.out.println((System.nanoTime()-t0)/1000000+"ms for "+tex);
     try {
       JSONObject jsonObject = (JSONObject) JSONSerializer.toJSON(json);
