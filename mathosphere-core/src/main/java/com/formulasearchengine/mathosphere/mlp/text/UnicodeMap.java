@@ -13,9 +13,9 @@ import java.util.Map;
 
 public class UnicodeMap {
 
-  private static final Map<Integer, String> MAP = buildMap();
+  private static  Map<Integer, String> MAP = null;
 
-  private static Map<Integer, String> buildMap() {
+  private static void buildMap() {
     // see table here
     // http://unicode-table.com/en/blocks/letterlike-symbols/
 
@@ -32,7 +32,7 @@ public class UnicodeMap {
       LOGGER.error("unicode2tex-problem");
       e.printStackTrace();
     }
-    return unicode2tex.build();
+    MAP =  unicode2tex.build();
   }
 
   private static final Logger LOGGER = LoggerFactory.getLogger(UnicodeMap.class);
@@ -54,6 +54,9 @@ public class UnicodeMap {
   }
 
   public static String char2TeX(int codePoint) {
+    if ( MAP == null){
+      buildMap();
+    }
     if (CharUtils.isAsciiPrintable((char) codePoint)) {
       return CharUtils.toString((char) codePoint);
     }
