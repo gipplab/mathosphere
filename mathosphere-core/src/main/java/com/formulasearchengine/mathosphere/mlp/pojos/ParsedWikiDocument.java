@@ -35,7 +35,6 @@ public class ParsedWikiDocument {
   }
 
 
-
   public String getTitle() {
     return title;
   }

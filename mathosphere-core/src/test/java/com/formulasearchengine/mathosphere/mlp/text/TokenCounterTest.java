@@ -3,7 +3,9 @@ package com.formulasearchengine.mathosphere.mlp.text;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Multiset;
 import com.google.common.collect.Multisets;
+
 import junit.framework.TestCase;
+
 import org.apache.flink.api.java.tuple.Tuple2;
 
 public class TokenCounterTest extends TestCase {
@@ -17,6 +19,7 @@ public class TokenCounterTest extends TestCase {
       System.out.println(tuple2Entry.getElement().toString() + ":" + tuple2Entry.getCount());
     }
   }
+
   public void testCountIdentifier() throws Exception {
     TokenCounter ct = new TokenCounter();
     Multiset<String> count = ct.countIdentifer(this.getClass().getClassLoader().getResourceAsStream("identifier.json"));

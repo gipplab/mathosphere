@@ -1,6 +1,7 @@
 package com.formulasearchengine.mathosphere.mlp.text;
 
 import com.google.common.collect.ImmutableMap;
+
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
 import org.apache.commons.lang3.CharUtils;
@@ -25,7 +26,7 @@ public class UnicodeMap {
       for (CSVRecord record : records) {
         String sUni = record.get("unicode");
         String sTex = record.get("latex");
-        unicode2tex.put(Integer.parseInt(sUni,16), sTex);
+        unicode2tex.put(Integer.parseInt(sUni, 16), sTex);
       }
     } catch (java.io.IOException e) {
       LOGGER.error("unicode2tex-problem");
@@ -33,7 +34,9 @@ public class UnicodeMap {
     }
     return unicode2tex.build();
   }
+
   private static final Logger LOGGER = LoggerFactory.getLogger(UnicodeMap.class);
+
   public static String string2TeX(String in) {
 
     int[] chars = in.codePoints().toArray();
@@ -43,8 +46,8 @@ public class UnicodeMap {
       res.append(char2TeX(code));
     }
     String s = res.toString().trim();
-    if (chars.length==1){
-      s=s.replaceAll("^\\{(.*)\\}$","$1");
+    if (chars.length == 1) {
+      s = s.replaceAll("^\\{(.*)\\}$", "$1");
     }
 
     return s;
@@ -62,7 +65,7 @@ public class UnicodeMap {
       return "{" + tex + "}";
     }
 
-      LOGGER.debug("invalid char", codePoint);
-      return "";
+    LOGGER.debug("invalid char", codePoint);
+    return "";
   }
 }

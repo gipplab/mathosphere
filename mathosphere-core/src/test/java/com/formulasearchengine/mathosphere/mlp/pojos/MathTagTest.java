@@ -2,7 +2,9 @@ package com.formulasearchengine.mathosphere.mlp.pojos;
 
 import com.google.common.collect.ImmutableMultiset;
 import com.google.common.collect.ImmutableSet;
+
 import com.formulasearchengine.mathosphere.mlp.text.WikiTextUtils;
+
 import org.junit.Test;
 
 import static junit.framework.Assert.assertEquals;
@@ -34,17 +36,17 @@ public class MathTagTest {
     MathTag tagX = new MathTag(1, "<math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mrow><mi>x</mi></mrow></math>", WikiTextUtils.MathMarkUpType.MATHML);
     assertEquals(ImmutableSet.of("x"), tagX.getIdentifier(true, true).elementSet());
     assertEquals(ImmutableSet.of("x"), tagX.getIdentifier(false, true).elementSet());
-    MathTag schrödinger = new MathTag(1,getTestResource("com/formulasearchengine/mathosphere/mlp/schrödinger_eq.xml"),WikiTextUtils.MathMarkUpType.MATHML);
+    MathTag schrödinger = new MathTag(1, getTestResource("com/formulasearchengine/mathosphere/mlp/schrödinger_eq.xml"), WikiTextUtils.MathMarkUpType.MATHML);
     //MathTag schrödingerTex = new MathTag(1,"i\\hbar\\frac{\\partial}{\\partial t}\\Psi(\\mathbb{r},\\,t)=-\\frac{\\hbar^{2}}{2m}" +
     //  "\\nabla^{2}\\Psi(\\mathbb{r},\\,t)+V(\\mathbb{r})\\Psi(\\mathbb{r},\\,t).", WikiTextUtils.MathMarkUpType.LATEX);
     ImmutableMultiset<String> lIds = ImmutableMultiset.of("i",
-      "\\hbar", "\\hbar",
-      "t", "t", "t", "t",
-      "\\Psi", "\\Psi", "\\Psi",
-      "\\mathbb{r}", "\\mathbb{r}", "\\mathbb{r}", "\\mathbb{r}",
-      "V",
-      "m");
-    assertEquals(lIds,schrödinger.getIdentifier(true,false));
+        "\\hbar", "\\hbar",
+        "t", "t", "t", "t",
+        "\\Psi", "\\Psi", "\\Psi",
+        "\\mathbb{r}", "\\mathbb{r}", "\\mathbb{r}", "\\mathbb{r}",
+        "V",
+        "m");
+    assertEquals(lIds, schrödinger.getIdentifier(true, false));
 
   }
 }

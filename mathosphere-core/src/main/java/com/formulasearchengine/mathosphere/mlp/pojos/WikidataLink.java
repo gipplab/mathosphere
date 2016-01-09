@@ -31,7 +31,7 @@ public class WikidataLink {
 
   public WikidataLink(String linkName) {
     content = linkName;
-    position =0;
+    position = 0;
   }
 
   public int getPosition() {

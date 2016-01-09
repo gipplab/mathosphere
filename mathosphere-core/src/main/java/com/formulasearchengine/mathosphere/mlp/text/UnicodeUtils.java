@@ -3,6 +3,7 @@ package com.formulasearchengine.mathosphere.mlp.text;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableMap.Builder;
 import com.google.common.collect.Lists;
+
 import org.apache.commons.lang3.CharUtils;
 
 import java.lang.Character.UnicodeBlock;
@@ -21,9 +22,9 @@ public class UnicodeUtils {
   private static final int MONOSPACE_9 = 120831;
 
   private static final List<String> LATIN_NORMAL = asList("ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-    + "abcdefghijklmnopqrstuvwxyz");
+      + "abcdefghijklmnopqrstuvwxyz");
   private static final List<String> GREEK_NORMAL = asList("ΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡϴΣΤΥΦΧΨΩ" + "\u2207"
-    + "αβγδεζηθικλμνξοπρςστυφχψω∂ϵϑϰϕϱϖ");
+      + "αβγδεζηθικλμνξοπρςστυφχψω∂ϵϑϰϕϱϖ");
   private static final List<String> DIGIT_NORMAL = asList("0123456789");
 
   private static final Map<Integer, String> LETTER_LIKE_MAPPING = buildLetterLikeMap();
@@ -122,63 +123,36 @@ public class UnicodeUtils {
   }
 
   /**
-   * Detects the following types of mathematical unicode chars:
-   * <ul>
-   * <li>bold</li>
-   * <li>italic</li>
-   * <li>bold italic</li>
-   * <li>script</li>
-   * <li>bold script</li>
-   * <li>fraktur</li>
-   * <li>double-struck</li>
-   * <li>bold fraktur</li>
-   * <li>sans-serif</li>
-   * <li>sans-serif bold</li>
-   * <li>sans-serif italic</li>
-   * <li>sans-serif bold italic</li>
-   * <li>monospace</li>
-   * </ul>
+   * Detects the following types of mathematical unicode chars: <ul> <li>bold</li> <li>italic</li>
+   * <li>bold italic</li> <li>script</li> <li>bold script</li> <li>fraktur</li>
+   * <li>double-struck</li> <li>bold fraktur</li> <li>sans-serif</li> <li>sans-serif bold</li>
+   * <li>sans-serif italic</li> <li>sans-serif bold italic</li> <li>monospace</li> </ul>
    *
    * @param codePoint character code to check
-   * @return <code>true</code> if the code belongs to one of the mentioned
-   * categories
+   * @return <code>true</code> if the code belongs to one of the mentioned categories
    */
   public static boolean isMathLatin(int codePoint) {
     return BOLD_A <= codePoint && codePoint <= MONOSPACE_z;
   }
 
   /**
-   * Detects the following types of mathematical unicode chars of the Greek
-   * alphabet:
-   * <ul>
-   * <li>bold</li>
-   * <li>italic</li>
-   * <li>bold italic</li>
-   * </ul>
-   * <p>
-   * Also handles extra symbols like \varphi, \varpi, \nabla
+   * Detects the following types of mathematical unicode chars of the Greek alphabet: <ul>
+   * <li>bold</li> <li>italic</li> <li>bold italic</li> </ul> <p> Also handles extra symbols like
+   * \varphi, \varpi, \nabla
    *
    * @param codePoint character code to check
-   * @return <code>true</code> if the code belongs to one of the mentioned
-   * categories
+   * @return <code>true</code> if the code belongs to one of the mentioned categories
    */
   public static boolean isMathGreek(int codePoint) {
     return BOLD_ALPHA <= codePoint && codePoint <= BOLD_ITALIC_VAR_PI_SMALL;
   }
 
   /**
-   * Detects the following types of mathematical unicode chars for digits:
-   * <ul>
-   * <li>bold</li>
-   * <li>double-struck</li>
-   * <li>sans-serif</li>
-   * <li>sans-serif bold</li>
-   * <li>monospace</li>
-   * </ul>
+   * Detects the following types of mathematical unicode chars for digits: <ul> <li>bold</li>
+   * <li>double-struck</li> <li>sans-serif</li> <li>sans-serif bold</li> <li>monospace</li> </ul>
    *
    * @param codePoint character code to check
-   * @return <code>true</code> if the code belongs to one of the mentioned
-   * categories
+   * @return <code>true</code> if the code belongs to one of the mentioned categories
    */
   public static boolean isMathDigit(int codePoint) {
     return BOLD_0 <= codePoint && codePoint <= MONOSPACE_9;

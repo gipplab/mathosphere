@@ -1,6 +1,7 @@
 package com.formulasearchengine.mathosphere.mlp.pojos;
 
 import com.formulasearchengine.mathosphere.mlp.text.PosTag;
+
 import org.apache.commons.lang3.builder.EqualsBuilder;
 
 import java.util.Objects;

@@ -8,14 +8,14 @@ public class CliParamsTest {
 
   @Test
   public void help() {
-    String[] args = { "help" };
+    String[] args = {"help"};
     CliParams params = CliParams.from(args);
     assertEquals("help", params.getCommand());
   }
 
   @Test
   public void useTex() {
-    String[] args = { "mlp", "--tex" };
+    String[] args = {"mlp", "--tex"};
     CliParams params = CliParams.from(args);
     assertEquals("mlp", params.getCommand());
     assertTrue(params.getMlpCommandConfig().getUseTeXIdentifiers());
@@ -23,7 +23,7 @@ public class CliParamsTest {
 
   @Test
   public void notUseTex() {
-    String[] args = { "mlp" };
+    String[] args = {"mlp"};
     CliParams params = CliParams.from(args);
     assertEquals("mlp", params.getCommand());
     assertFalse(params.getMlpCommandConfig().getUseTeXIdentifiers());
@@ -31,7 +31,7 @@ public class CliParamsTest {
 
   @Test
   public void count() {
-    String[] args = { "count", "--formulae", "-in", "c:/tmp/mlp/input/" };
+    String[] args = {"count", "--formulae", "-in", "c:/tmp/mlp/input/"};
     CliParams params = CliParams.from(args);
     assertEquals("count", params.getCommand());
 

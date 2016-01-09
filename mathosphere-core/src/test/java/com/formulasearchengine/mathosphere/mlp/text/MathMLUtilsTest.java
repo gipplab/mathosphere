@@ -3,7 +3,9 @@ package com.formulasearchengine.mathosphere.mlp.text;
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Multiset;
+
 import com.formulasearchengine.mathosphere.mlp.PatternMatchingRelationFinder;
+
 import org.apache.commons.io.IOUtils;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -20,7 +22,7 @@ public class MathMLUtilsTest {
   @Test
   public void extractFromTex_simple() {
     String tex = "x^2 + y^2 = z^2";
-    Set<String> identifiers = MathMLUtils.extractIdentifiersFromTex(tex,false,"").elementSet();
+    Set<String> identifiers = MathMLUtils.extractIdentifiersFromTex(tex, false, "").elementSet();
     Set<String> expected = ImmutableSet.of("x", "y", "z");
     assertEquals(expected, identifiers);
   }
@@ -30,7 +32,7 @@ public class MathMLUtilsTest {
   public void extractFromTex_moreComplex() {
     String tex = "\\sqrt{x + y} = \\cfrac{\\varphi + \\rho}{\\Theta \\cdot \\Phi}";
     MathMLUtils.setEngine("");
-    Set<String> identifiers = MathMLUtils.extractIdentifiersFromTex(tex,false,"").elementSet();
+    Set<String> identifiers = MathMLUtils.extractIdentifiersFromTex(tex, false, "").elementSet();
     Set<String> expected = ImmutableSet.of("x", "y", "φ", "ρ", "Θ", "Φ");
     assertEquals(expected, identifiers);
     MathMLUtils.setEngine("snuggle");
@@ -39,7 +41,7 @@ public class MathMLUtilsTest {
   @Test
   public void extractFromTex_subscripts() {
     String tex = "\\sigma_1 + \\sigma_2 = r_1";
-    Set<String> identifiers = MathMLUtils.extractIdentifiersFromTex(tex,false,"").elementSet();
+    Set<String> identifiers = MathMLUtils.extractIdentifiersFromTex(tex, false, "").elementSet();
     Set<String> expected = ImmutableSet.of("σ_1", "σ_2", "r_1");
     assertTrue(identifiers.containsAll(expected));
   }
@@ -47,7 +49,7 @@ public class MathMLUtilsTest {
   @Test
   public void extractFromTex_superscriptIndentifier() {
     String tex = "\\sigma^x";
-    Set<String> identifiers = MathMLUtils.extractIdentifiersFromTex(tex,false,"").elementSet();
+    Set<String> identifiers = MathMLUtils.extractIdentifiersFromTex(tex, false, "").elementSet();
     Set<String> expected = ImmutableSet.of("σ", "x");
     assertTrue(identifiers.containsAll(expected));
   }
@@ -55,7 +57,7 @@ public class MathMLUtilsTest {
   @Test
   public void extractFromTex_capturesMultipleOccurrences() {
     String tex = "\\sigma^2 + \\sigma + b";
-    Multiset<String> identifiers = MathMLUtils.extractIdentifiersFromTex(tex,false,"");
+    Multiset<String> identifiers = MathMLUtils.extractIdentifiersFromTex(tex, false, "");
     Multiset<String> expected = HashMultiset.create(Arrays.asList("σ", "σ", "b"));
     assertEquals(expected, identifiers);
   }
@@ -63,14 +65,14 @@ public class MathMLUtilsTest {
   @Test
   public void extractFromTex_oneIdTwoOccurrences_sizeIs2() {
     String tex = "\\sigma + \\sigma";
-    Multiset<String> identifiers = MathMLUtils.extractIdentifiersFromTex(tex,false,"");
+    Multiset<String> identifiers = MathMLUtils.extractIdentifiersFromTex(tex, false, "");
     assertEquals(2, identifiers.size());
   }
 
   @Test
   public void extractFromTex_boldText() {
     String tex = "\\mathbf r";
-    Set<String> identifiers = MathMLUtils.extractIdentifiersFromTex(tex,false,"").elementSet();
+    Set<String> identifiers = MathMLUtils.extractIdentifiersFromTex(tex, false, "").elementSet();
     Set<String> expected = ImmutableSet.of("r");
     assertTrue(identifiers.containsAll(expected));
   }
@@ -78,7 +80,7 @@ public class MathMLUtilsTest {
   @Test
   public void extractFromMathML_complextMsub_noSubCaptured() throws Exception {
     String mathML = readResource("complex_msub.xml");
-    Set<String> identifiers = MathMLUtils.extractIdentifiersFromMathML(mathML, false,false).elementSet();
+    Set<String> identifiers = MathMLUtils.extractIdentifiersFromMathML(mathML, false, false).elementSet();
     identifiers.forEach(id -> assertFalse(id.contains("_")));
   }
 
@@ -90,7 +92,7 @@ public class MathMLUtilsTest {
   @Test
   public void extractFromMathMl_identifiersFromMSub_notCaptured() throws Exception {
     String mathML = readResource("math-R_specific.xml");
-    Set<String> identifiers = MathMLUtils.extractIdentifiersFromMathML(mathML, false,false).elementSet();
+    Set<String> identifiers = MathMLUtils.extractIdentifiersFromMathML(mathML, false, false).elementSet();
     Set<String> expected = ImmutableSet.of("R_specific", "R", "M");
     assertFalse(identifiers.contains("specific"));
     assertEquals(expected, identifiers);
@@ -99,7 +101,7 @@ public class MathMLUtilsTest {
   @Test
   public void extractFromMathML_notParsable() throws Exception {
     String mathML = readResource("math-xmlparsingerror.xml");
-    Set<String> identifiers = MathMLUtils.extractIdentifiersFromMathML(mathML, false,false).elementSet();
+    Set<String> identifiers = MathMLUtils.extractIdentifiersFromMathML(mathML, false, false).elementSet();
     // "a" is a stop word, it's removed
     Set<String> expected = ImmutableSet.of("x", "b", "c");
     assertEquals(expected, identifiers);

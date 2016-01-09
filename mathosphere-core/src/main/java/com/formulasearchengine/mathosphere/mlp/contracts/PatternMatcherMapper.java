@@ -1,6 +1,7 @@
 package com.formulasearchengine.mathosphere.mlp.contracts;
 
 import com.google.common.collect.Lists;
+
 import com.formulasearchengine.mathosphere.mlp.pojos.ParsedWikiDocument;
 import com.formulasearchengine.mathosphere.mlp.pojos.Relation;
 import com.formulasearchengine.mathosphere.mlp.pojos.Sentence;
@@ -8,6 +9,7 @@ import com.formulasearchengine.mathosphere.mlp.pojos.WikiDocumentOutput;
 import com.formulasearchengine.mathosphere.mlp.text.DefinitionUtils;
 import com.formulasearchengine.mathosphere.mlp.text.PatternMatcher;
 import com.formulasearchengine.mathosphere.mlp.text.PatternMatcher.IdentifierMatch;
+
 import org.apache.flink.api.common.functions.MapFunction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

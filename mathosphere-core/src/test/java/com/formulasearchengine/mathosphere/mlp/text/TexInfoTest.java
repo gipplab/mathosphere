@@ -18,6 +18,6 @@ public class TexInfoTest {
     FlinkMlpCommandConfig cfg = FlinkMlpCommandConfig.test();
     final HashMultiset<String> expected = HashMultiset.create();
     expected.addAll(Lists.newArrayList("E", "m", "c"));
-    Assert.assertEquals(expected, TexInfo.getIdentifiers("E=mc^2",cfg.getTexvcinfoUrl()));
+    Assert.assertEquals(expected, TexInfo.getIdentifiers("E=mc^2", cfg.getTexvcinfoUrl()));
   }
 }

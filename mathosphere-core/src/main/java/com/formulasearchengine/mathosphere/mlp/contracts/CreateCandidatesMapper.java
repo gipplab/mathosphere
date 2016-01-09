@@ -93,7 +93,7 @@ public class CreateCandidatesMapper implements MapFunction<ParsedWikiDocument, W
         Relation relation = new Relation();
         relation.setIdentifier(identifier);
         relation.setIdentifierPosition(identifierPosition);
-        relation.setDefinition(word,doc);
+        relation.setDefinition(word, doc);
         relation.setWordPosition(wordIdx);
         relation.setScore(score);
         // relation.setSentence(sentence);

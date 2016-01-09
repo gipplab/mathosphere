@@ -262,7 +262,7 @@ public class MathConverter
     }
     WikidataLink wl = new WikidataLink(linkName);
     write("LINK_" + wl.getContentHash());
-    needSpace=true;
+    needSpace = true;
     if (link.getTitle().size() > 0) {
       StringBuilder tmp = this.line;
       this.line = new StringBuilder();

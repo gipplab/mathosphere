@@ -29,12 +29,12 @@ public class WikiTextUtilsTest {
   @Test
   public void findMathTags() {
     String input = "Text text <math>V = V_0</math> text text <math>V = V_1</math> text. "
-      + "Text <math>V = V_2</math>.";
+        + "Text <math>V = V_2</math>.";
     List<MathTag> actual = WikiTextUtils.findMathTags(input);
     List<MathTag> expected = Arrays.asList(
-      new MathTag(10, "V = V_0", MathMarkUpType.LATEX),
-      new MathTag(41, "V = V_1", MathMarkUpType.LATEX),
-      new MathTag(73, "V = V_2", MathMarkUpType.LATEX));
+        new MathTag(10, "V = V_0", MathMarkUpType.LATEX),
+        new MathTag(41, "V = V_1", MathMarkUpType.LATEX),
+        new MathTag(73, "V = V_2", MathMarkUpType.LATEX));
     assertEquals(expected, actual);
   }
 
@@ -43,13 +43,13 @@ public class WikiTextUtilsTest {
     String input = "<math>V = V_0</math> text text.";
     List<MathTag> actual = WikiTextUtils.findMathTags(input);
     List<MathTag> expected = Collections.singletonList(new MathTag(0, "V = V_0", MathMarkUpType.LATEX));
-    assertEquals((List)expected,(List) actual);
+    assertEquals((List) expected, (List) actual);
   }
 
   @Test
   public void replaceAllFormulas() {
     String text = "Text text <math>V = V_0</math> text text <math>V = V_1</math> text. "
-      + "Text <math>V = V_2</math>.";
+        + "Text <math>V = V_2</math>.";
 
     MathTag tag1 = new MathTag(10, "<math>V = V_0</math>", MathMarkUpType.LATEX);
     MathTag tag2 = new MathTag(41, "<math>V = V_1</math>", MathMarkUpType.LATEX);
@@ -59,7 +59,7 @@ public class WikiTextUtilsTest {
     String actual = WikiTextUtils.replaceAllFormulas(text, tags);
 
     String expected = "Text text " + tag1.placeholder() + " text text " + tag2.placeholder() + " text. "
-      + "Text " + tag3.placeholder() + ".";
+        + "Text " + tag3.placeholder() + ".";
 
     assertEquals(expected, actual);
   }
@@ -88,7 +88,7 @@ public class WikiTextUtilsTest {
   }
 
   @Test
-  public void findFormulaFromWikiText() throws Exception{
+  public void findFormulaFromWikiText() throws Exception {
     String text = getTestResource("com/formulasearchengine/mathosphere/mlp/gold/eval_dataset_sample.xml");
     text = TextExtractorMapper.unescape(text);
     WikiTextUtils.findMathTags(text);
@@ -112,16 +112,16 @@ public class WikiTextUtilsTest {
     //final ClassLoader classLoader = getClass().getClassLoader();
     //String testString = PosTaggerTest.readText("mean_wiki.txt");
     String testString = "The energy <math>E</math>,";
-      String out = WikiTextUtils.renderAllFormulae(testString);
-      assertEquals("The energy <math xmlns=\"http://www.w3.org/1998/Math/MathML\" id=\"p1.1.m1.1\" class=\"ltx_Math\" alttext=\"E\" display=\"inline\">\n" +
-          "  <semantics id=\"p1.1.m1.1a\">\n" +
-          "    <mi id=\"p1.1.m1.1.1\" xref=\"p1.1.m1.1.1.cmml\">E</mi>\n" +
-          "    <annotation-xml encoding=\"MathML-Content\" id=\"p1.1.m1.1b\">\n" +
-          "      <ci id=\"p1.1.m1.1.1.cmml\" xref=\"p1.1.m1.1.1\">E</ci>\n" +
-          "    </annotation-xml>\n" +
-          "    <annotation encoding=\"application/x-tex\" id=\"p1.1.m1.1c\">E</annotation>\n" +
-          "  </semantics>\n" +
-          "</math>,", out);
+    String out = WikiTextUtils.renderAllFormulae(testString);
+    assertEquals("The energy <math xmlns=\"http://www.w3.org/1998/Math/MathML\" id=\"p1.1.m1.1\" class=\"ltx_Math\" alttext=\"E\" display=\"inline\">\n" +
+        "  <semantics id=\"p1.1.m1.1a\">\n" +
+        "    <mi id=\"p1.1.m1.1.1\" xref=\"p1.1.m1.1.1.cmml\">E</mi>\n" +
+        "    <annotation-xml encoding=\"MathML-Content\" id=\"p1.1.m1.1b\">\n" +
+        "      <ci id=\"p1.1.m1.1.1.cmml\" xref=\"p1.1.m1.1.1\">E</ci>\n" +
+        "    </annotation-xml>\n" +
+        "    <annotation encoding=\"application/x-tex\" id=\"p1.1.m1.1c\">E</annotation>\n" +
+        "  </semantics>\n" +
+        "</math>,", out);
   }
 
   @Ignore
@@ -129,7 +129,7 @@ public class WikiTextUtilsTest {
   public void renderResource() throws Exception {
     final String name = "n20";
     String testString = PosTaggerTest.readText(name + "_wiki.txt");
-    String targetPath=PatternMatchingRelationFinder.class.getResource(name+"_wiki.txt").getPath().replace("_wiki.txt", "_exc.txt");
+    String targetPath = PatternMatchingRelationFinder.class.getResource(name + "_wiki.txt").getPath().replace("_wiki.txt", "_exc.txt");
     FileWriter writer = new FileWriter(targetPath);
     String out = WikiTextUtils.renderAllFormulae(testString);
     writer.write(out);

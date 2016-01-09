@@ -74,9 +74,9 @@ public class CreateCandidatesMapperTest {
   @Test
   public void identifierPositions() {
     List<Word> sentence = Arrays.asList(w("Ψ", "LNK"), w("is", "VBZ"), w("the", "DT"),
-      w("wave function", "LNK"), w(",", ","), w("i", "FW"), w("is", "VBZ"), w("the", "DT"),
-      w("imaginary unit", "LNK"), w(",", ","), w("ħ", "NN"), w("is", "VBZ"), w("the", "DT"),
-      w("reduced Planck constant", "LNK"));
+        w("wave function", "LNK"), w(",", ","), w("i", "FW"), w("is", "VBZ"), w("the", "DT"),
+        w("imaginary unit", "LNK"), w(",", ","), w("ħ", "NN"), w("is", "VBZ"), w("the", "DT"),
+        w("reduced Planck constant", "LNK"));
     List<Integer> identifierPositions = CreateCandidatesMapper.identifierPositions(sentence, "Ψ");
     assertEquals(Arrays.asList(0), identifierPositions);
   }
@@ -84,9 +84,9 @@ public class CreateCandidatesMapperTest {
   @Test
   public void identifierPositions_several() {
     List<Word> sentence = Arrays.asList(w("Ψ", "LNK"), w("is", "VBZ"), w("the", "DT"),
-      w("wave function", "LNK"), w(",", ","), w("Ψ", "FW"), w("is", "VBZ"), w("the", "DT"),
-      w("imaginary unit", "LNK"), w(",", ","), w("Ψ", "NN"), w("is", "VBZ"), w("the", "DT"),
-      w("reduced Planck constant", "LNK"));
+        w("wave function", "LNK"), w(",", ","), w("Ψ", "FW"), w("is", "VBZ"), w("the", "DT"),
+        w("imaginary unit", "LNK"), w(",", ","), w("Ψ", "NN"), w("is", "VBZ"), w("the", "DT"),
+        w("reduced Planck constant", "LNK"));
     List<Integer> identifierPositions = CreateCandidatesMapper.identifierPositions(sentence, "Ψ");
     assertEquals(Arrays.asList(0, 5, 10), identifierPositions);
   }
@@ -94,9 +94,9 @@ public class CreateCandidatesMapperTest {
   @Test
   public void identifierPositions_none() {
     List<Word> sentence = Arrays.asList(w("p", "LNK"), w("is", "VBZ"), w("the", "DT"),
-      w("wave function", "LNK"), w(",", ","), w("i", "FW"), w("is", "VBZ"), w("the", "DT"),
-      w("imaginary unit", "LNK"), w(",", ","), w("ħ", "NN"), w("is", "VBZ"), w("the", "DT"),
-      w("reduced Planck constant", "LNK"));
+        w("wave function", "LNK"), w(",", ","), w("i", "FW"), w("is", "VBZ"), w("the", "DT"),
+        w("imaginary unit", "LNK"), w(",", ","), w("ħ", "NN"), w("is", "VBZ"), w("the", "DT"),
+        w("reduced Planck constant", "LNK"));
     List<Integer> identifierPositions = CreateCandidatesMapper.identifierPositions(sentence, "Ψ");
     assertEquals(Collections.emptyList(), identifierPositions);
   }

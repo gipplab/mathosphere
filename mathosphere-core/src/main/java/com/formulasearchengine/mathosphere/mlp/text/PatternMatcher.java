@@ -2,6 +2,7 @@ package com.formulasearchengine.mathosphere.mlp.text;
 
 import com.alexeygrigorev.rseq.*;
 import com.formulasearchengine.mathosphere.mlp.pojos.Word;
+
 import com.google.common.collect.Lists;
 
 import java.util.Arrays;
@@ -42,16 +43,16 @@ public class PatternMatcher {
     Matcher<Word> definition = posRegExp("(NN[PS]{0,2}|NP\\+?|NN\\+|LNK)").captureAs("definition");
 
     List<Pattern<Word>> patterns = Arrays.asList(
-      Pattern.create(definition, identifier),
-      Pattern.create(identifier, definition),
-      Pattern.create(identifier, denotes, definition),
-      Pattern.create(identifier, denotes, the, definition),
-      Pattern.create(identifier, isOrAre, definition),
-      Pattern.create(identifier, isOrAre, the, definition),
-      Pattern.create(identifier, isOrAre, denoted, by, definition),
-      Pattern.create(identifier, isOrAre, denoted, by, the, definition),
-      Pattern.create(let, identifier, be, denoted, by, definition),
-      Pattern.create(let, identifier, be, denoted, by, the, definition));
+        Pattern.create(definition, identifier),
+        Pattern.create(identifier, definition),
+        Pattern.create(identifier, denotes, definition),
+        Pattern.create(identifier, denotes, the, definition),
+        Pattern.create(identifier, isOrAre, definition),
+        Pattern.create(identifier, isOrAre, the, definition),
+        Pattern.create(identifier, isOrAre, denoted, by, definition),
+        Pattern.create(identifier, isOrAre, denoted, by, the, definition),
+        Pattern.create(let, identifier, be, denoted, by, definition),
+        Pattern.create(let, identifier, be, denoted, by, the, definition));
 
     return new PatternMatcher(patterns);
 

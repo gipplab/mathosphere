@@ -45,23 +45,23 @@ public class PosTagger {
   private static final Logger LOGGER = LoggerFactory.getLogger(PosTagger.class);
 
   private static final Set<String> SYMBOLS = ImmutableSet.of("<", "=", ">", "≥", "≤", "|", "/", "\\", "[",
-    "]", "*");
+      "]", "*");
   private static final Map<String, String> BRACKET_CODES = ImmutableMap.<String, String>builder()
-    .put("-LRB-", "(").put("-RRB-", ")").put("-LCB-", "{").put("-RCB-", "}").put("-LSB-", "[")
-    .put("-RSB-", "]").build();
+      .put("-LRB-", "(").put("-RRB-", ")").put("-LCB-", "{").put("-RCB-", "}").put("-LSB-", "[")
+      .put("-RSB-", "]").build();
 
   public static PosTagger create(BaseConfig cfg) {
     config = cfg;
     Properties props = new Properties();
     props.put("annotators", "tokenize, ssplit");
     props.put("tokenize.options", "untokenizable=firstKeep,strictTreebank3=true,"
-      + "ptb3Escaping=true,escapeForwardSlashAsterisk=false");
+        + "ptb3Escaping=true,escapeForwardSlashAsterisk=false");
     props.put("ssplit.newlineIsSentenceBreak", "two");
-	  props.put("maxLength",50);
+    props.put("maxLength", 50);
     StanfordCoreNLP pipeline = new StanfordCoreNLP(props);
 
     if ("en".equals(cfg.getLanguage())) {
-      POSTaggerAnnotator modelBasedPosAnnotator =   new POSTaggerAnnotator(config.getModel(), false);
+      POSTaggerAnnotator modelBasedPosAnnotator = new POSTaggerAnnotator(config.getModel(), false);
       pipeline.addAnnotator(modelBasedPosAnnotator);
     } else if ("ru".equals(cfg.getLanguage())) {
       pipeline.addAnnotator(new RusPosAnnotator());
@@ -206,7 +206,7 @@ public class PosTagger {
   private static List<Word> postprocessSentence(List<Word> sentence) {
     // links
     List<Word> result;
-    if ( config.getUseTeXIdentifiers() ){
+    if (config.getUseTeXIdentifiers()) {
       result = sentence;
     } else {
       result = concatenateLinks(sentence);
@@ -218,14 +218,14 @@ public class PosTagger {
     result = contatenateSuccessive2Tags(result, PosTag.ADJECTIVE, PosTag.NOUN, PosTag.NOUN_PHRASE);
     result = contatenateSuccessive2Tags(result, PosTag.ADJECTIVE, PosTag.NOUN_PLURAL, PosTag.NOUN_PHRASE);
     result = contatenateSuccessive2Tags(result, PosTag.ADJECTIVE, PosTag.NOUN_SEQUENCE,
-      PosTag.NOUN_SEQUENCE_PHRASE);
+        PosTag.NOUN_SEQUENCE_PHRASE);
 
     return result;
   }
 
   public static List<Word> concatenateLinks(List<Word> in) {
     Pattern<Word> linksPattern = Pattern.create(pos(PosTag.QUOTE), anyWord().oneOrMore()
-      .captureAs("link"), pos(PosTag.UNQUOTE));
+        .captureAs("link"), pos(PosTag.UNQUOTE));
 
     return linksPattern.replaceToOne(in, new TransformerToElement<Word>() {
       @Override

@@ -121,21 +121,21 @@ public class FlinkMlpRelationFinder {
           double rec = ((double) tp.size()) / (tp.size() + fn.size());
           double prec = ((double) tp.size()) / (tp.size() + fp.size());
           if (rec < 1. || prec < 1.) {
-            System.err.println(title +" $"+tex+"$ Precision" + prec + "; Recall" + rec);
-            System.err.println("fp:"+fp.toString());
-            System.err.println("fn:"+fn.toString());
-            System.err.println("https://en.formulasearchengine.com/wiki/"+title+"#math."+formula.get("oldId")+"."+fid);
+            System.err.println(title + " $" + tex + "$ Precision" + prec + "; Recall" + rec);
+            System.err.println("fp:" + fp.toString());
+            System.err.println("fn:" + fn.toString());
+            System.err.println("https://en.formulasearchengine.com/wiki/" + title + "#math." + formula.get("oldId") + "." + fid);
           }
           final WikiDocumentOutput wikiDocumentOutput = candidatesMapper.map(parsedWikiDocument);
           List<Relation> relations = wikiDocumentOutput.getRelations();
-          relations.removeIf(r->!tp.contains(r.getIdentifier()));
+          relations.removeIf(r -> !tp.contains(r.getIdentifier()));
           for (Relation relation : relations) {
             final List<String> refList = getDefiniens(definitions, relation);
-            final String definition = relation.getDefinition().replaceAll("(\\[\\[|\\]\\])","");
-            if (refList.contains(definition)){
+            final String definition = relation.getDefinition().replaceAll("(\\[\\[|\\]\\])", "");
+            if (refList.contains(definition)) {
               System.err.println("MATCH");
             }
-            System.err.println(relation.getIdentifier()+":"+relation.getDefinition()+" ("+ relation.getScore() +")");
+            System.err.println(relation.getIdentifier() + ":" + relation.getDefinition() + " (" + relation.getScore() + ")");
           }
 
 
@@ -171,11 +171,11 @@ public class FlinkMlpRelationFinder {
         Map<String, String> var = (Map) definien;
         for (Map.Entry<String, String> stringStringEntry : var.entrySet()) {
           // there is only one entry
-          final String def = stringStringEntry.getValue().trim().replaceAll("\\s*\\(.*?\\)$","");
+          final String def = stringStringEntry.getValue().trim().replaceAll("\\s*\\(.*?\\)$", "");
           result.add(def);
         }
       } else {
-        result.add((String)definien);
+        result.add((String) definien);
       }
     }
     return result;

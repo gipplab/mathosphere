@@ -6,6 +6,7 @@ import edu.stanford.nlp.ling.CoreAnnotations.TokensAnnotation;
 import edu.stanford.nlp.ling.CoreLabel;
 import edu.stanford.nlp.pipeline.Annotation;
 import edu.stanford.nlp.pipeline.Annotator;
+
 import com.formulasearchengine.mathosphere.mlp.rus.RuleBasedPosTagger.PosTag;
 
 import java.util.Collections;

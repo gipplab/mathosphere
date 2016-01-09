@@ -9,7 +9,7 @@ import java.io.Serializable;
 public class EvalCommandConfig extends FlinkMlpCommandConfig implements Serializable {
 
 
-  @Parameter(names = {  "--queries" }, description = "query file")
+  @Parameter(names = {"--queries"}, description = "query file")
   private String queries;
 
   public String getQueries() {

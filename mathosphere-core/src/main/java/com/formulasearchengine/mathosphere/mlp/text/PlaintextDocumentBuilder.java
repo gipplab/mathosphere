@@ -28,8 +28,9 @@ import java.util.LinkedList;
 import java.util.regex.Pattern;
 
 /**
- * A DocumentBuilder for the mylyn wikitext parser. It converts a document written in MediaWiki-Markup into
- * plaintext. Most of the structure of the document will be stripped, including linebreaks, headings, etc.
+ * A DocumentBuilder for the mylyn wikitext parser. It converts a document written in
+ * MediaWiki-Markup into plaintext. Most of the structure of the document will be stripped,
+ * including linebreaks, headings, etc.
  *
  * @author rob
  */
@@ -233,9 +234,9 @@ public class PlaintextDocumentBuilder extends NoOpDocumentBuilder {
   }
 
   private static final CharSequenceTranslator TRANSLATOR = new AggregateTranslator(
-    new LookupTranslator(EntityArrays.ISO8859_1_UNESCAPE()),
-    new LookupTranslator(EntityArrays.BASIC_UNESCAPE()),
-    new LookupTranslator(EntityArrays.HTML40_EXTENDED_UNESCAPE()));
+      new LookupTranslator(EntityArrays.ISO8859_1_UNESCAPE()),
+      new LookupTranslator(EntityArrays.BASIC_UNESCAPE()),
+      new LookupTranslator(EntityArrays.HTML40_EXTENDED_UNESCAPE()));
 
   @Override
   public void entityReference(String entity) {

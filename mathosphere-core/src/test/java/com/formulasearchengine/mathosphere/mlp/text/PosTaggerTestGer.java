@@ -21,14 +21,14 @@ import static org.junit.Assert.assertEquals;
 public class PosTaggerTestGer {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(PosTaggerTestGer.class);
-	/**
-	 * other models
-	 * "edu/stanford/nlp/models/pos-tagger/german/german-fast.tagger",
-	 * "edu/stanford/nlp/models/pos-tagger/german/german-fast-caseless.tagger",
-	 * "edu/stanford/nlp/models/pos-tagger/german/german-hgc.tagger"
-	 */
-	private static final String GER = "edu/stanford/nlp/models/pos-tagger/german/german-fast.tagger";
-// other models
+  /**
+   * other models "edu/stanford/nlp/models/pos-tagger/german/german-fast.tagger",
+   * "edu/stanford/nlp/models/pos-tagger/german/german-fast-caseless.tagger",
+   * "edu/stanford/nlp/models/pos-tagger/german/german-hgc.tagger"
+   */
+  private static final String GER = "edu/stanford/nlp/models/pos-tagger/german/german-fast.tagger";
+
+  // other models
   @Test
   public void simpleGermanTest() throws Exception {
     FlinkMlpCommandConfig cfg = FlinkMlpCommandConfig.test();
@@ -43,16 +43,17 @@ public class PosTaggerTestGer {
 
     List<Sentence> result = nlpProcessor.process(cleanText, mathTags);
 
-    List<Word> expected = Arrays.asList(w("Dies", "PDS"), w("ist", "VAFIN"), w("ein", "ART"), w("simpler","ADJA"), w("Beispieltext", "NN"),
-      w(".", "$."));
+    List<Word> expected = Arrays.asList(w("Dies", "PDS"), w("ist", "VAFIN"), w("ein", "ART"), w("simpler", "ADJA"), w("Beispieltext", "NN"),
+        w(".", "$."));
 
     List<Word> sentence = result.get(0).getWords();
     assertEquals(expected, sentence.subList(0, expected.size()));
     LOGGER.debug("full result: {}", result);
   }
-	@Test
+
+  @Test
   public void mediumGermanTest() throws Exception {
-		final String text = IOUtils.toString(PosTaggerTest.class.getResourceAsStream("deText.txt"));
+    final String text = IOUtils.toString(PosTaggerTest.class.getResourceAsStream("deText.txt"));
 
     FlinkMlpCommandConfig cfg = FlinkMlpCommandConfig.test();
     cfg.setModel(GER);
@@ -62,10 +63,10 @@ public class PosTaggerTestGer {
     List<MathTag> mathTags = WikiTextUtils.findMathTags(text);
 
     String newText = WikiTextUtils.replaceAllFormulas(text, mathTags);
-		long t0 = System.nanoTime();
+    long t0 = System.nanoTime();
     String cleanText = WikiTextUtils.extractPlainText(newText);
-		System.out.println((System.nanoTime()-t0)/1000000+"ms for cleaning.");
-		List<Sentence> result = nlpProcessor.process(cleanText, mathTags);
+    System.out.println((System.nanoTime() - t0) / 1000000 + "ms for cleaning.");
+    List<Sentence> result = nlpProcessor.process(cleanText, mathTags);
   }
 
   public static Word w(String word, String tag) {

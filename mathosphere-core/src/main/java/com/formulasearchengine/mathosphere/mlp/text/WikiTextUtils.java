@@ -58,7 +58,7 @@ public class WikiTextUtils {
       newText.append(tag.placeholder());
       offset = tag.getPosition() + tag.getContent().length();
       if (tag.getMarkUpType() == MathMarkUpType.LATEX && !tag.getContent().startsWith("<math")) {
-        offset+=13; //<math></math>
+        offset += 13; //<math></math>
       }
     }
 

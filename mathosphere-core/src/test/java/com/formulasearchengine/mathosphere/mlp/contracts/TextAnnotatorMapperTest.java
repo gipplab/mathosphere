@@ -1,12 +1,14 @@
 package com.formulasearchengine.mathosphere.mlp.contracts;
 
 import com.google.common.base.Throwables;
+
 import com.formulasearchengine.mathosphere.mlp.cli.FlinkMlpCommandConfig;
 import com.formulasearchengine.mathosphere.mlp.flink.ListCollector;
 import com.formulasearchengine.mathosphere.mlp.pojos.*;
 import com.formulasearchengine.mathosphere.mlp.text.PosTag;
 import com.formulasearchengine.mathosphere.mlp.text.WikiTextUtils;
 import com.formulasearchengine.mathosphere.mlp.text.WikiTextUtilsTest;
+
 import org.junit.Test;
 
 import java.util.Arrays;
@@ -22,11 +24,11 @@ public class TextAnnotatorMapperTest {
 
   public static final TextAnnotatorMapper TEST_INSTANCE = createTestInstance();
 
-	@Test
-	public void readRecentPlainWikiDump() throws Exception {
-		List<RawWikiDocument> docs = readWikiTextDocuments("com/formulasearchengine/mathosphere/mlp/mrrFullHist.xml");
-		assertEquals(1,docs.size());
-	}
+  @Test
+  public void readRecentPlainWikiDump() throws Exception {
+    List<RawWikiDocument> docs = readWikiTextDocuments("com/formulasearchengine/mathosphere/mlp/mrrFullHist.xml");
+    assertEquals(1, docs.size());
+  }
 
   @Test
   public void test() throws Exception {
@@ -34,8 +36,8 @@ public class TextAnnotatorMapperTest {
     List<RawWikiDocument> docs = readWikiTextDocuments("com/formulasearchengine/mathosphere/mlp/augmentendwikitext.xml");
 
     RawWikiDocument schroedingerIn = docs.get(0);
-    assertTrue( "the seed math tag was not found", schroedingerIn.text.contains(mathMLExtract) );
-    MathTag tag = new MathTag(0,mathMLExtract, WikiTextUtils.MathMarkUpType.MATHML);
+    assertTrue("the seed math tag was not found", schroedingerIn.text.contains(mathMLExtract));
+    MathTag tag = new MathTag(0, mathMLExtract, WikiTextUtils.MathMarkUpType.MATHML);
     String placeholder = tag.placeholder();
     ParsedWikiDocument shroedingerOut = TEST_INSTANCE.map(schroedingerIn);
 
@@ -106,7 +108,7 @@ public class TextAnnotatorMapperTest {
     Sentence sentence = result.getSentences().get(0);
 
     List<Word> expected = Arrays.asList(new Word("The", "DT"), new Word("x", "ID"), new Word("-axis",
-      "-SUF"), new Word("shows", "VBZ"), new Word("...", ":"));
+        "-SUF"), new Word("shows", "VBZ"), new Word("...", ":"));
     assertEquals(expected, sentence.getWords());
   }
 

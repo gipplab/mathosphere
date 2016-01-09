@@ -6,7 +6,7 @@ import com.beust.jcommander.Parameters;
 
 import java.io.Serializable;
 
-@Parameters(commandDescription="Runs the MLP algorithm (on Flink)")
+@Parameters(commandDescription = "Runs the MLP algorithm (on Flink)")
 public class FlinkMlpCommandConfig extends BaseConfig implements Serializable {
 
   @Parameter(names = {"-in", "--inputDir"}, description = "path to the directory with wikidump")
@@ -25,7 +25,7 @@ public class FlinkMlpCommandConfig extends BaseConfig implements Serializable {
 
     FlinkMlpCommandConfig cfg = new FlinkMlpCommandConfig(dataset, outputdir);
     cfg.setUseTeXIdentifiers(false);
-    return  cfg;
+    return cfg;
   }
 
   public static FlinkMlpCommandConfig from(String[] args) {
@@ -46,7 +46,7 @@ public class FlinkMlpCommandConfig extends BaseConfig implements Serializable {
   }
 
   public FlinkMlpCommandConfig(String dataset, String outputdir, String model, String language, double alpha, double beta,
-                double gamma, double threshold, Boolean useTex) {
+                               double gamma, double threshold, Boolean useTex) {
     super(model, language, alpha, beta, gamma, threshold, useTex);
     this.dataset = dataset;
     this.outputdir = outputdir;

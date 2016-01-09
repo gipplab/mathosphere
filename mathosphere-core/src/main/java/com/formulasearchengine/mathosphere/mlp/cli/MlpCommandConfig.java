@@ -8,10 +8,10 @@ import java.io.Serializable;
 @Parameters(commandDescription = "Applies the MLP algorithm to a single wiki article")
 public class MlpCommandConfig extends BaseConfig implements Serializable {
 
-  @Parameter(names = { "-in", "--inputFile" }, description = "path to the wiki article")
+  @Parameter(names = {"-in", "--inputFile"}, description = "path to the wiki article")
   private String input;
 
-  @Parameter(names = { "-out", "--outputFile" }, description = "path to output file (if empty, print to stdout)")
+  @Parameter(names = {"-out", "--outputFile"}, description = "path to output file (if empty, print to stdout)")
   private String output;
 
   public String getInput() {

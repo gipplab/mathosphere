@@ -41,10 +41,10 @@ public class PerformanceHelper {
   }
 
   static void runTestCollection(String resourceName, String command) throws Exception {
-    runTestCollection(getResources(resourceName),command);
+    runTestCollection(getResources(resourceName), command);
   }
 
-  private static void runTestCollection(File dir,String command) throws Exception {
+  private static void runTestCollection(File dir, String command) throws Exception {
     //noinspection ConstantConditions
     for (File nextFile : dir.listFiles()) {
       if (nextFile.getName().endsWith("_wiki.txt")) {
@@ -86,7 +86,7 @@ public class PerformanceHelper {
     Set<String> sysOut = new HashSet<>(Arrays.asList(standardOutput.split(System.getProperty("line.separator"))));
     Set<String> real = new HashSet<>();
     for (String s : sysOut) {
-      real.add(s.replaceAll("_\\{(.*?)\\}$","_"));
+      real.add(s.replaceAll("_\\{(.*?)\\}$", "_"));
     }
     Set<String> tp = new HashSet<>(expected);
     Set<String> fn = new HashSet<>(expected);

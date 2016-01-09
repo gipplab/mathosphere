@@ -11,17 +11,18 @@ public class WikiDocumentOutput {
   private List<Relation> relations;
   private Set<Multiset.Entry<String>> identifiers;
 
-	public boolean isSuccess() {
-		return success;
-	}
+  public boolean isSuccess() {
+    return success;
+  }
 
-	private boolean success = true;
+  private boolean success = true;
 
   public WikiDocumentOutput() {
   }
-	public WikiDocumentOutput(boolean s){
-		this.success = s;
-	}
+
+  public WikiDocumentOutput(boolean s) {
+    this.success = s;
+  }
 
   public WikiDocumentOutput(String title, List<Relation> relations, Multiset<String> identifiers) {
     this.title = title;

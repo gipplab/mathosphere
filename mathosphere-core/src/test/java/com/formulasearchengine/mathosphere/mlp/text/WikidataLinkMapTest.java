@@ -33,7 +33,7 @@ public class WikidataLinkMapTest {
     testcases.put("[[Magnetic field]]", "Q11480");
     WikidataLinkMap map = new WikidataLinkMap(getClass().getResource("title2Data.csv").getFile(), false);
     for (Map.Entry<String, String> entry : testcases.entrySet()) {
-      assertEquals("Test for " + entry.getKey(),entry.getValue(), map.title2Data(entry.getKey()));
+      assertEquals("Test for " + entry.getKey(), entry.getValue(), map.title2Data(entry.getKey()));
     }
 
   }

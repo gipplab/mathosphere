@@ -2,11 +2,14 @@ package com.formulasearchengine.mathosphere.mlp.text;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.guava.GuavaModule;
+
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Multiset;
 import com.google.common.collect.Multisets;
+
 import com.formulasearchengine.mathosphere.mlp.cli.CountCommandConfig;
+
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
 import org.apache.flink.api.java.tuple.Tuple2;
@@ -95,7 +98,7 @@ public class TokenCounter {
             while (jParser.nextToken() != JsonToken.END_ARRAY) {
               tokens.addFromJson(jParser);
             }
-          } else if((jParser.nextToken() == JsonToken.START_OBJECT)) {
+          } else if ((jParser.nextToken() == JsonToken.START_OBJECT)) {
             if (jParser.nextToken() != JsonToken.END_OBJECT) {
               //noinspection StatementWithEmptyBody
               do {
@@ -126,16 +129,16 @@ public class TokenCounter {
       InputStream in = new FileInputStream(config.getInput());
       TokenCounter tokenCounter = new TokenCounter();
       ObjectMapper mapper = new ObjectMapper().registerModule(new GuavaModule());
-      if(config.isIdentifiers()){
+      if (config.isIdentifiers()) {
         ImmutableSet<Multiset.Entry<String>> entries = Multisets.copyHighestCountFirst(tokenCounter.countIdentifer(in)).entrySet();
-        if (config.isCsv()){
+        if (config.isCsv()) {
           CSVPrinter printer = CSVFormat.DEFAULT.withHeader("tex", "count").withRecordSeparator("\n").print(pw);
 
           for (Multiset.Entry<String> entry : entries) {
-            String[] output  = {entry.getElement(), String.valueOf(entry.getCount())};
+            String[] output = {entry.getElement(), String.valueOf(entry.getCount())};
             printer.printRecord(output);
           }
-        } else{
+        } else {
           mapper.writeValue(pw, entries);
         }
       } else {

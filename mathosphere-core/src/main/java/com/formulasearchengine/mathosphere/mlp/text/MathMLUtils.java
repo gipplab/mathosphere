@@ -142,12 +142,12 @@ public class MathMLUtils {
       try {
         Multiset<String> identifiers = TexInfo.getIdentifiers(tex, url);
         //TODO: Migrate to texvcinfo
-        identifiers.removeIf(x->x.equals("\\infty")||x.startsWith("\\operatorname"));
-        if ( summarizeSubscripts ){
+        identifiers.removeIf(x -> x.equals("\\infty") || x.startsWith("\\operatorname"));
+        if (summarizeSubscripts) {
           for (String identifier : identifiers.elementSet()) {
             if (identifier.matches("(.*?)_\\{[a-zA-Z0-9]\\}$")) {
               identifiers.remove(identifier, Integer.MAX_VALUE);
-              identifiers.add(identifier.replaceAll("(.*?)_\\{[a-zA-Z0-9]\\}$","$1_"));
+              identifiers.add(identifier.replaceAll("(.*?)_\\{[a-zA-Z0-9]\\}$", "$1_"));
             }
           }
         }

@@ -22,17 +22,17 @@ public class PatternMatchingRelationFinder {
 
     DataSource<String> source = readWikiDump(config, env);
     DataSet<ParsedWikiDocument> documents = source.flatMap(new TextExtractorMapper())
-      .map(new TextAnnotatorMapper(config));
+        .map(new TextAnnotatorMapper(config));
 
     DataSet<WikiDocumentOutput> relations = documents.map(new PatternMatcherMapper());
     relations.map(new JsonSerializerMapper<>())
-      .writeAsText(config.getOutputDir(), WriteMode.OVERWRITE);
+        .writeAsText(config.getOutputDir(), WriteMode.OVERWRITE);
 
     env.execute("Pattern Matcher Relation Finder");
   }
 
   public static DataSource<String> readWikiDump(FlinkMlpCommandConfig config, ExecutionEnvironment env) {
-    return FlinkMlpRelationFinder.readWikiDump(config,env);
+    return FlinkMlpRelationFinder.readWikiDump(config, env);
   }
 
 }

@@ -77,12 +77,13 @@ public class MathTag {
   }
 
   public Multiset<String> getIdentifiers(BaseConfig config) {
-    if ( indentifiers == null || indentifiers.size()==0){
-      indentifiers = extractIdentifiers(this,config.getUseTeXIdentifiers(),config.getTexvcinfoUrl());
+    if (indentifiers == null || indentifiers.size() == 0) {
+      indentifiers = extractIdentifiers(this, config.getUseTeXIdentifiers(), config.getTexvcinfoUrl());
     }
     return indentifiers;
   }
-  public String getKey(){
+
+  public String getKey() {
     return placeholder();
   }
 }

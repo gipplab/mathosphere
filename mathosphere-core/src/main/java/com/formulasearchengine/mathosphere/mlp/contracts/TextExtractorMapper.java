@@ -1,6 +1,7 @@
 package com.formulasearchengine.mathosphere.mlp.contracts;
 
 import com.formulasearchengine.mathosphere.mlp.pojos.RawWikiDocument;
+
 import org.apache.commons.lang3.text.translate.AggregateTranslator;
 import org.apache.commons.lang3.text.translate.CharSequenceTranslator;
 import org.apache.commons.lang3.text.translate.EntityArrays;
@@ -20,12 +21,12 @@ public class TextExtractorMapper implements FlatMapFunction<String, RawWikiDocum
   private static final Pattern TITLE_PATTERN = Pattern.compile("(?:<title>)(.*?)(?:</title>)");
   private static final Pattern NAMESPACE_PATTERN = Pattern.compile("(?:<ns>)(.*?)(?:</ns>)");
   private static final Pattern TEXT_PATTERN = Pattern.compile("(?:<text.*?>)(.*?)(?:</text>)",
-    Pattern.DOTALL);
+      Pattern.DOTALL);
 
   private static final CharSequenceTranslator TRANSLATOR = new AggregateTranslator(
-    new LookupTranslator(EntityArrays.ISO8859_1_UNESCAPE()),
-    new LookupTranslator(EntityArrays.BASIC_UNESCAPE()),
-    new LookupTranslator(EntityArrays.HTML40_EXTENDED_UNESCAPE()));
+      new LookupTranslator(EntityArrays.ISO8859_1_UNESCAPE()),
+      new LookupTranslator(EntityArrays.BASIC_UNESCAPE()),
+      new LookupTranslator(EntityArrays.HTML40_EXTENDED_UNESCAPE()));
 
   @Override
   public void flatMap(String content, Collector<RawWikiDocument> out) throws Exception {
@@ -62,8 +63,8 @@ public class TextExtractorMapper implements FlatMapFunction<String, RawWikiDocum
   }
 
   /**
-   * Unescapes special entity char sequences like &lt; to its UTF-8 representation. All ISO-8859-1, HTML4
-   * and Basic entities will be translated.
+   * Unescapes special entity char sequences like &lt; to its UTF-8 representation. All ISO-8859-1,
+   * HTML4 and Basic entities will be translated.
    *
    * @param text the text that will be unescaped
    * @return the unescaped version of the string text
