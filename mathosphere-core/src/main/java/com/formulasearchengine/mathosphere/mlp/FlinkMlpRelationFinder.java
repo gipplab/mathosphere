@@ -50,6 +50,10 @@ public class FlinkMlpRelationFinder {
         .writeAsText(config.getOutputDir(), WriteMode.OVERWRITE);
     //int cores = Runtime.getRuntime().availableProcessors();
     //env.setParallelism(1); // rounds down
+    final int parallelism = config.getParallelism();
+    if (parallelism > 0) {
+      env.setParallelism(parallelism);
+    }
     env.execute("Relation Finder");
   }
 
