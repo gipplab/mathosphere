@@ -187,6 +187,11 @@ public class CreateCandidatesMapper implements MapFunction<ParsedWikiDocument, W
     if (word.length() < 3) {
       return false;
     }
+    if (word.contains("<")) {
+      // remove tags and so
+      //TODO: Make a white-list of allowed chars.
+      return false;
+    }
     // we're only interested in nouns, entities and links
     return posTag.matches("NN[PS]{0,2}|NP\\+?|NN\\+|LNK");
 
