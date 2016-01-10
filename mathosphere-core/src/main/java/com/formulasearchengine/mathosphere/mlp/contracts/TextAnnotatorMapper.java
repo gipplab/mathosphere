@@ -12,7 +12,6 @@ import com.formulasearchengine.mathosphere.mlp.pojos.WikidataLink;
 import com.formulasearchengine.mathosphere.mlp.text.MathConverter;
 import com.formulasearchengine.mathosphere.mlp.text.PosTagger;
 import com.formulasearchengine.mathosphere.mlp.text.WikiTextUtils;
-import com.formulasearchengine.mathosphere.mlp.text.WikidataLinkMap;
 
 import org.apache.flink.api.common.functions.RichMapFunction;
 import org.apache.flink.configuration.Configuration;
@@ -27,21 +26,12 @@ public class TextAnnotatorMapper extends RichMapFunction<RawWikiDocument, Parsed
   private static final Logger LOGGER = LoggerFactory.getLogger(TextAnnotatorMapper.class);
 
   private final BaseConfig config;
-  private final String language;
-  private final String model;
-  private final WikidataLinkMap wl;
+
 
   private PosTagger posTagger;
 
   public TextAnnotatorMapper(BaseConfig config) {
     this.config = config;
-    this.language = config.getLanguage();
-    this.model = config.getModel();
-    if (config.getWikiDataFile() != null) {
-      wl = new WikidataLinkMap(config.getWikiDataFile());
-    } else {
-      wl = null;
-    }
   }
 
   @Override
@@ -66,7 +56,7 @@ public class TextAnnotatorMapper extends RichMapFunction<RawWikiDocument, Parsed
     try {
       String cleanText;
       if (config.getUseTeXIdentifiers()) {
-        MathConverter c = new MathConverter(wikitext, title, wl);
+        MathConverter c = new MathConverter(wikitext, title, config);
         cleanText = c.getStrippedOutput();
         mathTags = c.getMathTags();
         links = c.getLinks();

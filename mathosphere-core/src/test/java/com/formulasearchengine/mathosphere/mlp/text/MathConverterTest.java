@@ -138,6 +138,14 @@ public class MathConverterTest {
     final String real = mathConverter.getOutput();
     assertThat(real, containsString("<math>a</math> x"));
   }
+  @Test
+  public void testGo11() throws Exception {
+    String wikiText = "Let the coin tosses be represented by a sequence {{nowrap|1=''X''&lt;sub&gt;0&lt;/sub&gt;, ''X''&lt;sub&gt;1&lt;/sub&gt;, &amp;hellip;}}";
+    wikiText = TextExtractorMapper.unescape(wikiText);
+    final MathConverter mathConverter = new MathConverter(wikiText);
+    final String real = mathConverter.getOutput();
+    assertThat(real, containsString("<math>X_{0}"));
+  }
 
   @Test
   public void findFormulaFromWikiText() throws Exception {

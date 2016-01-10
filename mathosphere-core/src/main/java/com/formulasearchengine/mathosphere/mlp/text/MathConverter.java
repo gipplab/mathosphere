@@ -9,6 +9,9 @@ package com.formulasearchengine.mathosphere.mlp.text;
  * limitations under the License.
  */
 
+import com.google.common.collect.Multiset;
+
+import com.formulasearchengine.mathosphere.mlp.cli.BaseConfig;
 import com.formulasearchengine.mathosphere.mlp.contracts.TextExtractorMapper;
 import com.formulasearchengine.mathosphere.mlp.pojos.MathTag;
 import com.formulasearchengine.mathosphere.mlp.pojos.WikidataLink;
@@ -25,14 +28,52 @@ import org.sweble.wikitext.engine.config.WikiConfig;
 import org.sweble.wikitext.engine.nodes.EngPage;
 import org.sweble.wikitext.engine.nodes.EngProcessedPage;
 import org.sweble.wikitext.engine.utils.DefaultConfigEnWp;
-import org.sweble.wikitext.parser.nodes.*;
+import org.sweble.wikitext.parser.nodes.WtBold;
 import org.sweble.wikitext.parser.nodes.WtContentNode.WtContentNodeImpl;
+import org.sweble.wikitext.parser.nodes.WtExternalLink;
+import org.sweble.wikitext.parser.nodes.WtHorizontalRule;
+import org.sweble.wikitext.parser.nodes.WtIllegalCodePoint;
+import org.sweble.wikitext.parser.nodes.WtImageLink;
+import org.sweble.wikitext.parser.nodes.WtInternalLink;
+import org.sweble.wikitext.parser.nodes.WtItalics;
+import org.sweble.wikitext.parser.nodes.WtListItem;
+import org.sweble.wikitext.parser.nodes.WtNewline;
+import org.sweble.wikitext.parser.nodes.WtNode;
+import org.sweble.wikitext.parser.nodes.WtNodeList;
+import org.sweble.wikitext.parser.nodes.WtOrderedList;
+import org.sweble.wikitext.parser.nodes.WtPageSwitch;
+import org.sweble.wikitext.parser.nodes.WtParagraph;
+import org.sweble.wikitext.parser.nodes.WtSection;
+import org.sweble.wikitext.parser.nodes.WtTable;
+import org.sweble.wikitext.parser.nodes.WtTableCaption;
+import org.sweble.wikitext.parser.nodes.WtTableCell;
+import org.sweble.wikitext.parser.nodes.WtTableHeader;
+import org.sweble.wikitext.parser.nodes.WtTableImplicitTableBody;
+import org.sweble.wikitext.parser.nodes.WtTableRow;
+import org.sweble.wikitext.parser.nodes.WtTagExtension;
+import org.sweble.wikitext.parser.nodes.WtTemplate;
+import org.sweble.wikitext.parser.nodes.WtTemplateArgument;
+import org.sweble.wikitext.parser.nodes.WtTemplateParameter;
+import org.sweble.wikitext.parser.nodes.WtText;
+import org.sweble.wikitext.parser.nodes.WtUnorderedList;
+import org.sweble.wikitext.parser.nodes.WtUrl;
+import org.sweble.wikitext.parser.nodes.WtWhitespace;
+import org.sweble.wikitext.parser.nodes.WtXmlCharRef;
+import org.sweble.wikitext.parser.nodes.WtXmlComment;
+import org.sweble.wikitext.parser.nodes.WtXmlElement;
+import org.sweble.wikitext.parser.nodes.WtXmlEntityRef;
 import org.sweble.wikitext.parser.parser.LinkTargetException;
+import org.xml.sax.SAXException;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.regex.Pattern;
+
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.xpath.XPathExpressionException;
 
 /**
  * A visitor to convert an article AST into a pure text representation. To better understand the
@@ -74,20 +115,27 @@ public class MathConverter
   private boolean noWrap;
   private LinkedList<Integer> sections;
   private PageTitle pageTitle;
+  private String texInfoUrl;
 
   public MathConverter(String wikiText, String name) throws LinkTargetException, EngineException {
     pageTitle = PageTitle.make(config, name);
     PageId pageId = new PageId(pageTitle, -1);
     page = engine.postprocess(pageId, wikiText, null);
+    texInfoUrl = (new BaseConfig()).getTexvcinfoUrl();
   }
 
   public MathConverter(String wikiText) throws LinkTargetException, EngineException {
     this(wikiText, "noname");
   }
 
-  public MathConverter(String wikitext, String title, WikidataLinkMap wl) throws LinkTargetException, EngineException {
+  public MathConverter(String wikitext, String title, BaseConfig config) throws LinkTargetException, EngineException {
     this(wikitext, title);
-    this.wl = wl;
+    if (config.getWikiDataFile() != null) {
+      wl = new WikidataLinkMap(config.getWikiDataFile());
+    } else {
+      wl = null;
+    }
+    texInfoUrl = config.getTexvcinfoUrl();
   }
 
   public List<MathTag> getMathTags() {
@@ -174,7 +222,7 @@ public class MathConverter
     write("\"");
   }
 
-  public boolean detectHiddenMath(WtContentNodeImpl i) {
+  public boolean detectHiddenMath(WtNode i) {
     if (i.size() == 1 && i.get(0) instanceof WtText) {
       final String tex = getTex(i, false);
       if (tex != null) {
@@ -450,7 +498,9 @@ public class MathConverter
   }
 
   public void visit(WtTemplateArgument n) {
-    iterate(n.getValue());
+    if (!detectHiddenMath(n.getValue())) {
+      iterate(n.getValue());
+    }
   }
 
   public void visit(WtTemplateParameter n) {
@@ -584,13 +634,23 @@ public class MathConverter
     return links;
   }
 
-  private String getTex(WtContentNodeImpl i, boolean force) {
+  private String getTex(WtNode i, boolean force) {
     if (i.get(0) instanceof WtText) {
-      String content = ((WtText) i.get(0)).getContent();
-      //content = TextExtractorMapper.unescape(content);
+      String content = ((WtText) i.get(0)).getContent().trim();
+      content = TextExtractorMapper.unescape(content);
       String tex = wiki2Tex(content);
-      if (tex.length() > 0 && (content.length() == 1 ||
-          (content.length() < 10 && tex.length() > content.length()))) {
+      if (tex.length() > 0 && (content.length() == 1
+          || (content.length() < 100 && !content.equals(tex)))) {
+        Multiset<String> idents;
+        try {
+          idents = TexInfo.getIdentifiers(tex, texInfoUrl);
+        } catch (XPathExpressionException | ParserConfigurationException | IOException
+            | SAXException | TransformerException ignored) {
+          return null;
+        }
+        if (idents.size() == 0 && !force) {
+          return null;
+        }
         if (i instanceof WtBold) {
           tex = "\\mathbf{" + tex + "}";
         }
