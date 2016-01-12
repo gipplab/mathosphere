@@ -42,8 +42,7 @@ public class CreateCandidatesMapper implements MapFunction<ParsedWikiDocument, W
     List<Relation> relations = Lists.newArrayList();
     for (String identifier : identifiers) {
       List<Relation> candidates = generateCandidates(doc, identifier);
-      Collections.sort(candidates);
-      Collections.reverse(candidates);
+      selfMerge(candidates);
       int count = 0;
       for (Relation rel : candidates) {
         if (rel.getScore() >= config.getThreshold()) {
@@ -57,6 +56,31 @@ public class CreateCandidatesMapper implements MapFunction<ParsedWikiDocument, W
     }
 
     return new WikiDocumentOutput(doc.getTitle(), relations, doc.getIdentifiers());
+  }
+
+  private void selfMerge(List<Relation> candidates) {
+    Collections.sort(candidates,Relation::compareNameScore);
+    final Iterator<Relation> iterator = candidates.iterator();
+    Relation lastLower = null;
+    Relation lastElement = null;
+    double decayFactor;
+    int multiplicity = 1;
+    while (iterator.hasNext()) {
+      final Relation relation = iterator.next();
+      Relation lower = new Relation(relation.getIdentifier(), relation.getDefinition().toLowerCase());
+      if (lastLower != null && lower.compareToName(lastLower) == 0) {
+        multiplicity++;
+        decayFactor = Math.pow(2, -1.3*multiplicity);
+        lastElement.setScore(lastElement.getScore() + relation.getScore() * decayFactor);
+        iterator.remove();
+      } else {
+        multiplicity = 1;
+        relation.setScore(.722 * relation.getScore());
+        lastElement = relation;
+        lastLower = lower;
+      }
+    }
+    candidates.sort(Relation::compareTo);
   }
 
   private List<Relation> generateCandidates(ParsedWikiDocument doc, String identifier) {

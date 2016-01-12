@@ -1,6 +1,7 @@
 package com.formulasearchengine.mathosphere.mlp.cli;
 
 import com.google.common.base.Throwables;
+import com.google.common.io.Files;
 
 import com.formulasearchengine.mathosphere.mlp.Main;
 
@@ -164,20 +165,24 @@ public class CliMainTest {
   @Test
   public void testEval() throws Exception {
     final File temp;
-    temp = File.createTempFile("temp", Long.toString(System.nanoTime()));
+    temp = Files.createTempDir();
+    System.out.println(temp.getAbsolutePath());
     String[] args = {"eval",
-        "-in", resoucePath("com/formulasearchengine/mathosphere/mlp/gold/eval_dataset_sample.xml"),
+        "-in", resoucePath("com/formulasearchengine/mathosphere/mlp/gold/eval_dataset.xml"),
         "-out", temp.getAbsolutePath(),
-        "--queries", resoucePath("com/formulasearchengine/mathosphere/mlp/gold/gold_sample.json"),
-        "--tex"};
+        "--queries", resoucePath("com/formulasearchengine/mathosphere/mlp/gold/gold.json"),
+        "--nd", resoucePath("com/formulasearchengine/mathosphere/mlp/gold/nd.json"),
+        "--tex",
+        "-t", "0.8",
+        "--level","2",
+        "--ref", "C:\\Users\\Moritz\\SkyDrive\\_DIMA\\08.teaching\\Abschlussarbeiten\\alexey\\MathematicalNamespaceDiscovery\\paper\\eval"};
     final PrintStream stdout = System.out;
     final ByteArrayOutputStream myOut = new ByteArrayOutputStream();
     System.setOut(new PrintStream(myOut));
     Main.main(args);
     final String standardOutput = myOut.toString();
-    //assertThat(standardOutput, containsString ("W(2, k) > 2^k/k^\\varepsilon"));
     System.setOut(stdout);
-    System.out.println(standardOutput);
+    //System.out.println(standardOutput);
   }
 
 
