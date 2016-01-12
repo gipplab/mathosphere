@@ -12,7 +12,14 @@ public class EvalCommandConfig extends FlinkMlpCommandConfig implements Serializ
   @Parameter(names = {"--queries"}, description = "query file")
   private String queries;
 
+  @Parameter(names = {"--nd"}, description = "namespace discovery file")
+  private String ndFile;
+
   public String getQueries() {
     return queries;
+  }
+
+  public String getNdFile() {
+    return ndFile;
   }
 }
