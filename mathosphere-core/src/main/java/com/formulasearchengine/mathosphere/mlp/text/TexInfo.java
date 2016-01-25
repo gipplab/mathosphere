@@ -77,8 +77,8 @@ public class TexInfo {
       JSONArray identifiers = jsonObject.getJSONArray("identifiers");
       strings.addAll(identifiers);
     } catch (Exception e) {
-      System.err.println(tex + " Parsing problem");
-      System.err.println("Retrieved: " + json);
+      System.out.println(tex + " Parsing problem");
+      System.out.println("Retrieved: " + json);
       //e.printStackTrace();
     }
     return strings;
