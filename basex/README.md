@@ -10,14 +10,14 @@ must be initialized.
 ## Obtain the data
 The dataset is available from
 
-http://demo.formulasearchengine.com/images/NTCIR-11-Wikipedia-Math-MWS-Dump.zip
+https://www.researchgate.net/publication/267980833_NTCIR_11_Math_Wikipedia_Subtask_Dataset_MathWebSearch_harvest
 
 and can be referenced via DOI 10.13140/2.1.1374.9445
 
 ## Obtain the queries
 The queries are included in this repository and can be downloaded from
 
-http://demo.formulasearchengine.com/images/NTCIR11-Math-mathQueries-participants.xml
+https://www.researchgate.net/publication/267979610_NTCIR_11_Math_Wikipedia_Subtask_Topics
 
 The queries can be referenced via DOI 10.13140/2.1.1618.6564
 
