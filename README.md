@@ -49,3 +49,9 @@ Run the following to pull latest changes from each submodules' repo
 ```
 git submodule update --remote --merge
 ```
+### Troubleshooting
+If test fail due to encoding problems in windows, set the environment variable
+```
+JAVA_TOOL_OPTIONS = -Dfile.encoding=UTF8
+```
+as suggested on [stackoverflow.](http://stackoverflow.com/a/28470840)
