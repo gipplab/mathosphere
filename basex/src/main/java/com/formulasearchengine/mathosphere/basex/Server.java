@@ -1,18 +1,18 @@
 package com.formulasearchengine.mathosphere.basex;
 
-import com.google.common.base.Charsets;
 import org.basex.BaseXServer;
 import org.basex.core.BaseXException;
 import org.basex.core.cmd.CreateDB;
 import org.basex.core.cmd.DropDB;
-import org.basex.query.QueryException;
 import org.jetbrains.annotations.NotNull;
 
 import javax.xml.xquery.XQException;
-import java.io.*;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.RandomAccessFile;
 import java.nio.channels.FileChannel;
 import java.nio.channels.FileLock;
-import java.nio.charset.Charset;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -63,19 +63,28 @@ public final class Server {
 		shutdown();
 		baseXServer = new BaseXServer( "-p" + PORT, "-n" + SERVER_NAME ); // "-d" for debug
 		file = input;
-		final Charset charset = Charsets.UTF_8;
-		final StringBuilder stringBuilder = new StringBuilder();
-		try (BufferedReader fileReader = new BufferedReader(new InputStreamReader(new FileInputStream(file), charset))) {
-			String line = fileReader.readLine();
-			while (line != null) {
-				stringBuilder.append(line);
-				stringBuilder.append(System.getProperty("line.separator"));
-				line = fileReader.readLine();
+//		final Charset charset = Charsets.UTF_8;
+//		final StringBuilder stringBuilder = new StringBuilder();
+//		try (BufferedReader fileReader = new BufferedReader(new InputStreamReader(new FileInputStream(file), charset))) {
+//			String line = fileReader.readLine();
+//			while (line != null) {
+//				stringBuilder.append(line);
+//				stringBuilder.append(System.getProperty("line.separator"));
+//				line = fileReader.readLine();
+//			}
+//		}
+		if(file.isFile()) {
+			new CreateDB(DATABASE_NAME, file.getAbsolutePath()).execute(baseXServer.context);
+		} else {
+			File[] filesInDataDirectory = file.listFiles();
+			if(filesInDataDirectory != null) {
+				System.out.println("Importing files from directory:");
+				for(File f : filesInDataDirectory) {
+					System.out.println("Importing " + f.getAbsolutePath());
+					new CreateDB(DATABASE_NAME, f.getAbsolutePath()).execute(baseXServer.context);
+				}
 			}
 		}
-
-		final CreateDB db = new CreateDB(DATABASE_NAME, stringBuilder.toString());
-		db.execute(baseXServer.context);
 		System.out.println("Import completed. Start Monitoring.");
 		healthTimer = new Timer();
 
