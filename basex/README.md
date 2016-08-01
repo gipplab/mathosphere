@@ -25,15 +25,15 @@ The queries can be referenced via DOI 10.13140/2.1.1618.6564
 ```
 mkdir /tmp/baseX
 cd /tmp/baseX
-git clone https://github.com/TU-Berlin/mathosphere .
+git clone https://github.com/TU-Berlin/mathosphere . --recursive
 mvn install
 cd basex
 mkdir data
 cd data
-wget http://demo.formulasearchengine.com/images/NTCIR-11-Wikipedia-Math-MWS-Dump.zip
+wget https://github.com/TU-Berlin/mathosphere/releases/download/ntcir-11/NTCIR-11-Wikipedia-Math-MWS-Dump.zip
 unzip NTCIR-11-Wikipedia-Math-MWS-Dump.zip
 cd ..
-wget http://demo.formulasearchengine.com/images/NTCIR11-Math-mathQueries-participants.xml
+wget https://github.com/TU-Berlin/mathosphere/releases/download/ntcir-11/NTCIR11-Math2-queries-participants.xml
 cp target/basex-backend-0.0.1-SNAPSHOT-jar-with-dependencies.jar .
 time java -Xmx12G -jar basex-backend-0.0.1-SNAPSHOT-jar-with-dependencies.jar -d /tmp/baseX/data -q NTCIR11-Math-mathQueries-participants.xml -o ./results.csv -c
 ```
