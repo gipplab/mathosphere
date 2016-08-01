@@ -135,7 +135,7 @@
             </activation>
             <properties>
                 <tomcat-server>localhost</tomcat-server>
-                <tomcat-url>http://localhost:8080/manager</tomcat-url>
+                <tomcat-url>http://localhost:8080/manager/text</tomcat-url>
             </properties>
         </profile>
     </profiles>
