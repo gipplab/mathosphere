@@ -64,12 +64,12 @@
         <dependency>
             <groupId>org.basex</groupId>
             <artifactId>basex</artifactId>
-            <version>8.2</version>
+            <version>8.5.2</version>
         </dependency>
         <dependency>
             <groupId>org.basex</groupId>
             <artifactId>basex-api</artifactId>
-            <version>8.2</version>
+            <version>8.5.2</version>
         </dependency>
         <dependency>
         <groupId>com.formulasearchengine</groupId>
