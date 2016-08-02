@@ -62,19 +62,7 @@ public final class Server {
 	public void startup(@NotNull File input) throws IOException {
 		shutdown();
 		baseXServer = new BaseXServer( "-p" + PORT, "-n" + SERVER_NAME ); // "-d" for debug
-		file = input;
-		final Charset charset = Charsets.UTF_8;
-		final StringBuilder stringBuilder = new StringBuilder();
-		try (BufferedReader fileReader = new BufferedReader(new InputStreamReader(new FileInputStream(file), charset))) {
-			String line = fileReader.readLine();
-			while (line != null) {
-				stringBuilder.append(line);
-				stringBuilder.append(System.getProperty("line.separator"));
-				line = fileReader.readLine();
-			}
-		}
-
-		final CreateDB db = new CreateDB(DATABASE_NAME, stringBuilder.toString());
+		final CreateDB db = new CreateDB(DATABASE_NAME, input.getAbsolutePath());
 		db.execute(baseXServer.context);
 		System.out.println("Import completed. Start Monitoring.");
 		healthTimer = new Timer();
