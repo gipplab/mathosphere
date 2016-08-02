@@ -35,7 +35,7 @@ unzip NTCIR-11-Wikipedia-Math-MWS-Dump.zip
 cd ..
 wget https://github.com/TU-Berlin/mathosphere/releases/download/ntcir-11/NTCIR11-Math2-queries-participants.xml
 cp target/basex-backend-0.0.1-SNAPSHOT-jar-with-dependencies.jar .
-time java -Xmx12G -jar basex-backend-0.0.1-SNAPSHOT-jar-with-dependencies.jar -d /tmp/baseX/data -q NTCIR11-Math-mathQueries-participants.xml -o ./results.csv -c
+time java -Xmx12G -jar basex-0.0.1-SNAPSHOT-jar-with-dependencies.jar -d /tmp/baseX/data -q NTCIR11-Math2-queries-participants.xml -o ./results.xml
 ```
 
 * Overall runtime 8min 24seconds.
