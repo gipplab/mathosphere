@@ -30,7 +30,7 @@ public class Benchmark {
 	public static final String BASEX_FOOTER = " data($m/@url) \n";
 	//Return hit as XML with required NTCIR data and highlighting
 	public static final String NTCIR_FOOTER =
-			"<hit id=\"{generate-id()}\" xref=\"{base-uri($m)}\" score=\"\" rank=\"\"><formula id=\"{generate-id()}\" for=\"\" xref=\"{base-uri($m)}#{data($x/@xml:id)}\">{map:for-each($q,function($k,$v){for $value in $v return <qvar for=\"{$k}\" xref=\"{$value}\"/>})}</formula></hit>";
+			"<hit id=\"{generate-id()}\" xref=\"{$b}\" score=\"\" rank=\"\"><formula id=\"{generate-id()}\" for=\"\" xref=\"{$b}#{data($x/@xml:id)}\">{map:for-each($q,function($k,$v){for $value in $v return <qvar for=\"{$k}\" xref=\"{$value}\"/>})}</formula></hit>";
 
 	private final CommandLine line;
 

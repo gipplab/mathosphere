@@ -236,6 +236,7 @@ public final class ClientTest {
 			"where\n" +
 			"fn:count($x/*) = 3\n" +
 			"let $q := map{\"x\" : (data($x/*[2]/@xml:id)),\"y\" : (data($x/*[3]/@xml:id))}\n" +
+			"let $b := replace(base-uri($m),'^.*/','/" + Server.DATABASE_NAME + "/')\n" +
 			"return\n" +
 			Benchmark.NTCIR_FOOTER;
 		final Client c = new Client();
