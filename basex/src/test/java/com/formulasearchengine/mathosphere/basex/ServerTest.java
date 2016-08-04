@@ -1,21 +1,22 @@
 package com.formulasearchengine.mathosphere.basex;
 
-import net.xqj.basex.BaseXXQDataSource;
-import org.basex.api.client.ClientSession;
-import org.junit.After;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.junit.Assert;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
 
 import javax.xml.xquery.XQConnection;
 import javax.xml.xquery.XQDataSource;
 import javax.xml.xquery.XQPreparedExpression;
 import javax.xml.xquery.XQResultSequence;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.PrintStream;
-import java.net.URL;
+
+import org.basex.api.client.ClientSession;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.BeforeClass;
+import org.junit.Test;
+
+import net.xqj.basex.BaseXXQDataSource;
 
 public class ServerTest  {
 	@BeforeClass
@@ -50,19 +51,18 @@ public class ServerTest  {
 		srv.startup(file);
 
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		PrintStream ps = new PrintStream(baos);
-		ClientSession session = new ClientSession(srv.baseXServer.context, "admin", "admin");
-
-		session.execute("SET mainmem true");
-		//session.execute( "SET DEBUG true" );
-		session.execute("SET SERIALIZER newline=\"\\n\"");
-		session.execute("SET SERIALIZER item-separator=\"\\n\"");
-		session.execute("OPEN math");
-		session.setOutputStream( baos );
-		session.query("count(./*/*)").execute();
-		Assert.assertEquals( "104", baos.toString( "UTF-8" ) );
-		session.execute( "CLOSE" );
-		session.close();
+		
+		try(ClientSession session = new ClientSession(Server.SERVER_NAME, Server.PORT, "admin", "admin")) {
+	    session.execute("SET mainmem true");
+	    //session.execute( "SET DEBUG true" );
+	    session.execute("SET SERIALIZER newline=\"\\n\"");
+	    session.execute("SET SERIALIZER item-separator=\"\\n\"");
+	    session.execute("OPEN math");
+	    session.setOutputStream( baos );
+	    session.query("count(./*/*)").execute();
+	    Assert.assertEquals( "104", baos.toString( "UTF-8" ) );
+	    session.execute( "CLOSE" );
+		}
 	}
 
 	@Test
@@ -72,9 +72,9 @@ public class ServerTest  {
 		File file = new File(fname.toURI());
 		srv.startup(file);
 		final XQDataSource xqs = new BaseXXQDataSource();
-		xqs.setProperty("serverName", srv.SERVER_NAME);
-		xqs.setProperty("port", srv.PORT);
-		xqs.setProperty("databaseName", srv.DATABASE_NAME);
+		xqs.setProperty("serverName", Server.SERVER_NAME);
+		xqs.setProperty("port", String.valueOf(Server.PORT));
+		xqs.setProperty("databaseName", Server.DATABASE_NAME);
 		xqs.setProperty("user", Client.USER);
 		xqs.setProperty("password", Client.PASSWORD);
 
@@ -143,7 +143,6 @@ public class ServerTest  {
 		final URL fname = BaseXTestSuite.class.getClassLoader().getResource( "sampleHarvest.xml" );
 		File file = new File(fname.toURI());
 		srv.startup(file);
-		Assert.assertTrue( srv.checkHealth() );
 	}
 
 }

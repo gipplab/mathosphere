@@ -154,9 +154,9 @@ public class Client {
 		final Server srv = Server.getInstance();
 		final XQDataSource xqs = new BaseXXQDataSource();
 		//Other properties: description, logLevel, loginTimeout, readOnly
-		xqs.setProperty( "serverName", srv.SERVER_NAME);
-		xqs.setProperty( "port", srv.PORT );
-		xqs.setProperty( "databaseName", srv.DATABASE_NAME );
+		xqs.setProperty( "serverName", Server.SERVER_NAME);
+		xqs.setProperty( "port", String.valueOf(Server.PORT) );
+		xqs.setProperty( "databaseName", Server.DATABASE_NAME );
 		xqs.setProperty( "user", USER );
 		xqs.setProperty( "password", PASSWORD );
 
@@ -166,8 +166,8 @@ public class Client {
 	//Alternative API that enables XQuery v3.1
 	private static BaseXClient getBaseXClient() throws IOException {
 		final Server srv = Server.getInstance();
-		final BaseXClient session = new BaseXClient(srv.SERVER_NAME, Integer.parseInt(srv.PORT), USER, PASSWORD);
-		session.execute("OPEN " + srv.DATABASE_NAME);
+		final BaseXClient session = new BaseXClient(Server.SERVER_NAME, Server.PORT, USER, PASSWORD);
+		session.execute("OPEN " + Server.DATABASE_NAME);
 		return session;
 	}
 
