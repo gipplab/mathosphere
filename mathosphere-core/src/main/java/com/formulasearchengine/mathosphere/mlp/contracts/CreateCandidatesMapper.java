@@ -14,11 +14,7 @@ import com.formulasearchengine.mathosphere.mlp.pojos.Word;
 
 import org.apache.flink.api.common.functions.MapFunction;
 
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 public class CreateCandidatesMapper implements MapFunction<ParsedWikiDocument, WikiDocumentOutput> {
 
@@ -88,6 +84,14 @@ public class CreateCandidatesMapper implements MapFunction<ParsedWikiDocument, W
     candidates.sort(Relation::compareTo);
   }
 
+  /**
+   * Find a list of possible definitions for an identifier. As described in section 2 step 4 of
+   * https://www.google.co.jp/url?sa=t&rct=j&q=&esrc=s&source=web&cd=4&cad=rja&uact=8&ved=0ahUKEwjbo8bF5J3PAhWMcT4KHesdCRMQFgg0MAM&url=https%3A%2F%2Fwww.gipp.com%2Fwp-content%2Fpapercite-data%2Fpdf%2Fschubotz16.pdf&usg=AFQjCNG8WcokDbLBSdzddbijH-bJh4w5sA&sig2=ofIftBvBlsOdwikq2d1fag
+   *
+   * @param doc Where to search for definitions
+   * @param identifier What to define.
+   * @return {@link List<Relation>} with ranked definitions for the identifier.
+   */
   private List<Relation> generateCandidates(ParsedWikiDocument doc, String identifier) {
     List<Sentence> sentences = findSentencesWithIdentifier(doc.getSentences(), identifier);
     if (sentences.isEmpty()) {
@@ -108,6 +112,7 @@ public class CreateCandidatesMapper implements MapFunction<ParsedWikiDocument, W
       List<Integer> positions = identifierPositions(words, identifier);
 
       for (int wordIdx = 0; wordIdx < words.size(); wordIdx++) {
+        //Definiendum
         Word word = words.get(wordIdx);
         if (!isGood(word)) {
           continue;
@@ -134,6 +139,16 @@ public class CreateCandidatesMapper implements MapFunction<ParsedWikiDocument, W
     return result;
   }
 
+  /**
+   * Find a list of possible definitions for an identifier. As described in section 2 step 5 of
+   * https://www.google.co.jp/url?sa=t&rct=j&q=&esrc=s&source=web&cd=4&cad=rja&uact=8&ved=0ahUKEwjbo8bF5J3PAhWMcT4KHesdCRMQFgg0MAM&url=https%3A%2F%2Fwww.gipp.com%2Fwp-content%2Fpapercite-data%2Fpdf%2Fschubotz16.pdf&usg=AFQjCNG8WcokDbLBSdzddbijH-bJh4w5sA&sig2=ofIftBvBlsOdwikq2d1fag
+   *
+   * @param distance Number of tokens between identifier and definiens.
+   * @param frequency The term frequency of the possible definiendum.
+   * @param maxFrequency The max term frequency within this document. For normalisation of the term frequency.
+   * @param sentenceIdx The number of sentences between the definiens candidate and the sentence in which the identifier occurs for the first time
+   * @return Score how likely the definiendum is the correct definition for the identifier.
+   */
   private double calculateScore(int distance, int frequency, int maxFrequency, int sentenceIdx) {
     double std1 = Math.sqrt(Math.pow(5d, 2d) / (2d * Math.log(2)));
     double dist = gaussian(distance, std1);
@@ -149,6 +164,9 @@ public class CreateCandidatesMapper implements MapFunction<ParsedWikiDocument, W
     return Math.exp(-x * x / (2 * std * std));
   }
 
+  /**
+   * Find all occurrences of the identifier in the sentence.
+   */
   public static List<Integer> identifierPositions(List<Word> sentence, String identifier) {
     List<Integer> result = Lists.newArrayList();
 
@@ -226,6 +244,10 @@ public class CreateCandidatesMapper implements MapFunction<ParsedWikiDocument, W
 
   }
 
+  /**
+   * Find all sentences with the given identifier.
+   * @return {@link ArrayList} with the sentences containing the identifier.
+   */
   public static List<Sentence> findSentencesWithIdentifier(List<Sentence> sentences, String identifier) {
     List<Sentence> result = Lists.newArrayList();
 
