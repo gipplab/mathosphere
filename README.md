@@ -31,6 +31,13 @@ We are using the [NTCIR-11 Wikipedia](http://ntcir11-wmc.nii.ac.jp/index.php/NTC
 (specifically the augmentedWikiDump.xml from [this host](http://demo.formulasearchengine.com/images/)) for as additional
 training dataset.
 
+### Checkout
+  
+  * if tests fail on windows make sure to checkout the files with unix-style line endings. This is most easily done by
+  `git config --global core.autocrlf false`
+  
+  * in the git for windows installation process this would be the option #2 Checkout as-is, commit Unix-style line endings Git will not perform any conversion when checking out text files.
+
 ### Master branch tests
 [![Build Status](https://drone.io/github.com/TU-Berlin/mathosphere2/status.png)](https://drone.io/github.com/TU-Berlin/mathosphere2/latest)
 <!--
