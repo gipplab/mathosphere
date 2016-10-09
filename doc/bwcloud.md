@@ -49,7 +49,114 @@ Access via RDP was denied.
 
 ### NTCIR-12 arXiv
 ```
-wget --user ntcir12mathir --ask-password http://ntcir-math.nii.ac.jp/download/NTCIR_2014_dataset/NTCIR_2014_dataset_HTML5.tar.gz
+wget --user ntcir12mathir --ask-password http://ntcir-math.nii.ac.jp/download/NTCIR_2014_dataset/NTCIR_2014_dataset_XHTML5.tar.gz
+tar -xf NTCIR_2014_dataset_XHTML5.tar.gz
+../scripts/convert ./xhtml5 /tmp 100 ntcir12.xml
+
 ```
 To get a password ask here http://ntcir-math.nii.ac.jp/
 
+## To be sorted
+Copy hosts
+```
+cp /etc/hosts w1:~
+scp /etc/hosts w2:~
+ssh w1 'sudo mv hosts /etc'
+ssh w2 'sudo mv hosts /etc'
+
+```
+Check which java tasks are running
+```
+jps
+```
+Start and stop flink web-interface at port [8081](http://localhost:8081)
+```
+/srv/flink/bin/stop-cluster.sh
+/srv/flink/bin/stop-local.sh
+/srv/flink/bin/start-cluster.sh
+```
+set latest java home
+```
+export JAVA_HOME=$(readlink -f /usr/bin/java | sed "s:bin/java::")
+```
+
+ipconfig
+```
+ifconfig eth1
+ifconfig eth0
+sudo dhclient -v eth0
+sudo dhclient -v eth1
+sudo dhclient -v eth2
+ifconfig
+ping 192.168.0.4
+ping 192.168.0.5
+ping 192.168.0.4
+```
+Get disk partitioning info
+```
+sudo sfdisk -d /dev/vdb > dsk.part
+```
+Apply disk creation scripts
+```
+./frmt-dsk
+./foreachdatadisk 'mkdir tmp'
+./foreachdatadisk 'mkdir hdfs'
+```
+format namenode
+```
+/srv/hadoop/bin/hadoop namenode -format
+/srv/hadoop/sbin/start-dfs.sh
+```
+
+Install htop
+```
+sudo apt-get install htop
+```
+Install crashplan
+```
+wget https://download.code42.com/installs/linux/install/CrashPlan/CrashPlan_4.7.0_Linux.tgz
+tar -xf CrashPlan_4.7.0_Linux.tgz
+cd crashplan-install/
+./install.sh
+cat /var/lib/crashplan/.ui_info
+cd /usr/local/crashplan
+cd bin/
+./CrashPlanEngine status
+cd ..
+cd conf/
+ls
+netstat -na | grep LISTEN | grep 42
+cat /var/lib/crashplan/.ui_info
+mkdir /data2/crash
+./CrashPlanEngine stop
+sudo mv cache/* /data2/crash/
+sudo vi /usr/local/crashplan/conf/my.service.xml
+./CrashPlanEngine start
+```
+Convert corpus
+```
+cd /data
+../scripts/convert ./xhtml5 /tmp 100 ntcir12.xml
+exit
+```
+Create hdfs folder
+```
+/srv/hadoop/bin/hadoop fs mkdir /data
+/srv/hadoop/bin/hadoop fs -mkdir /data
+/srv/hadoop/bin/hadoop fs -mkdir -p /data/ntcir/12/arxiv/xhtml
+/srv/hadoop/bin/hadoop fs -copyFromLocal /data/ntcir/ntcir12.xml /data/ntcir/12/arxiv/xhtml/together.xml
+```
+HDFS web ui port [50070](http://localhost:50070)
+
+
+format disk (as root)
+```
+fdisk /dev/vdc
+```
+see m for commands... we create a **n**ew **p**rimary partition
+ and **w**rite that info to disk before we **q**uit.
+```
+mkfs.ext4 /dev/vdc1
+vi /etc/fstab
+sfdisk -d /dev/vdc
+```
