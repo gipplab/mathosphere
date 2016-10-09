@@ -1,0 +1,11 @@
+#!/bin/bash
+set -e
+/srv/hadoop/sbin/stop-dfs.sh
+/srv/flink/bin/stop-cluster.sh
+cp -r /data/cfg/* /srv
+for i in {1..2}
+do
+   scp -r /data/cfg/* w$i:/srv
+done
+/srv/hadoop/sbin/start-dfs.sh
+/srv/flink/bin/start-cluster.sh

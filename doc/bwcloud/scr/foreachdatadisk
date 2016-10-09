@@ -1,0 +1,9 @@
+#!/bin/bash
+for i in {1..2}
+do
+   for j in "b" "c" "d" "e"
+   do
+      echo processing worker-$i disk $j
+      ssh w$i "cd /data/$j && $1"
+   done
+done

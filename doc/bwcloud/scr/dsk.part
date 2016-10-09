@@ -1,0 +1,6 @@
+label: dos
+label-id: 0x74b7f93d
+device: /dev/vdb
+unit: sectors
+
+/dev/vdb1 : start=        2048, size=  1073739776, type=83

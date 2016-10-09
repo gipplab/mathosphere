@@ -1,0 +1,16 @@
+#!/bin/bash
+for i in {1..2}
+do
+   scp dsk.part w$i:~
+   ssh w$i 'sudo mkdir /data'
+   for j in "b" "c" "d" "e"
+   do
+      echo processing device $j
+      ssh w$i 'sudo sfdisk /dev/vd'$j' <dsk.part'
+      ssh w$i 'sudo mkfs.ext4 /dev/vd'$j'1'
+      ssh w$i 'sudo mkdir /data/'$j
+      ssh w$i 'echo "/dev/vd'$j'1 /data/'$j' ext4 defaults 0 2" | sudo tee -a /etc/fstab'
+      ssh w$i 'sudo mount /data/'$j
+      ssh w$i 'sudo chown ubuntu /data/'$j
+   done
+done
