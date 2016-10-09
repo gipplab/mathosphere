@@ -160,3 +160,13 @@ mkfs.ext4 /dev/vdc1
 vi /etc/fstab
 sfdisk -d /dev/vdc
 ```
+
+my local .ssh/config file
+```
+Host m
+    HostName master.mediabotz.de
+    User ubuntu
+    LocalForward 4200 127.0.0.1:4243
+    LocalForward 8081 127.0.0.1:8081
+    LocalForward 50070 127.0.0.1:50070
+```
