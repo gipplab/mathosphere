@@ -1,0 +1,40 @@
+#!/bin/bash
+USAGE="Usage: convert folderToRecurse fileList maxRes output"
+COUNTER=0
+declare -A relevantNames
+for constant in  $( cat $2)
+do
+    relevantNames[$constant]=1
+done
+num=$3
+out=$4
+recurse() {
+ for i in "$1"/*;do
+	if [ -d "$i" ];then
+		echo "dir: $i"
+		recurse "$i"
+	elif [ -f "$i" ]; then
+		filename=$(basename "$i")
+		extension="${filename##*.}"
+                fname=${filename%.*}
+		if [ "$extension" = "xhtml" ]; then
+			#if [ ${relevantNames[$fname]} ]; then
+			echo "found"
+			echo "appending: $i"
+			echo "<ARXIVFILESPLIT Filename=\"$i\">" >> $out
+			cat $i >> $out
+			echo "</ARXIVFILESPLIT>" >> $out
+			COUNTER=$[$COUNTER +1]
+			echo " $COUNTER "
+			#if [ $COUNTER -eq $num ]
+			#then
+			#	echo "Count is $num"
+			#	exit 1
+			#fi
+            #fi
+		fi
+	fi
+ done
+}
+
+recurse $1

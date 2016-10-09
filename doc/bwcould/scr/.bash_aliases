@@ -1,0 +1,1 @@
+alias hdfs='/srv/hadoop/bin/hadoop fs'
