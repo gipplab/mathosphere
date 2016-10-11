@@ -1,12 +1,12 @@
 package com.formulasearchengine.mathosphere.mlp.evaluation;
 
+import com.formulasearchengine.mathosphere.mlp.pojos.GoldEntry;
+import com.formulasearchengine.mathosphere.mlp.pojos.IdentifierDefinition;
+import com.formulasearchengine.mathosphere.mlp.pojos.Relation;
 import com.formulasearchengine.mathosphere.mlp.pojos.WikiDocumentOutput;
 import com.google.common.collect.Multiset;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * A Wikipedia document that has ben analysed with the mlp pipeline and been evaluated against a gold standard.
@@ -19,16 +19,43 @@ public class EvaluatedWikiDocumentOutput {
   private double identifierExtractionRecall = 0;
   private double identifierExtractionPrecision = 0;
   private double descriptionExtractionRecall = 0;
-  private Map<String, Object> gold;
+  private GoldEntry gold;
   private double descriptionExtractionPrecision = 0;
   private boolean success = true;
+  private Set<IdentifierDefinition> truePositives;
+  private Set<IdentifierDefinition> falsePositives;
+  private Set<IdentifierDefinition> falseNegatives;
+
+  public Set<IdentifierDefinition> getTruePositives() {
+    return truePositives;
+  }
+
+  public void setTruePositives(Set<IdentifierDefinition> truePositives) {
+    this.truePositives = truePositives;
+  }
+
+  public Set<IdentifierDefinition> getFalsePositives() {
+    return falsePositives;
+  }
+
+  public void setFalsePositives(Set<IdentifierDefinition> falsePositives) {
+    this.falsePositives = falsePositives;
+  }
+
+  public Set<IdentifierDefinition> getFalseNegatives() {
+    return falseNegatives;
+  }
+
+  public void setFalseNegatives(Set<IdentifierDefinition> falseNegatives) {
+    this.falseNegatives = falseNegatives;
+  }
 
   /**
    * Get the gold standard for this WikiDocument
    *
    * @return
    */
-  public Map<String, Object> getGold() {
+  public GoldEntry getGold() {
     return gold;
   }
 
@@ -36,9 +63,43 @@ public class EvaluatedWikiDocumentOutput {
    * Set the gold standard for this WikiDocument
    */
   public void setGold(Map<String, Object> gold) {
+    List<IdentifierDefinition> definitions = new ArrayList<>();
+    Map<String, String> rawDefinitions = (Map<String, String>) gold.get("definitions");
+    for (String identifier : rawDefinitions.keySet()) {
+      List<String> defeniens = getDefiniens(rawDefinitions, identifier);
+      for (String defenien : defeniens) {
+        definitions.add(new IdentifierDefinition(identifier, defenien));
+      }
+    }
+    Map<String, String> formula = (Map<String, String>) gold.get("formula");
+    this.gold = new GoldEntry(formula.get("qID"), formula.get("oldId"), formula.get("fid"), formula.get("math_inputtex"), formula.get("title"), definitions);
+  }
+
+  /**
+   * Set the gold standard for this WikiDocument
+   */
+  public void setGold(GoldEntry gold) {
     this.gold = gold;
   }
 
+  public static List<String> getDefiniens(Map definitions, String identifier) {
+    List<String> result = new ArrayList<>();
+    List definiens = (List) definitions.get(identifier);
+    for (Object definien : definiens) {
+      if (definien instanceof Map) {
+        Map<String, String> var = (Map) definien;
+        for (Map.Entry<String, String> stringStringEntry : var.entrySet()) {
+          // there is only one entry
+          //remove everything in brackets
+          final String def = stringStringEntry.getValue().trim().replaceAll("\\s*\\(.*?\\)$", "");
+          result.add(def);
+        }
+      } else {
+        result.add((String) definien);
+      }
+    }
+    return result;
+  }
 
   public double getDescriptionExtractionRecall() {
     return descriptionExtractionRecall;

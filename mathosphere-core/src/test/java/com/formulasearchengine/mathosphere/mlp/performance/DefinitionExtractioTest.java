@@ -12,7 +12,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLDecoder;
 
-public class DefinitionExtractioTest {
+public class DefinitionExtractionTest {
 
   @Test
   @Ignore
@@ -37,7 +37,7 @@ public class DefinitionExtractioTest {
   @Test
   @Ignore
   /**
-   * runs the full definition extraction pipeline on a large data set - takes very long
+   * runs the full definition extraction pipeline on a large data set.
    */
   public void testEval() throws Exception {
     final File temp;
@@ -57,28 +57,4 @@ public class DefinitionExtractioTest {
     System.out.println(standardOutput);
   }
 
-  @Test
-  @Ignore
-  /**
-   * runs the end of the definition extraction pipeline on a large data set - long
-   */
-  public void testEvalWithoutExtraction() throws Exception {
-    final File temp;
-    temp = File.createTempFile("temp", Long.toString(System.nanoTime()));
-    String[] args = {"eval",
-      "-in", resoucePath("com/formulasearchengine/mathosphere/mlp/gold/eval_dataset_annotated.json"),
-      "-out", temp.getAbsolutePath(),
-      "--queries", resoucePath("com/formulasearchengine/mathosphere/mlp/gold/gold.json"),
-      "--tex",
-      "--noExtract"
-    };
-    final PrintStream stdout = System.out;
-    final ByteArrayOutputStream myOut = new ByteArrayOutputStream();
-    System.setOut(new PrintStream(myOut));
-    Main.main(args);
-    final String standardOutput = myOut.toString();
-    //assertThat(standardOutput, containsString ("W(2, k) > 2^k/k^\\varepsilon"));
-    System.setOut(stdout);
-    System.out.println(standardOutput);
-  }
 }
