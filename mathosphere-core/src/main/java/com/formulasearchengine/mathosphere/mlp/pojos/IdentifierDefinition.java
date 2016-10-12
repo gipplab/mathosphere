@@ -21,7 +21,7 @@ public class IdentifierDefinition {
   }
 
   public void setDefinition(String definition) {
-    this.definition = definition.toLowerCase();
+    this.definition = definition;
   }
 
   private String definition;
@@ -33,7 +33,7 @@ public class IdentifierDefinition {
 
   public IdentifierDefinition(EvaluatedRelation evaluatedRelation){
     this.identifier = evaluatedRelation.getIdentifier();
-    this.definition = evaluatedRelation.getDefinition().toLowerCase();
+    this.definition = evaluatedRelation.getDefinition();
   }
 
   @Override

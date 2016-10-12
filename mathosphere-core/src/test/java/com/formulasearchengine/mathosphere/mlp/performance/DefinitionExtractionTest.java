@@ -40,13 +40,16 @@ public class DefinitionExtractionTest {
    * runs the full definition extraction pipeline on a large data set.
    */
   public void testEval() throws Exception {
-    final File temp;
-    temp = File.createTempFile("temp", Long.toString(System.nanoTime()));
+    File temp;
+    temp = File.createTempFile("temp gamma 0.1 threshold 0.6", Long.toString(System.nanoTime()));
     String[] args = {"eval",
       "-in", resoucePath("com/formulasearchengine/mathosphere/mlp/gold/eval_dataset.xml"),
       "-out", temp.getAbsolutePath(),
       "--queries", resoucePath("com/formulasearchengine/mathosphere/mlp/gold/gold.json"),
-      "--tex"};
+      "--tex",
+      "--texvcinfo", "http://localhost:10044/texvcinfo",
+      "--gamma", "0.1f",
+      "--threshold", "0.6f"};
     final PrintStream stdout = System.out;
     final ByteArrayOutputStream myOut = new ByteArrayOutputStream();
     System.setOut(new PrintStream(myOut));

@@ -2,7 +2,6 @@ package com.formulasearchengine.mathosphere.mlp.evaluation;
 
 import com.formulasearchengine.mathosphere.mlp.pojos.GoldEntry;
 import com.formulasearchengine.mathosphere.mlp.pojos.IdentifierDefinition;
-import com.formulasearchengine.mathosphere.mlp.pojos.Relation;
 import com.formulasearchengine.mathosphere.mlp.pojos.WikiDocumentOutput;
 import com.google.common.collect.Multiset;
 
@@ -22,32 +21,32 @@ public class EvaluatedWikiDocumentOutput {
   private GoldEntry gold;
   private double descriptionExtractionPrecision = 0;
   private boolean success = true;
-  private Set<IdentifierDefinition> truePositives;
-  private Set<IdentifierDefinition> falsePositives;
-  private Set<IdentifierDefinition> falseNegatives;
+  private Set<IdentifierDefinition> truePositiveDefinitions;
+  private Set<IdentifierDefinition> falsePositiveDefinitions;
+  private Set<IdentifierDefinition> falseNegativeDefinitions;
 
-  public Set<IdentifierDefinition> getTruePositives() {
-    return truePositives;
+  public Set<IdentifierDefinition> getTruePositiveDefinitions() {
+    return truePositiveDefinitions;
   }
 
-  public void setTruePositives(Set<IdentifierDefinition> truePositives) {
-    this.truePositives = truePositives;
+  public void setTruePositiveDefinitions(Set<IdentifierDefinition> truePositiveDefinitions) {
+    this.truePositiveDefinitions = truePositiveDefinitions;
   }
 
-  public Set<IdentifierDefinition> getFalsePositives() {
-    return falsePositives;
+  public Set<IdentifierDefinition> getFalsePositiveDefinitions() {
+    return falsePositiveDefinitions;
   }
 
-  public void setFalsePositives(Set<IdentifierDefinition> falsePositives) {
-    this.falsePositives = falsePositives;
+  public void setFalsePositiveDefinitions(Set<IdentifierDefinition> falsePositiveDefinitions) {
+    this.falsePositiveDefinitions = falsePositiveDefinitions;
   }
 
-  public Set<IdentifierDefinition> getFalseNegatives() {
-    return falseNegatives;
+  public Set<IdentifierDefinition> getFalseNegativeDefinitions() {
+    return falseNegativeDefinitions;
   }
 
-  public void setFalseNegatives(Set<IdentifierDefinition> falseNegatives) {
-    this.falseNegatives = falseNegatives;
+  public void setFalseNegativeDefinitions(Set<IdentifierDefinition> falseNegativeDefinitions) {
+    this.falseNegativeDefinitions = falseNegativeDefinitions;
   }
 
   /**
