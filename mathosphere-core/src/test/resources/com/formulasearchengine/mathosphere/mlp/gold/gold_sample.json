@@ -1,29 +1,18 @@
 [
   {
     "definitions": {
-      "W": [
+      "q": [
         {
-          "Q7913892": "Van der Waerden number"
-        }
-      ],
-      "k": [
-        {
-          "Q12503": "integer (number that can be written without a fractional or decimal component)"
-        }
-      ],
-      "\\varepsilon": [
-        {
-          "Q3176558": "positive number (real number strictly greater than zero)"
+          "Q9492": "probability (measure of the expectation that an event will occur or a statement is true)"
         }
       ]
     },
     "formula": {
-      "qID": "1",
-      "oldId": "2459",
-      "fid": "3",
-      "math_inputtex": "W(2, k) > 2^k/k^\\varepsilon",
-      "title": "Van_der_Waerden's_theorem"
+      "qID": "41",
+      "oldId": "3545",
+      "fid": "1",
+      "math_inputtex": "q^{42}",
+      "title": "Martingale_(betting_system)"
     }
   }
-
 ]
