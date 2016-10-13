@@ -1,0 +1,10 @@
+g,[[gravitational acceleration]],2
+v,magnitude,0
+v,projectile,1
+v,velocity,2
+x,arbitrary distance,1
+x,distance,2
+x,Height,0
+y,altitude,2
+y,height,2
+y,projectile,0
