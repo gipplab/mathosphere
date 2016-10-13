@@ -173,9 +173,10 @@ public class CliMainTest {
         "--queries", resoucePath("com/formulasearchengine/mathosphere/mlp/gold/gold.json"),
         "--nd", resoucePath("com/formulasearchengine/mathosphere/mlp/gold/nd.json"),
         "--tex",
-        "-t", "0.8",
+        "-t", "0.6",
         "--level","2",
-        "--ref", "C:\\Users\\Moritz\\SkyDrive\\_DIMA\\08.teaching\\Abschlussarbeiten\\alexey\\MathematicalNamespaceDiscovery\\paper\\eval"};
+        "--ref", resoucePath("com/formulasearchengine/mathosphere/mlp/nd"),
+        "--texvcinfo", "http://localhost:10044/texvcinfo"};
     final PrintStream stdout = System.out;
     final ByteArrayOutputStream myOut = new ByteArrayOutputStream();
     System.setOut(new PrintStream(myOut));
