@@ -42,7 +42,9 @@ public class CreateCandidatesMapper implements MapFunction<ParsedWikiDocument, W
     List<Relation> relations = Lists.newArrayList();
     for (String identifier : identifiers) {
       List<Relation> candidates = generateCandidates(doc, identifier);
-      selfMerge(candidates);
+      Collections.sort(candidates);
+      Collections.reverse(candidates);
+      //selfMerge(candidates);
       int count = 0;
       for (Relation rel : candidates) {
         if (rel.getScore() >= config.getThreshold()) {

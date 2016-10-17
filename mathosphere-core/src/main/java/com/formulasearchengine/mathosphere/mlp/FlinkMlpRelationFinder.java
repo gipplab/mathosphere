@@ -55,13 +55,13 @@ public class FlinkMlpRelationFinder {
 
     DataSource<String> source = readWikiDump(config, env);
     DataSet<ParsedWikiDocument> documents =
-        source.flatMap(new TextExtractorMapper())
-            .map(new TextAnnotatorMapper(config));
+      source.flatMap(new TextExtractorMapper())
+        .map(new TextAnnotatorMapper(config));
 
     DataSet<WikiDocumentOutput> result = documents.map(new CreateCandidatesMapper(config));
 
     result.map(new JsonSerializerMapper<>())
-        .writeAsText(config.getOutputDir(), WriteMode.OVERWRITE);
+      .writeAsText(config.getOutputDir(), WriteMode.OVERWRITE);
     //int cores = Runtime.getRuntime().availableProcessors();
     //env.setParallelism(1); // rounds down
     final int parallelism = config.getParallelism();
@@ -99,8 +99,8 @@ public class FlinkMlpRelationFinder {
     DataSource<String> source = readWikiDump(config, env);
     final CreateCandidatesMapper candidatesMapper = new CreateCandidatesMapper(config);
     DataSet<ParsedWikiDocument> documents =
-        source.flatMap(new TextExtractorMapper())
-            .map(new TextAnnotatorMapper(config));
+      source.flatMap(new TextExtractorMapper())
+        .map(new TextAnnotatorMapper(config));
     final File file = new File(config.getQueries());
     ObjectMapper mapper = new ObjectMapper();
     List userData = mapper.readValue(file, List.class);
@@ -146,31 +146,31 @@ public class FlinkMlpRelationFinder {
             List<Relation> relations = wikiDocumentOutput.getRelations();
             Set<String> relIdents = new HashSet<>();
             for (Relation relation : relations) {
-                relIdents.add(relation.getIdentifier());
+              relIdents.add(relation.getIdentifier());
             }
             final Set<String> real = seed.getIdentifiers(config).elementSet();
-            real.retainAll(relIdents);
+            //only keep identifiers that have a definition
+            //real.retainAll(relIdents);
             final Map definitions = (Map) goldElement.get("definitions");
             final Set expected = definitions.keySet();
             Set<String> tp = new HashSet<>(expected);
             Set<String> fn = new HashSet<>(expected);
             Set<String> fp = new HashSet<>(real);
+            tp.retainAll(real);
             fn.removeAll(real);
             fp.removeAll(expected);
-            tp.retainAll(real);
             tpOverall.addAll(tp);
             fnOverall.addAll(fn);
             fpOverall.addAll(fp);
             double rec = ((double) tp.size()) / (tp.size() + fn.size());
             double prec = ((double) tp.size()) / (tp.size() + fp.size());
-            if (rec < 1. || prec < 1.) {
-              System.err.println(title + " $" + tex + "$ Precision" + prec + "; Recall" + rec);
-              System.err.println("fp:" + fp.toString());
-              System.err.println("fn:" + fn.toString());
+            //if (rec < 1. || prec < 1.) {
+              //System.err.println(title + " $" + tex + "$ Precision" + prec + "; Recall" + rec);
+              //System.err.println("fp:" + fp.toString());
+             // System.err.println("fn:" + fn.toString());
               System.err.println("https://en.formulasearchengine.com/wiki/" + title + "#math." + formula.get("oldId") + "." + fid);
-            }
-
-            getNamespaceData(title, relations);
+            //}
+            //getNamespaceData(title, relations);
             relations.removeIf(r -> !expected.contains(r.getIdentifier()));
             Collections.sort(relations, Relation::compareToName);
             removeDuplicates(definitions, relations);
@@ -192,14 +192,15 @@ public class FlinkMlpRelationFinder {
                 Integer score = references.get(relation.getTuple());
                 if (score != null && score >= config.getLevel()) {
                   tpRelOverall.add(relation);
+                  System.err.println("tp: "+ relation.getIdentifier() + ", " + relation.getDefinition());
                   tpcnt++;
                 } else {
                   fpRelOverall.add(relation);
+                  System.err.println("fp: "+ relation.getIdentifier() + ", " + relation.getDefinition());
                 }
               }
               fnRelOverallCnt += (expected.size() - tpcnt);
             }
-
           } catch (Exception e) {
             e.printStackTrace();
             System.err.println("Problem with " + title);
@@ -212,7 +213,7 @@ public class FlinkMlpRelationFinder {
 
         System.err.println("Overall definition evaluation");
         System.err.println("fp=" + fpRelOverall.size() + "; fn=" + fnRelOverallCnt
-            + "; tp=" + tpRelOverall.size());
+          + "; tp=" + tpRelOverall.size());
         System.err.println(fpRelOverall.toString());
       }
 
@@ -229,7 +230,7 @@ public class FlinkMlpRelationFinder {
           }
           if (lastIdent.compareTo(relation.getIdentifier())
               + relation.getDefinition().compareToIgnoreCase(lastDef) == 0) {
-            iterator.remove();
+              iterator.remove();
           }
           lastDef = relation.getDefinition();
           lastIdent = relation.getIdentifier();
