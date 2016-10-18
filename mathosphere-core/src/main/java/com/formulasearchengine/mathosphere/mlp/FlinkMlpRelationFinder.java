@@ -170,7 +170,9 @@ public class FlinkMlpRelationFinder {
              // System.err.println("fn:" + fn.toString());
               System.err.println("https://en.formulasearchengine.com/wiki/" + title + "#math." + formula.get("oldId") + "." + fid);
             //}
-            //getNamespaceData(title, relations);
+            if(config.getNamespace()) {
+              getNamespaceData(title, relations);
+            }
             relations.removeIf(r -> !expected.contains(r.getIdentifier()));
             Collections.sort(relations, Relation::compareToName);
             removeDuplicates(definitions, relations);
