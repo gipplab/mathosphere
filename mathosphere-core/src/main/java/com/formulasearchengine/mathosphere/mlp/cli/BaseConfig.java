@@ -10,7 +10,7 @@ import java.util.Properties;
 
 public class BaseConfig implements Serializable {
   private static final String DEFAULT_POS_MODEL =
-      "edu/stanford/nlp/models/pos-tagger/english-left3words/english-left3words-distsim.tagger";
+    "edu/stanford/nlp/models/pos-tagger/english-left3words/english-left3words-distsim.tagger";
   @Parameter(names = {"-pos", "--posModel"}, description = "POS model to use")
   private String model = DEFAULT_POS_MODEL;
 
@@ -37,6 +37,13 @@ public class BaseConfig implements Serializable {
 
   @Parameter(names = {"--texvcinfo"})
   private String texvcinfoUrl = "http://api.formulasearchengine.com/v1/media/math/check/tex";
+
+  @Parameter(names = {"--definitionMerging"}, description = "apply definition merging algorithm")
+  private Boolean definitionMerging = false;
+
+  public Boolean getDefinitionMerging() {
+    return definitionMerging;
+  }
 
   public BaseConfig() {
     Properties prop = new Properties();

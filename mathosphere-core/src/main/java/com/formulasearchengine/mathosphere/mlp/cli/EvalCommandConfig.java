@@ -15,6 +15,10 @@ public class EvalCommandConfig extends FlinkMlpCommandConfig implements Serializ
   @Parameter(names = {"--nd"}, description = "namespace discovery file")
   private String ndFile;
 
+
+  @Parameter(names = {"--namespace"}, description = "incorporate namespace data")
+  private Boolean namespace = false;
+
   @Parameter(names = {"--ref"}, description = "relevance judgements folder")
   private String relevanceFolder;
 
@@ -28,6 +32,11 @@ public class EvalCommandConfig extends FlinkMlpCommandConfig implements Serializ
   public String getNdFile() {
     return ndFile;
   }
+
+  public Boolean getNamespace() {
+    return namespace;
+  }
+
 
   public String getRelevanceFolder() {
     return relevanceFolder;
