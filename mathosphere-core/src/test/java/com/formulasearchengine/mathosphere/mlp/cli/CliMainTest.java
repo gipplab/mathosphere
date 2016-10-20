@@ -168,9 +168,9 @@ public class CliMainTest {
     temp = Files.createTempDir();
     System.out.println(temp.getAbsolutePath());
     String[] args = {"eval",
-        "-in", resoucePath("com/formulasearchengine/mathosphere/mlp/gold/eval_dataset.xml"),
+        "-in", resoucePath("com/formulasearchengine/mathosphere/mlp/gold/eval_dataset_sample.xml"),
         "-out", temp.getAbsolutePath(),
-        "--queries", resoucePath("com/formulasearchengine/mathosphere/mlp/gold/gold.json"),
+        "--queries", resoucePath("com/formulasearchengine/mathosphere/mlp/gold/gold_sample.json"),
         "--nd", resoucePath("com/formulasearchengine/mathosphere/mlp/gold/nd.json"),
         "--tex",
         "-t", "0.8",
