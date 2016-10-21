@@ -1,0 +1,16 @@
+[
+  {
+    "definitions": {
+      "q": [
+        "probability"
+      ]
+    },
+    "formula": {
+      "qID": "41",
+      "oldId": "3545",
+      "fid": "1",
+      "math_inputtex": "q^{42}",
+      "title": "Martingale_(betting_system)"
+    }
+  }
+]

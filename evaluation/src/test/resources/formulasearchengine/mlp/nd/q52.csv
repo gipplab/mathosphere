@@ -1,0 +1,27 @@
+V_{x},[[Lyapunov function]],2
+V_{x},function,1
+V_{x},stable subsystem,0
+"\dot{\mathbf{x}}",effect,0
+"\dot{\mathbf{x}}",part,1
+"\dot{u}_{x}",control,1
+"\dot{u}_{x}",control law,2
+"\dot{u}_{x}",term,1
+"\mathbf{x}",subsystem,1
+e_{1},state,1
+e_{1},system,0
+g_{x},system,0
+k_{1},control law,0
+k_{1},convergence rate,0
+k_{1},gain,1
+k_{1},parameter,1
+u_{1},control,2
+u_{x},choice,0
+u_{x},control,2
+u_{x},system,0
+v_{1},control,1
+v_{1},control law,1
+v_{1},new control,1
+z_{1},control,0
+z_{1},drive,0
+z_{1},next state,1
+z_{1},subsystem,0

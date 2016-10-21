@@ -1,0 +1,18 @@
+[
+  {
+    "definitions": {
+      "q": [
+        {
+          "Q9492": "probability (measure of the expectation that an event will occur or a statement is true)"
+        }
+      ]
+    },
+    "formula": {
+      "qID": "41",
+      "oldId": "3545",
+      "fid": "1",
+      "math_inputtex": "q^{42}",
+      "title": "Martingale_(betting_system)"
+    }
+  }
+]
