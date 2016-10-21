@@ -165,12 +165,12 @@ public class FlinkMlpRelationFinder {
             double rec = ((double) tp.size()) / (tp.size() + fn.size());
             double prec = ((double) tp.size()) / (tp.size() + fp.size());
             //if (rec < 1. || prec < 1.) {
-              //System.err.println(title + " $" + tex + "$ Precision" + prec + "; Recall" + rec);
-              //System.err.println("fp:" + fp.toString());
-             // System.err.println("fn:" + fn.toString());
-              System.err.println("https://en.formulasearchengine.com/wiki/" + title + "#math." + formula.get("oldId") + "." + fid);
+            //System.err.println(title + " $" + tex + "$ Precision" + prec + "; Recall" + rec);
+            //System.err.println("fp:" + fp.toString());
+            // System.err.println("fn:" + fn.toString());
+            System.err.println("https://en.formulasearchengine.com/wiki/" + title + "#math." + formula.get("oldId") + "." + fid);
             //}
-            if(config.getNamespace()) {
+            if (config.getNamespace()) {
               getNamespaceData(title, relations);
             }
             relations.removeIf(r -> !expected.contains(r.getIdentifier()));
@@ -194,11 +194,11 @@ public class FlinkMlpRelationFinder {
                 Integer score = references.get(relation.getTuple());
                 if (score != null && score >= config.getLevel()) {
                   tpRelOverall.add(relation);
-                  System.err.println("tp: "+ relation.getIdentifier() + ", " + relation.getDefinition());
+                  System.err.println("tp: " + relation.getIdentifier() + ", " + relation.getDefinition());
                   tpcnt++;
                 } else {
                   fpRelOverall.add(relation);
-                  System.err.println("fp: "+ relation.getIdentifier() + ", " + relation.getDefinition());
+                  System.err.println("fp: " + relation.getIdentifier() + ", " + relation.getDefinition());
                 }
               }
               fnRelOverallCnt += (expected.size() - tpcnt);
@@ -231,8 +231,8 @@ public class FlinkMlpRelationFinder {
             relation.setRelevance(2);
           }
           if (lastIdent.compareTo(relation.getIdentifier())
-              + relation.getDefinition().compareToIgnoreCase(lastDef) == 0) {
-              iterator.remove();
+            + relation.getDefinition().compareToIgnoreCase(lastDef) == 0) {
+            iterator.remove();
           }
           lastDef = relation.getDefinition();
           lastIdent = relation.getIdentifier();
@@ -253,6 +253,23 @@ public class FlinkMlpRelationFinder {
               sScore = String.valueOf(relation.getRelevance());
             }
             String[] out = new String[]{relation.getIdentifier(), relation.getDefinition(), sScore};
+            printer.printRecord(out);
+          }
+          w.flush();
+          w.close();
+        }
+      }
+
+      public void writeExtractedDefinitions(String qId, String title, List<Relation> relations) throws IOException {
+        if (config.getOutputDir() != null) {
+          final File output = new File(config.getOutputDir() + "extraction.csv");
+          if (!output.exists())
+            output.createNewFile();
+          OutputStreamWriter w = new FileWriter(output, true);
+          CSVPrinter printer = CSVFormat.DEFAULT.withRecordSeparator("\n").print(w);
+          for (Relation relation : relations) {
+            //qId, title, identifier, definition
+            String[] out = new String[]{qId, title, relation.getIdentifier(), relation.getDefinition()};
             printer.printRecord(out);
           }
           w.flush();

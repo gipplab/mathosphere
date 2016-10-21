@@ -2,7 +2,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.formulasearchengine.mathosphere</groupId>
+    <groupId>com.formulasearchengine.formulasearchengine.mlp.mathosphere</groupId>
     <artifactId>basex</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>Core BaseX backend for MathSearch</name>
@@ -38,8 +38,8 @@
         <url>git@github.com:TU-Berlin/fse-ntcir11-wmc-basex.git</url>
     </scm>
     <parent>
-        <groupId>com.formulasearchengine.mathosphere</groupId>
-        <artifactId>mathosphere-parent</artifactId>
+        <groupId>com.formulasearchengine.formulasearchengine.mlp.mathosphere</groupId>
+        <artifactId>formulasearchengine.mlp.mathosphere-parent</artifactId>
         <relativePath>../pom.xml</relativePath>
         <version>3.0.0-SNAPSHOT</version>
     </parent>
@@ -169,7 +169,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>com.formulasearchengine.mathosphere.basex.Benchmark</mainClass>
+                            <mainClass>com.formulasearchengine.formulasearchengine.mlp.mathosphere.basex.Benchmark</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>
