@@ -74,6 +74,13 @@ public class CliMainTest {
   }
 
   @Test
+  public void testHelp() throws Exception {
+    String[] args = new String[1];
+    args[0] = "help";
+    runTest(args);
+  }
+
+  @Test
   public void testMlpEngPlain() throws Exception {
     String[] args = new String[5];
     final File temp;
@@ -168,14 +175,15 @@ public class CliMainTest {
     temp = Files.createTempDir();
     System.out.println(temp.getAbsolutePath());
     String[] args = {"eval",
-        "-in", resourcePath("com/formulasearchengine/mathosphere/mlp/gold/eval_dataset_sample.xml"),
+        "-in", resourcePath("com/formulasearchengine/mathosphere/mlp/gold/eval_dataset.xml"),
         "-out", temp.getAbsolutePath(),
-        "--queries", resourcePath("com/formulasearchengine/mathosphere/mlp/gold/gold_sample.json"),
+        "--queries", resourcePath("com/formulasearchengine/mathosphere/mlp/gold/gold.json"),
         "--nd", resourcePath("com/formulasearchengine/mathosphere/mlp/gold/nd.json"),
         "--tex",
         "-t", "0.8",
         "--level","2",
-        "--ref", resourcePath("com/formulasearchengine/mathosphere/mlp/nd")};
+        "--ref", resourcePath("com/formulasearchengine/mathosphere/mlp/nd"),
+      "--texvcinfo", "http://localhost:10044/texvcinfo"};
     final PrintStream stdout = System.out;
     final ByteArrayOutputStream myOut = new ByteArrayOutputStream();
     System.setOut(new PrintStream(myOut));
