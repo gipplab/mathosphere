@@ -1,0 +1,4 @@
+"\rho",gravity,0
+u_{i},fluid velocity,1
+u_{i},velocity,2
+u_{i},viscosity,0

@@ -5,6 +5,7 @@ import com.google.common.collect.Multimap;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.*;
 
@@ -23,11 +24,17 @@ public class FileParsingTest {
   public static final String EXTRACTIONS_SAMPLE_WRONG = FOLDER + "extraction_sample_wrong.csv";
   public static final String EXTRACTIONS_SAMPLE_WRONG_2 = FOLDER + "extraction_sample_wrong2.csv";
 
+
+  public File getFile(String file) {
+    ClassLoader classLoader = getClass().getClassLoader();
+    return new File(classLoader.getResource(file).getFile());
+  }
+  
   @Test
   public void testGoldReading() throws IOException {
     Evaluator evaluator = new Evaluator();
-    List<GoldEntry> gold = evaluator.readGoldEntries(GOLDFILE_SAMPLE);
-    List<GoldEntry> gold2 = evaluator.readGoldEntries(GOLDFILE_SAMPLE_2);
+    List<GoldEntry> gold = evaluator.readGoldEntries(getFile(GOLDFILE_SAMPLE));
+    List<GoldEntry> gold2 = evaluator.readGoldEntries(getFile(GOLDFILE_SAMPLE_2));
     assertEquals(gold.size(), 1);
     List<IdentifierDefinition> definitions = new ArrayList<>();
     definitions.add(new IdentifierDefinition("q", "probability"));
@@ -38,7 +45,7 @@ public class FileParsingTest {
   @Test
   public void testFullGoldReading() throws IOException {
     Evaluator evaluator = new Evaluator();
-    List<GoldEntry> gold = evaluator.readGoldEntries(Evaluator.GOLDFILE);
+    List<GoldEntry> gold = evaluator.readGoldEntries(getFile(Evaluator.GOLDFILE));
     //number of formula
     assertEquals(100, gold.size());
     //total number of definitions
@@ -54,8 +61,8 @@ public class FileParsingTest {
   @Test
   public void testExtractionReading() throws IOException {
     Evaluator evaluator = new Evaluator();
-    List<GoldEntry> gold = evaluator.readGoldEntries(GOLDFILE_SAMPLE);
-    Multimap<String, IdentifierDefinition> extractions = evaluator.readExtractions(EXTRACTIONS_SAMPLE, gold);
+    List<GoldEntry> gold = evaluator.readGoldEntries(getFile(GOLDFILE_SAMPLE));
+    Multimap<String, IdentifierDefinition> extractions = evaluator.readExtractions(getFile(EXTRACTIONS_SAMPLE), gold);
     Multimap<String, IdentifierDefinition> testData = ArrayListMultimap.create();
     testData.put("41", new IdentifierDefinition("q", "tosses"));
     assertEquals(extractions, testData);
@@ -64,8 +71,8 @@ public class FileParsingTest {
   @Test
   public void testExtractionReadingFull() throws IOException {
     Evaluator evaluator = new Evaluator();
-    List<GoldEntry> gold = evaluator.readGoldEntries(Evaluator.GOLDFILE);
-    Multimap<String, IdentifierDefinition> extractions = evaluator.readExtractions(EXTRACTIONS, gold);
+    List<GoldEntry> gold = evaluator.readGoldEntries(getFile(Evaluator.GOLDFILE));
+    Multimap<String, IdentifierDefinition> extractions = evaluator.readExtractions(getFile(EXTRACTIONS), gold);
     assertEquals(425, extractions.entries().size());
     assertEquals(87, extractions.keySet().size());
   }
@@ -73,23 +80,23 @@ public class FileParsingTest {
   @Test(expected = IllegalArgumentException.class)
   public void testExtractionReadingBadQId() throws IOException {
     Evaluator evaluator = new Evaluator();
-    List<GoldEntry> gold = evaluator.readGoldEntries(GOLDFILE_SAMPLE);
-    evaluator.readExtractions(EXTRACTIONS_SAMPLE_WRONG, gold);
+    List<GoldEntry> gold = evaluator.readGoldEntries(getFile(GOLDFILE_SAMPLE));
+    evaluator.readExtractions(getFile(EXTRACTIONS_SAMPLE_WRONG), gold);
   }
 
   @Test(expected = IllegalArgumentException.class)
   public void testExtractionReadingBadTitle() throws IOException {
     Evaluator evaluator = new Evaluator();
-    List<GoldEntry> gold = evaluator.readGoldEntries(GOLDFILE_SAMPLE);
-    evaluator.readExtractions(EXTRACTIONS_SAMPLE_WRONG_2, gold);
+    List<GoldEntry> gold = evaluator.readGoldEntries(getFile(GOLDFILE_SAMPLE));
+    evaluator.readExtractions(getFile(EXTRACTIONS_SAMPLE_WRONG_2), gold);
   }
 
   @Test
   public void testEvaluation() throws IOException {
     Evaluator evaluator = new Evaluator();
-    List<GoldEntry> gold = evaluator.readGoldEntries(Evaluator.GOLDFILE);
-    Multimap<String, IdentifierDefinition> extractions = evaluator.readExtractions(EXTRACTIONS, gold);
+    List<GoldEntry> gold = evaluator.readGoldEntries(getFile(Evaluator.GOLDFILE));
+    Multimap<String, IdentifierDefinition> extractions = evaluator.readExtractions(getFile(EXTRACTIONS), gold);
     int[] result = evaluator.evaluate(extractions, gold);
-    System.out.println(result);
+    System.out.println(String.format("tp: %d, fn: %d, fp: %d", result[0],result[1],result[2]));
   }
 }

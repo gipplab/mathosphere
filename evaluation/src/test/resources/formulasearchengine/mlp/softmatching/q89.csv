@@ -1,0 +1,16 @@
+T,[[transpose]],1
+T,distribution,0
+V,[[covariance matrix]],0
+V,asset returns,0
+X,[[first-order condition]],0
+X,[[random variable]],0
+X,asset quantities,1
+X,available assets,2
+X,optimal vector,0
+X,provisional solution,0
+X,respect,0
+X,terms,0
+X,vector,1
+"\sigma",[[matrix algebra]],0
+"\sigma",subject,0
+"\sigma",variance,1
