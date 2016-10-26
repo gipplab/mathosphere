@@ -15,7 +15,8 @@ public class Main {
       switch (command) {
         case "eval":
           int[] result = (new Evaluator()).evaluate(params.getEvaluateCommand());
-          System.out.println(String.format("tp: %d, fn: %d, fp: %d", result[0], result[1], result[2]));
+          System.out.println(String.format("tp: %d, fn: %d, fp: %d, wikidatalinks: %d"
+            , result[Evaluator.TP], result[Evaluator.FN], result[Evaluator.FP], result[Evaluator.WIKIDATALINK]));
           break;
         case "help":
         default:

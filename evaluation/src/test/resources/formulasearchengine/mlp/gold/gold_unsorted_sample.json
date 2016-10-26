@@ -1,0 +1,70 @@
+[
+  {
+    "definitions": {
+      "X": [
+        {
+          "Q36161": "set (fundamental mathematical concept related to the notions of belonging or inclusion)"
+        }
+      ],
+      "\\Sigma": [
+        {
+          "Q739925": "Family of sets (a collection of some of the subsets of a set)"
+        }
+      ]
+    },
+    "formula": {
+      "qID": "2",
+      "oldId": "4050",
+      "fid": "189",
+      "math_inputtex": "(X,\\Sigma)",
+      "title": "Bounded_variation"
+    }
+  },
+  {
+    "definitions": {
+      "W": [
+        {
+          "Q7913892": "Van der Waerden number"
+        }
+      ],
+      "k": [
+        {
+          "Q12503": "integer (number that can be written without a fractional or decimal component)"
+        }
+      ],
+      "\\varepsilon": [
+        {
+          "Q3176558": "positive number (real number strictly greater than zero)"
+        }
+      ]
+    },
+    "formula": {
+      "qID": "1",
+      "oldId": "2459",
+      "fid": "3",
+      "math_inputtex": "W(2, k) > 2^k/k^\\varepsilon",
+      "title": "Van_der_Waerden's_theorem"
+    }
+  },
+  {
+    "definitions": {
+      "p": [
+        {
+          "Q49008": " prime number (natural number greater than 1 that has no positive divisors other than 1 and itsel)"
+        }
+      ],
+      "n": [
+        {
+          "Q12503": "integer (number that can be written without a fractional or decimal component)"
+        }
+      ]
+    },
+    "formula": {
+      "qID": "3",
+      "oldId": "4189",
+      "fid": "50",
+      "math_inputtex": "(p-1)!^n",
+      "title": "Lindemann–Weierstrass_theorem"
+    }
+  }
+]

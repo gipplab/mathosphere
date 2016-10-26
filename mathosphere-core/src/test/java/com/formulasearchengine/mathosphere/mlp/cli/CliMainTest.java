@@ -164,7 +164,7 @@ public class CliMainTest {
     Main.main(args);
     final String standardOutput = myOut.toString();
     assertTrue(standardOutput
-        .contains("{\"element\":{\"f0\":\"TEX_ONLY\",\"f1\":\"i\",\"arity\":2},\"count\":88}"));
+      .contains("{\"element\":{\"f0\":\"TEX_ONLY\",\"f1\":\"i\",\"arity\":2},\"count\":88}"));
     System.setOut(stdout);
     // System.out.println(standardOutput);
   }
@@ -175,15 +175,14 @@ public class CliMainTest {
     temp = Files.createTempDir();
     System.out.println(temp.getAbsolutePath());
     String[] args = {"eval",
-        "-in", resourcePath("com/formulasearchengine/mathosphere/mlp/gold/eval_dataset.xml"),
-        "-out", temp.getAbsolutePath(),
-        "--queries", resourcePath("com/formulasearchengine/mathosphere/mlp/gold/gold.json"),
-        "--nd", resourcePath("com/formulasearchengine/mathosphere/mlp/gold/nd.json"),
-        "--tex",
-        "-t", "0.8",
-        "--level","2",
-        "--ref", resourcePath("com/formulasearchengine/mathosphere/mlp/nd"),
-      "--texvcinfo", "http://localhost:10044/texvcinfo"};
+      "-in", resourcePath("com/formulasearchengine/mathosphere/mlp/gold/eval_dataset_sample.xml"),
+      "-out", temp.getAbsolutePath(),
+      "--queries", resourcePath("com/formulasearchengine/mathosphere/mlp/gold/gold_sample.json"),
+      "--nd", resourcePath("com/formulasearchengine/mathosphere/mlp/gold/nd.json"),
+      "--tex",
+      "-t", "0.8",
+      "--level", "2",
+      "--ref", resourcePath("com/formulasearchengine/mathosphere/mlp/nd")};
     final PrintStream stdout = System.out;
     final ByteArrayOutputStream myOut = new ByteArrayOutputStream();
     System.setOut(new PrintStream(myOut));

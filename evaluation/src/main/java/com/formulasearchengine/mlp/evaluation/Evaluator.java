@@ -18,6 +18,17 @@ public class Evaluator {
 
   public static final String FOLDER = "formulasearchengine/mlp/gold/";
   public static final String GOLDFILE = FOLDER + "gold.json";
+  //Evaluation result
+  public static final int TP = 0;
+  public static final int FN = 1;
+  public static final int FP = 2;
+  public static final int WIKIDATALINK = 3;
+
+  //CSV fields
+  private static final int QID = 0;
+  private static final int TITLE = 1;
+  private static final int IDENTIFIER = 2;
+  private static final int DEFINITION = 3;
 
   public Evaluator() {}
 
@@ -29,8 +40,8 @@ public class Evaluator {
    */
   public int[] evaluate(Multimap<String, IdentifierDefinition> extractions, List<GoldEntry> gold) {
     int totalNumberOfIdentifiers = (int) gold.stream().flatMap(ge -> ge.getDefinitions().stream().map(i -> i.getIdentifier()).distinct()).count();
-    //initialize [true positives, false negatives, false positives] array
-    int[] tpfnfp = {0, totalNumberOfIdentifiers, 0};
+    //initialize [true positives, false negatives, false positives, number of wikidata links matched] array
+    int[] result = {0, totalNumberOfIdentifiers, 0, 0};
     for (GoldEntry goldEntry : gold) {
       Collection<IdentifierDefinition> identifierDefinitions = extractions.get(goldEntry.getqID());
       Set<String> identifiersWhosDefinitionWasFound = new HashSet<>();
@@ -40,36 +51,46 @@ public class Evaluator {
         if (goldEntry.getDefinitions().contains(i)) {
           if (!identifiersWhosDefinitionWasFound.contains(i.getIdentifier())) {
             System.out.print("matched,");
-            tpfnfp[0]++;
-            tpfnfp[1]--;
+            result[TP]++;
+            result[FN]--;
           } else {
             System.out.print("duplicate matched,");
+          }
+          if(i.getDefinition().matches("(^(q\\d+).*)$")){
+            result[WIKIDATALINK]++;
           }
           System.out.println(String.format("\"%s\",\"%s\"", i.getIdentifier(), i.getDefinition()));
           identifiersWhosDefinitionWasFound.add(i.getIdentifier());
         } else {
-          tpfnfp[2]++;
+          result[FP]++;
           System.out.println(String.format("not matched,\"%s\",\"%s\"", i.getIdentifier(), i.getDefinition()));
         }
       }
     }
-    return tpfnfp;
+    return result;
   }
 
+  /**
+   * Read a .csv file with extracted identifiers and perform some preliminary checks.
+   * @param file the file to parse
+   * @param goldEntries the goldstandard this file wil be checked against
+   * @return the parsed file in a format suitable for comparing to the gold standard
+   * @throws IOException
+   */
   public Multimap<String, IdentifierDefinition> readExtractions(File file, List<GoldEntry> goldEntries) throws IOException {
     Multimap<String, IdentifierDefinition> extractions = ArrayListMultimap.create();
     final FileReader extraction = new FileReader(file);
     Iterable<CSVRecord> records = CSVFormat.RFC4180.parse(extraction);
     for (CSVRecord record : records) {
       //qId, title, identifier, definition
-      String qId2 = record.get(0);
-      String title = record.get(1);
+      String qId2 = record.get(QID);
+      String title = record.get(TITLE);
       //check for qId and title
       if (goldEntries.stream().filter(g -> g.getqID().equals(qId2) && g.getTitle().equals(title)).collect(Collectors.toList()).size() == 0) {
         throw new IllegalArgumentException(String.format("The formula with qId: %s and title: %s does not exist in the gold standard.", qId2, title));
       }
-      String identifier = record.get(2);
-      String definition = record.get(3);
+      String identifier = record.get(IDENTIFIER);
+      String definition = record.get(DEFINITION);
       extractions.put(qId2, new IdentifierDefinition(identifier, definition));
     }
     return extractions;
@@ -113,6 +134,9 @@ public class Evaluator {
           // there is only one entry
           //remove everything in brackets
           final String def = stringStringEntry.getValue().trim().replaceAll("\\s*\\(.*?\\)$", "");
+          //extract wikidata link
+          final String wikidataLink = stringStringEntry.getKey();
+          result.add(wikidataLink);
           result.add(def);
         }
       } else {
