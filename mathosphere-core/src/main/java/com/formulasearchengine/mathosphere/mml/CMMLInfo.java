@@ -41,8 +41,7 @@ public class CMMLInfo implements Document {
       " } ;";
   private static final String XQUERY_HEADER = "declare default element namespace \"http://www.w3.org/1998/Math/MathML\";\n" +
       FN_PATH_FROM_ROOT +
-      "<result>{\n" +
-      "let $m := .";
+      "<result>{";
   public static final String ROBERT_MINER_XSL = "com/formulasearchengine/mathosphere/mml/RobertMinerC2s.xsl";
   final String XQUERY_FOOTER = "<element><x>{$x}</x><p>{data(functx:path-to-node($x))}</p></element>}\n" +
       "</result>";
@@ -367,8 +366,9 @@ public class CMMLInfo implements Document {
 
   public final String getXQueryString() {
     final XQueryGenerator gen = new XQueryGenerator(cmmlDoc);
-    gen.setHeader(XQUERY_HEADER);
-    gen.setFooter(XQUERY_FOOTER);
+    gen.setNamespace(XQUERY_HEADER);
+    gen.setPathToRoot(".");
+    gen.setReturnFormat(XQUERY_FOOTER);
     gen.setAddQvarMap(false);
     final String queryString = gen.toString();
     return queryString;

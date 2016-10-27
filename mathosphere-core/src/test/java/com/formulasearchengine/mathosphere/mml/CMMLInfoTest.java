@@ -325,7 +325,8 @@ public class CMMLInfoTest {
         "\n" +
         "$nodes/string-join(ancestor-or-self::*/name(.), '/')\n" +
         " } ;<result>{\n" +
-        "let $m := .for $x in $m//*:apply\n" +
+        "for $m in . return\n"+
+        "for $x in $m//*:apply\n" +
         "[*[1]/name() = 'l1' and *[2]/name() = 'apply' and *[2][*[1]/name() = 'l1'] and *[3]/name() = 'apply' and *[3][*[1]/name() = 'l1' and *[2]/name() = 'l0' and *[3]/name() = 'l0']]\n" +
         "where\n" +
         "fn:count($x/*[2]/*) = 3\n" +

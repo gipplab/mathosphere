@@ -110,8 +110,7 @@ public class Benchmark {
 		srv.startup(f);
 		File queries = new File( line.getOptionValue( "querysource" ) );
 		final NtcirTopicReader ntcirTopicReader = new NtcirTopicReader( queries );
-		ntcirTopicReader.setFooter( BASEX_FOOTER );
-		ntcirTopicReader.setHeader( BASEX_HEADER );
+		ntcirTopicReader.setPathToRoot("//*:expr");
 		ntcirTopicReader.setRestrictLength( !line.hasOption( "i" ) );
 		ntcirTopicReader.setAddQvarMap( false );
 		List<NtcirPattern> patterns = ntcirTopicReader.extractPatterns();

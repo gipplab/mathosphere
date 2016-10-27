@@ -333,8 +333,8 @@ public class Client {
 			throw new IllegalArgumentException( "Got empty MathML document" );
 		}
 		final XQueryGenerator generator = new XQueryGenerator( mwsQuery );
-		generator.setHeader( Benchmark.BASEX_HEADER );
-		generator.setFooter( Benchmark.BASEX_FOOTER );
+        generator.setPathToRoot("//*:expr");
+		generator.setReturnFormat(Benchmark.BASEX_FOOTER );
 		generator.setAddQvarMap( false );
 		return runQueryNtcirWrap(generator.toString());
 	}
