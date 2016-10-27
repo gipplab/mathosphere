@@ -40,7 +40,7 @@ training dataset.
 
 ### Master branch tests
 [![Build Status](https://travis-ci.org/TU-Berlin/mathosphere.svg?branch=master)](https://travis-ci.org/TU-Berlin/mathosphere)
-[![Coverage Status](https://coveralls.io/repos/TU-Berlin/mathosphere/badge.svg)](https://coveralls.io/r/TU-Berlin/mathosphere )
+[![Coverage Status](https://coveralls.io/repos/github/TU-Berlin/mathosphere/badge.svg?branch=master)](https://coveralls.io/github/TU-Berlin/mathosphere?branch=master)
 
 ### Building this project
 Run the following to initialize submodules after cloning this project:
