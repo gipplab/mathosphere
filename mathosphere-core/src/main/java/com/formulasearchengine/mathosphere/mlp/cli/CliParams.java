@@ -2,6 +2,7 @@ package com.formulasearchengine.mathosphere.mlp.cli;
 
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameters;
+import com.formulasearchengine.mathosphere.mathpd.cli.FlinkPdCommandConfig;
 
 import java.io.Serializable;
 
@@ -19,6 +20,7 @@ public class CliParams implements Serializable {
   private ListCommandConfig listCommand;
   private MlpCommandConfig extractCommand;
   private FlinkMlpCommandConfig mlpCommand;
+  private FlinkPdCommandConfig pdCommand;
 
   private String command;
 
@@ -34,12 +36,14 @@ public class CliParams implements Serializable {
     params.mlpCommand = new FlinkMlpCommandConfig();
     params.extractCommand = new MlpCommandConfig();
     params.evalCommand = new EvalCommandConfig();
+    params.pdCommand = new FlinkPdCommandConfig();
 
     jc.addCommand("count", params.countCommand);
     jc.addCommand("list", params.listCommand);
     jc.addCommand("extract", params.extractCommand);
     jc.addCommand("mlp", params.mlpCommand);
     jc.addCommand("eval", params.evalCommand);
+    jc.addCommand("pd", params.pdCommand);
     jc.addCommand("help", new HelpCommand());
 
     jc.parse(args);
@@ -75,5 +79,9 @@ public class CliParams implements Serializable {
 
   public EvalCommandConfig getEvalCommandConfig() {
     return evalCommand;
+  }
+
+  public FlinkPdCommandConfig getPdCommandConfig() {
+    return pdCommand;
   }
 }

@@ -1,5 +1,6 @@
 package com.formulasearchengine.mathosphere.mlp;
 
+import com.formulasearchengine.mathosphere.mathpd.FlinkPd;
 import com.formulasearchengine.mathosphere.mlp.cli.CliParams;
 import com.formulasearchengine.mathosphere.mlp.text.TokenCounter;
 
@@ -25,6 +26,8 @@ public class Main {
       FlinkMlpRelationFinder.run(params.getMlpCommandConfig());
     } else if ("eval".equals(command)) {
       FlinkMlpRelationFinder.evaluate(params.getEvalCommandConfig());
+    } else if ("pd".equals(command)) {
+      FlinkPd.run(params.getPdCommandConfig());
     } else {
       params.printHelp();
     }
