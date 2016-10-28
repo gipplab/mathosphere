@@ -1,10 +1,7 @@
 package com.formulasearchengine.mathosphere.mathpd;
 
-import com.formulasearchengine.mathosphere.mathpd.cli.FlinkPdCommandConfig;
 import com.formulasearchengine.mathosphere.mlp.Main;
-import com.formulasearchengine.mathosphere.mlp.cli.FlinkMlpCommandConfig;
 import com.google.common.base.Throwables;
-import org.apache.commons.io.IOUtils;
 import org.junit.Test;
 
 import java.io.ByteArrayOutputStream;
@@ -15,7 +12,6 @@ import java.net.URL;
 import java.net.URLDecoder;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.StringContains.containsString;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -44,7 +40,7 @@ public class FlinkPdTest {
     String[] args = new String[7];
     args[0] = "pd";
     args[1] = "-in";
-    args[2] = resourcePath("com/formulasearchengine/mathosphere/mathpd/test10.xml");
+    args[2] = resourcePath("com/formulasearchengine/mathosphere/mathpd/test9.xml");
     args[3] = "-ref";
     args[4] = resourcePath("com/formulasearchengine/mathosphere/mathpd/ex1.html");
     args[5] = "-out";

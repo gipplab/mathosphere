@@ -1,5 +1,6 @@
 package com.formulasearchengine.mathosphere.mathpd.contracts;
 
+import com.formulasearchengine.mathosphere.mathpd.pojos.ArxivDocument;
 import com.formulasearchengine.mathosphere.mlp.pojos.RawWikiDocument;
 import org.apache.commons.lang3.text.translate.AggregateTranslator;
 import org.apache.commons.lang3.text.translate.CharSequenceTranslator;
@@ -13,26 +14,29 @@ import org.slf4j.LoggerFactory;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class TextExtractorMapper implements FlatMapFunction<String, RawWikiDocument> {
+public class TextExtractorMapper implements FlatMapFunction<String, ArxivDocument> {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(TextExtractorMapper.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(TextExtractorMapper.class);
 
-  private static final Pattern TITLE_PATTERN = Pattern.compile("<ARXIVFILESPLIT(?:\\\\n?)Filename=\"(.*?).xhtml\">");
+    private static final Pattern TITLE_PATTERN = Pattern.compile("<ARXIVFILESPLIT(?:\\\\n?|[\\s\\r\\n]+)" +
+            "Filename=\"(.*?).xhtml\">(?:\\s*)(.*)", Pattern.DOTALL);
 
 
-  @Override
-  public void flatMap(String content, Collector<RawWikiDocument> out) throws Exception {
-    Matcher titleMatcher = TITLE_PATTERN.matcher(content);
-    if (!titleMatcher.find()) {
-      return;
+    @Override
+    public void flatMap(String content, Collector<ArxivDocument> out) throws Exception {
+        Matcher titleMatcher = TITLE_PATTERN.matcher(content);
+        if (!titleMatcher.find()) {
+            return;
+        }
+
+        final String title = titleMatcher.group(1);
+        final String xhtml = titleMatcher.group(2);
+        final ArxivDocument document = new ArxivDocument(title, xhtml);
+
+        LOGGER.info("processing document '{}'...", title);
+
+        out.collect(document);
+
     }
-
-    String title = titleMatcher.group(1);
-    LOGGER.info("processing document '{}'...", title);
-
-
-    out.collect(new RawWikiDocument(title, 0, content));
-
-  }
 
 }

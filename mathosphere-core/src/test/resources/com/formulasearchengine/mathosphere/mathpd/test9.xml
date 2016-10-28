@@ -10,7 +10,7 @@
 </div>
 </body></html>
 </ARXIVFILESPLIT>
-<ARXIVFILESPLIT\nFilename="./1/0704.0097/0704.0097_1_11.xhtml">
+<ARXIVFILESPLIT Filename="./1/0704.0097/0704.0097_1_11.xhtml">
 <?xml version="1.0" encoding="utf-8"?>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -24,7 +24,8 @@ and any interval <math xmlns="http://www.w3.org/1998/Math/MathML" xref="I1.i3.p1
 </div>
 </body></html>
 </ARXIVFILESPLIT>
-<ARXIVFILESPLIT\nFilename="./1/0704.0097/0704.0097_1_12.xhtml">
+<ARXIVFILESPLIT
+Filename="./1/0704.0097/0704.0097_1_12.xhtml">
 <?xml version="1.0" encoding="utf-8"?>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>

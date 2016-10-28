@@ -71,4 +71,8 @@ public class FlinkPdCommandConfig extends BaseConfig implements Serializable {
   public int getParallelism() {
     return parallelism;
   }
+
+  public String getRef() {
+    return ref;
+  }
 }
