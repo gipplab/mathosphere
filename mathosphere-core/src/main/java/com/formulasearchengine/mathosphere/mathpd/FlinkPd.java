@@ -34,13 +34,12 @@ public class FlinkPd {
         DataSource<String> source = readWikiDump(config, env);
         DataSource<String> refs = readRefs(config, env);
         source.flatMap(new TextExtractorMapper()).cross(refs.flatMap(new TextExtractorMapper()))
-                .groupBy(0)
                 .reduceGroup(new GroupReduceFunction<Tuple2<ArxivDocument, ArxivDocument>, Tuple2<Integer, String>>() {
                     @Override
                     public void reduce(Iterable<Tuple2<ArxivDocument, ArxivDocument>> iterable, Collector<Tuple2<Integer, String>> collector) throws Exception {
                         for (Tuple2<ArxivDocument, ArxivDocument> i : iterable) {
-                            final Multiset<String> elements = i.f0.getCElements();
-                            elements.removeAll(i.f1.getCElements());
+                            final Multiset<String> elements = i.f1.getCElements();
+                            elements.removeAll(i.f0.getCElements());
                             collector.collect(new Tuple2(elements.size(), i.f1.title + "-" + i.f0.title));
                         }
                     }
@@ -80,7 +79,7 @@ public class FlinkPd {
         TextInputFormat inp = new TextInputFormat(filePath);
         inp.setCharsetName("UTF-8");
         inp.setDelimiter("</ARXIVFILESPLIT>");
-        return env.readFile(inp, config.getDataset());
+        return env.readFile(inp, config.getRef());
     }
 
 
