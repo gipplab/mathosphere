@@ -1,5 +1,6 @@
 package com.formulasearchengine.mathosphere.mathpd;
 
+import com.formulasearchengine.mathmlquerygenerator.xmlhelper.NonWhitespaceNodeList;
 import com.formulasearchengine.mathosphere.mathpd.cli.FlinkPdCommandConfig;
 import com.formulasearchengine.mathosphere.mathpd.contracts.TextExtractorMapper;
 import com.formulasearchengine.mathosphere.mathpd.pojos.ArxivDocument;
@@ -20,6 +21,7 @@ import org.apache.flink.api.java.tuple.Tuple2;
 import org.apache.flink.core.fs.FileSystem.WriteMode;
 import org.apache.flink.core.fs.Path;
 import org.apache.flink.util.Collector;
+import org.w3c.dom.Node;
 
 public class FlinkPd {
 
@@ -38,6 +40,13 @@ public class FlinkPd {
                     @Override
                     public void reduce(Iterable<Tuple2<ArxivDocument, ArxivDocument>> iterable, Collector<Tuple2<Integer, String>> collector) throws Exception {
                         for (Tuple2<ArxivDocument, ArxivDocument> i : iterable) {
+                            NonWhitespaceNodeList allMathExpressionsF0 = i.f1.getMathTags();
+                            for(Node n : allMathExpressionsF0){
+                                Multiset<String> contentNodesF0 = i.f1.getCElements(n);
+                                System.out.println(contentNodesF0.toString());
+                            }
+                            System.out.println("cur comparison is finished now "+i.f0.title+" " +i.f1.title);
+
                             final Multiset<String> elements = i.f1.getCElements();
                             elements.removeAll(i.f0.getCElements());
                             collector.collect(new Tuple2(elements.size(), i.f1.title + "-" + i.f0.title));
