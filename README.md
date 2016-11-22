@@ -49,7 +49,7 @@ git submodule init
 git submodule update
 ```
 
-Run the following to pull latest changes from each submodules' repo
+Please run the following to pull latest changes from each submodules' repo
 ```
 git submodule update --remote --merge
 ```
