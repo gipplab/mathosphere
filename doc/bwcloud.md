@@ -56,6 +56,15 @@ tar -xf NTCIR_2014_dataset_XHTML5.tar.gz
 ```
 To get a password ask here http://ntcir-math.nii.ac.jp/
 
+
+## Running a WC Flink job
+
+### From the CLI
+On m execute
+```bash
+ubuntu@master:/srv/flink$ ./bin/flink run ./examples/batch/WordCount.jar --input hdfs://m:54310/data/ntcir/12/arxiv/xhtml/together.xml --output hdfs://m:54310/out/wc
+```
+
 ## To be sorted
 Copy hosts
 ```
