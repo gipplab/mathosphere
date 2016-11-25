@@ -64,7 +64,11 @@ On m execute
 ```bash
 ubuntu@master:/srv/flink$ ./bin/flink run ./examples/batch/WordCount.jar --input hdfs://m:54310/data/ntcir/12/arxiv/xhtml/together.xml --output hdfs://m:54310/out/wc
 ```
-
+## Get the data
+Execute the following command on m that will return the data from the wordcount job executed before with the destination hdfs://m:54310/out/wc
+```bash
+hdfs -getmerge /out/wc wc1.txt
+```
 ## To be sorted
 Copy hosts
 ```
