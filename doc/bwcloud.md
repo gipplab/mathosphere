@@ -64,6 +64,11 @@ On m execute
 ```bash
 ubuntu@master:/srv/flink$ ./bin/flink run ./examples/batch/WordCount.jar --input hdfs://m:54310/data/ntcir/12/arxiv/xhtml/together.xml --output hdfs://m:54310/out/wc
 ```
+or for PD run
+```bash
+ubuntu@master:/srv/flink$ ./bin/flink run /data/mathosphere/mathosphere-core/target/mathosphere-core-3.0.0-SNAPSHOT-jar-with-dependencies.jar pd --inputDir hdfs://m:54310/data/ntcir/12/arxiv/xhtml/together.xml --outputDir hdfs://m:54310/out/wc-pd --referenceDir hdfs://m:54310/data/ex1.html
+```
+
 ## Get the data
 Execute the following command on m that will return the data from the wordcount job executed before with the destination hdfs://m:54310/out/wc
 ```bash
