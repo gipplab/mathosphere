@@ -22,6 +22,7 @@ public class ExtractionTests {
   public static final String GOLDFILE_UNSORTED = FOLDER + "gold_unsorted_sample.json";
   public static final String EXTRACTIONS = FOLDER + "extraction.csv";
   public static final String EXTRACTIONS_SAMPLE = FOLDER + "extraction_sample.csv";
+  public static final String EXTRACTIONS_SAMPLE_EXTRACTIONS_NO_QID = FOLDER + "extraction_sample_noQid.csv";
   public static final String EXTRACTIONS_UNSORTED = FOLDER + "extraction_unsorted.csv";
   public static final String EXTRACTIONS_SAMPLE_WRONG = FOLDER + "extraction_sample_wrong.csv";
   public static final String EXTRACTIONS_SAMPLE_WRONG_2 = FOLDER + "extraction_sample_wrong2.csv";
@@ -122,6 +123,29 @@ public class ExtractionTests {
     Multimap<String, IdentifierDefinition> extractions = evaluator.readExtractions(getFile(EXTRACTIONS), gold);
     int[] result = evaluator.evaluate(extractions, gold);
     Assert.assertArrayEquals(new int[]{TRUE_POSITIVES, TOTAL_NUMBER_OF_IDENTIFIERS - TRUE_POSITIVES, FALSE_POSITIVES, 0}, result);
+    System.out.println(String.format("tp: %d, fn: %d, fp: %d, wikidatalinks: %d"
+      , result[Evaluator.TP], result[Evaluator.FN], result[Evaluator.FP], result[Evaluator.WIKIDATALINK]));
+  }
+
+  @Test
+  public void testEvaluationTitleKey() throws IOException {
+    Evaluator evaluator = new Evaluator();
+    List<GoldEntry> gold = evaluator.readGoldEntries(getFile(Evaluator.GOLDFILE));
+    Multimap<String, IdentifierDefinition> extractions = evaluator.readExtractions(getFile(EXTRACTIONS), gold, true);
+    int[] result = evaluator.evaluate(extractions, gold, true);
+    Assert.assertArrayEquals(new int[]{TRUE_POSITIVES, TOTAL_NUMBER_OF_IDENTIFIERS - TRUE_POSITIVES, FALSE_POSITIVES, 0}, result);
+    System.out.println(String.format("tp: %d, fn: %d, fp: %d, wikidatalinks: %d"
+      , result[Evaluator.TP], result[Evaluator.FN], result[Evaluator.FP], result[Evaluator.WIKIDATALINK]));
+  }
+
+
+  @Test
+  public void testEvaluation_no_qId() throws IOException {
+    Evaluator evaluator = new Evaluator();
+    List<GoldEntry> gold = evaluator.readGoldEntries(getFile(Evaluator.GOLDFILE));
+    Multimap<String, IdentifierDefinition> extractions = evaluator.readExtractions(getFile(EXTRACTIONS_SAMPLE_EXTRACTIONS_NO_QID), gold, true);
+    int[] result = evaluator.evaluate(extractions, gold, true);
+    Assert.assertArrayEquals(new int[]{1, TOTAL_NUMBER_OF_IDENTIFIERS - 1, 0, 0}, result);
     System.out.println(String.format("tp: %d, fn: %d, fp: %d, wikidatalinks: %d"
       , result[Evaluator.TP], result[Evaluator.FN], result[Evaluator.FP], result[Evaluator.WIKIDATALINK]));
   }

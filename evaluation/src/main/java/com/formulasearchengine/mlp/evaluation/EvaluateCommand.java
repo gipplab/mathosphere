@@ -16,19 +16,28 @@ public class EvaluateCommand implements Serializable {
         "\n1,matched,\"W\",\"van der waerden number\"")
   private String in = "";
 
-  public String getGold() {
-    return gold;
-  }
 
   @Parameter(names = {"-gold"},
     description = "The gold standard file")
   private String gold = "";
+
+  @Parameter(names = {"-titleKey"},
+    description = "Use the title instead of the qId for the matching")
+  private boolean titleKey = false;
 
   public EvaluateCommand() {
   }
 
   public String getIn() {
     return in;
+  }
+
+  public String getGold() {
+    return gold;
+  }
+
+  public boolean isTitleKey() {
+    return titleKey;
   }
 
 }
