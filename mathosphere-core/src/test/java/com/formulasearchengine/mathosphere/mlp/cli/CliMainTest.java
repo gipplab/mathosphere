@@ -189,6 +189,35 @@ public class CliMainTest {
     Main.main(args);
     final String standardOutput = myOut.toString();
     System.setOut(stdout);
+  }
+
+
+  @Test
+  @Ignore
+  public void testPatternMatcher() throws Exception {
+    final File temp = Files.createTempDir();
+    String[] args = {CliParams.EVAL,
+      "-in", resourcePath("com/formulasearchengine/mathosphere/mlp/gold/eval_dataset.xml"),
+      "-out", temp.getAbsolutePath(),
+      "--queries", resourcePath("com/formulasearchengine/mathosphere/mlp/gold/gold.json"),
+      "--nd", resourcePath("com/formulasearchengine/mathosphere/mlp/gold/nd.json"),
+      "--tex",
+      "--usePatternMatcher",
+      "-t", "0.8",
+      "--level", "2",
+      "--ref", resourcePath("com/formulasearchengine/mathosphere/mlp/nd"),
+      "--texvcinfo", "http://localhost:10044/texvcinfo"
+    };
+
+
+    final PrintStream stdout = System.out;
+    final ByteArrayOutputStream myOut = new ByteArrayOutputStream();
+    System.setOut(new
+
+      PrintStream(myOut));
+    Main.main(args);
+    final String standardOutput = myOut.toString();
+    System.setOut(stdout);
     //System.out.println(standardOutput);
   }
 
