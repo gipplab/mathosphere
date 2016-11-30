@@ -180,6 +180,11 @@
             <artifactId>httpclient</artifactId>
             <version>4.5</version>
         </dependency>
+        <dependency>
+            <groupId>com.formulasearchengine.evaluation</groupId>
+            <artifactId>evaluation</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
     </dependencies>
     <developers>
         <developer>

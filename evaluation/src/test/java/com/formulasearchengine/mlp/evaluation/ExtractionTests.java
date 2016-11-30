@@ -25,6 +25,7 @@ public class ExtractionTests {
   public static final String GOLDFILE_UNSORTED = FOLDER + "gold_unsorted_sample.json";
   public static final String EXTRACTIONS = FOLDER + "extraction.csv";
   public static final String EXTRACTIONS_SAMPLE = FOLDER + "extraction_sample.csv";
+  public static final String EXTRACTIONS_SAMPLE_LINK_WIKIDATA_NORMAL = FOLDER + "extraction_sample_link_wikidata_normal.csv";
   public static final String EXTRACTIONS_SAMPLE_EXTRACTIONS_NO_QID = FOLDER + "extraction_sample_noQid.csv";
   public static final String EXTRACTIONS_UNSORTED = FOLDER + "extraction_unsorted.csv";
   public static final String EXTRACTIONS_SAMPLE_WRONG = FOLDER + "extraction_sample_wrong.csv";
@@ -145,6 +146,17 @@ public class ExtractionTests {
     Multimap<String, IdentifierDefinition> extractions = evaluator.readExtractions(getFile(EXTRACTIONS_SAMPLE_EXTRACTIONS_NO_QID), gold, true);
     ScoreSummary result = evaluator.evaluate(extractions, gold, true);
     Assert.assertEquals(new ScoreSummary(1, TOTAL_NUMBER_OF_IDENTIFIERS - 1, 0, 0), result);
+  }
+
+  @Test
+  public void testEvaluation_entrie_with_link_wikidata_and_normal_definition() throws IOException {
+    Evaluator evaluator = new Evaluator();
+    List<GoldEntry> gold = evaluator.readGoldEntries(getFile(Evaluator.GOLDFILE));
+    Multimap<String, IdentifierDefinition> extractions = evaluator.readExtractions(getFile(EXTRACTIONS_SAMPLE_LINK_WIKIDATA_NORMAL), gold, true);
+    int[] result = evaluator.evaluate(extractions, gold, true);
+    Assert.assertArrayEquals(new int[]{1, TOTAL_NUMBER_OF_IDENTIFIERS - 1, 0, 1}, result);
+    System.out.println(String.format("tp: %d, fn: %d, fp: %d, wikidatalinks: %d"
+      , result[Evaluator.TP], result[Evaluator.FN], result[Evaluator.FP], result[Evaluator.WIKIDATALINK]));
   }
 
   @Test

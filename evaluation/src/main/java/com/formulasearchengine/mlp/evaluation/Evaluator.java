@@ -134,6 +134,15 @@ public class Evaluator {
         extractions.put(qId2, new IdentifierDefinition(identifier, definition));
       }
     }
+    //sanity test
+    for (String key : extractions.keySet()) {
+      Collection<IdentifierDefinition> definitions = extractions.get(key);
+      for (IdentifierDefinition definition : definitions) {
+        if (definitions.stream().filter(e -> e.equals(definition)).count() > 1) {
+          throw new IllegalArgumentException("Identifier-definition pair \"" + definition.toString() + "\" occured more than once in formula: " + key);
+        }
+      }
+    }
     return extractions;
   }
 
