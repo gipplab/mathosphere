@@ -2,6 +2,7 @@ package com.formulasearchengine.mathosphere.mlp.text;
 
 import com.formulasearchengine.mathosphere.mlp.pojos.MathTag;
 
+import com.formulasearchengine.mathosphere.mlp.pojos.ParsedWikiDocument;
 import org.eclipse.mylyn.wikitext.core.parser.MarkupParser;
 import org.eclipse.mylyn.wikitext.mediawiki.core.MediaWikiLanguage;
 
@@ -91,5 +92,20 @@ public class WikiTextUtils {
     parser.setBuilder(builder);
     parser.parse(wikiMarkup);
     return builder.getResult();
+  }
+
+  public static int getFormulaPos(ParsedWikiDocument parsedWikiDocument, Integer fid) {
+    int count = -1;
+    int i;
+    for (i = 0; i < parsedWikiDocument.getFormulas().size(); i++) {
+      final MathTag t = parsedWikiDocument.getFormulas().get(i);
+      if (t.getMarkUpType() == WikiTextUtils.MathMarkUpType.LATEX) {
+        count++;
+        if (count == fid) {
+          break;
+        }
+      }
+    }
+    return i;
   }
 }

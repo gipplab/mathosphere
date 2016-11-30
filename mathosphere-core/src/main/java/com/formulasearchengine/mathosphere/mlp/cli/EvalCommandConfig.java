@@ -16,6 +16,9 @@ public class EvalCommandConfig extends FlinkMlpCommandConfig implements Serializ
   private String ndFile;
 
 
+  @Parameter(names = {"--usePatternMatcher"}, description = "Use pattern matcher instead of statistical definition extraction")
+  private boolean patternMatcher = false;
+
   @Parameter(names = {"--namespace"}, description = "incorporate namespace data")
   private Boolean namespace = false;
 
@@ -37,6 +40,9 @@ public class EvalCommandConfig extends FlinkMlpCommandConfig implements Serializ
     return namespace;
   }
 
+  public boolean isPatternMatcher() {
+    return patternMatcher;
+  }
 
   public String getRelevanceFolder() {
     return relevanceFolder;
@@ -44,5 +50,14 @@ public class EvalCommandConfig extends FlinkMlpCommandConfig implements Serializ
 
   public int getLevel() {
     return level;
+  }
+
+  public static EvalCommandConfig test() {
+    EvalCommandConfig test = new EvalCommandConfig();
+    test.dataset = "c:/tmp/mlp/input/eval_dataset.xml";
+    test.outputdir = "c:/tmp/mlp/output/";
+    test.setUseTeXIdentifiers(true);
+    test.texvcinfoUrl = "http://localhost:10044/texvcinfo";
+    return test;
   }
 }
