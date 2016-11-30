@@ -200,7 +200,7 @@ public class CliMainTest {
       "--queries", resourcePath("com/formulasearchengine/mathosphere/mlp/gold/gold_sample.json"),
       "--nd", resourcePath("com/formulasearchengine/mathosphere/mlp/gold/nd.json"),
       "--tex",
-      "--usePatternMatcher",
+      //"--usePatternMatcher",
       "-t", "0.8",
       "--level", "2",
       "--ref", resourcePath("com/formulasearchengine/mathosphere/mlp/nd")
