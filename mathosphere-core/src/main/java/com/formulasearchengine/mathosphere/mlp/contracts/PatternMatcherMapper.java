@@ -32,7 +32,7 @@ public class PatternMatcherMapper implements MapFunction<ParsedWikiDocument, Wik
 
       Set<String> identifiers = sentence.getIdentifiers();
       PatternMatcher matcher = PatternMatcher.generatePatterns(identifiers);
-      List<IdentifierMatch> foundMatches = matcher.match(sentence.getWords());
+      List<IdentifierMatch> foundMatches = matcher.match(sentence.getWords(), doc);
 
       for (IdentifierMatch match : foundMatches) {
         if (!DefinitionUtils.isValid(match.getDefinition())) {
@@ -45,8 +45,15 @@ public class PatternMatcherMapper implements MapFunction<ParsedWikiDocument, Wik
         // relation.setSentence(sentence);
         relation.setScore(1.0d);
 
-        LOGGER.debug("found match {}", relation);
-        foundRelations.add(relation);
+        if (
+          !foundRelations.stream().filter(
+            e -> e.getIdentifier().toLowerCase().equals(relation.getIdentifier().toLowerCase())
+              && e.getDefinition().toLowerCase().equals(relation.getDefinition().toLowerCase())
+          ).findAny().isPresent()
+          ) {
+          LOGGER.debug("found match {}", relation);
+          foundRelations.add(relation);
+        }
       }
     }
 

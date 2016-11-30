@@ -1,12 +1,13 @@
 package com.formulasearchengine.mlp.evaluation;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Set;
 
 /**
  * Created by Leo on 05.10.2016.
  */
-public class GoldEntry {
+public class GoldEntry implements Serializable {
   private final String qID;
   private final String oldId;
   private final String fid;

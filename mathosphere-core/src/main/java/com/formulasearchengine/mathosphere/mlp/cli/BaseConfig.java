@@ -9,37 +9,37 @@ import java.io.Serializable;
 import java.util.Properties;
 
 public class BaseConfig implements Serializable {
-  private static final String DEFAULT_POS_MODEL =
+  protected static final String DEFAULT_POS_MODEL =
     "edu/stanford/nlp/models/pos-tagger/english-left3words/english-left3words-distsim.tagger";
   @Parameter(names = {"-pos", "--posModel"}, description = "POS model to use")
-  private String model = DEFAULT_POS_MODEL;
+  protected String model = DEFAULT_POS_MODEL;
 
   @Parameter(names = {"-l", "--language"}, description = "Language of the input")
-  private String language = "en";
+  protected String language = "en";
 
   @Parameter(names = {"-a", "--alpha"})
-  private double alpha = 1.0;
+  protected double alpha = 1.0;
 
   @Parameter(names = {"-b", "--beta"})
-  private double beta = 1.0;
+  protected double beta = 1.0;
 
   @Parameter(names = {"-g", "--gamma"})
-  private double gamma = 0.1;
+  protected double gamma = 0.1;
 
   @Parameter(names = {"-t", "--threshold"})
-  private double threshold = 0.4;
+  protected double threshold = 0.4;
 
   @Parameter(names = {"-w", "--wikiDataList"})
-  private String wikiDataFile = null;
+  protected String wikiDataFile = null;
 
   @Parameter(names = {"--tex"})
-  private boolean useTeXIdentifiers = false;
+  protected boolean useTeXIdentifiers = false;
 
   @Parameter(names = {"--texvcinfo"})
-  private String texvcinfoUrl = "http://api.formulasearchengine.com/v1/media/math/check/tex";
+  protected String texvcinfoUrl = "http://api.formulasearchengine.com/v1/media/math/check/tex";
 
   @Parameter(names = {"--definitionMerging"}, description = "apply definition merging algorithm")
-  private Boolean definitionMerging = false;
+  protected Boolean definitionMerging = false;
 
   public Boolean getDefinitionMerging() {
     return definitionMerging;
