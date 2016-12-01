@@ -1,21 +1,30 @@
 package com.formulasearchengine.mathosphere.mlp.text;
 
+import com.formulasearchengine.mathosphere.mlp.cli.BaseConfig;
+import com.formulasearchengine.mathosphere.mlp.cli.EvalCommandConfig;
 import com.formulasearchengine.mathosphere.mlp.features.Feature;
 import com.formulasearchengine.mathosphere.mlp.features.FeatureVector;
 import com.formulasearchengine.mathosphere.mlp.pojos.*;
+import com.formulasearchengine.mlp.evaluation.GoldEntry;
 import com.google.common.collect.Lists;
 
 import org.apache.flink.api.common.functions.MapFunction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class FeatureExtractor implements MapFunction<ParsedWikiDocument, MyWikiDocumentOutput> {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(FeatureExtractor.class);
+
+  private final EvalCommandConfig config;
+  private final List<GoldEntry> goldEntries;
+
+  public FeatureExtractor(EvalCommandConfig config, List<GoldEntry> goldEntries) {
+    this.config = config;
+    this.goldEntries = goldEntries;
+  }
 
   @Override
   public MyWikiDocumentOutput map(ParsedWikiDocument doc) throws Exception {
@@ -26,8 +35,12 @@ public class FeatureExtractor implements MapFunction<ParsedWikiDocument, MyWikiD
       if (!sentence.getIdentifiers().isEmpty()) {
         LOGGER.debug("sentence {}", sentence);
       }
-
+      GoldEntry goldEntry = goldEntries.stream().filter(e -> e.getTitle().equals(doc.getTitle().replaceAll(" ", "_"))).findFirst().get();
+      final Integer fid = Integer.parseInt(goldEntry.getFid());
+      int pos = WikiTextUtils.getFormulaPos(doc, fid);
+      final MathTag seed = doc.getFormulas().get(pos);
       Set<String> identifiers = sentence.getIdentifiers();
+      identifiers.retainAll(seed.getIdentifiers(config).elementSet());
       MyPatternMatcher matcher = MyPatternMatcher.generatePatterns(identifiers);
       Collection<FeatureVector> foundMatches = matcher.match(sentence.getWords(), doc);
       for (FeatureVector match : foundMatches) {
@@ -35,7 +48,6 @@ public class FeatureExtractor implements MapFunction<ParsedWikiDocument, MyWikiD
         foundFeatures.add(match);
       }
     }
-
     LOGGER.info("extracted {} relations from {}", foundFeatures.size(), doc.getTitle());
     return new MyWikiDocumentOutput(doc.getTitle(), foundFeatures, doc.getIdentifiers());
   }

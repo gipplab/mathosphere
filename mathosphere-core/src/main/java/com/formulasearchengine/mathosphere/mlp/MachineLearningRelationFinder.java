@@ -44,10 +44,11 @@ public class MachineLearningRelationFinder {
     DataSet<ParsedWikiDocument> documents = source.flatMap(new TextExtractorMapper())
       .map(new TextAnnotatorMapper(config));
     Logger.getRootLogger().setLevel(Level.ERROR);
-    DataSet<MyWikiDocumentOutput> features = documents.map(new FeatureExtractor());
+    ArrayList<GoldEntry> gold = (new Evaluator()).readGoldEntries(new File("C:\\tmp\\mlp\\input\\gold.json"));
+    DataSet<MyWikiDocumentOutput> features = documents.map(new FeatureExtractor(config, gold));
     features.map(new JsonSerializerMapper<>())
       .writeAsText(config.getOutputDir(), WriteMode.OVERWRITE);
-    ArrayList<GoldEntry> gold = (new Evaluator()).readGoldEntries(new File("C:\\tmp\\mlp\\input\\gold.json"));
+
     //add gold information to extracted featureVectors
     DataSet<FeatureVector> labeledVectorDataSet = features.flatMap(new FlatMapFunction<MyWikiDocumentOutput, FeatureVector>() {
       @Override
