@@ -8,14 +8,10 @@ import com.formulasearchengine.mathosphere.mlp.contracts.JsonSerializerMapper;
 import com.formulasearchengine.mathosphere.mlp.contracts.TextAnnotatorMapper;
 import com.formulasearchengine.mathosphere.mlp.pojos.ParsedWikiDocument;
 import com.formulasearchengine.mathosphere.mlp.pojos.WikiDocumentOutput;
-import com.formulasearchengine.mathosphere.mml.CMMLInfo;
 import com.google.common.collect.Multiset;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.flink.api.common.functions.GroupReduceFunction;
-import org.apache.flink.api.common.functions.ReduceFunction;
-import org.apache.flink.api.common.typeutils.base.array.StringArraySerializer;
-import org.apache.flink.api.java.DataSet;
 import org.apache.flink.api.java.ExecutionEnvironment;
 import org.apache.flink.api.java.io.TextInputFormat;
 import org.apache.flink.api.java.operators.DataSource;
@@ -25,7 +21,6 @@ import org.apache.flink.core.fs.Path;
 import org.apache.flink.util.Collector;
 
 import javax.xml.xpath.XPathExpressionException;
-import java.util.logging.Logger;
 
 public class FlinkPd {
     protected static final Log LOG = LogFactory.getLog(FlinkPd.class);
@@ -49,8 +44,10 @@ public class FlinkPd {
                                 final Multiset<String> elements = i.f1.getCElements();
                                 elements.removeAll(i.f0.getCElements());
                                 collector.collect(new Tuple2(elements.size(), i.f1.title + "-" + i.f0.title));
-                            }catch( XPathExpressionException xPathExpressionException){
-                                LOG.error("could not parse document: "+i.f0.title + " OR "+i.f1.title, xPathExpressionException);
+
+                                MathPdFeatureExtractor.getBigramLeaves(i.f0);
+                            } catch (XPathExpressionException xPathExpressionException) {
+                                LOG.error("could not parse document: " + i.f0.title + " OR " + i.f1.title, xPathExpressionException);
                             }
                         }
                     }
