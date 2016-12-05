@@ -10,3 +10,6 @@
 [submodule "lib/WikidataIdListGenerator"]
 	path = lib/WikidataIdListGenerator
 	url = https://github.com/physikerwelt/WikidataListGenerator.git
+[submodule "lib/JFastEMD"]
+	path = lib/JFastEMD
+	url = https://github.com/telmomenezes/JFastEMD
