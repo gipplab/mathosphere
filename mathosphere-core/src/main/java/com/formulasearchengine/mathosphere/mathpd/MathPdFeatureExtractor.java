@@ -1,6 +1,7 @@
 package com.formulasearchengine.mathosphere.mathpd;
 
 import com.formulasearchengine.mathosphere.mathpd.pojos.ArxivDocument;
+import com.telmomenezes.jfastemd.Signature;
 import org.apache.flink.api.java.tuple.Tuple2;
 import org.w3c.dom.Node;
 
@@ -40,5 +41,9 @@ public class MathPdFeatureExtractor {
         }
 
         return bigramLeaves;
+    }
+
+    public static Signature getCElementsSignature() {
+        return null;
     }
 }
