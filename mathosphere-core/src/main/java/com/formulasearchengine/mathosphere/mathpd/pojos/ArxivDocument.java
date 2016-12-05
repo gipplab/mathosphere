@@ -4,9 +4,6 @@ import com.formulasearchengine.mathmlquerygenerator.xmlhelper.NonWhitespaceNodeL
 import com.formulasearchengine.mathmlquerygenerator.xmlhelper.XMLHelper;
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Multiset;
-import com.google.common.collect.Multisets;
-import com.jcabi.immutable.Array;
-import com.sun.xml.internal.ws.encoding.XMLHTTPBindingCodec;
 import org.apache.commons.lang3.StringUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
