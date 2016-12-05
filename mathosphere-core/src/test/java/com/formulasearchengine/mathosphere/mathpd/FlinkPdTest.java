@@ -11,19 +11,12 @@ import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLDecoder;
 
-import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 /**
  * Created by Moritz on 12.11.2015.
  */
 public class FlinkPdTest {
-
-  private String resourcePath(String resourceName) {
-    ClassLoader classLoader = getClass().getClassLoader();
-    URL resource = classLoader.getResource(resourceName);
-    return decodePath(resource.getFile());
-  }
 
   private static String decodePath(String urlEncodedPath) {
     try {
@@ -32,6 +25,12 @@ public class FlinkPdTest {
       throw Throwables.propagate(e);
     }
   }
+
+    private String resourcePath(String resourceName) {
+        ClassLoader classLoader = getClass().getClassLoader();
+        URL resource = classLoader.getResource(resourceName);
+        return decodePath(resource.getFile());
+    }
 
   @Test
   public void testCountTok() throws Exception {
@@ -47,7 +46,7 @@ public class FlinkPdTest {
     args[6] = temp.getAbsolutePath();
     final PrintStream stdout = System.out;
     final ByteArrayOutputStream myOut = new ByteArrayOutputStream();
-    System.setOut(new PrintStream(myOut));
+      //System.setOut(new PrintStream(myOut));
     Main.main(args);
     final String standardOutput = myOut.toString();
     assertTrue(standardOutput.contains("switched to FINISHED"));

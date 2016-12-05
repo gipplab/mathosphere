@@ -1,7 +1,6 @@
 package com.formulasearchengine.mathosphere.mathpd;
 
 import com.formulasearchengine.mathosphere.mathpd.pojos.ArxivDocument;
-import com.telmomenezes.jfastemd.Signature;
 import org.apache.flink.api.java.tuple.Tuple2;
 import org.w3c.dom.Node;
 
@@ -16,6 +15,7 @@ public class MathPdFeatureExtractor {
 
     /**
      * Gets
+     *
      * @param n
      * @return
      */
@@ -33,7 +33,7 @@ public class MathPdFeatureExtractor {
      */
     public static List<Tuple2<String, String>> getBigramLeaves(ArxivDocument document) throws XPathExpressionException {
         final List<Tuple2<String, String>> bigramLeaves = new ArrayList<>();
-        for( Node curLeafNode : document.getCElementLeafNodes()){
+        for (Node curLeafNode : document.getCElementLeafNodes()) {
             bigramLeaves.add(new Tuple2<>(getNodeTextContent(curLeafNode), getNodeTextContent(curLeafNode.getParentNode())));
             System.out.print(getNodeTextContent(curLeafNode));
             System.out.print(" ; ");
@@ -43,7 +43,5 @@ public class MathPdFeatureExtractor {
         return bigramLeaves;
     }
 
-    public static Signature getCElementsSignature() {
-        return null;
-    }
+
 }
