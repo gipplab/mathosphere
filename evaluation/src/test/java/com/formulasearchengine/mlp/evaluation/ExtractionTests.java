@@ -121,10 +121,8 @@ public class ExtractionTests {
     Evaluator evaluator = new Evaluator();
     List<GoldEntry> gold = evaluator.readGoldEntries(getFile(Evaluator.GOLDFILE));
     Multimap<String, IdentifierDefinition> extractions = evaluator.readExtractions(getFile(EXTRACTIONS), gold);
-    int[] result = evaluator.evaluate(extractions, gold);
-    Assert.assertArrayEquals(new int[]{TRUE_POSITIVES, TOTAL_NUMBER_OF_IDENTIFIERS - TRUE_POSITIVES, FALSE_POSITIVES, 0}, result);
-    System.out.println(String.format("tp: %d, fn: %d, fp: %d, wikidatalinks: %d"
-      , result[Evaluator.TP], result[Evaluator.FN], result[Evaluator.FP], result[Evaluator.WIKIDATALINK]));
+    ScoreSummary result = evaluator.evaluate(extractions, gold);
+    Assert.assertEquals(new ScoreSummary(TRUE_POSITIVES, TOTAL_NUMBER_OF_IDENTIFIERS - TRUE_POSITIVES, FALSE_POSITIVES, 0), result);
   }
 
   @Test
@@ -132,10 +130,8 @@ public class ExtractionTests {
     Evaluator evaluator = new Evaluator();
     List<GoldEntry> gold = evaluator.readGoldEntries(getFile(Evaluator.GOLDFILE));
     Multimap<String, IdentifierDefinition> extractions = evaluator.readExtractions(getFile(EXTRACTIONS), gold, true);
-    int[] result = evaluator.evaluate(extractions, gold, true);
-    Assert.assertArrayEquals(new int[]{TRUE_POSITIVES, TOTAL_NUMBER_OF_IDENTIFIERS - TRUE_POSITIVES, FALSE_POSITIVES, 0}, result);
-    System.out.println(String.format("tp: %d, fn: %d, fp: %d, wikidatalinks: %d"
-      , result[Evaluator.TP], result[Evaluator.FN], result[Evaluator.FP], result[Evaluator.WIKIDATALINK]));
+    ScoreSummary result = evaluator.evaluate(extractions, gold, true);
+    Assert.assertEquals(new ScoreSummary(TRUE_POSITIVES, TOTAL_NUMBER_OF_IDENTIFIERS - TRUE_POSITIVES, FALSE_POSITIVES, 0), result);
   }
 
 
@@ -144,10 +140,8 @@ public class ExtractionTests {
     Evaluator evaluator = new Evaluator();
     List<GoldEntry> gold = evaluator.readGoldEntries(getFile(Evaluator.GOLDFILE));
     Multimap<String, IdentifierDefinition> extractions = evaluator.readExtractions(getFile(EXTRACTIONS_SAMPLE_EXTRACTIONS_NO_QID), gold, true);
-    int[] result = evaluator.evaluate(extractions, gold, true);
-    Assert.assertArrayEquals(new int[]{1, TOTAL_NUMBER_OF_IDENTIFIERS - 1, 0, 0}, result);
-    System.out.println(String.format("tp: %d, fn: %d, fp: %d, wikidatalinks: %d"
-      , result[Evaluator.TP], result[Evaluator.FN], result[Evaluator.FP], result[Evaluator.WIKIDATALINK]));
+    ScoreSummary result = evaluator.evaluate(extractions, gold, true);
+    Assert.assertEquals(new ScoreSummary(1, TOTAL_NUMBER_OF_IDENTIFIERS - 1, 0, 0), result);
   }
 
   @Test
@@ -156,10 +150,10 @@ public class ExtractionTests {
     List<GoldEntry> gold = evaluator.readGoldEntries(getFile(Evaluator.GOLDFILE));
     Multimap<String, IdentifierDefinition> extractionsWikidata = evaluator.readExtractions(getFile(EXTRACTIONS_SAMPLE_WIKIDATA), gold);
     Multimap<String, IdentifierDefinition> extractionsWikidata2 = evaluator.readExtractions(getFile(EXTRACTIONS_SAMPLE_WIKIDATA_2), gold);
-    int[] resultWikidata = evaluator.evaluate(extractionsWikidata, gold);
-    Assert.assertArrayEquals(new int[]{1, TOTAL_NUMBER_OF_IDENTIFIERS - 1, 0, 1}, resultWikidata);
-    int[] resultWikidata2 = evaluator.evaluate(extractionsWikidata2, gold);
-    Assert.assertArrayEquals(new int[]{1, TOTAL_NUMBER_OF_IDENTIFIERS - 1, 0, 1}, resultWikidata2);
+    ScoreSummary resultWikidata = evaluator.evaluate(extractionsWikidata, gold);
+    Assert.assertEquals(new ScoreSummary(1, TOTAL_NUMBER_OF_IDENTIFIERS - 1, 0, 1), resultWikidata);
+    ScoreSummary resultWikidata2 = evaluator.evaluate(extractionsWikidata2, gold);
+    Assert.assertEquals(new ScoreSummary(1, TOTAL_NUMBER_OF_IDENTIFIERS - 1, 0, 1), resultWikidata2);
   }
 
   @Test
@@ -167,7 +161,7 @@ public class ExtractionTests {
     Evaluator evaluator = new Evaluator();
     List<GoldEntry> gold = evaluator.readGoldEntries(getFile(GOLDFILE_UNSORTED));
     Multimap<String, IdentifierDefinition> extractions_unsorted = evaluator.readExtractions(getFile(EXTRACTIONS_UNSORTED), gold);
-    int[] result = evaluator.evaluate(extractions_unsorted, gold);
-    Assert.assertArrayEquals(new int[]{UNSORTED_TP, UNSORTED_TOTAL_IDENTIFIERS - UNSORTED_TP, UNSORTED_TOTAL_EXTRACTIONS - UNSORTED_TP, 0}, result);
+    ScoreSummary result = evaluator.evaluate(extractions_unsorted, gold);
+    Assert.assertEquals(new ScoreSummary(UNSORTED_TP, UNSORTED_TOTAL_IDENTIFIERS - UNSORTED_TP, UNSORTED_TOTAL_EXTRACTIONS - UNSORTED_TP, 0), result);
   }
 }
