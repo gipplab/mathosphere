@@ -1,18 +1,18 @@
 package com.formulasearchengine.mlp.evaluation;
 
-import java.util.List;
-import java.util.Set;
+import java.io.Serializable;
+import java.util.ArrayList;
 
 /**
  * Created by Leo on 05.10.2016.
  */
-public class GoldEntry {
+public class GoldEntry implements Serializable {
   private final String qID;
   private final String oldId;
   private final String fid;
   private final String mathInputTex;
   private final String title;
-  private final List<IdentifierDefinition> definitions;
+  private final ArrayList<IdentifierDefinition> definitions;
 
 
   public String getqID() {
@@ -35,7 +35,7 @@ public class GoldEntry {
     return title;
   }
 
-  public List<IdentifierDefinition> getDefinitions() {
+  public ArrayList<IdentifierDefinition> getDefinitions() {
     return definitions;
   }
 
@@ -66,7 +66,7 @@ public class GoldEntry {
     return result;
   }
 
-  public GoldEntry(String qID, String oldId, String fid, String mathInputTex, String title, List<IdentifierDefinition> definitions) {
+  public GoldEntry(String qID, String oldId, String fid, String mathInputTex, String title, ArrayList<IdentifierDefinition> definitions) {
     this.qID = qID;
     this.oldId = oldId;
     this.fid = fid;
