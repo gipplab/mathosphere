@@ -27,6 +27,8 @@ import org.apache.flink.api.java.tuple.Tuple2;
 import org.apache.flink.core.fs.FileSystem.WriteMode;
 import org.apache.flink.core.fs.Path;
 import org.apache.flink.util.Collector;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.FileReader;
@@ -43,6 +45,8 @@ import java.util.Map;
 import java.util.Set;
 
 public class FlinkMlpRelationFinder {
+
+  private static final Logger LOGGER = LoggerFactory.getLogger(FlinkMlpRelationFinder.class);
 
   public static void main(String[] args) throws Exception {
     FlinkMlpCommandConfig config = FlinkMlpCommandConfig.from(args);
@@ -140,9 +144,9 @@ public class FlinkMlpRelationFinder {
             final String qId = (String) formula.get("qID");
             final MathTag seed = WikiTextUtils.getLatexFormula(parsedWikiDocument, formulaId);
             if (!seed.getContent().equals(tex)) {
-              System.err.println("PROBLEM WITH" + title);
-              System.err.println(seed.getContent());
-              System.err.println(tex);
+              LOGGER.error("PROBLEM WITH" + title);
+              LOGGER.error(seed.getContent());
+              LOGGER.error(tex);
               throw new Exception("Invalid numbering.");
             }
             final WikiDocumentOutput wikiDocumentOutput = candidatesMapper.map(parsedWikiDocument);
@@ -165,7 +169,7 @@ public class FlinkMlpRelationFinder {
             tpOverall.addAll(tp);
             fnOverall.addAll(fn);
             fpOverall.addAll(fp);
-            System.err.println("https://en.formulasearchengine.com/wiki/" + title + "#math." + formula.get("oldId") + "." + formulaId);
+            LOGGER.info("https://en.formulasearchengine.com/wiki/" + title + "#math." + formula.get("oldId") + "." + formulaId);
             if (config.getNamespace()) {
               getNamespaceData(title, relations);
             }
@@ -191,29 +195,29 @@ public class FlinkMlpRelationFinder {
                 Integer score = references.get(relation.getTuple());
                 if (score != null && score >= config.getLevel()) {
                   tpRelOverall.add(relation);
-                  System.err.println("tp: " + relation.getIdentifier() + ", " + relation.getDefinition());
+                  LOGGER.info("tp: " + relation.getIdentifier() + ", " + relation.getDefinition());
                   tpcnt++;
                 } else {
                   fpRelOverall.add(relation);
-                  System.err.println("fp: " + relation.getIdentifier() + ", " + relation.getDefinition());
+                  LOGGER.info("fp: " + relation.getIdentifier() + ", " + relation.getDefinition());
                 }
               }
               fnRelOverallCnt += (expected.size() - tpcnt);
             }
           } catch (Exception e) {
             e.printStackTrace();
-            System.err.println("Problem with " + title);
+            LOGGER.info("Problem with " + title);
           }
         }
-        System.err.println("Overall identifier evaluation");
-        System.err.println("fp:" + fpOverall.size());
-        System.err.println("fn:" + fnOverall.size());
-        System.err.println("tp:" + tpOverall.size());
+        LOGGER.info("Overall identifier evaluation");
+        LOGGER.info("fp:" + fpOverall.size());
+        LOGGER.info("fn:" + fnOverall.size());
+        LOGGER.info("tp:" + tpOverall.size());
 
-        System.err.println("Overall definition evaluation - by this method, better use evaluation in Evaluation package.");
-        System.err.println("fp=" + fpRelOverall.size() + "; fn=" + fnRelOverallCnt
+        LOGGER.info("Overall definition evaluation - by this method, better use evaluation in Evaluation package.");
+        LOGGER.info("fp=" + fpRelOverall.size() + "; fn=" + fnRelOverallCnt
           + "; tp=" + tpRelOverall.size());
-        System.err.println(fpRelOverall.toString());
+        LOGGER.info(fpRelOverall.toString());
       }
 
       public void removeDuplicates(Map definitions, List<Relation> relations) {
