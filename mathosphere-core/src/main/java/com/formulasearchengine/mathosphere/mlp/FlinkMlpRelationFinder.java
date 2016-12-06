@@ -135,11 +135,10 @@ public class FlinkMlpRelationFinder {
           try {
             Map goldElement = (Map) gold.get(title);
             Map formula = (Map) goldElement.get("formula");
-            final Integer fid = Integer.parseInt((String) formula.get("fid"));
+            final Integer formulaId = Integer.parseInt((String) formula.get("fid"));
             final String tex = (String) formula.get("math_inputtex");
             final String qId = (String) formula.get("qID");
-            int pos = WikiTextUtils.getFormulaPos(parsedWikiDocument, fid);
-            final MathTag seed = parsedWikiDocument.getFormulas().get(pos);
+            final MathTag seed = WikiTextUtils.getLatexFormula(parsedWikiDocument, formulaId);
             if (!seed.getContent().equals(tex)) {
               System.err.println("PROBLEM WITH" + title);
               System.err.println(seed.getContent());
@@ -166,7 +165,7 @@ public class FlinkMlpRelationFinder {
             tpOverall.addAll(tp);
             fnOverall.addAll(fn);
             fpOverall.addAll(fp);
-            System.err.println("https://en.formulasearchengine.com/wiki/" + title + "#math." + formula.get("oldId") + "." + fid);
+            System.err.println("https://en.formulasearchengine.com/wiki/" + title + "#math." + formula.get("oldId") + "." + formulaId);
             if (config.getNamespace()) {
               getNamespaceData(title, relations);
             }
