@@ -97,28 +97,6 @@ public class WikiTextUtils {
   }
 
   /**
-   * Gets the fId'th {@link WikiTextUtils.MathMarkUpType#LATEX LATEX} type formula in a {@link ParsedWikiDocument}.
-   *
-   * @param parsedWikiDocument The Document containing the formula.
-   * @param fId                The fId of the formula.
-   * @return {@link MathTag} representing the formula.
-   */
-  public static MathTag getLatexFormula(ParsedWikiDocument parsedWikiDocument, Integer fId) {
-    int count = -1;
-    int i;
-    for (i = 0; i < parsedWikiDocument.getFormulas().size(); i++) {
-      final MathTag t = parsedWikiDocument.getFormulas().get(i);
-      if (t.getMarkUpType() == WikiTextUtils.MathMarkUpType.LATEX) {
-        count++;
-        if (count == fId) {
-          return parsedWikiDocument.getFormulas().get(i);
-        }
-      }
-    }
-    throw new IndexOutOfBoundsException("A Latex type formula with fId " + fId + " does not exist in " + parsedWikiDocument.getTitle());
-  }
-
-  /**
    * Get a definiens from a link. I.e. convert LINK_******** to [[LinkContent]] or [[LinkDefiniens]].
    * This method removes the explicit information where this link pints to and replaces it with a human readable representation.
    *

@@ -43,6 +43,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class FlinkMlpRelationFinder {
 
@@ -142,7 +143,10 @@ public class FlinkMlpRelationFinder {
             final Integer formulaId = Integer.parseInt((String) formula.get("fid"));
             final String tex = (String) formula.get("math_inputtex");
             final String qId = (String) formula.get("qID");
-            final MathTag seed = WikiTextUtils.getLatexFormula(parsedWikiDocument, formulaId);
+            final MathTag seed = parsedWikiDocument.getFormulas().stream()
+              .filter(f -> f.getMarkUpType().equals(WikiTextUtils.MathMarkUpType.LATEX)).collect(Collectors.toList())
+              .get(formulaId);
+            //WikiTextUtils.getLatexFormula(parsedWikiDocument, formulaId);
             if (!seed.getContent().equals(tex)) {
               LOGGER.error("PROBLEM WITH" + title);
               LOGGER.error(seed.getContent());
