@@ -18,11 +18,6 @@ public class Evaluator {
 
   public static final String FOLDER = "formulasearchengine/mlp/gold/";
   public static final String GOLDFILE = FOLDER + "gold.json";
-  //Evaluation result
-  public static final int TP = 0;
-  public static final int FN = 1;
-  public static final int FP = 2;
-  public static final int WIKIDATALINK = 3;
 
   //CSV fields
   private static final int QID = 0;
@@ -40,7 +35,7 @@ public class Evaluator {
    * @param gold        the gold data {@link #readGoldEntries}
    * @return [true positives, false negatives, false positives]
    */
-  public int[] evaluate(Multimap<String, IdentifierDefinition> extractions, List<GoldEntry> gold) {
+  public ScoreSummary evaluate(Multimap<String, IdentifierDefinition> extractions, List<GoldEntry> gold) {
     return evaluate(extractions, gold, false);
   }
 
@@ -53,10 +48,10 @@ public class Evaluator {
    * @param titleKey    if true the title will be used as key instead of the qId.
    * @return [true positives, false negatives, false positives]
    */
-  public int[] evaluate(Multimap<String, IdentifierDefinition> extractions, List<GoldEntry> gold, boolean titleKey) {
+  public ScoreSummary evaluate(Multimap<String, IdentifierDefinition> extractions, List<GoldEntry> gold, boolean titleKey) {
     int totalNumberOfIdentifiers = (int) gold.stream().flatMap(ge -> ge.getDefinitions().stream().map(i -> i.getIdentifier()).distinct()).count();
     //initialize [true positives, false negatives, false positives, number of wikidata links matched] array
-    int[] result = {0, totalNumberOfIdentifiers, 0, 0};
+    ScoreSummary result = new ScoreSummary(0, totalNumberOfIdentifiers, 0, 0);
     for (GoldEntry goldEntry : gold) {
       Collection<IdentifierDefinition> identifierDefinitions;
       if (titleKey) {
@@ -71,18 +66,18 @@ public class Evaluator {
         if (goldEntry.getDefinitions().contains(i)) {
           if (!identifiersWhosDefinitionWasFound.contains(i.getIdentifier())) {
             System.out.print("matched,");
-            result[TP]++;
-            result[FN]--;
+            result.tp++;
+            result.fn--;
           } else {
             System.out.print("duplicate matched,");
           }
           if (i.getDefinition().matches("(^(q\\d+).*)$")) {
-            result[WIKIDATALINK]++;
+            result.wikidatalinks++;
           }
           System.out.println(String.format("\"%s\",\"%s\"", i.getIdentifier(), i.getDefinition()));
           identifiersWhosDefinitionWasFound.add(i.getIdentifier());
         } else {
-          result[FP]++;
+          result.fp++;
           System.out.println(String.format("not matched,\"%s\",\"%s\"", i.getIdentifier(), i.getDefinition()));
         }
       }
@@ -190,7 +185,7 @@ public class Evaluator {
   }
 
 
-  public int[] evaluate(EvaluateCommand evaluateCommand) throws IOException {
+  public ScoreSummary evaluate(EvaluateCommand evaluateCommand) throws IOException {
     ArrayList<GoldEntry> goldEntries = readGoldEntries(new File(evaluateCommand.getGold()));
     Multimap<String, IdentifierDefinition> extractions = readExtractions(new File(evaluateCommand.getIn()), goldEntries, evaluateCommand.isTitleKey());
     return evaluate(extractions, goldEntries, evaluateCommand.isTitleKey());
