@@ -96,19 +96,26 @@ public class WikiTextUtils {
     return builder.getResult();
   }
 
-  public static int getFormulaPos(ParsedWikiDocument parsedWikiDocument, Integer fid) {
+  /**
+   * Gets the fId'th {@link WikiTextUtils.MathMarkUpType#LATEX LATEX} type formula in a {@link ParsedWikiDocument}.
+   *
+   * @param parsedWikiDocument The Document containing the formula.
+   * @param fId                The fId of the formula.
+   * @return {@link MathTag} representing the formula.
+   */
+  public static MathTag getLatexFormula(ParsedWikiDocument parsedWikiDocument, Integer fId) {
     int count = -1;
     int i;
     for (i = 0; i < parsedWikiDocument.getFormulas().size(); i++) {
       final MathTag t = parsedWikiDocument.getFormulas().get(i);
       if (t.getMarkUpType() == WikiTextUtils.MathMarkUpType.LATEX) {
         count++;
-        if (count == fid) {
-          break;
+        if (count == fId) {
+          return parsedWikiDocument.getFormulas().get(i);
         }
       }
     }
-    return i;
+    throw new IndexOutOfBoundsException("A Latex type formula with fId " + fId + " does not exist in " + parsedWikiDocument.getTitle());
   }
 
   /**
