@@ -11,6 +11,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
+import static com.formulasearchengine.mathosphere.mlp.text.WikiTextUtils.deLinkify;
+
 public class PatternMatcher {
   private List<Pattern<Word>> patterns;
 
@@ -89,21 +91,4 @@ public class PatternMatcher {
       return definition;
     }
   }
-
-  private String deLinkify(Word word, ParsedWikiDocument doc) {
-    String definition;
-    if (word.getPosTag().equals(PosTag.LINK)) {
-      String hash = word.getWord().replaceAll("^LINK_", "");
-      WikidataLink link = doc.getLinkMap().get(hash);
-      if (link != null) {
-        definition = "[[" + link.getContent() + "]]";
-      } else {
-        definition = "[[" + word.getWord() + "]]";
-      }
-    } else {
-      definition = word.getWord();
-    }
-    return definition;
-  }
-
 }
