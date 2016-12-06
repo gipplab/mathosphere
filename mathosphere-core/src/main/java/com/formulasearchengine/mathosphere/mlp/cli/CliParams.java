@@ -8,6 +8,13 @@ import java.io.Serializable;
 
 public class CliParams implements Serializable {
 
+  public static final String COUNT = "count";
+  public static final String LIST = "list";
+  public static final String EXTRACT = "extract";
+  public static final String MLP = "mlp";
+  public static final String EVAL = "eval";
+  public static final String PD = "pd";
+  public static final String HELP = "help";
   private EvalCommandConfig evalCommand;
 
   @Parameters(commandDescription = "Prints this help message")
@@ -38,13 +45,13 @@ public class CliParams implements Serializable {
     params.evalCommand = new EvalCommandConfig();
     params.pdCommand = new FlinkPdCommandConfig();
 
-    jc.addCommand("count", params.countCommand);
-    jc.addCommand("list", params.listCommand);
-    jc.addCommand("extract", params.extractCommand);
-    jc.addCommand("mlp", params.mlpCommand);
-    jc.addCommand("eval", params.evalCommand);
-    jc.addCommand("pd", params.pdCommand);
-    jc.addCommand("help", new HelpCommand());
+    jc.addCommand(COUNT, params.countCommand);
+    jc.addCommand(LIST, params.listCommand);
+    jc.addCommand(EXTRACT, params.extractCommand);
+    jc.addCommand(MLP, params.mlpCommand);
+    jc.addCommand(EVAL, params.evalCommand);
+    jc.addCommand(PD, params.pdCommand);
+    jc.addCommand(HELP, new HelpCommand());
 
     jc.parse(args);
 
