@@ -1,5 +1,8 @@
 package com.formulasearchengine.mlp.evaluation;
 
+import com.formulasearchengine.mlp.evaluation.pojo.GoldEntry;
+import com.formulasearchengine.mlp.evaluation.pojo.IdentifierDefinition;
+import com.formulasearchengine.mlp.evaluation.pojo.ScoreSummary;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import org.junit.Assert;

@@ -1,4 +1,4 @@
-package com.formulasearchengine.mlp.evaluation;
+package com.formulasearchengine.mlp.evaluation.pojo;
 
 import java.io.Serializable;
 

@@ -1,4 +1,4 @@
-package com.formulasearchengine.mlp.evaluation;
+package com.formulasearchengine.mlp.evaluation.cli;
 
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameters;

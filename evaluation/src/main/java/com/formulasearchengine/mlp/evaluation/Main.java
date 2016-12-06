@@ -1,5 +1,8 @@
 package com.formulasearchengine.mlp.evaluation;
 
+import com.formulasearchengine.mlp.evaluation.cli.CliParams;
+import com.formulasearchengine.mlp.evaluation.pojo.ScoreSummary;
+
 import java.io.IOException;
 
 /**
