@@ -154,7 +154,7 @@ public class Evaluator {
    */
 
   private GoldEntry parseGold(Map<String, Object> gold) {
-    List<IdentifierDefinition> definitions = new ArrayList<>();
+    ArrayList<IdentifierDefinition> definitions = new ArrayList<>();
     Map<String, String> rawDefinitions = (Map<String, String>) gold.get("definitions");
     for (String identifier : rawDefinitions.keySet()) {
       List<String> defeniens = getDefiniens(rawDefinitions, identifier);

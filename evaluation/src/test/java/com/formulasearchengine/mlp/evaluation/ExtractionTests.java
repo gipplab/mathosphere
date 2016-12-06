@@ -53,7 +53,7 @@ public class ExtractionTests {
     List<GoldEntry> gold_withWikidata = evaluator.readGoldEntries(getFile(GOLDFILE_SAMPLE));
     List<GoldEntry> gold_withoutWikidata = evaluator.readGoldEntries(getFile(GOLDFILE_SAMPLE_2));
     assertEquals(gold_withoutWikidata.size(), 1);
-    List<IdentifierDefinition> definitions = new ArrayList<>();
+    ArrayList<IdentifierDefinition> definitions = new ArrayList<>();
     definitions.add(new IdentifierDefinition("q", "probability"));
     //without wikidata
     assertEquals(1, gold_withoutWikidata.size());
@@ -76,7 +76,7 @@ public class ExtractionTests {
     assertEquals(TOTAL_NUMBER_OF_WIKIDATA_LINKS, gold.stream().flatMap(g -> g.getDefinitions().stream().filter(d -> d.getDefinition().matches("(^(q\\d+).*)$"))).count());
     //number of distinct identifiers
     assertEquals(TOTAL_NUMBER_OF_IDENTIFIERS, gold.stream().flatMap(g -> g.getDefinitions().stream().map(i -> i.getIdentifier()).distinct()).count());
-    List<IdentifierDefinition> definitions = new ArrayList<>();
+    ArrayList<IdentifierDefinition> definitions = new ArrayList<>();
     definitions.add(new IdentifierDefinition("q", "q9492"));
     definitions.add(new IdentifierDefinition("q", "probability"));
     //0 indexed but the first qId is 1 => 40 == 41
