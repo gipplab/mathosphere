@@ -1,6 +1,7 @@
 package com.formulasearchengine.mathosphere.mathpd;
 
 import com.formulasearchengine.mathosphere.mathpd.pojos.ArxivDocument;
+import com.formulasearchengine.mathosphere.mathpd.pojos.ExtractedMathPDDocument;
 import com.formulasearchengine.mathosphere.mml.CMMLInfo;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -11,6 +12,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.xpath.XPathExpressionException;
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -22,8 +24,10 @@ import java.util.Set;
 public class Distances {
     private static final Log LOG = LogFactory.getLog(Distances.class);
 
-    public static float computeAbsoluteDistance(Map<String, Integer> h1, Map<String, Integer> h2) {
-        float distance = 0;
+    private static final DecimalFormat decimalFormat = new DecimalFormat("#.###");
+
+    public static double computeAbsoluteDistance(Map<String, Integer> h1, Map<String, Integer> h2) {
+        double distance = 0;
 
         Set<String> keySet = new HashSet();
 
@@ -31,8 +35,8 @@ public class Distances {
         keySet.addAll(h2.keySet());
 
         for (String key : keySet) {
-            float v1 = h1.get(key) == null ? 0 : h1.get(key);
-            float v2 = h2.get(key) == null ? 0 : h2.get(key);
+            double v1 = h1.get(key) == null ? 0 : h1.get(key);
+            double v2 = h2.get(key) == null ? 0 : h2.get(key);
 
             distance += Math.abs(v1 - v2);
         }
@@ -119,49 +123,17 @@ public class Distances {
         return contentElementsToHistogram(elements);
     }
 
-    /**
-     * compares frequencies of cn (numbers) and co (operators) on document level
-     *
-     * @param d1
-     * @param d2
-     * @throws TransformerException
-     * @throws ParserConfigurationException
-     */
-    public static void testdist(ArxivDocument d1, ArxivDocument d2) throws TransformerException, ParserConfigurationException, XPathExpressionException, IOException {
-        final String tagname = "cn";
+    public static void testdist(ExtractedMathPDDocument f0, ExtractedMathPDDocument f1) {
+        final double absoluteDistanceContentNumbers = computeAbsoluteDistance(f0.getHistogramCn(), f1.getHistogramCn());
+        final double absoluteDistanceContentOperators = computeAbsoluteDistance(f0.getHistogramCo(), f1.getHistogramCo());
+        final double absoluteDistanceContentIdentifiers = computeAbsoluteDistance(f0.getHistogramCi(), f1.getHistogramCo());
 
-        System.out.println("h1 start");
-        Map<String, Integer> histogramDoc1 = getDocumentHistogram(d1, tagname);
-        System.out.println("h2 start");
-        Map<String, Integer> histogramDoc2 = getDocumentHistogram(d2, tagname);
+        LOG.info(getDocDescription(f0, f1) + "CN " + decimalFormat.format(absoluteDistanceContentNumbers));
+        LOG.info(getDocDescription(f0, f1) + "CO " + decimalFormat.format(absoluteDistanceContentOperators));
+        LOG.info(getDocDescription(f0, f1) + "CI " + decimalFormat.format(absoluteDistanceContentIdentifiers));
+    }
 
-        float absDist = computeAbsoluteDistance(histogramDoc1, histogramDoc2);
-        System.out.println("absDist " + tagname + ": " + absDist);
-
-
-        /*final CMMLInfo strictCmmlDoc1 = new CMMLInfo(d1).toStrictCmml();
-        final CMMLInfo strictCmmlDoc2 = new CMMLInfo(d2).toStrictCmml();
-
-        final NodeList contentNumberElements1 = strictCmmlDoc1.getElementsByTagName("cn");
-        final NodeList contentNumberElements2 = strictCmmlDoc2.getElementsByTagName("cn");
-        final NodeList contentOperatorElements1 = strictCmmlDoc1.getElementsByTagName("co");
-        final NodeList contentOperatorElements2 = strictCmmlDoc2.getElementsByTagName("co");
-        final NodeList contentIdentifierElements1 = strictCmmlDoc1.getElementsByTagName("ci");
-        final NodeList contentIdentifierElements2 = strictCmmlDoc2.getElementsByTagName("ci");
-
-        final Map<String, Integer> contentNumberHistogram1 = contentElementsToHistogram(contentNumberElements1);
-        final Map<String, Integer> contentNumberHistogram2 = contentElementsToHistogram(contentNumberElements2);
-        final Map<String, Integer> contentOperatorHistogram1 = contentElementsToHistogram(contentOperatorElements1);
-        final Map<String, Integer> contentOperatorHistogram2 = contentElementsToHistogram(contentOperatorElements2);
-        final Map<String, Integer> contentIdentifierHistogram1 = contentElementsToHistogram(contentIdentifierElements1);
-        final Map<String, Integer> contentIdentifierHistogram2 = contentElementsToHistogram(contentIdentifierElements2);
-
-        float absoluteDistanceContentNumbers = computeAbsoluteDistance(contentNumberHistogram1, contentNumberHistogram2);
-        float absoluteDistanceContentOperators = computeAbsoluteDistance(contentOperatorHistogram1, contentOperatorHistogram2);
-        float absoluteDistanceContentIdentifiers = computeAbsoluteDistance(contentIdentifierHistogram1, contentIdentifierHistogram2);
-
-        LOG.info("numbers     = " + absoluteDistanceContentNumbers);
-        LOG.info("operators   = " + absoluteDistanceContentOperators);
-        LOG.info("identifiers = " + absoluteDistanceContentIdentifiers);*/
+    private static String getDocDescription(ExtractedMathPDDocument f0, ExtractedMathPDDocument f1) {
+        return "{" + f0.getTitle() + ";" + f1.getTitle() + "} ";
     }
 }

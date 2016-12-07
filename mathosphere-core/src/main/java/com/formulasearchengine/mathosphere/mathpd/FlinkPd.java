@@ -2,7 +2,7 @@ package com.formulasearchengine.mathosphere.mathpd;
 
 import com.formulasearchengine.mathosphere.mathpd.cli.FlinkPdCommandConfig;
 import com.formulasearchengine.mathosphere.mathpd.contracts.TextExtractorMapper;
-import com.formulasearchengine.mathosphere.mathpd.pojos.ArxivDocument;
+import com.formulasearchengine.mathosphere.mathpd.pojos.ExtractedMathPDDocument;
 import com.formulasearchengine.mathosphere.mlp.contracts.CreateCandidatesMapper;
 import com.formulasearchengine.mathosphere.mlp.contracts.JsonSerializerMapper;
 import com.formulasearchengine.mathosphere.mlp.contracts.TextAnnotatorMapper;
@@ -32,24 +32,14 @@ public class FlinkPd {
 
         DataSource<String> source = readWikiDump(config, env);
         DataSource<String> refs = readRefs(config, env);
+        //noinspection Convert2Lambda
         source.flatMap(new TextExtractorMapper()).cross(refs.flatMap(new TextExtractorMapper()))
-                .reduceGroup(new GroupReduceFunction<Tuple2<ArxivDocument, ArxivDocument>, Tuple2<Integer, String>>() {
+                .groupBy(1)
+                .reduceGroup(new GroupReduceFunction<Tuple2<ExtractedMathPDDocument, ExtractedMathPDDocument>, Tuple2<Integer, String>>() {
                     @Override
-                    public void reduce(Iterable<Tuple2<ArxivDocument, ArxivDocument>> iterable, Collector<Tuple2<Integer, String>> collector) throws Exception {
-                        for (Tuple2<ArxivDocument, ArxivDocument> i : iterable) {
-                            System.out.println("next pair");
+                    public void reduce(Iterable<Tuple2<ExtractedMathPDDocument, ExtractedMathPDDocument>> iterable, Collector<Tuple2<Integer, String>> collector) throws Exception {
+                        for (Tuple2<ExtractedMathPDDocument, ExtractedMathPDDocument> i : iterable) {
                             Distances.testdist(i.f0, i.f1);
-                            /*try {
-                                HashMap<String, Integer> h1 = Distances.extractHistogram(i.f0.getCElements());
-                                HashMap<String, Integer> h2 = Distances.extractHistogram(i.f1.getCElements());
-                                float dist = Distances.computeAbsoluteDistance(h1, h2);
-
-                                System.out.println(i.f0.title + " " + i.f1.title + ": " + dist);
-
-
-                            } catch (XPathExpressionException xPathExpressionException) {
-                                LOG.error("could not parse document: " + i.f0.title + " OR " + i.f1.title, xPathExpressionException);
-                            }*/
                         }
                     }
                 })
