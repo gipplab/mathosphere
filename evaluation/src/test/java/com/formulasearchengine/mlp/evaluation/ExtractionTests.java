@@ -153,10 +153,8 @@ public class ExtractionTests {
     Evaluator evaluator = new Evaluator();
     List<GoldEntry> gold = evaluator.readGoldEntries(getFile(Evaluator.GOLDFILE));
     Multimap<String, IdentifierDefinition> extractions = evaluator.readExtractions(getFile(EXTRACTIONS_SAMPLE_LINK_WIKIDATA_NORMAL), gold, true);
-    int[] result = evaluator.evaluate(extractions, gold, true);
-    Assert.assertArrayEquals(new int[]{1, TOTAL_NUMBER_OF_IDENTIFIERS - 1, 0, 1}, result);
-    System.out.println(String.format("tp: %d, fn: %d, fp: %d, wikidatalinks: %d"
-      , result[Evaluator.TP], result[Evaluator.FN], result[Evaluator.FP], result[Evaluator.WIKIDATALINK]));
+    ScoreSummary result = evaluator.evaluate(extractions, gold, true);
+    Assert.assertEquals(new ScoreSummary(1, TOTAL_NUMBER_OF_IDENTIFIERS - 1, 0, 1), result);
   }
 
   @Test
