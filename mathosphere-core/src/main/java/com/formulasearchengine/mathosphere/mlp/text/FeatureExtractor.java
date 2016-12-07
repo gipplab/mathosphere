@@ -5,7 +5,7 @@ import com.formulasearchengine.mathosphere.mlp.cli.EvalCommandConfig;
 import com.formulasearchengine.mathosphere.mlp.features.Feature;
 import com.formulasearchengine.mathosphere.mlp.features.FeatureVector;
 import com.formulasearchengine.mathosphere.mlp.pojos.*;
-import com.formulasearchengine.mlp.evaluation.GoldEntry;
+import com.formulasearchengine.mlp.evaluation.pojo.GoldEntry;
 import com.google.common.collect.Lists;
 
 import org.apache.flink.api.common.functions.MapFunction;
@@ -13,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class FeatureExtractor implements MapFunction<ParsedWikiDocument, MyWikiDocumentOutput> {
 
@@ -37,8 +38,9 @@ public class FeatureExtractor implements MapFunction<ParsedWikiDocument, MyWikiD
       }
       GoldEntry goldEntry = goldEntries.stream().filter(e -> e.getTitle().equals(doc.getTitle().replaceAll(" ", "_"))).findFirst().get();
       final Integer fid = Integer.parseInt(goldEntry.getFid());
-      int pos = WikiTextUtils.getFormulaPos(doc, fid);
-      final MathTag seed = doc.getFormulas().get(pos);
+      final MathTag seed = doc.getFormulas()
+        .stream().filter(e -> e.getMarkUpType().equals(WikiTextUtils.MathMarkUpType.LATEX)).collect(Collectors.toList())
+        .get(fid);
       Set<String> identifiers = sentence.getIdentifiers();
       identifiers.retainAll(seed.getIdentifiers(config).elementSet());
       MyPatternMatcher matcher = MyPatternMatcher.generatePatterns(identifiers);

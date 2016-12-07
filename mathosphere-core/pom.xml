@@ -29,6 +29,11 @@
     </repositories>
     <dependencies>
         <dependency>
+            <groupId>com.formulasearchengine.evaluation</groupId>
+            <artifactId>evaluation</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.11</version>
@@ -179,11 +184,6 @@
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpclient</artifactId>
             <version>4.5</version>
-        </dependency>
-        <dependency>
-            <groupId>com.formulasearchengine.evaluation</groupId>
-            <artifactId>evaluation</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
         </dependency>
     </dependencies>
     <developers>
