@@ -1,5 +1,6 @@
 package com.formulasearchengine.mathosphere.mathpd;
 
+import com.formulasearchengine.mathmlquerygenerator.xmlhelper.NonWhitespaceNodeList;
 import com.formulasearchengine.mathosphere.mathpd.pojos.ArxivDocument;
 import com.formulasearchengine.mathosphere.mathpd.pojos.ExtractedMathPDDocument;
 import com.formulasearchengine.mathosphere.mml.CMMLInfo;
@@ -50,7 +51,7 @@ public class Distances {
      * @param nodes
      * @return
      */
-    protected static Map<String, Integer> contentElementsToHistogram(NodeList nodes) {
+    protected static HashMap<String, Integer> contentElementsToHistogram(NodeList nodes) {
         final HashMap<String, Integer> histogram = new HashMap<>();
 
         for (int i = 0; i < nodes.getLength(); i++) {
@@ -70,10 +71,10 @@ public class Distances {
      * @param h2
      * @return
      */
-    protected static Map<String, Integer> histogramPlus(Map<String, Integer> h1, Map<String, Integer> h2) {
+    protected static HashMap<String, Integer> histogramPlus(HashMap<String, Integer> h1, HashMap<String, Integer> h2) {
         final Set<String> mergedKeys = new HashSet<>(h1.keySet());
         mergedKeys.addAll(h2.keySet());
-        final Map<String, Integer> mergedHistogram = new HashMap<>();
+        final HashMap<String, Integer> mergedHistogram = new HashMap<>();
 
         for (String key : mergedKeys) {
             mergedHistogram.put(
@@ -97,12 +98,11 @@ public class Distances {
      * @throws TransformerException
      * @throws IOException
      */
-    public static Map<String, Integer> getDocumentHistogram(ArxivDocument d, String tagName) throws XPathExpressionException, ParserConfigurationException, TransformerException, IOException {
-        Map<String, Integer> mergedHistogram = new HashMap<>();
-        System.out.println("in getDocumentHistogram");
-        for (int i = 0; i < d.getMathTags().getLength(); i++) {
-            LOG.info("next math tag " + i + " of " + d.getMathTags().getLength());
-            final Node mathTag = d.getMathTags().item(i);
+    public static HashMap<String, Integer> getDocumentHistogram(ArxivDocument d, String tagName) throws XPathExpressionException, ParserConfigurationException, TransformerException, IOException {
+        HashMap<String, Integer> mergedHistogram = new HashMap<>();
+        final NonWhitespaceNodeList allMathTags = d.getMathTags();
+        for (int i = 0; i < allMathTags.getLength(); i++) {
+            final Node mathTag = allMathTags.item(i);
             final CMMLInfo curStrictCmml = new CMMLInfo(mathTag).toStrictCmml();
 
             mergedHistogram = histogramPlus(mergedHistogram, strictCmmlInfoToHistogram(curStrictCmml, tagName));
@@ -118,7 +118,7 @@ public class Distances {
      * @param tagName
      * @return
      */
-    private static Map<String, Integer> strictCmmlInfoToHistogram(CMMLInfo strictCmml, String tagName) {
+    private static HashMap<String, Integer> strictCmmlInfoToHistogram(CMMLInfo strictCmml, String tagName) {
         final NodeList elements = strictCmml.getElementsByTagName(tagName);
         return contentElementsToHistogram(elements);
     }

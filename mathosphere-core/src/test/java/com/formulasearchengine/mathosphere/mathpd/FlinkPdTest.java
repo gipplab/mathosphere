@@ -49,7 +49,7 @@ public class FlinkPdTest {
       //System.setOut(new PrintStream(myOut));
     Main.main(args);
     final String standardOutput = myOut.toString();
-    assertTrue(standardOutput.contains("switched to FINISHED"));
+      assertTrue(standardOutput.contains("switched to status FINISHED"));
     System.setOut(stdout);
     System.out.println(standardOutput);
   }
