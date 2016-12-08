@@ -1,25 +1,20 @@
 package com.formulasearchengine.mathosphere.mathpd.pojos;
 
-import org.apache.commons.lang3.NotImplementedException;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.flink.core.memory.DataInputView;
-import org.apache.flink.core.memory.DataOutputView;
-import org.apache.flink.types.Key;
 
-import java.io.IOException;
-import java.util.Map;
+import java.util.HashMap;
 
 /**
  * Represents a document with only those features and data we are interested in our later analysis pipeline.
  * <p>
  * Created by felix on 07.12.16.
  */
-public class ExtractedMathPDDocument implements Key<ExtractedMathPDDocument> {
+public class ExtractedMathPDDocument implements Comparable<ExtractedMathPDDocument> {
     public String title;
     public String text;
-    private Map<String, Integer> histogramCn;
-    private Map<String, Integer> histogramCo;
-    private Map<String, Integer> histogramCi;
+    private HashMap<String, Integer> histogramCn;
+    private HashMap<String, Integer> histogramCo;
+    private HashMap<String, Integer> histogramCi;
 
     public ExtractedMathPDDocument() {
     }
@@ -29,27 +24,27 @@ public class ExtractedMathPDDocument implements Key<ExtractedMathPDDocument> {
         this.text = text;
     }
 
-    public Map<String, Integer> getHistogramCn() {
+    public HashMap<String, Integer> getHistogramCn() {
         return histogramCn;
     }
 
-    public void setHistogramCn(Map<String, Integer> histogramCn) {
+    public void setHistogramCn(HashMap<String, Integer> histogramCn) {
         this.histogramCn = histogramCn;
     }
 
-    public Map<String, Integer> getHistogramCo() {
+    public HashMap<String, Integer> getHistogramCo() {
         return histogramCo;
     }
 
-    public void setHistogramCo(Map<String, Integer> histogramCo) {
+    public void setHistogramCo(HashMap<String, Integer> histogramCo) {
         this.histogramCo = histogramCo;
     }
 
-    public Map<String, Integer> getHistogramCi() {
+    public HashMap<String, Integer> getHistogramCi() {
         return histogramCi;
     }
 
-    public void setHistogramCi(Map<String, Integer> histogramCi) {
+    public void setHistogramCi(HashMap<String, Integer> histogramCi) {
         this.histogramCi = histogramCi;
     }
 
@@ -82,15 +77,5 @@ public class ExtractedMathPDDocument implements Key<ExtractedMathPDDocument> {
     @Override
     public int hashCode() {
         return this.getTitle().hashCode() + this.getText().hashCode();
-    }
-
-    @Override
-    public void write(DataOutputView dataOutputView) throws IOException {
-        throw new NotImplementedException("write");
-    }
-
-    @Override
-    public void read(DataInputView dataInputView) throws IOException {
-        throw new NotImplementedException("read");
     }
 }
