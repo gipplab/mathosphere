@@ -15,6 +15,8 @@ import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLDecoder;
 
+import static junit.framework.TestCase.assertTrue;
+
 /**
  * Created by Felix on 09.12.2016.
  */
@@ -42,7 +44,10 @@ public class DistancesTest {
     @Test
     public void testDistanceSameFile() throws Exception {
         final String resourceSimple = "com/formulasearchengine/mathosphere/mathpd/simple.xhtml";
-        Distances.testdist(testResourceToExtractedMathPDDocument(resourceSimple), testResourceToExtractedMathPDDocument(resourceSimple));
+        final double similarity = Distances.similarityAbsoluteThreeFeatures(testResourceToExtractedMathPDDocument(resourceSimple), testResourceToExtractedMathPDDocument(resourceSimple));
+
+        assertTrue(similarity == 0.0);
     }
+
 
 }
