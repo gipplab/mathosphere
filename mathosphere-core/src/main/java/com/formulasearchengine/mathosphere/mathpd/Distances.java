@@ -134,6 +134,6 @@ public class Distances {
     }
 
     private static String getDocDescription(ExtractedMathPDDocument f0, ExtractedMathPDDocument f1) {
-        return "{" + f0.getTitle() + ";" + f1.getTitle() + "} ";
+        return "{" + f0.getTitle() + "; " + f1.getTitle() + "} ";
     }
 }
