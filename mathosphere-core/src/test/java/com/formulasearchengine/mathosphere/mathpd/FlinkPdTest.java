@@ -11,6 +11,8 @@ import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLDecoder;
 
+import static junit.framework.TestCase.assertTrue;
+
 /**
  * Created by Moritz on 12.11.2015.
  */
@@ -48,7 +50,7 @@ public class FlinkPdTest {
     Main.main(args);
     final String standardOutput = myOut.toString();
 
-      //assertTrue(standardOutput.contains("switched to status FINISHED"));
+    assertTrue(standardOutput.contains("switched to status FINISHED"));
     System.setOut(stdout);
     System.out.println(standardOutput);
   }

@@ -32,16 +32,29 @@ public class Distances {
 
         Set<String> keySet = new HashSet();
 
+        System.out.println(h1);
+        System.out.println(h2);
+
         keySet.addAll(h1.keySet());
         keySet.addAll(h2.keySet());
+        System.out.println("all keys = " + keySet);
 
         for (String key : keySet) {
-            double v1 = h1.get(key) == null ? 0 : h1.get(key);
-            double v2 = h2.get(key) == null ? 0 : h2.get(key);
+            System.out.println("curkey = " + key);
+            double v1 = 0.0;
+            double v2 = 0.0;
+            if (h1.get(key) != null) {
+                System.out.println("h1 contains " + key);
+                v1 = h1.get(key);
+            }
+            if (h2.get(key) != null) {
+                System.out.println("h2 contains " + key);
+                v2 = h2.get(key);
+            }
 
             distance += Math.abs(v1 - v2);
         }
-
+        System.out.println();
         return distance;
     }
 
@@ -123,7 +136,7 @@ public class Distances {
         return contentElementsToHistogram(elements);
     }
 
-    public static void testdist(ExtractedMathPDDocument f0, ExtractedMathPDDocument f1) {
+    public static double similarityAbsoluteThreeFeatures(ExtractedMathPDDocument f0, ExtractedMathPDDocument f1) {
         final double absoluteDistanceContentNumbers = computeAbsoluteSimilarity(f0.getHistogramCn(), f1.getHistogramCn());
         final double absoluteDistanceContentOperators = computeAbsoluteSimilarity(f0.getHistogramCo(), f1.getHistogramCo());
         final double absoluteDistanceContentIdentifiers = computeAbsoluteSimilarity(f0.getHistogramCi(), f1.getHistogramCo());
@@ -131,6 +144,8 @@ public class Distances {
         LOG.info(getDocDescription(f0, f1) + "CN " + decimalFormat.format(absoluteDistanceContentNumbers));
         LOG.info(getDocDescription(f0, f1) + "CO " + decimalFormat.format(absoluteDistanceContentOperators));
         LOG.info(getDocDescription(f0, f1) + "CI " + decimalFormat.format(absoluteDistanceContentIdentifiers));
+
+        return absoluteDistanceContentNumbers + absoluteDistanceContentOperators + absoluteDistanceContentIdentifiers;
     }
 
     private static String getDocDescription(ExtractedMathPDDocument f0, ExtractedMathPDDocument f1) {
