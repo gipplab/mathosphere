@@ -8,6 +8,9 @@ import org.apache.flink.util.Collector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.ObjectOutputStream;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -29,7 +32,7 @@ public class TextExtractorMapper implements FlatMapFunction<String, ExtractedMat
         final String title = titleMatcher.group(1);
         final String xhtml = titleMatcher.group(2);
         final ArxivDocument document = new ArxivDocument(title, xhtml);
-        final ExtractedMathPDDocument extractedMathPDDocument = new ExtractedMathPDDocument();
+        final ExtractedMathPDDocument extractedMathPDDocument = new ExtractedMathPDDocument(title, xhtml);
 
         LOGGER.info("processing document '{}'...", title);
 
@@ -38,6 +41,10 @@ public class TextExtractorMapper implements FlatMapFunction<String, ExtractedMat
         extractedMathPDDocument.setHistogramCo(Distances.getDocumentHistogram(document, "co"));
         extractedMathPDDocument.setHistogramCi(Distances.getDocumentHistogram(document, "ci"));
 
+        // write to storage for test later
+        ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(new File("test_title")));
+        oos.writeObject(extractedMathPDDocument);
+        oos.close();
 
         // store the doc in the collector
         LOGGER.info("finished processing document '{}'...", title);

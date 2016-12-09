@@ -34,8 +34,6 @@ public class FlinkPd {
         DataSource<String> refs = readRefs(config, env);
         //noinspection Convert2Lambda
         source.flatMap(new TextExtractorMapper()).cross(refs.flatMap(new TextExtractorMapper()))
-                /*.groupBy(new KeySelector<Tuple2<ExtractedMathPDDocument,ExtractedMathPDDocument>, Object>() {
-                })*/
                 .reduceGroup(new GroupReduceFunction<Tuple2<ExtractedMathPDDocument, ExtractedMathPDDocument>, Tuple2<Integer, String>>() {
                     @Override
                     public void reduce(Iterable<Tuple2<ExtractedMathPDDocument, ExtractedMathPDDocument>> iterable, Collector<Tuple2<Integer, String>> collector) throws Exception {

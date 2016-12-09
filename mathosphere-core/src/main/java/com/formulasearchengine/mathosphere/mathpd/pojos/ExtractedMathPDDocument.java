@@ -2,6 +2,7 @@ package com.formulasearchengine.mathosphere.mathpd.pojos;
 
 import org.apache.commons.lang3.StringUtils;
 
+import java.io.Serializable;
 import java.util.HashMap;
 
 /**
@@ -9,7 +10,7 @@ import java.util.HashMap;
  * <p>
  * Created by felix on 07.12.16.
  */
-public class ExtractedMathPDDocument implements Comparable<ExtractedMathPDDocument> {
+public class ExtractedMathPDDocument implements Comparable<ExtractedMathPDDocument>, Serializable {
     public String title;
     public String text;
     private HashMap<String, Integer> histogramCn;

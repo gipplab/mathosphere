@@ -27,7 +27,7 @@ public class Distances {
 
     private static final DecimalFormat decimalFormat = new DecimalFormat("#.###");
 
-    public static double computeAbsoluteDistance(Map<String, Integer> h1, Map<String, Integer> h2) {
+    public static double computeAbsoluteSimilarity(Map<String, Integer> h1, Map<String, Integer> h2) {
         double distance = 0;
 
         Set<String> keySet = new HashSet();
@@ -124,9 +124,9 @@ public class Distances {
     }
 
     public static void testdist(ExtractedMathPDDocument f0, ExtractedMathPDDocument f1) {
-        final double absoluteDistanceContentNumbers = computeAbsoluteDistance(f0.getHistogramCn(), f1.getHistogramCn());
-        final double absoluteDistanceContentOperators = computeAbsoluteDistance(f0.getHistogramCo(), f1.getHistogramCo());
-        final double absoluteDistanceContentIdentifiers = computeAbsoluteDistance(f0.getHistogramCi(), f1.getHistogramCo());
+        final double absoluteDistanceContentNumbers = computeAbsoluteSimilarity(f0.getHistogramCn(), f1.getHistogramCn());
+        final double absoluteDistanceContentOperators = computeAbsoluteSimilarity(f0.getHistogramCo(), f1.getHistogramCo());
+        final double absoluteDistanceContentIdentifiers = computeAbsoluteSimilarity(f0.getHistogramCi(), f1.getHistogramCo());
 
         LOG.info(getDocDescription(f0, f1) + "CN " + decimalFormat.format(absoluteDistanceContentNumbers));
         LOG.info(getDocDescription(f0, f1) + "CO " + decimalFormat.format(absoluteDistanceContentOperators));
