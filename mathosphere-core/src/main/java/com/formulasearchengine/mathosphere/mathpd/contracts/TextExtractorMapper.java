@@ -46,7 +46,6 @@ public class TextExtractorMapper implements FlatMapFunction<String, ExtractedMat
         extractedMathPDDocument.setHistogramCi(Distances.getDocumentHistogram(document, "ci"));
         extractedMathPDDocument.setHistogramBvar(Distances.getDocumentHistogram(document, "bvar"));
 
-
         return extractedMathPDDocument;
     }
 
