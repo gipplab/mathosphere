@@ -44,7 +44,7 @@ public class DistancesTest {
     @Test
     public void testDistanceSameFile() throws Exception {
         final String resourceSimple = "com/formulasearchengine/mathosphere/mathpd/simple.xhtml";
-        final double similarity = Distances.similarityAbsoluteThreeFeatures(testResourceToExtractedMathPDDocument(resourceSimple), testResourceToExtractedMathPDDocument(resourceSimple));
+        final double similarity = Distances.distanceAbsoluteFeatures(testResourceToExtractedMathPDDocument(resourceSimple), testResourceToExtractedMathPDDocument(resourceSimple));
 
         assertTrue(similarity == 0.0);
     }

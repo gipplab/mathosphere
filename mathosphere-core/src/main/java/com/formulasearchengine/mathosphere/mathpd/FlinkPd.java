@@ -38,7 +38,7 @@ public class FlinkPd {
                     @Override
                     public void reduce(Iterable<Tuple2<ExtractedMathPDDocument, ExtractedMathPDDocument>> iterable, Collector<Tuple2<Integer, String>> collector) throws Exception {
                         for (Tuple2<ExtractedMathPDDocument, ExtractedMathPDDocument> i : iterable) {
-                            Distances.similarityAbsoluteThreeFeatures(i.f0, i.f1);
+                            Distances.distanceAbsoluteFeatures(i.f0, i.f1);
                         }
                     }
                 })
