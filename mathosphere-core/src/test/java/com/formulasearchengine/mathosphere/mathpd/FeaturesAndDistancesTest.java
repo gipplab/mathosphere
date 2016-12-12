@@ -21,7 +21,7 @@ import java.util.HashMap;
 import static junit.framework.TestCase.assertTrue;
 
 /**
- * Created by Felix on 09.12.2016.
+ * Created by Felix Hamborg <felixhamborg@gmail.com> on 09.12.2016.
  */
 public class FeaturesAndDistancesTest {
 

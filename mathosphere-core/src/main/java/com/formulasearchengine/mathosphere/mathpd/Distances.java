@@ -21,7 +21,7 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * Created by felix on 05.12.16.
+ * Created by Felix Hamborg <felixhamborg@gmail.com> on 05.12.16.
  */
 public class Distances {
     private static final Log LOG = LogFactory.getLog(Distances.class);
