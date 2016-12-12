@@ -136,12 +136,11 @@ public class Distances {
         final double absoluteDistanceContentIdentifiers = computeAbsoluteDistance(f0.getHistogramCi(), f1.getHistogramCi());
         final double absoluteDistanceBoundVariables = computeAbsoluteDistance(f0.getHistogramBvar(), f1.getHistogramBvar());
 
-        if (IS_DEBUG) {
-            LOG.info(getDocDescription(f0, f1) + "CN " + decimalFormat.format(absoluteDistanceContentNumbers));
-            LOG.info(getDocDescription(f0, f1) + "CSYMBOL " + decimalFormat.format(absoluteDistanceContentOperators));
-            LOG.info(getDocDescription(f0, f1) + "CI " + decimalFormat.format(absoluteDistanceContentIdentifiers));
-            LOG.info(getDocDescription(f0, f1) + "BVAR " + decimalFormat.format(absoluteDistanceBoundVariables));
-        }
+        LOG.debug("the following distances should all be 0");
+        LOG.debug(getDocDescription(f0, f1) + "CN " + decimalFormat.format(absoluteDistanceContentNumbers));
+        LOG.debug(getDocDescription(f0, f1) + "CSYMBOL " + decimalFormat.format(absoluteDistanceContentOperators));
+        LOG.debug(getDocDescription(f0, f1) + "CI " + decimalFormat.format(absoluteDistanceContentIdentifiers));
+        LOG.debug(getDocDescription(f0, f1) + "BVAR " + decimalFormat.format(absoluteDistanceBoundVariables));
 
         return absoluteDistanceContentNumbers + absoluteDistanceContentOperators + absoluteDistanceContentIdentifiers + absoluteDistanceBoundVariables;
     }
