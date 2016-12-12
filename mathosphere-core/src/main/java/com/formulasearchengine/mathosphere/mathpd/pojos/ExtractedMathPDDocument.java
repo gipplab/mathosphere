@@ -14,8 +14,9 @@ public class ExtractedMathPDDocument implements Comparable<ExtractedMathPDDocume
     public String title;
     public String text;
     private HashMap<String, Integer> histogramCn;
-    private HashMap<String, Integer> histogramCo;
+    private HashMap<String, Integer> histogramCsymbol;
     private HashMap<String, Integer> histogramCi;
+    private HashMap<String, Integer> histogramBvar;
 
     public ExtractedMathPDDocument() {
     }
@@ -23,6 +24,14 @@ public class ExtractedMathPDDocument implements Comparable<ExtractedMathPDDocume
     public ExtractedMathPDDocument(String title, String text) {
         this.title = title;
         this.text = text;
+    }
+
+    public HashMap<String, Integer> getHistogramBvar() {
+        return histogramBvar;
+    }
+
+    public void setHistogramBvar(HashMap<String, Integer> histogramBvar) {
+        this.histogramBvar = histogramBvar;
     }
 
     public HashMap<String, Integer> getHistogramCn() {
@@ -33,12 +42,12 @@ public class ExtractedMathPDDocument implements Comparable<ExtractedMathPDDocume
         this.histogramCn = histogramCn;
     }
 
-    public HashMap<String, Integer> getHistogramCo() {
-        return histogramCo;
+    public HashMap<String, Integer> getHistogramCsymbol() {
+        return histogramCsymbol;
     }
 
-    public void setHistogramCo(HashMap<String, Integer> histogramCo) {
-        this.histogramCo = histogramCo;
+    public void setHistogramCsymbol(HashMap<String, Integer> histogramCsymbol) {
+        this.histogramCsymbol = histogramCsymbol;
     }
 
     public HashMap<String, Integer> getHistogramCi() {
