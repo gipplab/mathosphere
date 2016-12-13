@@ -109,5 +109,20 @@ public class FeaturesAndDistancesTest {
 
     }
 
+    @Test
+    public void testEarthMoverDistanceBasic() {
+        HashMap<String, Integer> histogramCi1 = new HashMap<>();
+        histogramCi1.put("a", 3);
+        histogramCi1.put("b", 1);
+        histogramCi1.put("c", 1);
+
+        HashMap<String, Integer> histogramCi2 = new HashMap<>();
+        histogramCi2.put("a", 1);
+        histogramCi2.put("b", 1);
+        histogramCi2.put("c", 3);
+
+        final double distance = Distances.computeEarthMoverAbsoluteDistance(histogramCi1, histogramCi2);
+        LOGGER.debug("earthmover distance = " + distance);
+    }
 
 }
