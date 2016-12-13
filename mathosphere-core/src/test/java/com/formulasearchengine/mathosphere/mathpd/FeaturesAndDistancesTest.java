@@ -58,7 +58,12 @@ public class FeaturesAndDistancesTest {
         final double distanceRelativeAllFeatures = Distances.distanceRelativeAllFeatures(doc1, doc2);
         LOGGER.debug("relative distance = " + distanceRelativeAllFeatures);
 
-        assertTrue(distanceAbsoluteAllFeatures + distanceRelativeAllFeatures == 0.0);
+        final double distanceEarthMoverAllFeatures = Distances.computeEarthMoverAbsoluteDistance(doc1.getHistogramCi(), doc2.getHistogramCi());
+        LOGGER.debug("earth mover distance = " + distanceEarthMoverAllFeatures);
+
+        assertTrue(distanceAbsoluteAllFeatures
+                + distanceRelativeAllFeatures
+                + distanceEarthMoverAllFeatures == 0.0);
     }
 
     @Test
@@ -122,7 +127,7 @@ public class FeaturesAndDistancesTest {
         histogramCi2.put("c", 3);
 
         final double distance = Distances.computeEarthMoverAbsoluteDistance(histogramCi1, histogramCi2);
-        LOGGER.debug("earthmover distance = " + distance);
+        LOGGER.debug("earth mover distance = " + distance);
     }
 
 }
