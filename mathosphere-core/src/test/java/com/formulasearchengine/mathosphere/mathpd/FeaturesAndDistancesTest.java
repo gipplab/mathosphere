@@ -22,6 +22,7 @@ import static junit.framework.TestCase.assertTrue;
 
 /**
  * Created by Felix Hamborg <felixhamborg@gmail.com> on 09.12.2016.
+ * Unit test cases for features and distances.
  */
 public class FeaturesAndDistancesTest {
 
@@ -79,7 +80,7 @@ public class FeaturesAndDistancesTest {
     }
 
     @Test
-    public void testHistogramExtraction() throws ParserConfigurationException, TransformerException, XPathExpressionException, IOException {
+    public void testHistogramExtractionAndAbsoluteDistance() throws ParserConfigurationException, TransformerException, XPathExpressionException, IOException {
         final String resourceSimple = "com/formulasearchengine/mathosphere/mathpd/simple.xhtml";
         ExtractedMathPDDocument document = testResourceToExtractedMathPDDocument(resourceSimple);
 
