@@ -2,6 +2,9 @@ package com.formulasearchengine.mathosphere.mathpd;
 
 import com.formulasearchengine.mathmlquerygenerator.xmlhelper.NonWhitespaceNodeList;
 import com.formulasearchengine.mathmlquerygenerator.xmlhelper.XMLHelper;
+import com.formulasearchengine.mathosphere.mathpd.distances.earthmover.EarthMoverDistanceWrapper;
+import com.formulasearchengine.mathosphere.mathpd.distances.earthmover.JFastEMD;
+import com.formulasearchengine.mathosphere.mathpd.distances.earthmover.Signature;
 import com.formulasearchengine.mathosphere.mathpd.pojos.ArxivDocument;
 import com.formulasearchengine.mathosphere.mathpd.pojos.ExtractedMathPDDocument;
 import com.formulasearchengine.mathosphere.mml.CMMLInfo;
@@ -27,6 +30,20 @@ public class Distances {
     private static final Log LOG = LogFactory.getLog(Distances.class);
 
     private static final DecimalFormat decimalFormat = new DecimalFormat("#.###");
+
+    /**
+     * probably only makes sense to compute this on CI
+     *
+     * @param h1
+     * @param h2
+     * @return
+     */
+    public static double computeEarthMoverAbsoluteDistance(Map<String, Integer> h1, Map<String, Integer> h2) {
+        Signature s1 = EarthMoverDistanceWrapper.histogramToSignature(h1);
+        Signature s2 = EarthMoverDistanceWrapper.histogramToSignature(h2);
+
+        return JFastEMD.distance(s1, s2, -1.0);
+    }
 
     public static double computeRelativeDistance(Map<String, Integer> h1, Map<String, Integer> h2) {
         final Set<String> keySet = new HashSet();

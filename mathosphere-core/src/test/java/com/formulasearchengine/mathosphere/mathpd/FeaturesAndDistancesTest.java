@@ -62,6 +62,18 @@ public class FeaturesAndDistancesTest {
     }
 
     @Test
+    public void testEarthMoverDistance() throws ParserConfigurationException, TransformerException, XPathExpressionException, IOException {
+        final String resourceSimple = "com/formulasearchengine/mathosphere/mathpd/simple.xhtml";
+        ExtractedMathPDDocument doc1 = testResourceToExtractedMathPDDocument(resourceSimple);
+        ExtractedMathPDDocument doc2 = testResourceToExtractedMathPDDocument(resourceSimple);
+
+        final double distanceAbsoluteEarthMoverCiSame = Distances.computeEarthMoverAbsoluteDistance(doc1.getHistogramCi(), doc2.getHistogramCi());
+        LOGGER.debug("earthmover absolute distance = " + distanceAbsoluteEarthMoverCiSame);
+
+        assertTrue(distanceAbsoluteEarthMoverCiSame == 0.0);
+    }
+
+    @Test
     public void testHistogramExtraction() throws ParserConfigurationException, TransformerException, XPathExpressionException, IOException {
         final String resourceSimple = "com/formulasearchengine/mathosphere/mathpd/simple.xhtml";
         ExtractedMathPDDocument document = testResourceToExtractedMathPDDocument(resourceSimple);
