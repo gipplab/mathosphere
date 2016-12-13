@@ -42,7 +42,7 @@ public class Distances {
         Signature s1 = EarthMoverDistanceWrapper.histogramToSignature(h1);
         Signature s2 = EarthMoverDistanceWrapper.histogramToSignature(h2);
 
-        return JFastEMD.distance(s1, s2, -1.0);
+        return JFastEMD.distance(s1, s2, 0.0);
     }
 
     public static double computeRelativeDistance(Map<String, Integer> h1, Map<String, Integer> h2) {

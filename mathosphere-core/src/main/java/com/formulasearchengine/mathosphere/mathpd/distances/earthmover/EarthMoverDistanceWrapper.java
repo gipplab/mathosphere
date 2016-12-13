@@ -21,6 +21,7 @@ public class EarthMoverDistanceWrapper {
 
         signature.setFeatures(features);
         signature.setWeights(weights);
+        signature.setNumberOfFeatures(features.length);
 
         return signature;
     }
