@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * Provides wrapping functionality for invoking the Earth Mover Distance.
  * Created by Felix Hamborg on 13.12.16.
  */
 public class EarthMoverDistanceWrapper {
@@ -25,6 +26,4 @@ public class EarthMoverDistanceWrapper {
 
         return signature;
     }
-
-
 }
