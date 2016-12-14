@@ -51,7 +51,6 @@
         <module>lib/MathMLCan</module>
         <module>lib/MathMLQueryGenerator</module>
         <module>lib/RTED</module>
-        <module>lib/</module>
         <module>basex</module>
         <module>restd</module>
     </modules>
