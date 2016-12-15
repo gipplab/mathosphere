@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import edu.stanford.nlp.ling.CoreAnnotations.PartOfSpeechAnnotation;
 import edu.stanford.nlp.ling.CoreAnnotations.SentencesAnnotation;
@@ -45,17 +46,17 @@ public class PosTagger {
   private static final Logger LOGGER = LoggerFactory.getLogger(PosTagger.class);
 
   private static final Set<String> SYMBOLS = ImmutableSet.of("<", "=", ">", "≥", "≤", "|", "/", "\\", "[",
-      "]", "*");
+    "]", "*");
   private static final Map<String, String> BRACKET_CODES = ImmutableMap.<String, String>builder()
-      .put("-LRB-", "(").put("-RRB-", ")").put("-LCB-", "{").put("-RCB-", "}").put("-LSB-", "[")
-      .put("-RSB-", "]").build();
+    .put("-LRB-", "(").put("-RRB-", ")").put("-LCB-", "{").put("-RCB-", "}").put("-LSB-", "[")
+    .put("-RSB-", "]").build();
 
   public static PosTagger create(BaseConfig cfg) {
     config = cfg;
     Properties props = new Properties();
     props.put("annotators", "tokenize, ssplit");
     props.put("tokenize.options", "untokenizable=firstKeep,strictTreebank3=true,"
-        + "ptb3Escaping=true,escapeForwardSlashAsterisk=false");
+      + "ptb3Escaping=true,escapeForwardSlashAsterisk=false");
     props.put("ssplit.newlineIsSentenceBreak", "two");
     props.put("maxLength", 50);
     StanfordCoreNLP pipeline = new StanfordCoreNLP(props);
@@ -83,8 +84,12 @@ public class PosTagger {
     Set<String> allIdentifiers = Sets.newHashSet();
 
     formulas.forEach(f -> formulaIndex.put(f.getKey(), f));
-    formulas.forEach(f -> allIdentifiers.addAll(f.getIdentifiers(config)));
-
+    formulas.forEach(f -> allIdentifiers.addAll(
+      f.getIdentifiers(config)
+        .stream()
+        .map(e -> e.matches(".") ? "\\mathit{" + e + "}" : e)
+        .collect(Collectors.toList())
+    ));
     List<List<Word>> annotated = annotate(cleanText, formulaIndex, allIdentifiers);
     List<List<Word>> concatenated = concatenateTags(annotated);
     return postprocess(concatenated, formulaIndex, allIdentifiers);
@@ -105,8 +110,6 @@ public class PosTagger {
         String pos = token.get(PartOfSpeechAnnotation.class);
         if (textToken.startsWith("FORMULA_")) {
           words.add(new Word(textToken, PosTag.MATH));
-        } else if (allIdentifiers.contains(textToken)) {
-          words.add(new Word(textToken, PosTag.SYMBOL));
         } else if (SYMBOLS.contains(textToken)) {
           words.add(new Word(textToken, PosTag.SYMBOL));
         } else if (BRACKET_CODES.containsKey(textToken)) {
@@ -218,14 +221,14 @@ public class PosTagger {
     result = contatenateSuccessive2Tags(result, PosTag.ADJECTIVE, PosTag.NOUN, PosTag.NOUN_PHRASE);
     result = contatenateSuccessive2Tags(result, PosTag.ADJECTIVE, PosTag.NOUN_PLURAL, PosTag.NOUN_PHRASE);
     result = contatenateSuccessive2Tags(result, PosTag.ADJECTIVE, PosTag.NOUN_SEQUENCE,
-        PosTag.NOUN_SEQUENCE_PHRASE);
+      PosTag.NOUN_SEQUENCE_PHRASE);
 
     return result;
   }
 
   public static List<Word> concatenateLinks(List<Word> in) {
     Pattern<Word> linksPattern = Pattern.create(pos(PosTag.QUOTE), anyWord().oneOrMore()
-        .captureAs("link"), pos(PosTag.UNQUOTE));
+      .captureAs("link"), pos(PosTag.UNQUOTE));
 
     return linksPattern.replaceToOne(in, new TransformerToElement<Word>() {
       @Override

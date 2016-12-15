@@ -28,40 +28,8 @@ import org.sweble.wikitext.engine.config.WikiConfig;
 import org.sweble.wikitext.engine.nodes.EngPage;
 import org.sweble.wikitext.engine.nodes.EngProcessedPage;
 import org.sweble.wikitext.engine.utils.DefaultConfigEnWp;
-import org.sweble.wikitext.parser.nodes.WtBold;
+import org.sweble.wikitext.parser.nodes.*;
 import org.sweble.wikitext.parser.nodes.WtContentNode.WtContentNodeImpl;
-import org.sweble.wikitext.parser.nodes.WtExternalLink;
-import org.sweble.wikitext.parser.nodes.WtHorizontalRule;
-import org.sweble.wikitext.parser.nodes.WtIllegalCodePoint;
-import org.sweble.wikitext.parser.nodes.WtImageLink;
-import org.sweble.wikitext.parser.nodes.WtInternalLink;
-import org.sweble.wikitext.parser.nodes.WtItalics;
-import org.sweble.wikitext.parser.nodes.WtListItem;
-import org.sweble.wikitext.parser.nodes.WtNewline;
-import org.sweble.wikitext.parser.nodes.WtNode;
-import org.sweble.wikitext.parser.nodes.WtNodeList;
-import org.sweble.wikitext.parser.nodes.WtOrderedList;
-import org.sweble.wikitext.parser.nodes.WtPageSwitch;
-import org.sweble.wikitext.parser.nodes.WtParagraph;
-import org.sweble.wikitext.parser.nodes.WtSection;
-import org.sweble.wikitext.parser.nodes.WtTable;
-import org.sweble.wikitext.parser.nodes.WtTableCaption;
-import org.sweble.wikitext.parser.nodes.WtTableCell;
-import org.sweble.wikitext.parser.nodes.WtTableHeader;
-import org.sweble.wikitext.parser.nodes.WtTableImplicitTableBody;
-import org.sweble.wikitext.parser.nodes.WtTableRow;
-import org.sweble.wikitext.parser.nodes.WtTagExtension;
-import org.sweble.wikitext.parser.nodes.WtTemplate;
-import org.sweble.wikitext.parser.nodes.WtTemplateArgument;
-import org.sweble.wikitext.parser.nodes.WtTemplateParameter;
-import org.sweble.wikitext.parser.nodes.WtText;
-import org.sweble.wikitext.parser.nodes.WtUnorderedList;
-import org.sweble.wikitext.parser.nodes.WtUrl;
-import org.sweble.wikitext.parser.nodes.WtWhitespace;
-import org.sweble.wikitext.parser.nodes.WtXmlCharRef;
-import org.sweble.wikitext.parser.nodes.WtXmlComment;
-import org.sweble.wikitext.parser.nodes.WtXmlElement;
-import org.sweble.wikitext.parser.nodes.WtXmlEntityRef;
 import org.sweble.wikitext.parser.parser.LinkTargetException;
 import org.xml.sax.SAXException;
 
@@ -82,7 +50,7 @@ import javax.xml.xpath.XPathExpressionException;
  * .org/wiki/Visitor_pattern</a> (classic pattern)</li> <li><a href="http://www.javaworld.com/javaworld/javatips/jw-javatip98.html">http
  * ://www.javaworld.com/javaworld/javatips/jw-javatip98.html</a> (the version we use here)</li>
  * </ul>
- *
+ * <p>
  * The methods needed to descend into an AST and visit the children of a given node <code>n</code>
  * are <ul> <li><code>dispatch(n)</code> - visit node <code>n</code>,</li>
  * <li><code>iterate(n)</code> - visit the <b>children</b> of node <code>n</code>,</li>
@@ -92,8 +60,8 @@ import javax.xml.xpath.XPathExpressionException;
  * return value of the call to <code>visit(c)</code>.</li> </ul>
  */
 public class MathConverter
-    extends
-    AstVisitor<WtNode> {
+  extends
+  AstVisitor<WtNode> {
   private final static Pattern subMatch = Pattern.compile("[{<]sub[}>](.+?)[{<]/sub[}>]");
   private final static WikiConfig config = DefaultConfigEnWp.generate();
   private final static WtEngineImpl engine = new WtEngineImpl(config);
@@ -244,8 +212,8 @@ public class MathConverter
         //discover hidden subscripts
         final WtXmlElement xml = (WtXmlElement) i.get(1);
         if (xml.getName().matches("sub") &&
-            xml.getBody().size() == 1 &&
-            xml.getBody().get(0) instanceof WtText) {
+          xml.getBody().size() == 1 &&
+          xml.getBody().get(0) instanceof WtText) {
           //String subtext = ((WtText) ((WtXmlElement) i.get(1)).getBody().get(0)).getContent();
           final String subTex = getTex((WtContentNodeImpl) xml.getBody(), true);
           final String mainTex = getTex(i, true);
@@ -392,6 +360,8 @@ public class MathConverter
   public void visit(WtXmlElement e) {
     if (e.getName().equalsIgnoreCase("br")) {
       newline(1);
+    } else if (e.getName().equalsIgnoreCase("var")) {
+      handeLatexMathTag(e, ((WtText) e.getBody().get(0)).getContent().trim());
     } else {
       iterate(e.getBody());
     }
@@ -440,35 +410,23 @@ public class MathConverter
 
   public void visit(WtTemplate n) {
     try {
+      WtTemplateArgument arg0;
+      String content;
       switch (n.getName().getAsString().toLowerCase()) {
         case "math":
-          try {
-            WtTemplateArgument arg0 = (WtTemplateArgument) n.getArgs().get(0);
-            String content = ((WtText) arg0.getValue().get(0)).getContent().trim();
-            content = TextExtractorMapper.unescape(content);
-            //content = content.replaceAll("'''([a-zA-Z]+)'''","\\mathbf{$1}");
-            content = wiki2Tex(content);
-            MathTag tag = new MathTag(n.getLocation().line, content, WikiTextUtils.MathMarkUpType.MATH_TEMPLATE);
-            mathTags.add(tag);
-            needSpace = true;
-            writeWord(tag.placeholder());
-            needSpace = true;
-          } catch (Exception ignored) {
-
-          }
+          arg0 = (WtTemplateArgument) n.getArgs().get(0);
+          content = ((WtText) arg0.getValue().get(0)).getContent().trim();
+          handeLatexMathTag(n, content);
           break;
         case "mvar":
-          try {
-            WtTemplateArgument arg0 = (WtTemplateArgument) n.getArgs().get(0);
-            String content = ((WtText) arg0.getValue().get(0)).getContent().trim();
-            content = wiki2Tex(content);
-            MathTag tag = new MathTag(n.getLocation().line, content, WikiTextUtils.MathMarkUpType.MVAR_TEMPLATE);
-            mathTags.add(tag);
-            needSpace = true;
-            writeWord(tag.placeholder());
-            needSpace = true;
-          } catch (Exception ignored) {
-          }
+          arg0 = (WtTemplateArgument) n.getArgs().get(0);
+          content = ((WtText) arg0.getValue().get(0)).getContent().trim();
+          content = wiki2Tex(content);
+          MathTag tag = new MathTag(n.getLocation().line, content, WikiTextUtils.MathMarkUpType.MVAR_TEMPLATE);
+          mathTags.add(tag);
+          needSpace = true;
+          writeWord(tag.placeholder());
+          needSpace = true;
           break;
         default:
           iterate(n.getArgs());
@@ -478,11 +436,31 @@ public class MathConverter
     }
   }
 
+  public void handeLatexMathTag(WtNode n, String content) {
+
+    content = TextExtractorMapper.unescape(content);
+    //content = content.replaceAll("'''([a-zA-Z]+)'''","\\mathbf{$1}");
+    content = wiki2Tex(content);
+    int location = 0;
+    try {
+      location = n.getLocation().line;
+    } catch (Exception ignored) {
+      //we don't really need this
+    }
+    MathTag tag = new MathTag(location, content, WikiTextUtils.MathMarkUpType.MATH_TEMPLATE);
+
+    mathTags.add(tag);
+    needSpace = true;
+    writeWord(tag.placeholder());
+    needSpace = true;
+
+  }
+
   public String wiki2Tex(String content) {
     content = subMatch.matcher(content).replaceAll("_{$1}")
-        .replaceAll("[{<]sup[}>](.+?)[{<]/sup[}>]", "^{$1}")
-        .replaceAll("'''(.+?)'''", "\\\\mathbf{$1}")
-        .replaceAll("''(.+?)''", "$1");
+      .replaceAll("[{<]sup[}>](.+?)[{<]/sup[}>]", "^{$1}")
+      .replaceAll("'''(.+?)'''", "\\\\mathbf{$1}")
+      .replaceAll("''(.+?)''", "\\\\mathit{$1}");
     return UnicodeMap.string2TeX(content);
 //    int[] chars = content.codePoints().toArray();
 //    StringBuilder res = new StringBuilder();
@@ -625,7 +603,7 @@ public class MathConverter
     }
     for (MathTag tag : mathTags) {
       output = output.replace("FORMULA_" + tag.getContentHash(),
-          "<math>" + tag.getContent() + "</math>");
+        "<math>" + tag.getContent() + "</math>");
     }
     return output;
   }
@@ -640,12 +618,12 @@ public class MathConverter
       content = TextExtractorMapper.unescape(content);
       String tex = wiki2Tex(content);
       if (tex.length() > 0 && (content.length() == 1
-          || (content.length() < 100 && !content.equals(tex)))) {
+        || (content.length() < 100 && !content.equals(tex)))) {
         Multiset<String> idents;
         try {
           idents = TexInfo.getIdentifiers(tex, texInfoUrl);
         } catch (XPathExpressionException | ParserConfigurationException | IOException
-            | SAXException | TransformerException ignored) {
+          | SAXException | TransformerException ignored) {
           return null;
         }
         if (idents.size() == 0 && !force) {

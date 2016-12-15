@@ -3,10 +3,14 @@ package com.formulasearchengine.mathosphere.mlp.text;
 import com.formulasearchengine.mathosphere.mlp.contracts.TextExtractorMapper;
 
 import org.apache.commons.io.IOUtils;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.iterableWithSize;
 
 /**
  * Created by Moritz on 15.12.2015.
@@ -154,5 +158,17 @@ public class MathConverterTest {
     final MathConverter mathConverter = new MathConverter(text);
     final String real = mathConverter.getStrippedOutput();
     System.out.println(real);
+  }
+
+  @Test
+  public void testWiki2Tex() throws Exception {
+    String text = "<sub>a</sub>, <sup>b</sup>, '''c''', ''d''";
+    final MathConverter mathConverter = new MathConverter(text);
+    final String real = mathConverter.wiki2Tex(text);
+    assertThat(real, containsString("_{a}"));
+    assertThat(real, containsString("^{b}"));
+    assertThat(real, containsString("\\mathbf{c}"));
+    assertThat(real, containsString("\\mathit{d}"));
+    assertThat(real, equalTo("_{a}, ^{b}, \\mathbf{c}, \\mathit{d}"));
   }
 }
