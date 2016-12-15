@@ -133,6 +133,7 @@ public class CreateCandidatesMapper implements MapFunction<ParsedWikiDocument, W
         relation.setDefinition(word, doc);
         relation.setWordPosition(wordIdx);
         relation.setScore(score);
+        relation.setSentence(sentence);
         // relation.setSentence(sentence);
 
         result.add(relation);

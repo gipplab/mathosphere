@@ -27,7 +27,8 @@ public class PatternMatcher {
       for (Match<Word> match : matches) {
         String id = match.getVariable("identifier").getWord();
         String def = deLinkify(match.getVariable("definition"), doc);
-        result.add(new IdentifierMatch(id, def));
+        int position = match.matchedFrom() + match.getMatchedSubsequence().indexOf(match.getVariable("definition"));
+        result.add(new IdentifierMatch(id, def, position));
       }
     }
     return result;
@@ -77,10 +78,16 @@ public class PatternMatcher {
   public static class IdentifierMatch {
     private String identifier;
     private String definition;
+    private int position;
 
-    public IdentifierMatch(String identifier, String definition) {
+    public int getPosition() {
+      return position;
+    }
+
+    public IdentifierMatch(String identifier, String definition, int position) {
       this.identifier = identifier;
       this.definition = definition;
+      this.position = position;
     }
 
     public String getIdentifier() {
