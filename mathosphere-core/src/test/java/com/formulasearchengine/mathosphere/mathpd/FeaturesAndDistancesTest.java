@@ -52,6 +52,7 @@ public class FeaturesAndDistancesTest {
         final String resourceSimple = "com/formulasearchengine/mathosphere/mathpd/simple.xhtml";
         ExtractedMathPDDocument doc1 = testResourceToExtractedMathPDDocument(resourceSimple);
         ExtractedMathPDDocument doc2 = testResourceToExtractedMathPDDocument(resourceSimple);
+        assertTrue(doc1 != null && doc2 != null);
 
         final double distanceAbsoluteAllFeatures = Distances.distanceAbsoluteAllFeatures(doc1, doc2);
         LOGGER.debug("absolute distance = " + distanceAbsoluteAllFeatures);

@@ -13,6 +13,10 @@ import java.util.HashMap;
 public class ExtractedMathPDDocument implements Comparable<ExtractedMathPDDocument>, Serializable {
     public String title;
     public String text;
+    private String name;
+    private String page;
+
+
     private HashMap<String, Integer> histogramCn;
     private HashMap<String, Integer> histogramCsymbol;
     private HashMap<String, Integer> histogramCi;
@@ -76,7 +80,7 @@ public class ExtractedMathPDDocument implements Comparable<ExtractedMathPDDocume
 
     @Override
     public String toString() {
-        return "[title=" + title + ", text=" + StringUtils.abbreviate(text, 100) + "]";
+        return "[title=" + title + ", name=" + name + ", page=" + page + ", text=" + StringUtils.abbreviate(text, 100) + "]";
     }
 
     @Override
@@ -87,5 +91,21 @@ public class ExtractedMathPDDocument implements Comparable<ExtractedMathPDDocume
     @Override
     public int hashCode() {
         return this.getTitle().hashCode() + this.getText().hashCode();
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getPage() {
+        return page;
+    }
+
+    public void setPage(String page) {
+        this.page = page;
     }
 }

@@ -35,9 +35,6 @@ public class MathPdFeatureExtractor {
         final List<Tuple2<String, String>> bigramLeaves = new ArrayList<>();
         for (Node curLeafNode : document.getCElementLeafNodes()) {
             bigramLeaves.add(new Tuple2<>(getNodeTextContent(curLeafNode), getNodeTextContent(curLeafNode.getParentNode())));
-            System.out.print(getNodeTextContent(curLeafNode));
-            System.out.print(" ; ");
-            System.out.println(getNodeTextContent(curLeafNode.getParentNode()));
         }
 
         return bigramLeaves;

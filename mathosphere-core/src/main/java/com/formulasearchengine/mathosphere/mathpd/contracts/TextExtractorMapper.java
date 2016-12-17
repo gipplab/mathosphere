@@ -4,7 +4,7 @@ import com.formulasearchengine.mathosphere.mathpd.Distances;
 import com.formulasearchengine.mathosphere.mathpd.pojos.ArxivDocument;
 import com.formulasearchengine.mathosphere.mathpd.pojos.ExtractedMathPDDocument;
 import org.apache.flink.api.common.functions.FlatMapFunction;
-import org.apache.flink.api.java.tuple.Tuple2;
+import org.apache.flink.api.java.tuple.Tuple4;
 import org.apache.flink.util.Collector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,18 +20,34 @@ public class TextExtractorMapper implements FlatMapFunction<String, ExtractedMat
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TextExtractorMapper.class);
 
-    private static final Pattern TITLE_PATTERN = Pattern.compile("<ARXIVFILESPLIT(?:\\\\n?|[\\s\\r\\n]+)" +
+    private static final Pattern FILENAME_PATTERN = Pattern.compile("<ARXIVFILESPLIT(?:\\\\n?|[\\s\\r\\n]+)" +
             "Filename=\"(.*?).xhtml\">(?:\\s*)(.*)", Pattern.DOTALL);
+    private static final Pattern TITLE_COMPONENTS_PATTERN = Pattern.compile("", Pattern.DOTALL);
 
-    public static Tuple2<String, String> getTitleAndTextualContent(String content) {
-        Matcher titleMatcher = TITLE_PATTERN.matcher(content);
+    //private static final String FILENAME_INDICATOR = "Filename";
+    //private static final Pattern FILENAME_PATTERN = Pattern
+    //        .compile( "<ARXIVFILESPLIT\\\\n" + FILENAME_INDICATOR + "=\"\\./\\d+/(.*?)/\\1_(\\d+)_(\\d+)\\.xhtml\">" );
+
+    public static Tuple4<String, String, String, String> getTitleAndTextualContent(String content) {
+        Matcher titleMatcher = FILENAME_PATTERN.matcher(content);
         if (!titleMatcher.find()) {
             return null;
         }
         final String title = titleMatcher.group(1);
         final String xhtml = titleMatcher.group(2);
+        final String[] titleComponents = title.split("/");
 
-        return new Tuple2<>(title, xhtml);
+        String name = "no-name";
+        String page = "-1";
+
+        switch (titleComponents.length) {
+            case 4:
+                page = titleComponents[3];
+            case 3:
+                name = titleComponents[2];
+        }
+
+        return new Tuple4<>(title, name, page, xhtml);
     }
 
     public static ExtractedMathPDDocument convertArxivToExtractedMathPDDocument(ArxivDocument document) throws ParserConfigurationException, IOException, XPathExpressionException, TransformerException {
@@ -50,19 +66,20 @@ public class TextExtractorMapper implements FlatMapFunction<String, ExtractedMat
     }
 
     public static ArxivDocument arxivTextToDocument(String content) {
-        final Tuple2<String, String> titleAndContent = getTitleAndTextualContent(content);
+        final Tuple4<String, String, String, String> titleAndContent = getTitleAndTextualContent(content);
         if (titleAndContent == null) {
             return null;
         }
 
-        return new ArxivDocument(titleAndContent.f0, titleAndContent.f1);
+        final ArxivDocument arxivDocument = new ArxivDocument(titleAndContent.f0, titleAndContent.f3);
+        arxivDocument.setName(titleAndContent.f1);
+        arxivDocument.setPage(titleAndContent.f2);
+
+        return arxivDocument;
     }
 
     @Override
     public void flatMap(String content, Collector<ExtractedMathPDDocument> out) throws Exception {
-        System.out.println(content);
-        System.out.println();
-        System.out.println();
         final ArxivDocument document = arxivTextToDocument(content);
         if (document == null) {
             return;
@@ -71,11 +88,6 @@ public class TextExtractorMapper implements FlatMapFunction<String, ExtractedMat
         LOGGER.info("processing document '{}'...", document.title);
         final ExtractedMathPDDocument extractedMathPDDocument = convertArxivToExtractedMathPDDocument(document);
 
-
-        // write to storage for test later
-        //ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(new File("test_title")));
-        //oos.writeObject(extractedMathPDDocument);
-        //oos.close();
 
         // store the doc in the collector
         LOGGER.info("finished processing document '{}'...", document.title);
