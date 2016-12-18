@@ -11,6 +11,7 @@ import java.util.HashMap;
  * Created by felix on 07.12.16.
  */
 public class ExtractedMathPDDocument implements Comparable<ExtractedMathPDDocument>, Serializable {
+    private static final String ID_SEPARATOR = "/";
     public String title;
     public String text;
     private String name;
@@ -26,6 +27,14 @@ public class ExtractedMathPDDocument implements Comparable<ExtractedMathPDDocume
     public ExtractedMathPDDocument(String title, String text) {
         this.title = title;
         this.text = text;
+    }
+
+    public static String getNameFromId(String id) {
+        return id.split("/")[0];
+    }
+
+    public static String getPageFromId(String id) {
+        return id.split("/")[1];
     }
 
     public HashMap<String, Integer> getHistogramBvar() {

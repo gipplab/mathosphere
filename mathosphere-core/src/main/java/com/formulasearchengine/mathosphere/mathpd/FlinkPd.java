@@ -11,22 +11,37 @@ import com.formulasearchengine.mathosphere.mlp.pojos.WikiDocumentOutput;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.flink.api.common.functions.GroupReduceFunction;
+import org.apache.flink.api.common.operators.Order;
+import org.apache.flink.api.java.DataSet;
 import org.apache.flink.api.java.ExecutionEnvironment;
 import org.apache.flink.api.java.io.TextInputFormat;
 import org.apache.flink.api.java.operators.DataSource;
 import org.apache.flink.api.java.tuple.Tuple2;
+import org.apache.flink.api.java.tuple.Tuple3;
 import org.apache.flink.api.java.tuple.Tuple4;
 import org.apache.flink.api.java.tuple.Tuple6;
 import org.apache.flink.core.fs.FileSystem.WriteMode;
 import org.apache.flink.core.fs.Path;
 import org.apache.flink.util.Collector;
 
+import java.text.DecimalFormat;
+import java.util.HashMap;
+
 public class FlinkPd {
     protected static final Log LOG = LogFactory.getLog(FlinkPd.class);
+    private static DecimalFormat decimalFormat = new DecimalFormat("0.0");
 
     public static void main(String[] args) throws Exception {
         FlinkPdCommandConfig config = FlinkPdCommandConfig.from(args);
         run(config);
+    }
+
+    private static String generateIdPair(String id1, String id2) {
+        return id1 + "-" + id2;
+    }
+
+    private static String getIdFromIdPair(String idPair, int index) {
+        return idPair.split("-")[index];
     }
 
     public static void run(FlinkPdCommandConfig config) throws Exception {
@@ -38,38 +53,101 @@ public class FlinkPd {
         // TODO: cross product or reduce function can be enhanced by leaving out all duplicates of the matrix because d(a,b) == d(b,a)
 
         //noinspection Convert2Lambda
-        source.flatMap(new TextExtractorMapper()).cross(refs.flatMap(new TextExtractorMapper()))
-                .reduceGroup(new GroupReduceFunction<Tuple2<ExtractedMathPDDocument, ExtractedMathPDDocument>, Tuple6<Double, Double, Double, Double, Double, String>>() {
-                    @Override
-                    public void reduce(Iterable<Tuple2<ExtractedMathPDDocument, ExtractedMathPDDocument>> iterable, Collector<Tuple6<Double, Double, Double, Double, Double, String>> collector) throws Exception {
-                        for (Tuple2<ExtractedMathPDDocument, ExtractedMathPDDocument> i : iterable) {
-                            if (i.f0 == null || i.f1 == null)
-                                continue;
+        DataSet distancesAndSectionPairs =
+                source.flatMap(new TextExtractorMapper())
+                        .cross(refs.flatMap(new TextExtractorMapper()))
+                        .reduceGroup(new GroupReduceFunction<Tuple2<ExtractedMathPDDocument, ExtractedMathPDDocument>, Tuple6<Double, Double, Double, Double, Double, String>>() {
+                            @Override
+                            public void reduce(Iterable<Tuple2<ExtractedMathPDDocument, ExtractedMathPDDocument>> iterable, Collector<Tuple6<Double, Double, Double, Double, Double, String>> collector) throws Exception {
+                                for (Tuple2<ExtractedMathPDDocument, ExtractedMathPDDocument> i : iterable) {
+                                    if (i.f0 == null || i.f1 == null)
+                                        continue;
 
-                            if (i.f0.getId().contains("Plagiarism") && i.f1.getId().contains("Original") ||
-                                    i.f0.getId().contains("Original") && i.f1.getId().contains("Plagiarism")) {
+                                    // skip one diagonal half of the matrix
+                                    if (!i.f0.getId().contains("Original"))
+                                        continue;
 
-                                final Tuple4<Double, Double, Double, Double> distanceAbsoluteAllFeatures = Distances.distanceRelativeAllFeatures(i.f0, i.f1);
-                                final Tuple6<Double, Double, Double, Double, Double, String> resultLine = new Tuple6<>(
-                                        distanceAbsoluteAllFeatures.f0 + distanceAbsoluteAllFeatures.f1 + distanceAbsoluteAllFeatures.f2 + distanceAbsoluteAllFeatures.f3,
-                                        distanceAbsoluteAllFeatures.f0,
-                                        distanceAbsoluteAllFeatures.f1,
-                                        distanceAbsoluteAllFeatures.f2,
-                                        distanceAbsoluteAllFeatures.f3,
-                                        i.f0.getId() + "-" + i.f1.getId());
+                                    // only check Original against Plagiarism (not against other Originals)
+                                    if (!i.f1.getId().contains("Plagiarism"))
+                                        continue;
 
-                                collector.collect(resultLine);
+                                    final Tuple4<Double, Double, Double, Double> distanceAbsoluteAllFeatures = Distances.distanceRelativeAllFeatures(i.f0, i.f1);
+                                    final Tuple6<Double, Double, Double, Double, Double, String> resultLine = new Tuple6<>(
+                                            distanceAbsoluteAllFeatures.f0 + distanceAbsoluteAllFeatures.f1 + distanceAbsoluteAllFeatures.f2 + distanceAbsoluteAllFeatures.f3,
+                                            distanceAbsoluteAllFeatures.f0,
+                                            distanceAbsoluteAllFeatures.f1,
+                                            distanceAbsoluteAllFeatures.f2,
+                                            distanceAbsoluteAllFeatures.f3,
+                                            generateIdPair(i.f0.getId(), i.f1.getId()));
+
+                                    collector.collect(resultLine);
+                                }
                             }
-                        }
-                    }
-                })
-                //.writeAsText(config.getOutputDir(), WriteMode.OVERWRITE);
-                .writeAsCsv(config.getOutputDir(), WriteMode.OVERWRITE);
+                        })
+                        .sortPartition(1, Order.ASCENDING);
+        distancesAndSectionPairs.writeAsCsv(config.getOutputDir(), WriteMode.OVERWRITE);
+
+        // we can now use the distances and section pairs dataset to aggregate the distances on document level in distance bins
+        //noinspection Convert2Lambda
+        DataSet binnedDistancesForPairs =
+                distancesAndSectionPairs
+                        .reduceGroup(new GroupReduceFunction<
+                                Tuple6<Double, Double, Double, Double, Double, String>,
+                                Tuple4<String, Double, Double, Double>>() {
+                            @Override
+                            public void reduce(Iterable<Tuple6<Double, Double, Double, Double, Double, String>> iterable, Collector<Tuple4<String, Double, Double, Double>> collector) throws Exception {
+                                // histogram will contain as a key a tuple2 of the names of the two documents from the pair; and the bin
+                                // the value will be the frequency of that bin in that pair of documents
+                                HashMap<Tuple3<String, Double, Double>, Double> histogramPairOfNameAndBinWithFrequency = new HashMap<>();
+                                for (Tuple6<Double, Double, Double, Double, Double, String> curPairWithDistances : iterable) {
+                                    final String idPair = curPairWithDistances.f5;
+                                    final String id0 = FlinkPd.getIdFromIdPair(idPair, 0);
+                                    final String id1 = FlinkPd.getIdFromIdPair(idPair, 1);
+                                    final String name0 = ExtractedMathPDDocument.getNameFromId(id0);
+                                    final String name1 = ExtractedMathPDDocument.getNameFromId(id1);
+                                    final String namePair = generateIdPair(name0, name1);
+
+                                    double distance = curPairWithDistances.f0 / 4.0; // take the accumulated distance and normalize it
+
+                                    // the key
+                                    final Tuple3<String, Double, Double> key =
+                                            new Tuple3<>(
+                                                    namePair,
+                                                    getBinBoundary(distance, 0.2, true),
+                                                    getBinBoundary(distance, 0.2, false));
+
+                                    // look up if something has been stored under this key
+                                    Double frequencyOfCurKey = histogramPairOfNameAndBinWithFrequency.getOrDefault(key, 0.0);
+
+                                    histogramPairOfNameAndBinWithFrequency.put(key, frequencyOfCurKey + 1.0);
+                                }
+
+                                for (Tuple3<String, Double, Double> key : histogramPairOfNameAndBinWithFrequency.keySet()) {
+                                    collector.collect(new Tuple4<>(key.f0, key.f1, key.f2, histogramPairOfNameAndBinWithFrequency.get(key)));
+                                }
+                            }
+                        })
+                        .sortPartition(0, Order.ASCENDING)
+                        .sortPartition(1, Order.ASCENDING);
+        binnedDistancesForPairs.writeAsCsv(config.getOutputDir() + "_binned", WriteMode.OVERWRITE);
+
         final int parallelism = config.getParallelism();
         if (parallelism > 0) {
             env.setParallelism(parallelism);
         }
         env.execute("Relation Finder");
+    }
+
+    private static double getBinBoundary(double value, double binWidth, boolean isLower) {
+        double flooredDivision = Math.floor(value / binWidth);
+        double binBoundary = Double.NaN;
+
+        if (isLower)
+            binBoundary = binWidth * flooredDivision;
+        else
+            binBoundary = binWidth * (flooredDivision + 1);
+
+        return Double.valueOf(decimalFormat.format(binBoundary));
     }
 
     public static DataSource<String> readWikiDump(FlinkPdCommandConfig config, ExecutionEnvironment env) {
