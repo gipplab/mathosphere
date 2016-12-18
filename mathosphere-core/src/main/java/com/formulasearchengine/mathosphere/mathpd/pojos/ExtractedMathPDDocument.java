@@ -15,8 +15,6 @@ public class ExtractedMathPDDocument implements Comparable<ExtractedMathPDDocume
     public String text;
     private String name;
     private String page;
-
-
     private HashMap<String, Integer> histogramCn;
     private HashMap<String, Integer> histogramCsymbol;
     private HashMap<String, Integer> histogramCi;
@@ -76,6 +74,10 @@ public class ExtractedMathPDDocument implements Comparable<ExtractedMathPDDocume
 
     public void setText(String text) {
         this.text = text;
+    }
+
+    public String getId() {
+        return this.getName() + "/" + this.getPage();
     }
 
     @Override

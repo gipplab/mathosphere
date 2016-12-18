@@ -5,6 +5,7 @@ import com.formulasearchengine.mathosphere.mathpd.contracts.TextExtractorMapper;
 import com.formulasearchengine.mathosphere.mathpd.pojos.ArxivDocument;
 import com.formulasearchengine.mathosphere.mathpd.pojos.ExtractedMathPDDocument;
 import com.google.common.base.Throwables;
+import org.apache.flink.api.java.tuple.Tuple4;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -57,14 +58,17 @@ public class FeaturesAndDistancesTest {
         final double distanceAbsoluteAllFeatures = Distances.distanceAbsoluteAllFeatures(doc1, doc2);
         LOGGER.debug("absolute distance = " + distanceAbsoluteAllFeatures);
 
-        final double distanceRelativeAllFeatures = Distances.distanceRelativeAllFeatures(doc1, doc2);
+        final Tuple4<Double, Double, Double, Double> distanceRelativeAllFeatures = Distances.distanceRelativeAllFeatures(doc1, doc2);
         LOGGER.debug("relative distance = " + distanceRelativeAllFeatures);
 
         final double distanceEarthMoverAllFeatures = Distances.computeEarthMoverAbsoluteDistance(doc1.getHistogramCi(), doc2.getHistogramCi());
         LOGGER.debug("earth mover distance = " + distanceEarthMoverAllFeatures);
 
         assertTrue(distanceAbsoluteAllFeatures
-                + distanceRelativeAllFeatures
+                + distanceRelativeAllFeatures.f0
+                + distanceRelativeAllFeatures.f1
+                + distanceRelativeAllFeatures.f2
+                + distanceRelativeAllFeatures.f3
                 + distanceEarthMoverAllFeatures == 0.0);
     }
 

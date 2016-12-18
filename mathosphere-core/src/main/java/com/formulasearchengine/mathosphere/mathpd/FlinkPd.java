@@ -15,6 +15,8 @@ import org.apache.flink.api.java.ExecutionEnvironment;
 import org.apache.flink.api.java.io.TextInputFormat;
 import org.apache.flink.api.java.operators.DataSource;
 import org.apache.flink.api.java.tuple.Tuple2;
+import org.apache.flink.api.java.tuple.Tuple4;
+import org.apache.flink.api.java.tuple.Tuple6;
 import org.apache.flink.core.fs.FileSystem.WriteMode;
 import org.apache.flink.core.fs.Path;
 import org.apache.flink.util.Collector;
@@ -32,17 +34,37 @@ public class FlinkPd {
 
         DataSource<String> source = readWikiDump(config, env);
         DataSource<String> refs = readRefs(config, env);
+
+        // TODO: cross product or reduce function can be enhanced by leaving out all duplicates of the matrix because d(a,b) == d(b,a)
+
         //noinspection Convert2Lambda
         source.flatMap(new TextExtractorMapper()).cross(refs.flatMap(new TextExtractorMapper()))
-                .reduceGroup(new GroupReduceFunction<Tuple2<ExtractedMathPDDocument, ExtractedMathPDDocument>, Tuple2<Integer, String>>() {
+                .reduceGroup(new GroupReduceFunction<Tuple2<ExtractedMathPDDocument, ExtractedMathPDDocument>, Tuple6<Double, Double, Double, Double, Double, String>>() {
                     @Override
-                    public void reduce(Iterable<Tuple2<ExtractedMathPDDocument, ExtractedMathPDDocument>> iterable, Collector<Tuple2<Integer, String>> collector) throws Exception {
+                    public void reduce(Iterable<Tuple2<ExtractedMathPDDocument, ExtractedMathPDDocument>> iterable, Collector<Tuple6<Double, Double, Double, Double, Double, String>> collector) throws Exception {
                         for (Tuple2<ExtractedMathPDDocument, ExtractedMathPDDocument> i : iterable) {
-                            Distances.distanceAbsoluteAllFeatures(i.f0, i.f1);
+                            if (i.f0 == null || i.f1 == null)
+                                continue;
+
+                            if (i.f0.getId().contains("Plagiarism") && i.f1.getId().contains("Original") ||
+                                    i.f0.getId().contains("Original") && i.f1.getId().contains("Plagiarism")) {
+
+                                final Tuple4<Double, Double, Double, Double> distanceAbsoluteAllFeatures = Distances.distanceRelativeAllFeatures(i.f0, i.f1);
+                                final Tuple6<Double, Double, Double, Double, Double, String> resultLine = new Tuple6<>(
+                                        distanceAbsoluteAllFeatures.f0 + distanceAbsoluteAllFeatures.f1 + distanceAbsoluteAllFeatures.f2 + distanceAbsoluteAllFeatures.f3,
+                                        distanceAbsoluteAllFeatures.f0,
+                                        distanceAbsoluteAllFeatures.f1,
+                                        distanceAbsoluteAllFeatures.f2,
+                                        distanceAbsoluteAllFeatures.f3,
+                                        i.f0.getId() + "-" + i.f1.getId());
+
+                                collector.collect(resultLine);
+                            }
                         }
                     }
                 })
-                .writeAsText(config.getOutputDir(), WriteMode.OVERWRITE);
+                //.writeAsText(config.getOutputDir(), WriteMode.OVERWRITE);
+                .writeAsCsv(config.getOutputDir(), WriteMode.OVERWRITE);
         final int parallelism = config.getParallelism();
         if (parallelism > 0) {
             env.setParallelism(parallelism);

@@ -10,6 +10,7 @@ import com.formulasearchengine.mathosphere.mathpd.pojos.ExtractedMathPDDocument;
 import com.formulasearchengine.mathosphere.mml.CMMLInfo;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.flink.api.java.tuple.Tuple4;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
@@ -46,17 +47,20 @@ public class Distances {
     }
 
     public static double computeRelativeDistance(Map<String, Integer> h1, Map<String, Integer> h2) {
-        final Set<String> keySet = new HashSet();
-        keySet.addAll(h1.keySet());
-        keySet.addAll(h2.keySet());
-        final double numberOfUniqueElements = keySet.size();
-        if (numberOfUniqueElements == 0.0) {
+        int totalNumberOfElements = 0;
+        for (Integer frequency : h1.values()) {
+            totalNumberOfElements += frequency;
+        }
+        for (Integer frequency : h2.values()) {
+            totalNumberOfElements += frequency;
+        }
+        if (totalNumberOfElements == 0) {
             return 0.0;
         }
 
         final double absoluteDistance = computeAbsoluteDistance(h1, h2);
 
-        return absoluteDistance / numberOfUniqueElements;
+        return absoluteDistance / totalNumberOfElements;
     }
 
 
@@ -208,7 +212,7 @@ public class Distances {
         return absoluteDistanceContentNumbers + absoluteDistanceContentOperators + absoluteDistanceContentIdentifiers + absoluteDistanceBoundVariables;
     }
 
-    public static double distanceRelativeAllFeatures(ExtractedMathPDDocument f0, ExtractedMathPDDocument f1) {
+    public static Tuple4<Double, Double, Double, Double> distanceRelativeAllFeatures(ExtractedMathPDDocument f0, ExtractedMathPDDocument f1) {
         final double relativeDistanceContentNumbers = computeRelativeDistance(f0.getHistogramCn(), f1.getHistogramCn());
         final double relativeDistanceContentOperators = computeRelativeDistance(f0.getHistogramCsymbol(), f1.getHistogramCsymbol());
         final double relativeDistanceContentIdentifiers = computeRelativeDistance(f0.getHistogramCi(), f1.getHistogramCi());
@@ -221,7 +225,10 @@ public class Distances {
         LOG.debug(getDocDescription(f0, f1) + "BVAR " + decimalFormat.format(relativeDistanceBoundVariables));
 
 
-        return relativeDistanceContentNumbers + relativeDistanceContentOperators + relativeDistanceContentIdentifiers + relativeDistanceBoundVariables;
+        return new Tuple4<>(relativeDistanceContentNumbers,
+                relativeDistanceContentOperators,
+                relativeDistanceContentIdentifiers,
+                relativeDistanceBoundVariables);
     }
 
     private static String getDocDescription(ExtractedMathPDDocument f0, ExtractedMathPDDocument f1) {

@@ -40,11 +40,12 @@ public class TextExtractorMapper implements FlatMapFunction<String, ExtractedMat
         String name = "no-name";
         String page = "-1";
 
+        // tailored to the input format, you might need to change this if you have another format
         switch (titleComponents.length) {
+            case 5:
+                page = titleComponents[4];
             case 4:
-                page = titleComponents[3];
-            case 3:
-                name = titleComponents[2];
+                name = titleComponents[3];
         }
 
         return new Tuple4<>(title, name, page, xhtml);
@@ -54,15 +55,22 @@ public class TextExtractorMapper implements FlatMapFunction<String, ExtractedMat
         if (document == null)
             return null;
 
-        final ExtractedMathPDDocument extractedMathPDDocument = new ExtractedMathPDDocument(document.title, document.text);
+        try {
+            final ExtractedMathPDDocument extractedMathPDDocument = new ExtractedMathPDDocument(document.title, document.text);
+            extractedMathPDDocument.setName(document.getName());
+            extractedMathPDDocument.setPage(document.getPage());
 
-        // extract all features we are or might be interested in later
-        extractedMathPDDocument.setHistogramCn(Distances.getDocumentHistogram(document, "cn"));
-        extractedMathPDDocument.setHistogramCsymbol(Distances.getDocumentHistogram(document, "csymbol"));
-        extractedMathPDDocument.setHistogramCi(Distances.getDocumentHistogram(document, "ci"));
-        extractedMathPDDocument.setHistogramBvar(Distances.getDocumentHistogram(document, "bvar"));
+            // extract all features we are or might be interested in later
+            extractedMathPDDocument.setHistogramCn(Distances.getDocumentHistogram(document, "cn"));
+            extractedMathPDDocument.setHistogramCsymbol(Distances.getDocumentHistogram(document, "csymbol"));
+            extractedMathPDDocument.setHistogramCi(Distances.getDocumentHistogram(document, "ci"));
+            extractedMathPDDocument.setHistogramBvar(Distances.getDocumentHistogram(document, "bvar"));
 
-        return extractedMathPDDocument;
+            return extractedMathPDDocument;
+        } catch (Exception e) {
+            LOGGER.error(e.toString());
+            return null;
+        }
     }
 
     public static ArxivDocument arxivTextToDocument(String content) {
@@ -87,7 +95,8 @@ public class TextExtractorMapper implements FlatMapFunction<String, ExtractedMat
 
         LOGGER.info("processing document '{}'...", document.title);
         final ExtractedMathPDDocument extractedMathPDDocument = convertArxivToExtractedMathPDDocument(document);
-
+        if (extractedMathPDDocument == null)
+            return;
 
         // store the doc in the collector
         LOGGER.info("finished processing document '{}'...", document.title);

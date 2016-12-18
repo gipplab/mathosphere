@@ -18,13 +18,13 @@ import static junit.framework.TestCase.assertTrue;
  */
 public class FlinkPdTest {
 
-  private static String decodePath(String urlEncodedPath) {
-    try {
-      return URLDecoder.decode(urlEncodedPath, "UTF-8");
-    } catch (UnsupportedEncodingException e) {
-      throw Throwables.propagate(e);
+    private static String decodePath(String urlEncodedPath) {
+        try {
+            return URLDecoder.decode(urlEncodedPath, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            throw Throwables.propagate(e);
+        }
     }
-  }
 
     private String resourcePath(String resourceName) {
         ClassLoader classLoader = getClass().getClassLoader();
@@ -32,50 +32,51 @@ public class FlinkPdTest {
         return decodePath(resource.getFile());
     }
 
-  @Test
-  public void testCountTok() throws Exception {
-    final File temp;
-    temp = File.createTempFile("temp", Long.toString(System.nanoTime()));
-    System.out.println(temp);
-    String[] args = new String[7];
-    args[0] = "pd";
-    args[1] = "-in";
-    args[2] = resourcePath("com/formulasearchengine/mathosphere/mathpd/test9.xml");
-    args[3] = "-ref";
-    args[4] = resourcePath("com/formulasearchengine/mathosphere/mathpd/ex1.html");
-    args[5] = "-out";
-    args[6] = temp.getAbsolutePath();
-    final PrintStream stdout = System.out;
-    final ByteArrayOutputStream myOut = new ByteArrayOutputStream();
-      System.setOut(new PrintStream(myOut));
-    Main.main(args);
-    final String standardOutput = myOut.toString();
+    @Test
+    public void testCountTok() throws Exception {
+        final File temp;
+        temp = File.createTempFile("temp", Long.toString(System.nanoTime()));
+        System.out.println(temp);
+        String[] args = new String[7];
+        args[0] = "pd";
+        args[1] = "-in";
+        args[2] = resourcePath("com/formulasearchengine/mathosphere/mathpd/test9.xml");
+        args[3] = "-ref";
+        args[4] = resourcePath("com/formulasearchengine/mathosphere/mathpd/ex1.html");
+        args[5] = "-out";
+        args[6] = temp.getAbsolutePath();
+        final PrintStream stdout = System.out;
+        final ByteArrayOutputStream myOut = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(myOut));
+        Main.main(args);
+        final String standardOutput = myOut.toString();
 
-    assertTrue(standardOutput.contains("switched to status FINISHED"));
-    System.setOut(stdout);
-    System.out.println(standardOutput);
-  }
+        assertTrue(standardOutput.contains("switched to status FINISHED"));
+        System.setOut(stdout);
+        System.out.println(standardOutput);
+    }
 
-  @Test
-  public void testDistances() throws Exception {
-    final File temp;
-    temp = File.createTempFile("temp", Long.toString(System.nanoTime()));
-    String[] args = new String[7];
-    args[0] = "pd";
-    args[1] = "-in";
-    args[2] = resourcePath("com/formulasearchengine/mathosphere/mathpd/161214_allpdcases.xml");
-    args[3] = "-ref";
-    args[4] = resourcePath("com/formulasearchengine/mathosphere/mathpd/161214_allpdcases.xml");
-    args[5] = "-out";
-    args[6] = temp.getAbsolutePath();
-    final PrintStream stdout = System.out;
-    final ByteArrayOutputStream myOut = new ByteArrayOutputStream();
-    Main.main(args);
-    final String standardOutput = myOut.toString();
+    @Test
+    public void testDistances() throws Exception {
+        String filename = "161214_veryfewcases.xml";
+        final File temp;
+        temp = File.createTempFile("temp", Long.toString(System.nanoTime()));
+        String[] args = new String[7];
+        args[0] = "pd";
+        args[1] = "-in";
+        args[2] = resourcePath("com/formulasearchengine/mathosphere/mathpd/" + filename);
+        args[3] = "-ref";
+        args[4] = resourcePath("com/formulasearchengine/mathosphere/mathpd/" + filename);
+        args[5] = "-out";
+        args[6] = temp.getAbsolutePath();
+        final PrintStream stdout = System.out;
+        final ByteArrayOutputStream myOut = new ByteArrayOutputStream();
+        Main.main(args);
+        final String standardOutput = myOut.toString();
 
-    //assertTrue(standardOutput.contains("switched to status FINISHED"));
-    //System.setOut(stdout);
-    //System.out.println(standardOutput);
-  }
+        //assertTrue(standardOutput.contains("switched to status FINISHED"));
+        //System.setOut(stdout);
+        //System.out.println(standardOutput);
+    }
 
 }
