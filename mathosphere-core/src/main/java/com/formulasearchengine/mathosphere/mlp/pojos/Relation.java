@@ -7,14 +7,29 @@ import org.apache.flink.api.java.tuple.Tuple2;
 
 import java.util.Map;
 
+import static com.formulasearchengine.mathosphere.mlp.text.WikiTextUtils.deLinkify;
+
 public class Relation implements Comparable<Relation> {
 
   private String identifier;
   private String definition;
+  /**
+   * The calculated score.
+   */
   private double score;
   private int identifierPosition;
+  /**
+   * Position of the definiens.
+   */
   private int wordPosition;
+  /**
+   * The sentence containing the relation.
+   */
   private Sentence sentence;
+  /**
+   * The relevance score, when compared to e.g. a gold standard.
+   * 0 = irrelevant; 1 = partly relevant; 2 = correct definiens.
+   */
   private Integer relevance;
 
   public Relation() {
@@ -104,7 +119,7 @@ public class Relation implements Comparable<Relation> {
     if (res == 0) {
       res = getDefinition().compareToIgnoreCase(o.getDefinition());
     }
-    if ( res == 0 ){
+    if (res == 0) {
       res = countLowerCaseChars(o.getDefinition()).compareTo(countLowerCaseChars(getDefinition()));
     }
     return res;
@@ -115,12 +130,13 @@ public class Relation implements Comparable<Relation> {
     if (res == 0) {
       res = getDefinition().compareToIgnoreCase(o.getDefinition());
     }
-    if ( res == 0 ){
+    if (res == 0) {
       res = compareTo(o); //Sort by score desc
     }
     return res;
   }
-  private Integer countLowerCaseChars(String s){
+
+  private Integer countLowerCaseChars(String s) {
     int upperCase = 0;
     for (int k = 0; k < s.length(); k++) {
       if (Character.isUpperCase(s.charAt(k))) upperCase++;
@@ -128,18 +144,9 @@ public class Relation implements Comparable<Relation> {
     }
     return upperCase;
   }
+
   public void setDefinition(Word word, ParsedWikiDocument doc) {
-    if (word.getPosTag().equals(PosTag.LINK)) {
-      String hash = word.getWord().replaceAll("^LINK_", "");
-      WikidataLink link = doc.getLinkMap().get(hash);
-      if (link != null) {
-        this.definition = "[[" + link.getContent() + "]]";
-      } else {
-        this.definition = "[[" + word.getWord() + "]]";
-      }
-    } else {
-      this.definition = word.getWord();
-    }
+    this.definition = deLinkify(word, doc);
   }
 
   public Integer getRelevance() {
@@ -151,7 +158,7 @@ public class Relation implements Comparable<Relation> {
     return this;
   }
 
-  public Tuple2<String,String> getTuple(){
-    return new Tuple2<>(identifier,definition);
+  public Tuple2<String, String> getTuple() {
+    return new Tuple2<>(identifier, definition);
   }
 }
