@@ -60,6 +60,11 @@ public class TextExtractorMapper implements FlatMapFunction<String, ExtractedMat
             extractedMathPDDocument.setName(document.getName());
             extractedMathPDDocument.setPage(document.getPage());
 
+            // discard this document if no math tag is contained
+            if (document.getMathTags().getLength() == 0) {
+                return null;
+            }
+
             // extract all features we are or might be interested in later
             extractedMathPDDocument.setHistogramCn(Distances.getDocumentHistogram(document, "cn"));
             extractedMathPDDocument.setHistogramCsymbol(Distances.getDocumentHistogram(document, "csymbol"));
