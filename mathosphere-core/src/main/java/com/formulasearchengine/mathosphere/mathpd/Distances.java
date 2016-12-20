@@ -39,19 +39,19 @@ public class Distances {
      * @param h2
      * @return
      */
-    public static double computeEarthMoverAbsoluteDistance(Map<String, Integer> h1, Map<String, Integer> h2) {
+    public static double computeEarthMoverAbsoluteDistance(Map<String, Double> h1, Map<String, Double> h2) {
         Signature s1 = EarthMoverDistanceWrapper.histogramToSignature(h1);
         Signature s2 = EarthMoverDistanceWrapper.histogramToSignature(h2);
 
         return JFastEMD.distance(s1, s2, 0.0);
     }
 
-    public static double computeRelativeDistance(Map<String, Integer> h1, Map<String, Integer> h2) {
+    public static double computeRelativeDistance(Map<String, Double> h1, Map<String, Double> h2) {
         int totalNumberOfElements = 0;
-        for (Integer frequency : h1.values()) {
+        for (Double frequency : h1.values()) {
             totalNumberOfElements += frequency;
         }
-        for (Integer frequency : h2.values()) {
+        for (Double frequency : h2.values()) {
             totalNumberOfElements += frequency;
         }
         if (totalNumberOfElements == 0) {
@@ -63,6 +63,10 @@ public class Distances {
         return absoluteDistance / totalNumberOfElements;
     }
 
+    public static double computeCosineDistance(Map<String, Double> h1, Map<String, Double> h2) {
+        return computeRelativeDistance(h1, h2);
+    }
+
 
     /**
      * compares two histograms and returns the accumulated number of differences (absolute)
@@ -71,7 +75,7 @@ public class Distances {
      * @param h2
      * @return
      */
-    public static double computeAbsoluteDistance(Map<String, Integer> h1, Map<String, Integer> h2) {
+    public static double computeAbsoluteDistance(Map<String, Double> h1, Map<String, Double> h2) {
         double distance = 0;
 
         final Set<String> keySet = new HashSet();
@@ -100,14 +104,14 @@ public class Distances {
      * @param nodes
      * @return
      */
-    protected static HashMap<String, Integer> contentElementsToHistogram(NodeList nodes) {
-        final HashMap<String, Integer> histogram = new HashMap<>();
+    protected static HashMap<String, Double> contentElementsToHistogram(NodeList nodes) {
+        final HashMap<String, Double> histogram = new HashMap<>();
 
         for (int i = 0; i < nodes.getLength(); i++) {
             Node node = nodes.item(i);
             String contentElementName = node.getTextContent().trim();
             // increment frequency by 1
-            histogram.put(contentElementName, histogram.getOrDefault(contentElementName, 0) + 1);
+            histogram.put(contentElementName, histogram.getOrDefault(contentElementName, 0.0) + 1.0);
         }
 
         return histogram;
@@ -120,16 +124,16 @@ public class Distances {
      * @param h2
      * @return
      */
-    protected static HashMap<String, Integer> histogramPlus(HashMap<String, Integer> h1, HashMap<String, Integer> h2) {
+    public static HashMap<String, Double> histogramPlus(HashMap<String, Double> h1, HashMap<String, Double> h2) {
         final Set<String> mergedKeys = new HashSet<>(h1.keySet());
         mergedKeys.addAll(h2.keySet());
-        final HashMap<String, Integer> mergedHistogram = new HashMap<>();
+        final HashMap<String, Double> mergedHistogram = new HashMap<>();
 
         for (String key : mergedKeys) {
             mergedHistogram.put(
                     key,
-                    h1.getOrDefault(key, 0)
-                            + h2.getOrDefault(key, 0)
+                    h1.getOrDefault(key, 0.0)
+                            + h2.getOrDefault(key, 0.0)
             );
         }
 
@@ -147,9 +151,9 @@ public class Distances {
      * @throws TransformerException
      * @throws IOException
      */
-    public static HashMap<String, Integer> getDocumentHistogram(ArxivDocument d, String tagName) throws XPathExpressionException, ParserConfigurationException, TransformerException, IOException {
+    public static HashMap<String, Double> getDocumentHistogram(ArxivDocument d, String tagName) throws XPathExpressionException, ParserConfigurationException, TransformerException, IOException {
         LOG.debug("getDocumentHistogram(" + d.title + ", " + tagName + ")");
-        HashMap<String, Integer> mergedHistogram = new HashMap<>();
+        HashMap<String, Double> mergedHistogram = new HashMap<>();
         final NonWhitespaceNodeList allMathTags = d.getMathTags();
         for (int i = 0; i < allMathTags.getLength(); i++) {
             final Node mathTag = allMathTags.item(i);
@@ -180,7 +184,7 @@ public class Distances {
      * @param tagName
      * @return
      */
-    private static HashMap<String, Integer> strictCmmlInfoToHistogram(CMMLInfo strictCmml, String tagName) {
+    private static HashMap<String, Double> strictCmmlInfoToHistogram(CMMLInfo strictCmml, String tagName) {
         final NodeList elements = strictCmml.getElementsByTagName(tagName);
         return contentElementsToHistogram(elements);
     }
@@ -192,7 +196,7 @@ public class Distances {
      * @param tagName
      * @return
      */
-    private static HashMap<String, Integer> cmmlNodeToHistrogram(Node node, String tagName) throws XPathExpressionException {
+    private static HashMap<String, Double> cmmlNodeToHistrogram(Node node, String tagName) throws XPathExpressionException {
         final NodeList elements = XMLHelper.getElementsB(node, "*//*:" + tagName);
         return contentElementsToHistogram(elements);
     }
@@ -210,6 +214,10 @@ public class Distances {
         LOG.debug(getDocDescription(f0, f1) + "BVAR " + decimalFormat.format(absoluteDistanceBoundVariables));
 
         return absoluteDistanceContentNumbers + absoluteDistanceContentOperators + absoluteDistanceContentIdentifiers + absoluteDistanceBoundVariables;
+    }
+
+    public static Tuple4<Double, Double, Double, Double> distanceCosineAllFeatures(ExtractedMathPDDocument f0, ExtractedMathPDDocument f1) {
+        return distanceRelativeAllFeatures(f0, f1);
     }
 
     public static Tuple4<Double, Double, Double, Double> distanceRelativeAllFeatures(ExtractedMathPDDocument f0, ExtractedMathPDDocument f1) {
@@ -241,7 +249,7 @@ public class Distances {
      * @param tagName
      * @param histogram
      */
-    private static void cleanupHistogram(String tagName, HashMap<String, Integer> histogram) {
+    private static void cleanupHistogram(String tagName, HashMap<String, Double> histogram) {
         switch (tagName) {
             case "csymbol":
                 histogram.remove("based_integer");

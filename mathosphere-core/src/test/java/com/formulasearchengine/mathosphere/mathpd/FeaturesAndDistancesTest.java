@@ -93,44 +93,44 @@ public class FeaturesAndDistancesTest {
         assertTrue(document.getHistogramBvar().size() == 0.0);
 
         // identifiers
-        HashMap<String, Integer> histogramCi = new HashMap<>();
-        histogramCi.put("\uD835\uDC4E", 1);
-        histogramCi.put("\uD835\uDC4F", 1);
-        histogramCi.put("\uD835\uDC50", 1);
-        histogramCi.put("\uD835\uDC51", 1);
+        HashMap<String, Double> histogramCi = new HashMap<>();
+        histogramCi.put("\uD835\uDC4E", 1.0);
+        histogramCi.put("\uD835\uDC4F", 1.0);
+        histogramCi.put("\uD835\uDC50", 1.0);
+        histogramCi.put("\uD835\uDC51", 1.0);
         assertTrue(Distances.computeAbsoluteDistance(document.getHistogramCi(), histogramCi) == 0.0);
 
         // numbers
-        HashMap<String, Integer> histogramCn = new HashMap<>();
-        histogramCn.put("1", 1);
-        histogramCn.put("2", 1);
-        histogramCn.put("3", 1);
-        histogramCn.put("4", 1);
+        HashMap<String, Double> histogramCn = new HashMap<>();
+        histogramCn.put("1", 1.0);
+        histogramCn.put("2", 1.0);
+        histogramCn.put("3", 1.0);
+        histogramCn.put("4", 1.0);
         assertTrue(Distances.computeAbsoluteDistance(document.getHistogramCn(), histogramCn) == 0.0);
 
         // symbols
-        HashMap<String, Integer> histogramCsymbol = new HashMap<>();
-        histogramCsymbol.put("minus", 1);
-        histogramCsymbol.put("plus", 3);
-        histogramCsymbol.put("times", 1);
-        histogramCsymbol.put("divide", 1);
-        histogramCsymbol.put("eq", 2);
-        histogramCsymbol.put("list", 1);
+        HashMap<String, Double> histogramCsymbol = new HashMap<>();
+        histogramCsymbol.put("minus", 1.0);
+        histogramCsymbol.put("plus", 3.0);
+        histogramCsymbol.put("times", 1.0);
+        histogramCsymbol.put("divide", 1.0);
+        histogramCsymbol.put("eq", 2.0);
+        histogramCsymbol.put("list", 1.0);
         assertTrue(Distances.computeAbsoluteDistance(document.getHistogramCsymbol(), histogramCsymbol) == 0.0);
 
     }
 
     @Test
     public void testEarthMoverDistanceBasic() {
-        HashMap<String, Integer> histogramCi1 = new HashMap<>();
-        histogramCi1.put("a", 3);
-        histogramCi1.put("b", 1);
-        histogramCi1.put("c", 1);
+        HashMap<String, Double> histogramCi1 = new HashMap<>();
+        histogramCi1.put("a", 3.0);
+        histogramCi1.put("b", 1.0);
+        histogramCi1.put("c", 1.0);
 
-        HashMap<String, Integer> histogramCi2 = new HashMap<>();
-        histogramCi2.put("a", 1);
-        histogramCi2.put("b", 1);
-        histogramCi2.put("c", 3);
+        HashMap<String, Double> histogramCi2 = new HashMap<>();
+        histogramCi2.put("a", 1.0);
+        histogramCi2.put("b", 1.0);
+        histogramCi2.put("c", 3.0);
 
         final double distance = Distances.computeEarthMoverAbsoluteDistance(histogramCi1, histogramCi2);
         LOGGER.debug("earth mover distance = " + distance);

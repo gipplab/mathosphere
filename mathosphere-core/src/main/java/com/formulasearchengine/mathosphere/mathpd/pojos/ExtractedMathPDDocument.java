@@ -1,5 +1,6 @@
 package com.formulasearchengine.mathosphere.mathpd.pojos;
 
+import com.formulasearchengine.mathosphere.mathpd.Distances;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.Serializable;
@@ -14,12 +15,12 @@ public class ExtractedMathPDDocument implements Comparable<ExtractedMathPDDocume
     private static final String ID_SEPARATOR = "/";
     public String title;
     public String text;
-    private String name;
+    public String name;
     private String page;
-    private HashMap<String, Integer> histogramCn;
-    private HashMap<String, Integer> histogramCsymbol;
-    private HashMap<String, Integer> histogramCi;
-    private HashMap<String, Integer> histogramBvar;
+    private HashMap<String, Double> histogramCn = new HashMap<>();
+    private HashMap<String, Double> histogramCsymbol = new HashMap<>();
+    private HashMap<String, Double> histogramCi = new HashMap<>();
+    private HashMap<String, Double> histogramBvar = new HashMap<>();
 
     public ExtractedMathPDDocument() {
     }
@@ -37,35 +38,35 @@ public class ExtractedMathPDDocument implements Comparable<ExtractedMathPDDocume
         return id.split("/")[1];
     }
 
-    public HashMap<String, Integer> getHistogramBvar() {
+    public HashMap<String, Double> getHistogramBvar() {
         return histogramBvar;
     }
 
-    public void setHistogramBvar(HashMap<String, Integer> histogramBvar) {
+    public void setHistogramBvar(HashMap<String, Double> histogramBvar) {
         this.histogramBvar = histogramBvar;
     }
 
-    public HashMap<String, Integer> getHistogramCn() {
+    public HashMap<String, Double> getHistogramCn() {
         return histogramCn;
     }
 
-    public void setHistogramCn(HashMap<String, Integer> histogramCn) {
+    public void setHistogramCn(HashMap<String, Double> histogramCn) {
         this.histogramCn = histogramCn;
     }
 
-    public HashMap<String, Integer> getHistogramCsymbol() {
+    public HashMap<String, Double> getHistogramCsymbol() {
         return histogramCsymbol;
     }
 
-    public void setHistogramCsymbol(HashMap<String, Integer> histogramCsymbol) {
+    public void setHistogramCsymbol(HashMap<String, Double> histogramCsymbol) {
         this.histogramCsymbol = histogramCsymbol;
     }
 
-    public HashMap<String, Integer> getHistogramCi() {
+    public HashMap<String, Double> getHistogramCi() {
         return histogramCi;
     }
 
-    public void setHistogramCi(HashMap<String, Integer> histogramCi) {
+    public void setHistogramCi(HashMap<String, Double> histogramCi) {
         this.histogramCi = histogramCi;
     }
 
@@ -113,10 +114,20 @@ public class ExtractedMathPDDocument implements Comparable<ExtractedMathPDDocume
     }
 
     public String getPage() {
-        return page;
+        return "none";
     }
 
     public void setPage(String page) {
         this.page = page;
+    }
+
+    public void mergeOtherIntoThis(ExtractedMathPDDocument other) {
+        if (!this.name.equals(other.name)) {
+            throw new RuntimeException("name is not equal : " + name + " vs " + other.name);
+        }
+        this.histogramBvar = Distances.histogramPlus(this.histogramBvar, other.histogramBvar);
+        this.histogramCi = Distances.histogramPlus(this.histogramCi, other.histogramCi);
+        this.histogramCn = Distances.histogramPlus(this.histogramCn, other.histogramCn);
+        this.histogramCsymbol = Distances.histogramPlus(this.histogramCsymbol, other.histogramCsymbol);
     }
 }
