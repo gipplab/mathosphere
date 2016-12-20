@@ -17,8 +17,8 @@ import org.apache.flink.api.java.ExecutionEnvironment;
 import org.apache.flink.api.java.io.TextInputFormat;
 import org.apache.flink.api.java.operators.DataSource;
 import org.apache.flink.api.java.tuple.Tuple2;
-import org.apache.flink.api.java.tuple.Tuple3;
 import org.apache.flink.api.java.tuple.Tuple4;
+import org.apache.flink.api.java.tuple.Tuple5;
 import org.apache.flink.api.java.tuple.Tuple6;
 import org.apache.flink.core.fs.FileSystem.WriteMode;
 import org.apache.flink.core.fs.Path;
@@ -93,37 +93,42 @@ public class FlinkPd {
                 distancesAndSectionPairs
                         .reduceGroup(new GroupReduceFunction<
                                 Tuple6<Double, Double, Double, Double, Double, String>,
-                                Tuple4<String, Double, Double, Double>>() {
+                                Tuple5<String, String, Double, Double, Double>>() {
                             @Override
-                            public void reduce(Iterable<Tuple6<Double, Double, Double, Double, Double, String>> iterable, Collector<Tuple4<String, Double, Double, Double>> collector) throws Exception {
+                            public void reduce(Iterable<Tuple6<Double, Double, Double, Double, Double, String>> iterable, Collector<Tuple5<String, String, Double, Double, Double>> collector) throws Exception {
                                 // histogram will contain as a key a tuple2 of the names of the two documents from the pair; and the bin
                                 // the value will be the frequency of that bin in that pair of documents
-                                HashMap<Tuple3<String, Double, Double>, Double> histogramPairOfNameAndBinWithFrequency = new HashMap<>();
+                                final HashMap<Tuple4<String, String, Double, Double>, Double> histogramPairOfNameAndBinWithFrequency = new HashMap<>();
+                                final HashMap<Tuple2<String, String>, Double> histogramPairOfNameWithFrequency = new HashMap<>();
+
                                 for (Tuple6<Double, Double, Double, Double, Double, String> curPairWithDistances : iterable) {
                                     final String idPair = curPairWithDistances.f5;
                                     final String id0 = FlinkPd.getIdFromIdPair(idPair, 0);
                                     final String id1 = FlinkPd.getIdFromIdPair(idPair, 1);
                                     final String name0 = ExtractedMathPDDocument.getNameFromId(id0);
                                     final String name1 = ExtractedMathPDDocument.getNameFromId(id1);
-                                    final String namePair = generateIdPair(name0, name1);
 
                                     double distance = curPairWithDistances.f0 / 4.0; // take the accumulated distance and normalize it
 
                                     // the key
-                                    final Tuple3<String, Double, Double> key =
-                                            new Tuple3<>(
-                                                    namePair,
+                                    final Tuple4<String, String, Double, Double> key =
+                                            new Tuple4<>(
+                                                    name0,
+                                                    name1,
                                                     getBinBoundary(distance, 0.2, true),
                                                     getBinBoundary(distance, 0.2, false));
+                                    final Tuple2<String, String> keyName = new Tuple2<String, String>(name0, name1);
 
                                     // look up if something has been stored under this key
                                     Double frequencyOfCurKey = histogramPairOfNameAndBinWithFrequency.getOrDefault(key, 0.0);
-
                                     histogramPairOfNameAndBinWithFrequency.put(key, frequencyOfCurKey + 1.0);
+
+                                    // also update the pair's total frequency
+                                    histogramPairOfNameWithFrequency.put(keyName, histogramPairOfNameWithFrequency.getOrDefault(keyName, 0.0) + 1.0);
                                 }
 
-                                for (Tuple3<String, Double, Double> key : histogramPairOfNameAndBinWithFrequency.keySet()) {
-                                    collector.collect(new Tuple4<>(key.f0, key.f1, key.f2, histogramPairOfNameAndBinWithFrequency.get(key)));
+                                for (Tuple4<String, String, Double, Double> key : histogramPairOfNameAndBinWithFrequency.keySet()) {
+                                    collector.collect(new Tuple5<>(key.f0, key.f1, key.f2, key.f3, histogramPairOfNameAndBinWithFrequency.get(key) / histogramPairOfNameWithFrequency.get(new Tuple2<>(key.f0, key.f1))));
                                 }
                             }
                         })
