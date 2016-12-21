@@ -29,6 +29,8 @@ import java.util.HashMap;
 
 public class FlinkPd {
     protected static final Log LOG = LogFactory.getLog(FlinkPd.class);
+    private static final int NUMBER_OF_ALL_DOCS = 20;
+    private static final double EPSILON = 0.00000000000000000001;
     private static DecimalFormat decimalFormat = new DecimalFormat("0.0");
 
     public static void main(String[] args) throws Exception {
@@ -36,17 +38,18 @@ public class FlinkPd {
         run(config);
     }
 
-    private static String generateIdPair(String id1, String id2) {
-        return id1 + "-" + id2;
-    }
+    //private static String generateIdPair(String id1, String id2) {
+    //    return id1 + "-" + id2;
+    //}
 
-    private static String getIdFromIdPair(String idPair, int index) {
-        return idPair.split("-")[index];
-    }
+    //private static String getIdFromIdPair(String idPair, int index) {
+    //   return idPair.split("-")[index];
+    //}
 
     private static void collectElementFrequencies(HashMap<String, Double> histogramOfDimension, String dimension, Collector<Tuple3<String, String, Double>> collector) {
         for (String key : histogramOfDimension.keySet()) {
-            collector.collect(new Tuple3<>(dimension, key, histogramOfDimension.get(key)));
+            //collector.collect(new Tuple3<>(dimension, key, histogramOfDimension.get(key))); // this would be the term frequency in the whole dataset,
+            collector.collect(new Tuple3<>(dimension, key, 1.0)); // but IDF is actually the number of documents that contain the term
         }
     }
 
@@ -75,7 +78,9 @@ public class FlinkPd {
                 throw new RuntimeException("unknown dimension");
         }
 
-        histogramOut.put(elementName, histogramIn.getOrDefault(elementName, 0.0) / (df + 0.00000000000000000001));
+        histogramOut.put(elementName, histogramOut.getOrDefault(elementName, 0.0) +
+                histogramIn.getOrDefault(elementName, 0.0)
+                        * (EPSILON + Math.log(NUMBER_OF_ALL_DOCS / (df + EPSILON))));
     }
 
     public static void run(FlinkPdCommandConfig config) throws Exception {
@@ -84,10 +89,45 @@ public class FlinkPd {
         DataSource<String> source = readWikiDump(config, env);
         DataSource<String> refs = readRefs(config, env);
 
-        final FlatMapOperator<String, Tuple2<String, ExtractedMathPDDocument>> extractedMathPdDocuments = source.flatMap(new TextExtractorMapper());
+        final FlatMapOperator<String, Tuple2<String, ExtractedMathPDDocument>> extractedMathPdSections = source.flatMap(new TextExtractorMapper());
+
+        // first, merge all pages of one doc to one doc
+        final GroupReduceOperator<Tuple2<String, ExtractedMathPDDocument>, Tuple2<String, ExtractedMathPDDocument>> extractedMathPdDocuments = extractedMathPdSections
+                .groupBy(0)
+                .reduceGroup(new GroupReduceFunction<Tuple2<String, ExtractedMathPDDocument>, Tuple2<String, ExtractedMathPDDocument>>() {
+                    @Override
+                    public void reduce(Iterable<Tuple2<String, ExtractedMathPDDocument>> iterable, Collector<Tuple2<String, ExtractedMathPDDocument>> collector) throws Exception {
+                        // here we have all sections that belong to the same document
+                        HashMap<String, ExtractedMathPDDocument> nameAndDocs = new HashMap<>();
+
+                        for (Tuple2<String, ExtractedMathPDDocument> nameAndSection : iterable) {
+                            ExtractedMathPDDocument mainDoc = nameAndDocs.get(nameAndSection.f0);
+                            if (mainDoc == null) {
+                                mainDoc = nameAndSection.f1;
+                                nameAndDocs.put(nameAndSection.f0, mainDoc);
+                                continue;
+                            }
+                            final ExtractedMathPDDocument curDoc = nameAndSection.f1;
+
+                            mainDoc.setHistogramCi(Distances.histogramPlus(mainDoc.getHistogramCi(), curDoc.getHistogramCi()));
+                            mainDoc.setHistogramBvar(Distances.histogramPlus(mainDoc.getHistogramBvar(), curDoc.getHistogramBvar()));
+                            mainDoc.setHistogramCn(Distances.histogramPlus(mainDoc.getHistogramCn(), curDoc.getHistogramCn()));
+                            mainDoc.setHistogramCsymbol(Distances.histogramPlus(mainDoc.getHistogramCsymbol(), curDoc.getHistogramCsymbol()));
+                        }
+
+                        for (String name : nameAndDocs.keySet()) {
+                            collector.collect(new Tuple2<>(name, nameAndDocs.get(name)));
+                            System.out.println(name);
+                            System.out.println(nameAndDocs.get(name).getHistogramCi());
+                            System.out.println(nameAndDocs.get(name).getHistogramCsymbol());
+                            System.out.println("");
+                        }
+                    }
+                });
 
         //noinspection Convert2Lambda
         final GroupReduceOperator<Tuple3<String, String, Double>, Tuple3<String, String, Double>> corpusWideElementFrequenciesByDimension = extractedMathPdDocuments
+                .union(extractedMathPdDocuments) // this could also be another dataset
                 .flatMap(new FlatMapFunction<Tuple2<String, ExtractedMathPDDocument>, Tuple3<String, String, Double>>() {
                     @Override
                     public void flatMap(Tuple2<String, ExtractedMathPDDocument> stringExtractedMathPDDocumentTuple2, Collector<Tuple3<String, String, Double>> collector) throws Exception {
@@ -110,10 +150,11 @@ public class FlinkPd {
 
                         for (Tuple2<String, String> key : freqsInCorpus.keySet()) {
                             collector.collect(new Tuple3<>(key.f0, key.f1, freqsInCorpus.get(key)));
+                            System.out.println(new Tuple3<>(key.f0, key.f1, freqsInCorpus.get(key)));
                         }
                     }
                 });
-        // at this point we have in corpusWideElementFrequenciesByDimension the DF over all documents for each element in all dimensions
+        // at this point we have in corpusWideElementFrequenciesByDimension the DF over all documents for each element in all dimensions (verified)
         corpusWideElementFrequenciesByDimension.writeAsCsv(config.getOutputDir() + "_DF");
 
         // now convert the absolute histograms into tfidf histograms
@@ -134,7 +175,9 @@ public class FlinkPd {
                                     // get to tfidf doc
                                     ExtractedMathPDDocument curTfidfDoc = tfidfDocs.get(name);
                                     if (curTfidfDoc == null) {
-                                        curTfidfDoc = new ExtractedMathPDDocument();
+                                        curTfidfDoc = new ExtractedMathPDDocument(curDoc.title, curDoc.text);
+                                        curTfidfDoc.setName(curDoc.getName());
+                                        curTfidfDoc.setPage(curDoc.getPage());
                                         tfidfDocs.put(name, curTfidfDoc);
                                     }
 
@@ -143,10 +186,15 @@ public class FlinkPd {
 
                                 for (String name : tfidfDocs.keySet()) {
                                     collector.collect(new Tuple2<>(name, tfidfDocs.get(name)));
+                                    System.out.println(name);
+                                    System.out.println(tfidfDocs.get(name).getHistogramCi());
+                                    System.out.println(tfidfDocs.get(name).getHistogramCsymbol());
+                                    System.out.println(tfidfDocs.get(name).getHistogramCn());
+                                    System.out.println("");
                                 }
                             }
                         });
-        extractedMathPDDocsWithTFIDF.writeAsCsv(config.getOutputDir() + "_TFIDF");
+        extractedMathPDDocsWithTFIDF.writeAsText(config.getOutputDir() + "_TFIDF");
 
         DataSet distancesAndSectionPairs =
                 extractedMathPDDocsWithTFIDF
@@ -182,9 +230,9 @@ public class FlinkPd {
                                     }
                                 })
                         )
-                        .reduceGroup(new GroupReduceFunction<Tuple2<ExtractedMathPDDocument, ExtractedMathPDDocument>, Tuple6<Double, Double, Double, Double, Double, String>>() {
+                        .reduceGroup(new GroupReduceFunction<Tuple2<ExtractedMathPDDocument, ExtractedMathPDDocument>, Tuple7<String, String, Double, Double, Double, Double, Double>>() {
                             @Override
-                            public void reduce(Iterable<Tuple2<ExtractedMathPDDocument, ExtractedMathPDDocument>> iterable, Collector<Tuple6<Double, Double, Double, Double, Double, String>> collector) throws Exception {
+                            public void reduce(Iterable<Tuple2<ExtractedMathPDDocument, ExtractedMathPDDocument>> iterable, Collector<Tuple7<String, String, Double, Double, Double, Double, Double>> collector) throws Exception {
                                 for (Tuple2<ExtractedMathPDDocument, ExtractedMathPDDocument> i : iterable) {
                                     if (i.f0 == null || i.f1 == null)
                                         continue;
@@ -198,14 +246,19 @@ public class FlinkPd {
                                         continue;
 
                                     // WARNING: Currently the cosine distance is just the relative distance!!! TODO
-                                    final Tuple4<Double, Double, Double, Double> distanceAbsoluteAllFeatures = Distances.distanceCosineAllFeatures(i.f0, i.f1);
-                                    final Tuple6<Double, Double, Double, Double, Double, String> resultLine = new Tuple6<>(
-                                            distanceAbsoluteAllFeatures.f0 + distanceAbsoluteAllFeatures.f1 + distanceAbsoluteAllFeatures.f2 + distanceAbsoluteAllFeatures.f3,
-                                            distanceAbsoluteAllFeatures.f0,
-                                            distanceAbsoluteAllFeatures.f1,
-                                            distanceAbsoluteAllFeatures.f2,
-                                            distanceAbsoluteAllFeatures.f3,
-                                            generateIdPair(i.f0.getId(), i.f1.getId()));
+                                    final Tuple4<Double, Double, Double, Double> distanceAllFeatures = Distances.distanceCosineAllFeatures(i.f0, i.f1);
+                                    System.out.println(i.f0.getId() + " - " + i.f1.getId());
+                                    System.out.println(distanceAllFeatures);
+                                    System.out.println("");
+                                    final Tuple7<String, String, Double, Double, Double, Double, Double> resultLine = new Tuple7<>(
+                                            i.f0.getId(),
+                                            i.f1.getId(),
+                                            Math.abs(distanceAllFeatures.f0) + Math.abs(distanceAllFeatures.f1) + Math.abs(distanceAllFeatures.f2) + Math.abs(distanceAllFeatures.f3),
+                                            distanceAllFeatures.f0,
+                                            distanceAllFeatures.f1,
+                                            distanceAllFeatures.f2,
+                                            distanceAllFeatures.f3
+                                    );
 
                                     collector.collect(resultLine);
                                 }
@@ -219,23 +272,22 @@ public class FlinkPd {
         DataSet binnedDistancesForPairs =
                 distancesAndSectionPairs
                         .reduceGroup(new GroupReduceFunction<
-                                Tuple6<Double, Double, Double, Double, Double, String>,
+                                Tuple7<String, String, Double, Double, Double, Double, Double>,
                                 Tuple5<String, String, Double, Double, Double>>() {
                             @Override
-                            public void reduce(Iterable<Tuple6<Double, Double, Double, Double, Double, String>> iterable, Collector<Tuple5<String, String, Double, Double, Double>> collector) throws Exception {
+                            public void reduce(Iterable<Tuple7<String, String, Double, Double, Double, Double, Double>> iterable, Collector<Tuple5<String, String, Double, Double, Double>> collector) throws Exception {
                                 // histogram will contain as a key a tuple2 of the names of the two documents from the pair; and the bin
                                 // the value will be the frequency of that bin in that pair of documents
                                 final HashMap<Tuple4<String, String, Double, Double>, Double> histogramPairOfNameAndBinWithFrequency = new HashMap<>();
                                 final HashMap<Tuple2<String, String>, Double> histogramPairOfNameWithFrequency = new HashMap<>();
 
-                                for (Tuple6<Double, Double, Double, Double, Double, String> curPairWithDistances : iterable) {
-                                    final String idPair = curPairWithDistances.f5;
-                                    final String id0 = FlinkPd.getIdFromIdPair(idPair, 0);
-                                    final String id1 = FlinkPd.getIdFromIdPair(idPair, 1);
+                                for (Tuple7<String, String, Double, Double, Double, Double, Double> curPairWithDistances : iterable) {
+                                    final String id0 = curPairWithDistances.f0;
+                                    final String id1 = curPairWithDistances.f1;
                                     final String name0 = ExtractedMathPDDocument.getNameFromId(id0);
                                     final String name1 = ExtractedMathPDDocument.getNameFromId(id1);
 
-                                    double distance = curPairWithDistances.f0 / 4.0; // take the accumulated distance and normalize it
+                                    double distance = curPairWithDistances.f2 / 4.0; // take the accumulated distance and normalize it
 
                                     // the key
                                     final Tuple4<String, String, Double, Double> key =

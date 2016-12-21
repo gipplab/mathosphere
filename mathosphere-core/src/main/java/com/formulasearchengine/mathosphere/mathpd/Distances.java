@@ -63,10 +63,6 @@ public class Distances {
         return absoluteDistance / totalNumberOfElements;
     }
 
-    public static double computeCosineDistance(Map<String, Double> h1, Map<String, Double> h2) {
-        return computeRelativeDistance(h1, h2);
-    }
-
 
     /**
      * compares two histograms and returns the accumulated number of differences (absolute)
@@ -201,7 +197,7 @@ public class Distances {
         return contentElementsToHistogram(elements);
     }
 
-    public static double distanceAbsoluteAllFeatures(ExtractedMathPDDocument f0, ExtractedMathPDDocument f1) {
+    public static Tuple4<Double, Double, Double, Double> distanceAbsoluteAllFeatures(ExtractedMathPDDocument f0, ExtractedMathPDDocument f1) {
         final double absoluteDistanceContentNumbers = computeAbsoluteDistance(f0.getHistogramCn(), f1.getHistogramCn());
         final double absoluteDistanceContentOperators = computeAbsoluteDistance(f0.getHistogramCsymbol(), f1.getHistogramCsymbol());
         final double absoluteDistanceContentIdentifiers = computeAbsoluteDistance(f0.getHistogramCi(), f1.getHistogramCi());
@@ -213,11 +209,55 @@ public class Distances {
         LOG.debug(getDocDescription(f0, f1) + "CI " + decimalFormat.format(absoluteDistanceContentIdentifiers));
         LOG.debug(getDocDescription(f0, f1) + "BVAR " + decimalFormat.format(absoluteDistanceBoundVariables));
 
-        return absoluteDistanceContentNumbers + absoluteDistanceContentOperators + absoluteDistanceContentIdentifiers + absoluteDistanceBoundVariables;
+        return new Tuple4<>(absoluteDistanceContentNumbers, absoluteDistanceContentOperators, absoluteDistanceContentIdentifiers, absoluteDistanceBoundVariables);
+    }
+
+    public static double computeCosineDistance(HashMap<String, Double> h1, HashMap<String, Double> h2) {
+        final Set<String> mergedKeys = new HashSet<>(h1.keySet());
+        mergedKeys.addAll(h2.keySet());
+
+        if (mergedKeys.isEmpty()) {
+            return 0.0;
+        }
+
+        // https://en.wikipedia.org/wiki/Cosine_similarity
+        double numerator = 0.0;
+        for (String key : mergedKeys) {
+            numerator += (h1.getOrDefault(key, 0.0) * h2.getOrDefault(key, 0.0));
+        }
+
+        double denominator1 = 0.0;
+        for (String key : h1.keySet()) {
+            double value = h1.get(key);
+            denominator1 += (value * value);
+        }
+        denominator1 = Math.sqrt(denominator1);
+
+        double denominator2 = 0.0;
+        for (String key : h2.keySet()) {
+            double value = h2.get(key);
+            denominator2 += (value * value);
+        }
+        denominator2 = Math.sqrt(denominator2);
+
+        return numerator / (denominator1 * denominator2);
     }
 
     public static Tuple4<Double, Double, Double, Double> distanceCosineAllFeatures(ExtractedMathPDDocument f0, ExtractedMathPDDocument f1) {
-        return distanceRelativeAllFeatures(f0, f1);
+        final double cosineDistanceContentNumbers = computeCosineDistance(f0.getHistogramCn(), f1.getHistogramCn());
+        final double cosineDistanceContentOperators = computeCosineDistance(f0.getHistogramCsymbol(), f1.getHistogramCsymbol());
+        final double cosineDistanceContentIdentifiers = computeCosineDistance(f0.getHistogramCi(), f1.getHistogramCi());
+        final double cosineDistanceBoundVariables = computeCosineDistance(f0.getHistogramBvar(), f1.getHistogramBvar());
+
+        LOG.debug(getDocDescription(f0, f1) + "CN " + decimalFormat.format(cosineDistanceContentNumbers));
+        LOG.debug(getDocDescription(f0, f1) + "CSYMBOL " + decimalFormat.format(cosineDistanceContentOperators));
+        LOG.debug(getDocDescription(f0, f1) + "CI " + decimalFormat.format(cosineDistanceContentIdentifiers));
+        LOG.debug(getDocDescription(f0, f1) + "BVAR " + decimalFormat.format(cosineDistanceBoundVariables));
+
+        return new Tuple4<>(cosineDistanceContentNumbers,
+                cosineDistanceContentOperators,
+                cosineDistanceContentIdentifiers,
+                cosineDistanceBoundVariables);
     }
 
     public static Tuple4<Double, Double, Double, Double> distanceRelativeAllFeatures(ExtractedMathPDDocument f0, ExtractedMathPDDocument f1) {
@@ -226,12 +266,10 @@ public class Distances {
         final double relativeDistanceContentIdentifiers = computeRelativeDistance(f0.getHistogramCi(), f1.getHistogramCi());
         final double relativeDistanceBoundVariables = computeRelativeDistance(f0.getHistogramBvar(), f1.getHistogramBvar());
 
-        LOG.debug("the following distances should all be 0");
         LOG.debug(getDocDescription(f0, f1) + "CN " + decimalFormat.format(relativeDistanceContentNumbers));
         LOG.debug(getDocDescription(f0, f1) + "CSYMBOL " + decimalFormat.format(relativeDistanceContentOperators));
         LOG.debug(getDocDescription(f0, f1) + "CI " + decimalFormat.format(relativeDistanceContentIdentifiers));
         LOG.debug(getDocDescription(f0, f1) + "BVAR " + decimalFormat.format(relativeDistanceBoundVariables));
-
 
         return new Tuple4<>(relativeDistanceContentNumbers,
                 relativeDistanceContentOperators,
@@ -249,15 +287,29 @@ public class Distances {
      * @param tagName
      * @param histogram
      */
-    private static void cleanupHistogram(String tagName, HashMap<String, Double> histogram) {
+    synchronized private static void cleanupHistogram(String tagName, HashMap<String, Double> histogram) {
         switch (tagName) {
             case "csymbol":
                 histogram.remove("based_integer");
+                for (String key : ValidCSymbols.VALID_CSYMBOLS) {
+                    histogram.remove(key);
+                }
                 break;
             case "ci":
                 histogram.remove("integer");
                 break;
+            case "cn":
+                for (String key : histogram.keySet()) {
+                    if (!isNumeric(key)) {
+                        histogram.remove(key);
+                    }
+                }
+                break;
         }
+    }
+
+    private static boolean isNumeric(String str) {
+        return str.matches("-?\\d+(\\.\\d+)?");  //match a number with optional '-' and decimal.
     }
 
 }

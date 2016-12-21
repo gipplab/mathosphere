@@ -55,7 +55,7 @@ public class FeaturesAndDistancesTest {
         ExtractedMathPDDocument doc2 = testResourceToExtractedMathPDDocument(resourceSimple);
         assertTrue(doc1 != null && doc2 != null);
 
-        final double distanceAbsoluteAllFeatures = Distances.distanceAbsoluteAllFeatures(doc1, doc2);
+        final Tuple4<Double, Double, Double, Double> distanceAbsoluteAllFeatures = Distances.distanceAbsoluteAllFeatures(doc1, doc2);
         LOGGER.debug("absolute distance = " + distanceAbsoluteAllFeatures);
 
         final Tuple4<Double, Double, Double, Double> distanceRelativeAllFeatures = Distances.distanceRelativeAllFeatures(doc1, doc2);
@@ -64,7 +64,10 @@ public class FeaturesAndDistancesTest {
         final double distanceEarthMoverAllFeatures = Distances.computeEarthMoverAbsoluteDistance(doc1.getHistogramCi(), doc2.getHistogramCi());
         LOGGER.debug("earth mover distance = " + distanceEarthMoverAllFeatures);
 
-        assertTrue(distanceAbsoluteAllFeatures
+        assertTrue(distanceAbsoluteAllFeatures.f0
+                + distanceAbsoluteAllFeatures.f1
+                + distanceAbsoluteAllFeatures.f2
+                + distanceAbsoluteAllFeatures.f3
                 + distanceRelativeAllFeatures.f0
                 + distanceRelativeAllFeatures.f1
                 + distanceRelativeAllFeatures.f2
@@ -118,6 +121,28 @@ public class FeaturesAndDistancesTest {
         histogramCsymbol.put("list", 1.0);
         assertTrue(Distances.computeAbsoluteDistance(document.getHistogramCsymbol(), histogramCsymbol) == 0.0);
 
+    }
+
+    @Test
+    public void testCosineSimilarity() {
+        HashMap<String, Double> h1 = new HashMap<>();
+        h1.put("minus", 1.0);
+        h1.put("plus", 3.0);
+        h1.put("times", 1.0);
+        h1.put("divide", 1.0);
+        h1.put("eq", 2.0);
+        h1.put("list", 1.0);
+
+        HashMap<String, Double> h2 = new HashMap<>();
+        h2.put("minus", 1.0);
+        h2.put("plus", 3.0);
+        h2.put("times", 1.0);
+        h2.put("divide", 1.0);
+        h2.put("eq", 2.0);
+        h2.put("list", 1.0);
+        h2 = Distances.histogramPlus(h2, h2);
+
+        System.out.println(Distances.computeCosineDistance(h1, h2));
     }
 
     @Test
