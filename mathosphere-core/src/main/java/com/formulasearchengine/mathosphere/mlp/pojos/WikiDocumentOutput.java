@@ -9,7 +9,7 @@ public class WikiDocumentOutput {
 
   private String title;
   private List<Relation> relations;
-  private Set<Multiset.Entry<String>> identifiers;
+  private Set<String> identifiers;
 
   public boolean isSuccess() {
     return success;
@@ -24,10 +24,10 @@ public class WikiDocumentOutput {
     this.success = s;
   }
 
-  public WikiDocumentOutput(String title, List<Relation> relations, Multiset<String> identifiers) {
+  public WikiDocumentOutput(String title, List<Relation> relations, Set<String> identifiers) {
     this.title = title;
     this.relations = relations;
-    this.identifiers = identifiers.entrySet();
+    this.identifiers = identifiers;
   }
 
   public String getTitle() {
@@ -46,11 +46,11 @@ public class WikiDocumentOutput {
     this.relations = relations;
   }
 
-  public Set<Multiset.Entry<String>> getIdentifiers() {
+  public Set<String> getIdentifiers() {
     return identifiers;
   }
 
-  public void setIdentifiers(Set<Multiset.Entry<String>> identifiers) {
+  public void setIdentifiers(Set<String> identifiers) {
     this.identifiers = identifiers;
   }
 

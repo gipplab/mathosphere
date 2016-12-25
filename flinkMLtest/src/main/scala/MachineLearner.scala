@@ -1,6 +1,7 @@
 import akka.event.slf4j.Logger
 import com.formulasearchengine.mathosphere.mlp.MachineLearningRelationFinder
 import com.formulasearchengine.mathosphere.mlp.features.FeatureVector
+import com.formulasearchengine.mathosphere.mlp.pojos.WikiDocumentOutput
 import org.apache.flink.api.common.functions.{FlatMapFunction, MapFunction}
 import org.apache.flink.api.scala._
 import org.apache.flink.api.scala.utils.DataSetUtils
@@ -8,6 +9,7 @@ import org.apache.flink.core.fs.FileSystem.WriteMode
 import org.apache.flink.ml.common.LabeledVector
 import org.apache.flink.ml.math.{DenseVector, Vector}
 import org.apache.flink.ml.classification.SVM
+import weka.core.Instances
 
 
 object MachineLearner {
@@ -23,9 +25,9 @@ object MachineLearner {
     val env = ExecutionEnvironment.createCollectionsEnvironment
     env.getConfig.enableSysoutLogging()
     val machineLearningRelationFinder = new MachineLearningRelationFinder()
-    val data: DataSet[FeatureVector] = new DataSet[FeatureVector](machineLearningRelationFinder.find(env.getJavaEnv));
+    val data: DataSet[WikiDocumentOutput] = new DataSet[WikiDocumentOutput](machineLearningRelationFinder.find(env.getJavaEnv));
     data.writeAsText("c:/tmp/output/data.txt", WriteMode.OVERWRITE)
-    val dataWithIndex: DataSet[(Long, FeatureVector)] = data.zipWithIndex
+    /*val dataWithIndex: DataSet[(Long, FeatureVector)] = data.zipWithIndex
     val partitions: Integer = 10;
     val predictions: List[(Double, Double)] = List[(Double, Double)]();
     for (i <- 0 until partitions) {
@@ -51,7 +53,7 @@ object MachineLearner {
       //val truePositives = classifications.filter(e => e._1 == e._2.truePositive)
       predictions.+:(predictionPairs);
       predictionPairs.writeAsText("c:/tmp/output/result_" + i + ".txt", WriteMode.OVERWRITE)
-    }
+    }*/
     env.execute("foo")
     //val c = predictionPairs.cross(test).filter(a => a._1._1.equalsVector(a._2)).filter(a => !a._1._2.equals(a._2.label))
     //System.out.println(c.count())

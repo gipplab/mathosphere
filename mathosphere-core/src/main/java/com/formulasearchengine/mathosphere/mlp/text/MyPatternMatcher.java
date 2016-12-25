@@ -3,189 +3,30 @@ package com.formulasearchengine.mathosphere.mlp.text;
 import com.alexeygrigorev.rseq.*;
 import com.formulasearchengine.mathosphere.mlp.features.FeatureVector;
 import com.formulasearchengine.mathosphere.mlp.pojos.ParsedWikiDocument;
+import com.formulasearchengine.mathosphere.mlp.pojos.Sentence;
 import com.formulasearchengine.mathosphere.mlp.pojos.WikidataLink;
 import com.formulasearchengine.mathosphere.mlp.pojos.Word;
 
 import java.util.*;
 
 public class MyPatternMatcher {
-  private static final String SENTENCE_NUMBER = "sentence_number";
-  public static final String DOCUMENT_TITLE = "title";
   public static final String IDENTIFIER = "identifier";
   public static final String DEFINITION = "definition";
-  public static final double TRUE = 1d;
-  public static final double BEFORE = 1d;
-  public static final double AFTER = -1d;
-  private List<Pattern<Word>> patterns;
-  public static Integer NUMBER_OF_FEATURES = 16;
+  public static final String COLON = "colon";
 
-  public enum features {
-    PATTERN1,
-    PATTERN2,
-    PATTERN3,
-    PATTERN4,
-    PATTERN5,
-    PATTERN6,
-    PATTERN7,
-    PATTERN8,
-    PATTERN9,
-    PATTERN10,
-    COLON,
-    COMMA,
-    OTHERMATH,
-    PARENTHESES,
-    POSITION,
-    WORD_DISTANCE
-  }
-
-  public MyPatternMatcher(List<Pattern<Word>> patterns) {
-    this.patterns = patterns;
-  }
-
-  public Collection<FeatureVector> match(List<Word> words, ParsedWikiDocument doc) {
-    HashMap<String, FeatureVector> result = new HashMap<>();
-    for (int i = 0; i < patterns.size(); i++) {
-      Pattern<Word> pattern = patterns.get(i);
-      List<Match<Word>> matches = pattern.find(words);
-      for (Match<Word> match : matches) {
-        String id = match.getVariable(IDENTIFIER).getWord();
-
-        String def = deLinkify(match.getVariable(DEFINITION), doc);
-
-        switch (i) {
-          case 0:
-          case 1:
-          case 2:
-          case 3:
-          case 4:
-          case 5:
-          case 6:
-          case 7:
-          case 8:
-          case 9:
-            //found by pattern
-            setFeature(result, id, def, i, TRUE);
-            break;
-          case 10:
-            setFeature(result, id, def, features.COLON.ordinal(), TRUE);
-            break;
-          case 11:
-            setFeature(result, id, def, features.COMMA.ordinal(), TRUE);
-            break;
-          case 12:
-            setFeature(result, id, def, features.OTHERMATH.ordinal(), TRUE);
-            break;
-          case 13:
-            setFeature(result, id, def, features.PARENTHESES.ordinal(), TRUE);
-            break;
-          case 14:
-            setFeature(result, id, def, features.POSITION.ordinal(), BEFORE);
-            setFeature(result, id, def, features.WORD_DISTANCE.ordinal(), match.matchedTo() - match.matchedFrom());
-            break;
-          case 15:
-            setFeature(result, id, def, features.POSITION.ordinal(), AFTER);
-            setFeature(result, id, def, features.WORD_DISTANCE.ordinal(), match.matchedTo() - match.matchedFrom());
-            break;
-        }
-      }
-    }
-    return result.values();
-  }
-
-  /*public Collection<FeatureVector> match(List<Word> words, ParsedWikiDocument doc) {
-    HashMap<String, FeatureVector> result = new HashMap<>();
-    for (int i = 0; i < patterns.size(); i++) {
-      Pattern<Word> pattern = patterns.get(i);
-      List<Match<Word>> matches = pattern.find(words);
-      for (Match<Word> match : matches) {
-        String id = match.getVariable(IDENTIFIER).getWord();
-
-        String def = deLinkify(match.getVariable(DEFINITION), doc);
-
-        switch (i) {
-          case 0:
-          case 1:
-          case 2:
-          case 3:
-          case 4:
-          case 5:
-          case 6:
-          case 7:
-          case 8:
-          case 9:
-            //found by pattern
-            setFeature(result, id, def, i, TRUE);
-            break;
-          case 10:
-            setFeature(result, id, def, features.COLON.ordinal(), TRUE);
-            break;
-          case 11:
-            setFeature(result, id, def, features.COMMA.ordinal(), TRUE);
-            break;
-          case 12:
-            setFeature(result, id, def, features.OTHERMATH.ordinal(), TRUE);
-            break;
-          case 13:
-            setFeature(result, id, def, features.PARENTHESES.ordinal(), TRUE);
-            break;
-          case 14:
-            setFeature(result, id, def, features.POSITION.ordinal(), BEFORE);
-            setFeature(result, id, def, features.WORD_DISTANCE.ordinal(), match.matchedTo()-match.matchedFrom());
-            break;
-          case 15:
-            setFeature(result, id, def, features.POSITION.ordinal(), AFTER);
-            setFeature(result, id, def, features.WORD_DISTANCE.ordinal(), match.matchedTo()-match.matchedFrom());
-            break;
-        }
-      }
-    }
-    return result.values();
-  }*/
-
-  public void setFeature(HashMap<String, FeatureVector> result, String id, String def, int feature, double value) {
-    FeatureVector temp = result.get(key(id, def));
-    if (temp != null) {
-      temp.setFeature(feature, value);
-    } else {
-      result.put(key(id, def), new FeatureVector(id, def, NUMBER_OF_FEATURES).setFeature(feature, value));
-    }
-  }
-
-  private String key(String id, String def) {
-    return id + def;
-  }
-
-  private String deLinkify(Word word, ParsedWikiDocument doc) {
-    String definition;
-    if (word.getPosTag().equals(PosTag.LINK)) {
-      String hash = word.getWord().replaceAll("^LINK_", "");
-      WikidataLink link = doc.getLinkMap().get(hash);
-      if (link != null) {
-        definition = "[[" + link.getContent() + "]]";
-      } else {
-        definition = "[[" + word.getWord() + "]]";
-      }
-    } else {
-      definition = word.getWord();
-    }
-    return definition;
-  }
-
-  public static MyPatternMatcher generatePatterns(Set<String> identifiers) {
+  public static int[] match(Sentence sentence, String identifierText, String definiens, int identifierPosition, int definiensPosition) {
     Matcher<Word> isOrAre = word("is").or(word("are"));
     Matcher<Word> let = word("let");
     Matcher<Word> be = word("be");
     Matcher<Word> by = word("by");
-    Matcher<Word> openParentheses = word("(").or(word("{").or(word("[")));
-    Matcher<Word> closeParentheses = word(")").or(word("}").or(word("]")));
     Matcher<Word> denotes = word("denotes").or(word("denote"));
     Matcher<Word> denoted = word("denoted");
 
     Matcher<Word> the = pos("DT");
 
-    Matcher<Word> identifier = BeanMatchers.in(Word.class, "word", identifiers).captureAs(IDENTIFIER);
-    Matcher<Word> otherIdentifier = BeanMatchers.in(Word.class, "word", identifiers);
+    Matcher<Word> identifier = BeanMatchers.eq(Word.class, "word", identifierText).captureAs(IDENTIFIER);
     Matcher<Word> definition = posRegExp("(NN[PS]{0,2}|NP\\+?|NN\\+|LNK)").captureAs(DEFINITION);
+    Matcher<Word> otherMathExpression = posRegExp("(ID|MATH)").captureAs("othermath");
 
     List<Pattern<Word>> patterns = Arrays.asList(
       //1
@@ -209,30 +50,75 @@ public class MyPatternMatcher {
       //10
       Pattern.create(let, identifier, be, denoted, by, the, definition),
       //11
-      //paper: 7
-      Pattern.create(identifier, anyWord().zeroOrMore(), word(":"), anyWord().zeroOrMore(), definition),
+      //colon
+      Pattern.create(pos(":")),
       //12
-      //paper: 8
-      Pattern.create(identifier, anyWord().zeroOrMore(), word(","), anyWord().zeroOrMore(), definition),
+      //comma
+      Pattern.create(pos(",")),
       //13
-      //paper: 9
-      Pattern.create(identifier, anyWord().zeroOrMore(), otherIdentifier, anyWord().zeroOrMore(), definition),
+      //othermath
+      Pattern.create(otherMathExpression),
       //14
-      //paper: 10
-      Pattern.create(openParentheses, anyWord().zeroOrMore(), identifier, anyWord().zeroOrMore(), closeParentheses, anyWord().zeroOrMore(), definition),
-      //15
-      //paper: 11 - 21 catchAll
-      Pattern.create(definition, anyWord().zeroOrMore(), identifier),
-      //16
-      Pattern.create(identifier, anyWord().zeroOrMore(), definition)
-
+      //othermath
+      Pattern.create(word("\\(")),
+      Pattern.create(word("\\)"))
     );
 
-    return new MyPatternMatcher(patterns);
+    int[] result = new int[16];
+    long openingParentheses = 0;
+    for (int i = 0; i < patterns.size(); i++) {
+      Pattern<Word> pattern = patterns.get(i);
+      List<Match<Word>> matches = pattern.find(sentence.getWords());
+      switch (i) {
+        case 0:
+        case 1:
+        case 2:
+        case 3:
+        case 4:
+        case 5:
+        case 6:
+        case 7:
+        case 8:
+        case 9:
+        case 10:
+          for (Match<Word> match : matches) {
+            Word matchedDefiniens = match.getVariable(DEFINITION);
+            if (matchedDefiniens != null && matchedDefiniens.getWord().equals(definiens))
+              result[i] = 1;
+          }
+          break;
+        case 11:
+        case 12:
+        case 13:
+          for (Match<Word> match : matches) {
+            if (inRange(match.matchedFrom(), identifierPosition, definiensPosition))
+              result[i] = 1;
+          }
+          break;
+        case 14:
+          openingParentheses = matches.stream().filter(m -> inRange(m.matchedFrom(), identifierPosition, definiensPosition)).count();
+          break;
+        case 15:
+          //definiens in parentheses
+          long closingParentheses = matches.stream().filter(m -> inRange(m.matchedFrom(), identifierPosition, definiensPosition)).count();
+          if (identifierPosition < definiensPosition)
+            //more opening parentheses than closing -> definiens in parentheses
+            result[13] = openingParentheses - closingParentheses > 0 ? 1 : 0;
+          if (identifierPosition > definiensPosition)
+            //more closing parentheses than opening -> identifier in parentheses
+            result[14] = closingParentheses - openingParentheses > 0 ? 1 : 0;
+      }
+    }
+    return result;
   }
 
-  public static XMatcher<Word> anyWord() {
-    return word(".");
+  /**
+   * Checks if x lies between y and z
+   *
+   * @return
+   */
+  private static boolean inRange(int x, int y, int z) {
+    return ((y < x && x < z) || (z < x && x < y));
   }
 
   protected static XMatcher<Word> word(String word) {

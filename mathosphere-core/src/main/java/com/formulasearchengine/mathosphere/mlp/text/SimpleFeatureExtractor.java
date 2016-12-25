@@ -1,11 +1,13 @@
 package com.formulasearchengine.mathosphere.mlp.text;
 
 import com.formulasearchengine.mathosphere.mlp.cli.EvalCommandConfig;
+import com.formulasearchengine.mathosphere.mlp.features.Feature;
 import com.formulasearchengine.mathosphere.mlp.features.FeatureVector;
 import com.formulasearchengine.mathosphere.mlp.pojos.*;
 import com.formulasearchengine.mlp.evaluation.pojo.GoldEntry;
 import com.formulasearchengine.mlp.evaluation.pojo.IdentifierDefinition;
 import com.google.common.collect.Lists;
+import com.sun.org.apache.xpath.internal.SourceTree;
 import org.apache.flink.api.common.functions.MapFunction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,14 +15,16 @@ import weka.core.Attribute;
 import weka.core.DenseInstance;
 import weka.core.FastVector;
 import weka.core.Instances;
+import weka.core.converters.ArffSaver;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class SimpleFeatureExtractor implements MapFunction<ParsedWikiDocument, Instances> {
+public class SimpleFeatureExtractor implements MapFunction<ParsedWikiDocument, WikiDocumentOutput> {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(SimpleFeatureExtractor.class);
   public static final String MATCH = "match";
@@ -35,26 +39,24 @@ public class SimpleFeatureExtractor implements MapFunction<ParsedWikiDocument, I
   }
 
   @Override
-  public Instances map(ParsedWikiDocument doc) throws Exception {
+  public WikiDocumentOutput map(ParsedWikiDocument doc) throws Exception {
     List<Relation> foundFeatures = Lists.newArrayList();
     List<Sentence> sentences = doc.getSentences();
     ArrayList<Attribute> atts = new ArrayList<>();
     //meta information
-    atts.add(new Attribute("title"));
-    atts.add(new Attribute("identifier"));
-    atts.add(new Attribute("definiens"));
+    atts.add(new Attribute("identifier", (FastVector) null));
+    atts.add(new Attribute("definiens", (FastVector) null));
     atts.add(new Attribute("identifierPos"));
     atts.add(new Attribute("definiensPos"));
     //this is where the real attrs begin
-    atts.add(new Attribute("sentence"));
+    atts.add(new Attribute("sentence", (FastVector) null));
     //TODO expand
     //classification
     FastVector attVals = new FastVector();
     attVals.addElement(MATCH);
     attVals.addElement(NO_MATCH);
     atts.add(new Attribute("classification", attVals));
-    Instances result = new Instances("MyRelation", atts, 0);
-
+    Instances result = new Instances(doc.getTitle(), atts, 0);
     for (int i = 0; i < sentences.size(); i++) {
       Sentence sentence = sentences.get(i);
       if (!sentence.getIdentifiers().isEmpty()) {
@@ -71,21 +73,12 @@ public class SimpleFeatureExtractor implements MapFunction<ParsedWikiDocument, I
       Collection<Relation> foundMatches = matcher.match(sentence, doc);
       for (Relation match : foundMatches) {
         LOGGER.debug("found match {}", match);
+        match.setRelevance(matchesGold(match, goldEntry) ? 2 : 0);
         foundFeatures.add(match);
-
-        double[] values = new double[result.numAttributes()];
-        values[0] = result.attribute(1).addStringValue(doc.getTitle());
-        values[1] = result.attribute(2).addStringValue(match.getIdentifier());
-        values[2] = result.attribute(3).addStringValue(match.getDefinition());
-        values[3] = match.getIdentifierPosition();
-        values[4] = match.getWordPosition();
-        values[5] = result.attribute(4).addStringValue(match.getSentence().getWords().toString());
-        values[6] = matchesGold(match, goldEntry) ? attVals.indexOf(MATCH) : attVals.indexOf(NO_MATCH);
-        result.add(new DenseInstance(1.0, values));
       }
     }
     LOGGER.info("extracted {} relations from {}", foundFeatures.size(), doc.getTitle());
-    return result;
+    return new WikiDocumentOutput(doc.getTitle(), foundFeatures, null);
   }
 
 
