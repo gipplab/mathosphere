@@ -29,7 +29,7 @@ import java.util.HashMap;
 
 public class FlinkPd {
     protected static final Log LOG = LogFactory.getLog(FlinkPd.class);
-    private static final int NUMBER_OF_ALL_DOCS = 20;
+    private static final int NUMBER_OF_ALL_DOCS = 4; // TODO: welche Nummer ist korrekt hier?
     private static final double EPSILON = 0.00000000000000000001;
     private static DecimalFormat decimalFormat = new DecimalFormat("0.0");
 
@@ -242,8 +242,8 @@ public class FlinkPd {
                                         continue;
 
                                     // only check Original against Plagiarism (not against other Originals)
-                                    if (!i.f1.getId().contains("Plagiarism"))
-                                        continue;
+                                    //if (!i.f1.getId().contains("Plagiarism"))
+                                    //    continue;
 
                                     // WARNING: Currently the cosine distance is just the relative distance!!! TODO
                                     final Tuple4<Double, Double, Double, Double> distanceAllFeatures = Distances.distanceCosineAllFeatures(i.f0, i.f1);
@@ -289,7 +289,7 @@ public class FlinkPd {
 
                                     double distance = curPairWithDistances.f2 / 4.0; // take the accumulated distance and normalize it
 
-                                    // the key
+                                    // the key3
                                     final Tuple4<String, String, Double, Double> key =
                                             new Tuple4<>(
                                                     name0,

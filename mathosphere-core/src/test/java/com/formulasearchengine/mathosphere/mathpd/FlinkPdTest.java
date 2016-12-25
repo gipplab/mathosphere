@@ -59,8 +59,9 @@ public class FlinkPdTest {
     @Test
     public void testDistances() throws Exception {
         String filename = "161214_allpdcases.xml";
-        filename = "161214_somepdcases.xml";
+        //filename = "161214_somepdcases.xml";
         //filename = "test9.xml";
+        filename = "twice.xhtml";
 
         final File temp;
         temp = File.createTempFile("temp", Long.toString(System.nanoTime()));
