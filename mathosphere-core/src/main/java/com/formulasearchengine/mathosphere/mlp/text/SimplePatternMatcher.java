@@ -1,12 +1,9 @@
 package com.formulasearchengine.mathosphere.mlp.text;
 
 import com.alexeygrigorev.rseq.*;
-import com.formulasearchengine.mathosphere.mlp.features.FeatureVector;
 import com.formulasearchengine.mathosphere.mlp.pojos.*;
 
 import java.util.*;
-
-import static com.formulasearchengine.mathosphere.mlp.text.WikiTextUtils.deLinkify;
 
 /**
  * Simply extracts whole sentences with identifiers and definitions.
@@ -22,17 +19,26 @@ public class SimplePatternMatcher {
 
   public Collection<Relation> match(Sentence sentence, ParsedWikiDocument doc) {
     List<Relation> result = new ArrayList<>();
-    for (int i = 0; i < patterns.size(); i++) {
-      Pattern<Word> pattern = patterns.get(i);
-      List<Match<Word>> matches = pattern.find(sentence.getWords());
-      for (Match<Word> match : matches) {
-        Relation relation = new Relation();
-        relation.setIdentifier(match.getVariable(IDENTIFIER).getWord());
-        relation.setDefinition(match.getVariable(DEFINITION), doc);
-        relation.setSentence(sentence);
-        relation.setIdentifierPosition(match.matchedFrom() + match.getMatchedSubsequence().indexOf(match.getVariable(IDENTIFIER)));
-        relation.setWordPosition(match.matchedFrom() + match.getMatchedSubsequence().indexOf(match.getVariable(DEFINITION)));
-        result.add(relation);
+    List<Match<Word>> identifierMatches = patterns.get(0).find(sentence.getWords());
+    if (identifierMatches.size() > 0) {
+      List<Match<Word>> definiensMatches = patterns.get(1).find(sentence.getWords());
+      if (definiensMatches.size() > 0) {
+        for (Match<Word> identifier : identifierMatches) {
+          for (Match<Word> definiens : definiensMatches) {
+            if (definiens.getVariable(DEFINITION).getWord().length() >= 3) {
+              Relation relation = new Relation();
+              relation.setIdentifier(identifier.getVariable(IDENTIFIER).getWord());
+              relation.setDefinition(definiens.getVariable(DEFINITION), doc);
+              Word definiensWord = sentence.getWords().remove(definiens.matchedFrom());
+              Word cleanDefiniensWord = new Word(relation.getDefinition(), definiensWord.getPosTag());
+              sentence.getWords().add(definiens.matchedFrom(), cleanDefiniensWord);
+              relation.setSentence(sentence);
+              relation.setIdentifierPosition(identifier.matchedFrom());
+              relation.setWordPosition(definiens.matchedFrom());
+              result.add(relation);
+            }
+          }
+        }
       }
     }
     return result;
@@ -44,16 +50,14 @@ public class SimplePatternMatcher {
     Matcher<Word> definition = posRegExp("(NN[PS]{0,2}|NP\\+?|NN\\+|LNK)").captureAs(DEFINITION);
 
     List<Pattern<Word>> patterns = Arrays.asList(
-      //1
-      Pattern.create(definition, anyWord(), identifier),
-      //2
-      Pattern.create(identifier, anyWord(), definition)
+      Pattern.create(identifier),
+      Pattern.create(definition)
     );
     return new SimplePatternMatcher(patterns);
   }
 
   public static XMatcher<Word> anyWord() {
-    return word(".");
+    return Matchers.anything();
   }
 
   protected static XMatcher<Word> word(String word) {

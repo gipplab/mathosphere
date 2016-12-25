@@ -31,31 +31,13 @@ under the License.
     <packaging>jar</packaging>
 
     <name>MLMLP</name>
-    <url>http://www.myorganization.org</url>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <flink.ml.version>1.2-SNAPSHOT</flink.ml.version>
     </properties>
 
-    <repositories>
-        <repository>
-            <id>apache.snapshots</id>
-            <name>Apache Development Snapshot Repository</name>
-            <url>https://repository.apache.org/content/repositories/snapshots/</url>
-            <releases>
-                <enabled>false</enabled>
-            </releases>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </repository>
-        <repository>
-            <id>mvncentral</id>
-            <name>mvncentral</name>
-            <url>http://central.maven.org/maven2/</url>
-        </repository>
-    </repositories>
+
 
     <!-- These two requirements are the minimum to use and develop Flink.
         You can add others like <artifactId>flink-scala</artifactId> for Scala! -->
@@ -83,8 +65,18 @@ under the License.
         </dependency>
         <dependency>
             <groupId>org.apache.flink</groupId>
+            <artifactId>flink-streaming-scala_2.10</artifactId>
+            <version>${flink.ml.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.flink</groupId>
             <artifactId>flink-clients_2.10</artifactId>
             <version>${flink.ml.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.flink</groupId>
+            <artifactId>flink-ml_2.10</artifactId>
+            <version>1.2-SNAPSHOT</version>
         </dependency>
     </dependencies>
 
@@ -92,7 +84,10 @@ under the License.
     except flink and it's transitive dependencies. The resulting fat-jar can be executed
     on a cluster. Change the value of Program-Class if your program entry point changes. -->
     <build>
+        <sourceDirectory>src/main/scala</sourceDirectory>
+        <testSourceDirectory>src/test/scala</testSourceDirectory>
         <plugins>
+
             <plugin>
                 <artifactId>maven-assembly-plugin</artifactId>
                 <version>2.4.1</version>
