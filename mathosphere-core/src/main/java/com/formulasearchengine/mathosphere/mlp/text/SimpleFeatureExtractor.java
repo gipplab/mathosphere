@@ -56,17 +56,16 @@ public class SimpleFeatureExtractor implements MapFunction<ParsedWikiDocument, W
     attVals.addElement(MATCH);
     attVals.addElement(NO_MATCH);
     atts.add(new Attribute("classification", attVals));
-    Instances result = new Instances(doc.getTitle(), atts, 0);
+    GoldEntry goldEntry = goldEntries.stream().filter(e -> e.getTitle().equals(doc.getTitle().replaceAll(" ", "_"))).findFirst().get();
+    final Integer fid = Integer.parseInt(goldEntry.getFid());
+    final MathTag seed = doc.getFormulas()
+      .stream().filter(e -> e.getMarkUpType().equals(WikiTextUtils.MathMarkUpType.LATEX)).collect(Collectors.toList())
+      .get(fid);
     for (int i = 0; i < sentences.size(); i++) {
       Sentence sentence = sentences.get(i);
       if (!sentence.getIdentifiers().isEmpty()) {
         LOGGER.debug("sentence {}", sentence);
       }
-      GoldEntry goldEntry = goldEntries.stream().filter(e -> e.getTitle().equals(doc.getTitle().replaceAll(" ", "_"))).findFirst().get();
-      final Integer fid = Integer.parseInt(goldEntry.getFid());
-      final MathTag seed = doc.getFormulas()
-        .stream().filter(e -> e.getMarkUpType().equals(WikiTextUtils.MathMarkUpType.LATEX)).collect(Collectors.toList())
-        .get(fid);
       Set<String> identifiers = sentence.getIdentifiers();
       identifiers.retainAll(seed.getIdentifiers(config).elementSet());
       SimplePatternMatcher matcher = SimplePatternMatcher.generatePatterns(identifiers);
@@ -78,7 +77,7 @@ public class SimpleFeatureExtractor implements MapFunction<ParsedWikiDocument, W
       }
     }
     LOGGER.info("extracted {} relations from {}", foundFeatures.size(), doc.getTitle());
-    return new WikiDocumentOutput(doc.getTitle(), foundFeatures, null);
+    return new WikiDocumentOutput(doc.getTitle(), goldEntry.getqID(), foundFeatures, null);
   }
 
 
