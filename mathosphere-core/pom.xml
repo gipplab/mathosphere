@@ -150,6 +150,12 @@
         </dependency>
 
         <dependency>
+            <groupId>edu.stanford.nlp</groupId>
+            <artifactId>stanford-srparser</artifactId>
+            <version>3.5.2</version> <!-- sr-parser model-->
+        </dependency>
+
+        <dependency>
             <groupId>com.jcabi</groupId>
             <artifactId>jcabi-xml</artifactId>
             <version>0.16.1</version>
