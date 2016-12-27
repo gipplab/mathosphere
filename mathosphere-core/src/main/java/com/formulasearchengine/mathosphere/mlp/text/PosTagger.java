@@ -120,7 +120,6 @@ public class PosTagger {
           words.add(new Word(textToken, pos));
         }
       }
-
       result.add(words);
     }
 

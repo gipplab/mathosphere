@@ -6,6 +6,7 @@ import com.formulasearchengine.mathosphere.mlp.pojos.Word;
 import com.formulasearchengine.mathosphere.mlp.rus.RusPosAnnotator;
 import com.formulasearchengine.mathosphere.mlp.text.PosTagger;
 import edu.stanford.nlp.ling.CoreAnnotations;
+import edu.stanford.nlp.ling.Label;
 import edu.stanford.nlp.ling.Sentence;
 import edu.stanford.nlp.ling.TaggedWord;
 import edu.stanford.nlp.parser.lexparser.LexicalizedParser;
@@ -61,7 +62,7 @@ public class WekaUtils {
   public static final String SURFACE_TEXT_AND_POS_TAG_OF_TWO_PRECEDING_AND_FOLLOWING_TOKENS_AROUND_THE_DESC_CANDIDATE = "Surface text and POS tag of two preceding and following tokens around the desc candidate";
   public static final String SURFACE_TEXT_AND_POS_TAG_OF_THREE_PRECEDING_AND_FOLLOWING_TOKENS_AROUND_THE_PAIRED_MATH_EXPR = "Surface text and POS tag of three preceding and following tokens around the paired math expr";
   public static final String SURFACE_TEXT_OF_THE_FIRST_VERB_THAT_APPEARS_BETWEEN_THE_DESC_CANDIDATE_AND_THE_TARGET_MATH_EXPR = "Surface text of the first verb that appears between the desc candidate and the target math expr";
-  public static final String NULL_3 = "null3";
+  public static final String GRAPH_DISTANCE = "graphDistance";
   public static final String NULL_4 = "null4";
   public static final String NULL_5 = "null5";
   public static final String NULL_6 = "null6";
@@ -104,7 +105,7 @@ public class WekaUtils {
     atts.add(new Attribute(SURFACE_TEXT_AND_POS_TAG_OF_TWO_PRECEDING_AND_FOLLOWING_TOKENS_AROUND_THE_DESC_CANDIDATE, (FastVector) null));//24
     atts.add(new Attribute(SURFACE_TEXT_AND_POS_TAG_OF_THREE_PRECEDING_AND_FOLLOWING_TOKENS_AROUND_THE_PAIRED_MATH_EXPR, (FastVector) null));//25
     atts.add(new Attribute(SURFACE_TEXT_OF_THE_FIRST_VERB_THAT_APPEARS_BETWEEN_THE_DESC_CANDIDATE_AND_THE_TARGET_MATH_EXPR, (FastVector) null));//26
-    atts.add(new Attribute(NULL_3));//27
+    atts.add(new Attribute(GRAPH_DISTANCE));//27
     atts.add(new Attribute(NULL_4));//28
     atts.add(new Attribute(NULL_5));//29
     atts.add(new Attribute(NULL_6));//30
@@ -177,6 +178,46 @@ public class WekaUtils {
       if (firstVerb.isPresent()) {
         addStringValue(values, instances, SURFACE_TEXT_OF_THE_FIRST_VERB_THAT_APPEARS_BETWEEN_THE_DESC_CANDIDATE_AND_THE_TARGET_MATH_EXPR, firstVerb.get().getWord());
       }
+
+
+      StringBuilder sentenceStringBuilder = new StringBuilder();
+      for (Word w : relation.getSentence().getWords()) {
+        sentenceStringBuilder.append(w.getWord()).append(" ");
+      }
+// Set the CoreNLP pipeline annotators.
+      props.setProperty("annotators", "tokenize, ssplit, pos, parse, sentiment");
+      props.setProperty("parse.model", "edu/stanford/nlp/models/srparser/englishSR.ser.gz");
+      pipeline = new StanfordCoreNLP(props);
+      Annotation annotatedScentence = new Annotation(sentenceStringBuilder.toString());
+      pipeline.annotate(annotatedScentence);
+      List<CoreMap> sentences = annotatedScentence.get(CoreAnnotations.SentencesAnnotation.class);
+
+      int distance = 0;
+      if (sentences.size() > 1)
+        throw new IllegalStateException("Must be only one sentence! " + sentenceStringBuilder.toString());
+      for (CoreMap sentence : sentences) {
+        Tree tree = sentence.get(TreeCoreAnnotations.TreeAnnotation.class);
+        List<Tree> leaves = new ArrayList<>();
+        leaves = tree.getLeaves(leaves);
+        Tree identifier = leaves.get(relation.getIdentifierPosition());
+        Tree definiens = leaves.get(relation.getWordPosition());
+        Tree ancestorNode = identifier;
+        boolean found = false;
+        while (!found) {
+          ancestorNode = ancestorNode.ancestor(1, tree);
+          if (ancestorNode.getLeaves().contains(definiens)) {
+            int definiensDepth = ancestorNode.depth(definiens);
+            int identifierDepth = ancestorNode.depth(identifier);
+            if (definiensDepth < 0 || identifierDepth < 0)
+              throw new IllegalStateException("Must be a child of the ancestor");
+            distance = definiensDepth + identifierDepth;
+            found = true;
+          }
+        }
+      }
+      values[instances.attribute(GRAPH_DISTANCE).index()] = distance;
+
+
       //text between the tokens
       values[ATTRIBUTE_SENTENCE] = instances.attribute(ATTRIBUTE_SENTENCE).addStringValue(wordListToSimpleString(wordsInbetween));
       //values[ATTRIBUTE_SENTENCE] = instances.attribute(ATTRIBUTE_SENTENCE).addStringValue("");
@@ -185,6 +226,10 @@ public class WekaUtils {
     }
     return instances;
   }
+
+  // Initialize a CoreNLP pipeline
+  public static Properties props = new Properties();
+  public static StanfordCoreNLP pipeline;
 
   private static void addStringValue(double[] data, Instances instances, String field, String string) {
     data[instances.attribute(field).index()] = instances.attribute(field).addStringValue(string);
