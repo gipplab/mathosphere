@@ -1,13 +1,21 @@
 package com.formulasearchengine.mathosphere.mlp.pojos;
 
-import com.google.common.collect.Multiset;
-
 import java.util.List;
 import java.util.Set;
 
 public class WikiDocumentOutput {
 
   private String title;
+
+  public String getqId() {
+    return qId;
+  }
+
+  public void setqId(String qId) {
+    this.qId = qId;
+  }
+
+  private String qId;
   private List<Relation> relations;
   private Set<String> identifiers;
 
@@ -25,7 +33,12 @@ public class WikiDocumentOutput {
   }
 
   public WikiDocumentOutput(String title, List<Relation> relations, Set<String> identifiers) {
+    this(title, null, relations, identifiers);
+  }
+
+  public WikiDocumentOutput(String title, String qId, List<Relation> relations, Set<String> identifiers) {
     this.title = title;
+    this.qId = qId;
     this.relations = relations;
     this.identifiers = identifiers;
   }
