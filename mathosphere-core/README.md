@@ -4,6 +4,9 @@ Mathematical Language Processing
 
 # Run
 * compile the maven project
+* install http://nlp.stanford.edu/software/stanford-srparser-2014-10-23-models.jar
+to `mathosphere-core\src\main\resources\com\formulasearchengine\mathosphere\mlp`
+see: http://stackoverflow.com/a/34801130/4265739
 * run the jar (mathoshpere-core-3.0.0-SNAPSHOT-jar-with-dependencies)
 * try `java -jar mathoshpere-core-3.0.0-SNAPSHOT-jar-with-dependencies` to see the list of possible commands
 * try `java -jar mathoshpere-core-3.0.0-SNAPSHOT-jar-with-dependencies list -in *in file* --tex` to extract the identifiers from a wikipedia article
