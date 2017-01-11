@@ -31,6 +31,7 @@ public class FlinkPd {
     protected static final Log LOG = LogFactory.getLog(FlinkPd.class);
     private static final int NUMBER_OF_ALL_DOCS = 4; // TODO: welche Nummer ist korrekt hier?
     private static final double EPSILON = 0.00000000000000000001;
+    private static final boolean IS_MODE_TFIDF = false; // if false, we use relative similarity
     private static DecimalFormat decimalFormat = new DecimalFormat("0.0");
 
     public static void main(String[] args) throws Exception {
@@ -92,7 +93,7 @@ public class FlinkPd {
         final FlatMapOperator<String, Tuple2<String, ExtractedMathPDDocument>> extractedMathPdSections = source.flatMap(new TextExtractorMapper());
 
         // first, merge all pages of one doc to one doc
-        final GroupReduceOperator<Tuple2<String, ExtractedMathPDDocument>, Tuple2<String, ExtractedMathPDDocument>> extractedMathPdDocuments = extractedMathPdSections
+        GroupReduceOperator<Tuple2<String, ExtractedMathPDDocument>, Tuple2<String, ExtractedMathPDDocument>> extractedMathPdDocuments = extractedMathPdSections
                 .groupBy(0)
                 .reduceGroup(new GroupReduceFunction<Tuple2<String, ExtractedMathPDDocument>, Tuple2<String, ExtractedMathPDDocument>>() {
                     @Override
@@ -124,80 +125,84 @@ public class FlinkPd {
                         }
                     }
                 });
+        // at this point we have all sections of a document merged to four histograms per document (one for each dimension)
 
-        //noinspection Convert2Lambda
-        final GroupReduceOperator<Tuple3<String, String, Double>, Tuple3<String, String, Double>> corpusWideElementFrequenciesByDimension = extractedMathPdDocuments
-                .union(extractedMathPdDocuments) // this could also be another dataset
-                .flatMap(new FlatMapFunction<Tuple2<String, ExtractedMathPDDocument>, Tuple3<String, String, Double>>() {
-                    @Override
-                    public void flatMap(Tuple2<String, ExtractedMathPDDocument> stringExtractedMathPDDocumentTuple2, Collector<Tuple3<String, String, Double>> collector) throws Exception {
-                        final ExtractedMathPDDocument curDoc = stringExtractedMathPDDocumentTuple2.f1;
-                        collectElementFrequencies(curDoc.getHistogramBvar(), "bvar", collector);
-                        collectElementFrequencies(curDoc.getHistogramCi(), "ci", collector);
-                        collectElementFrequencies(curDoc.getHistogramCn(), "cn", collector);
-                        collectElementFrequencies(curDoc.getHistogramCsymbol(), "csymbol", collector);
-                    }
-                })
-                .groupBy(0, 1)
-                .reduceGroup(new GroupReduceFunction<Tuple3<String, String, Double>, Tuple3<String, String, Double>>() {
-                    @Override
-                    public void reduce(Iterable<Tuple3<String, String, Double>> iterable, Collector<Tuple3<String, String, Double>> collector) throws Exception {
-                        final HashMap<Tuple2<String, String>, Double> freqsInCorpus = new HashMap<>();
-                        for (Tuple3<String, String, Double> i : iterable) {
-                            final Tuple2<String, String> key = new Tuple2<>(i.f0, i.f1);
-                            freqsInCorpus.put(key, freqsInCorpus.getOrDefault(key, 0.0) + i.f2);
+        GroupReduceOperator<Tuple2<Tuple2<String, ExtractedMathPDDocument>, Tuple3<String, String, Double>>, Tuple2<String, ExtractedMathPDDocument>> extractedMathPDDocsWithTFIDF = null;
+        if (IS_MODE_TFIDF) {
+            //noinspection Convert2Lambda
+            final GroupReduceOperator<Tuple3<String, String, Double>, Tuple3<String, String, Double>> corpusWideElementFrequenciesByDimension = extractedMathPdDocuments
+                    .union(extractedMathPdDocuments) // this could also be another dataset
+                    .flatMap(new FlatMapFunction<Tuple2<String, ExtractedMathPDDocument>, Tuple3<String, String, Double>>() {
+                        @Override
+                        public void flatMap(Tuple2<String, ExtractedMathPDDocument> stringExtractedMathPDDocumentTuple2, Collector<Tuple3<String, String, Double>> collector) throws Exception {
+                            final ExtractedMathPDDocument curDoc = stringExtractedMathPDDocumentTuple2.f1;
+                            collectElementFrequencies(curDoc.getHistogramBvar(), "bvar", collector);
+                            collectElementFrequencies(curDoc.getHistogramCi(), "ci", collector);
+                            collectElementFrequencies(curDoc.getHistogramCn(), "cn", collector);
+                            collectElementFrequencies(curDoc.getHistogramCsymbol(), "csymbol", collector);
                         }
+                    })
+                    .groupBy(0, 1)
+                    .reduceGroup(new GroupReduceFunction<Tuple3<String, String, Double>, Tuple3<String, String, Double>>() {
+                        @Override
+                        public void reduce(Iterable<Tuple3<String, String, Double>> iterable, Collector<Tuple3<String, String, Double>> collector) throws Exception {
+                            final HashMap<Tuple2<String, String>, Double> freqsInCorpus = new HashMap<>();
+                            for (Tuple3<String, String, Double> i : iterable) {
+                                final Tuple2<String, String> key = new Tuple2<>(i.f0, i.f1);
+                                freqsInCorpus.put(key, freqsInCorpus.getOrDefault(key, 0.0) + i.f2);
+                            }
 
-                        for (Tuple2<String, String> key : freqsInCorpus.keySet()) {
-                            collector.collect(new Tuple3<>(key.f0, key.f1, freqsInCorpus.get(key)));
-                            System.out.println(new Tuple3<>(key.f0, key.f1, freqsInCorpus.get(key)));
+                            for (Tuple2<String, String> key : freqsInCorpus.keySet()) {
+                                collector.collect(new Tuple3<>(key.f0, key.f1, freqsInCorpus.get(key)));
+                                System.out.println(new Tuple3<>(key.f0, key.f1, freqsInCorpus.get(key)));
+                            }
                         }
-                    }
-                });
-        // at this point we have in corpusWideElementFrequenciesByDimension the DF over all documents for each element in all dimensions (verified)
-        corpusWideElementFrequenciesByDimension.writeAsCsv(config.getOutputDir() + "_DF");
+                    });
+            // at this point we have in corpusWideElementFrequenciesByDimension the DF over all documents for each element in all dimensions (verified)
+            corpusWideElementFrequenciesByDimension.writeAsCsv(config.getOutputDir() + "_DF");
 
-        // now convert the absolute histograms into tfidf histograms
-        final GroupReduceOperator<Tuple2<Tuple2<String, ExtractedMathPDDocument>, Tuple3<String, String, Double>>, Tuple2<String, ExtractedMathPDDocument>> extractedMathPDDocsWithTFIDF =
-                extractedMathPdDocuments
-                        .cross(corpusWideElementFrequenciesByDimension)
-                        .reduceGroup(new GroupReduceFunction<Tuple2<Tuple2<String, ExtractedMathPDDocument>, Tuple3<String, String, Double>>, Tuple2<String, ExtractedMathPDDocument>>() {
-                            @Override
-                            public void reduce(Iterable<Tuple2<Tuple2<String, ExtractedMathPDDocument>, Tuple3<String, String, Double>>> iterable,
-                                               Collector<Tuple2<String, ExtractedMathPDDocument>> collector) throws Exception {
-                                final HashMap<String, ExtractedMathPDDocument> tfidfDocs = new HashMap<>();
+            // now convert the absolute histograms into tfidf histograms
+            extractedMathPDDocsWithTFIDF =
+                    extractedMathPdDocuments
+                            .cross(corpusWideElementFrequenciesByDimension)
+                            .reduceGroup(new GroupReduceFunction<Tuple2<Tuple2<String, ExtractedMathPDDocument>, Tuple3<String, String, Double>>, Tuple2<String, ExtractedMathPDDocument>>() {
+                                @Override
+                                public void reduce(Iterable<Tuple2<Tuple2<String, ExtractedMathPDDocument>, Tuple3<String, String, Double>>> iterable,
+                                                   Collector<Tuple2<String, ExtractedMathPDDocument>> collector) throws Exception {
+                                    final HashMap<String, ExtractedMathPDDocument> tfidfDocs = new HashMap<>();
 
-                                for (Tuple2<Tuple2<String, ExtractedMathPDDocument>, Tuple3<String, String, Double>> pair : iterable) {
-                                    final ExtractedMathPDDocument curDoc = pair.f0.f1;
-                                    final String name = curDoc.getName();
-                                    final Tuple3<String, String, Double> curIDFTriple = pair.f1;
+                                    for (Tuple2<Tuple2<String, ExtractedMathPDDocument>, Tuple3<String, String, Double>> pair : iterable) {
+                                        final ExtractedMathPDDocument curDoc = pair.f0.f1;
+                                        final String name = curDoc.getName();
+                                        final Tuple3<String, String, Double> curIDFTriple = pair.f1;
 
-                                    // get to tfidf doc
-                                    ExtractedMathPDDocument curTfidfDoc = tfidfDocs.get(name);
-                                    if (curTfidfDoc == null) {
-                                        curTfidfDoc = new ExtractedMathPDDocument(curDoc.title, curDoc.text);
-                                        curTfidfDoc.setName(curDoc.getName());
-                                        curTfidfDoc.setPage(curDoc.getPage());
-                                        tfidfDocs.put(name, curTfidfDoc);
+                                        // get to tfidf doc
+                                        ExtractedMathPDDocument curTfidfDoc = tfidfDocs.get(name);
+                                        if (curTfidfDoc == null) {
+                                            curTfidfDoc = new ExtractedMathPDDocument(curDoc.title, curDoc.text);
+                                            curTfidfDoc.setName(curDoc.getName());
+                                            curTfidfDoc.setPage(curDoc.getPage());
+                                            tfidfDocs.put(name, curTfidfDoc);
+                                        }
+
+                                        convertAbsoluteHistogramToTFIDFHistogram(curDoc, curTfidfDoc, curIDFTriple.f0, curIDFTriple.f1, curIDFTriple.f2);
                                     }
 
-                                    convertAbsoluteHistogramToTFIDFHistogram(curDoc, curTfidfDoc, curIDFTriple.f0, curIDFTriple.f1, curIDFTriple.f2);
+                                    for (String name : tfidfDocs.keySet()) {
+                                        collector.collect(new Tuple2<>(name, tfidfDocs.get(name)));
+                                        System.out.println(name);
+                                        System.out.println(tfidfDocs.get(name).getHistogramCi());
+                                        System.out.println(tfidfDocs.get(name).getHistogramCsymbol());
+                                        System.out.println(tfidfDocs.get(name).getHistogramCn());
+                                        System.out.println(tfidfDocs.get(name).getHistogramBvar());
+                                        System.out.println("");
+                                    }
                                 }
-
-                                for (String name : tfidfDocs.keySet()) {
-                                    collector.collect(new Tuple2<>(name, tfidfDocs.get(name)));
-                                    System.out.println(name);
-                                    System.out.println(tfidfDocs.get(name).getHistogramCi());
-                                    System.out.println(tfidfDocs.get(name).getHistogramCsymbol());
-                                    System.out.println(tfidfDocs.get(name).getHistogramCn());
-                                    System.out.println("");
-                                }
-                            }
-                        });
-        extractedMathPDDocsWithTFIDF.writeAsText(config.getOutputDir() + "_TFIDF");
+                            });
+        }
 
         DataSet distancesAndSectionPairs =
-                extractedMathPDDocsWithTFIDF
+                IS_MODE_TFIDF ? extractedMathPDDocsWithTFIDF : extractedMathPdDocuments // if in TFIDF_MODE use tfidf docs, otherwise absolute frequency histogram docs
                         .groupBy(0)
                         .reduceGroup(new GroupReduceFunction<Tuple2<String, ExtractedMathPDDocument>, ExtractedMathPDDocument>() {
                             @Override
@@ -242,11 +247,23 @@ public class FlinkPd {
                                         continue;
 
                                     // only check Original against Plagiarism (not against other Originals)
-                                    //if (!i.f1.getId().contains("Plagiarism"))
-                                    //    continue;
+                                    if (!i.f1.getId().contains("Plagiarism"))
+                                        continue;
 
-                                    // WARNING: Currently the cosine distance is just the relative distance!!! TODO
-                                    final Tuple4<Double, Double, Double, Double> distanceAllFeatures = Distances.distanceCosineAllFeatures(i.f0, i.f1);
+                                    // Tuple4 contains (if cosine is used, the term distance actually means similarity, i.e.,
+                                    // -1=opposite, 0=unrelated, 1=same doc
+                                    // 1) total distance (accumulated distance of all others) - makes no sense in case of cosine distance
+                                    // 2) numbers
+                                    // 3) operators
+                                    // 4) identifiers
+                                    // 5) bound variables
+                                    Tuple4<Double, Double, Double, Double> distanceAllFeatures;
+                                    if (IS_MODE_TFIDF) {
+                                        distanceAllFeatures = Distances.distanceCosineAllFeatures(i.f0, i.f1);
+                                    } else {
+                                        distanceAllFeatures = Distances.distanceRelativeAllFeatures(i.f0, i.f1);
+                                    }
+
                                     System.out.println(i.f0.getId() + " - " + i.f1.getId());
                                     System.out.println(distanceAllFeatures);
                                     System.out.println("");
@@ -324,7 +341,7 @@ public class FlinkPd {
 
     private static double getBinBoundary(double value, double binWidth, boolean isLower) {
         double flooredDivision = Math.floor(value / binWidth);
-        double binBoundary = Double.NaN;
+        double binBoundary;
 
         if (isLower)
             binBoundary = binWidth * flooredDivision;

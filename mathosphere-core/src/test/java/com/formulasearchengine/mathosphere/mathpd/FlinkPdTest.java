@@ -61,7 +61,7 @@ public class FlinkPdTest {
         String filename = "161214_allpdcases.xml";
         //filename = "161214_somepdcases.xml";
         //filename = "test9.xml";
-        filename = "twice.xhtml";
+        //filename = "twice.xhtml";
 
         final File temp;
         temp = File.createTempFile("temp", Long.toString(System.nanoTime()));
@@ -81,6 +81,8 @@ public class FlinkPdTest {
         //assertTrue(standardOutput.contains("switched to status FINISHED"));
         //System.setOut(stdout);
         //System.out.println(standardOutput);
+
+        ConverterPairCSVToMatrix.main(new String[]{resourcePath("com/formulasearchengine/mathosphere/mathpd/" + filename)});
     }
 
 }

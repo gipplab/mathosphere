@@ -216,6 +216,12 @@ public class Distances {
         final Set<String> mergedKeys = new HashSet<>(h1.keySet());
         mergedKeys.addAll(h2.keySet());
 
+        // if both histograms are empty, they are same
+        if (h1.size() + h2.size() == 0) {
+            return -10.0; // tmp value for development, TODO, replace with 1.0 once finished.
+        }
+
+        // if at least one histogram is not empty but no keys are shared, the documents will be completely different
         if (mergedKeys.isEmpty()) {
             return 0.0;
         }

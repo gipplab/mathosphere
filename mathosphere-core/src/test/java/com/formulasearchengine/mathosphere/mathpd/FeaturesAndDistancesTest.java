@@ -120,7 +120,6 @@ public class FeaturesAndDistancesTest {
         histogramCsymbol.put("eq", 2.0);
         histogramCsymbol.put("list", 1.0);
         assertTrue(Distances.computeAbsoluteDistance(document.getHistogramCsymbol(), histogramCsymbol) == 0.0);
-
     }
 
     @Test

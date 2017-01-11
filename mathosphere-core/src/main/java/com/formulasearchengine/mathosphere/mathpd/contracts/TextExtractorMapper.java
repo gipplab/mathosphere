@@ -52,7 +52,7 @@ public class TextExtractorMapper implements FlatMapFunction<String, Tuple2<Strin
         return new Tuple4<>(title, name, page, xhtml);
     }
 
-    public static ExtractedMathPDDocument convertArxivToExtractedMathPDDocument(ArxivDocument document) throws ParserConfigurationException, IOException, XPathExpressionException, TransformerException {
+    public static synchronized ExtractedMathPDDocument convertArxivToExtractedMathPDDocument(ArxivDocument document) throws ParserConfigurationException, IOException, XPathExpressionException, TransformerException {
         if (document == null)
             return null;
 
