@@ -125,9 +125,9 @@ public class ExtractedMathPDDocument implements Comparable<ExtractedMathPDDocume
         if (!this.name.equals(other.name)) {
             throw new RuntimeException("name is not equal : " + name + " vs " + other.name);
         }
-        this.histogramBvar = Distances.histogramPlus(this.histogramBvar, other.histogramBvar);
-        this.histogramCi = Distances.histogramPlus(this.histogramCi, other.histogramCi);
-        this.histogramCn = Distances.histogramPlus(this.histogramCn, other.histogramCn);
-        this.histogramCsymbol = Distances.histogramPlus(this.histogramCsymbol, other.histogramCsymbol);
+        this.histogramBvar = Distances.histogramsPlus(this.histogramBvar, other.histogramBvar);
+        this.histogramCi = Distances.histogramsPlus(this.histogramCi, other.histogramCi);
+        this.histogramCn = Distances.histogramsPlus(this.histogramCn, other.histogramCn);
+        this.histogramCsymbol = Distances.histogramsPlus(this.histogramCsymbol, other.histogramCsymbol);
     }
 }

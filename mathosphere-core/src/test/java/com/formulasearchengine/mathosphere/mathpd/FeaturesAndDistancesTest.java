@@ -139,7 +139,7 @@ public class FeaturesAndDistancesTest {
         h2.put("divide", 1.0);
         h2.put("eq", 2.0);
         h2.put("list", 1.0);
-        h2 = Distances.histogramPlus(h2, h2);
+        h2 = Distances.histogramsPlus(h2, h2);
 
         System.out.println(Distances.computeCosineDistance(h1, h2));
     }

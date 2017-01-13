@@ -91,9 +91,9 @@ public class ConverterPairCSVToMatrix {
         } else {
             in = args[0];
         }
-        final String outbase = args.length == 2 ? args[1] : in + "_out_";
+        final String outbase = in + "_out_";
 
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < 5; i++) {
             final CSVParser parser = CSVParser.parse(new File(in), Charset.defaultCharset(), CSV_FORMAT);
 
             final HashMap<Tuple2<String, String>, Double> matrix = new HashMap<>();

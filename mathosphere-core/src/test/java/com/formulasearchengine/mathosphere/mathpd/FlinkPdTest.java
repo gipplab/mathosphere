@@ -82,7 +82,7 @@ public class FlinkPdTest {
         //System.setOut(stdout);
         //System.out.println(standardOutput);
 
-        ConverterPairCSVToMatrix.main(new String[]{resourcePath("com/formulasearchengine/mathosphere/mathpd/" + filename)});
+        //ConverterPairCSVToMatrix.main(new String[]{resourcePath("com/formulasearchengine/mathosphere/mathpd/" + filename)});
     }
 
 }

@@ -19,10 +19,7 @@ import javax.xml.transform.TransformerException;
 import javax.xml.xpath.XPathExpressionException;
 import java.io.IOException;
 import java.text.DecimalFormat;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by Felix Hamborg <felixhamborg@gmail.com> on 05.12.16.
@@ -114,27 +111,41 @@ public class Distances {
     }
 
     /**
-     * Adds all elements from one histogram to the other
+     * Adds all elements from all histogram
      *
-     * @param h1
-     * @param h2
      * @return
      */
-    public static HashMap<String, Double> histogramPlus(HashMap<String, Double> h1, HashMap<String, Double> h2) {
-        final Set<String> mergedKeys = new HashSet<>(h1.keySet());
-        mergedKeys.addAll(h2.keySet());
+    public static HashMap<String, Double> histogramsPlus(List<HashMap<String, Double>> histograms) {
+        return histogramsPlus(histograms.toArray(new HashMap[histograms.size()]));
+    }
+
+    /**
+     * Adds all elements from all histogram
+     *
+     * @return
+     */
+    public static HashMap<String, Double> histogramsPlus(HashMap<String, Double>... histograms) {
+        if (histograms.length < 2) {
+            throw new IllegalArgumentException("histograms.length=" + histograms.length + "; needs to be >= 2");
+        }
+
+        final Set<String> mergedKeys = new HashSet<>();
+        for (HashMap<String, Double> histogram : histograms) {
+            mergedKeys.addAll(histogram.keySet());
+        }
         final HashMap<String, Double> mergedHistogram = new HashMap<>();
 
         for (String key : mergedKeys) {
-            mergedHistogram.put(
-                    key,
-                    h1.getOrDefault(key, 0.0)
-                            + h2.getOrDefault(key, 0.0)
-            );
+            double value = 0.0;
+            for (HashMap<String, Double> histogram : histograms) {
+                value += histogram.getOrDefault(key, 0.0);
+            }
+            mergedHistogram.put(key, value);
         }
 
         return mergedHistogram;
     }
+
 
     /**
      * Returns an absolute histogram of the whole document d with all elements that match tagname. The key in the histogram is the element's name.
@@ -156,12 +167,12 @@ public class Distances {
 
             // this hack is necessary, as the converter that generates StrictCMML does not work correctly for CN, e.g., the number 3 is converted into a cn 10 as a base and a cs 3 as the actual number.
             if (tagName.equals("cn")) {
-                mergedHistogram = histogramPlus(mergedHistogram, cmmlNodeToHistrogram(mathTag, tagName));
+                mergedHistogram = histogramsPlus(mergedHistogram, cmmlNodeToHistrogram(mathTag, tagName));
             } else {
                 final CMMLInfo curStrictCmml = new CMMLInfo(mathTag).toStrictCmml();
                 LOG.trace(curStrictCmml.toString());
 
-                mergedHistogram = histogramPlus(mergedHistogram, strictCmmlInfoToHistogram(curStrictCmml, tagName));
+                mergedHistogram = histogramsPlus(mergedHistogram, strictCmmlInfoToHistogram(curStrictCmml, tagName));
             }
         }
 
