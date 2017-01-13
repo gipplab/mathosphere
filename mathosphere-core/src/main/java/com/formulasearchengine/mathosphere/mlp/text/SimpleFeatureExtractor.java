@@ -55,18 +55,20 @@ public class SimpleFeatureExtractor implements MapFunction<ParsedWikiDocument, W
       Collection<Relation> foundMatches = matcher.match(sentence, doc);
       for (Relation match : foundMatches) {
         LOGGER.debug("found match {}", match);
-        int freq = frequencies.count(match.getSentence().getWords().get(match.getIdentifierPosition()).toLowerCase());
+        int freq = frequencies.count(match.getSentence().getWords().get(match.getWordPosition()).toLowerCase());
         match.setRelativeTermFrequency((double) freq / (double) maxFrequency);
         if (i - identifierSentenceDistanceMap.get(match.getIdentifier()) < 0) {
           throw new RuntimeException("Cannot find identifier before first occurence");
         }
-        match.setDistanceFromFirstIdentifierOccurence(i - identifierSentenceDistanceMap.get(match.getIdentifier()));
+        match.setDistanceFromFirstIdentifierOccurence((double) (i - identifierSentenceDistanceMap.get(match.getIdentifier())) / (double) doc.getSentences().size());
         match.setRelevance(matchesGold(match, goldEntry) ? 2 : 0);
         foundFeatures.add(match);
       }
     }
     LOGGER.info("extracted {} relations from {}", foundFeatures.size(), doc.getTitle());
-    return new WikiDocumentOutput(doc.getTitle(), goldEntry.getqID(), foundFeatures, null);
+    WikiDocumentOutput result = new WikiDocumentOutput(doc.getTitle(), goldEntry.getqID(), foundFeatures, null);
+    result.setMaxSentenceLength(doc.getSentences().stream().map(s -> s.getWords().size()).max(Comparator.naturalOrder()).get());
+    return result;
   }
 
 

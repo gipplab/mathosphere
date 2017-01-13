@@ -1,6 +1,7 @@
 package com.formulasearchengine.mathosphere.mlp.ml;
 
 import com.formulasearchengine.mathosphere.mlp.pojos.WikiDocumentOutput;
+import libsvm.svm;
 import org.apache.flink.api.common.functions.GroupReduceFunction;
 import org.apache.flink.util.Collector;
 import weka.classifiers.Classifier;
@@ -16,6 +17,7 @@ import weka.filters.supervised.instance.Resample;
 import weka.filters.unsupervised.attribute.Remove;
 import weka.filters.unsupervised.attribute.StringToWordVector;
 
+import java.io.File;
 import java.util.*;
 
 import static com.formulasearchengine.mathosphere.mlp.ml.WekaUtils.*;
@@ -43,7 +45,7 @@ public class WekaLearner implements GroupReduceFunction<WikiDocumentOutput, Obje
   public void reduce(Iterable<WikiDocumentOutput> values, Collector<Object> out) throws Exception {
     Instances instances = createInstances("AllRelations");
     for (WikiDocumentOutput value : values) {
-      addRelationsToInstances(value.getRelations(), value.getTitle(), value.getqId(), instances);
+      addRelationsToInstances(value.getRelations(), value.getTitle(), value.getqId(), instances, value.getMaxSentenceLength());
     }
     StringToWordVector stringToWordVector = new StringToWordVector();
     stringToWordVector.setAttributeIndices(indicesToRangeList(new int[]{
@@ -71,66 +73,80 @@ public class WekaLearner implements GroupReduceFunction<WikiDocumentOutput, Obje
     }));
     removeFilter.setInputFormat(stringsReplacedData);
 
-    for (int p = 5; p <= 100; p += 5) {
-
-      Resample sampler = new Resample();
-      sampler.setInputFormat(stringsReplacedData);
-      sampler.setRandomSeed(1);
-      sampler.setBiasToUniformClass(0);
-      sampler.setSampleSizePercent(p);
-      Instances reduced = Filter.useFilter(stringsReplacedData, sampler);
-
-      Resample resampleFilter = new Resample();
-      resampleFilter.setRandomSeed(1);
-      resampleFilter.setBiasToUniformClass(1d);
-      resampleFilter.setInputFormat(reduced);
-      Instances resampled = Filter.useFilter(reduced, resampleFilter);
-
-      LibSVM svm = new LibSVM();
-      MultiFilter multi = new MultiFilter();
-      multi.setFilters(new Filter[]{removeFilter});
-      FilteredClassifier filteredClassifier = new FilteredClassifier();
-      filteredClassifier.setClassifier(svm);
-      filteredClassifier.setFilter(multi);
-
-      Evaluation eval = new Evaluation(reduced);
-      double[] averagePrecision = new double[folds];
-      double[] averageRecall = new double[folds];
-
-
-      for (int n = 0; n < folds; n++) {
-        List<Integer> testIds = Arrays.asList(Arrays.copyOfRange(rand, 10 * n, 10 * (n + 1)));
-        Instances train = new Instances(resampled, 1);
-        Instances test = new Instances(resampled, 1);
-        for (int i = 0; i < resampled.numInstances(); i++) {
-          Instance a = resampled.instance(i);
-          if (testIds.contains(Integer.parseInt(a.stringValue(a.attribute(resampled.attribute(Q_ID).index()))))) {
-            train.add(a);
-          } else {
-            //test.add(a);
-          }
-        }
-        for (int i = 0; i < resampled.numInstances(); i++) {
-          Instance a = resampled.instance(i);
-          if (testIds.contains(Integer.parseInt(a.stringValue(a.attribute(stringsReplacedData.attribute(Q_ID).index()))))) {
-            //train.add(a);
-          } else {
-            test.add(a);
-          }
-        }
-        System.out.print("prec, " + Arrays.toString(averagePrecision));
-
-        // build and evaluate classifier
-        Classifier clsCopy = FilteredClassifier.makeCopy(filteredClassifier);
-        clsCopy.buildClassifier(train);
-        eval.setPriors(train);
-        eval.evaluateModel(clsCopy, test);
-        averagePrecision[n] = eval.precision(0);
-        averageRecall[n] = eval.recall(0);
-
+    for (int p = 100; p <= 100; p += 5) {
+      double[] C = {Math.pow(2, -5), Math.pow(2, -3), Math.pow(2, -1), Math.pow(2, 0), Math.pow(2, 1), Math.pow(2, 3), Math.pow(2, 5), Math.pow(2, 7), Math.pow(2, 9), Math.pow(2, 11), Math.pow(2, 13), Math.pow(2, 15)};
+      double[] Y = C.clone();
+      for (int i = 0; i < C.length; i++) {
+        Y[C.length - i - 1] = C[i];
       }
-      System.out.print(p + " percent ");
-      System.out.println("recall, " + Arrays.toString(averageRecall));
+
+      for (int c = 0; c < C.length; c++) {
+        for (int y = 0; y < Y.length; y++) {
+          Resample sampler = new Resample();
+          sampler.setInputFormat(stringsReplacedData);
+          sampler.setRandomSeed(1);
+          sampler.setBiasToUniformClass(0);
+          sampler.setSampleSizePercent(p);
+          Instances reduced = Filter.useFilter(stringsReplacedData, sampler);
+
+          Resample resampleFilter = new Resample();
+          resampleFilter.setRandomSeed(1);
+          resampleFilter.setBiasToUniformClass(1d);
+          resampleFilter.setInputFormat(reduced);
+          Instances resampled = Filter.useFilter(reduced, resampleFilter);
+
+          LibSVM svm = new LibSVM();
+          svm.setCost(c);
+          svm.setGamma(y);
+          MultiFilter multi = new MultiFilter();
+          multi.setFilters(new Filter[]{removeFilter});
+          FilteredClassifier filteredClassifier = new FilteredClassifier();
+          filteredClassifier.setClassifier(svm);
+          filteredClassifier.setFilter(multi);
+
+          Evaluation eval = new Evaluation(reduced);
+          double[] averagePrecision = new double[folds];
+          double[] averageRecall = new double[folds];
+
+
+          for (int n = 0; n < folds; n++) {
+            List<Integer> testIds = Arrays.asList(Arrays.copyOfRange(rand, 10 * n, 10 * (n + 1)));
+            Instances train = new Instances(resampled, 1);
+            Instances test = new Instances(resampled, 1);
+            for (int i = 0; i < resampled.numInstances(); i++) {
+              Instance a = resampled.instance(i);
+              if (testIds.contains(Integer.parseInt(a.stringValue(a.attribute(resampled.attribute(Q_ID).index()))))) {
+                train.add(a);
+              } else {
+                //test.add(a);
+              }
+            }
+            for (int i = 0; i < resampled.numInstances(); i++) {
+              Instance a = resampled.instance(i);
+              if (testIds.contains(Integer.parseInt(a.stringValue(a.attribute(stringsReplacedData.attribute(Q_ID).index()))))) {
+                //train.add(a);
+              } else {
+                test.add(a);
+              }
+            }
+
+
+            // build and evaluate classifier
+            svm.setModelFile(new File("C:\\tmp\\output\\model_" + p + "_percent_fold_" + n));
+            Classifier clsCopy = FilteredClassifier.makeCopy(filteredClassifier);
+            clsCopy.buildClassifier(train);
+            eval.setPriors(train);
+            eval.evaluateModel(clsCopy, test);
+            averagePrecision[n] = eval.precision(0);
+            averageRecall[n] = eval.recall(0);
+
+          }
+          //System.out.print(p + " percent ");
+          System.out.print("Cost " + c + ", gamma, " + y);
+          System.out.print(", prec, " + Arrays.toString(averagePrecision));
+          System.out.println(", recall, " + Arrays.toString(averageRecall));
+        }
+      }
     }
     out.collect(new Object());
   }

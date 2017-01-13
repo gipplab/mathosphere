@@ -82,6 +82,7 @@ public class WekaUtils {
   public static final String INCOMING_TO_IDENTIFIER = "direction of " + DEP_3_FROM_IDENTIFIER;
   public static final String DISTANCE_FROM_FIRST_OCCURENCE = "distance_from_first_occurence";
   public static final String RELATIVE_TERM_FREQUENCY = "relative_term_frequency";
+  private static final double LONGEST_WORD_IN_ENGLISH = 100d;
 
   public static Instances createInstances(String title) {
     ArrayList<Attribute> atts = new ArrayList<>();
@@ -138,7 +139,7 @@ public class WekaUtils {
 
   public static DependencyParser parser = DependencyParser.loadFromModelFile("edu/stanford/nlp/models/parser/nndep/english_UD.gz");
 
-  public static Instances addRelationsToInstances(List<Relation> relations, String title, String qId, Instances instances) {
+  public static Instances addRelationsToInstances(List<Relation> relations, String title, String qId, Instances instances, int maxSentenceLength) {
     List nominal = new ArrayList();
     nominal.add(MATCH);
     nominal.add(NO_MATCH);
@@ -149,21 +150,21 @@ public class WekaUtils {
       addStringValue(values, instances, Q_ID, qId);
       addStringValue(values, instances, IDENTIFIER, relation.getIdentifier());
       addStringValue(values, instances, DEFINIEN, relation.getDefinition());
-      values[instances.attribute(IDENTIFIER_POS).index()] = relation.getIdentifierPosition();
-      values[instances.attribute(DEFINIENS_POS).index()] = relation.getWordPosition();
+      values[instances.attribute(IDENTIFIER_POS).index()] = (double) relation.getIdentifierPosition() / maxSentenceLength;
+      values[instances.attribute(DEFINIENS_POS).index()] = (double) relation.getWordPosition() / maxSentenceLength;
       //distance between identifier and definiens candidate
       int wordDistance = relation.getIdentifierPosition() - relation.getWordPosition();
-      values[instances.attribute(WORD_DISTANCE).index()] = Math.abs(wordDistance);
+      values[instances.attribute(WORD_DISTANCE).index()] = (double) Math.abs(wordDistance) / maxSentenceLength;
       //weather or not the definiens is before or after the identifier
-      values[instances.attribute(WORD_POSITIONING).index()] = Math.signum(wordDistance);
-      values[instances.attribute(DEFINIENS_LENGTH).index()] = relation.getDefinition().length();
+      values[instances.attribute(WORD_POSITIONING).index()] = wordDistance > 0 ? 1 : 0;
+      values[instances.attribute(DEFINIENS_LENGTH).index()] = (double) relation.getDefinition().length() / LONGEST_WORD_IN_ENGLISH;
       for (int i = 0; i < patternMatches.length; i++) {
         values[instances.attribute(PATTERN_1).index() + i] = patternMatches[i];
       }
 
       addStringFeatures(values, instances, relation);
 
-      addDependencyTreeFeatures(values, instances, relation);
+      addDependencyTreeFeatures(values, instances, relation, maxSentenceLength);
 
       values[instances.attribute(DISTANCE_FROM_FIRST_OCCURENCE).index()] = relation.getDistanceFromFirstIdentifierOccurence();
 
@@ -229,7 +230,7 @@ public class WekaUtils {
    * @param instances instances where the values will be added.
    * @param relation  the relation from whitch to extract the features.
    */
-  private static void addDependencyTreeFeatures(double[] values, Instances instances, Relation relation) {
+  private static void addDependencyTreeFeatures(double[] values, Instances instances, Relation relation, int maxSentenceLength) {
     List<TaggedWord> taggedSentence = new ArrayList<>();
     for (Word word : relation.getSentence().getWords()) {
       taggedSentence.add(new TaggedWord(word.getWord(), word.getPosTag()));
@@ -242,7 +243,7 @@ public class WekaUtils {
     //shortest edge path for distance
     List<SemanticGraphEdge> edgesOnPath = semanticGraph.getShortestUndirectedPathEdges(identifier, definiens);
     int distance = edgesOnPath.size();
-    values[instances.attribute(GRAPH_DISTANCE).index()] = distance;
+    values[instances.attribute(GRAPH_DISTANCE).index()] = (double) distance / maxSentenceLength;
     //shortest node path for dependencies
     List<IndexedWord> fromIdentifier = semanticGraph.getShortestUndirectedPathNodes(identifier, definiens);
     removeUnwanted(fromIdentifier);
@@ -260,9 +261,9 @@ public class WekaUtils {
 
     addStringValue(values, instances, DEP_3_FROM_DEFINIEN, wordListToSimpleString(threeFromDefinien));
 
-    values[instances.attribute(INCOMING_TO_IDENTIFIER).index()] = edgesOnPath.get(0).getDependent().equals(identifier) ? 1 : -1;
+    values[instances.attribute(INCOMING_TO_IDENTIFIER).index()] = edgesOnPath.get(0).getDependent().equals(identifier) ? 1 : 0;
 
-    values[instances.attribute(INCOMING_TO_DEFINIEN).index()] = edgesOnPath.get(edgesOnPath.size() - 1).getDependent().equals(definiens) ? 1 : -1;
+    values[instances.attribute(INCOMING_TO_DEFINIEN).index()] = edgesOnPath.get(edgesOnPath.size() - 1).getDependent().equals(definiens) ? 1 : 0;
   }
 
   /**
