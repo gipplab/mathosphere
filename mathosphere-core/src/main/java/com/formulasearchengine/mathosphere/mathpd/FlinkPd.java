@@ -36,7 +36,7 @@ public class FlinkPd {
     private static final int NUMBER_OF_ALL_DOCS = 4; // only used in TF_IDF mode
     private static final double EPSILON = 0.00000000000000000001;
     private static final boolean IS_MODE_TFIDF = false; // if false, we use relative similarity
-    private static final boolean IS_MODE_PREPROCESSING = false;
+    private static final boolean IS_MODE_PREPROCESSING = true;
     private static DecimalFormat decimalFormat = new DecimalFormat("0.0");
 
     public static void main(String[] args) throws Exception {
