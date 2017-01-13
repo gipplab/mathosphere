@@ -1,27 +1,17 @@
 package com.formulasearchengine.mathosphere.mlp.text;
 
 import com.formulasearchengine.mathosphere.mlp.cli.EvalCommandConfig;
-import com.formulasearchengine.mathosphere.mlp.features.Feature;
-import com.formulasearchengine.mathosphere.mlp.features.FeatureVector;
 import com.formulasearchengine.mathosphere.mlp.pojos.*;
 import com.formulasearchengine.mlp.evaluation.pojo.GoldEntry;
 import com.formulasearchengine.mlp.evaluation.pojo.IdentifierDefinition;
+import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Lists;
-import com.sun.org.apache.xpath.internal.SourceTree;
+import com.google.common.collect.Multiset;
 import org.apache.flink.api.common.functions.MapFunction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import weka.core.Attribute;
-import weka.core.DenseInstance;
-import weka.core.FastVector;
-import weka.core.Instances;
-import weka.core.converters.ArffSaver;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class SimpleFeatureExtractor implements MapFunction<ParsedWikiDocument, WikiDocumentOutput> {
@@ -42,20 +32,13 @@ public class SimpleFeatureExtractor implements MapFunction<ParsedWikiDocument, W
   public WikiDocumentOutput map(ParsedWikiDocument doc) throws Exception {
     List<Relation> foundFeatures = Lists.newArrayList();
     List<Sentence> sentences = doc.getSentences();
-    ArrayList<Attribute> atts = new ArrayList<>();
-    //meta information
-    atts.add(new Attribute("identifier", (FastVector) null));
-    atts.add(new Attribute("definiens", (FastVector) null));
-    atts.add(new Attribute("identifierPos"));
-    atts.add(new Attribute("definiensPos"));
-    //this is where the real attrs begin
-    atts.add(new Attribute("sentence", (FastVector) null));
-    //TODO expand
-    //classification
-    FastVector attVals = new FastVector();
-    attVals.addElement(MATCH);
-    attVals.addElement(NO_MATCH);
-    atts.add(new Attribute("classification", attVals));
+
+    Map<String, Integer> identifierSentenceDistanceMap = findSentencesWithIdentifierFirstOccurrences(sentences, doc.getIdentifiers());
+
+    Multiset<String> frequencies = aggregateWords(sentences);
+
+    int maxFrequency = calculateMax(frequencies);
+
     GoldEntry goldEntry = goldEntries.stream().filter(e -> e.getTitle().equals(doc.getTitle().replaceAll(" ", "_"))).findFirst().get();
     final Integer fid = Integer.parseInt(goldEntry.getFid());
     final MathTag seed = doc.getFormulas()
@@ -72,6 +55,12 @@ public class SimpleFeatureExtractor implements MapFunction<ParsedWikiDocument, W
       Collection<Relation> foundMatches = matcher.match(sentence, doc);
       for (Relation match : foundMatches) {
         LOGGER.debug("found match {}", match);
+        int freq = frequencies.count(match.getSentence().getWords().get(match.getIdentifierPosition()).toLowerCase());
+        match.setRelativeTermFrequency((double) freq / (double) maxFrequency);
+        if (i - identifierSentenceDistanceMap.get(match.getIdentifier()) < 0) {
+          throw new RuntimeException("Cannot find identifier before first occurence");
+        }
+        match.setDistanceFromFirstIdentifierOccurence(i - identifierSentenceDistanceMap.get(match.getIdentifier()));
         match.setRelevance(matchesGold(match, goldEntry) ? 2 : 0);
         foundFeatures.add(match);
       }
@@ -88,5 +77,43 @@ public class SimpleFeatureExtractor implements MapFunction<ParsedWikiDocument, W
   public boolean matchesGold(String identifier, String definiens, GoldEntry gold) {
     List<IdentifierDefinition> identifierDefinitions = gold.getDefinitions();
     return identifierDefinitions.contains(new IdentifierDefinition(identifier, definiens.replaceAll("\\[|\\]", "").trim().toLowerCase()));
+  }
+
+  private Map<String, Integer> findSentencesWithIdentifierFirstOccurrences(List<Sentence> sentences, Collection<String> identifiers) {
+    Map<String, Integer> result = new HashMap<>();
+    for (String identifier : identifiers) {
+      for (int i = 0; i < sentences.size(); i++) {
+        Sentence sentence = sentences.get(i);
+        if (sentence.contains(identifier)) {
+          result.put(identifier, i);
+          break;
+        }
+      }
+    }
+    return result;
+  }
+
+  /**
+   * Aggregates the words to make counting easy.
+   *
+   * @param sentences from witch to aggregate the words.
+   * @return Multiset with an entry for every word.
+   */
+  private Multiset<String> aggregateWords(List<Sentence> sentences) {
+    Multiset<String> counts = HashMultiset.create();
+    for (Sentence sentence : sentences) {
+      for (Word word : sentence.getWords()) {
+        if (word.getWord().length() >= 3) {
+          counts.add(word.getWord().toLowerCase());
+        }
+      }
+    }
+    return counts;
+  }
+
+  private int calculateMax(Multiset<String> frequencies) {
+    Multiset.Entry<String> max = Collections.max(frequencies.entrySet(),
+      (e1, e2) -> Integer.compare(e1.getCount(), e2.getCount()));
+    return max.getCount();
   }
 }

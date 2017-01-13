@@ -12,7 +12,6 @@ import java.util.*;
 public class MyPatternMatcher {
   public static final String IDENTIFIER = "identifier";
   public static final String DEFINITION = "definition";
-  public static final String COLON = "colon";
 
   public static int[] match(Sentence sentence, String identifierText, String definiens, int identifierPosition, int definiensPosition) {
     Matcher<Word> isOrAre = word("is").or(word("are"));
@@ -59,7 +58,7 @@ public class MyPatternMatcher {
       //othermath
       Pattern.create(otherMathExpression),
       //14
-      //othermath
+      //parens
       Pattern.create(word("\\(")),
       Pattern.create(word("\\)"))
     );
