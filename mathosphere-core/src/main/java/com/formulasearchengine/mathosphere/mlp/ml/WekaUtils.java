@@ -245,6 +245,7 @@ public class WekaUtils {
     values[instances.attribute(GRAPH_DISTANCE).index()] = distance;
     //shortest node path for dependencies
     List<IndexedWord> fromIdentifier = semanticGraph.getShortestUndirectedPathNodes(identifier, definiens);
+    removeUnwanted(fromIdentifier);
     List<IndexedWord> fromDefinien = new ArrayList<>(fromIdentifier);
     Collections.reverse(fromDefinien);
     //we don't want the first, since that would be the identifier
@@ -321,6 +322,7 @@ public class WekaUtils {
 
   /**
    * Convenience method to add a string value.
+   *
    * @param data
    * @param instances
    * @param field
@@ -332,17 +334,41 @@ public class WekaUtils {
 
   /**
    * Gets a string from a list of words.
+   *
    * @param words the words to convert.
    * @return String containing surface text and pos tag of the words.
    */
   private static String wordListToSimpleString(List<Word> words) {
     StringBuilder stringBuilder = new StringBuilder();
     for (Word w : words) {
-      stringBuilder.append(w.getWord().replaceAll(" ", "_"));
-      stringBuilder.append("_");
-      stringBuilder.append(w.getPosTag());
-      stringBuilder.append(" ");
+      //do not include things that the tokenizer eats anyway
+      if (!tokenisationDelimiters.contains(w.getWord()) && !tokenisationDelimitersPOSTags.contains(w.getPosTag())) {
+        stringBuilder.append(w.getWord().replaceAll(" ", "_").replaceAll(tokenisationDelimitersRegex, ""));
+        stringBuilder.append("_");
+        stringBuilder.append(w.getPosTag());
+        stringBuilder.append(" ");
+      }
     }
     return stringBuilder.toString();
   }
+
+  private static void removeUnwanted(List<IndexedWord> words) {
+    Iterator i = words.iterator();
+    while (i.hasNext()) {
+      IndexedWord w = (IndexedWord) i.next();
+      if (tokenisationDelimitersPOSTags.contains(w.tag())) {
+        i.remove();
+      } else if (tokenisationDelimiters.contains(w.word())) {
+        i.remove();
+      }
+    }
+  }
+
+  /**
+   * {@link weka.core.tokenizers.NGramTokenizer#m_Delimiters}
+   */
+  private static String tokenisationDelimiters = " \r\n\t\\.,;:'\"\\(\\)\\?\\!";
+  private static String tokenisationDelimitersRegex = "[ \r\n\t.,;:'\"()?!]";
+  private static List<String> tokenisationDelimitersPOSTags =
+    Arrays.asList(new String[]{"-LRB-", "-RRB-", "$", "#", ".", ",", ":", "\"", "(", ")", "``", "'", "`", "\'\'"});
 }
