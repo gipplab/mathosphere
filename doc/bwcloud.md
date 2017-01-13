@@ -188,3 +188,6 @@ Host m
     LocalForward 8081 127.0.0.1:8081
     LocalForward 50070 127.0.0.1:50070
 ```
+
+## Run MathPD job
+/srv/hadoop/bin/hadoop fs -rmdir /data/161214_allpdcases.xml_preprocessed; /srv/hadoop/bin/hadoop fs -rmdir /data/ntcir_and_pdcases.xml_preprocessed; /srv/flink/bin/flink run /data/mathosphere/mathosphere-core/target/mathosphere-core-3.0.0-SNAPSHOT-jar-with-dependencies.jar pd --inputDir hdfs://m:54310/data/ntcir_and_pdcases.xml --referenceDir hdfs://m:54310/data/161214_allpdcases.xml --outputDir hdfs://m:54310/data/170113run
