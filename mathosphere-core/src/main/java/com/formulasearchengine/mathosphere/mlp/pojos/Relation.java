@@ -11,19 +11,20 @@ import static com.formulasearchengine.mathosphere.mlp.text.WikiTextUtils.deLinki
 
 public class Relation implements Comparable<Relation> {
 
-  public int getDistanceFromFirstIdentifierOccurence() {
+  public double getDistanceFromFirstIdentifierOccurence() {
     return distanceFromFirstIdentifierOccurence;
   }
 
-  public void setDistanceFromFirstIdentifierOccurence(int distanceFromFirstIdentifierOccurence) {
+  public void setDistanceFromFirstIdentifierOccurence(double distanceFromFirstIdentifierOccurence) {
     this.distanceFromFirstIdentifierOccurence = distanceFromFirstIdentifierOccurence;
   }
 
   /**
    * The distance from the definiens distraction sentence to the sentence where the identifier occurs for the first time.
    * 0 if the definiens is found in the same sentence as the first occurrence of the identifier.
+   * Normalized with the length of the document in sentences.
    */
-  private int distanceFromFirstIdentifierOccurence;
+  private double distanceFromFirstIdentifierOccurence;
   private String identifier;
   private String definition;
   /**
