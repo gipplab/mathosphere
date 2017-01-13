@@ -149,11 +149,6 @@ public class FlinkPd {
 
                         for (String name : nameAndDocs.keySet()) {
                             collector.collect(new Tuple2<>(name, nameAndDocs.get(name)));
-                            // TODO: remove this output
-                            System.out.println(name);
-                            System.out.println(nameAndDocs.get(name).getHistogramCi());
-                            System.out.println(nameAndDocs.get(name).getHistogramCsymbol());
-                            System.out.println("");
                         }
                     }
                 });
@@ -228,7 +223,6 @@ public class FlinkPd {
 
                                 for (Tuple2<String, String> key : freqsInCorpus.keySet()) {
                                     collector.collect(new Tuple3<>(key.f0, key.f1, freqsInCorpus.get(key)));
-                                    System.out.println(new Tuple3<>(key.f0, key.f1, freqsInCorpus.get(key)));
                                 }
                             }
                         });
@@ -264,12 +258,6 @@ public class FlinkPd {
 
                                         for (String name : tfidfDocs.keySet()) {
                                             collector.collect(new Tuple2<>(name, tfidfDocs.get(name)));
-                                            System.out.println(name);
-                                            System.out.println(tfidfDocs.get(name).getHistogramCi());
-                                            System.out.println(tfidfDocs.get(name).getHistogramCsymbol());
-                                            System.out.println(tfidfDocs.get(name).getHistogramCn());
-                                            System.out.println(tfidfDocs.get(name).getHistogramBvar());
-                                            System.out.println("");
                                         }
                                     }
                                 });
@@ -338,9 +326,6 @@ public class FlinkPd {
                                             distanceAllFeatures = Distances.distanceRelativeAllFeatures(i.f0, i.f1);
                                         }
 
-                                        System.out.println(i.f0.getId() + " - " + i.f1.getId());
-                                        System.out.println(distanceAllFeatures);
-                                        System.out.println("");
                                         final Tuple7<String, String, Double, Double, Double, Double, Double> resultLine = new Tuple7<>(
                                                 i.f0.getId(),
                                                 i.f1.getId(),
