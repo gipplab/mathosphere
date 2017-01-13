@@ -11,12 +11,31 @@ import static com.formulasearchengine.mathosphere.mlp.text.WikiTextUtils.deLinki
 
 public class Relation implements Comparable<Relation> {
 
+  public int getDistanceFromFirstIdentifierOccurence() {
+    return distanceFromFirstIdentifierOccurence;
+  }
+
+  public void setDistanceFromFirstIdentifierOccurence(int distanceFromFirstIdentifierOccurence) {
+    this.distanceFromFirstIdentifierOccurence = distanceFromFirstIdentifierOccurence;
+  }
+
+  /**
+   * The distance from the definiens distraction sentence to the sentence where the identifier occurs for the first time.
+   * 0 if the definiens is found in the same sentence as the first occurrence of the identifier.
+   */
+  private int distanceFromFirstIdentifierOccurence;
   private String identifier;
   private String definition;
   /**
    * The calculated score.
    */
   private double score;
+
+  /**
+   * Relative term frequency of the definiens in the document.
+   */
+  private double relativeTermFrequency;
+
   private int identifierPosition;
   /**
    * Position of the definiens.
@@ -108,11 +127,11 @@ public class Relation implements Comparable<Relation> {
     return "Relation [" + identifier + ", score=" + score + ", word=" + definition + "]";
   }
 
-
   @Override
   public int compareTo(Relation o) {
     return (o.getScore()).compareTo(getScore());
   }
+
 
   public int compareToName(Relation o) {
     int res = getIdentifier().compareTo(o.getIdentifier());
@@ -160,5 +179,13 @@ public class Relation implements Comparable<Relation> {
 
   public Tuple2<String, String> getTuple() {
     return new Tuple2<>(identifier, definition);
+  }
+
+  public double getRelativeTermFrequency() {
+    return relativeTermFrequency;
+  }
+
+  public void setRelativeTermFrequency(double termFrequency) {
+    this.relativeTermFrequency = termFrequency;
   }
 }
