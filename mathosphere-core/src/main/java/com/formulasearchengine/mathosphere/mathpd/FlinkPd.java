@@ -102,54 +102,31 @@ public class FlinkPd {
                 .reduceGroup(new GroupReduceFunction<Tuple2<String, ExtractedMathPDDocument>, Tuple2<String, ExtractedMathPDDocument>>() {
                     @Override
                     public void reduce(Iterable<Tuple2<String, ExtractedMathPDDocument>> iterable, Collector<Tuple2<String, ExtractedMathPDDocument>> collector) throws Exception {
-                        final HashMap<String, List<HashMap<String, Double>>> nameAndAllHistogramsCi = new HashMap<>();
-                        final HashMap<String, List<HashMap<String, Double>>> nameAndAllHistogramsCn = new HashMap<>();
-                        final HashMap<String, List<HashMap<String, Double>>> nameAndAllHistogramsCsymbol = new HashMap<>();
-                        final HashMap<String, List<HashMap<String, Double>>> nameAndAllHistogramsBvar = new HashMap<>();
-
-                        // this will store all the aggregated documents
-                        final HashMap<String, ExtractedMathPDDocument> nameAndDocs = new HashMap<>();
+                        final List<HashMap<String, Double>> allHistogramsCi = new ArrayList<>();
+                        final List<HashMap<String, Double>> allHistogramsCn = new ArrayList<>();
+                        final List<HashMap<String, Double>> allHistogramsCsymbol = new ArrayList<>();
+                        final List<HashMap<String, Double>> allHistogramsBvar = new ArrayList<>();
+                        ExtractedMathPDDocument mainDoc = null;
 
                         for (Tuple2<String, ExtractedMathPDDocument> nameAndSnippet : iterable) {
                             final String name = nameAndSnippet.f0;
                             final ExtractedMathPDDocument snippet = nameAndSnippet.f1;
-                            synchronized (nameAndDocs) {
-                                nameAndDocs.putIfAbsent(name, snippet); // only done once for each name, will serve as the main document later
+                            if (mainDoc == null) {
+                                mainDoc = snippet;
                             }
 
-                            final List<HashMap<String, Double>> allHistogramsCiOfCurDoc = nameAndAllHistogramsCi.getOrDefault(name, new ArrayList<>());
-                            final List<HashMap<String, Double>> allHistogramsCnOfCurDoc = nameAndAllHistogramsCn.getOrDefault(name, new ArrayList<>());
-                            final List<HashMap<String, Double>> allHistogramsCsymbolOfCurDoc = nameAndAllHistogramsCsymbol.getOrDefault(name, new ArrayList<>());
-                            final List<HashMap<String, Double>> allHistogramsBvarOfCurDoc = nameAndAllHistogramsBvar.getOrDefault(name, new ArrayList<>());
-                            nameAndAllHistogramsCi.put(name, allHistogramsCiOfCurDoc);
-                            nameAndAllHistogramsCn.put(name, allHistogramsCnOfCurDoc);
-                            nameAndAllHistogramsCsymbol.put(name, allHistogramsCsymbolOfCurDoc);
-                            nameAndAllHistogramsBvar.put(name, allHistogramsBvarOfCurDoc);
-
-                            allHistogramsCiOfCurDoc.add(snippet.getHistogramCi());
-                            allHistogramsCnOfCurDoc.add(snippet.getHistogramCn());
-                            allHistogramsCsymbolOfCurDoc.add(snippet.getHistogramCsymbol());
-                            allHistogramsBvarOfCurDoc.add(snippet.getHistogramBvar());
+                            allHistogramsCi.add(snippet.getHistogramCi());
+                            allHistogramsCn.add(snippet.getHistogramCn());
+                            allHistogramsCsymbol.add(snippet.getHistogramCsymbol());
+                            allHistogramsBvar.add(snippet.getHistogramBvar());
                         }
 
-                        // now merge all the stuff together
-                        for (String name : nameAndDocs.keySet()) {
-                            final ExtractedMathPDDocument curDoc = nameAndDocs.get(name);
+                        mainDoc.setHistogramCi(Distances.histogramsPlus(allHistogramsCi));
+                        mainDoc.setHistogramCn(Distances.histogramsPlus(allHistogramsCn));
+                        mainDoc.setHistogramCsymbol(Distances.histogramsPlus(allHistogramsCsymbol));
+                        mainDoc.setHistogramBvar(Distances.histogramsPlus(allHistogramsBvar));
 
-                            final List<HashMap<String, Double>> allHistogramsCiOfCurDoc = nameAndAllHistogramsCi.get(name);
-                            final List<HashMap<String, Double>> allHistogramsCnOfCurDoc = nameAndAllHistogramsCn.get(name);
-                            final List<HashMap<String, Double>> allHistogramsCsymbolOfCurDoc = nameAndAllHistogramsCsymbol.get(name);
-                            final List<HashMap<String, Double>> allHistogramsBvarOfCurDoc = nameAndAllHistogramsBvar.get(name);
-
-                            curDoc.setHistogramCi(Distances.histogramsPlus(allHistogramsCiOfCurDoc));
-                            curDoc.setHistogramCn(Distances.histogramsPlus(allHistogramsCnOfCurDoc));
-                            curDoc.setHistogramCsymbol(Distances.histogramsPlus(allHistogramsCsymbolOfCurDoc));
-                            curDoc.setHistogramBvar(Distances.histogramsPlus(allHistogramsBvarOfCurDoc));
-                        }
-
-                        for (String name : nameAndDocs.keySet()) {
-                            collector.collect(new Tuple2<>(name, nameAndDocs.get(name)));
-                        }
+                        collector.collect(new Tuple2<>(mainDoc.getName(), mainDoc));
                     }
                 });
 
@@ -305,12 +282,12 @@ public class FlinkPd {
                                             continue;
 
                                         // skip one diagonal half of the matrix
-                                        if (!i.f0.getId().contains("Original"))
-                                            continue;
+                                        //if (!i.f0.getId().contains("Original"))
+                                        //    continue;
 
                                         // only check Original against Plagiarism (not against other Originals)
-                                        if (!i.f1.getId().contains("Plagiarism"))
-                                            continue;
+                                        //if (!i.f1.getId().contains("Plagiarism"))
+                                        //    continue;
 
                                         // Tuple4 contains (if cosine is used, the term distance actually means similarity, i.e.,
                                         // -1=opposite, 0=unrelated, 1=same doc
@@ -393,9 +370,9 @@ public class FlinkPd {
         }
 
 
-        final int parallelism2 = config.getParallelism();
-        if (parallelism2 > 0) {
-            env.setParallelism(parallelism2);
+        final int parallelism = config.getParallelism();
+        if (parallelism > 0) {
+            env.setParallelism(parallelism);
         }
         env.execute("Relation Finder");
     }

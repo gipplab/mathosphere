@@ -304,7 +304,7 @@ public class Distances {
      * @param tagName
      * @param histogram
      */
-    synchronized private static void cleanupHistogram(String tagName, HashMap<String, Double> histogram) {
+    private static void cleanupHistogram(String tagName, HashMap<String, Double> histogram) {
         switch (tagName) {
             case "csymbol":
                 histogram.remove("based_integer");
@@ -316,10 +316,15 @@ public class Distances {
                 histogram.remove("integer");
                 break;
             case "cn":
+                Set<String> toberemovedKeys = new HashSet<>();
                 for (String key : histogram.keySet()) {
                     if (!isNumeric(key)) {
-                        histogram.remove(key);
+                        toberemovedKeys.add(key);
                     }
+                }
+                // now we can remove the keys
+                for (String key : toberemovedKeys) {
+                    histogram.remove(key);
                 }
                 break;
         }
