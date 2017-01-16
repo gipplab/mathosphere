@@ -116,8 +116,8 @@ public class Evaluator {
     Iterable<CSVRecord> records = CSVFormat.RFC4180.parse(extraction);
     for (CSVRecord record : records) {
       //qId, title, identifier, definition
-      String qId2 = record.get(QID);
-      String title = record.get(TITLE);
+      String qId2 = record.get(QID).trim();
+      String title = record.get(TITLE).trim();
       //check for qId and title
       if (!titleKey && goldEntries.stream().filter(g -> g.getqID().equals(qId2)).collect(Collectors.toList()).size() == 0) {
         throw new IllegalArgumentException(String.format("The formula with qId: %s and title: %s does not exist in the gold standard.", qId2, title));
@@ -125,8 +125,8 @@ public class Evaluator {
       if (titleKey && goldEntries.stream().filter(g -> g.getTitle().equals(title)).collect(Collectors.toList()).size() == 0) {
         throw new IllegalArgumentException(String.format("The formula with qId: %s and title: %s does not exist in the gold standard.", qId2, title));
       }
-      String identifier = record.get(IDENTIFIER);
-      String definition = record.get(DEFINITION);
+      String identifier = record.get(IDENTIFIER).trim();
+      String definition = record.get(DEFINITION).trim();
 
       if (titleKey) {
         extractions.put(title, new IdentifierDefinition(identifier, definition));
@@ -184,7 +184,7 @@ public class Evaluator {
         for (Map.Entry<String, String> stringStringEntry : var.entrySet()) {
           // there is only one entry
           //remove everything in brackets
-          final String def = stringStringEntry.getValue().trim().replaceAll("\\s*\\(.*?\\)$", "");
+          final String def = stringStringEntry.getValue().replaceAll("\\s*\\(.*?\\)$", "").trim();
           //extract wikidata link
           final String wikidataLink = stringStringEntry.getKey();
           result.add(wikidataLink);
