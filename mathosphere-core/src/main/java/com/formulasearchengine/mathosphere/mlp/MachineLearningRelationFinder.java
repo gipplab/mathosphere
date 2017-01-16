@@ -2,6 +2,7 @@ package com.formulasearchengine.mathosphere.mlp;
 
 import com.formulasearchengine.mathosphere.mlp.cli.EvalCommandConfig;
 import com.formulasearchengine.mathosphere.mlp.cli.FlinkMlpCommandConfig;
+import com.formulasearchengine.mathosphere.mlp.cli.MachineLearningDefinienExtractionConfig;
 import com.formulasearchengine.mathosphere.mlp.contracts.JsonSerializerMapper;
 import com.formulasearchengine.mathosphere.mlp.contracts.TextAnnotatorMapper;
 import com.formulasearchengine.mathosphere.mlp.contracts.TextExtractorMapper;
@@ -29,39 +30,38 @@ import java.util.*;
 public class MachineLearningRelationFinder {
 
   public static void main(String[] args) throws Exception {
+    MachineLearningDefinienExtractionConfig config = MachineLearningDefinienExtractionConfig.from(args);
+    config.setMultiThreadedCrossEvaluation(true);
+    find(config);
   }
 
-  public DataSet<WikiDocumentOutput> find(ExecutionEnvironment env) throws Exception {
-    EvalCommandConfig config = EvalCommandConfig.test();
+  public static void test() throws Exception {
+    find(MachineLearningDefinienExtractionConfig.test());
+  }
 
+  public static DataSet<WikiDocumentOutput> find(MachineLearningDefinienExtractionConfig config) throws Exception {
+    ExecutionEnvironment env = ExecutionEnvironment.getExecutionEnvironment();
     DataSource<String> source = readWikiDump(config, env);
     DataSet<ParsedWikiDocument> documents = source.flatMap(new TextExtractorMapper())
       .map(new TextAnnotatorMapper(config));
     Logger.getRootLogger().setLevel(Level.ERROR);
     ArrayList<GoldEntry> gold = (new Evaluator()).readGoldEntries(new File("C:\\tmp\\mlp\\input\\gold.json"));
     DataSet<WikiDocumentOutput> instances = documents.map(new SimpleFeatureExtractor(config, gold));
-    DataSet<Object> a = instances.reduceGroup(new WekaLearner());
+    DataSet<Object> a = instances.reduceGroup(new WekaLearner(config));
     a.map(new JsonSerializerMapper<>())
-      .writeAsText(config.getOutputDir(), WriteMode.OVERWRITE);
-
+      .writeAsText(config.getOutputDir() + "\\tmp", WriteMode.OVERWRITE);
+    env.execute();
     return instances;
   }
 
-  private String resourcePath(String resourceName) {
-    ClassLoader classLoader = getClass().getClassLoader();
-    URL resource = classLoader.getResource(resourceName);
-    return decodePath(resource.getFile());
-  }
-
-  private static String decodePath(String urlEncodedPath) {
-    try {
-      return URLDecoder.decode(urlEncodedPath, "UTF-8");
-    } catch (UnsupportedEncodingException e) {
-      throw Throwables.propagate(e);
-    }
-  }
-
-  public static DataSource<String> readWikiDump(FlinkMlpCommandConfig config, ExecutionEnvironment env) {
+  public static DataSource<String> readWikiDump(MachineLearningDefinienExtractionConfig config, ExecutionEnvironment env) {
     return FlinkMlpRelationFinder.readWikiDump(config, env);
+  }
+
+  private static void generateSatuationData() throws Exception {
+    MachineLearningDefinienExtractionConfig config = MachineLearningDefinienExtractionConfig.test();
+    config.setPercent(new double[]{10, 20, 30, 40, 50, 60, 70, 80, 90, 100});
+    config.setMultiThreadedCrossEvaluation(true);
+    find(config);
   }
 }

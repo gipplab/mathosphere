@@ -51,13 +51,4 @@ public class EvalCommandConfig extends FlinkMlpCommandConfig implements Serializ
   public int getLevel() {
     return level;
   }
-
-  public static EvalCommandConfig test() {
-    EvalCommandConfig test = new EvalCommandConfig();
-    test.dataset = "c:/tmp/mlp/input/eval_dataset.xml";
-    test.outputdir = "c:/tmp/mlp/output/";
-    test.setUseTeXIdentifiers(true);
-    test.texvcinfoUrl = "http://localhost:10044/texvcinfo";
-    return test;
-  }
 }

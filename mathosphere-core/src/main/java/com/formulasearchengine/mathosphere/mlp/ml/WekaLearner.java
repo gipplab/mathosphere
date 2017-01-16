@@ -1,7 +1,11 @@
 package com.formulasearchengine.mathosphere.mlp.ml;
 
+import com.formulasearchengine.mathosphere.mlp.cli.MachineLearningDefinienExtractionConfig;
+import com.formulasearchengine.mathosphere.mlp.pojos.Relation;
 import com.formulasearchengine.mathosphere.mlp.pojos.WikiDocumentOutput;
-import libsvm.svm;
+import com.formulasearchengine.mathosphere.utils.Util;
+import edu.stanford.nlp.parser.nndep.DependencyParser;
+import org.apache.commons.io.FileUtils;
 import org.apache.flink.api.common.functions.GroupReduceFunction;
 import org.apache.flink.util.Collector;
 import weka.classifiers.Classifier;
@@ -10,6 +14,7 @@ import weka.classifiers.functions.LibSVM;
 import weka.classifiers.meta.FilteredClassifier;
 import weka.core.Instance;
 import weka.core.Instances;
+import weka.core.Utils;
 import weka.core.tokenizers.NGramTokenizer;
 import weka.filters.Filter;
 import weka.filters.MultiFilter;
@@ -19,6 +24,7 @@ import weka.filters.unsupervised.attribute.StringToWordVector;
 
 import java.io.File;
 import java.util.*;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 import static com.formulasearchengine.mathosphere.mlp.ml.WekaUtils.*;
 import static weka.core.Range.indicesToRangeList;
@@ -41,11 +47,71 @@ public class WekaLearner implements GroupReduceFunction<WikiDocumentOutput, Obje
     98, 1, 43, 3, 83, 16, 36, 95, 44, 92,
     59, 68, 45, 13, 39, 73, 87, 10, 57, 64};
 
+  /**
+   * Cost.
+   */
+  private static final double[] C_corase = {Math.pow(2, -7), Math.pow(2, -5), Math.pow(2, -3), Math.pow(2, -1), Math.pow(2, 1), Math.pow(2, 3), Math.pow(2, 5), Math.pow(2, 7), Math.pow(2, 9), Math.pow(2, 11), Math.pow(2, 13), Math.pow(2, 15)};
+
+  /**
+   * Gamma.
+   */
+  private static final double[] Y_corase = {Math.pow(2, -15), Math.pow(2, -13), Math.pow(2, -11), Math.pow(2, -9), Math.pow(2, -7), Math.pow(2, -5), Math.pow(2, -3), Math.pow(2, -1), Math.pow(2, 1), Math.pow(2, 3)};
+
+  /**
+   * Cost of the interesting region.
+   */
+  private static final double[] C_fine = {
+    Math.pow(2, -9)
+    , Math.pow(2, -8.75), Math.pow(2, -8.5), Math.pow(2, -8.25), Math.pow(2, -8)
+    , Math.pow(2, -7.75), Math.pow(2, -7.5), Math.pow(2, -7.25), Math.pow(2, -7)
+    , Math.pow(2, -6.75), Math.pow(2, -6.5), Math.pow(2, -6.25), Math.pow(2, -6)
+    , Math.pow(2, -5.75), Math.pow(2, -5.5), Math.pow(2, -5.25), Math.pow(2, -5)
+    , Math.pow(2, -4.75), Math.pow(2, -4.5), Math.pow(2, -4.25), Math.pow(2, -4)
+    , Math.pow(2, -3.75), Math.pow(2, -3.5), Math.pow(2, -3.25), Math.pow(2, -3)
+    , Math.pow(2, -2.75), Math.pow(2, -2.5), Math.pow(2, -2.25), Math.pow(2, -2)
+    , Math.pow(2, -1.75), Math.pow(2, -1.5), Math.pow(2, -1.25), Math.pow(2, -1)
+    , Math.pow(2, -0.75), Math.pow(2, -0.5), Math.pow(2, -0.25), Math.pow(2, 0)
+  };
+  /**
+   * Gamma of the interesting region.
+   */
+  private static final double[] Y_fine = {
+    Math.pow(2, -7)
+    , Math.pow(2, -6.75), Math.pow(2, -6.5), Math.pow(2, -6.25), Math.pow(2, -6)
+    , Math.pow(2, -5.75), Math.pow(2, -5.5), Math.pow(2, -5.25), Math.pow(2, -5)
+    , Math.pow(2, -4.75), Math.pow(2, -4.5), Math.pow(2, -4.25), Math.pow(2, -4)
+    , Math.pow(2, -3.75), Math.pow(2, -3.5), Math.pow(2, -3.25), Math.pow(2, -3)
+    , Math.pow(2, -2.75), Math.pow(2, -2.5), Math.pow(2, -2.25), Math.pow(2, -2)
+  };
+
+  /**
+   * Cost for highest accuracy.
+   */
+  public static final double[] C_best = {Math.pow(2, -3.75)};
+
+  /**
+   * Gamma for highest accuracy.
+   */
+  public static final double[] Y_best = {Math.pow(2, -5.25)};
+
+  public WekaLearner(MachineLearningDefinienExtractionConfig config) {
+    this.config = config;
+  }
+
+  public final MachineLearningDefinienExtractionConfig config;
+
   @Override
   public void reduce(Iterable<WikiDocumentOutput> values, Collector<Object> out) throws Exception {
+    double[] percentages = config.getPercent();
+    double[] C_used = config.getSvmCost();
+    double[] Y_used = config.getSvmGamma();
+    File output = new File(config.getOutputDir() + "\\svm_cross_eval_statistics.csv");
+    File outputDetails = new File(config.getOutputDir() + "\\svm_cross_eval_detailed_statistics.txt");
+    File extractedDefiniens = new File(config.getOutputDir() + "\\classifications.csv");
+    DependencyParser parser = DependencyParser.loadFromModelFile(config.dependencyParserModel());
     Instances instances = createInstances("AllRelations");
     for (WikiDocumentOutput value : values) {
-      addRelationsToInstances(value.getRelations(), value.getTitle(), value.getqId(), instances, value.getMaxSentenceLength());
+      addRelationsToInstances(parser, value.getRelations(), value.getTitle(), value.getqId(), instances, value.getMaxSentenceLength());
     }
     StringToWordVector stringToWordVector = new StringToWordVector();
     stringToWordVector.setAttributeIndices(indicesToRangeList(new int[]{
@@ -53,8 +119,7 @@ public class WekaLearner implements GroupReduceFunction<WikiDocumentOutput, Obje
       instances.attribute(SURFACE_TEXT_AND_POS_TAG_OF_THREE_PRECEDING_AND_FOLLOWING_TOKENS_AROUND_THE_PAIRED_MATH_EXPR).index(),
       instances.attribute(SURFACE_TEXT_OF_THE_FIRST_VERB_THAT_APPEARS_BETWEEN_THE_DESC_CANDIDATE_AND_THE_TARGET_MATH_EXPR).index(),
       instances.attribute(DEP_3_FROM_IDENTIFIER).index(),
-      instances.attribute(DEP_3_FROM_DEFINIEN).index(),
-      instances.attribute(SENTENCE).index()}));
+      instances.attribute(DEP_3_FROM_DEFINIEN).index()}));
     stringToWordVector.setWordsToKeep(1000);
     NGramTokenizer nGramTokenizer = new NGramTokenizer();
     nGramTokenizer.setNGramMaxSize(3);
@@ -73,81 +138,152 @@ public class WekaLearner implements GroupReduceFunction<WikiDocumentOutput, Obje
     }));
     removeFilter.setInputFormat(stringsReplacedData);
 
-    for (int p = 100; p <= 100; p += 5) {
-      double[] C = {Math.pow(2, -5), Math.pow(2, -3), Math.pow(2, -1), Math.pow(2, 0), Math.pow(2, 1), Math.pow(2, 3), Math.pow(2, 5), Math.pow(2, 7), Math.pow(2, 9), Math.pow(2, 11), Math.pow(2, 13), Math.pow(2, 15)};
-      double[] Y = C.clone();
-      for (int i = 0; i < C.length; i++) {
-        Y[C.length - i - 1] = C[i];
-      }
+    FileUtils.deleteQuietly(output);
+    FileUtils.deleteQuietly(outputDetails);
+    FileUtils.deleteQuietly(extractedDefiniens);
+    for (double p : percentages) {
+      for (double c : C_used) {
+        for (double y : Y_used) {
+          //output
+          double[] averagePrecision = new double[folds];
+          double[] averageRecall = new double[folds];
+          double[] accuracy = new double[folds];
+          String[] text = new String[folds];
+          Collection<String> extractions = new ConcurrentLinkedQueue();
 
-      for (int c = 0; c < C.length; c++) {
-        for (int y = 0; y < Y.length; y++) {
+          //draw random sample
           Resample sampler = new Resample();
           sampler.setInputFormat(stringsReplacedData);
           sampler.setRandomSeed(1);
+          //do not change distribution
           sampler.setBiasToUniformClass(0);
           sampler.setSampleSizePercent(p);
           Instances reduced = Filter.useFilter(stringsReplacedData, sampler);
 
+          //oversampling to deal with the ratio of the classes
           Resample resampleFilter = new Resample();
           resampleFilter.setRandomSeed(1);
           resampleFilter.setBiasToUniformClass(1d);
           resampleFilter.setInputFormat(reduced);
           Instances resampled = Filter.useFilter(reduced, resampleFilter);
 
-          LibSVM svm = new LibSVM();
-          svm.setCost(c);
-          svm.setGamma(y);
-          MultiFilter multi = new MultiFilter();
-          multi.setFilters(new Filter[]{removeFilter});
-          FilteredClassifier filteredClassifier = new FilteredClassifier();
-          filteredClassifier.setClassifier(svm);
-          filteredClassifier.setFilter(multi);
-
-          Evaluation eval = new Evaluation(reduced);
-          double[] averagePrecision = new double[folds];
-          double[] averageRecall = new double[folds];
-
-
-          for (int n = 0; n < folds; n++) {
-            List<Integer> testIds = Arrays.asList(Arrays.copyOfRange(rand, 10 * n, 10 * (n + 1)));
-            Instances train = new Instances(resampled, 1);
-            Instances test = new Instances(resampled, 1);
-            for (int i = 0; i < resampled.numInstances(); i++) {
-              Instance a = resampled.instance(i);
-              if (testIds.contains(Integer.parseInt(a.stringValue(a.attribute(resampled.attribute(Q_ID).index()))))) {
-                train.add(a);
-              } else {
-                //test.add(a);
-              }
+          if (config.isMultiThreadedCrossEvaluation()) {
+            //Do the computation in parallel
+            Thread[] threads = new Thread[folds];
+            for (int n = 0; n < folds; n++) {
+              threads[n] = new Thread(getRunnable(n, removeFilter, c, y, resampled, averagePrecision, averageRecall, accuracy, text, extractions));
+              threads[n].start();
             }
-            for (int i = 0; i < resampled.numInstances(); i++) {
-              Instance a = resampled.instance(i);
-              if (testIds.contains(Integer.parseInt(a.stringValue(a.attribute(stringsReplacedData.attribute(Q_ID).index()))))) {
-                //train.add(a);
-              } else {
-                test.add(a);
-              }
+            for (int n = 0; n < folds; n++) {
+              threads[n].join();
             }
-
-
-            // build and evaluate classifier
-            svm.setModelFile(new File("C:\\tmp\\output\\model_" + p + "_percent_fold_" + n));
-            Classifier clsCopy = FilteredClassifier.makeCopy(filteredClassifier);
-            clsCopy.buildClassifier(train);
-            eval.setPriors(train);
-            eval.evaluateModel(clsCopy, test);
-            averagePrecision[n] = eval.precision(0);
-            averageRecall[n] = eval.recall(0);
-
+          } else {
+            for (int n = 0; n < folds; n++) {
+              trainAndTest(n, removeFilter, c, y, resampled, averagePrecision, averageRecall, accuracy, text, extractions);
+            }
           }
-          //System.out.print(p + " percent ");
-          System.out.print("Cost " + c + ", gamma, " + y);
-          System.out.print(", prec, " + Arrays.toString(averagePrecision));
-          System.out.println(", recall, " + Arrays.toString(averageRecall));
+
+          //Output files
+          FileUtils.write(output, "Cost; " + Utils.doubleToString(c, 10) + "; gamma; " + Utils.doubleToString(y, 10)
+            + "; percentage_of_data_used; " + p
+            + "; accuracy; " + Arrays.toString(accuracy).replaceAll("\\[|\\]", "").replaceAll(",", ";")
+            + "; avg_accuracy; " + average(accuracy)
+            + "; prec; " + Arrays.toString(averagePrecision).replaceAll("\\[|\\]", "").replaceAll(",", ";")
+            + "; avg_prec; " + average(averagePrecision)
+            + "; recall; " + Arrays.toString(averageRecall).replaceAll("\\[|\\]", "").replaceAll(",", ";")
+            + "; avg_recall; " + average(averageRecall)
+            + "; avg_F1; " + 2 * average(averageRecall) * average(averagePrecision) / (average(averageRecall) + average(averagePrecision))
+            + "\n", true);
+          FileUtils.write(outputDetails, "Cost; " + Utils.doubleToString(c, 10) + "; gamma; " + Utils.doubleToString(y, 10) + "\n" + Arrays.toString(text) + "\n", true);
+          //remove duplicates
+          StringBuilder e = new StringBuilder();
+          Set<String> set = new HashSet();
+          set.addAll(extractions);
+          List<String> list = new ArrayList<>(set);
+          list.sort(Comparator.naturalOrder());
+          for (String extraction : list) {
+            e.append(extraction).append("\n");
+          }
+          FileUtils.write(extractedDefiniens, e.toString(), true);
         }
       }
     }
     out.collect(new Object());
+  }
+
+  private Runnable getRunnable(int n, Filter removeFilter, double cost, double gamma, Instances resampled,
+                               double[] averagePrecision, double[] averageRecall, double[] accuracy, String[] text,
+                               Collection<String> extractions) throws Exception {
+    return new Runnable() {
+      @Override
+      public void run() {
+        try {
+          trainAndTest(n, removeFilter, cost, gamma, resampled, averagePrecision, averageRecall, accuracy, text, extractions);
+        } catch (Exception e) {
+          e.printStackTrace();
+        }
+      }
+    };
+  }
+
+  ;
+
+  private void trainAndTest(int n, Filter removeFilter, double cost, double gamma, Instances resampled,
+                            double[] averagePrecision, double[] averageRecall, double[] accuracy, String[] text,
+                            Collection<String> extractions) throws Exception {
+    LibSVM svm = new LibSVM();
+    svm.setCost(cost);
+    svm.setGamma(gamma);
+    MultiFilter multi = new MultiFilter();
+    multi.setFilters(new Filter[]{removeFilter});
+    FilteredClassifier filteredClassifier = new FilteredClassifier();
+    filteredClassifier.setClassifier(svm);
+    filteredClassifier.setFilter(multi);
+
+    List<Integer> testIds = Arrays.asList(Arrays.copyOfRange(rand, 10 * n, 10 * (n + 1)));
+    Instances train = new Instances(resampled, 1);
+    Instances test = new Instances(resampled, 1);
+    for (int i = 0; i < resampled.numInstances(); i++) {
+      Instance a = resampled.instance(i);
+      if (testIds.contains(Integer.parseInt(a.stringValue(a.attribute(resampled.attribute(Q_ID).index()))))) {
+        test.add(a);
+      } else {
+        train.add(a);
+      }
+    }
+    // build and evaluate classifier
+    if (config.getWriteSvmModel()) {
+      svm.setModelFile(new File("C:\\tmp\\output\\model_" + config.getPercent() + "_percent_fold_" + n));
+    }
+    Classifier clsCopy = FilteredClassifier.makeCopy(filteredClassifier);
+    clsCopy.buildClassifier(train);
+    //extract matches
+    for (int i = 0; i < test.size(); i++) {
+      Instance instance = test.get(i);
+      String match = train.classAttribute().value(0);
+      String predictedClass = train.classAttribute().value((int) clsCopy.classifyInstance(instance));
+      if (match.equals(predictedClass)) {
+        String extraction =
+          instance.stringValue(instance.attribute(train.attribute(Q_ID).index())) + ", "
+            + instance.stringValue(instance.attribute(train.attribute(TITLE).index())).replaceAll("\\s", "_") + ", "
+            + instance.stringValue(instance.attribute(train.attribute(IDENTIFIER).index())) + ", "
+            + instance.stringValue(instance.attribute(train.attribute(DEFINIEN).index()));
+        extractions.add(extraction);
+      }
+    }
+    Evaluation eval = new Evaluation(resampled);
+    eval.setPriors(train);
+    eval.evaluateModel(clsCopy, test);
+    averagePrecision[n] = eval.precision(0);
+    averageRecall[n] = eval.recall(0);
+    accuracy[n] = eval.pctCorrect() / 100d;
+    StringBuilder b = new StringBuilder();
+    b.append(", fold, ").append(n).append("\n").append(eval.toClassDetailsString()).append("\n").append(eval.toSummaryString(true));
+    text[n] = b.toString();
+    //}
+  }
+
+  private double average(double[] doubles) {
+    return Arrays.stream(doubles).sum() / doubles.length;
   }
 }

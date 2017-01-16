@@ -25,6 +25,8 @@ public class Main {
       FlinkMlpRelationFinder.run(params.getMlpCommandConfig());
     } else if (CliParams.EVAL.equals(command)) {
       FlinkMlpRelationFinder.evaluate(params.getEvalCommandConfig());
+    } else if (CliParams.ML.equals(command)) {
+      MachineLearningRelationFinder.find(params.getMachineLearningCommand());
     } else if (CliParams.PD.equals(command)) {
       FlinkPd.run(params.getPdCommandConfig());
     } else {
