@@ -1,15 +1,10 @@
-import akka.event.slf4j.Logger
 import com.formulasearchengine.mathosphere.mlp.MachineLearningRelationFinder
-import com.formulasearchengine.mathosphere.mlp.features.FeatureVector
+import com.formulasearchengine.mathosphere.mlp.cli.MachineLearningDefinienExtractionConfig
 import com.formulasearchengine.mathosphere.mlp.pojos.WikiDocumentOutput
 import org.apache.flink.api.common.functions.{FlatMapFunction, MapFunction}
 import org.apache.flink.api.scala._
-import org.apache.flink.api.scala.utils.DataSetUtils
 import org.apache.flink.core.fs.FileSystem.WriteMode
-import org.apache.flink.ml.common.LabeledVector
 import org.apache.flink.ml.math.{DenseVector, Vector}
-import org.apache.flink.ml.classification.SVM
-import weka.core.Instances
 
 
 object MachineLearner {
@@ -24,8 +19,7 @@ object MachineLearner {
   def main(args: Array[String]): Unit = {
     val env = ExecutionEnvironment.createCollectionsEnvironment
     env.getConfig.enableSysoutLogging()
-    val machineLearningRelationFinder = new MachineLearningRelationFinder()
-    val data: DataSet[WikiDocumentOutput] = new DataSet[WikiDocumentOutput](machineLearningRelationFinder.find(env.getJavaEnv));
+    val data: DataSet[WikiDocumentOutput] = new DataSet[WikiDocumentOutput](MachineLearningRelationFinder.find(MachineLearningDefinienExtractionConfig.test()));
     data.writeAsText("c:/tmp/output/data.txt", WriteMode.OVERWRITE)
     /*val dataWithIndex: DataSet[(Long, FeatureVector)] = data.zipWithIndex
     val partitions: Integer = 10;

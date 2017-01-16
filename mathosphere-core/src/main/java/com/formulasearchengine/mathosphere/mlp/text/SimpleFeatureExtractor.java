@@ -1,6 +1,7 @@
 package com.formulasearchengine.mathosphere.mlp.text;
 
 import com.formulasearchengine.mathosphere.mlp.cli.EvalCommandConfig;
+import com.formulasearchengine.mathosphere.mlp.cli.MachineLearningDefinienExtractionConfig;
 import com.formulasearchengine.mathosphere.mlp.pojos.*;
 import com.formulasearchengine.mlp.evaluation.pojo.GoldEntry;
 import com.formulasearchengine.mlp.evaluation.pojo.IdentifierDefinition;
@@ -17,13 +18,11 @@ import java.util.stream.Collectors;
 public class SimpleFeatureExtractor implements MapFunction<ParsedWikiDocument, WikiDocumentOutput> {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(SimpleFeatureExtractor.class);
-  public static final String MATCH = "match";
-  public static final String NO_MATCH = "no match";
 
-  private final EvalCommandConfig config;
+  private final MachineLearningDefinienExtractionConfig config;
   private final List<GoldEntry> goldEntries;
 
-  public SimpleFeatureExtractor(EvalCommandConfig config, List<GoldEntry> goldEntries) {
+  public SimpleFeatureExtractor(MachineLearningDefinienExtractionConfig config, List<GoldEntry> goldEntries) {
     this.config = config;
     this.goldEntries = goldEntries;
   }

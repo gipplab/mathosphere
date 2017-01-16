@@ -23,7 +23,6 @@ import static com.formulasearchengine.mathosphere.mlp.text.MyPatternMatcher.matc
 public class WekaUtils {
   public static final String MATCH = "match";
   public static final String NO_MATCH = "no match";
-  public static final int ATTRIBUTE_SENTENCE = 37;
   public static final String DEFINIENS_POS = "definiensPos";
   public static final String IDENTIFIER_POS = "identifierPos";
   public static final String DEFINIEN = "definiens";
@@ -59,15 +58,6 @@ public class WekaUtils {
   public static final String SURFACE_TEXT_OF_THE_FIRST_VERB_THAT_APPEARS_BETWEEN_THE_DESC_CANDIDATE_AND_THE_TARGET_MATH_EXPR = "Surface text of the first verb that appears between the desc candidate and the target math expr";
   //Feature 18 of [1]
   public static final String GRAPH_DISTANCE = "graphDistance";
-  public static final String NULL_4 = "null4";
-  public static final String NULL_5 = "null5";
-  public static final String NULL_6 = "null6";
-  public static final String NULL_7 = "null7";
-  public static final String NULL_8 = "null8";
-  public static final String NULL_9 = "null9";
-  public static final String NULL_10 = "null10";
-  public static final String NULL_11 = "null11";
-  public static final String SENTENCE = "sentence";
   public static final String CLASSIFICATION = "classification";
   private static final String DEFINIENS_TEXT = "definiens_candidate";
   private static final String IDENTIFIER_TEXT = "identifier_candidate";
@@ -124,8 +114,6 @@ public class WekaUtils {
     atts.add(new Attribute(INCOMING_TO_DEFINIEN));
     atts.add(new Attribute(DISTANCE_FROM_FIRST_OCCURENCE));
     atts.add(new Attribute(RELATIVE_TERM_FREQUENCY));
-    atts.add(new Attribute(NULL_11));
-    atts.add(new Attribute(SENTENCE, (FastVector) null));
     //TODO expand
     //classification
     ArrayList nominal = new ArrayList();
@@ -137,9 +125,7 @@ public class WekaUtils {
     return result;
   }
 
-  public static DependencyParser parser = DependencyParser.loadFromModelFile("edu/stanford/nlp/models/parser/nndep/english_UD.gz");
-
-  public static Instances addRelationsToInstances(List<Relation> relations, String title, String qId, Instances instances, int maxSentenceLength) {
+  public static Instances addRelationsToInstances(DependencyParser parser, List<Relation> relations, String title, String qId, Instances instances, int maxSentenceLength) {
     List nominal = new ArrayList();
     nominal.add(MATCH);
     nominal.add(NO_MATCH);
@@ -164,15 +150,12 @@ public class WekaUtils {
 
       addStringFeatures(values, instances, relation);
 
-      addDependencyTreeFeatures(values, instances, relation, maxSentenceLength);
+      addDependencyTreeFeatures(parser, values, instances, relation, maxSentenceLength);
 
       values[instances.attribute(DISTANCE_FROM_FIRST_OCCURENCE).index()] = relation.getDistanceFromFirstIdentifierOccurence();
 
       values[instances.attribute(RELATIVE_TERM_FREQUENCY).index()] = relation.getRelativeTermFrequency();
 
-      //text between the tokens
-      //values[ATTRIBUTE_SENTENCE] = instances.attribute(ATTRIBUTE_SENTENCE).addStringValue(wordListToSimpleString(wordsInbetween));
-      values[ATTRIBUTE_SENTENCE] = instances.attribute(ATTRIBUTE_SENTENCE).addStringValue("");
       values[values.length - 1] = relation.getRelevance() > 1 ? nominal.indexOf(MATCH) : nominal.indexOf(NO_MATCH);
       instances.add(new DenseInstance(1.0, values));
     }
@@ -230,7 +213,7 @@ public class WekaUtils {
    * @param instances instances where the values will be added.
    * @param relation  the relation from whitch to extract the features.
    */
-  private static void addDependencyTreeFeatures(double[] values, Instances instances, Relation relation, int maxSentenceLength) {
+  private static void addDependencyTreeFeatures(DependencyParser parser, double[] values, Instances instances, Relation relation, int maxSentenceLength) {
     List<TaggedWord> taggedSentence = new ArrayList<>();
     for (Word word : relation.getSentence().getWords()) {
       taggedSentence.add(new TaggedWord(word.getWord(), word.getPosTag()));
