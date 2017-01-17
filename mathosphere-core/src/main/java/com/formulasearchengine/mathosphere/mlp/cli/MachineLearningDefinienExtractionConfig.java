@@ -20,6 +20,13 @@ public class MachineLearningDefinienExtractionConfig extends FlinkMlpCommandConf
   @Parameter(names = {"--dependencyParserModel"}, description = "Location of the model for the dependency parser.")
   protected String dependencyParserModel = "edu/stanford/nlp/models/parser/nndep/english_UD.gz";
 
+  @Parameter(names = {"--gold"}, description = "gold file")
+  protected String queries;
+
+  public String getQueries() {
+    return queries;
+  }
+
   public double[] getPercent() {
     return percent;
   }
@@ -67,7 +74,18 @@ public class MachineLearningDefinienExtractionConfig extends FlinkMlpCommandConf
   public static MachineLearningDefinienExtractionConfig test() {
     MachineLearningDefinienExtractionConfig test = new MachineLearningDefinienExtractionConfig();
     test.dataset = "c:/tmp/mlp/input/eval_dataset.xml";
-    test.outputdir = "c:/tmp/mlp/output/";
+    test.outputdir = "c:/tmp/mlp/output/corase";
+    test.queries = "C:/tmp/mlp/input/gold.json";
+    test.setUseTeXIdentifiers(true);
+    test.texvcinfoUrl = "http://localhost:10044/texvcinfo";
+    return test;
+  }
+
+  public static MachineLearningDefinienExtractionConfig testfine() {
+    MachineLearningDefinienExtractionConfig test = new MachineLearningDefinienExtractionConfig();
+    test.dataset = "c:/tmp/mlp/input/eval_dataset.xml";
+    test.outputdir = "c:/tmp/mlp/output/fine";
+    test.queries = "C:/tmp/mlp/input/gold.json";
     test.setUseTeXIdentifiers(true);
     test.texvcinfoUrl = "http://localhost:10044/texvcinfo";
     return test;
