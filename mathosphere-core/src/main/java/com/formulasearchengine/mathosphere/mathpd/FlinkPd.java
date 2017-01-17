@@ -97,7 +97,8 @@ public class FlinkPd {
      */
     private static DataSet<Tuple2<String, ExtractedMathPDDocument>> aggregateSnippetsToSingleDocs(FlatMapOperator<String, Tuple2<String, ExtractedMathPDDocument>> extractedMathPdSnippets) {
         DataSet<Tuple2<String, ExtractedMathPDDocument>> extractedMathPdDocuments = extractedMathPdSnippets
-                .groupBy(0).reduce(new ReduceFunction<Tuple2<String, ExtractedMathPDDocument>>() {
+                .groupBy(0)
+                .reduce(new ReduceFunction<Tuple2<String, ExtractedMathPDDocument>>() {
                     @Override
                     public Tuple2<String, ExtractedMathPDDocument> reduce(Tuple2<String, ExtractedMathPDDocument> t0, Tuple2<String, ExtractedMathPDDocument> t1) throws Exception {
                         t1.f1.mergeOtherIntoThis(t0.f1);
