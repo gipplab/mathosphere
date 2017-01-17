@@ -97,13 +97,16 @@ public class TextExtractorMapper implements FlatMapFunction<String, Tuple2<Strin
     public void flatMap(String content, Collector<Tuple2<String, ExtractedMathPDDocument>> out) throws Exception {
         final ArxivDocument document = arxivTextToDocument(content);
         if (document == null) {
+            LOGGER.warn("could not convert raw string to ArxivDocuemt: {}", content.substring(0, 100));
             return;
         }
 
         LOGGER.info("processing document '{}'...", document.title);
         final ExtractedMathPDDocument extractedMathPDDocument = convertArxivToExtractedMathPDDocument(document);
-        if (extractedMathPDDocument == null)
+        if (extractedMathPDDocument == null) {
+            LOGGER.warn("could not convert ArxivDocument to ExtractedMathPDDocument: {}", document.title);
             return;
+        }
 
         // store the doc in the collector
         LOGGER.info("finished processing document '{}'...", document.title);
