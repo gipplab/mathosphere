@@ -13,6 +13,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.flink.api.common.functions.FlatMapFunction;
 import org.apache.flink.api.common.functions.GroupReduceFunction;
+import org.apache.flink.api.common.functions.ReduceFunction;
 import org.apache.flink.api.common.operators.Order;
 import org.apache.flink.api.java.DataSet;
 import org.apache.flink.api.java.ExecutionEnvironment;
@@ -27,9 +28,7 @@ import org.apache.flink.core.fs.Path;
 import org.apache.flink.util.Collector;
 
 import java.text.DecimalFormat;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 public class FlinkPd {
     protected static final Log LOG = LogFactory.getLog(FlinkPd.class);
@@ -97,36 +96,12 @@ public class FlinkPd {
      * @return
      */
     private static DataSet<Tuple2<String, ExtractedMathPDDocument>> aggregateSnippetsToSingleDocs(FlatMapOperator<String, Tuple2<String, ExtractedMathPDDocument>> extractedMathPdSnippets) {
-        GroupReduceOperator<Tuple2<String, ExtractedMathPDDocument>, Tuple2<String, ExtractedMathPDDocument>> extractedMathPdDocuments = extractedMathPdSnippets
-                .groupBy(0)
-                .reduceGroup(new GroupReduceFunction<Tuple2<String, ExtractedMathPDDocument>, Tuple2<String, ExtractedMathPDDocument>>() {
+        DataSet<Tuple2<String, ExtractedMathPDDocument>> extractedMathPdDocuments = extractedMathPdSnippets
+                .groupBy(0).reduce(new ReduceFunction<Tuple2<String, ExtractedMathPDDocument>>() {
                     @Override
-                    public void reduce(Iterable<Tuple2<String, ExtractedMathPDDocument>> iterable, Collector<Tuple2<String, ExtractedMathPDDocument>> collector) throws Exception {
-                        final List<HashMap<String, Double>> allHistogramsCi = new ArrayList<>();
-                        final List<HashMap<String, Double>> allHistogramsCn = new ArrayList<>();
-                        final List<HashMap<String, Double>> allHistogramsCsymbol = new ArrayList<>();
-                        final List<HashMap<String, Double>> allHistogramsBvar = new ArrayList<>();
-                        ExtractedMathPDDocument mainDoc = null;
-
-                        for (Tuple2<String, ExtractedMathPDDocument> nameAndSnippet : iterable) {
-                            final String name = nameAndSnippet.f0;
-                            final ExtractedMathPDDocument snippet = nameAndSnippet.f1;
-                            if (mainDoc == null) {
-                                mainDoc = snippet;
-                            }
-
-                            allHistogramsCi.add(snippet.getHistogramCi());
-                            allHistogramsCn.add(snippet.getHistogramCn());
-                            allHistogramsCsymbol.add(snippet.getHistogramCsymbol());
-                            allHistogramsBvar.add(snippet.getHistogramBvar());
-                        }
-
-                        mainDoc.setHistogramCi(Distances.histogramsPlus(allHistogramsCi));
-                        mainDoc.setHistogramCn(Distances.histogramsPlus(allHistogramsCn));
-                        mainDoc.setHistogramCsymbol(Distances.histogramsPlus(allHistogramsCsymbol));
-                        mainDoc.setHistogramBvar(Distances.histogramsPlus(allHistogramsBvar));
-
-                        collector.collect(new Tuple2<>(mainDoc.getName(), mainDoc));
+                    public Tuple2<String, ExtractedMathPDDocument> reduce(Tuple2<String, ExtractedMathPDDocument> t0, Tuple2<String, ExtractedMathPDDocument> t1) throws Exception {
+                        t1.f1.mergeOtherIntoThis(t0.f1);
+                        return t1;
                     }
                 });
 

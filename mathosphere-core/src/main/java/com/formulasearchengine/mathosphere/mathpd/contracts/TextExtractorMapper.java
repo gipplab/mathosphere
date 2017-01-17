@@ -6,7 +6,9 @@ import com.formulasearchengine.mathosphere.mathpd.pojos.ExtractedMathPDDocument;
 import org.apache.flink.api.common.functions.FlatMapFunction;
 import org.apache.flink.api.java.tuple.Tuple2;
 import org.apache.flink.api.java.tuple.Tuple4;
+import org.apache.flink.configuration.Configuration;
 import org.apache.flink.util.Collector;
+import org.apache.hadoop.mapred.Counters;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,6 +20,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class TextExtractorMapper implements FlatMapFunction<String, Tuple2<String, ExtractedMathPDDocument>> {
+
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TextExtractorMapper.class);
 
