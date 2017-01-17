@@ -1,9 +1,10 @@
 127.0.0.1 localhost
 192.168.0.3 master
 192.168.0.3 m
-192.168.0.5 w1
-192.168.0.5 worker-1
-192.168.0.4 w2
+192.168.0.10 w-3
+192.168.0.11 w-6
+192.168.0.12 w-1
+192.168.0.13 w-4
 192.168.0.4 worker-2
 # The following lines are desirable for IPv6 capable hosts
 ::1 ip6-localhost ip6-loopback
