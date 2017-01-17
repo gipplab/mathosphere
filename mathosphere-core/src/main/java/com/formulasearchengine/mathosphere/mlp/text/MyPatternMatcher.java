@@ -1,10 +1,7 @@
 package com.formulasearchengine.mathosphere.mlp.text;
 
 import com.alexeygrigorev.rseq.*;
-import com.formulasearchengine.mathosphere.mlp.features.FeatureVector;
-import com.formulasearchengine.mathosphere.mlp.pojos.ParsedWikiDocument;
 import com.formulasearchengine.mathosphere.mlp.pojos.Sentence;
-import com.formulasearchengine.mathosphere.mlp.pojos.WikidataLink;
 import com.formulasearchengine.mathosphere.mlp.pojos.Word;
 
 import java.util.*;

@@ -1,9 +1,10 @@
 package com.formulasearchengine.mathosphere.mlp.ml;
 
 import com.formulasearchengine.mathosphere.mlp.cli.MachineLearningDefinienExtractionConfig;
-import com.formulasearchengine.mathosphere.mlp.pojos.Relation;
 import com.formulasearchengine.mathosphere.mlp.pojos.WikiDocumentOutput;
-import com.formulasearchengine.mathosphere.utils.Util;
+import com.formulasearchengine.mlp.evaluation.Evaluator;
+import com.formulasearchengine.mlp.evaluation.pojo.GoldEntry;
+import com.formulasearchengine.mlp.evaluation.pojo.ScoreSummary;
 import edu.stanford.nlp.parser.nndep.DependencyParser;
 import org.apache.commons.io.FileUtils;
 import org.apache.flink.api.common.functions.GroupReduceFunction;
@@ -23,8 +24,10 @@ import weka.filters.unsupervised.attribute.Remove;
 import weka.filters.unsupervised.attribute.StringToWordVector;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.StringReader;
 import java.util.*;
-import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.stream.Collectors;
 
 import static com.formulasearchengine.mathosphere.mlp.ml.WekaUtils.*;
 import static weka.core.Range.indicesToRangeList;
@@ -50,17 +53,17 @@ public class WekaLearner implements GroupReduceFunction<WikiDocumentOutput, Obje
   /**
    * Cost.
    */
-  private static final double[] C_corase = {Math.pow(2, -7), Math.pow(2, -5), Math.pow(2, -3), Math.pow(2, -1), Math.pow(2, 1), Math.pow(2, 3), Math.pow(2, 5), Math.pow(2, 7), Math.pow(2, 9), Math.pow(2, 11), Math.pow(2, 13), Math.pow(2, 15)};
+  public static final double[] C_corase = {Math.pow(2, -7), Math.pow(2, -5), Math.pow(2, -3), Math.pow(2, -1), Math.pow(2, 1), Math.pow(2, 3), Math.pow(2, 5), Math.pow(2, 7), Math.pow(2, 9), Math.pow(2, 11), Math.pow(2, 13), Math.pow(2, 15)};
 
   /**
    * Gamma.
    */
-  private static final double[] Y_corase = {Math.pow(2, -15), Math.pow(2, -13), Math.pow(2, -11), Math.pow(2, -9), Math.pow(2, -7), Math.pow(2, -5), Math.pow(2, -3), Math.pow(2, -1), Math.pow(2, 1), Math.pow(2, 3)};
+  public static final double[] Y_corase = {Math.pow(2, -15), Math.pow(2, -13), Math.pow(2, -11), Math.pow(2, -9), Math.pow(2, -7), Math.pow(2, -5), Math.pow(2, -3), Math.pow(2, -1), Math.pow(2, 1), Math.pow(2, 3)};
 
   /**
    * Cost of the interesting region.
    */
-  private static final double[] C_fine = {
+  public static final double[] C_fine = {
     Math.pow(2, -9)
     , Math.pow(2, -8.75), Math.pow(2, -8.5), Math.pow(2, -8.25), Math.pow(2, -8)
     , Math.pow(2, -7.75), Math.pow(2, -7.5), Math.pow(2, -7.25), Math.pow(2, -7)
@@ -75,7 +78,7 @@ public class WekaLearner implements GroupReduceFunction<WikiDocumentOutput, Obje
   /**
    * Gamma of the interesting region.
    */
-  private static final double[] Y_fine = {
+  public static final double[] Y_fine = {
     Math.pow(2, -7)
     , Math.pow(2, -6.75), Math.pow(2, -6.5), Math.pow(2, -6.25), Math.pow(2, -6)
     , Math.pow(2, -5.75), Math.pow(2, -5.5), Math.pow(2, -5.25), Math.pow(2, -5)
@@ -93,9 +96,11 @@ public class WekaLearner implements GroupReduceFunction<WikiDocumentOutput, Obje
    * Gamma for highest accuracy.
    */
   public static final double[] Y_best = {Math.pow(2, -5.25)};
+  private final ArrayList<GoldEntry> gold;
 
-  public WekaLearner(MachineLearningDefinienExtractionConfig config) {
+  public WekaLearner(MachineLearningDefinienExtractionConfig config) throws IOException {
     this.config = config;
+    this.gold = (new Evaluator()).readGoldEntries(new File(config.getQueries()));
   }
 
   public final MachineLearningDefinienExtractionConfig config;
@@ -105,9 +110,9 @@ public class WekaLearner implements GroupReduceFunction<WikiDocumentOutput, Obje
     double[] percentages = config.getPercent();
     double[] C_used = config.getSvmCost();
     double[] Y_used = config.getSvmGamma();
-    File output = new File(config.getOutputDir() + "\\svm_cross_eval_statistics.csv");
-    File outputDetails = new File(config.getOutputDir() + "\\svm_cross_eval_detailed_statistics.txt");
-    File extractedDefiniens = new File(config.getOutputDir() + "\\classifications.csv");
+    File output = new File(config.getOutputDir() + "/svm_cross_eval_statistics.csv");
+    File outputDetails = new File(config.getOutputDir() + "/svm_cross_eval_detailed_statistics.txt");
+    File extractedDefiniens = new File(config.getOutputDir() + "/classifications.csv");
     DependencyParser parser = DependencyParser.loadFromModelFile(config.dependencyParserModel());
     Instances instances = createInstances("AllRelations");
     for (WikiDocumentOutput value : values) {
@@ -141,74 +146,98 @@ public class WekaLearner implements GroupReduceFunction<WikiDocumentOutput, Obje
     FileUtils.deleteQuietly(output);
     FileUtils.deleteQuietly(outputDetails);
     FileUtils.deleteQuietly(extractedDefiniens);
+    List<Double[]> parameters = new ArrayList<>();
     for (double p : percentages) {
       for (double c : C_used) {
         for (double y : Y_used) {
-          //output
-          double[] averagePrecision = new double[folds];
-          double[] averageRecall = new double[folds];
-          double[] accuracy = new double[folds];
-          String[] text = new String[folds];
-          Collection<String> extractions = new ConcurrentLinkedQueue();
-
-          //draw random sample
-          Resample sampler = new Resample();
-          sampler.setInputFormat(stringsReplacedData);
-          sampler.setRandomSeed(1);
-          //do not change distribution
-          sampler.setBiasToUniformClass(0);
-          sampler.setSampleSizePercent(p);
-          Instances reduced = Filter.useFilter(stringsReplacedData, sampler);
-
-          //oversampling to deal with the ratio of the classes
-          Resample resampleFilter = new Resample();
-          resampleFilter.setRandomSeed(1);
-          resampleFilter.setBiasToUniformClass(1d);
-          resampleFilter.setInputFormat(reduced);
-          Instances resampled = Filter.useFilter(reduced, resampleFilter);
-
-          if (config.isMultiThreadedCrossEvaluation()) {
-            //Do the computation in parallel
-            Thread[] threads = new Thread[folds];
-            for (int n = 0; n < folds; n++) {
-              threads[n] = new Thread(getRunnable(n, removeFilter, c, y, resampled, averagePrecision, averageRecall, accuracy, text, extractions));
-              threads[n].start();
-            }
-            for (int n = 0; n < folds; n++) {
-              threads[n].join();
-            }
-          } else {
-            for (int n = 0; n < folds; n++) {
-              trainAndTest(n, removeFilter, c, y, resampled, averagePrecision, averageRecall, accuracy, text, extractions);
-            }
-          }
-
-          //Output files
-          FileUtils.write(output, "Cost; " + Utils.doubleToString(c, 10) + "; gamma; " + Utils.doubleToString(y, 10)
-            + "; percentage_of_data_used; " + p
-            + "; accuracy; " + Arrays.toString(accuracy).replaceAll("\\[|\\]", "").replaceAll(",", ";")
-            + "; avg_accuracy; " + average(accuracy)
-            + "; prec; " + Arrays.toString(averagePrecision).replaceAll("\\[|\\]", "").replaceAll(",", ";")
-            + "; avg_prec; " + average(averagePrecision)
-            + "; recall; " + Arrays.toString(averageRecall).replaceAll("\\[|\\]", "").replaceAll(",", ";")
-            + "; avg_recall; " + average(averageRecall)
-            + "; avg_F1; " + 2 * average(averageRecall) * average(averagePrecision) / (average(averageRecall) + average(averagePrecision))
-            + "\n", true);
-          FileUtils.write(outputDetails, "Cost; " + Utils.doubleToString(c, 10) + "; gamma; " + Utils.doubleToString(y, 10) + "\n" + Arrays.toString(text) + "\n", true);
-          //remove duplicates
-          StringBuilder e = new StringBuilder();
-          Set<String> set = new HashSet();
-          set.addAll(extractions);
-          List<String> list = new ArrayList<>(set);
-          list.sort(Comparator.naturalOrder());
-          for (String extraction : list) {
-            e.append(extraction).append("\n");
-          }
-          FileUtils.write(extractedDefiniens, e.toString(), true);
+          parameters.add(new Double[]{p, c, y});
         }
       }
     }
+    List<EvaluationResult> evaluationResults;
+    if (config.isMultiThreadedCrossEvaluation()) {
+      evaluationResults = parameters.parallelStream()
+        .map(parameter -> crossEvaluate(stringsReplacedData, removeFilter, parameter[0], parameter[1], parameter[2])).collect(Collectors.toList());
+    } else {
+      evaluationResults = parameters.parallelStream()
+        .map(parameter -> crossEvaluate(stringsReplacedData, removeFilter, parameter[0], parameter[1], parameter[2])).collect(Collectors.toList());
+    }
+    for (
+      EvaluationResult evaluationResult : evaluationResults) {
+      FileUtils.write(outputDetails, "Cost; " + Utils.doubleToString(evaluationResult.gamma, 10) + "; gamma; " + Utils.doubleToString(evaluationResult.gamma, 10) + "\n" + Arrays.toString(evaluationResult.text) + "\n", true);
+      //remove duplicates
+      StringBuilder e = new StringBuilder();
+      Set<String> set = new HashSet();
+      set.addAll(evaluationResult.extractions);
+      List<String> list = new ArrayList<>(set);
+      list.sort(Comparator.naturalOrder());
+      for (String extraction : list) {
+        e.append(extraction).append("\n");
+      }
+      Evaluator evaluator = new Evaluator();
+      FileUtils.write(extractedDefiniens, "Cost; "
+        + Utils.doubleToString(evaluationResult.cost, 10)
+        + "; gamma; " + Utils.doubleToString(evaluationResult.gamma, 10)
+        + "; percentage_of_data_used; " + evaluationResult.percent
+        + "\\n", true);
+      FileUtils.write(extractedDefiniens, e.toString(), true);
+      StringReader reader = new StringReader(e.toString());
+      ScoreSummary scoreSummary = evaluator.evaluate(evaluator.readExtractions(reader, gold, false), gold);
+      //Output files
+      FileUtils.write(output, "Cost; " + Utils.doubleToString(evaluationResult.cost, 10)
+        + "; gamma; " + Utils.doubleToString(evaluationResult.gamma, 10)
+        + "; percentage_of_data_used; " + evaluationResult.percent
+        + "; accuracy; " + Arrays.toString(evaluationResult.accuracy).replaceAll("\\[|\\]", "").replaceAll(",", ";")
+        + "; avg_accuracy; " + average(evaluationResult.accuracy)
+        + "; prec; " + Arrays.toString(evaluationResult.averagePrecision).replaceAll("\\[|\\]", "").replaceAll(",", ";")
+        + "; avg_prec; " + average(evaluationResult.averagePrecision)
+        + "; recall; " + Arrays.toString(evaluationResult.averageRecall).replaceAll("\\[|\\]", "").replaceAll(",", ";")
+        + "; avg_recall; " + average(evaluationResult.averageRecall)
+        + "; avg_F1; " + evaluationResult.getF1()
+        + "; tp; " + scoreSummary.tp + "; fn; " + scoreSummary.fn + "; fp; " + scoreSummary.fp
+        + "\n", true);
+    }
     out.collect(new Object());
+  }
+
+  private EvaluationResult crossEvaluate(Instances stringsReplacedData, Remove removeFilter, double percent, double cost, double gamma) {
+    try {
+      EvaluationResult result = new EvaluationResult(folds, percent, cost, gamma);
+      //draw random sample
+      Resample sampler = new Resample();
+      sampler.setInputFormat(stringsReplacedData);
+      sampler.setRandomSeed(1);
+      //do not change distribution
+      sampler.setBiasToUniformClass(0);
+      sampler.setSampleSizePercent(percent);
+      Instances reduced = Filter.useFilter(stringsReplacedData, sampler);
+
+      //oversampling to deal with the ratio of the classes
+      Resample resampleFilter = new Resample();
+      resampleFilter.setRandomSeed(1);
+      resampleFilter.setBiasToUniformClass(1d);
+      resampleFilter.setInputFormat(reduced);
+      Instances resampled = Filter.useFilter(reduced, resampleFilter);
+
+      if (config.isMultiThreadedCrossEvaluation()) {
+        //Do the computation in parallel
+        Thread[] threads = new Thread[folds];
+        for (int n = 0; n < folds; n++) {
+          threads[n] = new Thread(getRunnable(n, removeFilter, cost, gamma, resampled, result.averagePrecision, result.averageRecall, result.accuracy, result.text, result.extractions));
+          threads[n].start();
+        }
+        for (int n = 0; n < folds; n++) {
+          threads[n].join();
+        }
+      } else {
+        for (int n = 0; n < folds; n++) {
+          trainAndTest(n, removeFilter, cost, gamma, resampled, result.averagePrecision, result.averageRecall, result.accuracy, result.text, result.extractions);
+        }
+      }
+      return result;
+    } catch (Exception e) {
+      return new EvaluationResult(folds, percent, cost, gamma);
+    }
   }
 
   private Runnable getRunnable(int n, Filter removeFilter, double cost, double gamma, Instances resampled,
@@ -264,10 +293,10 @@ public class WekaLearner implements GroupReduceFunction<WikiDocumentOutput, Obje
       String predictedClass = train.classAttribute().value((int) clsCopy.classifyInstance(instance));
       if (match.equals(predictedClass)) {
         String extraction =
-          instance.stringValue(instance.attribute(train.attribute(Q_ID).index())) + ", "
-            + instance.stringValue(instance.attribute(train.attribute(TITLE).index())).replaceAll("\\s", "_") + ", "
-            + instance.stringValue(instance.attribute(train.attribute(IDENTIFIER).index())) + ", "
-            + instance.stringValue(instance.attribute(train.attribute(DEFINIEN).index()));
+          instance.stringValue(instance.attribute(train.attribute(Q_ID).index())) + ","
+            + "\"" + instance.stringValue(instance.attribute(train.attribute(TITLE).index())).replaceAll("\\s", "_") + "\","
+            + "\"" + instance.stringValue(instance.attribute(train.attribute(IDENTIFIER).index())) + "\","
+            + "\"" + instance.stringValue(instance.attribute(train.attribute(DEFINIEN).index())).toLowerCase() + "\"";
         extractions.add(extraction);
       }
     }
@@ -281,9 +310,5 @@ public class WekaLearner implements GroupReduceFunction<WikiDocumentOutput, Obje
     b.append(", fold, ").append(n).append("\n").append(eval.toClassDetailsString()).append("\n").append(eval.toSummaryString(true));
     text[n] = b.toString();
     //}
-  }
-
-  private double average(double[] doubles) {
-    return Arrays.stream(doubles).sum() / doubles.length;
   }
 }

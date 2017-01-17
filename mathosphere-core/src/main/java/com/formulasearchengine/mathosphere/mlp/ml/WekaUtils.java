@@ -355,4 +355,8 @@ public class WekaUtils {
   private static String tokenisationDelimitersRegex = "[ \r\n\t.,;:'\"()?!]";
   private static List<String> tokenisationDelimitersPOSTags =
     Arrays.asList(new String[]{"-LRB-", "-RRB-", "$", "#", ".", ",", ":", "\"", "(", ")", "``", "'", "`", "\'\'"});
+
+  public static double average(double[] doubles) {
+    return Arrays.stream(doubles).sum() / doubles.length;
+  }
 }

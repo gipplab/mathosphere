@@ -30,9 +30,10 @@ import java.util.*;
 public class MachineLearningRelationFinder {
 
   public static void main(String[] args) throws Exception {
-    MachineLearningDefinienExtractionConfig config = MachineLearningDefinienExtractionConfig.from(args);
+    /*MachineLearningDefinienExtractionConfig config = MachineLearningDefinienExtractionConfig.from(args);
     config.setMultiThreadedCrossEvaluation(true);
-    find(config);
+    find(config);*/
+    generateCoraseParameterGrid();
   }
 
   public static void test() throws Exception {
@@ -60,8 +61,24 @@ public class MachineLearningRelationFinder {
 
   private static void generateSatuationData() throws Exception {
     MachineLearningDefinienExtractionConfig config = MachineLearningDefinienExtractionConfig.test();
-    config.setPercent(new double[]{10, 20, 30, 40, 50, 60, 70, 80, 90, 100});
+    //config.setPercent(new double[]{10, 20, 30, 40, 50, 60, 70, 80, 90, 100});
     config.setMultiThreadedCrossEvaluation(true);
     find(config);
   }
+
+  private static void generateCoraseParameterGrid() throws Exception {
+    MachineLearningDefinienExtractionConfig config = MachineLearningDefinienExtractionConfig.test();
+    config.setSvmCost(WekaLearner.C_corase);
+    config.setSvmGamma(WekaLearner.Y_corase);
+    find(config);
+  }
+
+  private static void generateFineParameterGrid() throws Exception {
+    MachineLearningDefinienExtractionConfig config = MachineLearningDefinienExtractionConfig.testfine();
+    config.setSvmCost(WekaLearner.C_fine);
+    config.setSvmGamma(WekaLearner.Y_fine);
+    find(config);
+  }
+
+
 }
