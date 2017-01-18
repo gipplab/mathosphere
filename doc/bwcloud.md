@@ -14,7 +14,7 @@ in the IP range 192.168.0.0/24.
 ## Prerequisites
 Install Java8
 ```
-sudo apt-get install openjdk-8-jdk
+sudo apt-get -y install openjdk-8-jdk
 ```
 Install flink
 ```
