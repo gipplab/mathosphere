@@ -1,0 +1,12 @@
+#!/bin/bash
+for i in {1..16}
+do
+   scp /etc/hosts w-"$i"g:~
+   ssh w-"$i"g "sudo echo "127.0.0.1 w-"$i"" >> hosts"
+   ssh w-"$i"g 'sudo cp hosts /etc/hosts'
+   scp 2-iface.cfg w-"$i"g:~
+   ssh w-"$i"g 'sudo cp 2-iface.cfg /etc/network/interfaces.d/'
+   ssh w-"$i"g 'sudo ifup ens4'
+   ssh-keyscan w-"$i"
+   ssh w-"$i" 'echo "ok"'
+done
