@@ -9,8 +9,8 @@ import com.beust.jcommander.Parameter;
 public class MachineLearningDefinienExtractionConfig extends FlinkMlpCommandConfig {
   @Parameter(names = {"--samplePercent"}, description = "how much of the training data should be used for training.")
   protected double[] percent = new double[]{100d};
-  @Parameter(names = {"--multiThreadedCrossEvaluation"}, description = "If the cross evaluation should be done with 10 parallel threads.")
-  protected boolean multiThreadedCrossEvaluation = false;
+  @Parameter(names = {"--multiThreadedEvaluation"}, description = "If the cross evaluation should be done with many threads.")
+  protected boolean multiThreadedEvaluation = false;
   @Parameter(names = {"--svmCost"}, description = "Cost value for the svm.")
   protected double[] svmCost = new double[]{0.074325445d};
   @Parameter(names = {"--svmGgamma"}, description = "Gamma value for the svm.")
@@ -35,12 +35,12 @@ public class MachineLearningDefinienExtractionConfig extends FlinkMlpCommandConf
     this.percent = percent;
   }
 
-  public boolean isMultiThreadedCrossEvaluation() {
-    return multiThreadedCrossEvaluation;
+  public boolean isMultiThreadedEvaluation() {
+    return multiThreadedEvaluation;
   }
 
-  public void setMultiThreadedCrossEvaluation(boolean multiThreadedCrossEvaluation) {
-    this.multiThreadedCrossEvaluation = multiThreadedCrossEvaluation;
+  public void setMultiThreadedEvaluation(boolean multiThreadedEvaluation) {
+    this.multiThreadedEvaluation = multiThreadedEvaluation;
   }
 
   public double[] getSvmCost() {
@@ -78,16 +78,19 @@ public class MachineLearningDefinienExtractionConfig extends FlinkMlpCommandConf
     test.queries = "C:/tmp/mlp/input/gold.json";
     test.setUseTeXIdentifiers(true);
     test.texvcinfoUrl = "http://localhost:10044/texvcinfo";
+    test.parallelism = 1;
+    return test;
+  }
+
+  public static MachineLearningDefinienExtractionConfig testSatuation() {
+    MachineLearningDefinienExtractionConfig test = test();
+    test.outputdir = "c:/tmp/mlp/output/satuation";
     return test;
   }
 
   public static MachineLearningDefinienExtractionConfig testfine() {
-    MachineLearningDefinienExtractionConfig test = new MachineLearningDefinienExtractionConfig();
-    test.dataset = "c:/tmp/mlp/input/eval_dataset.xml";
+    MachineLearningDefinienExtractionConfig test = test();
     test.outputdir = "c:/tmp/mlp/output/fine";
-    test.queries = "C:/tmp/mlp/input/gold.json";
-    test.setUseTeXIdentifiers(true);
-    test.texvcinfoUrl = "http://localhost:10044/texvcinfo";
     return test;
   }
 

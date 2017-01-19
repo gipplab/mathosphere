@@ -15,7 +15,7 @@ public class FlinkMlpCommandConfig extends BaseConfig implements Serializable {
   @Parameter(names = {"-out", "--outputDir"}, description = "path to output directory")
   protected String outputdir;
 
-  @Parameter(names = {"--treads"}, description = "how many parallel threads should be used")
+  @Parameter(names = {"--threads"}, description = "how many parallel threads should be used")
   protected int parallelism = 0;
 
   public FlinkMlpCommandConfig() {

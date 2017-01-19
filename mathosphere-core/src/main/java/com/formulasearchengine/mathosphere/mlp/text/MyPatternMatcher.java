@@ -55,12 +55,14 @@ public class MyPatternMatcher {
       //othermath
       Pattern.create(otherMathExpression),
       //14
-      //parens
+      //more opening parentheses than closing -> definiens in parentheses
       Pattern.create(word("\\(")),
+      //15
+      //more closing parentheses than opening -> identifier in parentheses
       Pattern.create(word("\\)"))
     );
 
-    int[] result = new int[16];
+    int[] result = new int[15];
     long openingParentheses = 0;
     for (int i = 0; i < patterns.size(); i++) {
       Pattern<Word> pattern = patterns.get(i);
@@ -76,25 +78,24 @@ public class MyPatternMatcher {
         case 7:
         case 8:
         case 9:
-        case 10:
           for (Match<Word> match : matches) {
             Word matchedDefiniens = match.getVariable(DEFINITION);
             if (matchedDefiniens != null && matchedDefiniens.getWord().equals(definiens))
               result[i] = 1;
           }
           break;
+        case 10:
         case 11:
         case 12:
-        case 13:
           for (Match<Word> match : matches) {
             if (inRange(match.matchedFrom(), identifierPosition, definiensPosition))
               result[i] = 1;
           }
           break;
-        case 14:
+        case 13:
           openingParentheses = matches.stream().filter(m -> inRange(m.matchedFrom(), identifierPosition, definiensPosition)).count();
           break;
-        case 15:
+        case 14:
           //definiens in parentheses
           long closingParentheses = matches.stream().filter(m -> inRange(m.matchedFrom(), identifierPosition, definiensPosition)).count();
           if (identifierPosition < definiensPosition)

@@ -154,14 +154,8 @@ public class WekaLearner implements GroupReduceFunction<WikiDocumentOutput, Obje
         }
       }
     }
-    List<EvaluationResult> evaluationResults;
-    if (config.isMultiThreadedCrossEvaluation()) {
-      evaluationResults = parameters.parallelStream()
-        .map(parameter -> crossEvaluate(stringsReplacedData, removeFilter, parameter[0], parameter[1], parameter[2])).collect(Collectors.toList());
-    } else {
-      evaluationResults = parameters.parallelStream()
-        .map(parameter -> crossEvaluate(stringsReplacedData, removeFilter, parameter[0], parameter[1], parameter[2])).collect(Collectors.toList());
-    }
+    List<EvaluationResult> evaluationResults = parameters.stream()
+      .map(parameter -> crossEvaluate(stringsReplacedData, removeFilter, parameter[0], parameter[1], parameter[2])).collect(Collectors.toList());
     for (
       EvaluationResult evaluationResult : evaluationResults) {
       FileUtils.write(outputDetails, "Cost; " + Utils.doubleToString(evaluationResult.gamma, 10) + "; gamma; " + Utils.doubleToString(evaluationResult.gamma, 10) + "\n" + Arrays.toString(evaluationResult.text) + "\n", true);
@@ -202,6 +196,8 @@ public class WekaLearner implements GroupReduceFunction<WikiDocumentOutput, Obje
 
   private EvaluationResult crossEvaluate(Instances stringsReplacedData, Remove removeFilter, double percent, double cost, double gamma) {
     try {
+      System.out.println("Cost; " + Utils.doubleToString(cost, 10)
+        + "; gamma; " + Utils.doubleToString(gamma, 10));
       EvaluationResult result = new EvaluationResult(folds, percent, cost, gamma);
       //draw random sample
       Resample sampler = new Resample();
@@ -219,7 +215,7 @@ public class WekaLearner implements GroupReduceFunction<WikiDocumentOutput, Obje
       resampleFilter.setInputFormat(reduced);
       Instances resampled = Filter.useFilter(reduced, resampleFilter);
 
-      if (config.isMultiThreadedCrossEvaluation()) {
+      if (config.isMultiThreadedEvaluation()) {
         //Do the computation in parallel
         Thread[] threads = new Thread[folds];
         for (int n = 0; n < folds; n++) {
