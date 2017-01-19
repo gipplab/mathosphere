@@ -347,7 +347,7 @@ public class FlinkPd {
             binnedDistancesForPairs.writeAsCsv(config.getOutputDir() + "_binned", WriteMode.OVERWRITE);
         }
 
-        env.execute("Relation Finder");
+        env.execute("Uncle Felix' MathPD Tool");
     }
 
     private static double getBinBoundary(double value, double binWidth, boolean isLower) {
