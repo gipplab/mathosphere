@@ -114,7 +114,7 @@ public class FlinkPd {
         ExecutionEnvironment env = ExecutionEnvironment.getExecutionEnvironment();
 
         final String preprocessedSourcesFiles = config.getDataset() + "_preprocessed";
-        final String preprocessedRefsFiles = config.getRef() + "_preprocessed";
+        final String preprocessedRefsFiles = config.getRef() + "_preprocessed2";
 
         if (IS_MODE_PREPROCESSING) {
             DataSource<String> source = readWikiDump(config, env);
@@ -128,6 +128,7 @@ public class FlinkPd {
                     new TextOutputFormat.TextFormatter<Tuple2<String, ExtractedMathPDDocument>>() {
                         @Override
                         public String format(Tuple2<String, ExtractedMathPDDocument> stringExtractedMathPDDocumentTuple2) {
+                            LOGGER.trace("writing one document to disk");
                             return ExtractedMathPDDocumentMapper.getFormattedWritableText(stringExtractedMathPDDocumentTuple2.f1);
                         }
                     });
