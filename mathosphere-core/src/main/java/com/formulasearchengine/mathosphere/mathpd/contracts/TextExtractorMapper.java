@@ -64,6 +64,7 @@ public class TextExtractorMapper implements FlatMapFunction<String, Tuple2<Strin
 
             // discard this document if no math tag is contained
             if (document.getMathTags().getLength() == 0) {
+                LOGGER.warn("{} contains no math tags", document.getName());
                 return null;
             }
 

@@ -9,8 +9,6 @@ import com.formulasearchengine.mathosphere.mlp.contracts.JsonSerializerMapper;
 import com.formulasearchengine.mathosphere.mlp.contracts.TextAnnotatorMapper;
 import com.formulasearchengine.mathosphere.mlp.pojos.ParsedWikiDocument;
 import com.formulasearchengine.mathosphere.mlp.pojos.WikiDocumentOutput;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.flink.api.common.functions.FlatMapFunction;
 import org.apache.flink.api.common.functions.GroupReduceFunction;
 import org.apache.flink.api.common.functions.ReduceFunction;
@@ -26,12 +24,14 @@ import org.apache.flink.api.java.tuple.*;
 import org.apache.flink.core.fs.FileSystem.WriteMode;
 import org.apache.flink.core.fs.Path;
 import org.apache.flink.util.Collector;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.text.DecimalFormat;
 import java.util.HashMap;
 
 public class FlinkPd {
-    protected static final Log LOG = LogFactory.getLog(FlinkPd.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(FlinkPd.class);
     private static final int NUMBER_OF_ALL_DOCS = 4; // only used in TF_IDF mode
     private static final double EPSILON = 0.00000000000000000001;
     private static final boolean IS_MODE_TFIDF = false; // if false, we use relative similarity
@@ -102,6 +102,7 @@ public class FlinkPd {
                     @Override
                     public Tuple2<String, ExtractedMathPDDocument> reduce(Tuple2<String, ExtractedMathPDDocument> t0, Tuple2<String, ExtractedMathPDDocument> t1) throws Exception {
                         t1.f1.mergeOtherIntoThis(t0.f1);
+                        LOGGER.info("merged {} into {}", new Object[]{t1.f0, t0.f0});
                         return t1;
                     }
                 });
