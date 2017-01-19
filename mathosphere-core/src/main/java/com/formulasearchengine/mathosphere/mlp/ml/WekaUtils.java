@@ -23,16 +23,25 @@ import static com.formulasearchengine.mathosphere.mlp.text.MyPatternMatcher.matc
 public class WekaUtils {
   public static final String MATCH = "match";
   public static final String NO_MATCH = "no match";
-  public static final String DEFINIENS_POS = "definiensPos";
-  public static final String IDENTIFIER_POS = "identifierPos";
   public static final String DEFINIEN = "definiens";
   public static final String IDENTIFIER = "identifier";
   public static final String Q_ID = "qId";
   public static final String TITLE = "title";
+  /**
+   * Position of the definiens in the sentence normalized with the maximal length of a sentence in the document corpus.
+   */
+  public static final String DEFINIENS_POS = "definiensPos";
+  /**
+   * Position of the identifier in the sentence normalized with the maximal length of a sentence in the document corpus.
+   */
+  public static final String IDENTIFIER_POS = "identifierPos";
   //Feature 11 of [1]
   public static final String WORD_DISTANCE = "wordDistance";
   //Feature 12 of [1]
   public static final String WORD_POSITIONING = "wordPositioning";
+  /**
+   * Length od the definiens normalized with {@link #LONGEST_WORD_IN_ENGLISH}
+   */
   public static final String DEFINIENS_LENGTH = "definiensLength";
   public static final String PATTERN_1 = "pattern1";
   public static final String PATTERN_2 = "pattern2";
@@ -44,12 +53,23 @@ public class WekaUtils {
   public static final String PATTERN_8 = "pattern8";
   public static final String PATTERN_9 = "pattern9";
   public static final String PATTERN_10 = "pattern10";
+  /**
+   * colon between
+   */
   public static final String PATTERN_11 = "pattern11";
+  /**
+   * comma between
+   */
   public static final String PATTERN_12 = "pattern12";
+  /**
+   * othermath or identifier between
+   */
   public static final String PATTERN_13 = "pattern13";
+  /**
+   * patentheses
+   */
   public static final String PATTERN_14 = "pattern14";
   public static final String PATTERN_15 = "pattern15";
-  public static final String PATTERN_16 = "pattern16";
   //Feature 13 of [1]
   public static final String SURFACE_TEXT_AND_POS_TAG_OF_TWO_PRECEDING_AND_FOLLOWING_TOKENS_AROUND_THE_DESC_CANDIDATE = "Surface text and POS tag of two preceding and following tokens around the desc candidate";
   //Feature 15 of [1]
@@ -58,10 +78,6 @@ public class WekaUtils {
   public static final String SURFACE_TEXT_OF_THE_FIRST_VERB_THAT_APPEARS_BETWEEN_THE_DESC_CANDIDATE_AND_THE_TARGET_MATH_EXPR = "Surface text of the first verb that appears between the desc candidate and the target math expr";
   //Feature 18 of [1]
   public static final String GRAPH_DISTANCE = "graphDistance";
-  public static final String CLASSIFICATION = "classification";
-  private static final String DEFINIENS_TEXT = "definiens_candidate";
-  private static final String IDENTIFIER_TEXT = "identifier_candidate";
-  private static final String DISTANCE_DIRECTION = "distance direction";
   //Feature 19 of [1]
   public static final String DEP_3_FROM_DEFINIEN = "dependency with length 3 from definien";
   //Feature 21 in [1]
@@ -72,7 +88,15 @@ public class WekaUtils {
   public static final String INCOMING_TO_IDENTIFIER = "direction of " + DEP_3_FROM_IDENTIFIER;
   public static final String DISTANCE_FROM_FIRST_OCCURENCE = "distance_from_first_occurence";
   public static final String RELATIVE_TERM_FREQUENCY = "relative_term_frequency";
-  private static final double LONGEST_WORD_IN_ENGLISH = 100d;
+
+  //String constants
+  public static final String CLASSIFICATION = "classification";
+  private static final String DEFINIENS_TEXT = "definiens_candidate";
+  private static final String IDENTIFIER_TEXT = "identifier_candidate";
+  /**
+   * Assumed length of the longest possible word (30) times three to accommodate for noun phrases. For normalisation.
+   */
+  public static final double LONGEST_WORD_IN_ENGLISH = 100d;
 
   public static Instances createInstances(String title) {
     ArrayList<Attribute> atts = new ArrayList<>();
@@ -100,14 +124,12 @@ public class WekaUtils {
     atts.add(new Attribute(PATTERN_13));
     atts.add(new Attribute(PATTERN_14));
     atts.add(new Attribute(PATTERN_15));
-    atts.add(new Attribute(PATTERN_16));
     atts.add(new Attribute(WORD_DISTANCE));
     atts.add(new Attribute(WORD_POSITIONING));
     atts.add(new Attribute(SURFACE_TEXT_AND_POS_TAG_OF_TWO_PRECEDING_AND_FOLLOWING_TOKENS_AROUND_THE_DESC_CANDIDATE, (FastVector) null));
     atts.add(new Attribute(SURFACE_TEXT_AND_POS_TAG_OF_THREE_PRECEDING_AND_FOLLOWING_TOKENS_AROUND_THE_PAIRED_MATH_EXPR, (FastVector) null));
     atts.add(new Attribute(SURFACE_TEXT_OF_THE_FIRST_VERB_THAT_APPEARS_BETWEEN_THE_DESC_CANDIDATE_AND_THE_TARGET_MATH_EXPR, (FastVector) null));
     atts.add(new Attribute(GRAPH_DISTANCE));
-    atts.add(new Attribute(DISTANCE_DIRECTION));
     atts.add(new Attribute(DEP_3_FROM_IDENTIFIER, (FastVector) null));
     atts.add(new Attribute(INCOMING_TO_IDENTIFIER));
     atts.add(new Attribute(DEP_3_FROM_DEFINIEN, (FastVector) null));
