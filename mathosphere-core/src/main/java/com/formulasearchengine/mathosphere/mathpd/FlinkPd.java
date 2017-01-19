@@ -345,11 +345,6 @@ public class FlinkPd {
             binnedDistancesForPairs.writeAsCsv(config.getOutputDir() + "_binned", WriteMode.OVERWRITE);
         }
 
-
-        final int parallelism = config.getParallelism();
-        if (parallelism > 0) {
-            env.setParallelism(parallelism);
-        }
         env.execute("Relation Finder");
     }
 
