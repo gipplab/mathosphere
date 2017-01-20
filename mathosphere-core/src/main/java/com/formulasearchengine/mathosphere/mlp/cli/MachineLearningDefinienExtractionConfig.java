@@ -13,18 +13,29 @@ public class MachineLearningDefinienExtractionConfig extends FlinkMlpCommandConf
   protected boolean multiThreadedEvaluation = false;
   @Parameter(names = {"--svmCost"}, description = "Cost value for the svm.")
   protected double[] svmCost = new double[]{0.074325445d};
-  @Parameter(names = {"--svmGgamma"}, description = "Gamma value for the svm.")
-  protected double[] svmGamma = new double[]{0.026278013d};
+  @Parameter(names = {"--svmGamma"}, description = "Gamma value for the svm.")
+  protected double[] svmGamma = new double[]{0.011048544d};
   @Parameter(names = {"--writeSvmModel"}, description = "Writes the models from the cross evaluation to the output directory.")
   protected boolean writeSvmModel;
   @Parameter(names = {"--dependencyParserModel"}, description = "Location of the model for the dependency parser.")
   protected String dependencyParserModel = "edu/stanford/nlp/models/parser/nndep/english_UD.gz";
 
-  @Parameter(names = {"--gold"}, description = "gold file")
-  protected String queries;
+  @Parameter(names = {"--leaveOneOutEvaluation"}, description = "Perform a leave one out evaluation of the models performance.")
+  protected boolean leaveOneOutEvaluation = false;
 
-  public String getQueries() {
-    return queries;
+  @Parameter(names = {"--goldFile"}, description = "Location of the gold data file.")
+  protected String goldFile;
+
+  public String getDependencyParserModel() {
+    return dependencyParserModel;
+  }
+
+  public boolean isLeaveOneOutEvaluation() {
+    return leaveOneOutEvaluation;
+  }
+
+  public String getGoldFile() {
+    return goldFile;
   }
 
   public double[] getPercent() {
@@ -75,7 +86,7 @@ public class MachineLearningDefinienExtractionConfig extends FlinkMlpCommandConf
     MachineLearningDefinienExtractionConfig test = new MachineLearningDefinienExtractionConfig();
     test.dataset = "c:/tmp/mlp/input/eval_dataset.xml";
     test.outputdir = "c:/tmp/mlp/output/corase";
-    test.queries = "C:/tmp/mlp/input/gold.json";
+    test.goldFile = "C:/tmp/mlp/input/gold.json";
     test.setUseTeXIdentifiers(true);
     test.texvcinfoUrl = "http://localhost:10044/texvcinfo";
     test.parallelism = 1;

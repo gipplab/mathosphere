@@ -201,7 +201,7 @@ public class CliMainTest {
       "--queries", resourcePath("com/formulasearchengine/mathosphere/mlp/gold/gold_sample.json"),
       "--nd", resourcePath("com/formulasearchengine/mathosphere/mlp/gold/nd.json"),
       "--tex",
-      //"--usePatternMatcher",
+      "--usePatternMatcher",
       "-t", "0.8",
       "--level", "2",
       "--ref", resourcePath("com/formulasearchengine/mathosphere/mlp/nd")
@@ -211,6 +211,21 @@ public class CliMainTest {
     System.setOut(new PrintStream(myOut));
     Main.main(args);
     System.setOut(stdout);
+  }
+
+  @Test
+  public void testMachineLearning() throws Exception {
+    final File temp = Files.createTempDir();
+    String[] args = {CliParams.ML,
+      "-in", resourcePath("com/formulasearchengine/mathosphere/mlp/gold/eval_dataset.xml"),
+      "-out", temp.getAbsolutePath(),
+      "--goldFile", resourcePath("com/formulasearchengine/mathosphere/mlp/gold/gold.json"),
+      "--tex",
+      "--multiThreadedEvaluation",
+      "--texvcinfo", "http://localhost:10044/texvcinfo",
+      "--threads", "1"
+    };
+    Main.main(args);
   }
 
 
