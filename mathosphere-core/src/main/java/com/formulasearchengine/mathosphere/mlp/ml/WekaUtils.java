@@ -147,7 +147,7 @@ public class WekaUtils {
     return result;
   }
 
-  public static Instances addRelationsToInstances(DependencyParser parser, List<Relation> relations, String title, String qId, Instances instances, int maxSentenceLength) {
+  public static Instances addRelationsToInstances(DependencyParser parser, List<Relation> relations, String title, String qId, Instances instances, double maxSentenceLength) {
     List nominal = new ArrayList();
     nominal.add(MATCH);
     nominal.add(NO_MATCH);
@@ -235,7 +235,7 @@ public class WekaUtils {
    * @param instances instances where the values will be added.
    * @param relation  the relation from whitch to extract the features.
    */
-  private static void addDependencyTreeFeatures(DependencyParser parser, double[] values, Instances instances, Relation relation, int maxSentenceLength) {
+  private static void addDependencyTreeFeatures(DependencyParser parser, double[] values, Instances instances, Relation relation, double maxSentenceLength) {
     List<TaggedWord> taggedSentence = new ArrayList<>();
     for (Word word : relation.getSentence().getWords()) {
       taggedSentence.add(new TaggedWord(word.getWord(), word.getPosTag()));

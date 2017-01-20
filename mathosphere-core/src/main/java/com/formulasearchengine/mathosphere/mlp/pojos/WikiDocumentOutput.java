@@ -19,18 +19,18 @@ public class WikiDocumentOutput {
   private List<Relation> relations;
   private Set<String> identifiers;
 
-  public int getMaxSentenceLength() {
+  public double getMaxSentenceLength() {
     return maxSentenceLength;
   }
 
-  public void setMaxSentenceLength(int maxSentenceLength) {
+  public void setMaxSentenceLength(double maxSentenceLength) {
     this.maxSentenceLength = maxSentenceLength;
   }
 
   /**
    * The length of the longest sentence in this document.
    */
-  private int maxSentenceLength;
+  private double maxSentenceLength;
 
   public boolean isSuccess() {
     return success;
