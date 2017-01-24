@@ -13,10 +13,17 @@ public class SimplePatternMatcher {
   public static final String DEFINITION = "definition";
   private List<Pattern<Word>> patterns;
 
-  public SimplePatternMatcher(List<Pattern<Word>> patterns) {
+  private SimplePatternMatcher(List<Pattern<Word>> patterns) {
     this.patterns = patterns;
   }
 
+  /**
+   * Find all identifier-definiens candidates in the document.
+   *
+   * @param sentence The sentence to check.
+   * @param doc      The document that contains the sentence.
+   * @return identifier-definiens candidates, boxed in relations.
+   */
   public Collection<Relation> match(Sentence sentence, ParsedWikiDocument doc) {
     List<Relation> result = new ArrayList<>();
     List<Match<Word>> identifierMatches = patterns.get(0).find(sentence.getWords());
@@ -29,6 +36,7 @@ public class SimplePatternMatcher {
               Relation relation = new Relation();
               relation.setIdentifier(identifier.getVariable(IDENTIFIER).getWord());
               relation.setDefinition(definiens.getVariable(DEFINITION), doc);
+              //replace the definiens in the sentence with the word as it is stored in the relation.
               Word definiensWord = sentence.getWords().remove(definiens.matchedFrom());
               Word cleanDefiniensWord = new Word(relation.getDefinition(), definiensWord.getPosTag());
               sentence.getWords().add(definiens.matchedFrom(), cleanDefiniensWord);
@@ -55,19 +63,6 @@ public class SimplePatternMatcher {
     );
     return new SimplePatternMatcher(patterns);
   }
-
-  public static XMatcher<Word> anyWord() {
-    return Matchers.anything();
-  }
-
-  protected static XMatcher<Word> word(String word) {
-    return BeanMatchers.eq(Word.class, "word", word);
-  }
-
-  protected static XMatcher<Word> pos(String pos) {
-    return BeanMatchers.eq(Word.class, "posTag", pos);
-  }
-
   protected static XMatcher<Word> posRegExp(String regexp) {
     return BeanMatchers.regex(Word.class, "posTag", regexp);
   }

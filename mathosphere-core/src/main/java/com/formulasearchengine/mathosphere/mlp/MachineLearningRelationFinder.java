@@ -55,23 +55,23 @@ public class MachineLearningRelationFinder {
 
   private static void generateSatuationData() throws Exception {
     MachineLearningDefinienExtractionConfig config = MachineLearningDefinienExtractionConfig.test();
-    config.setPercent(new double[]{10, 20, 30, 40, 50, 60, 70, 80, 90, 100});
+    config.setPercent(Arrays.asList(new Double[]{10d, 20d, 30d, 40d, 50d, 60d, 70d, 80d, 90d, 100d}));
     config.setMultiThreadedEvaluation(true);
     find(config);
   }
 
   private static void generateCoraseParameterGrid() throws Exception {
     MachineLearningDefinienExtractionConfig config = MachineLearningDefinienExtractionConfig.test();
-    config.setSvmCost(WekaLearner.C_corase);
-    config.setSvmGamma(WekaLearner.Y_corase);
+    config.setSvmCost(Arrays.asList(WekaLearner.C_coarse));
+    config.setSvmGamma(Arrays.asList(WekaLearner.Y_coarse));
     config.setMultiThreadedEvaluation(true);
     find(config);
   }
 
   private static void generateFineParameterGrid() throws Exception {
     MachineLearningDefinienExtractionConfig config = MachineLearningDefinienExtractionConfig.testfine();
-    config.setSvmCost(WekaLearner.C_fine);
-    config.setSvmGamma(WekaLearner.Y_fine);
+    config.setSvmCost(Arrays.asList(WekaLearner.C_fine));
+    config.setSvmGamma(Arrays.asList(WekaLearner.Y_fine));
     config.setMultiThreadedEvaluation(true);
     find(config);
   }

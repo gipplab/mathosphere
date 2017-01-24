@@ -15,6 +15,7 @@ import weka.classifiers.meta.FilteredClassifier;
 import weka.core.Instance;
 import weka.core.Instances;
 import weka.core.Utils;
+import weka.core.converters.ArffSaver;
 import weka.core.tokenizers.NGramTokenizer;
 import weka.filters.Filter;
 import weka.filters.MultiFilter;
@@ -26,9 +27,12 @@ import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.*;
-import java.util.stream.Collectors;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ForkJoinPool;
+import java.util.stream.Stream;
 
 import static com.formulasearchengine.mathosphere.mlp.ml.WekaUtils.*;
+import static java.util.stream.Collectors.toList;
 import static weka.core.Range.indicesToRangeList;
 
 /**
@@ -53,17 +57,17 @@ public class WekaLearner implements GroupReduceFunction<WikiDocumentOutput, Eval
   /**
    * Cost.
    */
-  public static final double[] C_corase = {Math.pow(2, -7), Math.pow(2, -5), Math.pow(2, -3), Math.pow(2, -1), Math.pow(2, 1), Math.pow(2, 3), Math.pow(2, 5), Math.pow(2, 7), Math.pow(2, 9), Math.pow(2, 11), Math.pow(2, 13), Math.pow(2, 15)};
+  public static final Double[] C_coarse = {Math.pow(2, -7), Math.pow(2, -5), Math.pow(2, -3), Math.pow(2, -1), Math.pow(2, 1), Math.pow(2, 3), Math.pow(2, 5), Math.pow(2, 7), Math.pow(2, 9), Math.pow(2, 11), Math.pow(2, 13), Math.pow(2, 15)};
 
   /**
    * Gamma.
    */
-  public static final double[] Y_corase = {Math.pow(2, -15), Math.pow(2, -13), Math.pow(2, -11), Math.pow(2, -9), Math.pow(2, -7), Math.pow(2, -5), Math.pow(2, -3), Math.pow(2, -1), Math.pow(2, 1), Math.pow(2, 3)};
+  public static final Double[] Y_coarse = {Math.pow(2, -15), Math.pow(2, -13), Math.pow(2, -11), Math.pow(2, -9), Math.pow(2, -7), Math.pow(2, -5), Math.pow(2, -3), Math.pow(2, -1), Math.pow(2, 1), Math.pow(2, 3)};
 
   /**
    * Cost of the interesting region.
    */
-  public static final double[] C_fine = {
+  public static final Double[] C_fine = {
     Math.pow(2, -9)
     , Math.pow(2, -8.75), Math.pow(2, -8.5), Math.pow(2, -8.25), Math.pow(2, -8)
     , Math.pow(2, -7.75), Math.pow(2, -7.5), Math.pow(2, -7.25), Math.pow(2, -7)
@@ -78,7 +82,7 @@ public class WekaLearner implements GroupReduceFunction<WikiDocumentOutput, Eval
   /**
    * Gamma of the interesting region.
    */
-  public static final double[] Y_fine = {
+  public static final Double[] Y_fine = {
     Math.pow(2, -7)
     , Math.pow(2, -6.75), Math.pow(2, -6.5), Math.pow(2, -6.25), Math.pow(2, -6)
     , Math.pow(2, -5.75), Math.pow(2, -5.5), Math.pow(2, -5.25), Math.pow(2, -5)
@@ -91,39 +95,39 @@ public class WekaLearner implements GroupReduceFunction<WikiDocumentOutput, Eval
    * Cost for highest accuracy in the SVM.
    * c = 0.074325445
    */
-  public static final double[] C_best_accuracy = {Math.pow(2, -3.75)};
+  public static final Double[] C_best_accuracy = {Math.pow(2, -3.75)};
 
   /**
    * Gamma for highest accuracy in the SVM.
    * γ = 0.026278013
    */
-  public static final double[] Y_best_accuracy = {Math.pow(2, -5.25)};
+  public static final Double[] Y_best_accuracy = {Math.pow(2, -5.25)};
 
   /**
    * Cost for highest recall in the evaluation. (Post SVM evaluation metric.)
    * tp: 77	fn: 233	fp: 110
    * c = 0.074325445
    */
-  public static final double[] C_best_recall = {Math.pow(2, -3.75)};
+  public static final Double[] C_best_recall = {Math.pow(2, -3.75)};
   /**
    * Gamma for highest recall in the evaluation. (Post SVM evaluation metric.)
    * tp: 77	fn: 233	fp: 110
    * γ = 0.011048544
    */
-  public static final double[] Y_best_recall = {Math.pow(2, -6.5)};
+  public static final Double[] Y_best_recall = {Math.pow(2, -6.5)};
 
   /**
    * Cost for highest F! in the evaluation. (Post SVM evaluation metric.)
    * tp: 70	fn: 240	fp: 44
    * c = 0.4204482076
    */
-  public static final double[] C_best_F1 = {Math.pow(2, -1.25)};
+  public static final Double[] C_best_F1 = {Math.pow(2, -1.25)};
   /**
    * Gamma for highest F1 in the evaluation. (Post SVM evaluation metric.)
    * tp: 70	fn: 240	fp: 44
    * γ = 0.018581361
    */
-  public static final double[] Y_best_F1 = {Math.pow(2, -5.75)};
+  public static final Double[] Y_best_F1 = {Math.pow(2, -5.75)};
 
   private final ArrayList<GoldEntry> gold;
 
@@ -136,10 +140,18 @@ public class WekaLearner implements GroupReduceFunction<WikiDocumentOutput, Eval
 
   @Override
   public void reduce(Iterable<WikiDocumentOutput> values, Collector<EvaluationResult> out) throws Exception {
-    double[] percentages = config.getPercent();
-    double[] C_used = config.getSvmCost();
-    double[] Y_used = config.getSvmGamma();
+    if (config.isCoarseSearch()) {
+      config.setSvmCost(Arrays.asList(WekaLearner.C_coarse));
+      config.setSvmGamma(Arrays.asList(WekaLearner.Y_coarse));
+    } else if (config.isFineSearch()) {
+      config.setSvmCost(Arrays.asList(WekaLearner.C_fine));
+      config.setSvmGamma(Arrays.asList(WekaLearner.Y_fine));
+    }
+    List<Double> percentages = config.getPercent();
+    List<Double> C_used = config.getSvmCost();
+    List<Double> Y_used = config.getSvmGamma();
     File output = new File(config.getOutputDir() + "/svm_cross_eval_statistics.csv");
+    File instancesFile = new File(config.getOutputDir() + "/instances.arff");
     File outputDetails = new File(config.getOutputDir() + "/svm_cross_eval_detailed_statistics.txt");
     File extractedDefiniens = new File(config.getOutputDir() + "/classifications.csv");
     DependencyParser parser = DependencyParser.loadFromModelFile(config.dependencyParserModel());
@@ -147,13 +159,19 @@ public class WekaLearner implements GroupReduceFunction<WikiDocumentOutput, Eval
     for (WikiDocumentOutput value : values) {
       addRelationsToInstances(parser, value.getRelations(), value.getTitle(), value.getqId(), instances, value.getMaxSentenceLength());
     }
+    if (config.isWriteInstances()) {
+      ArffSaver arffSaver = new ArffSaver();
+      arffSaver.setFile(instancesFile);
+      arffSaver.setInstances(instances);
+      arffSaver.writeBatch();
+    }
     StringToWordVector stringToWordVector = new StringToWordVector();
     stringToWordVector.setAttributeIndices(indicesToRangeList(new int[]{
       instances.attribute(SURFACE_TEXT_AND_POS_TAG_OF_TWO_PRECEDING_AND_FOLLOWING_TOKENS_AROUND_THE_DESC_CANDIDATE).index(),
       instances.attribute(SURFACE_TEXT_AND_POS_TAG_OF_THREE_PRECEDING_AND_FOLLOWING_TOKENS_AROUND_THE_PAIRED_MATH_EXPR).index(),
       instances.attribute(SURFACE_TEXT_OF_THE_FIRST_VERB_THAT_APPEARS_BETWEEN_THE_DESC_CANDIDATE_AND_THE_TARGET_MATH_EXPR).index(),
-      instances.attribute(DEP_3_FROM_IDENTIFIER).index(),
-      instances.attribute(DEP_3_FROM_DEFINIEN).index()}));
+      instances.attribute(SURFACE_TEXT_AND_POS_TAG_OF_DEPENDENCY_WITH_LENGTH_3_FROM_IDENTIFIER).index(),
+      instances.attribute(SURFACE_TEXT_AND_POS_TAG_OF_DEPENDENCY_WITH_LENGTH_3_FROM_DEFINIEN).index()}));
     stringToWordVector.setWordsToKeep(1000);
     NGramTokenizer nGramTokenizer = new NGramTokenizer();
     nGramTokenizer.setNGramMaxSize(3);
@@ -183,8 +201,11 @@ public class WekaLearner implements GroupReduceFunction<WikiDocumentOutput, Eval
         }
       }
     }
-    List<EvaluationResult> evaluationResults = parameters.stream()
-      .map(parameter -> crossEvaluate(stringsReplacedData, removeFilter, parameter[0], parameter[1], parameter[2])).collect(Collectors.toList());
+    ForkJoinPool forkJoinPool = new ForkJoinPool(config.getParallelism());
+    Stream<EvaluationResult> a = parameters.parallelStream().map(
+      parameter -> crossEvaluate(stringsReplacedData, removeFilter, parameter[0], parameter[1], parameter[2]));
+    Callable<List<EvaluationResult>> task = () -> a.collect(toList());
+    List<EvaluationResult> evaluationResults = forkJoinPool.submit(task).get();
     for (EvaluationResult evaluationResult : evaluationResults) {
       FileUtils.write(outputDetails, "Cost; " + Utils.doubleToString(evaluationResult.gamma, 10) + "; gamma; " + Utils.doubleToString(evaluationResult.gamma, 10) + "\n" + Arrays.toString(evaluationResult.text) + "\n", true);
       //remove duplicates from extraction
@@ -237,7 +258,7 @@ public class WekaLearner implements GroupReduceFunction<WikiDocumentOutput, Eval
           //Do the computation in parallel
           Thread[] threads = new Thread[folds];
           for (int n = 0; n < folds; n++) {
-            threads[n] = new Thread(getRunnable(10 * counter + n, removeFilter, cost, gamma, resampled, result.averagePrecision, result.averageRecall, result.accuracy, result.text, result.extractions));
+            threads[n] = new Thread(getRunnable(10 * counter + n, removeFilter, cost, gamma, reduced, resampled, result.averagePrecision, result.averageRecall, result.accuracy, result.text, result.extractions));
             threads[n].start();
           }
           for (int n = 0; n < folds; n++) {
@@ -245,7 +266,7 @@ public class WekaLearner implements GroupReduceFunction<WikiDocumentOutput, Eval
           }
         } else {
           for (int n = 0; n < folds; n++) {
-            trainAndTest(10 * counter + n, removeFilter, cost, gamma, resampled, result.averagePrecision, result.averageRecall, result.accuracy, result.text, result.extractions);
+            trainAndTest(10 * counter + n, removeFilter, cost, gamma, reduced, resampled, result.averagePrecision, result.averageRecall, result.accuracy, result.text, result.extractions);
           }
         }
         if (!config.isLeaveOneOutEvaluation())
@@ -257,24 +278,19 @@ public class WekaLearner implements GroupReduceFunction<WikiDocumentOutput, Eval
     }
   }
 
-  private Runnable getRunnable(int n, Filter removeFilter, double cost, double gamma, Instances resampled,
+  private Runnable getRunnable(int n, Filter removeFilter, double cost, double gamma, Instances beforeResampling, Instances resampled,
                                double[] averagePrecision, double[] averageRecall, double[] accuracy, String[] text,
                                Collection<String> extractions) throws Exception {
-    return new Runnable() {
-      @Override
-      public void run() {
-        try {
-          trainAndTest(n, removeFilter, cost, gamma, resampled, averagePrecision, averageRecall, accuracy, text, extractions);
-        } catch (Exception e) {
-          e.printStackTrace();
-        }
+    return () -> {
+      try {
+        trainAndTest(n, removeFilter, cost, gamma, beforeResampling, resampled, averagePrecision, averageRecall, accuracy, text, extractions);
+      } catch (Exception e) {
+        e.printStackTrace();
       }
     };
   }
 
-  ;
-
-  private void trainAndTest(int n, Filter removeFilter, double cost, double gamma, Instances resampled,
+  private void trainAndTest(int n, Filter removeFilter, double cost, double gamma, Instances beforeResampling, Instances resampled,
                             double[] averagePrecision, double[] averageRecall, double[] accuracy, String[] text,
                             Collection<String> extractions) throws Exception {
     LibSVM svm = new LibSVM();
@@ -292,13 +308,21 @@ public class WekaLearner implements GroupReduceFunction<WikiDocumentOutput, Eval
       testIds = Arrays.asList(Arrays.copyOfRange(rand, folds * n, folds * (n + 1)));
     }
     Instances train = new Instances(resampled, 1);
-    Instances test = new Instances(resampled, 1);
+    Instances test = new Instances(beforeResampling, 1);
     for (int i = 0; i < resampled.numInstances(); i++) {
       Instance a = resampled.instance(i);
       if (testIds.contains(Integer.parseInt(a.stringValue(a.attribute(resampled.attribute(Q_ID).index()))))) {
-        test.add(a);
+        //test.add(a);
       } else {
         train.add(a);
+      }
+    }
+    for (int i = 0; i < beforeResampling.numInstances(); i++) {
+      Instance a = beforeResampling.instance(i);
+      if (testIds.contains(Integer.parseInt(a.stringValue(a.attribute(beforeResampling.attribute(Q_ID).index()))))) {
+        test.add(a);
+      } else {
+        //train.add(a);
       }
     }
     // build and evaluate classifier
@@ -330,6 +354,5 @@ public class WekaLearner implements GroupReduceFunction<WikiDocumentOutput, Eval
     StringBuilder b = new StringBuilder();
     b.append(", fold, ").append(n).append("\n").append(eval.toClassDetailsString()).append("\n").append(eval.toSummaryString(true));
     text[n] = b.toString();
-    //}
   }
 }

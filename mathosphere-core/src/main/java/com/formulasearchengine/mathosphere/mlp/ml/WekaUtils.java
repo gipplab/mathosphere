@@ -2,7 +2,9 @@ package com.formulasearchengine.mathosphere.mlp.ml;
 
 import com.beust.jcommander.internal.Lists;
 import com.formulasearchengine.mathosphere.mlp.pojos.Relation;
+import com.formulasearchengine.mathosphere.mlp.pojos.WikiDocumentOutput;
 import com.formulasearchengine.mathosphere.mlp.pojos.Word;
+import com.formulasearchengine.mathosphere.mlp.text.MyPatternMatcher;
 import edu.stanford.nlp.ling.IndexedWord;
 import edu.stanford.nlp.ling.TaggedWord;
 import edu.stanford.nlp.parser.nndep.DependencyParser;
@@ -13,8 +15,6 @@ import weka.core.*;
 
 import java.util.*;
 import java.util.stream.Collectors;
-
-import static com.formulasearchengine.mathosphere.mlp.text.MyPatternMatcher.match;
 
 /**
  * Created by Leo on 21.12.2016.
@@ -35,12 +35,18 @@ public class WekaUtils {
    * Position of the identifier in the sentence normalized with the maximal length of a sentence in the document corpus.
    */
   public static final String IDENTIFIER_POS = "identifierPos";
-  //Feature 11 of [1]
+  /**
+   * Feature 11 of [1]
+   * Relative distance identifier - definiens in words. Normalized by {@link WikiDocumentOutput#maxSentenceLength}
+   */
   public static final String WORD_DISTANCE = "wordDistance";
-  //Feature 12 of [1]
+  /**
+   * Feature 12 of [1]
+   * weather or not the definiens is before or after the identifier
+   */
   public static final String WORD_POSITIONING = "wordPositioning";
   /**
-   * Length od the definiens normalized with {@link #LONGEST_WORD_IN_ENGLISH}
+   * Length of the definiens normalized with {@link #LONGEST_NNP_IN_ENGLISH}
    */
   public static final String DEFINIENS_LENGTH = "definiensLength";
   public static final String PATTERN_1 = "pattern1";
@@ -56,20 +62,20 @@ public class WekaUtils {
   /**
    * colon between
    */
-  public static final String PATTERN_11 = "pattern11";
+  public static final String COLON_BETWEEN = "colon between";
   /**
    * comma between
    */
-  public static final String PATTERN_12 = "pattern12";
+  public static final String COMMMA_BETWEEN = "commma between";
   /**
    * othermath or identifier between
    */
-  public static final String PATTERN_13 = "pattern13";
+  public static final String OTHER_MATH_BETWEEN = "other math between";
   /**
    * patentheses
    */
-  public static final String PATTERN_14 = "pattern14";
-  public static final String PATTERN_15 = "pattern15";
+  public static final String IDENTIFIER_IN_PARENTHESES = "identifier in parentheses in sentence";
+  public static final String DEFINIENS_IN_PARENTHESES = "definiens in parentheses in sentence";
   //Feature 13 of [1]
   public static final String SURFACE_TEXT_AND_POS_TAG_OF_TWO_PRECEDING_AND_FOLLOWING_TOKENS_AROUND_THE_DESC_CANDIDATE = "Surface text and POS tag of two preceding and following tokens around the desc candidate";
   //Feature 15 of [1]
@@ -79,13 +85,13 @@ public class WekaUtils {
   //Feature 18 of [1]
   public static final String GRAPH_DISTANCE = "graphDistance";
   //Feature 19 of [1]
-  public static final String DEP_3_FROM_DEFINIEN = "dependency with length 3 from definien";
+  public static final String SURFACE_TEXT_AND_POS_TAG_OF_DEPENDENCY_WITH_LENGTH_3_FROM_DEFINIEN = "dependency with length 3 from definien";
   //Feature 21 in [1]
-  public static final String DEP_3_FROM_IDENTIFIER = "dependency with length 3 from identifier";
+  public static final String SURFACE_TEXT_AND_POS_TAG_OF_DEPENDENCY_WITH_LENGTH_3_FROM_IDENTIFIER = "dependency with length 3 from identifier";
   //Feature 20 of [1]
-  public static final String INCOMING_TO_DEFINIEN = "direction of " + DEP_3_FROM_DEFINIEN;
+  public static final String INCOMING_TO_DEFINIEN = "direction of " + SURFACE_TEXT_AND_POS_TAG_OF_DEPENDENCY_WITH_LENGTH_3_FROM_DEFINIEN;
   //Feature 22 of [1]
-  public static final String INCOMING_TO_IDENTIFIER = "direction of " + DEP_3_FROM_IDENTIFIER;
+  public static final String INCOMING_TO_IDENTIFIER = "direction of " + SURFACE_TEXT_AND_POS_TAG_OF_DEPENDENCY_WITH_LENGTH_3_FROM_IDENTIFIER;
   public static final String DISTANCE_FROM_FIRST_OCCURENCE = "distance_from_first_occurence";
   public static final String RELATIVE_TERM_FREQUENCY = "relative_term_frequency";
 
@@ -96,7 +102,13 @@ public class WekaUtils {
   /**
    * Assumed length of the longest possible word (30) times three to accommodate for noun phrases. For normalisation.
    */
-  public static final double LONGEST_WORD_IN_ENGLISH = 100d;
+  public static final double LONGEST_NNP_IN_ENGLISH = 100d;
+  /**
+   * According to https://en.wikipedia.org/wiki/Longest_English_sentence
+   */
+  public static final double LONGEST_SENTENCE_IN_ENGISH = 100d;
+  private static final String NUMBER_OF_DEFINIENS_IN_SENTENCE = "number_of_definiens";
+  private static final String NUMBER_OF_IDENTIFIERS_IN_SENTENCE = "number_of_identifiers";
 
   public static Instances createInstances(String title) {
     ArrayList<Attribute> atts = new ArrayList<>();
@@ -107,8 +119,9 @@ public class WekaUtils {
     atts.add(new Attribute(DEFINIEN, (FastVector) null));
     atts.add(new Attribute(IDENTIFIER_POS));
     atts.add(new Attribute(DEFINIENS_POS));
-    atts.add(new Attribute(DEFINIENS_LENGTH));
     //this is where the real attrs begin
+    atts.add(new Attribute(DEFINIENS_LENGTH));
+
     atts.add(new Attribute(PATTERN_1));
     atts.add(new Attribute(PATTERN_2));
     atts.add(new Attribute(PATTERN_3));
@@ -119,20 +132,27 @@ public class WekaUtils {
     atts.add(new Attribute(PATTERN_8));
     atts.add(new Attribute(PATTERN_9));
     atts.add(new Attribute(PATTERN_10));
-    atts.add(new Attribute(PATTERN_11));
-    atts.add(new Attribute(PATTERN_12));
-    atts.add(new Attribute(PATTERN_13));
-    atts.add(new Attribute(PATTERN_14));
-    atts.add(new Attribute(PATTERN_15));
+
+    atts.add(new Attribute(COLON_BETWEEN));
+    atts.add(new Attribute(COMMMA_BETWEEN));
+    atts.add(new Attribute(OTHER_MATH_BETWEEN));
+
+    atts.add(new Attribute(NUMBER_OF_DEFINIENS_IN_SENTENCE));
+    atts.add(new Attribute(NUMBER_OF_IDENTIFIERS_IN_SENTENCE));
+
+    atts.add(new Attribute(DEFINIENS_IN_PARENTHESES));
+    atts.add(new Attribute(IDENTIFIER_IN_PARENTHESES));
+
     atts.add(new Attribute(WORD_DISTANCE));
     atts.add(new Attribute(WORD_POSITIONING));
+
     atts.add(new Attribute(SURFACE_TEXT_AND_POS_TAG_OF_TWO_PRECEDING_AND_FOLLOWING_TOKENS_AROUND_THE_DESC_CANDIDATE, (FastVector) null));
     atts.add(new Attribute(SURFACE_TEXT_AND_POS_TAG_OF_THREE_PRECEDING_AND_FOLLOWING_TOKENS_AROUND_THE_PAIRED_MATH_EXPR, (FastVector) null));
     atts.add(new Attribute(SURFACE_TEXT_OF_THE_FIRST_VERB_THAT_APPEARS_BETWEEN_THE_DESC_CANDIDATE_AND_THE_TARGET_MATH_EXPR, (FastVector) null));
     atts.add(new Attribute(GRAPH_DISTANCE));
-    atts.add(new Attribute(DEP_3_FROM_IDENTIFIER, (FastVector) null));
+    atts.add(new Attribute(SURFACE_TEXT_AND_POS_TAG_OF_DEPENDENCY_WITH_LENGTH_3_FROM_IDENTIFIER, (FastVector) null));
     atts.add(new Attribute(INCOMING_TO_IDENTIFIER));
-    atts.add(new Attribute(DEP_3_FROM_DEFINIEN, (FastVector) null));
+    atts.add(new Attribute(SURFACE_TEXT_AND_POS_TAG_OF_DEPENDENCY_WITH_LENGTH_3_FROM_DEFINIEN, (FastVector) null));
     atts.add(new Attribute(INCOMING_TO_DEFINIEN));
     atts.add(new Attribute(DISTANCE_FROM_FIRST_OCCURENCE));
     atts.add(new Attribute(RELATIVE_TERM_FREQUENCY));
@@ -152,7 +172,7 @@ public class WekaUtils {
     nominal.add(MATCH);
     nominal.add(NO_MATCH);
     for (Relation relation : relations) {
-      int[] patternMatches = match(relation.getSentence(), relation.getIdentifier(), relation.getDefinition(), relation.getIdentifierPosition(), relation.getWordPosition());
+      double[] patternMatches = MyPatternMatcher.match(relation.getSentence(), relation.getIdentifier(), relation.getDefinition(), relation.getIdentifierPosition(), relation.getWordPosition());
       double[] values = new double[instances.numAttributes()];
       addStringValue(values, instances, TITLE, title);
       addStringValue(values, instances, Q_ID, qId);
@@ -165,7 +185,7 @@ public class WekaUtils {
       values[instances.attribute(WORD_DISTANCE).index()] = (double) Math.abs(wordDistance) / maxSentenceLength;
       //weather or not the definiens is before or after the identifier
       values[instances.attribute(WORD_POSITIONING).index()] = wordDistance > 0 ? 1 : 0;
-      values[instances.attribute(DEFINIENS_LENGTH).index()] = (double) relation.getDefinition().length() / LONGEST_WORD_IN_ENGLISH;
+      values[instances.attribute(DEFINIENS_LENGTH).index()] = (double) relation.getDefinition().length() / LONGEST_NNP_IN_ENGLISH;
       for (int i = 0; i < patternMatches.length; i++) {
         values[instances.attribute(PATTERN_1).index() + i] = patternMatches[i];
       }
@@ -228,7 +248,7 @@ public class WekaUtils {
   }
 
   /**
-   * Adds {@link #DEP_3_FROM_DEFINIEN}, {@link #DEP_3_FROM_IDENTIFIER}, {@link #INCOMING_TO_DEFINIEN} and
+   * Adds {@link #SURFACE_TEXT_AND_POS_TAG_OF_DEPENDENCY_WITH_LENGTH_3_FROM_DEFINIEN}, {@link #SURFACE_TEXT_AND_POS_TAG_OF_DEPENDENCY_WITH_LENGTH_3_FROM_IDENTIFIER}, {@link #INCOMING_TO_DEFINIEN} and
    * {@link #INCOMING_TO_IDENTIFIER} to values.
    *
    * @param values    values object.
@@ -260,11 +280,11 @@ public class WekaUtils {
 
     List<Word> threeFromIdentifier = getDependencyWithLengthOfThree(fromIdentifier);
 
-    addStringValue(values, instances, DEP_3_FROM_IDENTIFIER, wordListToSimpleString(threeFromIdentifier));
+    addStringValue(values, instances, SURFACE_TEXT_AND_POS_TAG_OF_DEPENDENCY_WITH_LENGTH_3_FROM_IDENTIFIER, wordListToSimpleString(threeFromIdentifier));
 
     List<Word> threeFromDefinien = getDependencyWithLengthOfThree(fromDefinien);
 
-    addStringValue(values, instances, DEP_3_FROM_DEFINIEN, wordListToSimpleString(threeFromDefinien));
+    addStringValue(values, instances, SURFACE_TEXT_AND_POS_TAG_OF_DEPENDENCY_WITH_LENGTH_3_FROM_DEFINIEN, wordListToSimpleString(threeFromDefinien));
 
     values[instances.attribute(INCOMING_TO_IDENTIFIER).index()] = edgesOnPath.get(0).getDependent().equals(identifier) ? 1 : 0;
 
@@ -277,7 +297,7 @@ public class WekaUtils {
    * @param fromIdentifierOrDefiniens List of indexed words starting with the source (identifier or definiens).
    * @return list with at most three words.
    */
-  private static List<Word> getDependencyWithLengthOfThree(List<IndexedWord> fromIdentifierOrDefiniens) {
+  public static List<Word> getDependencyWithLengthOfThree(List<IndexedWord> fromIdentifierOrDefiniens) {
     return fromIdentifierOrDefiniens.subList(
       Math.min(1, fromIdentifierOrDefiniens.size()),
       Math.min(4, fromIdentifierOrDefiniens.size())
@@ -292,7 +312,7 @@ public class WekaUtils {
    * @param words list of words.
    * @param text  the new surface text.
    */
-  private static void replaceWord(int index, List<IndexedWord> words, String text) {
+  public static void replaceWord(int index, List<IndexedWord> words, String text) {
     for (IndexedWord iw : words) {
       if (iw.index() == index) {
         iw.setWord(text);
@@ -311,7 +331,7 @@ public class WekaUtils {
    * @param post  list of words after the identifier or definiens.
    * @param text  the new surface text.
    */
-  private static void replaceWord(int index, List<Word> pre, List<Word> post, String text) {
+  public static void replaceWord(int index, List<Word> pre, List<Word> post, String text) {
     Word replacement;
     if (index > 0 && index <= post.size()) {
       replacement = new Word(text, post.get(index - 1).getPosTag());
@@ -334,7 +354,7 @@ public class WekaUtils {
    * @param field
    * @param string
    */
-  private static void addStringValue(double[] data, Instances instances, String field, String string) {
+  public static void addStringValue(double[] data, Instances instances, String field, String string) {
     data[instances.attribute(field).index()] = instances.attribute(field).addStringValue(string);
   }
 
@@ -344,7 +364,7 @@ public class WekaUtils {
    * @param words the words to convert.
    * @return String containing surface text and pos tag of the words.
    */
-  private static String wordListToSimpleString(List<Word> words) {
+  public static String wordListToSimpleString(List<Word> words) {
     StringBuilder stringBuilder = new StringBuilder();
     for (Word w : words) {
       //do not include things that the tokenizer eats anyway

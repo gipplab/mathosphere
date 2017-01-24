@@ -3,20 +3,43 @@ package com.formulasearchengine.mathosphere.mlp.cli;
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameter;
 
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * Created by Leo on 16.01.2017.
  */
 public class MachineLearningDefinienExtractionConfig extends FlinkMlpCommandConfig {
   @Parameter(names = {"--samplePercent"}, description = "how much of the training data should be used for training.")
-  protected double[] percent = new double[]{100d};
-  @Parameter(names = {"--multiThreadedEvaluation"}, description = "If the cross evaluation should be done with many threads.")
+  protected List<Double> percent = Arrays.asList(100d);
+  @Parameter(names = {"--multiThreadedEvaluation"}, description = "If the cross evaluation should be done with 10 threads. " +
+    "Should only be used with parallelism = 1, otherwise it will multiply the number of used threads by 10")
   protected boolean multiThreadedEvaluation = false;
   @Parameter(names = {"--svmCost"}, description = "Cost value for the svm.")
-  protected double[] svmCost = new double[]{0.074325445d};
+  protected List<Double> svmCost = Arrays.asList(0.074325445d);
   @Parameter(names = {"--svmGamma"}, description = "Gamma value for the svm.")
-  protected double[] svmGamma = new double[]{0.011048544d};
+  protected List<Double> svmGamma = Arrays.asList(0.011048544d);
   @Parameter(names = {"--writeSvmModel"}, description = "Writes the models from the cross evaluation to the output directory.")
   protected boolean writeSvmModel;
+
+  public boolean isWriteInstances() {
+    return writeInstances;
+  }
+
+  public boolean isCoarseSearch() {
+    return coarseSearch;
+  }
+
+  public boolean isFineSearch() {
+    return fineSearch;
+  }
+
+  @Parameter(names = {"--writeInstances"}, description = "Writes the data to train the svm to the output directory.")
+  protected boolean writeInstances;
+  @Parameter(names = {"--coarseParameterSearch"}, description = "Searches for parameters in a coarse grid of cost and gamma values.")
+  protected boolean coarseSearch;
+  @Parameter(names = {"--fineParameterSearch"}, description = "Searches for parameters in a fine grid of cost and gamma values.")
+  protected boolean fineSearch;
   @Parameter(names = {"--dependencyParserModel"}, description = "Location of the model for the dependency parser.")
   protected String dependencyParserModel = "edu/stanford/nlp/models/parser/nndep/english_UD.gz";
 
@@ -38,11 +61,11 @@ public class MachineLearningDefinienExtractionConfig extends FlinkMlpCommandConf
     return goldFile;
   }
 
-  public double[] getPercent() {
+  public List<Double> getPercent() {
     return percent;
   }
 
-  public void setPercent(double[] percent) {
+  public void setPercent(List<Double> percent) {
     this.percent = percent;
   }
 
@@ -54,19 +77,19 @@ public class MachineLearningDefinienExtractionConfig extends FlinkMlpCommandConf
     this.multiThreadedEvaluation = multiThreadedEvaluation;
   }
 
-  public double[] getSvmCost() {
+  public List<Double> getSvmCost() {
     return svmCost;
   }
 
-  public void setSvmCost(double[] svmCost) {
+  public void setSvmCost(List<Double> svmCost) {
     this.svmCost = svmCost;
   }
 
-  public double[] getSvmGamma() {
+  public List<Double> getSvmGamma() {
     return svmGamma;
   }
 
-  public void setSvmGamma(double[] svmGamma) {
+  public void setSvmGamma(List<Double> svmGamma) {
     this.svmGamma = svmGamma;
   }
 
@@ -114,6 +137,7 @@ public class MachineLearningDefinienExtractionConfig extends FlinkMlpCommandConf
     JCommander commander = new JCommander();
     commander.addObject(config);
     commander.parse(args);
+
     return config;
   }
 

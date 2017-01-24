@@ -1,5 +1,6 @@
 package com.formulasearchengine.mathosphere.mlp.cli;
 
+import com.formulasearchengine.mathosphere.mlp.ml.WekaLearner;
 import com.google.common.base.Throwables;
 import com.google.common.io.Files;
 
@@ -15,6 +16,10 @@ import java.io.PrintStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLDecoder;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Stream;
 
 import static org.junit.Assert.assertTrue;
 
@@ -221,12 +226,37 @@ public class CliMainTest {
       "-out", temp.getAbsolutePath(),
       "--goldFile", resourcePath("com/formulasearchengine/mathosphere/mlp/gold/gold.json"),
       "--tex",
-      "--multiThreadedEvaluation",
       "--texvcinfo", "http://localhost:10044/texvcinfo",
-      "--threads", "1"
+      "--threads", "10",
+      "--writeInstances"
     };
     Main.main(args);
   }
 
+  @Test
+  public void testMachineLearningCorase() throws Exception {
+    final File temp = Files.createTempDir();
+    List<String> costAndGamma = new ArrayList<>();
+    for (double c : WekaLearner.C_coarse) {
+      costAndGamma.add("--svmCost");
+      costAndGamma.add("" + c);
+    }
+    for (double g : WekaLearner.Y_coarse) {
+      costAndGamma.add("--svmGamma");
+      costAndGamma.add("" + g);
+    }
+    String[] args = {CliParams.ML,
+      "-in", resourcePath("com/formulasearchengine/mathosphere/mlp/gold/eval_dataset.xml"),
+      "-out", temp.getAbsolutePath(),
+      "--goldFile", resourcePath("com/formulasearchengine/mathosphere/mlp/gold/gold.json"),
+      "--tex",
+      "--multiThreadedEvaluation",
+      "--texvcinfo", "http://localhost:10044/texvcinfo",
+      "--threads", "1",
+      "--writeInstances"
+    };
+    String[] allArgs = Stream.concat(Arrays.stream(args), costAndGamma.stream()).toArray(String[]::new);
+    Main.main(allArgs);
+  }
 
 }

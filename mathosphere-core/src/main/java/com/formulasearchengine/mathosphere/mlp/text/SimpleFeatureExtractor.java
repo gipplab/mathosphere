@@ -1,10 +1,8 @@
 package com.formulasearchengine.mathosphere.mlp.text;
 
-import com.formulasearchengine.mathosphere.mlp.cli.EvalCommandConfig;
 import com.formulasearchengine.mathosphere.mlp.cli.MachineLearningDefinienExtractionConfig;
 import com.formulasearchengine.mathosphere.mlp.pojos.*;
 import com.formulasearchengine.mlp.evaluation.pojo.GoldEntry;
-import com.formulasearchengine.mlp.evaluation.pojo.IdentifierDefinition;
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multiset;
@@ -14,6 +12,9 @@ import org.slf4j.LoggerFactory;
 
 import java.util.*;
 import java.util.stream.Collectors;
+
+import static com.formulasearchengine.mathosphere.utils.GoldUtil.getGoldEntryByTitle;
+import static com.formulasearchengine.mathosphere.utils.GoldUtil.matchesGold;
 
 public class SimpleFeatureExtractor implements MapFunction<ParsedWikiDocument, WikiDocumentOutput> {
 
@@ -36,9 +37,9 @@ public class SimpleFeatureExtractor implements MapFunction<ParsedWikiDocument, W
 
     Multiset<String> frequencies = aggregateWords(sentences);
 
-    int maxFrequency = calculateMax(frequencies);
+    int maxFrequency = getMaxFrequency(frequencies);
 
-    GoldEntry goldEntry = goldEntries.stream().filter(e -> e.getTitle().equals(doc.getTitle().replaceAll(" ", "_"))).findFirst().get();
+    GoldEntry goldEntry = getGoldEntryByTitle(goldEntries, doc.getTitle());
     final Integer fid = Integer.parseInt(goldEntry.getFid());
     final MathTag seed = doc.getFormulas()
       .stream().filter(e -> e.getMarkUpType().equals(WikiTextUtils.MathMarkUpType.LATEX)).collect(Collectors.toList())
@@ -60,7 +61,7 @@ public class SimpleFeatureExtractor implements MapFunction<ParsedWikiDocument, W
           throw new RuntimeException("Cannot find identifier before first occurence");
         }
         match.setDistanceFromFirstIdentifierOccurence((double) (i - identifierSentenceDistanceMap.get(match.getIdentifier())) / (double) doc.getSentences().size());
-        match.setRelevance(matchesGold(match, goldEntry) ? 2 : 0);
+        match.setRelevance(matchesGold(match.getIdentifier(), match.getDefinition(), goldEntry) ? 2 : 0);
         foundFeatures.add(match);
       }
     }
@@ -71,14 +72,6 @@ public class SimpleFeatureExtractor implements MapFunction<ParsedWikiDocument, W
   }
 
 
-  public boolean matchesGold(Relation relation, GoldEntry gold) {
-    return matchesGold(relation.getIdentifier(), relation.getDefinition(), gold);
-  }
-
-  public boolean matchesGold(String identifier, String definiens, GoldEntry gold) {
-    List<IdentifierDefinition> identifierDefinitions = gold.getDefinitions();
-    return identifierDefinitions.contains(new IdentifierDefinition(identifier, definiens.replaceAll("\\[|\\]", "").trim().toLowerCase()));
-  }
 
   private Map<String, Integer> findSentencesWithIdentifierFirstOccurrences(List<Sentence> sentences, Collection<String> identifiers) {
     Map<String, Integer> result = new HashMap<>();
@@ -112,7 +105,7 @@ public class SimpleFeatureExtractor implements MapFunction<ParsedWikiDocument, W
     return counts;
   }
 
-  private int calculateMax(Multiset<String> frequencies) {
+  private int getMaxFrequency(Multiset<String> frequencies) {
     Multiset.Entry<String> max = Collections.max(frequencies.entrySet(),
       (e1, e2) -> Integer.compare(e1.getCount(), e2.getCount()));
     return max.getCount();
