@@ -59,23 +59,28 @@ public class TextExtractorMapper implements FlatMapFunction<String, Tuple2<Strin
             return null;
 
         // try {
-            final ExtractedMathPDDocument extractedMathPDDocument = new ExtractedMathPDDocument(document.title, document.text);
-            extractedMathPDDocument.setName(document.getName());
-            extractedMathPDDocument.setPage(document.getPage());
+        final ExtractedMathPDDocument extractedMathPDDocument = new ExtractedMathPDDocument(document.title, document.text);
+        extractedMathPDDocument.setName(document.getName());
+        extractedMathPDDocument.setPage(document.getPage());
 
-            // discard this document if no math tag is contained
+        // discard this document if no math tag is contained
+        try {
             if (document.getMathTags().getLength() == 0) {
                 LOGGER.trace("{} contains no math tags", document.getName());
                 return null;
             }
+        } catch (XPathExpressionException xPathExpressionException) {
+            LOGGER.error("following string could not be converted to xpath: {}", document.getDoc().toString());
+            return null;
+        }
 
-            // extract all features we are or might be interested in later
-            extractedMathPDDocument.setHistogramCn(Distances.getDocumentHistogram(document, "cn"));
-            extractedMathPDDocument.setHistogramCsymbol(Distances.getDocumentHistogram(document, "csymbol"));
-            extractedMathPDDocument.setHistogramCi(Distances.getDocumentHistogram(document, "ci"));
-            extractedMathPDDocument.setHistogramBvar(Distances.getDocumentHistogram(document, "bvar"));
+        // extract all features we are or might be interested in later
+        extractedMathPDDocument.setHistogramCn(Distances.getDocumentHistogram(document, "cn"));
+        extractedMathPDDocument.setHistogramCsymbol(Distances.getDocumentHistogram(document, "csymbol"));
+        extractedMathPDDocument.setHistogramCi(Distances.getDocumentHistogram(document, "ci"));
+        extractedMathPDDocument.setHistogramBvar(Distances.getDocumentHistogram(document, "bvar"));
 
-            return extractedMathPDDocument;
+        return extractedMathPDDocument;
         // } catch (Exception e) {
         //    LOGGER.error(e.getClass().toString());
         //    LOGGER.error(e.toString());
@@ -97,7 +102,7 @@ public class TextExtractorMapper implements FlatMapFunction<String, Tuple2<Strin
     }
 
     @Override
-    public void flatMap(String content, Collector<Tuple2<String, ExtractedMathPDDocument>> out) throws Exception {
+    public void flatMap(String content, Collector<Tuple2<String, ExtractedMathPDDocument>> out) throws ParserConfigurationException, TransformerException, XPathExpressionException, IOException {
         LOGGER.info(content);
         final ArxivDocument document = arxivTextToDocument(content);
         if (document == null) {

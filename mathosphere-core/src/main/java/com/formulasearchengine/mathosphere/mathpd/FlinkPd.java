@@ -186,7 +186,6 @@ public class FlinkPd {
             final DataSet<Tuple2<String, ExtractedMathPDDocument>> extractedMathPdDocumentsSources = readPreprocessedFiles(preprocessedSourcesFiles, env).flatMap(new ExtractedMathPDDocumentMapper());
             final DataSet<Tuple2<String, ExtractedMathPDDocument>> extractedMathPdDocumentsRefs = readPreprocessedFiles(preprocessedRefsFiles, env).flatMap(new ExtractedMathPDDocumentMapper());
 
-
             GroupReduceOperator<Tuple2<Tuple2<String, ExtractedMathPDDocument>, Tuple3<String, String, Double>>, Tuple2<String, ExtractedMathPDDocument>> extractedMathPDDocsWithTFIDF = null;
             if (IS_MODE_TFIDF) {
                 //noinspection Convert2Lambda
