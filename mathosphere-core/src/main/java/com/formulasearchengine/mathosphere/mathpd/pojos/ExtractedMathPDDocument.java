@@ -31,11 +31,11 @@ public class ExtractedMathPDDocument implements Comparable<ExtractedMathPDDocume
     }
 
     public static String getNameFromId(String id) {
-        return id.split("/")[0];
+        return id.split(ID_SEPARATOR)[0];
     }
 
     public static String getPageFromId(String id) {
-        return id.split("/")[1];
+        return id.split(ID_SEPARATOR)[1];
     }
 
     public HashMap<String, Double> getHistogramBvar() {
@@ -87,7 +87,7 @@ public class ExtractedMathPDDocument implements Comparable<ExtractedMathPDDocume
     }
 
     public String getId() {
-        return this.getName() + "/" + this.getPage();
+        return this.getName() + ID_SEPARATOR + this.getPage();
     }
 
     @Override

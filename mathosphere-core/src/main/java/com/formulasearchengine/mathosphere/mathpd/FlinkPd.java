@@ -106,38 +106,6 @@ public class FlinkPd {
                         return t1;
                     }
                 });
-                /*.reduceGroup(new GroupReduceFunction<Tuple2<String, ExtractedMathPDDocument>, Tuple2<String, ExtractedMathPDDocument>>() {
-                    @Override
-                    public void reduce(Iterable<Tuple2<String, ExtractedMathPDDocument>> iterable, Collector<Tuple2<String, ExtractedMathPDDocument>> collector) throws Exception {
-                        final List<HashMap<String, Double>> allHistogramsCi = new ArrayList<>();
-                        final List<HashMap<String, Double>> allHistogramsCn = new ArrayList<>();
-                        final List<HashMap<String, Double>> allHistogramsCsymbol = new ArrayList<>();
-                        final List<HashMap<String, Double>> allHistogramsBvar = new ArrayList<>();
-                        ExtractedMathPDDocument mainDoc = null;
-
-                        for (Tuple2<String, ExtractedMathPDDocument> nameAndSnippet : iterable) {
-                            final String name = nameAndSnippet.f0;
-                            final ExtractedMathPDDocument snippet = nameAndSnippet.f1;
-                            if (mainDoc == null) {
-                                mainDoc = snippet;
-                            }
-                            allHistogramsCi.add(snippet.getHistogramCi());
-                            allHistogramsCn.add(snippet.getHistogramCn());
-                            allHistogramsCsymbol.add(snippet.getHistogramCsymbol());
-                            allHistogramsBvar.add(snippet.getHistogramBvar());
-                        }
-
-                        mainDoc.setHistogramCi(Distances.histogramsPlus(allHistogramsCi));
-                        mainDoc.setHistogramCn(Distances.histogramsPlus(allHistogramsCn));
-                        mainDoc.setHistogramCsymbol(Distances.histogramsPlus(allHistogramsCsymbol));
-                        mainDoc.setHistogramBvar(Distances.histogramsPlus(allHistogramsBvar));
-
-                        collector.collect(new Tuple2<>(mainDoc.getName(), mainDoc));
-                    }
-
-
-                });*/
-
 
         return extractedMathPdDocuments;
     }
@@ -146,27 +114,26 @@ public class FlinkPd {
     public static void run(FlinkPdCommandConfig config) throws Exception {
         final ExecutionEnvironment env = ExecutionEnvironment.getExecutionEnvironment();
         final String preprocessedSourcesFiles = config.getDataset() + "_preprocessed";
-        final String preprocessedRefsFiles = config.getRef() + "_preprocessed2";
+        String preprocessedRefsFiles = config.getRef() + "_preprocessed";
+        if (preprocessedRefsFiles.equals(preprocessedSourcesFiles)) {
+            preprocessedRefsFiles += "2";
+        }
 
         if (IS_MODE_PREPROCESSING) {
             DataSource<String> source = readWikiDump(config, env);
             DataSource<String> refs = readRefs(config, env);
 
             final FlatMapOperator<String, Tuple2<String, ExtractedMathPDDocument>> extractedMathPdSnippetsSources = source.flatMap(new TextExtractorMapper());
-            //LOGGER.warn("extractedMathPdSnippetsSources.count() = " + extractedMathPdSnippetsSources.count());
 
             // first, merge all pages of one doc to one doc
             DataSet<Tuple2<String, ExtractedMathPDDocument>> extractedMathPdDocumentsSources = aggregateSnippetsToSingleDocs(extractedMathPdSnippetsSources);
-            //LOGGER.warn("extractedMathPdDocumentsSources.count() = " + extractedMathPdDocumentsSources.count());
             extractedMathPdDocumentsSources.writeAsFormattedText(preprocessedSourcesFiles,
                     new TextOutputFormat.TextFormatter<Tuple2<String, ExtractedMathPDDocument>>() {
                         @Override
                         public String format(Tuple2<String, ExtractedMathPDDocument> stringExtractedMathPDDocumentTuple2) {
-                            LOGGER.trace("writing one document to disk");
                             return ExtractedMathPDDocumentMapper.getFormattedWritableText(stringExtractedMathPDDocumentTuple2.f1);
                         }
                     });
-
 
             // now for the refs
             final FlatMapOperator<String, Tuple2<String, ExtractedMathPDDocument>> extractedMathPdSnippetsRefs = refs.flatMap(new TextExtractorMapper());
