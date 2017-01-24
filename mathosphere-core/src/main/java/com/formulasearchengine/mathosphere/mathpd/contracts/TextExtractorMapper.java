@@ -56,8 +56,10 @@ public class TextExtractorMapper implements FlatMapFunction<String, Tuple2<Strin
     }
 
     public static ExtractedMathPDDocument convertArxivToExtractedMathPDDocument(ArxivDocument document) throws ParserConfigurationException, IOException, XPathExpressionException, TransformerException {
-        if (document == null)
+        if (document == null) {
+            LOGGER.warn("ArxivDocument = null");
             return null;
+        }
 
         // try {
         final ExtractedMathPDDocument extractedMathPDDocument = new ExtractedMathPDDocument(document.title, document.text);
@@ -69,7 +71,7 @@ public class TextExtractorMapper implements FlatMapFunction<String, Tuple2<Strin
         try {
             mathTags = document.getMathTags();
             if (mathTags.getLength() == 0) {
-                LOGGER.trace("{} contains no math tags", document.getName());
+                LOGGER.info("{} contains no math tags", document.getName());
                 return null;
             }
         } catch (XPathExpressionException xPathExpressionException) {
