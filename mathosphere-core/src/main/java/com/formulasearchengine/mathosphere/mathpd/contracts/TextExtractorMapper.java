@@ -70,7 +70,7 @@ public class TextExtractorMapper implements FlatMapFunction<String, Tuple2<Strin
                 return null;
             }
         } catch (XPathExpressionException xPathExpressionException) {
-            LOGGER.error("following string could not be converted to xpath: {}", document.getDoc().toString());
+            LOGGER.error("following string could not be converted to xpath: {}", document.text);
             return null;
         }
 
