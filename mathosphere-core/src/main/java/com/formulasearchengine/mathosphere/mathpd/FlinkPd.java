@@ -108,11 +108,8 @@ public class FlinkPd {
                     }
                 });*/
                 .reduceGroup(new GroupReduceFunction<Tuple2<String, ExtractedMathPDDocument>, Tuple2<String, ExtractedMathPDDocument>>() {
-
                     @Override
                     public void reduce(Iterable<Tuple2<String, ExtractedMathPDDocument>> iterable, Collector<Tuple2<String, ExtractedMathPDDocument>> collector) throws Exception {
-
-
                         final List<HashMap<String, Double>> allHistogramsCi = new ArrayList<>();
                         final List<HashMap<String, Double>> allHistogramsCn = new ArrayList<>();
                         final List<HashMap<String, Double>> allHistogramsCsymbol = new ArrayList<>();
@@ -148,8 +145,7 @@ public class FlinkPd {
 
 
     public static void run(FlinkPdCommandConfig config) throws Exception {
-        ExecutionEnvironment env = ExecutionEnvironment.getExecutionEnvironment();
-
+        final ExecutionEnvironment env = ExecutionEnvironment.getExecutionEnvironment();
         final String preprocessedSourcesFiles = config.getDataset() + "_preprocessed";
         final String preprocessedRefsFiles = config.getRef() + "_preprocessed2";
 
@@ -158,9 +154,11 @@ public class FlinkPd {
             DataSource<String> refs = readRefs(config, env);
 
             final FlatMapOperator<String, Tuple2<String, ExtractedMathPDDocument>> extractedMathPdSnippetsSources = source.flatMap(new TextExtractorMapper());
+            LOGGER.warn("extractedMathPdSnippetsSources.count() = " + extractedMathPdSnippetsSources.count());
 
             // first, merge all pages of one doc to one doc
             DataSet<Tuple2<String, ExtractedMathPDDocument>> extractedMathPdDocumentsSources = aggregateSnippetsToSingleDocs(extractedMathPdSnippetsSources);
+            LOGGER.warn("extractedMathPdDocumentsSources.count() = " + extractedMathPdDocumentsSources.count());
             extractedMathPdDocumentsSources.writeAsFormattedText(preprocessedSourcesFiles,
                     new TextOutputFormat.TextFormatter<Tuple2<String, ExtractedMathPDDocument>>() {
                         @Override

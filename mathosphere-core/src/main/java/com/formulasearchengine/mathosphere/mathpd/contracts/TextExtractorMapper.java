@@ -64,7 +64,7 @@ public class TextExtractorMapper implements FlatMapFunction<String, Tuple2<Strin
 
             // discard this document if no math tag is contained
             if (document.getMathTags().getLength() == 0) {
-                LOGGER.warn("{} contains no math tags", document.getName());
+                LOGGER.trace("{} contains no math tags", document.getName());
                 return null;
             }
 
@@ -98,19 +98,19 @@ public class TextExtractorMapper implements FlatMapFunction<String, Tuple2<Strin
     public void flatMap(String content, Collector<Tuple2<String, ExtractedMathPDDocument>> out) throws Exception {
         final ArxivDocument document = arxivTextToDocument(content);
         if (document == null) {
-            LOGGER.warn("could not convert raw string to ArxivDocuemt: {}", content.substring(0, content.length() > 100 ? 100 : content.length() - 1));
+            LOGGER.trace("could not convert raw string to ArxivDocuemt: {}", content.substring(0, content.length() > 100 ? 100 : content.length() - 1));
             return;
         }
 
         LOGGER.info("processing document '{}'...", document.title);
         final ExtractedMathPDDocument extractedMathPDDocument = convertArxivToExtractedMathPDDocument(document);
         if (extractedMathPDDocument == null) {
-            LOGGER.warn("could not convert ArxivDocument to ExtractedMathPDDocument: {}", document.title);
+            LOGGER.trace("could not convert ArxivDocument to ExtractedMathPDDocument: {}", document.title);
             return;
         }
 
         // store the doc in the collector
-        LOGGER.info("finished processing document '{}'...", document.title);
+        LOGGER.debug("finished processing document '{}'...", document.title);
         out.collect(new Tuple2<>(extractedMathPDDocument.getName(), extractedMathPDDocument));
     }
 }
