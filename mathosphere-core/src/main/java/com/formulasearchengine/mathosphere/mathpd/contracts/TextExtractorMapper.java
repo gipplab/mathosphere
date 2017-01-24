@@ -1,5 +1,6 @@
 package com.formulasearchengine.mathosphere.mathpd.contracts;
 
+import com.formulasearchengine.mathmlquerygenerator.xmlhelper.NonWhitespaceNodeList;
 import com.formulasearchengine.mathosphere.mathpd.Distances;
 import com.formulasearchengine.mathosphere.mathpd.pojos.ArxivDocument;
 import com.formulasearchengine.mathosphere.mathpd.pojos.ExtractedMathPDDocument;
@@ -64,8 +65,10 @@ public class TextExtractorMapper implements FlatMapFunction<String, Tuple2<Strin
         extractedMathPDDocument.setPage(document.getPage());
 
         // discard this document if no math tag is contained
+        NonWhitespaceNodeList mathTags = null;
         try {
-            if (document.getMathTags().getLength() == 0) {
+            mathTags = document.getMathTags();
+            if (mathTags.getLength() == 0) {
                 LOGGER.trace("{} contains no math tags", document.getName());
                 return null;
             }
@@ -75,10 +78,11 @@ public class TextExtractorMapper implements FlatMapFunction<String, Tuple2<Strin
         }
 
         // extract all features we are or might be interested in later
-        extractedMathPDDocument.setHistogramCn(Distances.getDocumentHistogram(document, "cn"));
-        extractedMathPDDocument.setHistogramCsymbol(Distances.getDocumentHistogram(document, "csymbol"));
-        extractedMathPDDocument.setHistogramCi(Distances.getDocumentHistogram(document, "ci"));
-        extractedMathPDDocument.setHistogramBvar(Distances.getDocumentHistogram(document, "bvar"));
+
+        extractedMathPDDocument.setHistogramCn(Distances.getDocumentHistogram(document, "cn", mathTags));
+        extractedMathPDDocument.setHistogramCsymbol(Distances.getDocumentHistogram(document, "csymbol", mathTags));
+        extractedMathPDDocument.setHistogramCi(Distances.getDocumentHistogram(document, "ci", mathTags));
+        extractedMathPDDocument.setHistogramBvar(Distances.getDocumentHistogram(document, "bvar", mathTags));
 
         return extractedMathPDDocument;
         // } catch (Exception e) {

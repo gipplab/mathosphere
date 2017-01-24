@@ -146,7 +146,6 @@ public class Distances {
         return mergedHistogram;
     }
 
-
     /**
      * Returns an absolute histogram of the whole document d with all elements that match tagname. The key in the histogram is the element's name.
      *
@@ -158,10 +157,10 @@ public class Distances {
      * @throws TransformerException
      * @throws IOException
      */
-    public static HashMap<String, Double> getDocumentHistogram(ArxivDocument d, String tagName) throws XPathExpressionException, ParserConfigurationException, TransformerException, IOException {
+    public static HashMap<String, Double> getDocumentHistogram(ArxivDocument d, String tagName, NonWhitespaceNodeList allMathTagsOfDOc) throws XPathExpressionException, ParserConfigurationException, TransformerException, IOException {
         LOG.debug("getDocumentHistogram(" + d.title + ", " + tagName + ")");
         HashMap<String, Double> mergedHistogram = new HashMap<>();
-        final NonWhitespaceNodeList allMathTags = d.getMathTags();
+        final NonWhitespaceNodeList allMathTags = (allMathTagsOfDOc != null) ? allMathTagsOfDOc : d.getMathTags();
         for (int i = 0; i < allMathTags.getLength(); i++) {
             final Node mathTag = allMathTags.item(i);
 
