@@ -116,12 +116,12 @@ public class TextExtractorMapper implements FlatMapFunction<String, Tuple2<Strin
         LOGGER.info("processing document '{}'...", document.title);
         final ExtractedMathPDDocument extractedMathPDDocument = convertArxivToExtractedMathPDDocument(document);
         if (extractedMathPDDocument == null) {
-            LOGGER.trace("could not convert ArxivDocument to ExtractedMathPDDocument: {}", document.title);
+            LOGGER.info("could not convert ArxivDocument to ExtractedMathPDDocument: {}", document.title);
             return;
         }
 
         // store the doc in the collector
-        LOGGER.debug("finished processing document '{}'...", document.title);
+        LOGGER.info("finished processing document '{}'...", document.title);
         out.collect(new Tuple2<>(extractedMathPDDocument.getName(), extractedMathPDDocument));
     }
 }
