@@ -153,11 +153,11 @@ public class FlinkPd {
             DataSource<String> refs = readRefs(config, env);
 
             final FlatMapOperator<String, Tuple2<String, ExtractedMathPDDocument>> extractedMathPdSnippetsSources = source.flatMap(new TextExtractorMapper());
-            LOGGER.warn("extractedMathPdSnippetsSources.count() = " + extractedMathPdSnippetsSources.count());
+            //LOGGER.warn("extractedMathPdSnippetsSources.count() = " + extractedMathPdSnippetsSources.count());
 
             // first, merge all pages of one doc to one doc
             DataSet<Tuple2<String, ExtractedMathPDDocument>> extractedMathPdDocumentsSources = aggregateSnippetsToSingleDocs(extractedMathPdSnippetsSources);
-            LOGGER.warn("extractedMathPdDocumentsSources.count() = " + extractedMathPdDocumentsSources.count());
+            //LOGGER.warn("extractedMathPdDocumentsSources.count() = " + extractedMathPdDocumentsSources.count());
             extractedMathPdDocumentsSources.writeAsFormattedText(preprocessedSourcesFiles,
                     new TextOutputFormat.TextFormatter<Tuple2<String, ExtractedMathPDDocument>>() {
                         @Override
