@@ -166,8 +166,7 @@ public class FlinkPd {
                             return ExtractedMathPDDocumentMapper.getFormattedWritableText(stringExtractedMathPDDocumentTuple2.f1);
                         }
                     });
-            if (true)
-                return;
+
 
             // now for the refs
             final FlatMapOperator<String, Tuple2<String, ExtractedMathPDDocument>> extractedMathPdSnippetsRefs = refs.flatMap(new TextExtractorMapper());
