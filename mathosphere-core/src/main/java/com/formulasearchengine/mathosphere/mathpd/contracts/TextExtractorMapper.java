@@ -96,6 +96,7 @@ public class TextExtractorMapper implements FlatMapFunction<String, Tuple2<Strin
 
     @Override
     public void flatMap(String content, Collector<Tuple2<String, ExtractedMathPDDocument>> out) throws Exception {
+        LOGGER.info(content);
         final ArxivDocument document = arxivTextToDocument(content);
         if (document == null) {
             LOGGER.trace("could not convert raw string to ArxivDocuemt: {}", content.substring(0, content.length() > 100 ? 100 : content.length() - 1));
