@@ -33,6 +33,7 @@ public class TextExtractorMapper implements FlatMapFunction<String, Tuple2<Strin
     public static Tuple4<String, String, String, String> getTitleAndTextualContent(String content) {
         Matcher titleMatcher = FILENAME_PATTERN.matcher(content);
         if (!titleMatcher.find()) {
+            LOGGER.error("found no title");
             return null;
         }
         final String title = titleMatcher.group(1);
@@ -57,7 +58,7 @@ public class TextExtractorMapper implements FlatMapFunction<String, Tuple2<Strin
         if (document == null)
             return null;
 
-        try {
+        // try {
             final ExtractedMathPDDocument extractedMathPDDocument = new ExtractedMathPDDocument(document.title, document.text);
             extractedMathPDDocument.setName(document.getName());
             extractedMathPDDocument.setPage(document.getPage());
@@ -75,10 +76,11 @@ public class TextExtractorMapper implements FlatMapFunction<String, Tuple2<Strin
             extractedMathPDDocument.setHistogramBvar(Distances.getDocumentHistogram(document, "bvar"));
 
             return extractedMathPDDocument;
-        } catch (Exception e) {
-            LOGGER.error(e.toString());
-            return null;
-        }
+        // } catch (Exception e) {
+        //    LOGGER.error(e.getClass().toString());
+        //    LOGGER.error(e.toString());
+        //    return null;
+        //}
     }
 
     public static ArxivDocument arxivTextToDocument(String content) {
