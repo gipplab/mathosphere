@@ -11,12 +11,12 @@ import com.formulasearchengine.mathosphere.mlp.pojos.ParsedWikiDocument;
 import com.formulasearchengine.mathosphere.mlp.pojos.WikiDocumentOutput;
 import org.apache.flink.api.common.functions.FlatMapFunction;
 import org.apache.flink.api.common.functions.GroupReduceFunction;
+import org.apache.flink.api.common.functions.MapFunction;
 import org.apache.flink.api.common.functions.ReduceFunction;
 import org.apache.flink.api.common.operators.Order;
 import org.apache.flink.api.java.DataSet;
 import org.apache.flink.api.java.ExecutionEnvironment;
 import org.apache.flink.api.java.io.TextInputFormat;
-import org.apache.flink.api.java.io.TextOutputFormat;
 import org.apache.flink.api.java.operators.DataSource;
 import org.apache.flink.api.java.operators.FlatMapOperator;
 import org.apache.flink.api.java.operators.GroupReduceOperator;
@@ -148,7 +148,7 @@ public class FlinkPd {
 
             // write to disk
             LOGGER.info("writing preprocesssed refs to disk at {}", preprocessedRefsFiles);
-            extractedMathPdDocumentsRefs.writeAsFormattedText(preprocessedRefsFiles,
+            /*extractedMathPdDocumentsRefs.writeAsFormattedText(preprocessedRefsFiles,
                     new TextOutputFormat.TextFormatter<Tuple2<String, ExtractedMathPDDocument>>() {
                         @Override
                         public String format(Tuple2<String, ExtractedMathPDDocument> stringExtractedMathPDDocumentTuple2) {
@@ -159,7 +159,15 @@ public class FlinkPd {
                             LOGGER.info("output-ref {}: {}", stringExtractedMathPDDocumentTuple2.f0, outputB64);
                             return outputB64;
                         }
-                    });
+                    });*/
+            extractedMathPdDocumentsRefs.map(new MapFunction<Tuple2<String, ExtractedMathPDDocument>, String>() {
+                @Override
+                public String map(Tuple2<String, ExtractedMathPDDocument> stringExtractedMathPDDocumentTuple2) throws Exception {
+                    final String output = ExtractedMathPDDocumentMapper.getFormattedWritableText(stringExtractedMathPDDocumentTuple2.f1);
+                    final String outputB64 = Base64.getEncoder().encodeToString(output.getBytes());
+                    return outputB64;
+                }
+            }).writeAsText(preprocessedRefsFiles);
 
         } else {
             final DataSet<Tuple2<String, ExtractedMathPDDocument>> extractedMathPdDocumentsSources = readPreprocessedFiles(preprocessedSourcesFiles, env).flatMap(new ExtractedMathPDDocumentMapper());
