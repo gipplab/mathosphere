@@ -160,12 +160,12 @@ public class FlinkPd {
                             return outputB64;
                         }
                     });*/
-            extractedMathPdDocumentsRefs.map(new MapFunction<Tuple2<String, ExtractedMathPDDocument>, String>() {
+            extractedMathPdDocumentsRefs.map(new MapFunction<Tuple2<String, ExtractedMathPDDocument>, Tuple1<String>>() {
                 @Override
-                public String map(Tuple2<String, ExtractedMathPDDocument> stringExtractedMathPDDocumentTuple2) throws Exception {
+                public Tuple1<String> map(Tuple2<String, ExtractedMathPDDocument> stringExtractedMathPDDocumentTuple2) throws Exception {
                     final String output = ExtractedMathPDDocumentMapper.getFormattedWritableText(stringExtractedMathPDDocumentTuple2.f1);
                     final String outputB64 = Base64.getEncoder().encodeToString(output.getBytes());
-                    return outputB64;
+                    return new Tuple1<>(outputB64);
                 }
             }).writeAsCsv(preprocessedRefsFiles, WriteMode.OVERWRITE);
 
