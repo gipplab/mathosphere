@@ -123,7 +123,7 @@ public class FlinkPd {
             DataSource<String> source = readWikiDump(config, env);
             DataSource<String> refs = readRefs(config, env);
 
-            final FlatMapOperator<String, Tuple2<String, ExtractedMathPDDocument>> extractedMathPdSnippetsSources = source.flatMap(new TextExtractorMapper());
+           /* final FlatMapOperator<String, Tuple2<String, ExtractedMathPDDocument>> extractedMathPdSnippetsSources = source.flatMap(new TextExtractorMapper());
 
             // first, merge all pages of one doc to one doc
             DataSet<Tuple2<String, ExtractedMathPDDocument>> extractedMathPdDocumentsSources = aggregateSnippetsToSingleDocs(extractedMathPdSnippetsSources);
@@ -133,7 +133,7 @@ public class FlinkPd {
                         public String format(Tuple2<String, ExtractedMathPDDocument> stringExtractedMathPDDocumentTuple2) {
                             return ExtractedMathPDDocumentMapper.getFormattedWritableText(stringExtractedMathPDDocumentTuple2.f1);
                         }
-                    });
+                    });*/
 
             // now for the refs
             final FlatMapOperator<String, Tuple2<String, ExtractedMathPDDocument>> extractedMathPdSnippetsRefs = refs.flatMap(new TextExtractorMapper());
@@ -144,7 +144,10 @@ public class FlinkPd {
                     new TextOutputFormat.TextFormatter<Tuple2<String, ExtractedMathPDDocument>>() {
                         @Override
                         public String format(Tuple2<String, ExtractedMathPDDocument> stringExtractedMathPDDocumentTuple2) {
-                            return ExtractedMathPDDocumentMapper.getFormattedWritableText(stringExtractedMathPDDocumentTuple2.f1);
+                            LOGGER.info("input-ref {}: {}", stringExtractedMathPDDocumentTuple2.f0, stringExtractedMathPDDocumentTuple2.f1);
+                            final String output = ExtractedMathPDDocumentMapper.getFormattedWritableText(stringExtractedMathPDDocumentTuple2.f1);
+                            LOGGER.info("output-ref {}: {}", stringExtractedMathPDDocumentTuple2.f0, output);
+                            return output;
                         }
                     });
 
