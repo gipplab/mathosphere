@@ -102,6 +102,7 @@ public class FlinkPd {
                     @Override
                     public Tuple2<String, ExtractedMathPDDocument> reduce(Tuple2<String, ExtractedMathPDDocument> t0, Tuple2<String, ExtractedMathPDDocument> t1) throws Exception {
                         t1.f1.mergeOtherIntoThis(t0.f1);
+                        t1.f1.setText("removed");
                         LOGGER.info("merged {} into {}", new Object[]{t1.f0, t0.f0});
                         return t1;
                     }
