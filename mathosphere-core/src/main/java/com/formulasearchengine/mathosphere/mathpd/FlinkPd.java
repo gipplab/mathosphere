@@ -167,7 +167,8 @@ public class FlinkPd {
                     final String outputB64 = Base64.getEncoder().encodeToString(output.getBytes());
                     return outputB64;
                 }
-            }).writeAsText(preprocessedRefsFiles);
+            }).writeAsCsv(preprocessedRefsFiles, WriteMode.OVERWRITE);
+
 
         } else {
             final DataSet<Tuple2<String, ExtractedMathPDDocument>> extractedMathPdDocumentsSources = readPreprocessedFiles(preprocessedSourcesFiles, env).flatMap(new ExtractedMathPDDocumentMapper());
