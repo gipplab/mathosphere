@@ -6,12 +6,14 @@ import org.apache.flink.api.common.functions.FlatMapFunction;
 import org.apache.flink.api.java.tuple.Tuple2;
 import org.apache.flink.util.Collector;
 
+import java.util.Base64;
+
 /**
  * Created by felix on 13.01.17.
  */
 public class ExtractedMathPDDocumentMapper implements FlatMapFunction<String, Tuple2<String, ExtractedMathPDDocument>> {
     public static String getFormattedWritableText(ExtractedMathPDDocument doc) {
-        return new Gson().toJson(doc);
+        return Base64.getEncoder().encodeToString(new Gson().toJson(doc).getBytes());
     }
 
     @Override
