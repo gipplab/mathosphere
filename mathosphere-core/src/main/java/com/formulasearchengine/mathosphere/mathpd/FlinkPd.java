@@ -354,7 +354,7 @@ public class FlinkPd {
             binnedDistancesForPairs.writeAsCsv(config.getOutputDir() + "_binned", WriteMode.OVERWRITE);
         }
 
-        env.execute("You ad could be here! Call 4451");
+        env.execute(String.format("MathPD(IS_MODE_PREPROCESSING=%b, IS_MODE_TFIDF=%b)", IS_MODE_PREPROCESSING, IS_MODE_TFIDF));
     }
 
     private static double getBinBoundary(double value, double binWidth, boolean isLower) {
