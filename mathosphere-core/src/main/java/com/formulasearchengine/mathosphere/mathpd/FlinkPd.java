@@ -128,6 +128,9 @@ public class FlinkPd {
 
             // first, merge all pages of one doc to one doc
             DataSet<Tuple2<String, ExtractedMathPDDocument>> extractedMathPdDocumentsSources = aggregateSnippetsToSingleDocs(extractedMathPdSnippetsSources);
+
+             // write to disk
+            LOGGER.info("writing preprocesssed input to disk at {}", preprocessedRefsFiles
             extractedMathPdDocumentsSources.writeAsFormattedText(preprocessedSourcesFiles,
                     new TextOutputFormat.TextFormatter<Tuple2<String, ExtractedMathPDDocument>>() {
                         @Override
@@ -141,6 +144,9 @@ public class FlinkPd {
 
             // first, merge all pages of one doc to one doc
             final DataSet<Tuple2<String, ExtractedMathPDDocument>> extractedMathPdDocumentsRefs = aggregateSnippetsToSingleDocs(extractedMathPdSnippetsRefs);
+
+            // write to disk
+            LOGGER.info("writing preprocesssed refs to disk at {}", preprocessedRefsFiles);
             extractedMathPdDocumentsRefs.writeAsFormattedText(preprocessedRefsFiles,
                     new TextOutputFormat.TextFormatter<Tuple2<String, ExtractedMathPDDocument>>() {
                         @Override
@@ -352,7 +358,7 @@ public class FlinkPd {
             binnedDistancesForPairs.writeAsCsv(config.getOutputDir() + "_binned", WriteMode.OVERWRITE);
         }
 
-        env.execute("Uncle Felix' MathPD Tool");
+        env.execute("You ad could be here! Call 4451");
     }
 
     private static double getBinBoundary(double value, double binWidth, boolean isLower) {
