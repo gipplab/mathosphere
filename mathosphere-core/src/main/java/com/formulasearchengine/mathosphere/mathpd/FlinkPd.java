@@ -28,6 +28,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.text.DecimalFormat;
+import java.util.Base64;
 import java.util.HashMap;
 
 public class FlinkPd {
@@ -154,7 +155,9 @@ public class FlinkPd {
                             LOGGER.info("input-ref {}: {}", stringExtractedMathPDDocumentTuple2.f0, stringExtractedMathPDDocumentTuple2.f1);
                             final String output = ExtractedMathPDDocumentMapper.getFormattedWritableText(stringExtractedMathPDDocumentTuple2.f1);
                             LOGGER.info("output-ref {}: {}", stringExtractedMathPDDocumentTuple2.f0, output);
-                            return output;
+                            final String outputB64 = Base64.getEncoder().encodeToString(output.getBytes());
+                            LOGGER.info("output-ref {}: {}", stringExtractedMathPDDocumentTuple2.f0, outputB64);
+                            return outputB64;
                         }
                     });
 
