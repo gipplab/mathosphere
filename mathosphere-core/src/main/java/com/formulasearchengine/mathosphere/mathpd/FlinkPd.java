@@ -165,9 +165,10 @@ public class FlinkPd {
                 public Tuple1<String> map(Tuple2<String, ExtractedMathPDDocument> stringExtractedMathPDDocumentTuple2) throws Exception {
                     final String output = ExtractedMathPDDocumentMapper.getFormattedWritableText(stringExtractedMathPDDocumentTuple2.f1);
                     final String outputB64 = Base64.getEncoder().encodeToString(output.getBytes());
+                    LOGGER.info("output-ref: {}", outputB64);
                     return new Tuple1<>(outputB64);
                 }
-            }).writeAsCsv(preprocessedRefsFiles, WriteMode.OVERWRITE);
+            }).writeAsCsv(preprocessedRefsFiles);
 
 
         } else {
