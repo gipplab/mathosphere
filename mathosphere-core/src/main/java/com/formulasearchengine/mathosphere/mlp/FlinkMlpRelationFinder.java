@@ -146,7 +146,6 @@ public class FlinkMlpRelationFinder {
             final MathTag seed = parsedWikiDocument.getFormulas().stream()
               .filter(f -> f.getMarkUpType().equals(WikiTextUtils.MathMarkUpType.LATEX)).collect(Collectors.toList())
               .get(formulaId);
-            //WikiTextUtils.getLatexFormula(parsedWikiDocument, formulaId);
             if (!seed.getContent().equals(tex)) {
               LOGGER.error("PROBLEM WITH" + title);
               LOGGER.error(seed.getContent());
@@ -155,13 +154,8 @@ public class FlinkMlpRelationFinder {
             }
             final WikiDocumentOutput wikiDocumentOutput = candidatesMapper.map(parsedWikiDocument);
             List<Relation> relations = wikiDocumentOutput.getRelations();
-            Set<String> relIdents = new HashSet<>();
-            for (Relation relation : relations) {
-              relIdents.add(relation.getIdentifier());
-            }
             final Set<String> real = seed.getIdentifiers(config).elementSet();
             //only keep identifiers that have a definition
-            //real.retainAll(relIdents);
             final Map definitions = (Map) goldElement.get("definitions");
             final Set expected = definitions.keySet();
             Set<String> tp = new HashSet<>(expected);
@@ -177,6 +171,7 @@ public class FlinkMlpRelationFinder {
             if (config.getNamespace()) {
               getNamespaceData(title, relations);
             }
+            //remove identifiers that are not in the gold standard -> these were errors of the identifier extraction.
             relations.removeIf(r -> !expected.contains(r.getIdentifier()));
             Collections.sort(relations, Relation::compareToName);
             removeDuplicates(definitions, relations);

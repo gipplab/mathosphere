@@ -16,14 +16,18 @@ import java.util.stream.Collectors;
 import static com.formulasearchengine.mathosphere.utils.GoldUtil.getGoldEntryByTitle;
 import static com.formulasearchengine.mathosphere.utils.GoldUtil.matchesGold;
 
-public class SimpleFeatureExtractor implements MapFunction<ParsedWikiDocument, WikiDocumentOutput> {
+/**
+ * Extracts simple features like pattern matching and word counts.
+ * Use this class to generate the features of the document.
+ */
+public class SimpleFeatureExtractorMapper implements MapFunction<ParsedWikiDocument, WikiDocumentOutput> {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(SimpleFeatureExtractor.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(SimpleFeatureExtractorMapper.class);
 
   private final MachineLearningDefinienExtractionConfig config;
   private final List<GoldEntry> goldEntries;
 
-  public SimpleFeatureExtractor(MachineLearningDefinienExtractionConfig config, List<GoldEntry> goldEntries) {
+  public SimpleFeatureExtractorMapper(MachineLearningDefinienExtractionConfig config, List<GoldEntry> goldEntries) {
     this.config = config;
     this.goldEntries = goldEntries;
   }
@@ -54,15 +58,19 @@ public class SimpleFeatureExtractor implements MapFunction<ParsedWikiDocument, W
       SimplePatternMatcher matcher = SimplePatternMatcher.generatePatterns(identifiers);
       Collection<Relation> foundMatches = matcher.match(sentence, doc);
       for (Relation match : foundMatches) {
-        LOGGER.debug("found match {}", match);
-        int freq = frequencies.count(match.getSentence().getWords().get(match.getWordPosition()).toLowerCase());
-        match.setRelativeTermFrequency((double) freq / (double) maxFrequency);
-        if (i - identifierSentenceDistanceMap.get(match.getIdentifier()) < 0) {
-          throw new RuntimeException("Cannot find identifier before first occurence");
+        List<String> identifiersInGold = goldEntry.getDefinitions().stream().map(id -> id.getIdentifier()).collect(Collectors.toList());
+        //take only the identifiers that were extracted correctly to avoid false negatives in the training set.
+        if (identifiersInGold.contains(match.getIdentifier())) {
+          LOGGER.debug("found match {}", match);
+          int freq = frequencies.count(match.getSentence().getWords().get(match.getWordPosition()).toLowerCase());
+          match.setRelativeTermFrequency((double) freq / (double) maxFrequency);
+          if (i - identifierSentenceDistanceMap.get(match.getIdentifier()) < 0) {
+            throw new RuntimeException("Cannot find identifier before first occurence");
+          }
+          match.setDistanceFromFirstIdentifierOccurence((double) (i - identifierSentenceDistanceMap.get(match.getIdentifier())) / (double) doc.getSentences().size());
+          match.setRelevance(matchesGold(match.getIdentifier(), match.getDefinition(), goldEntry) ? 2 : 0);
+          foundFeatures.add(match);
         }
-        match.setDistanceFromFirstIdentifierOccurence((double) (i - identifierSentenceDistanceMap.get(match.getIdentifier())) / (double) doc.getSentences().size());
-        match.setRelevance(matchesGold(match.getIdentifier(), match.getDefinition(), goldEntry) ? 2 : 0);
-        foundFeatures.add(match);
       }
     }
     LOGGER.info("extracted {} relations from {}", foundFeatures.size(), doc.getTitle());
@@ -70,7 +78,6 @@ public class SimpleFeatureExtractor implements MapFunction<ParsedWikiDocument, W
     result.setMaxSentenceLength(doc.getSentences().stream().map(s -> s.getWords().size()).max(Comparator.naturalOrder()).get());
     return result;
   }
-
 
 
   private Map<String, Integer> findSentencesWithIdentifierFirstOccurrences(List<Sentence> sentences, Collection<String> identifiers) {

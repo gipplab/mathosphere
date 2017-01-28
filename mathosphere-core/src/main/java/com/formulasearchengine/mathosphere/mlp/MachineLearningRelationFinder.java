@@ -8,7 +8,7 @@ import com.formulasearchengine.mathosphere.mlp.ml.EvaluationResult;
 import com.formulasearchengine.mathosphere.mlp.ml.WekaLearner;
 import com.formulasearchengine.mathosphere.mlp.pojos.ParsedWikiDocument;
 import com.formulasearchengine.mathosphere.mlp.pojos.WikiDocumentOutput;
-import com.formulasearchengine.mathosphere.mlp.text.SimpleFeatureExtractor;
+import com.formulasearchengine.mathosphere.mlp.text.SimpleFeatureExtractorMapper;
 import com.formulasearchengine.mlp.evaluation.Evaluator;
 import com.formulasearchengine.mlp.evaluation.pojo.GoldEntry;
 import org.apache.flink.api.java.DataSet;
@@ -41,7 +41,7 @@ public class MachineLearningRelationFinder {
       .map(new TextAnnotatorMapper(config));
     Logger.getRootLogger().setLevel(Level.ERROR);
     ArrayList<GoldEntry> gold = (new Evaluator()).readGoldEntries(new File(config.getGoldFile()));
-    DataSet<WikiDocumentOutput> instances = documents.map(new SimpleFeatureExtractor(config, gold));
+    DataSet<WikiDocumentOutput> instances = documents.map(new SimpleFeatureExtractorMapper(config, gold));
     DataSet<EvaluationResult> result = instances.reduceGroup(new WekaLearner(config));
     result.map(new JsonSerializerMapper<>())
       .writeAsText(config.getOutputDir() + "\\tmp", WriteMode.OVERWRITE);

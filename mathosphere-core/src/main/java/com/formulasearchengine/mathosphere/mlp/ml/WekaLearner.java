@@ -140,6 +140,18 @@ public class WekaLearner implements GroupReduceFunction<WikiDocumentOutput, Eval
 
   @Override
   public void reduce(Iterable<WikiDocumentOutput> values, Collector<EvaluationResult> out) throws Exception {
+    DependencyParser parser = DependencyParser.loadFromModelFile(config.dependencyParserModel());
+    Instances instances = createInstances("AllRelations");
+    File instancesFile = new File(config.getOutputDir() + "/instances.arff");
+    if (config.isWriteInstances()) {
+      ArffSaver arffSaver = new ArffSaver();
+      arffSaver.setFile(instancesFile);
+      arffSaver.setInstances(instances);
+      arffSaver.writeBatch();
+    }
+    for (WikiDocumentOutput value : values) {
+      addRelationsToInstances(parser, value.getRelations(), value.getTitle(), value.getqId(), instances, value.getMaxSentenceLength());
+    }
     if (config.isCoarseSearch()) {
       config.setSvmCost(Arrays.asList(WekaLearner.C_coarse));
       config.setSvmGamma(Arrays.asList(WekaLearner.Y_coarse));
@@ -151,20 +163,9 @@ public class WekaLearner implements GroupReduceFunction<WikiDocumentOutput, Eval
     List<Double> C_used = config.getSvmCost();
     List<Double> Y_used = config.getSvmGamma();
     File output = new File(config.getOutputDir() + "/svm_cross_eval_statistics.csv");
-    File instancesFile = new File(config.getOutputDir() + "/instances.arff");
     File outputDetails = new File(config.getOutputDir() + "/svm_cross_eval_detailed_statistics.txt");
     File extractedDefiniens = new File(config.getOutputDir() + "/classifications.csv");
-    DependencyParser parser = DependencyParser.loadFromModelFile(config.dependencyParserModel());
-    Instances instances = createInstances("AllRelations");
-    for (WikiDocumentOutput value : values) {
-      addRelationsToInstances(parser, value.getRelations(), value.getTitle(), value.getqId(), instances, value.getMaxSentenceLength());
-    }
-    if (config.isWriteInstances()) {
-      ArffSaver arffSaver = new ArffSaver();
-      arffSaver.setFile(instancesFile);
-      arffSaver.setInstances(instances);
-      arffSaver.writeBatch();
-    }
+
     StringToWordVector stringToWordVector = new StringToWordVector();
     stringToWordVector.setAttributeIndices(indicesToRangeList(new int[]{
       instances.attribute(SURFACE_TEXT_AND_POS_TAG_OF_TWO_PRECEDING_AND_FOLLOWING_TOKENS_AROUND_THE_DESC_CANDIDATE).index(),
@@ -225,7 +226,7 @@ public class WekaLearner implements GroupReduceFunction<WikiDocumentOutput, Eval
         + Utils.doubleToString(evaluationResult.cost, 10)
         + "; gamma; " + Utils.doubleToString(evaluationResult.gamma, 10)
         + "; percentage_of_data_used; " + evaluationResult.percent
-        + "\\n", true);
+        + "\n", true);
       FileUtils.write(extractedDefiniens, e.toString(), true);
       FileUtils.write(output, evaluationResult.toString() + "\n", true);
       out.collect(evaluationResult);

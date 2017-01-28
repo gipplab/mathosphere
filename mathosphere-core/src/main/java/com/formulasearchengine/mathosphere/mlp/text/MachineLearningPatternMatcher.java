@@ -7,7 +7,7 @@ import com.formulasearchengine.mathosphere.mlp.pojos.Word;
 
 import java.util.*;
 
-public class MyPatternMatcher {
+public class MachineLearningPatternMatcher {
 
   public static final String IDENTIFIER = "identifier";
   public static final String DEFINITION = "definition";
@@ -43,30 +43,27 @@ public class MyPatternMatcher {
     Matcher<Word> identifier = BeanMatchers.eq(Word.class, "word", identifierText).captureAs(IDENTIFIER);
     Matcher<Word> definition = BeanMatchers.eq(Word.class, "word", definiens).captureAs(DEFINITION);
 
-    Pattern<Word> identifierPattern = Pattern.create(identifier);
-    Pattern<Word> definiensPattern = Pattern.create(definition);
-
     List<Pattern<Word>> patterns = Arrays.asList(
-      //1 pagel 1
-      Pattern.create(definition, identifier),
-      //2 not in pagel
+      //1 not in pagel
       Pattern.create(identifier, definition),
-      //3 pagel 6
-      Pattern.create(identifier, denotes, definition),
-      //4 pagel 6
-      Pattern.create(identifier, denotes, the, definition),
-      //5 pagel 2
+      //2 pagel 1
+      Pattern.create(definition, identifier),
+      //3 pagel 2
       Pattern.create(identifier, isOrAre, definition),
-      //6 pagel 3
+      //4 pagel 3
       Pattern.create(identifier, isOrAre, the, definition),
+      //5 pagel 4
+      Pattern.create(let, identifier, be, denoted, by, definition),
+      //6 pagel 4
+      Pattern.create(let, identifier, be, denoted, by, the, definition),
       //7 pagel 5
       Pattern.create(definition, isOrAre, denoted, by, identifier),
       //8 pagel 5
       Pattern.create(definition, isOrAre, denoted, by, the, identifier),
-      //9 pagel 4
-      Pattern.create(let, identifier, be, denoted, by, definition),
-      //10 pagel 4
-      Pattern.create(let, identifier, be, denoted, by, the, definition),
+      //9 pagel 6
+      Pattern.create(identifier, denotes, definition),
+      //10 pagel 6
+      Pattern.create(identifier, denotes, the, definition),
       //11
       //colon
       Pattern.create(pos(":")),
@@ -106,12 +103,12 @@ public class MyPatternMatcher {
         case 9:
           for (Match<Word> match : matches) {
             //check that the positions match
-            if (match.matchedFrom() + identifierPattern.find(match.getMatchedSubsequence()).get(0).matchedFrom() == identifierPosition &&
-              match.matchedFrom() + definiensPattern.find(match.getMatchedSubsequence()).get(0).matchedFrom() == definiensPosition) {
-              Word matchedDefiniens = match.getVariable(DEFINITION);
-              if (matchedDefiniens != null && matchedDefiniens.getWord().equals(definiens))
-                result[i] = 1;
-            }
+            //if (match.matchedFrom() + identifierPattern.find(match.getMatchedSubsequence()).get(0).matchedFrom() == identifierPosition &&
+            // match.matchedFrom() + definiensPattern.find(match.getMatchedSubsequence()).get(0).matchedFrom() == definiensPosition) {
+            Word matchedDefiniens = match.getVariable(DEFINITION);
+            if (matchedDefiniens != null && matchedDefiniens.getWord().equals(definiens))
+              result[i] = 1;
+            //}
           }
           break;
         case 10:
@@ -145,10 +142,10 @@ public class MyPatternMatcher {
               result[13] = 1;
           }
         case 15:
-          result[15] = ((double) matches.size()) / WekaUtils.LONGEST_SENTENCE_IN_ENGISH;
+          //result[15] = ((double) matches.size()) / WekaUtils.LONGEST_SENTENCE_IN_ENGISH;
           break;
         case 16:
-          result[16] = ((double) matches.size()) / WekaUtils.LONGEST_SENTENCE_IN_ENGISH;
+          //result[16] = ((double) matches.size()) / WekaUtils.LONGEST_SENTENCE_IN_ENGISH;
           break;
       }
     }

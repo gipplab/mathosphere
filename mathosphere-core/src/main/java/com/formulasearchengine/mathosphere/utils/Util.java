@@ -32,7 +32,7 @@ public class Util {
           title,
           relation.getIdentifier(),
           relation.getDefinition(), "Word number: " + String.valueOf(relation.getIdentifierPosition()),
-          relation.getSentence().toString(),
+          "\"" + relation.getSentence().toString() + "\"",
           getHumanReadableSentence(relation)};
         printer.printRecord(out);
       }
@@ -48,7 +48,7 @@ public class Util {
     //replace link
     words.remove(relation.getWordPosition());
     words.add(relation.getWordPosition(), relation.getDefinition());
-    return words.toString().replaceAll(",", "");
+    return '"' + words.toString() + '"';
 
 
   }

@@ -44,7 +44,7 @@ public class PatternMatcherMapper implements MapFunction<ParsedWikiDocument, Wik
         relation.setDefinition(match.getDefinition());
         relation.setSentence(sentence);
         relation.setScore(1.0d);
-        relation.setWordPosition(match.getPosition());
+        relation.setIdentifierPosition(match.getPosition());
 
         if (!relationWasFoundBefore(foundRelations, relation)) {
           LOGGER.debug("found match {}", relation);

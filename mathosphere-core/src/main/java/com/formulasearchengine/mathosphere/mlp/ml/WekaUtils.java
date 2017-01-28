@@ -4,7 +4,7 @@ import com.beust.jcommander.internal.Lists;
 import com.formulasearchengine.mathosphere.mlp.pojos.Relation;
 import com.formulasearchengine.mathosphere.mlp.pojos.WikiDocumentOutput;
 import com.formulasearchengine.mathosphere.mlp.pojos.Word;
-import com.formulasearchengine.mathosphere.mlp.text.MyPatternMatcher;
+import com.formulasearchengine.mathosphere.mlp.text.MachineLearningPatternMatcher;
 import edu.stanford.nlp.ling.IndexedWord;
 import edu.stanford.nlp.ling.TaggedWord;
 import edu.stanford.nlp.parser.nndep.DependencyParser;
@@ -49,16 +49,16 @@ public class WekaUtils {
    * Length of the definiens normalized with {@link #LONGEST_NNP_IN_ENGLISH}
    */
   public static final String DEFINIENS_LENGTH = "definiensLength";
-  public static final String PATTERN_1 = "pattern1";
-  public static final String PATTERN_2 = "pattern2";
-  public static final String PATTERN_3 = "pattern3";
-  public static final String PATTERN_4 = "pattern4";
-  public static final String PATTERN_5 = "pattern5";
-  public static final String PATTERN_6 = "pattern6";
-  public static final String PATTERN_7 = "pattern7";
-  public static final String PATTERN_8 = "pattern8";
-  public static final String PATTERN_9 = "pattern9";
-  public static final String PATTERN_10 = "pattern10";
+  public static final String PATTERN_1 = "pattern 1 identifier, definition";
+  public static final String PATTERN_2 = "pattern 2 definition, identifier";
+  public static final String PATTERN_3 = "pattern 3 identifier, isOrAre, definition";
+  public static final String PATTERN_4 = "pattern 4 identifier, isOrAre, the, definition";
+  public static final String PATTERN_5 = "pattern 5 let, identifier, be, denoted, by, definition";
+  public static final String PATTERN_6 = "pattern 6 let, identifier, be, denoted, by, the_one_or_more, definition";
+  public static final String PATTERN_7 = "pattern 7 definition, isOrAre, denoted, by, identifier";
+  public static final String PATTERN_8 = "pattern 8 definition, isOrAre, denoted, by, the_one_or_more, identifier";
+  public static final String PATTERN_9 = "pattern 9 identifier, denotes, definition";
+  public static final String PATTERN_10 = "pattern 10 identifier, denotes, the_one_or_more, definition";
   /**
    * colon between
    */
@@ -92,7 +92,7 @@ public class WekaUtils {
   public static final String INCOMING_TO_DEFINIEN = "direction of " + SURFACE_TEXT_AND_POS_TAG_OF_DEPENDENCY_WITH_LENGTH_3_FROM_DEFINIEN;
   //Feature 22 of [1]
   public static final String INCOMING_TO_IDENTIFIER = "direction of " + SURFACE_TEXT_AND_POS_TAG_OF_DEPENDENCY_WITH_LENGTH_3_FROM_IDENTIFIER;
-  public static final String DISTANCE_FROM_FIRST_OCCURENCE = "distance_from_first_occurence";
+  public static final String DISTANCE_FROM_FIRST_OCCURRENCE = "distance_from_first_occurence";
   public static final String RELATIVE_TERM_FREQUENCY = "relative_term_frequency";
 
   //String constants
@@ -106,7 +106,7 @@ public class WekaUtils {
   /**
    * According to https://en.wikipedia.org/wiki/Longest_English_sentence
    */
-  public static final double LONGEST_SENTENCE_IN_ENGISH = 100d;
+  public static final double LONGEST_SENTENCE_IN_ENGISH = 300d;
   private static final String NUMBER_OF_DEFINIENS_IN_SENTENCE = "number_of_definiens";
   private static final String NUMBER_OF_IDENTIFIERS_IN_SENTENCE = "number_of_identifiers";
 
@@ -137,11 +137,11 @@ public class WekaUtils {
     atts.add(new Attribute(COMMMA_BETWEEN));
     atts.add(new Attribute(OTHER_MATH_BETWEEN));
 
-    atts.add(new Attribute(NUMBER_OF_DEFINIENS_IN_SENTENCE));
-    atts.add(new Attribute(NUMBER_OF_IDENTIFIERS_IN_SENTENCE));
-
     atts.add(new Attribute(DEFINIENS_IN_PARENTHESES));
     atts.add(new Attribute(IDENTIFIER_IN_PARENTHESES));
+
+    atts.add(new Attribute(NUMBER_OF_DEFINIENS_IN_SENTENCE));
+    atts.add(new Attribute(NUMBER_OF_IDENTIFIERS_IN_SENTENCE));
 
     atts.add(new Attribute(WORD_DISTANCE));
     atts.add(new Attribute(WORD_POSITIONING));
@@ -154,7 +154,7 @@ public class WekaUtils {
     atts.add(new Attribute(INCOMING_TO_IDENTIFIER));
     atts.add(new Attribute(SURFACE_TEXT_AND_POS_TAG_OF_DEPENDENCY_WITH_LENGTH_3_FROM_DEFINIEN, (FastVector) null));
     atts.add(new Attribute(INCOMING_TO_DEFINIEN));
-    atts.add(new Attribute(DISTANCE_FROM_FIRST_OCCURENCE));
+    atts.add(new Attribute(DISTANCE_FROM_FIRST_OCCURRENCE));
     atts.add(new Attribute(RELATIVE_TERM_FREQUENCY));
     //TODO expand
     //classification
@@ -172,7 +172,7 @@ public class WekaUtils {
     nominal.add(MATCH);
     nominal.add(NO_MATCH);
     for (Relation relation : relations) {
-      double[] patternMatches = MyPatternMatcher.match(relation.getSentence(), relation.getIdentifier(), relation.getDefinition(), relation.getIdentifierPosition(), relation.getWordPosition());
+      double[] patternMatches = MachineLearningPatternMatcher.match(relation.getSentence(), relation.getIdentifier(), relation.getDefinition(), relation.getIdentifierPosition(), relation.getWordPosition());
       double[] values = new double[instances.numAttributes()];
       addStringValue(values, instances, TITLE, title);
       addStringValue(values, instances, Q_ID, qId);
@@ -185,7 +185,7 @@ public class WekaUtils {
       values[instances.attribute(WORD_DISTANCE).index()] = (double) Math.abs(wordDistance) / maxSentenceLength;
       //weather or not the definiens is before or after the identifier
       values[instances.attribute(WORD_POSITIONING).index()] = wordDistance > 0 ? 1 : 0;
-      values[instances.attribute(DEFINIENS_LENGTH).index()] = (double) relation.getDefinition().length() / LONGEST_NNP_IN_ENGLISH;
+      values[instances.attribute(DEFINIENS_LENGTH).index()] = (double) relation.getDefinition().length() / maxSentenceLength;
       for (int i = 0; i < patternMatches.length; i++) {
         values[instances.attribute(PATTERN_1).index() + i] = patternMatches[i];
       }
@@ -194,7 +194,7 @@ public class WekaUtils {
 
       addDependencyTreeFeatures(parser, values, instances, relation, maxSentenceLength);
 
-      values[instances.attribute(DISTANCE_FROM_FIRST_OCCURENCE).index()] = relation.getDistanceFromFirstIdentifierOccurence();
+      values[instances.attribute(DISTANCE_FROM_FIRST_OCCURRENCE).index()] = relation.getDistanceFromFirstIdentifierOccurence();
 
       values[instances.attribute(RELATIVE_TERM_FREQUENCY).index()] = relation.getRelativeTermFrequency();
 

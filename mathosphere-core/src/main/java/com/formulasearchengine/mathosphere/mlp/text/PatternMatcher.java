@@ -22,12 +22,13 @@ public class PatternMatcher {
 
   public List<IdentifierMatch> match(List<Word> words, ParsedWikiDocument doc) {
     List<IdentifierMatch> result = Lists.newArrayList();
-    for (Pattern<Word> pattern : patterns) {
+    for (int i = 0; i < patterns.size(); i++) {
+      Pattern<Word> pattern = patterns.get(i);
       List<Match<Word>> matches = pattern.find(words);
       for (Match<Word> match : matches) {
         String id = match.getVariable("identifier").getWord();
         String def = deLinkify(match.getVariable("definition"), doc);
-        int position = match.matchedFrom() + match.getMatchedSubsequence().indexOf(match.getVariable("definition"));
+        int position = i;
         result.add(new IdentifierMatch(id, def, position));
       }
     }
@@ -48,17 +49,25 @@ public class PatternMatcher {
     Matcher<Word> definition = posRegExp("(NN[PS]{0,2}|NP\\+?|NN\\+|LNK)").captureAs("definition");
 
     List<Pattern<Word>> patterns = Arrays.asList(
-        Pattern.create(definition, identifier),
-        Pattern.create(identifier, definition),
-        Pattern.create(identifier, denotes, definition),
-        Pattern.create(identifier, denotes, the, definition),
-        Pattern.create(identifier, isOrAre, definition),
-        Pattern.create(identifier, isOrAre, the, definition),
-        Pattern.create(identifier, isOrAre, denoted, by, definition),
-        Pattern.create(identifier, isOrAre, denoted, by, the, definition),
-        Pattern.create(let, identifier, be, denoted, by, definition),
-        Pattern.create(let, identifier, be, denoted, by, the, definition));
-
+      //0
+      Pattern.create(definition, identifier),
+      //1
+      Pattern.create(identifier, definition),
+      //2
+      Pattern.create(identifier, isOrAre, definition),
+      //3
+      Pattern.create(identifier, isOrAre, the, definition),
+      //4
+      Pattern.create(let, identifier, be, definition),
+      //5
+      Pattern.create(let, identifier, be, the, definition),
+      //6
+      Pattern.create(definition, isOrAre, denoted, by, identifier),
+      //7
+      Pattern.create(identifier, denotes, definition),
+      //8
+      Pattern.create(identifier, denotes, the, definition)
+    );
     return new PatternMatcher(patterns);
 
   }
