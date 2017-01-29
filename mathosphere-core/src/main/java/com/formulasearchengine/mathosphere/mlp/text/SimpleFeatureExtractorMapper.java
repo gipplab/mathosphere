@@ -34,7 +34,7 @@ public class SimpleFeatureExtractorMapper implements MapFunction<ParsedWikiDocum
 
   @Override
   public WikiDocumentOutput map(ParsedWikiDocument doc) throws Exception {
-    List<Relation> foundFeatures = Lists.newArrayList();
+    List<Relation> allIdentifierDefininesCandidates = new ArrayList<>();
     List<Sentence> sentences = doc.getSentences();
 
     Map<String, Integer> identifierSentenceDistanceMap = findSentencesWithIdentifierFirstOccurrences(sentences, doc.getIdentifiers());
@@ -69,12 +69,12 @@ public class SimpleFeatureExtractorMapper implements MapFunction<ParsedWikiDocum
           }
           match.setDistanceFromFirstIdentifierOccurence((double) (i - identifierSentenceDistanceMap.get(match.getIdentifier())) / (double) doc.getSentences().size());
           match.setRelevance(matchesGold(match.getIdentifier(), match.getDefinition(), goldEntry) ? 2 : 0);
-          foundFeatures.add(match);
+          allIdentifierDefininesCandidates.add(match);
         }
       }
     }
-    LOGGER.info("extracted {} relations from {}", foundFeatures.size(), doc.getTitle());
-    WikiDocumentOutput result = new WikiDocumentOutput(doc.getTitle(), goldEntry.getqID(), foundFeatures, null);
+    LOGGER.info("extracted {} relations from {}", allIdentifierDefininesCandidates.size(), doc.getTitle());
+    WikiDocumentOutput result = new WikiDocumentOutput(doc.getTitle(), goldEntry.getqID(), allIdentifierDefininesCandidates, null);
     result.setMaxSentenceLength(doc.getSentences().stream().map(s -> s.getWords().size()).max(Comparator.naturalOrder()).get());
     return result;
   }

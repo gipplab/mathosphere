@@ -235,7 +235,7 @@ public class CliMainTest {
   }
 
   @Test
-  public void testMachineLearningPreprocesses() throws Exception {
+  public void testMachineLearningFromPreprocessedInstances() throws Exception {
     final File temp = Files.createTempDir();
     String[] args = {CliParams.ML,
       "-in", resourcePath("com/formulasearchengine/mathosphere/mlp/gold/eval_dataset.xml"),
@@ -264,7 +264,6 @@ public class CliMainTest {
       "-out", temp.getAbsolutePath(),
       "--goldFile", resourcePath("com/formulasearchengine/mathosphere/mlp/gold/gold.json"),
       "--tex",
-      "--multiThreadedEvaluation",
       "--texvcinfo", "http://localhost:10044/texvcinfo",
       "--threads", "1",
       "--writeInstances"

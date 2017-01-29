@@ -12,9 +12,6 @@ import java.util.List;
 public class MachineLearningDefinienExtractionConfig extends FlinkMlpCommandConfig {
   @Parameter(names = {"--samplePercent"}, description = "how much of the training data should be used for training.")
   protected List<Double> percent = Arrays.asList(100d);
-  @Parameter(names = {"--multiThreadedEvaluation"}, description = "If the cross evaluation should be done with 10 threads. " +
-    "Should only be used with parallelism = 1, otherwise it will multiply the number of used threads by 10")
-  protected boolean multiThreadedEvaluation = false;
   @Parameter(names = {"--svmCost"}, description = "Cost value for the svm.")
   protected List<Double> svmCost = Arrays.asList(0.074325445d);
   @Parameter(names = {"--svmGamma"}, description = "Gamma value for the svm.")
@@ -70,14 +67,6 @@ public class MachineLearningDefinienExtractionConfig extends FlinkMlpCommandConf
 
   public void setPercent(List<Double> percent) {
     this.percent = percent;
-  }
-
-  public boolean isMultiThreadedEvaluation() {
-    return multiThreadedEvaluation;
-  }
-
-  public void setMultiThreadedEvaluation(boolean multiThreadedEvaluation) {
-    this.multiThreadedEvaluation = multiThreadedEvaluation;
   }
 
   public List<Double> getSvmCost() {

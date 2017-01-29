@@ -68,7 +68,6 @@ public class MachineLearningRelationFinder {
   private static void generateSatuationData() throws Exception {
     MachineLearningDefinienExtractionConfig config = MachineLearningDefinienExtractionConfig.test();
     config.setPercent(Arrays.asList(new Double[]{10d, 20d, 30d, 40d, 50d, 60d, 70d, 80d, 90d, 100d}));
-    config.setMultiThreadedEvaluation(true);
     find(config);
   }
 
@@ -76,7 +75,6 @@ public class MachineLearningRelationFinder {
     MachineLearningDefinienExtractionConfig config = MachineLearningDefinienExtractionConfig.test();
     config.setSvmCost(Arrays.asList(WekaLearner.C_coarse));
     config.setSvmGamma(Arrays.asList(WekaLearner.Y_coarse));
-    config.setMultiThreadedEvaluation(true);
     find(config);
   }
 
@@ -84,7 +82,6 @@ public class MachineLearningRelationFinder {
     MachineLearningDefinienExtractionConfig config = MachineLearningDefinienExtractionConfig.testfine();
     config.setSvmCost(Arrays.asList(WekaLearner.C_fine));
     config.setSvmGamma(Arrays.asList(WekaLearner.Y_fine));
-    config.setMultiThreadedEvaluation(true);
     find(config);
   }
 

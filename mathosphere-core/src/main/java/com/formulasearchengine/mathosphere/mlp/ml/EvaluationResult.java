@@ -3,8 +3,10 @@ package com.formulasearchengine.mathosphere.mlp.ml;
 import com.formulasearchengine.mlp.evaluation.pojo.ScoreSummary;
 import weka.core.Utils;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import static com.formulasearchengine.mathosphere.mlp.ml.WekaUtils.average;
@@ -31,7 +33,7 @@ public class EvaluationResult {
   public final double percent;
   public final double cost;
   public final double gamma;
-  Collection<String> extractions = new ConcurrentLinkedQueue();
+  public final List<String> extractions = new ArrayList<>();
 
   public EvaluationResult(int folds, double percent, double cost, double gamma) {
     this.folds = folds;

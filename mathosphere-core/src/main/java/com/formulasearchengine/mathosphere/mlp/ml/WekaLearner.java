@@ -4,6 +4,7 @@ import com.formulasearchengine.mathosphere.mlp.cli.MachineLearningDefinienExtrac
 import com.formulasearchengine.mathosphere.mlp.pojos.WikiDocumentOutput;
 import com.formulasearchengine.mlp.evaluation.Evaluator;
 import com.formulasearchengine.mlp.evaluation.pojo.GoldEntry;
+import com.formulasearchengine.mlp.evaluation.pojo.ScoreSummary;
 import edu.stanford.nlp.parser.nndep.DependencyParser;
 import org.apache.commons.io.FileUtils;
 import org.apache.flink.api.common.functions.GroupReduceFunction;
@@ -145,15 +146,15 @@ public class WekaLearner implements GroupReduceFunction<WikiDocumentOutput, Eval
     Instances instances;
     DependencyParser parser = DependencyParser.loadFromModelFile(config.dependencyParserModel());
     instances = createInstances("AllRelations");
+    for (WikiDocumentOutput value : values) {
+      addRelationsToInstances(parser, value.getRelations(), value.getTitle(), value.getqId(), instances, value.getMaxSentenceLength());
+    }
     File instancesFile = new File(config.getOutputDir() + INSTANCES_ARFF_FILE_NAME);
     if (config.isWriteInstances()) {
       ArffSaver arffSaver = new ArffSaver();
       arffSaver.setFile(instancesFile);
       arffSaver.setInstances(instances);
       arffSaver.writeBatch();
-    }
-    for (WikiDocumentOutput value : values) {
-      addRelationsToInstances(parser, value.getRelations(), value.getTitle(), value.getqId(), instances, value.getMaxSentenceLength());
     }
     process(out, instances);
   }
@@ -236,10 +237,10 @@ public class WekaLearner implements GroupReduceFunction<WikiDocumentOutput, Eval
     Callable<List<EvaluationResult>> task = () -> a.collect(toList());
     List<EvaluationResult> evaluationResults = forkJoinPool.submit(task).get();
     for (EvaluationResult evaluationResult : evaluationResults) {
-      FileUtils.write(outputDetails, "Cost; " + Utils.doubleToString(evaluationResult.gamma, 10) + "; gamma; " + Utils.doubleToString(evaluationResult.gamma, 10) + "\n" + Arrays.toString(evaluationResult.text) + "\n", true);
+      FileUtils.write(outputDetails, "Cost; " + Utils.doubleToString(evaluationResult.cost, 10) + "; gamma; " + Utils.doubleToString(evaluationResult.gamma, 10) + "\n" + Arrays.toString(evaluationResult.text) + "\n", true);
       //remove duplicates from extraction
       StringBuilder e = new StringBuilder();
-      Set<String> set = new HashSet();
+      Set<String> set = new HashSet<>();
       set.addAll(evaluationResult.extractions);
       List<String> list = new ArrayList<>(set);
       list.sort(Comparator.naturalOrder());
@@ -266,58 +267,39 @@ public class WekaLearner implements GroupReduceFunction<WikiDocumentOutput, Eval
       System.out.println("Cost; " + Utils.doubleToString(cost, 10)
         + "; gamma; " + Utils.doubleToString(gamma, 10));
       EvaluationResult result = new EvaluationResult(folds, percent, cost, gamma);
-      //draw random sample
-      Resample sampler = new Resample();
-      sampler.setInputFormat(stringsReplacedData);
-      sampler.setRandomSeed(1);
-      //do not change distribution
-      sampler.setBiasToUniformClass(0);
-      sampler.setSampleSizePercent(percent);
-      Instances reduced = Filter.useFilter(stringsReplacedData, sampler);
-
+      Instances reduced;
+      if (percent != 100) {
+        //draw random sample
+        Resample sampler = new Resample();
+        sampler.setInputFormat(stringsReplacedData);
+        sampler.setRandomSeed(1);
+        //do not change distribution
+        sampler.setBiasToUniformClass(0);
+        sampler.setSampleSizePercent(percent);
+        reduced = Filter.useFilter(stringsReplacedData, sampler);
+      } else {
+        reduced = stringsReplacedData;
+      }
       //oversampling to deal with the ratio of the classes
       Resample resampleFilter = new Resample();
       resampleFilter.setRandomSeed(1);
-      resampleFilter.setBiasToUniformClass(1d);
+      resampleFilter.setBiasToUniformClass(0);
       resampleFilter.setInputFormat(reduced);
       Instances resampled = Filter.useFilter(reduced, resampleFilter);
       int counter = 0;
       while (10 * counter < totalQids) {
-        if (config.isMultiThreadedEvaluation()) {
-          //Do the computation in parallel
-          Thread[] threads = new Thread[folds];
-          for (int n = 0; n < folds; n++) {
-            threads[n] = new Thread(getRunnable(10 * counter + n, removeFilter, cost, gamma, reduced, resampled, result.averagePrecision, result.averageRecall, result.accuracy, result.text, result.extractions));
-            threads[n].start();
-          }
-          for (int n = 0; n < folds; n++) {
-            threads[n].join();
-          }
-        } else {
-          for (int n = 0; n < folds; n++) {
-            trainAndTest(10 * counter + n, removeFilter, cost, gamma, reduced, resampled, result.averagePrecision, result.averageRecall, result.accuracy, result.text, result.extractions);
-          }
+        for (int n = 0; n < folds; n++) {
+          trainAndTest(10 * counter + n, removeFilter, cost, gamma, reduced, resampled, result.averagePrecision, result.averageRecall, result.accuracy, result.text, result.extractions);
         }
-        if (!config.isLeaveOneOutEvaluation())
+        if (!config.isLeaveOneOutEvaluation()) {
           break;
+        }
       }
       return result;
     } catch (Exception e) {
       System.out.println(e.toString());
       return new EvaluationResult(folds, percent, cost, gamma);
     }
-  }
-
-  private Runnable getRunnable(int n, Filter removeFilter, double cost, double gamma, Instances beforeResampling, Instances resampled,
-                               double[] averagePrecision, double[] averageRecall, double[] accuracy, String[] text,
-                               Collection<String> extractions) throws Exception {
-    return () -> {
-      try {
-        trainAndTest(n, removeFilter, cost, gamma, beforeResampling, resampled, averagePrecision, averageRecall, accuracy, text, extractions);
-      } catch (Exception e) {
-        e.printStackTrace();
-      }
-    };
   }
 
   private void trainAndTest(int n, Filter removeFilter, double cost, double gamma, Instances beforeResampling, Instances resampled,
@@ -366,14 +348,14 @@ public class WekaLearner implements GroupReduceFunction<WikiDocumentOutput, Eval
       Instance instance = test.get(i);
       String match = train.classAttribute().value(0);
       String predictedClass = train.classAttribute().value((int) clsCopy.classifyInstance(instance));
-      if (match.equals(predictedClass)) {
-        String extraction =
-          instance.stringValue(instance.attribute(train.attribute(Q_ID).index())) + ","
-            + "\"" + instance.stringValue(instance.attribute(train.attribute(TITLE).index())).replaceAll("\\s", "_") + "\","
-            + "\"" + instance.stringValue(instance.attribute(train.attribute(IDENTIFIER).index())) + "\","
-            + "\"" + instance.stringValue(instance.attribute(train.attribute(DEFINIEN).index())).toLowerCase() + "\"";
-        extractions.add(extraction);
-      }
+      //if (match.equals(predictedClass)) {
+      String extraction =
+        instance.stringValue(instance.attribute(train.attribute(Q_ID).index())) + ","
+          + "\"" + instance.stringValue(instance.attribute(train.attribute(TITLE).index())).replaceAll("\\s", "_") + "\","
+          + "\"" + instance.stringValue(instance.attribute(train.attribute(IDENTIFIER).index())) + "\","
+          + "\"" + instance.stringValue(instance.attribute(train.attribute(DEFINIEN).index())).toLowerCase() + "\"";
+      extractions.add(extraction);
+      //}
     }
     Evaluation eval = new Evaluation(resampled);
     eval.setPriors(train);
