@@ -348,14 +348,14 @@ public class WekaLearner implements GroupReduceFunction<WikiDocumentOutput, Eval
       Instance instance = test.get(i);
       String match = train.classAttribute().value(0);
       String predictedClass = train.classAttribute().value((int) clsCopy.classifyInstance(instance));
-      //if (match.equals(predictedClass)) {
+      if (match.equals(predictedClass)) {
       String extraction =
         instance.stringValue(instance.attribute(train.attribute(Q_ID).index())) + ","
           + "\"" + instance.stringValue(instance.attribute(train.attribute(TITLE).index())).replaceAll("\\s", "_") + "\","
           + "\"" + instance.stringValue(instance.attribute(train.attribute(IDENTIFIER).index())) + "\","
           + "\"" + instance.stringValue(instance.attribute(train.attribute(DEFINIEN).index())).toLowerCase() + "\"";
       extractions.add(extraction);
-      //}
+      }
     }
     Evaluation eval = new Evaluation(resampled);
     eval.setPriors(train);
