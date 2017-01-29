@@ -1,7 +1,7 @@
 package com.formulasearchengine.mathosphere.mathpd;
 
 import com.formulasearchengine.mathosphere.mathpd.cli.FlinkPdCommandConfig;
-import com.formulasearchengine.mathosphere.mathpd.contracts.ExtractedMathPDDocumentMapper;
+import com.formulasearchengine.mathosphere.mathpd.contracts.PreprocessedExtractedMathPDDocumentMapper;
 import com.formulasearchengine.mathosphere.mathpd.contracts.TextExtractorMapper;
 import com.formulasearchengine.mathosphere.mathpd.pojos.ExtractedMathPDDocument;
 import com.formulasearchengine.mathosphere.mlp.contracts.CreateCandidatesMapper;
@@ -35,7 +35,7 @@ public class FlinkPd {
     private static final int NUMBER_OF_ALL_DOCS = 4; // only used in TF_IDF mode
     private static final double EPSILON = 0.00000000000000000001;
     private static final boolean IS_MODE_TFIDF = false; // if false, we use relative similarity
-    private static final boolean IS_MODE_PREPROCESSING = true;
+    private static final boolean IS_MODE_PREPROCESSING = false;
     private static DecimalFormat decimalFormat = new DecimalFormat("0.0");
 
     public static void main(String[] args) throws Exception {
@@ -135,7 +135,7 @@ public class FlinkPd {
                     new TextOutputFormat.TextFormatter<Tuple2<String, ExtractedMathPDDocument>>() {
                         @Override
                         public String format(Tuple2<String, ExtractedMathPDDocument> stringExtractedMathPDDocumentTuple2) {
-                            return ExtractedMathPDDocumentMapper.getFormattedWritableText(stringExtractedMathPDDocumentTuple2.f1);
+                            return PreprocessedExtractedMathPDDocumentMapper.getFormattedWritableText(stringExtractedMathPDDocumentTuple2.f1);
                         }
                     });
 
@@ -151,12 +151,12 @@ public class FlinkPd {
                     new TextOutputFormat.TextFormatter<Tuple2<String, ExtractedMathPDDocument>>() {
                         @Override
                         public String format(Tuple2<String, ExtractedMathPDDocument> stringExtractedMathPDDocumentTuple2) {
-                            return ExtractedMathPDDocumentMapper.getFormattedWritableText(stringExtractedMathPDDocumentTuple2.f1);
+                            return PreprocessedExtractedMathPDDocumentMapper.getFormattedWritableText(stringExtractedMathPDDocumentTuple2.f1);
                         }
                     });
         } else {
-            final DataSet<Tuple2<String, ExtractedMathPDDocument>> extractedMathPdDocumentsSources = readPreprocessedFiles(preprocessedSourcesFiles, env).flatMap(new ExtractedMathPDDocumentMapper());
-            final DataSet<Tuple2<String, ExtractedMathPDDocument>> extractedMathPdDocumentsRefs = readPreprocessedFiles(preprocessedRefsFiles, env).flatMap(new ExtractedMathPDDocumentMapper());
+            final DataSet<Tuple2<String, ExtractedMathPDDocument>> extractedMathPdDocumentsSources = readPreprocessedFile(preprocessedSourcesFiles, env).flatMap(new PreprocessedExtractedMathPDDocumentMapper());
+            final DataSet<Tuple2<String, ExtractedMathPDDocument>> extractedMathPdDocumentsRefs = readPreprocessedFile(preprocessedRefsFiles, env).flatMap(new PreprocessedExtractedMathPDDocumentMapper());
 
             GroupReduceOperator<Tuple2<Tuple2<String, ExtractedMathPDDocument>, Tuple3<String, String, Double>>, Tuple2<String, ExtractedMathPDDocument>> extractedMathPDDocsWithTFIDF = null;
             if (IS_MODE_TFIDF) {
@@ -385,10 +385,11 @@ public class FlinkPd {
         return env.readFile(inp, config.getRef());
     }
 
-    public static DataSource<String> readPreprocessedFiles(String pathname, ExecutionEnvironment env) {
+    public static DataSource<String> readPreprocessedFile(String pathname, ExecutionEnvironment env) {
         Path filePath = new Path(pathname);
         TextInputFormat inp = new TextInputFormat(filePath);
         inp.setCharsetName("UTF-8");
+        // env.read
         return env.readFile(inp, pathname);
     }
 
