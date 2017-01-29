@@ -120,7 +120,8 @@ public class FlinkPd {
             preprocessedRefsFiles += "2";
         }
 
-        if (config.isPreProcessingMode()) {
+        //if (config.isPreProcessingMode()) {
+        if (true) {
             DataSource<String> source = readWikiDump(config, env);
             DataSource<String> refs = readRefs(config, env);
 
