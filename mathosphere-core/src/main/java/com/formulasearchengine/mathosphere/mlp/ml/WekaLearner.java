@@ -269,7 +269,7 @@ public class WekaLearner implements GroupReduceFunction<WikiDocumentOutput, Eval
       EvaluationResult result = new EvaluationResult(folds, percent, cost, gamma);
       Instances reduced;
       if (percent != 100) {
-        //draw random sample
+        //draw random sample, careful, this actually has an effect, even for setSampleSizePercent(100) and setBiasToUniformClass(0)
         Resample sampler = new Resample();
         sampler.setInputFormat(stringsReplacedData);
         sampler.setRandomSeed(1);
@@ -283,7 +283,7 @@ public class WekaLearner implements GroupReduceFunction<WikiDocumentOutput, Eval
       //oversampling to deal with the ratio of the classes
       Resample resampleFilter = new Resample();
       resampleFilter.setRandomSeed(1);
-      resampleFilter.setBiasToUniformClass(0);
+      resampleFilter.setBiasToUniformClass(1);
       resampleFilter.setInputFormat(reduced);
       Instances resampled = Filter.useFilter(reduced, resampleFilter);
       int counter = 0;
