@@ -7,6 +7,8 @@ import com.formulasearchengine.mlp.evaluation.pojo.GoldEntry;
 import edu.stanford.nlp.parser.nndep.DependencyParser;
 import org.apache.commons.io.FileUtils;
 import org.apache.flink.api.common.functions.GroupReduceFunction;
+import org.apache.flink.api.common.functions.util.CopyingListCollector;
+import org.apache.flink.api.common.functions.util.ListCollector;
 import org.apache.flink.util.Collector;
 import weka.classifiers.Classifier;
 import weka.classifiers.evaluation.Evaluation;
@@ -15,6 +17,7 @@ import weka.classifiers.meta.FilteredClassifier;
 import weka.core.Instance;
 import weka.core.Instances;
 import weka.core.Utils;
+import weka.core.converters.ArffLoader;
 import weka.core.converters.ArffSaver;
 import weka.core.tokenizers.NGramTokenizer;
 import weka.filters.Filter;
@@ -23,9 +26,7 @@ import weka.filters.supervised.instance.Resample;
 import weka.filters.unsupervised.attribute.Remove;
 import weka.filters.unsupervised.attribute.StringToWordVector;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.StringReader;
+import java.io.*;
 import java.util.*;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ForkJoinPool;
@@ -128,6 +129,7 @@ public class WekaLearner implements GroupReduceFunction<WikiDocumentOutput, Eval
    * γ = 0.018581361
    */
   public static final Double[] Y_best_F1 = {Math.pow(2, -5.75)};
+  public static final String INSTANCES_ARFF_FILE_NAME = "/instances.arff";
 
   private final ArrayList<GoldEntry> gold;
 
@@ -140,9 +142,10 @@ public class WekaLearner implements GroupReduceFunction<WikiDocumentOutput, Eval
 
   @Override
   public void reduce(Iterable<WikiDocumentOutput> values, Collector<EvaluationResult> out) throws Exception {
+    Instances instances;
     DependencyParser parser = DependencyParser.loadFromModelFile(config.dependencyParserModel());
-    Instances instances = createInstances("AllRelations");
-    File instancesFile = new File(config.getOutputDir() + "/instances.arff");
+    instances = createInstances("AllRelations");
+    File instancesFile = new File(config.getOutputDir() + INSTANCES_ARFF_FILE_NAME);
     if (config.isWriteInstances()) {
       ArffSaver arffSaver = new ArffSaver();
       arffSaver.setFile(instancesFile);
@@ -152,6 +155,31 @@ public class WekaLearner implements GroupReduceFunction<WikiDocumentOutput, Eval
     for (WikiDocumentOutput value : values) {
       addRelationsToInstances(parser, value.getRelations(), value.getTitle(), value.getqId(), instances, value.getMaxSentenceLength());
     }
+    process(out, instances);
+  }
+
+  public List<EvaluationResult> processFromInstances() throws Exception {
+    BufferedReader reader =
+      new BufferedReader(new FileReader(config.getInstancesFile()));
+    ArffLoader.ArffReader arff = new ArffLoader.ArffReader(reader);
+    Instances instances;
+    instances = arff.getData();
+    instances.setClassIndex(instances.numAttributes() - 1);
+    ArrayList<EvaluationResult> evaluationResults = new ArrayList<>();
+    //wrap
+    Collector<EvaluationResult> c = new ListCollector<>(evaluationResults);
+    process(c, instances);
+    return evaluationResults;
+  }
+
+  /**
+   * Do the pre-processing, training and testing.
+   *
+   * @param out       the result of the testing
+   * @param instances the instances to use for the testing and training.
+   * @throws Exception
+   */
+  private void process(Collector<EvaluationResult> out, Instances instances) throws Exception {
     if (config.isCoarseSearch()) {
       config.setSvmCost(Arrays.asList(WekaLearner.C_coarse));
       config.setSvmGamma(Arrays.asList(WekaLearner.Y_coarse));
@@ -275,6 +303,7 @@ public class WekaLearner implements GroupReduceFunction<WikiDocumentOutput, Eval
       }
       return result;
     } catch (Exception e) {
+      System.out.println(e.toString());
       return new EvaluationResult(folds, percent, cost, gamma);
     }
   }

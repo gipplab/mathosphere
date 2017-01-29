@@ -21,6 +21,9 @@ public class MachineLearningDefinienExtractionConfig extends FlinkMlpCommandConf
   protected List<Double> svmGamma = Arrays.asList(0.011048544d);
   @Parameter(names = {"--writeSvmModel"}, description = "Writes the models from the cross evaluation to the output directory.")
   protected boolean writeSvmModel;
+  @Parameter(names = {"--instances"}, description = "File location of the instances.arff file to use for the testing and training. " +
+    "Full support only for files that have been written by --writeInstances of the same version of this executable.")
+  protected String instancesFile;
 
   public boolean isWriteInstances() {
     return writeInstances;
@@ -34,7 +37,7 @@ public class MachineLearningDefinienExtractionConfig extends FlinkMlpCommandConf
     return fineSearch;
   }
 
-  @Parameter(names = {"--writeInstances"}, description = "Writes the data to train the svm to the output directory.")
+  @Parameter(names = {"--writeInstances"}, description = "Writes the data to train the svm to the output directory. Overwrites instances.arff in the output directory.")
   protected boolean writeInstances;
   @Parameter(names = {"--coarseParameterSearch"}, description = "Searches for parameters in a coarse grid of cost and gamma values.")
   protected boolean coarseSearch;
@@ -147,5 +150,13 @@ public class MachineLearningDefinienExtractionConfig extends FlinkMlpCommandConf
 
   public void dependencyParserModel(String dependencyParserLocation) {
     this.dependencyParserModel = dependencyParserModel;
+  }
+
+  public String getInstancesFile() {
+    return instancesFile;
+  }
+
+  public void setInstancesFile(String instancesFile) {
+    this.instancesFile = instancesFile;
   }
 }

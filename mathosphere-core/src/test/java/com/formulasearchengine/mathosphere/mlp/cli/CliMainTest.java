@@ -201,14 +201,15 @@ public class CliMainTest {
   public void testPatternMatcher() throws Exception {
     final File temp = Files.createTempDir();
     String[] args = {CliParams.EVAL,
-      "-in", resourcePath("com/formulasearchengine/mathosphere/mlp/gold/eval_dataset_sample.xml"),
+      "-in", resourcePath("com/formulasearchengine/mathosphere/mlp/gold/eval_dataset.xml"),
       "-out", temp.getAbsolutePath(),
-      "--queries", resourcePath("com/formulasearchengine/mathosphere/mlp/gold/gold_sample.json"),
+      "--queries", resourcePath("com/formulasearchengine/mathosphere/mlp/gold/gold.json"),
       "--nd", resourcePath("com/formulasearchengine/mathosphere/mlp/gold/nd.json"),
       "--tex",
       "--usePatternMatcher",
       "-t", "0.8",
       "--level", "2",
+      "--texvcinfo", "http://localhost:10044/texvcinfo",
       "--ref", resourcePath("com/formulasearchengine/mathosphere/mlp/nd")
     };
     final PrintStream stdout = System.out;
@@ -229,6 +230,19 @@ public class CliMainTest {
       "--texvcinfo", "http://localhost:10044/texvcinfo",
       "--threads", "10",
       "--writeInstances"
+    };
+    Main.main(args);
+  }
+
+  @Test
+  public void testMachineLearningPreprocesses() throws Exception {
+    final File temp = Files.createTempDir();
+    String[] args = {CliParams.ML,
+      "-in", resourcePath("com/formulasearchengine/mathosphere/mlp/gold/eval_dataset.xml"),
+      "-out", temp.getAbsolutePath(),
+      "--goldFile", resourcePath("com/formulasearchengine/mathosphere/mlp/gold/gold.json"),
+      "--threads", "10",
+      "--instances", resourcePath("com/formulasearchengine/mathosphere/mlp/ml/instances.arff")
     };
     Main.main(args);
   }

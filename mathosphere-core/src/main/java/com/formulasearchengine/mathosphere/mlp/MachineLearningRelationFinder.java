@@ -33,20 +33,32 @@ public class MachineLearningRelationFinder {
     find(MachineLearningDefinienExtractionConfig.test());
   }
 
-  public static DataSet<EvaluationResult> find(MachineLearningDefinienExtractionConfig config) throws Exception {
-    ExecutionEnvironment env = ExecutionEnvironment.getExecutionEnvironment();
-    env.setParallelism(config.getParallelism());
-    DataSource<String> source = readWikiDump(config, env);
-    DataSet<ParsedWikiDocument> documents = source.flatMap(new TextExtractorMapper())
-      .map(new TextAnnotatorMapper(config));
-    Logger.getRootLogger().setLevel(Level.ERROR);
-    ArrayList<GoldEntry> gold = (new Evaluator()).readGoldEntries(new File(config.getGoldFile()));
-    DataSet<WikiDocumentOutput> instances = documents.map(new SimpleFeatureExtractorMapper(config, gold));
-    DataSet<EvaluationResult> result = instances.reduceGroup(new WekaLearner(config));
-    result.map(new JsonSerializerMapper<>())
-      .writeAsText(config.getOutputDir() + "\\tmp", WriteMode.OVERWRITE);
-    env.execute();
-    return result;
+  public static void find(MachineLearningDefinienExtractionConfig config) throws Exception {
+    if (config.getInstancesFile() == null) {
+      //parse wikipedia (subset) and process afterwards
+      ExecutionEnvironment env = ExecutionEnvironment.getExecutionEnvironment();
+      env.setParallelism(config.getParallelism());
+      DataSource<String> source = readWikiDump(config, env);
+      DataSet<ParsedWikiDocument> documents = source.flatMap(new TextExtractorMapper())
+        .map(new TextAnnotatorMapper(config));
+      Logger.getRootLogger().setLevel(Level.ERROR);
+      ArrayList<GoldEntry> gold = (new Evaluator()).readGoldEntries(new File(config.getGoldFile()));
+      DataSet<WikiDocumentOutput> instances = documents.map(new SimpleFeatureExtractorMapper(config, gold));
+      //process parsed wikipedia
+      DataSet<EvaluationResult> result = instances.reduceGroup(new WekaLearner(config));
+      //write to kick off flink execution
+      result.map(new JsonSerializerMapper<>())
+        .writeAsText(config.getOutputDir() + "\\tmp", WriteMode.OVERWRITE);
+      env.execute();
+    } else {
+      //just process
+      findFromInstances(config);
+    }
+  }
+
+  public static List<EvaluationResult> findFromInstances(MachineLearningDefinienExtractionConfig config) throws Exception {
+    WekaLearner wekaLearner = new WekaLearner(config);
+    return wekaLearner.processFromInstances();
   }
 
   public static DataSource<String> readWikiDump(MachineLearningDefinienExtractionConfig config, ExecutionEnvironment env) {
