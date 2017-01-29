@@ -22,8 +22,29 @@ public class FlinkPdCommandConfig extends BaseConfig implements Serializable {
   @Parameter(names = {"--treads"}, description = "how many parallel threads should be used")
   protected int parallelism = 0;
 
+    @Parameter(names = {"--preprocessing"}, description = "if MathPD is run in preprocessing mode")
+    protected boolean isPreProcessingMode = false;
+
   public FlinkPdCommandConfig() {
   }
+
+    public FlinkPdCommandConfig(String dataset, String reference, String outputdir, boolean isPreProcessingMode) {
+        this.dataset = dataset;
+        this.outputdir = outputdir;
+        this.ref = reference;
+        this.isPreProcessingMode = isPreProcessingMode;
+    }
+
+    public FlinkPdCommandConfig(String dataset, String reference, String outputdir) {
+        this(dataset, reference, outputdir, false);
+    }
+
+    public FlinkPdCommandConfig(String dataset, String outputdir, String model, String language, double alpha, double beta,
+                                double gamma, double threshold, Boolean useTex) {
+        super(model, language, alpha, beta, gamma, threshold, useTex);
+        this.dataset = dataset;
+        this.outputdir = outputdir;
+    }
 
   public static FlinkPdCommandConfig test() {
     String dataset = "c:/tmp/mlp/input/";
@@ -47,19 +68,6 @@ public class FlinkPdCommandConfig extends BaseConfig implements Serializable {
     return config;
   }
 
-  public FlinkPdCommandConfig(String dataset, String reference, String outputdir) {
-    this.dataset = dataset;
-    this.outputdir = outputdir;
-    this.ref = reference;
-  }
-
-  public FlinkPdCommandConfig(String dataset, String outputdir, String model, String language, double alpha, double beta,
-                              double gamma, double threshold, Boolean useTex) {
-    super(model, language, alpha, beta, gamma, threshold, useTex);
-    this.dataset = dataset;
-    this.outputdir = outputdir;
-  }
-
   public String getDataset() {
     return dataset;
   }
@@ -67,6 +75,10 @@ public class FlinkPdCommandConfig extends BaseConfig implements Serializable {
   public String getOutputDir() {
     return outputdir;
   }
+
+    public boolean isPreProcessingMode() {
+        return isPreProcessingMode;
+    }
 
   public int getParallelism() {
     return parallelism;

@@ -35,7 +35,6 @@ public class FlinkPd {
     private static final int NUMBER_OF_ALL_DOCS = 4; // only used in TF_IDF mode
     private static final double EPSILON = 0.00000000000000000001;
     private static final boolean IS_MODE_TFIDF = false; // if false, we use relative similarity
-    private static final boolean IS_MODE_PREPROCESSING = false;
     private static DecimalFormat decimalFormat = new DecimalFormat("0.0");
 
     public static void main(String[] args) throws Exception {
@@ -114,17 +113,18 @@ public class FlinkPd {
 
     public static void run(FlinkPdCommandConfig config) throws Exception {
         final ExecutionEnvironment env = ExecutionEnvironment.getExecutionEnvironment();
+
         final String preprocessedSourcesFiles = config.getDataset() + "_preprocessed";
         String preprocessedRefsFiles = config.getRef() + "_preprocessed";
         if (preprocessedRefsFiles.equals(preprocessedSourcesFiles)) {
             preprocessedRefsFiles += "2";
         }
 
-        if (IS_MODE_PREPROCESSING) {
+        if (config.isPreProcessingMode()) {
             DataSource<String> source = readWikiDump(config, env);
             DataSource<String> refs = readRefs(config, env);
 
-            final FlatMapOperator<String, Tuple2<String, ExtractedMathPDDocument>> extractedMathPdSnippetsSources = source.flatMap(new TextExtractorMapper());
+            final FlatMapOperator<String, Tuple2<String, ExtractedMathPDDocument>> extractedMathPdSnippetsSources = source.first(100).flatMap(new TextExtractorMapper());
 
             // first, merge all pages of one doc to one doc
             DataSet<Tuple2<String, ExtractedMathPDDocument>> extractedMathPdDocumentsSources = aggregateSnippetsToSingleDocs(extractedMathPdSnippetsSources);
@@ -354,7 +354,7 @@ public class FlinkPd {
             binnedDistancesForPairs.writeAsCsv(config.getOutputDir() + "_binned", WriteMode.OVERWRITE);
         }
 
-        env.execute(String.format("MathPD(IS_MODE_PREPROCESSING=%b, IS_MODE_TFIDF=%b)", IS_MODE_PREPROCESSING, IS_MODE_TFIDF));
+        env.execute(String.format("MathPD(IS_MODE_PREPROCESSING=%b, IS_MODE_TFIDF=%b)", config.isPreProcessingMode(), IS_MODE_TFIDF));
     }
 
     private static double getBinBoundary(double value, double binWidth, boolean isLower) {

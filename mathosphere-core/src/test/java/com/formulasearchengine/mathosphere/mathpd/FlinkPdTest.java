@@ -58,19 +58,20 @@ public class FlinkPdTest {
 
     @Test
     public void testDistances() throws Exception {
-        String filename = "161214_allpdcases.xml";
+        String filename1 = "161214_allpdcases.xml";
         //filename = "161214_somepdcases.xml";
         //filename = "test9.xml";
         //filename = "twice.xhtml";
+        String filename2 = "test9.xml";
 
         final File temp;
         temp = File.createTempFile("temp", Long.toString(System.nanoTime()));
         String[] args = new String[7];
         args[0] = "pd";
         args[1] = "-in";
-        args[2] = resourcePath("com/formulasearchengine/mathosphere/mathpd/" + filename);
+        args[2] = resourcePath("com/formulasearchengine/mathosphere/mathpd/" + filename1);
         args[3] = "-ref";
-        args[4] = resourcePath("com/formulasearchengine/mathosphere/mathpd/" + filename);
+        args[4] = resourcePath("com/formulasearchengine/mathosphere/mathpd/" + filename2);
         args[5] = "-out";
         args[6] = temp.getAbsolutePath();
         final PrintStream stdout = System.out;

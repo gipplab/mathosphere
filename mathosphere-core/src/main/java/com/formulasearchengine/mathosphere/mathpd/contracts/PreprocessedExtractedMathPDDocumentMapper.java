@@ -1,13 +1,13 @@
 package com.formulasearchengine.mathosphere.mathpd.contracts;
 
 import com.formulasearchengine.mathosphere.mathpd.pojos.ExtractedMathPDDocument;
-import com.google.gson.Gson;
 import org.apache.flink.api.common.functions.FlatMapFunction;
 import org.apache.flink.api.java.tuple.Tuple2;
 import org.apache.flink.util.Collector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.*;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
@@ -20,13 +20,48 @@ public class PreprocessedExtractedMathPDDocumentMapper implements FlatMapFunctio
     private static final Logger LOGGER = LoggerFactory.getLogger(PreprocessedExtractedMathPDDocumentMapper.class);
 
     public static ExtractedMathPDDocument readExtractedMathPDDocumentFromText(String text) {
-        final String json = new String(Base64.getDecoder().decode(text), CHARSET);
-        LOGGER.info(json);
-        return new Gson().fromJson(json, ExtractedMathPDDocument.class);
+        LOGGER.info("text = " + text);
+        ByteArrayInputStream bis = new ByteArrayInputStream(Base64.getDecoder().decode(text));
+        ObjectInput in = null;
+        try {
+            in = new ObjectInputStream(bis);
+            return (ExtractedMathPDDocument) in.readObject();
+        } catch (IOException | ClassNotFoundException e) {
+            new RuntimeException(e);
+        } finally {
+            try {
+                if (in != null) {
+                    in.close();
+                }
+            } catch (IOException ex2) {
+                // ignore close exception
+            }
+        }
+        return null;
     }
 
     public static String getFormattedWritableText(ExtractedMathPDDocument doc) {
-        return Base64.getEncoder().encodeToString(new Gson().toJson(doc).getBytes());
+        final ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        ObjectOutputStream oos = null;
+        try {
+            oos = new ObjectOutputStream(bos);
+            oos.writeObject(doc);
+            oos.flush();
+            return Base64.getEncoder().encodeToString(bos.toByteArray());
+        } catch (IOException ioe) {
+            throw new RuntimeException(ioe);
+        } finally {
+            try {
+                if (bos != null)
+                    bos.close();
+                if (oos != null) {
+                    oos.close();
+                    ;
+                }
+            } catch (IOException oie2) {
+                throw new RuntimeException(oie2);
+            }
+        }
     }
 
     @Override
