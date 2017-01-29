@@ -124,7 +124,7 @@ public class FlinkPd {
             DataSource<String> source = readWikiDump(config, env);
             DataSource<String> refs = readRefs(config, env);
 
-            final FlatMapOperator<String, Tuple2<String, ExtractedMathPDDocument>> extractedMathPdSnippetsSources = source.first(100).flatMap(new TextExtractorMapper());
+            final FlatMapOperator<String, Tuple2<String, ExtractedMathPDDocument>> extractedMathPdSnippetsSources = source.flatMap(new TextExtractorMapper());
 
             // first, merge all pages of one doc to one doc
             DataSet<Tuple2<String, ExtractedMathPDDocument>> extractedMathPdDocumentsSources = aggregateSnippetsToSingleDocs(extractedMathPdSnippetsSources);
