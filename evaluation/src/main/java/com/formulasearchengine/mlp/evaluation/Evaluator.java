@@ -56,7 +56,7 @@ public class Evaluator {
   public ScoreSummary evaluate(Multimap<String, IdentifierDefinition> extractions, List<GoldEntry> gold, boolean titleKey) {
     int totalNumberOfIdentifiers = (int) gold.stream().flatMap(ge -> ge.getDefinitions().stream().map(i -> i.getIdentifier()).distinct()).count();
     //initialize [true positives, false negatives, false positives, number of wikidata links matched] array
-    ScoreSummary result = new ScoreSummary(0, totalNumberOfIdentifiers, 0, 0);
+    ScoreSummary result = new ScoreSummary(0, 0, totalNumberOfIdentifiers, 0, 0);
     for (GoldEntry goldEntry : gold) {
       Collection<IdentifierDefinition> identifierDefinitions;
       if (titleKey) {
@@ -75,6 +75,7 @@ public class Evaluator {
             result.fn--;
           } else {
             System.out.print("duplicate matched,");
+            result.duplicateTp++;
           }
           if (i.getDefinition().matches("(^(q\\d+).*)$")) {
             result.wikidatalinks++;

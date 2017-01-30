@@ -45,6 +45,7 @@ public class ExtractionTests {
   public static final int UNSORTED_TP = 3;
   public static final int UNSORTED_TOTAL_IDENTIFIERS = 7;
   public static final int UNSORTED_TOTAL_EXTRACTIONS = 15;
+  public static final int DUPLICATE_TP = 5;
 
   public File getFile(String file) {
     ClassLoader classLoader = getClass().getClassLoader();
@@ -126,7 +127,7 @@ public class ExtractionTests {
     List<GoldEntry> gold = evaluator.readGoldEntries(getFile(Evaluator.GOLDFILE));
     Multimap<String, IdentifierDefinition> extractions = evaluator.readExtractions(getFile(EXTRACTIONS), gold);
     ScoreSummary result = evaluator.evaluate(extractions, gold);
-    Assert.assertEquals(new ScoreSummary(TRUE_POSITIVES, TOTAL_NUMBER_OF_IDENTIFIERS - TRUE_POSITIVES, FALSE_POSITIVES, 0), result);
+    Assert.assertEquals(new ScoreSummary(TRUE_POSITIVES, DUPLICATE_TP, TOTAL_NUMBER_OF_IDENTIFIERS - TRUE_POSITIVES, FALSE_POSITIVES, 0), result);
   }
 
   @Test
@@ -135,7 +136,7 @@ public class ExtractionTests {
     List<GoldEntry> gold = evaluator.readGoldEntries(getFile(Evaluator.GOLDFILE));
     Multimap<String, IdentifierDefinition> extractions = evaluator.readExtractions(getFile(EXTRACTIONS), gold, true);
     ScoreSummary result = evaluator.evaluate(extractions, gold, true);
-    Assert.assertEquals(new ScoreSummary(TRUE_POSITIVES, TOTAL_NUMBER_OF_IDENTIFIERS - TRUE_POSITIVES, FALSE_POSITIVES, 0), result);
+    Assert.assertEquals(new ScoreSummary(TRUE_POSITIVES, DUPLICATE_TP, TOTAL_NUMBER_OF_IDENTIFIERS - TRUE_POSITIVES, FALSE_POSITIVES, 0), result);
   }
 
 
@@ -145,7 +146,7 @@ public class ExtractionTests {
     List<GoldEntry> gold = evaluator.readGoldEntries(getFile(Evaluator.GOLDFILE));
     Multimap<String, IdentifierDefinition> extractions = evaluator.readExtractions(getFile(EXTRACTIONS_SAMPLE_EXTRACTIONS_NO_QID), gold, true);
     ScoreSummary result = evaluator.evaluate(extractions, gold, true);
-    Assert.assertEquals(new ScoreSummary(1, TOTAL_NUMBER_OF_IDENTIFIERS - 1, 0, 0), result);
+    Assert.assertEquals(new ScoreSummary(1, 0, TOTAL_NUMBER_OF_IDENTIFIERS - 1, 0, 0), result);
   }
 
   @Test
@@ -154,7 +155,7 @@ public class ExtractionTests {
     List<GoldEntry> gold = evaluator.readGoldEntries(getFile(Evaluator.GOLDFILE));
     Multimap<String, IdentifierDefinition> extractions = evaluator.readExtractions(getFile(EXTRACTIONS_SAMPLE_LINK_WIKIDATA_NORMAL), gold, true);
     ScoreSummary result = evaluator.evaluate(extractions, gold, true);
-    Assert.assertEquals(new ScoreSummary(1, TOTAL_NUMBER_OF_IDENTIFIERS - 1, 0, 1), result);
+    Assert.assertEquals(new ScoreSummary(1, 2, TOTAL_NUMBER_OF_IDENTIFIERS - 1, 0, 1), result);
   }
 
   @Test
@@ -164,9 +165,9 @@ public class ExtractionTests {
     Multimap<String, IdentifierDefinition> extractionsWikidata = evaluator.readExtractions(getFile(EXTRACTIONS_SAMPLE_WIKIDATA), gold);
     Multimap<String, IdentifierDefinition> extractionsWikidata2 = evaluator.readExtractions(getFile(EXTRACTIONS_SAMPLE_WIKIDATA_2), gold);
     ScoreSummary resultWikidata = evaluator.evaluate(extractionsWikidata, gold);
-    Assert.assertEquals(new ScoreSummary(1, TOTAL_NUMBER_OF_IDENTIFIERS - 1, 0, 1), resultWikidata);
+    Assert.assertEquals(new ScoreSummary(1, 0, TOTAL_NUMBER_OF_IDENTIFIERS - 1, 0, 1), resultWikidata);
     ScoreSummary resultWikidata2 = evaluator.evaluate(extractionsWikidata2, gold);
-    Assert.assertEquals(new ScoreSummary(1, TOTAL_NUMBER_OF_IDENTIFIERS - 1, 0, 1), resultWikidata2);
+    Assert.assertEquals(new ScoreSummary(1, 1, TOTAL_NUMBER_OF_IDENTIFIERS - 1, 0, 1), resultWikidata2);
   }
 
   @Test
@@ -175,6 +176,6 @@ public class ExtractionTests {
     List<GoldEntry> gold = evaluator.readGoldEntries(getFile(GOLDFILE_UNSORTED));
     Multimap<String, IdentifierDefinition> extractions_unsorted = evaluator.readExtractions(getFile(EXTRACTIONS_UNSORTED), gold);
     ScoreSummary result = evaluator.evaluate(extractions_unsorted, gold);
-    Assert.assertEquals(new ScoreSummary(UNSORTED_TP, UNSORTED_TOTAL_IDENTIFIERS - UNSORTED_TP, UNSORTED_TOTAL_EXTRACTIONS - UNSORTED_TP, 0), result);
+    Assert.assertEquals(new ScoreSummary(UNSORTED_TP, 0, UNSORTED_TOTAL_IDENTIFIERS - UNSORTED_TP, UNSORTED_TOTAL_EXTRACTIONS - UNSORTED_TP, 0), result);
   }
 }
