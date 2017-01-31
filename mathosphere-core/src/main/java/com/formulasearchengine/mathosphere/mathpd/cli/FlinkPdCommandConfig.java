@@ -23,7 +23,7 @@ public class FlinkPdCommandConfig extends BaseConfig implements Serializable {
     protected int parallelism = 0;
 
     @Parameter(names = {"--preprocessing"}, description = "if MathPD is run in preprocessing mode")
-    protected boolean isPreProcessingMode = true;
+    protected boolean isPreProcessingMode = false;
 
     public FlinkPdCommandConfig() {
     }
