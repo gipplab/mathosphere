@@ -84,6 +84,7 @@ public class PosTagger {
     Set<String> allIdentifiers = Sets.newHashSet();
 
     formulas.forEach(f -> formulaIndex.put(f.getKey(), f));
+    //wrap all single character identifiers in \\mathit{} tag
     formulas.forEach(f -> allIdentifiers.addAll(
       f.getIdentifiers(config)
         .stream()

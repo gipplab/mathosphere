@@ -13,9 +13,9 @@ public class MachineLearningDefinienExtractionConfig extends FlinkMlpCommandConf
   @Parameter(names = {"--samplePercent"}, description = "how much of the training data should be used for training.")
   protected List<Double> percent = Arrays.asList(100d);
   @Parameter(names = {"--svmCost"}, description = "Cost value for the svm.")
-  protected List<Double> svmCost = Arrays.asList(0.074325445d);
+  protected List<Double> svmCost = Arrays.asList(1d);
   @Parameter(names = {"--svmGamma"}, description = "Gamma value for the svm.")
-  protected List<Double> svmGamma = Arrays.asList(0.011048544d);
+  protected List<Double> svmGamma = Arrays.asList(0.018581361d);
   @Parameter(names = {"--writeSvmModel"}, description = "Writes the models from the cross evaluation to the output directory.")
   protected boolean writeSvmModel;
   @Parameter(names = {"--instances"}, description = "File location of the instances.arff file to use for the testing and training. " +
