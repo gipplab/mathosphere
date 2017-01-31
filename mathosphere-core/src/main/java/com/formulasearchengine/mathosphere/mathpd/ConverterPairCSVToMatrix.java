@@ -94,8 +94,11 @@ public class ConverterPairCSVToMatrix {
         final String outbase = in + "_out_";
 
         for (int i = 0; i < 5; i++) {
+            System.out.println("parsing file to CSV: " + in);
             final CSVParser parser = CSVParser.parse(new File(in), Charset.defaultCharset(), CSV_FORMAT);
+            System.out.println("finished parsing");
 
+            System.out.println("creating matrix (" + i + ")");
             final HashMap<Tuple2<String, String>, Double> matrix = new HashMap<>();
             for (CSVRecord row : parser) {
                 Tuple2<String, String> key = getDocumentIDsFromRow(row);
@@ -105,8 +108,11 @@ public class ConverterPairCSVToMatrix {
 
                 matrix.put(key, getDistanceFromRow(row, i));
             }
+            System.out.println("finished creating matrix (" + i + ")");
 
+            System.out.println("writing matrix");
             writeOrderedMatrix(matrix, outbase + i + ".csv");
+            System.out.println("finished writing matrix");
 
             // reset parser
             parser.close();
