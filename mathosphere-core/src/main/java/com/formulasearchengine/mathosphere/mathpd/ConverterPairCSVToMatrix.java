@@ -53,6 +53,7 @@ public class ConverterPairCSVToMatrix {
     private static void writeOrderedMatrix(HashMap<Tuple2<String, String>, Double> matrix, String filepath) throws Exception {
         final List<String> orderedRowValues = new ArrayList<>();
         final List<String> orderedColValues = new ArrayList<>();
+        System.out.println("merging " + matrix.size() + " keys");
         for (Tuple2<String, String> key : matrix.keySet()) {
             if (!orderedRowValues.contains(key.f0))
                 orderedRowValues.add(key.f0);
@@ -60,7 +61,9 @@ public class ConverterPairCSVToMatrix {
                 orderedColValues.add(key.f1);
         }
         // sort
+        System.out.println("sorting rows");
         Collections.sort(orderedRowValues);
+        System.out.println("sorting columns");
         Collections.sort(orderedColValues);
 
         // print to disk
@@ -72,6 +75,7 @@ public class ConverterPairCSVToMatrix {
         tmpHeader.addAll(orderedColValues);
         printer.printRecord(tmpHeader);
 
+        System.out.println("writing " + orderedRowValues.size() + " records");
         for (String rowName : orderedRowValues) {
             printer.printRecord(
                     getRowWithDescriptionInFirstCol(
