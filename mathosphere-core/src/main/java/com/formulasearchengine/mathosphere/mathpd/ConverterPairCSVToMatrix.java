@@ -53,12 +53,17 @@ public class ConverterPairCSVToMatrix {
     private static void writeOrderedMatrix(HashMap<Tuple2<String, String>, Double> matrix, String filepath) throws Exception {
         final List<String> orderedRowValues = new ArrayList<>();
         final List<String> orderedColValues = new ArrayList<>();
-        System.out.println("merging " + matrix.size() + " keys");
+        System.out.println("merging " + matrix.size() + " keys (matrix size in cells: " + (matrix.size() * matrix.size()) + ")");
+        int tmpCounter = 0;
         for (Tuple2<String, String> key : matrix.keySet()) {
             if (!orderedRowValues.contains(key.f0))
                 orderedRowValues.add(key.f0);
             if (!orderedColValues.contains(key.f1))
                 orderedColValues.add(key.f1);
+
+            if (++tmpCounter % 100000 == 0) {
+                System.out.println("merged " + tmpCounter + " keys (" + (tmpCounter / (float) matrix.size()) + ")");
+            }
         }
         // sort
         System.out.println("sorting rows");
