@@ -50,9 +50,10 @@ public class ConverterPairCSVToMatrix {
         return entries;
     }
 
-    private static void writeOrderedMatrix(HashMap<Tuple2<String, String>, Double> matrix, String filepath) throws Exception {
+    private static List<String>[] mergeKeysIntoRowsAndCols(HashMap<Tuple2<String, String>, Double> matrix) {
         final List<String> orderedRowValues = new ArrayList<>();
         final List<String> orderedColValues = new ArrayList<>();
+
         System.out.println("merging " + matrix.size() + " keys (matrix size in cells: " + (matrix.size() * matrix.size()) + ")");
         int tmpCounter = 0;
         for (Tuple2<String, String> key : matrix.keySet()) {
@@ -65,12 +66,17 @@ public class ConverterPairCSVToMatrix {
                 System.out.println("merged " + tmpCounter + " keys (" + (tmpCounter / (float) matrix.size()) + ")");
             }
         }
+
         // sort
         System.out.println("sorting rows");
         Collections.sort(orderedRowValues);
         System.out.println("sorting columns");
         Collections.sort(orderedColValues);
 
+        return new List[]{orderedRowValues, orderedColValues};
+    }
+
+    private static void writeOrderedMatrix(HashMap<Tuple2<String, String>, Double> matrix, String filepath, List<String> orderedRowValues, List<String> orderedColValues) throws Exception {
         // print to disk
         final CSVPrinter printer = new CSVPrinter(new FileWriter(filepath), CSV_FORMAT);
 
@@ -102,6 +108,9 @@ public class ConverterPairCSVToMatrix {
         }
         final String outbase = in + "_out_";
 
+
+        List<String> rows = null;
+        List<String> cols = null;
         for (int i = 0; i < 5; i++) {
             System.out.println("parsing file to CSV: " + in);
             final CSVParser parser = CSVParser.parse(new File(in), Charset.defaultCharset(), CSV_FORMAT);
@@ -119,8 +128,16 @@ public class ConverterPairCSVToMatrix {
             }
             System.out.println("finished creating matrix (" + i + ")");
 
+            if (rows == null && cols == null) {
+                final List<String>[] rowsAndCols = mergeKeysIntoRowsAndCols(matrix);
+                rows = rowsAndCols[0];
+                cols = rowsAndCols[1];
+            } else {
+                System.out.println("reusing previously created rows and columns");
+            }
+
             System.out.println("writing matrix");
-            writeOrderedMatrix(matrix, outbase + i + ".csv");
+            writeOrderedMatrix(matrix, outbase + i + ".csv", rows, cols);
             System.out.println("finished writing matrix");
 
             // reset parser
