@@ -4,12 +4,12 @@ import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.csv.CSVRecord;
+import org.apache.commons.io.FileUtils;
 import org.apache.flink.api.java.tuple.Tuple2;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileWriter;
-import java.io.InputStreamReader;
+import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -22,6 +22,7 @@ import java.util.List;
  */
 public class ConverterPairCSVToMatrix {
     private static final CSVFormat CSV_FORMAT = CSVFormat.RFC4180.withSkipHeaderRecord();
+    private static final boolean DEBUG = false;
 
     private static Tuple2<String, String> getDocumentIDsFromRow(CSVRecord row) {
         return new Tuple2<>(row.get(0), row.get(1));
@@ -54,6 +55,15 @@ public class ConverterPairCSVToMatrix {
         final List<String> orderedRowValues = new ArrayList<>();
         final List<String> orderedColValues = new ArrayList<>();
 
+        if (DEBUG) {
+            try {
+                System.out.println(new File("matrixKeySet").getAbsolutePath());
+                FileUtils.writeLines(new File("matrixKeySet"), matrix.keySet());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
         System.out.println("merging " + matrix.size() + " keys (matrix size in cells: " + (matrix.size() * matrix.size()) + ")");
         int tmpCounter = 0;
         for (Tuple2<String, String> key : matrix.keySet()) {
@@ -72,6 +82,15 @@ public class ConverterPairCSVToMatrix {
         Collections.sort(orderedRowValues);
         System.out.println("sorting columns");
         Collections.sort(orderedColValues);
+
+        if (DEBUG) {
+            try {
+                FileUtils.writeLines(new File("orderedRowValues"), orderedRowValues);
+                FileUtils.writeLines(new File("orderedColValues"), orderedColValues);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
 
         return new List[]{orderedRowValues, orderedColValues};
     }
@@ -98,14 +117,14 @@ public class ConverterPairCSVToMatrix {
 
     public static void main(String[] args) throws Exception {
         System.out.println("number of args given = " + args.length);
-        String in = null;
-        if (args.length == 0) {
+        String in = "/home/felix/170113run";
+        /*if (args.length == 0) {
             System.out.println("input file name? ");
             BufferedReader buffer = new BufferedReader(new InputStreamReader(System.in));
             in = buffer.readLine().trim();
         } else {
             in = args[0];
-        }
+        }*/
         final String outbase = in + "_out_";
 
 
