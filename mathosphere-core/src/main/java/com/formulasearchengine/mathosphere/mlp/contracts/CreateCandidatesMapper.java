@@ -26,7 +26,6 @@ public class CreateCandidatesMapper implements MapFunction<ParsedWikiDocument, W
   private double alpha;
   private double beta;
   private double gamma;
-  private static final int MAX_CANDIDATES = 20;
 
   public CreateCandidatesMapper(BaseConfig config) {
     this.config = config;
@@ -48,14 +47,9 @@ public class CreateCandidatesMapper implements MapFunction<ParsedWikiDocument, W
         Collections.sort(candidates);
         Collections.reverse(candidates);
       }
-      int count = 0;
       for (Relation rel : candidates) {
         if (rel.getScore() >= config.getThreshold()) {
-          count++;
           relations.add(rel);
-        }
-        if (count >= MAX_CANDIDATES) {
-          break;
         }
       }
     }
