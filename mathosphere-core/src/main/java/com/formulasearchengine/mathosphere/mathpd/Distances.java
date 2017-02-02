@@ -125,9 +125,14 @@ public class Distances {
      * @return
      */
     public static HashMap<String, Double> histogramsPlus(HashMap<String, Double>... histograms) {
-        if (histograms.length < 2) {
-            throw new IllegalArgumentException("histograms.length=" + histograms.length + "; needs to be >= 2");
+        switch (histograms.length) {
+            case 0:
+                throw new IllegalArgumentException("histograms.length=" + histograms.length + "; needs to be >= 2");
+                // return null;
+            case 1:
+                return histograms[0];
         }
+
 
         final Set<String> mergedKeys = new HashSet<>();
         for (HashMap<String, Double> histogram : histograms) {

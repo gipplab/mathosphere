@@ -114,7 +114,8 @@ public class ExtractedMathPDDocument implements Comparable<ExtractedMathPDDocume
     }
 
     public String getPage() {
-        return "none";
+        //return "none";
+        return page;
     }
 
     public void setPage(String page) {

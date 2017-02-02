@@ -63,6 +63,7 @@ public class FlinkPdTest {
         //filename = "test9.xml";
         //filename = "twice.xhtml";
         String filename2 = "test9.xml";
+        filename2 = filename1;
 
         final File temp;
         temp = File.createTempFile("temp", Long.toString(System.nanoTime()));
@@ -83,7 +84,8 @@ public class FlinkPdTest {
         //System.setOut(stdout);
         //System.out.println(standardOutput);
 
-        //ConverterPairCSVToMatrix.main(new String[]{resourcePath("com/formulasearchengine/mathosphere/mathpd/" + filename)});
+        //ConverterPairCSVToMatrix.main(new String[]{resourcePath("com/formulasearchengine/mathosphere/mathpd/" + filename1)});
+        ConverterPairCSVToMatrix.main(new String[]{temp.getAbsolutePath()});
     }
 
 }

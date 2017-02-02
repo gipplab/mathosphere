@@ -7,9 +7,7 @@ import org.apache.commons.csv.CSVRecord;
 import org.apache.commons.io.FileUtils;
 import org.apache.flink.api.java.tuple.Tuple2;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -118,13 +116,13 @@ public class ConverterPairCSVToMatrix {
     public static void main(String[] args) throws Exception {
         System.out.println("number of args given = " + args.length);
         String in = "/home/felix/170113run";
-        /*if (args.length == 0) {
+        if (args.length == 0) {
             System.out.println("input file name? ");
             BufferedReader buffer = new BufferedReader(new InputStreamReader(System.in));
             in = buffer.readLine().trim();
         } else {
             in = args[0];
-        }*/
+        }
         final String outbase = in + "_out_";
 
 

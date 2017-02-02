@@ -50,7 +50,13 @@ public class TextExtractorMapper implements FlatMapFunction<String, Tuple2<Strin
                 page = titleComponents[4];
             case 4:
                 name = titleComponents[3];
+                break;
+            default:
+                throw new RuntimeException("title does not contain all components: " + title);
         }
+
+        LOGGER.warn(name);
+        LOGGER.warn(page);
 
         return new Tuple4<>(title, name, page, xhtml);
     }
@@ -124,6 +130,6 @@ public class TextExtractorMapper implements FlatMapFunction<String, Tuple2<Strin
 
         // store the doc in the collector
         LOGGER.info("finished processing document '{}'...", document.title);
-        out.collect(new Tuple2<>(extractedMathPDDocument.getName(), extractedMathPDDocument));
+        out.collect(new Tuple2<>(extractedMathPDDocument.getTitle(), extractedMathPDDocument));
     }
 }
