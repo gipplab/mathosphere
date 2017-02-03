@@ -58,12 +58,12 @@ public class FlinkPdTest {
 
     @Test
     public void testDistances() throws Exception {
-        String filename1 = "161214_allpdcases.xml";
+        String filename2 = "161214_allpdcases.xml";
         //filename = "161214_somepdcases.xml";
         //filename = "test9.xml";
         //filename = "twice.xhtml";
-        String filename2 = "test9.xml";
-        filename2 = filename1;
+        String filename1 = "test9.xml";
+        //filename2 = filename1;
 
         final File temp;
         temp = File.createTempFile("temp", Long.toString(System.nanoTime()));
@@ -77,12 +77,10 @@ public class FlinkPdTest {
         args[6] = temp.getAbsolutePath();
         final PrintStream stdout = System.out;
         final ByteArrayOutputStream myOut = new ByteArrayOutputStream();
+        FlinkPd.IS_MODE_PREPROCESSING = true;
         Main.main(args);
-        final String standardOutput = myOut.toString();
-
-        //assertTrue(standardOutput.contains("switched to status FINISHED"));
-        //System.setOut(stdout);
-        //System.out.println(standardOutput);
+        FlinkPd.IS_MODE_PREPROCESSING = false;
+        Main.main(args);
 
         //ConverterPairCSVToMatrix.main(new String[]{resourcePath("com/formulasearchengine/mathosphere/mathpd/" + filename1)});
         ConverterPairCSVToMatrix.main(new String[]{temp.getAbsolutePath()});

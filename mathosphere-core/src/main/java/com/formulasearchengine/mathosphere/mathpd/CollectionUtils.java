@@ -16,6 +16,9 @@
 
 package com.formulasearchengine.mathosphere.mathpd;
 
+import com.formulasearchengine.mathosphere.mathpd.pojos.ExtractedMathPDDocument;
+import org.apache.flink.api.java.tuple.Tuple2;
+
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
@@ -86,6 +89,18 @@ public class CollectionUtils {
         return result;
     }
 
+    public static List<List<Tuple2<String, ExtractedMathPDDocument>>> overlapInPercent(List<List<Tuple2<String, ExtractedMathPDDocument>>> partitions,
+                                                                                       double before, double after) {
+        double allElements = 0.0;
+        for (List<Tuple2<String, ExtractedMathPDDocument>> partition : partitions) {
+            allElements += partition.size();
+        }
+        int beforeAbs = (int) (allElements * before);
+        int afterAbs = (int) (allElements * after);
+
+        return overlap(partitions, beforeAbs, afterAbs);
+    }
+
     /**
      * Introduces overlap into a series of lists.
      *
@@ -101,6 +116,8 @@ public class CollectionUtils {
             throw new IllegalArgumentException("Value of after cannot be negative");
         }
 
+        System.out.println("got " + lists.size() + " lists that will be overlapped now");
+
         ListIterator<List<T>> iter = lists.listIterator();
 
         List<List<T>> result = new ArrayList<List<T>>();
@@ -108,12 +125,15 @@ public class CollectionUtils {
             List<T> current = new ArrayList<T>(iter.next());
             List<T> prev = before > 0 ? findPrevious(iter) : null;
             List<T> next = after > 0 ? findNext(iter) : null;
+            System.out.println("cur list has " + current.size() + " entries");
             if (prev != null) {
-                List<T> overlap = prev.subList(prev.size() - before, prev.size());
+                int prefBeforeSize = Math.min(before, prev.size());
+                List<T> overlap = prev.subList(prev.size() - prefBeforeSize, prev.size());
                 current.addAll(0, overlap);
             }
             if (next != null) {
-                List<T> overlap = next.subList(0, after);
+                int nextAfterSize = Math.min(after, next.size());
+                List<T> overlap = next.subList(0, nextAfterSize);
                 current.addAll(overlap);
             }
             result.add(current);
@@ -211,5 +231,6 @@ public class CollectionUtils {
     public static void clearProperties(Properties props, Collection<String> names) {
         props.keySet().removeAll(names);
     }
+
 
 }

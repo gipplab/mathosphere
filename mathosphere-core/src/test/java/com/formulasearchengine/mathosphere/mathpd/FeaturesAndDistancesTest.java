@@ -38,7 +38,7 @@ public class FeaturesAndDistancesTest {
     }
 
     private static ExtractedMathPDDocument testResourceToExtractedMathPDDocument(String path) throws IOException, TransformerException, XPathExpressionException, ParserConfigurationException {
-        final ArxivDocument arxivDocument = TextExtractorMapper.arxivTextToDocument(TestUtils.getFileContents(path));
+        final ArxivDocument arxivDocument = new TextExtractorMapper(false).arxivTextToDocument(TestUtils.getFileContents(path));
         return TextExtractorMapper.convertArxivToExtractedMathPDDocument(arxivDocument);
     }
 

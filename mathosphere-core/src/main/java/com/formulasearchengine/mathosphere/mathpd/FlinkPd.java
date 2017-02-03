@@ -32,8 +32,8 @@ import java.util.*;
 
 public class FlinkPd {
     private static final Logger LOGGER = LoggerFactory.getLogger(FlinkPd.class);
-    private static final boolean IS_MODE_PREPROCESSING = false;
-    private static final int NUMBER_OF_PARTITIONS = 10; // if -1 then partitioning is disabled and it will just be one document merge (all snippets into one doc)
+    private static final int NUMBER_OF_PARTITIONS = 5; // if -1 then partitioning is disabled and it will just be one document merge (all snippets into one doc)
+    public static boolean IS_MODE_PREPROCESSING = false;
     private static DecimalFormat decimalFormat = new DecimalFormat("0.0");
 
     public static void main(String[] args) throws Exception {
@@ -58,21 +58,40 @@ public class FlinkPd {
                         for (Tuple2<String, ExtractedMathPDDocument> nameAndSnippet : iterable) {
                             sortedNamesAndSnippets.add(nameAndSnippet);
                         }
-                        LOGGER.info("sorting {} entries", sortedNamesAndSnippets.size());
+                        //LOGGER.warn("sorting {} entries", sortedNamesAndSnippets.size());
                         Collections.sort(sortedNamesAndSnippets, new Comparator<Tuple2<String, ExtractedMathPDDocument>>() {
                             @Override
                             public int compare(Tuple2<String, ExtractedMathPDDocument> o1, Tuple2<String, ExtractedMathPDDocument> o2) {
-                                return o1.f0.compareTo(o2.f0);
+                                return o1.f1.getPage().compareTo(o2.f1.getPage());
                             }
                         });
 
-                        final List<List<Tuple2<String, ExtractedMathPDDocument>>> partitions = CollectionUtils.partition(sortedNamesAndSnippets, 10);
-                        final List<List<Tuple2<String, ExtractedMathPDDocument>>> overlappingPartitions = CollectionUtils.overlap(partitions, 25, 25);
+                        final List<List<Tuple2<String, ExtractedMathPDDocument>>> partitions = CollectionUtils.partition(sortedNamesAndSnippets, NUMBER_OF_PARTITIONS);
+                        List<Tuple3<String, String, String>> partitionFirstEntrysTitle = new ArrayList<>();
+                        for (List<Tuple2<String, ExtractedMathPDDocument>> partition : partitions) {
+                            partitionFirstEntrysTitle.add(new Tuple3<>(
+                                    partition.get(0).f1.getTitle(),
+                                    partition.get(0).f1.getName(),
+                                    partition.get(0).f1.getPage()));
+                        }
+                        final List<List<Tuple2<String, ExtractedMathPDDocument>>> overlappingPartitions = CollectionUtils.overlapInPercent(partitions, 0.25, 0.25);
 
+                        //LOGGER.warn("overlappingPartitions number = {}", overlappingPartitions.size());
+
+                        int i = 0;
                         for (List<Tuple2<String, ExtractedMathPDDocument>> overlappingPartition : overlappingPartitions) {
-                            LOGGER.info("merging partition with {} entries", overlappingPartition.size());
+                            //LOGGER.warn("merging partition with {} entries", overlappingPartition.size());
                             final Tuple2<String, ExtractedMathPDDocument> mergedPartition = mergeToOne(overlappingPartition);
+
+                            // we need to overwrite these properties to avoid duplicates later. the duplicates were introduced during creating overlapping partitions.
+                            Tuple3<String, String, String> firstOriginalEntry = partitionFirstEntrysTitle.get(i++);
+                            mergedPartition.setField(firstOriginalEntry.f0, 0);
+                            mergedPartition.f1.setTitle(firstOriginalEntry.f0);
+                            mergedPartition.f1.setName(firstOriginalEntry.f1);
+                            mergedPartition.f1.setPage(firstOriginalEntry.f2);
+
                             collector.collect(mergedPartition);
+                            //LOGGER.warn(mergedPartition.f0);
                         }
                     }
                 });
@@ -134,7 +153,7 @@ public class FlinkPd {
                     public Tuple2<String, ExtractedMathPDDocument> reduce(Tuple2<String, ExtractedMathPDDocument> t0, Tuple2<String, ExtractedMathPDDocument> t1) throws Exception {
                         t1.f1.mergeOtherIntoThis(t0.f1);
                         t1.f1.setText("removed");
-                        LOGGER.info("merged {} into {}", new Object[]{t1.f0, t0.f0});
+                        //LOGGER.info("merged {} into {}", new Object[]{t1.f0, t0.f0});
                         return t1;
                     }
                 });
@@ -157,7 +176,7 @@ public class FlinkPd {
             DataSource<String> source = readWikiDump(config, env);
             DataSource<String> refs = readRefs(config, env);
 
-            final FlatMapOperator<String, Tuple2<String, ExtractedMathPDDocument>> extractedMathPdSnippetsSources = source.flatMap(new TextExtractorMapper());
+            final FlatMapOperator<String, Tuple2<String, ExtractedMathPDDocument>> extractedMathPdSnippetsSources = source.flatMap(new TextExtractorMapper(true));
 
             // first, merge all pages of one doc to one doc
             DataSet<Tuple2<String, ExtractedMathPDDocument>> extractedMathPdDocumentsSources = aggregateSnippets(extractedMathPdSnippetsSources);
@@ -173,7 +192,7 @@ public class FlinkPd {
                     });
 
             // now for the refs
-            final FlatMapOperator<String, Tuple2<String, ExtractedMathPDDocument>> extractedMathPdSnippetsRefs = refs.flatMap(new TextExtractorMapper());
+            final FlatMapOperator<String, Tuple2<String, ExtractedMathPDDocument>> extractedMathPdSnippetsRefs = refs.flatMap(new TextExtractorMapper(false));
 
             // first, merge all pages of one doc to one doc
             final DataSet<Tuple2<String, ExtractedMathPDDocument>> extractedMathPdDocumentsRefs = aggregateSnippets(extractedMathPdSnippetsRefs);

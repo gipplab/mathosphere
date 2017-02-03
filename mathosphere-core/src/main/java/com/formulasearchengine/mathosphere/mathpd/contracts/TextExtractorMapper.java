@@ -23,42 +23,21 @@ public class TextExtractorMapper implements FlatMapFunction<String, Tuple2<Strin
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TextExtractorMapper.class);
 
-    private static final Pattern FILENAME_PATTERN = Pattern.compile("<ARXIVFILESPLIT(?:\\\\n?|[\\s\\r\\n]+)" +
+    private static final Pattern FILENAME_PATTERN_20PD = Pattern.compile("<ARXIVFILESPLIT(?:\\\\n?|[\\s\\r\\n]+)" +
             "Filename=\"(.*?).xhtml\">(?:\\s*)(.*)", Pattern.DOTALL);
-    private static final Pattern TITLE_COMPONENTS_PATTERN = Pattern.compile("", Pattern.DOTALL);
+    private static final Pattern FILENAME_PATTERN_NTCIR = Pattern.compile("<ARXIVFILESPLIT(?:\\\\n?|[\\s\\r\\n]+)" +
+            "Filename=\"\\./\\d+/(.*?)/\\1_(\\d+)_(\\d+)\\.xhtml\">(?:\\s*)(.*)", Pattern.DOTALL);
 
-    //private static final String FILENAME_INDICATOR = "Filename";
-    //private static final Pattern FILENAME_PATTERN = Pattern
-    //        .compile( "<ARXIVFILESPLIT\\\\n" + FILENAME_INDICATOR + "=\"\\./\\d+/(.*?)/\\1_(\\d+)_(\\d+)\\.xhtml\">" );
+    private final Pattern filenamePattern;
+    private final boolean isNtcir;
 
-    public static Tuple4<String, String, String, String> getTitleAndTextualContent(String content) {
-        Matcher titleMatcher = FILENAME_PATTERN.matcher(content);
-        if (!titleMatcher.find()) {
-            LOGGER.error("found no title");
-            return null;
+    public TextExtractorMapper(boolean isNtcir) {
+        if (isNtcir) {
+            filenamePattern = FILENAME_PATTERN_NTCIR;
+        } else {
+            filenamePattern = FILENAME_PATTERN_20PD;
         }
-        final String title = titleMatcher.group(1);
-        final String xhtml = titleMatcher.group(2);
-        final String[] titleComponents = title.split("/");
-
-        String name = "no-name";
-        String page = "-1";
-
-        // tailored to the input format, you might need to change this if you have another format
-        switch (titleComponents.length) {
-            case 5:
-                page = titleComponents[4];
-            case 4:
-                name = titleComponents[3];
-                break;
-            default:
-                throw new RuntimeException("title does not contain all components: " + title);
-        }
-
-        LOGGER.warn(name);
-        LOGGER.warn(page);
-
-        return new Tuple4<>(title, name, page, xhtml);
+        this.isNtcir = isNtcir;
     }
 
     public static ExtractedMathPDDocument convertArxivToExtractedMathPDDocument(ArxivDocument document) throws ParserConfigurationException, IOException, XPathExpressionException, TransformerException {
@@ -100,7 +79,50 @@ public class TextExtractorMapper implements FlatMapFunction<String, Tuple2<Strin
         //}
     }
 
-    public static ArxivDocument arxivTextToDocument(String content) {
+    public Tuple4<String, String, String, String> getTitleAndTextualContent(String content) {
+        if (content.startsWith("\n"))
+            content = content.substring(1);
+
+        Matcher titleMatcher = filenamePattern.matcher(content);
+        if (!titleMatcher.find()) {
+            LOGGER.error("found no title");
+            return null;
+        }
+        String title;
+        String xhtml;
+        String name = "no-name";
+        String page = "-1";
+
+        if (isNtcir) {
+            name = titleMatcher.group(1);
+            page = titleMatcher.group(3);
+            xhtml = titleMatcher.group(4);
+        } else {
+            title = titleMatcher.group(1);
+            xhtml = titleMatcher.group(2);
+            final String[] titleComponents = title.split("/");
+
+            // tailored to the input format, you might need to change this if you have another format
+            switch (titleComponents.length) {
+                case 5:
+                    page = titleComponents[4];
+                case 4:
+                    name = titleComponents[3];
+                    break;
+                default:
+                    throw new RuntimeException("title does not contain all components: " + title);
+            }
+        }
+
+        title = name + "/" + page;
+
+        //LOGGER.warn(name);
+        //LOGGER.warn(page);
+
+        return new Tuple4<>(title, name, page, xhtml);
+    }
+
+    public ArxivDocument arxivTextToDocument(String content) {
         final Tuple4<String, String, String, String> titleAndContent = getTitleAndTextualContent(content);
         if (titleAndContent == null) {
             return null;
@@ -130,6 +152,6 @@ public class TextExtractorMapper implements FlatMapFunction<String, Tuple2<Strin
 
         // store the doc in the collector
         LOGGER.info("finished processing document '{}'...", document.title);
-        out.collect(new Tuple2<>(extractedMathPDDocument.getTitle(), extractedMathPDDocument));
+        out.collect(new Tuple2<>(extractedMathPDDocument.getName(), extractedMathPDDocument));
     }
 }
