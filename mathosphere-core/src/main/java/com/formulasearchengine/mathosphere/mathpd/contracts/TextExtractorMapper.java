@@ -26,7 +26,10 @@ public class TextExtractorMapper implements FlatMapFunction<String, Tuple2<Strin
     private static final Pattern FILENAME_PATTERN_20PD = Pattern.compile("<ARXIVFILESPLIT(?:\\\\n?|[\\s\\r\\n]+)" +
             "Filename=\"(.*?).xhtml\">(?:\\s*)(.*)", Pattern.DOTALL);
     private static final Pattern FILENAME_PATTERN_NTCIR = Pattern.compile("<ARXIVFILESPLIT(?:\\\\n?|[\\s\\r\\n]+)" +
-            "Filename=\"\\./\\d+/(.*?)/\\1_(\\d+)_(\\d+)\\.xhtml\">(?:\\s*)(.*)", Pattern.DOTALL);
+            "Filename=\"\\./.+/(.*?)/\\1_(\\d+)_(\\d+)\\.xhtml\">(?:\\s*)(.*)", Pattern.DOTALL);
+    // private static final Pattern FILENAME_PATTERN_NTCIR = Pattern.compile("<ARXIVFILESPLIT(?:\\\\n?|[\\s\\r\\n]+)" +
+    //        "Filename=\"\\./\\d+/(.*?)/\\1_(\\d+)_(\\d+)\\.xhtml\">(?:\\s*)(.*)", Pattern.DOTALL);
+
 
     private final Pattern filenamePattern;
     private final boolean isNtcir;
@@ -77,6 +80,14 @@ public class TextExtractorMapper implements FlatMapFunction<String, Tuple2<Strin
         //    LOGGER.error(e.toString());
         //    return null;
         //}
+    }
+
+    public static void main(String[] args) {
+        TextExtractorMapper t = new TextExtractorMapper(true);
+        t.getTitleAndTextualContent("<ARXIVFILESPLIT Filename=\"./xhtml5/1/0704.0097/0704.0097_1_11.xhtml\">\n" +
+                "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n" +
+                "<html xmlns=\"http://www.w3.org/1999/xhtml\">\n" +
+                "<head>");
     }
 
     public Tuple4<String, String, String, String> getTitleAndTextualContent(String content) {
