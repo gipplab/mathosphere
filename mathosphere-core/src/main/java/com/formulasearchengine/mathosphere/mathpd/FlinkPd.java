@@ -33,7 +33,7 @@ import java.util.*;
 public class FlinkPd {
     private static final Logger LOGGER = LoggerFactory.getLogger(FlinkPd.class);
     private static final int NUMBER_OF_PARTITIONS = 5; // if -1 then partitioning is disabled and it will just be one document merge (all snippets into one doc)
-    public static boolean IS_MODE_PREPROCESSING = true;
+    public static boolean IS_MODE_PREPROCESSING = false;
     private static DecimalFormat decimalFormat = new DecimalFormat("0.0");
 
     public static void main(String[] args) throws Exception {
