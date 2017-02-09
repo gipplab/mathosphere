@@ -200,3 +200,4 @@ Similarity analysis (after boolean toogle in code has been changed)
 /srv/flink/bin/flink run /data/mathosphere/mathosphere-core/target/mathosphere-core-3.0.0-SNAPSHOT-jar-with-dependencies.jar pd --inputDir hdfs://m:54310/data/ntcir_and_pdcases.xml --referenceDir hdfs://m:54310/data/161214_allpdcases.xml --outputDir hdfs://m:54310/data/170113run --preprocessing false
 ```
 
+java -cp /data/mathosphere/mathosphere-core/target/mathosphere-core-3.0.0-SNAPSHOT-jar-with-dependencies.jar com.formulasearchengine.mathosphere.mathpd.ConverterPairCSVToMatrix
