@@ -109,6 +109,11 @@ public class WekaUtils {
   public static final double LONGEST_SENTENCE_IN_ENGISH = 300d;
   private static final String NUMBER_OF_DEFINIENS_IN_SENTENCE = "number_of_definiens";
   private static final String NUMBER_OF_IDENTIFIERS_IN_SENTENCE = "number_of_identifiers";
+  private MachineLearningPatternMatcher machineLearningPatternMatcher;
+
+  public WekaUtils() {
+    machineLearningPatternMatcher = new MachineLearningPatternMatcher();
+  }
 
   public Instances createInstances(String title) {
     ArrayList<Attribute> atts = new ArrayList<>();
@@ -172,7 +177,7 @@ public class WekaUtils {
     nominal.add(MATCH);
     nominal.add(NO_MATCH);
     for (Relation relation : relations) {
-      double[] patternMatches = MachineLearningPatternMatcher.match(relation.getSentence(), relation.getIdentifier(), relation.getDefinition(), relation.getIdentifierPosition(), relation.getWordPosition());
+      double[] patternMatches = new MachineLearningPatternMatcher().match(relation.getSentence(), relation.getIdentifier(), relation.getDefinition(), relation.getIdentifierPosition(), relation.getWordPosition());
       double[] values = new double[instances.numAttributes()];
       addStringValue(values, instances, TITLE, title);
       addStringValue(values, instances, Q_ID, qId);
@@ -199,7 +204,8 @@ public class WekaUtils {
       values[instances.attribute(RELATIVE_TERM_FREQUENCY).index()] = relation.getRelativeTermFrequency();
 
       values[values.length - 1] = relation.getRelevance() > 1 ? nominal.indexOf(MATCH) : nominal.indexOf(NO_MATCH);
-      instances.add(new DenseInstance(1.0, values));
+      DenseInstance instance = new DenseInstance(1.0, values);
+      instances.add(instance);
     }
     return instances;
   }
@@ -213,7 +219,7 @@ public class WekaUtils {
    * @param instances instances where the values will be added.
    * @param relation  the relation from whitch to extract the features.
    */
-  private static void addStringFeatures(double[] values, Instances instances, Relation relation) {
+  private void addStringFeatures(double[] values, Instances instances, Relation relation) {
     int wordDistance = relation.getIdentifierPosition() - relation.getWordPosition();
     //Surface text and POS tag of two preceding and following tokens around the desc candidate
     List<Word> pre = Lists.newArrayList(relation.getSentence().getWords().subList(Math.max(0, relation.getWordPosition() - 2), relation.getWordPosition()));
@@ -244,6 +250,8 @@ public class WekaUtils {
     Optional<Word> firstVerb = wordsInbetween.stream().filter(w -> w.getPosTag().startsWith("VB")).findFirst();
     if (firstVerb.isPresent()) {
       addStringValue(values, instances, SURFACE_TEXT_OF_THE_FIRST_VERB_THAT_APPEARS_BETWEEN_THE_DESC_CANDIDATE_AND_THE_TARGET_MATH_EXPR, firstVerb.get().getWord());
+    } else {
+      addStringValue(values, instances, SURFACE_TEXT_OF_THE_FIRST_VERB_THAT_APPEARS_BETWEEN_THE_DESC_CANDIDATE_AND_THE_TARGET_MATH_EXPR, "");
     }
   }
 
@@ -255,7 +263,7 @@ public class WekaUtils {
    * @param instances instances where the values will be added.
    * @param relation  the relation from whitch to extract the features.
    */
-  private static void addDependencyTreeFeatures(DependencyParser parser, double[] values, Instances instances, Relation relation, double maxSentenceLength) {
+  private void addDependencyTreeFeatures(DependencyParser parser, double[] values, Instances instances, Relation relation, double maxSentenceLength) {
     List<TaggedWord> taggedSentence = new ArrayList<>();
     for (Word word : relation.getSentence().getWords()) {
       taggedSentence.add(new TaggedWord(word.getWord(), word.getPosTag()));
@@ -297,7 +305,7 @@ public class WekaUtils {
    * @param fromIdentifierOrDefiniens List of indexed words starting with the source (identifier or definiens).
    * @return list with at most three words.
    */
-  public static List<Word> getDependencyWithLengthOfThree(List<IndexedWord> fromIdentifierOrDefiniens) {
+  public List<Word> getDependencyWithLengthOfThree(List<IndexedWord> fromIdentifierOrDefiniens) {
     return fromIdentifierOrDefiniens.subList(
       Math.min(1, fromIdentifierOrDefiniens.size()),
       Math.min(4, fromIdentifierOrDefiniens.size())
@@ -312,7 +320,7 @@ public class WekaUtils {
    * @param words list of words.
    * @param text  the new surface text.
    */
-  public static void replaceWord(int index, List<IndexedWord> words, String text) {
+  public void replaceWord(int index, List<IndexedWord> words, String text) {
     for (IndexedWord iw : words) {
       if (iw.index() == index) {
         iw.setWord(text);
@@ -331,7 +339,7 @@ public class WekaUtils {
    * @param post  list of words after the identifier or definiens.
    * @param text  the new surface text.
    */
-  public static void replaceWord(int index, List<Word> pre, List<Word> post, String text) {
+  public void replaceWord(int index, List<Word> pre, List<Word> post, String text) {
     Word replacement;
     if (index > 0 && index <= post.size()) {
       replacement = new Word(text, post.get(index - 1).getPosTag());
@@ -354,7 +362,7 @@ public class WekaUtils {
    * @param field
    * @param string
    */
-  public static void addStringValue(double[] data, Instances instances, String field, String string) {
+  public void addStringValue(double[] data, Instances instances, String field, String string) {
     data[instances.attribute(field).index()] = instances.attribute(field).addStringValue(string);
   }
 
@@ -364,7 +372,7 @@ public class WekaUtils {
    * @param words the words to convert.
    * @return String containing surface text and pos tag of the words.
    */
-  public static String wordListToSimpleString(List<Word> words) {
+  public String wordListToSimpleString(List<Word> words) {
     StringBuilder stringBuilder = new StringBuilder();
     for (Word w : words) {
       //do not include things that the tokenizer eats anyway
@@ -378,7 +386,7 @@ public class WekaUtils {
     return stringBuilder.toString();
   }
 
-  private static void removeUnwanted(List<IndexedWord> words) {
+  private void removeUnwanted(List<IndexedWord> words) {
     Iterator i = words.iterator();
     while (i.hasNext()) {
       IndexedWord w = (IndexedWord) i.next();

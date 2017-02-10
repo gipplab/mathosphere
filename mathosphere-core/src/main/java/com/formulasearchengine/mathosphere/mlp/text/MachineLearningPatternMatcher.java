@@ -39,7 +39,7 @@ public class MachineLearningPatternMatcher {
    * @param definiensPosition  0 indexed
    * @return [pattern1, ... , pattern10, colon between, comma between, othermath between, definiens in parens, identifier in parens]
    */
-  public static double[] match(Sentence sentence, String identifierText, String definiens, int identifierPosition, int definiensPosition) {
+  public double[] match(Sentence sentence, String identifierText, String definiens, int identifierPosition, int definiensPosition) {
     Matcher<Word> identifier = BeanMatchers.eq(Word.class, "word", identifierText).captureAs(IDENTIFIER);
     Matcher<Word> definition = BeanMatchers.eq(Word.class, "word", definiens).captureAs(DEFINITION);
 

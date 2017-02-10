@@ -286,8 +286,8 @@ public class WekaLearner implements GroupReduceFunction<WikiDocumentOutput, Eval
     nGramTokenizer.setNGramMaxSize(3);
     nGramTokenizer.setNGramMinSize(1);
     nGramTokenizer.setDelimiters(nGramTokenizer.getDelimiters().replaceAll(":", ""));
-    stringToWordVector.setInputFormat(instances);
     stringToWordVector.setTokenizer(nGramTokenizer);
+    stringToWordVector.setInputFormat(instances);
     return stringToWordVector;
   }
 
@@ -347,11 +347,11 @@ public class WekaLearner implements GroupReduceFunction<WikiDocumentOutput, Eval
   private Instances downsample(Instances stringsReplacedData, double percent) throws Exception {
     Instances reduced;
     Resample sampler = new Resample();
-    sampler.setInputFormat(stringsReplacedData);
     sampler.setRandomSeed(1);
     //do not change distribution
     sampler.setBiasToUniformClass(0);
     sampler.setSampleSizePercent(percent);
+    sampler.setInputFormat(stringsReplacedData);
     reduced = Filter.useFilter(stringsReplacedData, sampler);
     return reduced;
   }
@@ -375,8 +375,8 @@ public class WekaLearner implements GroupReduceFunction<WikiDocumentOutput, Eval
     SMOTE smote = new SMOTE();
     smote.setRandomSeed(1);
     smote.setPercentage(oversample);
-    smote.setInputFormat(stringsReplacedData);
     smote.setNearestNeighbors(5);
+    smote.setInputFormat(stringsReplacedData);
     return smote;
   }
 

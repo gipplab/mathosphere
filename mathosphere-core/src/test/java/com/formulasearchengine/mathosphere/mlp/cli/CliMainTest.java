@@ -239,7 +239,7 @@ public class CliMainTest {
   public void testMachineLearningClassification() throws Exception {
     final File temp = Files.createTempDir();
     String[] args = {CliParams.CLASSIFY,
-      "-in", resourcePath("com/formulasearchengine/mathosphere/mlp/gold/eval_dataset.xml"),
+            "-in", "C:\\Users\\Leo\\Desktop\\mlp\\extract definiens from whole wikipedia\\lateralSurface.xml",
       "-out", temp.getAbsolutePath(),
       "--tex",
       "--texvcinfo", "http://localhost:10044/texvcinfo",
