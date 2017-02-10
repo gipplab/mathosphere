@@ -22,7 +22,7 @@ import org.apache.log4j.Logger;
 import java.io.File;
 import java.util.*;
 
-public class MachineLearningRelationFinder {
+public class MachineLearningModelGenerator {
 
   public static void main(String[] args) throws Exception {
     MachineLearningDefinienExtractionConfig config = MachineLearningDefinienExtractionConfig.from(args);

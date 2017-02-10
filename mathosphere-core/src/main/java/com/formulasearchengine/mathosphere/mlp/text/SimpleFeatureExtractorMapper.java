@@ -1,10 +1,9 @@
 package com.formulasearchengine.mathosphere.mlp.text;
 
-import com.formulasearchengine.mathosphere.mlp.cli.MachineLearningDefinienExtractionConfig;
+import com.formulasearchengine.mathosphere.mlp.cli.FlinkMlpCommandConfig;
 import com.formulasearchengine.mathosphere.mlp.pojos.*;
 import com.formulasearchengine.mlp.evaluation.pojo.GoldEntry;
 import com.google.common.collect.HashMultiset;
-import com.google.common.collect.Lists;
 import com.google.common.collect.Multiset;
 import org.apache.flink.api.common.functions.MapFunction;
 import org.slf4j.Logger;
@@ -24,12 +23,14 @@ public class SimpleFeatureExtractorMapper implements MapFunction<ParsedWikiDocum
 
   private static final Logger LOGGER = LoggerFactory.getLogger(SimpleFeatureExtractorMapper.class);
 
-  private final MachineLearningDefinienExtractionConfig config;
+  private final FlinkMlpCommandConfig config;
   private final List<GoldEntry> goldEntries;
+  private final boolean extractionForTraining;
 
-  public SimpleFeatureExtractorMapper(MachineLearningDefinienExtractionConfig config, List<GoldEntry> goldEntries) {
+  public SimpleFeatureExtractorMapper(FlinkMlpCommandConfig config, List<GoldEntry> goldEntries) {
     this.config = config;
     this.goldEntries = goldEntries;
+    extractionForTraining = goldEntries != null && !goldEntries.isEmpty();
   }
 
   @Override
@@ -42,10 +43,17 @@ public class SimpleFeatureExtractorMapper implements MapFunction<ParsedWikiDocum
     Multiset<String> frequencies = aggregateWords(sentences);
 
     int maxFrequency = getMaxFrequency(frequencies);
+    if (extractionForTraining) {
+      return getIdentifiersWithGoldInfo(doc, allIdentifierDefininesCandidates, sentences, identifierSentenceDistanceMap, frequencies, maxFrequency);
+    } else {
+      return getAllIdentifiers(doc, allIdentifierDefininesCandidates, sentences, identifierSentenceDistanceMap, frequencies, maxFrequency);
+    }
+  }
 
+  private WikiDocumentOutput getIdentifiersWithGoldInfo(ParsedWikiDocument doc, List<Relation> allIdentifierDefininesCandidates, List<Sentence> sentences, Map<String, Integer> identifierSentenceDistanceMap, Multiset<String> frequencies, double maxFrequency) {
     GoldEntry goldEntry = getGoldEntryByTitle(goldEntries, doc.getTitle());
     final Integer fid = Integer.parseInt(goldEntry.getFid());
-    final MathTag seed = doc.getFormulas()
+    MathTag seed = doc.getFormulas()
       .stream().filter(e -> e.getMarkUpType().equals(WikiTextUtils.MathMarkUpType.LATEX)).collect(Collectors.toList())
       .get(fid);
     for (int i = 0; i < sentences.size(); i++) {
@@ -54,6 +62,7 @@ public class SimpleFeatureExtractorMapper implements MapFunction<ParsedWikiDocum
         LOGGER.debug("sentence {}", sentence);
       }
       Set<String> identifiers = sentence.getIdentifiers();
+      //only identifiers that were extracted by the MPL pipeline
       identifiers.retainAll(seed.getIdentifiers(config).elementSet());
       SimplePatternMatcher matcher = SimplePatternMatcher.generatePatterns(identifiers);
       Collection<Relation> foundMatches = matcher.match(sentence, doc);
@@ -63,7 +72,7 @@ public class SimpleFeatureExtractorMapper implements MapFunction<ParsedWikiDocum
         if (identifiersInGold.contains(match.getIdentifier())) {
           LOGGER.debug("found match {}", match);
           int freq = frequencies.count(match.getSentence().getWords().get(match.getWordPosition()).toLowerCase());
-          match.setRelativeTermFrequency((double) freq / (double) maxFrequency);
+          match.setRelativeTermFrequency((double) freq / maxFrequency);
           if (i - identifierSentenceDistanceMap.get(match.getIdentifier()) < 0) {
             throw new RuntimeException("Cannot find identifier before first occurence");
           }
@@ -75,6 +84,33 @@ public class SimpleFeatureExtractorMapper implements MapFunction<ParsedWikiDocum
     }
     LOGGER.info("extracted {} relations from {}", allIdentifierDefininesCandidates.size(), doc.getTitle());
     WikiDocumentOutput result = new WikiDocumentOutput(doc.getTitle(), goldEntry.getqID(), allIdentifierDefininesCandidates, null);
+    result.setMaxSentenceLength(doc.getSentences().stream().map(s -> s.getWords().size()).max(Comparator.naturalOrder()).get());
+    return result;
+  }
+
+  private WikiDocumentOutput getAllIdentifiers(ParsedWikiDocument doc, List<Relation> allIdentifierDefininesCandidates, List<Sentence> sentences, Map<String, Integer> identifierSentenceDistanceMap, Multiset<String> frequencies, double maxFrequency) {
+    for (int i = 0; i < sentences.size(); i++) {
+      Sentence sentence = sentences.get(i);
+      if (!sentence.getIdentifiers().isEmpty()) {
+        LOGGER.debug("sentence {}", sentence);
+      }
+      Set<String> identifiers = sentence.getIdentifiers();
+      //only identifiers that were extracted by the MPL pipeline
+      SimplePatternMatcher matcher = SimplePatternMatcher.generatePatterns(identifiers);
+      Collection<Relation> foundMatches = matcher.match(sentence, doc);
+      for (Relation match : foundMatches) {
+        //take only the identifiers that were extracted correctly to avoid false negatives in the training set.
+        LOGGER.debug("found match {}", match);
+        int freq = frequencies.count(match.getSentence().getWords().get(match.getWordPosition()).toLowerCase());
+        match.setRelativeTermFrequency((double) freq / maxFrequency);
+        if (i - identifierSentenceDistanceMap.get(match.getIdentifier()) < 0) {
+          throw new RuntimeException("Cannot find identifier before first occurence");
+        }
+        match.setDistanceFromFirstIdentifierOccurence((double) (i - identifierSentenceDistanceMap.get(match.getIdentifier())) / (double) doc.getSentences().size());
+        allIdentifierDefininesCandidates.add(match);
+      }
+    }
+    WikiDocumentOutput result = new WikiDocumentOutput(doc.getTitle(), "-1", allIdentifierDefininesCandidates, null);
     result.setMaxSentenceLength(doc.getSentences().stream().map(s -> s.getWords().size()).max(Comparator.naturalOrder()).get());
     return result;
   }

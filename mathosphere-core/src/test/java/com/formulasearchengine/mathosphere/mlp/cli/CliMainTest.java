@@ -229,7 +229,22 @@ public class CliMainTest {
       "--tex",
       "--texvcinfo", "http://localhost:10044/texvcinfo",
       "--threads", "10",
-      "--writeInstances"
+      "--writeInstances",
+      "--writeSvmModel"
+    };
+    Main.main(args);
+  }
+
+  @Test
+  public void testMachineLearningClassification() throws Exception {
+    final File temp = Files.createTempDir();
+    String[] args = {CliParams.CLASSIFY,
+      "-in", resourcePath("com/formulasearchengine/mathosphere/mlp/gold/eval_dataset.xml"),
+      "-out", temp.getAbsolutePath(),
+      "--tex",
+      "--texvcinfo", "http://localhost:10044/texvcinfo",
+      "--threads", "5",
+      "--svmModel", resourcePath("com/formulasearchengine/mathosphere/mlp/ml/svm_model_best_dumb_oversampling.model"),
     };
     Main.main(args);
   }

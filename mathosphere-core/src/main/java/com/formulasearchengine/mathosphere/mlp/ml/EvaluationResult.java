@@ -19,6 +19,7 @@ public class EvaluationResult {
   public final double[] averageRecall;
   public final double[] accuracy;
   public final String[] text;
+  public String prefix = "";
 
   public ScoreSummary getScoreSummary() {
     return scoreSummary;
@@ -48,7 +49,7 @@ public class EvaluationResult {
 
   @Override
   public String toString() {
-    return "Cost; " + Utils.doubleToString(cost, 10)
+    return prefix + "Cost; " + Utils.doubleToString(cost, 10)
       + "; gamma; " + Utils.doubleToString(gamma, 10)
       + "; percentage_of_data_used; " + percent
       + "; accuracy; " + Arrays.toString(accuracy).replaceAll("\\[|\\]", "").replaceAll(",", ";")

@@ -50,7 +50,7 @@ public class Relation implements Comparable<Relation> {
    * The relevance score, when compared to e.g. a gold standard.
    * 0 = irrelevant; 1 = partly relevant; 2 = correct definiens.
    */
-  private Integer relevance;
+  private Integer relevance = 0;
 
   public Relation() {
   }

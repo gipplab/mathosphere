@@ -2,6 +2,7 @@ package com.formulasearchengine.mathosphere.mlp;
 
 import com.formulasearchengine.mathosphere.mathpd.FlinkPd;
 import com.formulasearchengine.mathosphere.mlp.cli.CliParams;
+import com.formulasearchengine.mathosphere.mlp.cli.MachineLearningDefinienExtractionConfig;
 import com.formulasearchengine.mathosphere.mlp.text.TokenCounter;
 
 /**
@@ -26,7 +27,9 @@ public class Main {
     } else if (CliParams.EVAL.equals(command)) {
       FlinkMlpRelationFinder.evaluate(params.getEvalCommandConfig());
     } else if (CliParams.ML.equals(command)) {
-      MachineLearningRelationFinder.find(params.getMachineLearningCommand());
+      MachineLearningModelGenerator.find(params.getMachineLearningCommand());
+    } else if (CliParams.CLASSIFY.equals(command)) {
+      MachineLearningRelationClassifier.find(params.getClassifyCommand());
     } else if (CliParams.PD.equals(command)) {
       FlinkPd.run(params.getPdCommandConfig());
     } else {

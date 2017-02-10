@@ -110,7 +110,7 @@ public class WekaUtils {
   private static final String NUMBER_OF_DEFINIENS_IN_SENTENCE = "number_of_definiens";
   private static final String NUMBER_OF_IDENTIFIERS_IN_SENTENCE = "number_of_identifiers";
 
-  public static Instances createInstances(String title) {
+  public Instances createInstances(String title) {
     ArrayList<Attribute> atts = new ArrayList<>();
     //meta information
     atts.add(new Attribute(TITLE, (FastVector) null));
@@ -167,7 +167,7 @@ public class WekaUtils {
     return result;
   }
 
-  public static Instances addRelationsToInstances(DependencyParser parser, List<Relation> relations, String title, String qId, Instances instances, double maxSentenceLength) {
+  public Instances addRelationsToInstances(DependencyParser parser, List<Relation> relations, String title, String qId, Instances instances, double maxSentenceLength) {
     List nominal = new ArrayList();
     nominal.add(MATCH);
     nominal.add(NO_MATCH);

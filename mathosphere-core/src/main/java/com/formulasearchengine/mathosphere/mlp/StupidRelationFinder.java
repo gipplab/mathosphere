@@ -6,7 +6,6 @@ import com.formulasearchengine.mathosphere.mlp.contracts.StupidRelationScorer;
 import com.formulasearchengine.mathosphere.mlp.contracts.TextAnnotatorMapper;
 import com.formulasearchengine.mathosphere.mlp.contracts.TextExtractorMapper;
 import com.formulasearchengine.mathosphere.mlp.ml.EvaluationResult;
-import com.formulasearchengine.mathosphere.mlp.ml.WekaLearner;
 import com.formulasearchengine.mathosphere.mlp.pojos.ParsedWikiDocument;
 import com.formulasearchengine.mathosphere.mlp.pojos.WikiDocumentOutput;
 import com.formulasearchengine.mathosphere.mlp.text.SimpleFeatureExtractorMapper;
@@ -21,8 +20,6 @@ import org.apache.log4j.Logger;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 public class StupidRelationFinder {
 

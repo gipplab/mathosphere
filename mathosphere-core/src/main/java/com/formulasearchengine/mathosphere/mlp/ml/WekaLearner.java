@@ -4,11 +4,9 @@ import com.formulasearchengine.mathosphere.mlp.cli.MachineLearningDefinienExtrac
 import com.formulasearchengine.mathosphere.mlp.pojos.WikiDocumentOutput;
 import com.formulasearchengine.mlp.evaluation.Evaluator;
 import com.formulasearchengine.mlp.evaluation.pojo.GoldEntry;
-import com.formulasearchengine.mlp.evaluation.pojo.ScoreSummary;
 import edu.stanford.nlp.parser.nndep.DependencyParser;
 import org.apache.commons.io.FileUtils;
 import org.apache.flink.api.common.functions.GroupReduceFunction;
-import org.apache.flink.api.common.functions.util.CopyingListCollector;
 import org.apache.flink.api.common.functions.util.ListCollector;
 import org.apache.flink.util.Collector;
 import weka.classifiers.Classifier;
@@ -24,6 +22,7 @@ import weka.core.tokenizers.NGramTokenizer;
 import weka.filters.Filter;
 import weka.filters.MultiFilter;
 import weka.filters.supervised.instance.Resample;
+import weka.filters.supervised.instance.SMOTE;
 import weka.filters.unsupervised.attribute.Remove;
 import weka.filters.unsupervised.attribute.StringToWordVector;
 
@@ -145,18 +144,47 @@ public class WekaLearner implements GroupReduceFunction<WikiDocumentOutput, Eval
   public void reduce(Iterable<WikiDocumentOutput> values, Collector<EvaluationResult> out) throws Exception {
     Instances instances;
     DependencyParser parser = DependencyParser.loadFromModelFile(config.dependencyParserModel());
-    instances = createInstances("AllRelations");
+    WekaUtils wekaUtils = new WekaUtils();
+    instances = wekaUtils.createInstances("AllRelations");
     for (WikiDocumentOutput value : values) {
-      addRelationsToInstances(parser, value.getRelations(), value.getTitle(), value.getqId(), instances, value.getMaxSentenceLength());
+      wekaUtils.addRelationsToInstances(parser, value.getRelations(), value.getTitle(), value.getqId(), instances, value.getMaxSentenceLength());
     }
-    File instancesFile = new File(config.getOutputDir() + INSTANCES_ARFF_FILE_NAME);
     if (config.isWriteInstances()) {
+      File instancesFile = new File(config.getOutputDir() + INSTANCES_ARFF_FILE_NAME);
       ArffSaver arffSaver = new ArffSaver();
       arffSaver.setFile(instancesFile);
       arffSaver.setInstances(instances);
       arffSaver.writeBatch();
     }
+    //do model once with all data
+    if (config.getWriteSvmModel()) {
+      generateAndWriteFullModel(instances);
+    }
     process(out, instances);
+  }
+
+  /**
+   * Generate the model with all data and write it with the appropriate filters.
+   *
+   * @param instances as returned from {@link WekaUtils#createInstances(String)}
+   * @throws Exception
+   */
+  private void generateAndWriteFullModel(Instances instances) throws Exception {
+    Instances resampled = dumbResample(instances);
+    StringToWordVector stringToWordVector = getStringToWordVectorFilter(resampled);
+    Instances stringsReplacedData = Filter.useFilter(resampled, stringToWordVector);
+    Remove removeFilter = getRemoveFilter(stringsReplacedData);
+    removeFilter.setInputFormat(stringsReplacedData);
+    LibSVM svmForOut = new LibSVM();
+    svmForOut.setCost(config.getSvmCost().get(0));
+    svmForOut.setGamma(config.getSvmGamma().get(0));
+    MultiFilter multi = new MultiFilter();
+    multi.setFilters(new Filter[]{stringToWordVector, removeFilter});
+    FilteredClassifier filteredClassifierForOut = new FilteredClassifier();
+    filteredClassifierForOut.setClassifier(svmForOut);
+    filteredClassifierForOut.setFilter(multi);
+    filteredClassifierForOut.buildClassifier(resampled);
+    weka.core.SerializationHelper.write(config.getOutputDir() + "/svm_model_" + "_c_" + config.getSvmCost().get(0) + "_gamma_" + config.getSvmGamma().get(0) + ".model", filteredClassifierForOut);
   }
 
   public List<EvaluationResult> processFromInstances() throws Exception {
@@ -195,45 +223,28 @@ public class WekaLearner implements GroupReduceFunction<WikiDocumentOutput, Eval
     File outputDetails = new File(config.getOutputDir() + "/svm_cross_eval_detailed_statistics.txt");
     File extractedDefiniens = new File(config.getOutputDir() + "/classifications.csv");
 
-    StringToWordVector stringToWordVector = new StringToWordVector();
-    stringToWordVector.setAttributeIndices(indicesToRangeList(new int[]{
-      instances.attribute(SURFACE_TEXT_AND_POS_TAG_OF_TWO_PRECEDING_AND_FOLLOWING_TOKENS_AROUND_THE_DESC_CANDIDATE).index(),
-      instances.attribute(SURFACE_TEXT_AND_POS_TAG_OF_THREE_PRECEDING_AND_FOLLOWING_TOKENS_AROUND_THE_PAIRED_MATH_EXPR).index(),
-      instances.attribute(SURFACE_TEXT_OF_THE_FIRST_VERB_THAT_APPEARS_BETWEEN_THE_DESC_CANDIDATE_AND_THE_TARGET_MATH_EXPR).index(),
-      instances.attribute(SURFACE_TEXT_AND_POS_TAG_OF_DEPENDENCY_WITH_LENGTH_3_FROM_IDENTIFIER).index(),
-      instances.attribute(SURFACE_TEXT_AND_POS_TAG_OF_DEPENDENCY_WITH_LENGTH_3_FROM_DEFINIEN).index()}));
-    stringToWordVector.setWordsToKeep(1000);
-    NGramTokenizer nGramTokenizer = new NGramTokenizer();
-    nGramTokenizer.setNGramMaxSize(3);
-    nGramTokenizer.setNGramMinSize(1);
-    nGramTokenizer.setDelimiters(nGramTokenizer.getDelimiters().replaceAll(":", ""));
-    stringToWordVector.setInputFormat(instances);
-    stringToWordVector.setTokenizer(nGramTokenizer);
+    StringToWordVector stringToWordVector = getStringToWordVectorFilter(instances);
     Instances stringsReplacedData = Filter.useFilter(instances, stringToWordVector);
 
-    Remove removeFilter = new Remove();
-    removeFilter.setAttributeIndices(indicesToRangeList(new int[]{
-      instances.attribute(TITLE).index(),
-      instances.attribute(IDENTIFIER).index(),
-      instances.attribute(DEFINIEN).index(),
-      instances.attribute(Q_ID).index(),
-    }));
+    Remove removeFilter = getRemoveFilter(stringsReplacedData);
     removeFilter.setInputFormat(stringsReplacedData);
 
     FileUtils.deleteQuietly(output);
     FileUtils.deleteQuietly(outputDetails);
     FileUtils.deleteQuietly(extractedDefiniens);
+    Double[] oversample = new Double[]{0d};//, 10d, 20d, 50d, 70d, 100d, 120d, 150d};
     List<Double[]> parameters = new ArrayList<>();
     for (double p : percentages) {
       for (double c : C_used) {
         for (double y : Y_used) {
-          parameters.add(new Double[]{p, c, y});
+          for (double o : oversample)
+            parameters.add(new Double[]{p, c, y, o});
         }
       }
     }
     ForkJoinPool forkJoinPool = new ForkJoinPool(config.getParallelism());
     Stream<EvaluationResult> a = parameters.parallelStream().map(
-      parameter -> crossEvaluate(stringsReplacedData, removeFilter, parameter[0], parameter[1], parameter[2]));
+      parameter -> crossEvaluate(stringsReplacedData, removeFilter, stringToWordVector, parameter[0], parameter[1], parameter[2], parameter[3]));
     Callable<List<EvaluationResult>> task = () -> a.collect(toList());
     List<EvaluationResult> evaluationResults = forkJoinPool.submit(task).get();
     for (EvaluationResult evaluationResult : evaluationResults) {
@@ -262,34 +273,53 @@ public class WekaLearner implements GroupReduceFunction<WikiDocumentOutput, Eval
     }
   }
 
-  private EvaluationResult crossEvaluate(Instances stringsReplacedData, Remove removeFilter, double percent, double cost, double gamma) {
+  private StringToWordVector getStringToWordVectorFilter(Instances instances) throws Exception {
+    StringToWordVector stringToWordVector = new StringToWordVector();
+    stringToWordVector.setAttributeIndices(indicesToRangeList(new int[]{
+      instances.attribute(SURFACE_TEXT_AND_POS_TAG_OF_TWO_PRECEDING_AND_FOLLOWING_TOKENS_AROUND_THE_DESC_CANDIDATE).index(),
+      instances.attribute(SURFACE_TEXT_AND_POS_TAG_OF_THREE_PRECEDING_AND_FOLLOWING_TOKENS_AROUND_THE_PAIRED_MATH_EXPR).index(),
+      instances.attribute(SURFACE_TEXT_OF_THE_FIRST_VERB_THAT_APPEARS_BETWEEN_THE_DESC_CANDIDATE_AND_THE_TARGET_MATH_EXPR).index(),
+      instances.attribute(SURFACE_TEXT_AND_POS_TAG_OF_DEPENDENCY_WITH_LENGTH_3_FROM_IDENTIFIER).index(),
+      instances.attribute(SURFACE_TEXT_AND_POS_TAG_OF_DEPENDENCY_WITH_LENGTH_3_FROM_DEFINIEN).index()}));
+    stringToWordVector.setWordsToKeep(1000);
+    NGramTokenizer nGramTokenizer = new NGramTokenizer();
+    nGramTokenizer.setNGramMaxSize(3);
+    nGramTokenizer.setNGramMinSize(1);
+    nGramTokenizer.setDelimiters(nGramTokenizer.getDelimiters().replaceAll(":", ""));
+    stringToWordVector.setInputFormat(instances);
+    stringToWordVector.setTokenizer(nGramTokenizer);
+    return stringToWordVector;
+  }
+
+  private Remove getRemoveFilter(Instances instances) {
+    Remove removeFilter = new Remove();
+    removeFilter.setAttributeIndices(indicesToRangeList(new int[]{
+      instances.attribute(TITLE).index(),
+      instances.attribute(IDENTIFIER).index(),
+      instances.attribute(DEFINIEN).index(),
+      instances.attribute(Q_ID).index(),
+    }));
+    return removeFilter;
+  }
+
+  private EvaluationResult crossEvaluate(Instances stringsReplacedData, Remove removeFilter, StringToWordVector stringToWordVector, double percent, double cost, double gamma, double oversample) {
     try {
       System.out.println("Cost; " + Utils.doubleToString(cost, 10)
         + "; gamma; " + Utils.doubleToString(gamma, 10));
       EvaluationResult result = new EvaluationResult(folds, percent, cost, gamma);
+      result.prefix = "oversample; " + oversample;
       Instances reduced;
       if (percent != 100) {
         //draw random sample, careful, this actually has an effect, even for setSampleSizePercent(100) and setBiasToUniformClass(0)
-        Resample sampler = new Resample();
-        sampler.setInputFormat(stringsReplacedData);
-        sampler.setRandomSeed(1);
-        //do not change distribution
-        sampler.setBiasToUniformClass(0);
-        sampler.setSampleSizePercent(percent);
-        reduced = Filter.useFilter(stringsReplacedData, sampler);
+        reduced = downsample(stringsReplacedData, percent);
       } else {
         reduced = stringsReplacedData;
       }
-      //oversampling to deal with the ratio of the classes
-      Resample resampleFilter = new Resample();
-      resampleFilter.setRandomSeed(1);
-      resampleFilter.setBiasToUniformClass(1);
-      resampleFilter.setInputFormat(reduced);
-      Instances resampled = Filter.useFilter(reduced, resampleFilter);
+      Instances resampled = resample(oversample, reduced);
       int counter = 0;
       while (10 * counter < totalQids) {
         for (int n = 0; n < folds; n++) {
-          trainAndTest(10 * counter + n, removeFilter, cost, gamma, reduced, resampled, result.averagePrecision, result.averageRecall, result.accuracy, result.text, result.extractions);
+          trainAndTest(10 * counter + n, removeFilter, cost, gamma, reduced, resampled, result);
         }
         if (!config.isLeaveOneOutEvaluation()) {
           break;
@@ -302,17 +332,72 @@ public class WekaLearner implements GroupReduceFunction<WikiDocumentOutput, Eval
     }
   }
 
+  private Instances resample(double oversample, Instances reduced) throws Exception {
+    Instances resampled;
+
+    //oversampling to deal with the ratio of the classes
+    if (true) {
+      resampled = dumbResample(reduced);
+    } else {
+      resampled = smote(reduced, oversample);
+    }
+    return resampled;
+  }
+
+  private Instances downsample(Instances stringsReplacedData, double percent) throws Exception {
+    Instances reduced;
+    Resample sampler = new Resample();
+    sampler.setInputFormat(stringsReplacedData);
+    sampler.setRandomSeed(1);
+    //do not change distribution
+    sampler.setBiasToUniformClass(0);
+    sampler.setSampleSizePercent(percent);
+    reduced = Filter.useFilter(stringsReplacedData, sampler);
+    return reduced;
+  }
+
+  private Instances dumbResample(Instances reduced) throws Exception {
+    Resample resampleFilter = new Resample();
+    resampleFilter.setRandomSeed(1);
+    resampleFilter.setBiasToUniformClass(1);
+    resampleFilter.setInputFormat(reduced);
+    return Filter.useFilter(reduced, resampleFilter);
+  }
+
+  private Instances smote(Instances stringsReplacedData, double oversample) throws Exception {
+    Instances resampled;
+    SMOTE smote = getSmoteFilter(stringsReplacedData, oversample);
+    resampled = Filter.useFilter(stringsReplacedData, smote);
+    return resampled;
+  }
+
+  private SMOTE getSmoteFilter(Instances stringsReplacedData, double oversample) throws Exception {
+    SMOTE smote = new SMOTE();
+    smote.setRandomSeed(1);
+    smote.setPercentage(oversample);
+    smote.setInputFormat(stringsReplacedData);
+    smote.setNearestNeighbors(5);
+    return smote;
+  }
+
+  /**
+   * @param n                fold.
+   * @param removeFilter     the filter that removes the string attributes title, qid, identifier and definiens.
+   * @param cost             cost for the svm.
+   * @param gamma            gamma for the svm.
+   * @param beforeResampling plain data for test set generation, strings replaced.
+   * @param resampled        resampled training data.
+   * @param result           for returning the results.
+   * @throws Exception weka may throw.
+   */
   private void trainAndTest(int n, Filter removeFilter, double cost, double gamma, Instances beforeResampling, Instances resampled,
-                            double[] averagePrecision, double[] averageRecall, double[] accuracy, String[] text,
-                            Collection<String> extractions) throws Exception {
+                            EvaluationResult result) throws Exception {
     LibSVM svm = new LibSVM();
     svm.setCost(cost);
     svm.setGamma(gamma);
-    MultiFilter multi = new MultiFilter();
-    multi.setFilters(new Filter[]{removeFilter});
     FilteredClassifier filteredClassifier = new FilteredClassifier();
     filteredClassifier.setClassifier(svm);
-    filteredClassifier.setFilter(multi);
+    filteredClassifier.setFilter(removeFilter);
     List<Integer> testIds;
     if (config.isLeaveOneOutEvaluation()) {
       testIds = new ArrayList<>(n);
@@ -321,25 +406,19 @@ public class WekaLearner implements GroupReduceFunction<WikiDocumentOutput, Eval
     }
     Instances train = new Instances(resampled, 1);
     Instances test = new Instances(beforeResampling, 1);
+    //build test and training set independently
     for (int i = 0; i < resampled.numInstances(); i++) {
       Instance a = resampled.instance(i);
-      if (testIds.contains(Integer.parseInt(a.stringValue(a.attribute(resampled.attribute(Q_ID).index()))))) {
-        //test.add(a);
-      } else {
+      if (!testIds.contains(Integer.parseInt(a.stringValue(a.attribute(resampled.attribute(Q_ID).index()))))) {
         train.add(a);
       }
     }
     for (int i = 0; i < beforeResampling.numInstances(); i++) {
       Instance a = beforeResampling.instance(i);
       if (testIds.contains(Integer.parseInt(a.stringValue(a.attribute(beforeResampling.attribute(Q_ID).index()))))) {
+        //from unresampled data for accurate accuracy predictions
         test.add(a);
-      } else {
-        //train.add(a);
       }
-    }
-    // build and evaluate classifier
-    if (config.getWriteSvmModel()) {
-      svm.setModelFile(new File("C:\\tmp\\output\\model_" + config.getPercent() + "_percent_fold_" + n));
     }
     Classifier clsCopy = FilteredClassifier.makeCopy(filteredClassifier);
     clsCopy.buildClassifier(train);
@@ -349,22 +428,22 @@ public class WekaLearner implements GroupReduceFunction<WikiDocumentOutput, Eval
       String match = train.classAttribute().value(0);
       String predictedClass = train.classAttribute().value((int) clsCopy.classifyInstance(instance));
       if (match.equals(predictedClass)) {
-      String extraction =
-        instance.stringValue(instance.attribute(train.attribute(Q_ID).index())) + ","
-          + "\"" + instance.stringValue(instance.attribute(train.attribute(TITLE).index())).replaceAll("\\s", "_") + "\","
-          + "\"" + instance.stringValue(instance.attribute(train.attribute(IDENTIFIER).index())) + "\","
-          + "\"" + instance.stringValue(instance.attribute(train.attribute(DEFINIEN).index())).toLowerCase() + "\"";
-      extractions.add(extraction);
+        String extraction =
+          instance.stringValue(instance.attribute(train.attribute(Q_ID).index())) + ","
+            + "\"" + instance.stringValue(instance.attribute(train.attribute(TITLE).index())).replaceAll("\\s", "_") + "\","
+            + "\"" + instance.stringValue(instance.attribute(train.attribute(IDENTIFIER).index())) + "\","
+            + "\"" + instance.stringValue(instance.attribute(train.attribute(DEFINIEN).index())).toLowerCase() + "\"";
+        result.extractions.add(extraction);
       }
     }
     Evaluation eval = new Evaluation(resampled);
     eval.setPriors(train);
     eval.evaluateModel(clsCopy, test);
-    averagePrecision[n] = eval.precision(0);
-    averageRecall[n] = eval.recall(0);
-    accuracy[n] = eval.pctCorrect() / 100d;
+    result.averagePrecision[n] = eval.precision(0);
+    result.averageRecall[n] = eval.recall(0);
+    result.accuracy[n] = eval.pctCorrect() / 100d;
     StringBuilder b = new StringBuilder();
     b.append(", fold, ").append(n).append("\n").append(eval.toClassDetailsString()).append("\n").append(eval.toSummaryString(true));
-    text[n] = b.toString();
+    result.text[n] = b.toString();
   }
 }
