@@ -361,7 +361,17 @@ public class MathConverter
     if (e.getName().equalsIgnoreCase("br")) {
       newline(1);
     } else if (e.getName().equalsIgnoreCase("var")) {
-      handeLatexMathTag(e, ((WtText) e.getBody().get(0)).getContent().trim());
+      WtNode wtNodes = e.getBody().get(0);
+      String content;
+      if (wtNodes instanceof WtText) {
+        content = ((WtText) wtNodes).getContent().trim();
+        handeLatexMathTag(e, content);
+      } else if (wtNodes instanceof WtInternalLink) {
+        //TODO: do not throw away the information of the link from WtInternalLink.getTarget()
+        //Identifier is more important than link. Link maybe helpful for wikidata.
+        content = ((WtText) ((WtInternalLink) e.getBody().get(0)).getTitle().get(0)).getContent().trim();
+        handeLatexMathTag(e, content);
+      }
     } else {
       iterate(e.getBody());
     }
