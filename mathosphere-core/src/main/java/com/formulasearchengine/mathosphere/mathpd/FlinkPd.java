@@ -214,21 +214,6 @@ public class FlinkPd {
 
             DataSet<Tuple7<String, String, Double, Double, Double, Double, Double>> distancesAndSectionPairs =
                     extractedMathPdDocumentsSources
-                            /*.groupBy(0)
-                            .reduceGroup(new GroupReduceFunction<Tuple2<String, ExtractedMathPDDocument>, ExtractedMathPDDocument>() {
-                                @Override
-                                public void reduce(Iterable<Tuple2<String, ExtractedMathPDDocument>> iterable, Collector<ExtractedMathPDDocument> collector) throws Exception {
-                                    ExtractedMathPDDocument tmpDoc = null;
-                                    for (Tuple2<String, ExtractedMathPDDocument> i : iterable) {
-                                        if (tmpDoc == null) {
-                                            tmpDoc = i.f1;
-                                        } else {
-                                            tmpDoc.mergeOtherIntoThis(i.f1);
-                                        }
-                                    }
-                                    collector.collect(tmpDoc);
-                                }
-                            })*/
                             .map(new MapFunction<Tuple2<String, ExtractedMathPDDocument>, ExtractedMathPDDocument>() {
                                 @Override
                                 public ExtractedMathPDDocument map(Tuple2<String, ExtractedMathPDDocument> stringExtractedMathPDDocumentTuple2) throws Exception {
@@ -236,27 +221,12 @@ public class FlinkPd {
                                 }
                             })
                             .cross(extractedMathPdDocumentsRefs
-                                            .map(new MapFunction<Tuple2<String, ExtractedMathPDDocument>, ExtractedMathPDDocument>() {
-                                                @Override
-                                                public ExtractedMathPDDocument map(Tuple2<String, ExtractedMathPDDocument> stringExtractedMathPDDocumentTuple2) throws Exception {
-                                                    return stringExtractedMathPDDocumentTuple2.f1;
-                                                }
-                                            })
-                                    /*.groupBy(0)
-                                    .reduceGroup(new GroupReduceFunction<Tuple2<String, ExtractedMathPDDocument>, ExtractedMathPDDocument>() {
+                                    .map(new MapFunction<Tuple2<String, ExtractedMathPDDocument>, ExtractedMathPDDocument>() {
                                         @Override
-                                        public void reduce(Iterable<Tuple2<String, ExtractedMathPDDocument>> iterable, Collector<ExtractedMathPDDocument> collector) throws Exception {
-                                            ExtractedMathPDDocument tmpDoc = null;
-                                            for (Tuple2<String, ExtractedMathPDDocument> i : iterable) {
-                                                if (tmpDoc == null) {
-                                                    tmpDoc = i.f1;
-                                                } else {
-                                                    tmpDoc.mergeOtherIntoThis(i.f1);
-                                                }
-                                            }
-                                            collector.collect(tmpDoc);
+                                        public ExtractedMathPDDocument map(Tuple2<String, ExtractedMathPDDocument> stringExtractedMathPDDocumentTuple2) throws Exception {
+                                            return stringExtractedMathPDDocumentTuple2.f1;
                                         }
-                                    })*/
+                                    })
                             )
                             .map(new MapFunction<Tuple2<ExtractedMathPDDocument, ExtractedMathPDDocument>, Tuple7<String, String, Double, Double, Double, Double, Double>>() {
                                 @Override
@@ -264,14 +234,6 @@ public class FlinkPd {
                                     if (extractedMathPDDocumentExtractedMathPDDocumentTuple2.f0 == null || extractedMathPDDocumentExtractedMathPDDocumentTuple2.f1 == null) {
                                         return null;
                                     }
-
-                                    // skip one diagonal half of the matrix
-                                    //if (!i.f0.getId().contains("Original"))
-                                    //    continue;
-
-                                    // only check Original against Plagiarism (not against other Originals)
-                                    //if (!i.f1.getId().contains("Plagiarism"))
-                                    //    continue;
 
                                     // Tuple4 contains (if cosine is used, the term distance actually means similarity, i.e.,
                                     // -1=opposite, 0=unrelated, 1=same doc
@@ -302,21 +264,22 @@ public class FlinkPd {
             distancesAndSectionPairs.writeAsCsv(config.getOutputDir(), WriteMode.OVERWRITE);
 
             // also merge all partitions together of all document pairs, by taking the min distance in any field
-            final DataSet<Tuple7<String, String, Double, Double, Double, Double, Double>> minDistancesOfRemergedDocs = distancesAndSectionPairs.map(new MapFunction<Tuple7<String, String, Double, Double, Double, Double, Double>, Tuple7<String, String, Double, Double, Double, Double, Double>>() {
-                @Override
-                public Tuple7<String, String, Double, Double, Double, Double, Double> map(Tuple7<String, String, Double, Double, Double, Double, Double> stringStringDoubleDoubleDoubleDoubleDoubleTuple7) throws Exception {
-                    String id0 = stringStringDoubleDoubleDoubleDoubleDoubleTuple7.f0;
-                    String id1 = stringStringDoubleDoubleDoubleDoubleDoubleTuple7.f1;
-                    id0 = id0.substring(0, id0.lastIndexOf("/"));
-                    id1 = id0.substring(0, id1.lastIndexOf("/"));
+            final DataSet<Tuple7<String, String, Double, Double, Double, Double, Double>> minDistancesOfRemergedDocs = distancesAndSectionPairs
+                    .map(new MapFunction<Tuple7<String, String, Double, Double, Double, Double, Double>, Tuple7<String, String, Double, Double, Double, Double, Double>>() {
+                        @Override
+                        public Tuple7<String, String, Double, Double, Double, Double, Double> map(Tuple7<String, String, Double, Double, Double, Double, Double> stringStringDoubleDoubleDoubleDoubleDoubleTuple7) throws Exception {
+                            String id0 = stringStringDoubleDoubleDoubleDoubleDoubleTuple7.f0;
+                            String id1 = stringStringDoubleDoubleDoubleDoubleDoubleTuple7.f1;
+                            id0 = id0.substring(0, id0.lastIndexOf("/"));
+                            id1 = id0.substring(0, id1.lastIndexOf("/"));
 
-                    return new Tuple7<>(id0, id1, stringStringDoubleDoubleDoubleDoubleDoubleTuple7.f2,
-                            stringStringDoubleDoubleDoubleDoubleDoubleTuple7.f3,
-                            stringStringDoubleDoubleDoubleDoubleDoubleTuple7.f4,
-                            stringStringDoubleDoubleDoubleDoubleDoubleTuple7.f5,
-                            stringStringDoubleDoubleDoubleDoubleDoubleTuple7.f6);
-                }
-            })
+                            return new Tuple7<>(id0, id1, stringStringDoubleDoubleDoubleDoubleDoubleTuple7.f2,
+                                    stringStringDoubleDoubleDoubleDoubleDoubleTuple7.f3,
+                                    stringStringDoubleDoubleDoubleDoubleDoubleTuple7.f4,
+                                    stringStringDoubleDoubleDoubleDoubleDoubleTuple7.f5,
+                                    stringStringDoubleDoubleDoubleDoubleDoubleTuple7.f6);
+                        }
+                    })
                     .groupBy(0, 1)
                     .reduceGroup(new GroupReduceFunction<Tuple7<String, String, Double, Double, Double, Double, Double>, Tuple7<String, String, Double, Double, Double, Double, Double>>() {
                         @Override
