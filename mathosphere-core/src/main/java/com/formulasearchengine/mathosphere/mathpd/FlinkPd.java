@@ -162,7 +162,6 @@ public class FlinkPd {
     }
 
 
-
     public static void run(FlinkPdCommandConfig config) throws Exception {
         final ExecutionEnvironment env = ExecutionEnvironment.getExecutionEnvironment();
 
@@ -213,7 +212,7 @@ public class FlinkPd {
             GroupReduceOperator<Tuple2<Tuple2<String, ExtractedMathPDDocument>, Tuple3<String, String, Double>>, Tuple2<String, ExtractedMathPDDocument>> extractedMathPDDocsWithTFIDF = null;
 
 
-            DataSet distancesAndSectionPairs =
+            DataSet<Tuple7<String, String, Double, Double, Double, Double, Double>> distancesAndSectionPairs =
                     extractedMathPdDocumentsSources
                             /*.groupBy(0)
                             .reduceGroup(new GroupReduceFunction<Tuple2<String, ExtractedMathPDDocument>, ExtractedMathPDDocument>() {
@@ -259,49 +258,88 @@ public class FlinkPd {
                                         }
                                     })*/
                             )
-                            .reduceGroup(new GroupReduceFunction<Tuple2<ExtractedMathPDDocument, ExtractedMathPDDocument>, Tuple7<String, String, Double, Double, Double, Double, Double>>() {
+                            .map(new MapFunction<Tuple2<ExtractedMathPDDocument, ExtractedMathPDDocument>, Tuple7<String, String, Double, Double, Double, Double, Double>>() {
                                 @Override
-                                public void reduce(Iterable<Tuple2<ExtractedMathPDDocument, ExtractedMathPDDocument>> iterable, Collector<Tuple7<String, String, Double, Double, Double, Double, Double>> collector) throws Exception {
-                                    for (Tuple2<ExtractedMathPDDocument, ExtractedMathPDDocument> i : iterable) {
-                                        if (i.f0 == null || i.f1 == null)
-                                            continue;
-
-                                        // skip one diagonal half of the matrix
-                                        //if (!i.f0.getId().contains("Original"))
-                                        //    continue;
-
-                                        // only check Original against Plagiarism (not against other Originals)
-                                        //if (!i.f1.getId().contains("Plagiarism"))
-                                        //    continue;
-
-                                        // Tuple4 contains (if cosine is used, the term distance actually means similarity, i.e.,
-                                        // -1=opposite, 0=unrelated, 1=same doc
-                                        // 1) total distance (accumulated distance of all others) - makes no sense in case of cosine distance
-                                        // 2) numbers
-                                        // 3) operators
-                                        // 4) identifiers
-                                        // 5) bound variables
-                                        Tuple4<Double, Double, Double, Double> distanceAllFeatures;
-
-                                        distanceAllFeatures = Distances.distanceRelativeAllFeatures(i.f0, i.f1);
-
-
-                                        final Tuple7<String, String, Double, Double, Double, Double, Double> resultLine = new Tuple7<>(
-                                                i.f0.getId(),
-                                                i.f1.getId(),
-                                                Math.abs(distanceAllFeatures.f0) + Math.abs(distanceAllFeatures.f1) + Math.abs(distanceAllFeatures.f2) + Math.abs(distanceAllFeatures.f3),
-                                                distanceAllFeatures.f0,
-                                                distanceAllFeatures.f1,
-                                                distanceAllFeatures.f2,
-                                                distanceAllFeatures.f3
-                                        );
-
-                                        collector.collect(resultLine);
+                                public Tuple7<String, String, Double, Double, Double, Double, Double> map(Tuple2<ExtractedMathPDDocument, ExtractedMathPDDocument> extractedMathPDDocumentExtractedMathPDDocumentTuple2) throws Exception {
+                                    if (extractedMathPDDocumentExtractedMathPDDocumentTuple2.f0 == null || extractedMathPDDocumentExtractedMathPDDocumentTuple2.f1 == null) {
+                                        return null;
                                     }
+
+                                    // skip one diagonal half of the matrix
+                                    //if (!i.f0.getId().contains("Original"))
+                                    //    continue;
+
+                                    // only check Original against Plagiarism (not against other Originals)
+                                    //if (!i.f1.getId().contains("Plagiarism"))
+                                    //    continue;
+
+                                    // Tuple4 contains (if cosine is used, the term distance actually means similarity, i.e.,
+                                    // -1=opposite, 0=unrelated, 1=same doc
+                                    // 1) total distance (accumulated distance of all others) - makes no sense in case of cosine distance
+                                    // 2) numbers
+                                    // 3) operators
+                                    // 4) identifiers
+                                    // 5) bound variables
+                                    Tuple4<Double, Double, Double, Double> distanceAllFeatures;
+
+                                    distanceAllFeatures = Distances.distanceRelativeAllFeatures(extractedMathPDDocumentExtractedMathPDDocumentTuple2.f0, extractedMathPDDocumentExtractedMathPDDocumentTuple2.f1);
+
+
+                                    final Tuple7<String, String, Double, Double, Double, Double, Double> resultLine = new Tuple7<>(
+                                            extractedMathPDDocumentExtractedMathPDDocumentTuple2.f0.getId(),
+                                            extractedMathPDDocumentExtractedMathPDDocumentTuple2.f1.getId(),
+                                            Math.abs(distanceAllFeatures.f0) + Math.abs(distanceAllFeatures.f1) + Math.abs(distanceAllFeatures.f2) + Math.abs(distanceAllFeatures.f3),
+                                            distanceAllFeatures.f0,
+                                            distanceAllFeatures.f1,
+                                            distanceAllFeatures.f2,
+                                            distanceAllFeatures.f3
+                                    );
+
+                                    return resultLine;
                                 }
                             })
                             .sortPartition(1, Order.ASCENDING);
             distancesAndSectionPairs.writeAsCsv(config.getOutputDir(), WriteMode.OVERWRITE);
+
+            // also merge all partitions together of all document pairs, by taking the min distance in any field
+            final DataSet<Tuple7<String, String, Double, Double, Double, Double, Double>> minDistancesOfRemergedDocs = distancesAndSectionPairs.map(new MapFunction<Tuple7<String, String, Double, Double, Double, Double, Double>, Tuple7<String, String, Double, Double, Double, Double, Double>>() {
+                @Override
+                public Tuple7<String, String, Double, Double, Double, Double, Double> map(Tuple7<String, String, Double, Double, Double, Double, Double> stringStringDoubleDoubleDoubleDoubleDoubleTuple7) throws Exception {
+                    String id0 = stringStringDoubleDoubleDoubleDoubleDoubleTuple7.f0;
+                    String id1 = stringStringDoubleDoubleDoubleDoubleDoubleTuple7.f1;
+                    id0 = id0.substring(0, id0.lastIndexOf("/"));
+                    id1 = id0.substring(0, id1.lastIndexOf("/"));
+
+                    return new Tuple7<>(id0, id1, stringStringDoubleDoubleDoubleDoubleDoubleTuple7.f2,
+                            stringStringDoubleDoubleDoubleDoubleDoubleTuple7.f3,
+                            stringStringDoubleDoubleDoubleDoubleDoubleTuple7.f4,
+                            stringStringDoubleDoubleDoubleDoubleDoubleTuple7.f5,
+                            stringStringDoubleDoubleDoubleDoubleDoubleTuple7.f6);
+                }
+            })
+                    .groupBy(0, 1)
+                    .reduceGroup(new GroupReduceFunction<Tuple7<String, String, Double, Double, Double, Double, Double>, Tuple7<String, String, Double, Double, Double, Double, Double>>() {
+                        @Override
+                        public void reduce(Iterable<Tuple7<String, String, Double, Double, Double, Double, Double>> iterable, Collector<Tuple7<String, String, Double, Double, Double, Double, Double>> collector) throws Exception {
+                            double f2 = 0, f3 = 0, f4 = 0, f5 = 0, f6 = 0;
+                            String s0 = null, s1 = null;
+                            for (Tuple7<String, String, Double, Double, Double, Double, Double> cur : iterable) {
+                                if (s0 == null)
+                                    s0 = cur.f0;
+                                if (s1 == null)
+                                    s1 = cur.f1;
+                                f2 = Math.min(f2, cur.f2);
+                                f3 = Math.min(f2, cur.f3);
+                                f4 = Math.min(f2, cur.f4);
+                                f5 = Math.min(f2, cur.f5);
+                                f6 = Math.min(f2, cur.f6);
+                            }
+                            collector.collect(new Tuple7<>(
+                                    s0, s1, f2, f3, f4, f5, f6
+                            ));
+                        }
+                    });
+            minDistancesOfRemergedDocs.writeAsCsv(config.getOutputDir() + "_remergedbymindist", WriteMode.OVERWRITE);
 
             // we can now use the distances and section pairs dataset to aggregate the distances on document level in distance bins
             //noinspection Convert2Lambda
