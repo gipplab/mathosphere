@@ -284,7 +284,7 @@ public class FlinkPd {
                     .reduceGroup(new GroupReduceFunction<Tuple7<String, String, Double, Double, Double, Double, Double>, Tuple7<String, String, Double, Double, Double, Double, Double>>() {
                         @Override
                         public void reduce(Iterable<Tuple7<String, String, Double, Double, Double, Double, Double>> iterable, Collector<Tuple7<String, String, Double, Double, Double, Double, Double>> collector) throws Exception {
-                            double f2 = 0, f3 = 0, f4 = 0, f5 = 0, f6 = 0;
+                            double f2 = Double.MAX_VALUE, f3 = Double.MAX_VALUE, f4 = Double.MAX_VALUE, f5 = Double.MAX_VALUE, f6 = Double.MAX_VALUE;
                             String s0 = null, s1 = null;
                             for (Tuple7<String, String, Double, Double, Double, Double, Double> cur : iterable) {
                                 if (s0 == null)
