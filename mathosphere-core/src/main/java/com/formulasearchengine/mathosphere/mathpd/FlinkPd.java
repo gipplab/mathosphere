@@ -270,8 +270,8 @@ public class FlinkPd {
                         public Tuple7<String, String, Double, Double, Double, Double, Double> map(Tuple7<String, String, Double, Double, Double, Double, Double> stringStringDoubleDoubleDoubleDoubleDoubleTuple7) throws Exception {
                             String id0 = stringStringDoubleDoubleDoubleDoubleDoubleTuple7.f0;
                             String id1 = stringStringDoubleDoubleDoubleDoubleDoubleTuple7.f1;
-                            id0 = id0.substring(0, id0.lastIndexOf("/") - 1);
-                            id1 = id0.substring(0, id1.lastIndexOf("/") - 1);
+                            id0 = id0.substring(0, id0.lastIndexOf("/"));
+                            id1 = id1.substring(0, id1.lastIndexOf("/"));
 
                             return new Tuple7<>(id0, id1, stringStringDoubleDoubleDoubleDoubleDoubleTuple7.f2,
                                     stringStringDoubleDoubleDoubleDoubleDoubleTuple7.f3,
