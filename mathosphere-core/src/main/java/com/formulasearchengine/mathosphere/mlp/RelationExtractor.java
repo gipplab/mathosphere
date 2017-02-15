@@ -70,8 +70,8 @@ public class RelationExtractor {
     try {
       PrintWriter pw = createPrinter(config);
       WikiDocumentOutput output = getWikiDocumentOutput(config);
-      for (Multiset.Entry<String> stringEntry : output.getIdentifiers()) {
-        pw.println(stringEntry.getElement());
+      for (String stringEntry : output.getIdentifiers()) {
+        pw.println(stringEntry);
       }
       pw.flush();
     } catch (Exception e) {

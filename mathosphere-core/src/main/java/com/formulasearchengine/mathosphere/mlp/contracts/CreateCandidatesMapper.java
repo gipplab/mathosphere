@@ -53,7 +53,7 @@ public class CreateCandidatesMapper implements MapFunction<ParsedWikiDocument, W
         }
       }
     }
-    return new WikiDocumentOutput(doc.getTitle(), relations, doc.getIdentifiers());
+    return new WikiDocumentOutput(doc.getTitle(), relations, doc.getIdentifiers().elementSet());
   }
 
   private void selfMerge(List<Relation> candidates) {

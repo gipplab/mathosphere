@@ -146,6 +146,7 @@ public class FlinkMlpRelationFinder {
             final MathTag seed = parsedWikiDocument.getFormulas().stream()
               .filter(f -> f.getMarkUpType().equals(WikiTextUtils.MathMarkUpType.LATEX)).collect(Collectors.toList())
               .get(formulaId);
+            //WikiTextUtils.getLatexFormula(parsedWikiDocument, formulaId);
             if (!seed.getContent().equals(tex)) {
               LOGGER.error("PROBLEM WITH" + title);
               LOGGER.error(seed.getContent());
