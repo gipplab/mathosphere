@@ -1,5 +1,7 @@
 package com.formulasearchengine.mathosphere.mlp.pojos;
 
+import com.google.common.collect.Multiset;
+
 import java.util.List;
 import java.util.Set;
 
@@ -14,10 +16,9 @@ public class WikiDocumentOutput {
   public void setqId(String qId) {
     this.qId = qId;
   }
-
   private String qId;
   private List<Relation> relations;
-  private Set<String> identifiers;
+  private Set<Multiset.Entry<String>> identifiers;
 
   public double getMaxSentenceLength() {
     return maxSentenceLength;
@@ -45,15 +46,15 @@ public class WikiDocumentOutput {
     this.success = s;
   }
 
-  public WikiDocumentOutput(String title, List<Relation> relations, Set<String> identifiers) {
+  public WikiDocumentOutput(String title, List<Relation> relations, Multiset<String> identifiers) {
     this(title, null, relations, identifiers);
   }
 
-  public WikiDocumentOutput(String title, String qId, List<Relation> relations, Set<String> identifiers) {
+  public WikiDocumentOutput(String title, String qId, List<Relation> relations, Multiset<String> identifiers) {
     this.title = title;
     this.qId = qId;
     this.relations = relations;
-    this.identifiers = identifiers;
+    this.identifiers = identifiers.entrySet();
   }
 
   public String getTitle() {
@@ -72,12 +73,11 @@ public class WikiDocumentOutput {
     this.relations = relations;
   }
 
-  public Set<String> getIdentifiers() {
+  public Set<Multiset.Entry<String>> getIdentifiers() {
     return identifiers;
   }
 
-  public void setIdentifiers(Set<String> identifiers) {
+  public void setIdentifiers(Set<Multiset.Entry<String>> identifiers) {
     this.identifiers = identifiers;
   }
-
 }

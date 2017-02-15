@@ -1,0 +1,31 @@
+<mediawiki xmlns="http://www.mediawiki.org/xml/export-0.10/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://www.mediawiki.org/xml/export-0.10/ http://www.mediawiki.org/xml/export-0.10.xsd"
+           version="0.10" xml:lang="en">
+    <siteinfo>
+        <sitename>Wikipedia</sitename>
+        <dbname>enwiki</dbname>
+        <base>http://en.wikipedia.org/wiki/Main_Page</base>
+        <generator>MediaWiki 1.25wmf13</generator>
+        <case>first-letter</case>
+        <namespaces>
+            <namespace key="2600" case="first-letter">Topic</namespace>
+        </namespaces>
+    </siteinfo>
+    <page>
+        <title>no text</title>
+        <ns>0</ns>
+        <id>00000000</id>
+        <revision>
+            <id>00000000</id>
+            <parentid>625493575</parentid>
+            <timestamp>2014-11-20T05:48:13Z</timestamp>
+            <contributor>
+                <ip>169.229.108.76</ip>
+            </contributor>
+            <model>wikitext</model>
+            <format>text/x-wiki</format>
+            <text xml:space="preserve"></text>
+            <sha1>adiykfzpdw6471pnzk6m25fyv0zn7gu</sha1>
+        </revision>
+    </page>
+</mediawiki>

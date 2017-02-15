@@ -191,7 +191,7 @@ public class FlinkMlpRelationFinder {
               }
               int tpcnt = 0;
               for (Relation relation : relations) {
-                Integer score = references.get(relation.getTuple());
+                Integer score = references.get(new Tuple2<>(relation.getIdentifier(), relation.getDefinition()));
                 if (score != null && score >= config.getLevel()) {
                   tpRelOverall.add(relation);
                   LOGGER.info("tp: " + relation.getIdentifier() + ", " + relation.getDefinition());

@@ -2,6 +2,7 @@ package com.formulasearchengine.mathosphere.mlp.ml;
 
 import com.beust.jcommander.internal.Lists;
 import com.formulasearchengine.mathosphere.mlp.pojos.Relation;
+import com.formulasearchengine.mathosphere.mlp.pojos.Sentence;
 import com.formulasearchengine.mathosphere.mlp.pojos.WikiDocumentOutput;
 import com.formulasearchengine.mathosphere.mlp.pojos.Word;
 import com.formulasearchengine.mathosphere.mlp.text.MachineLearningPatternMatcher;
@@ -109,11 +110,8 @@ public class WekaUtils {
   public static final double LONGEST_SENTENCE_IN_ENGISH = 300d;
   private static final String NUMBER_OF_DEFINIENS_IN_SENTENCE = "number_of_definiens";
   private static final String NUMBER_OF_IDENTIFIERS_IN_SENTENCE = "number_of_identifiers";
-  private MachineLearningPatternMatcher machineLearningPatternMatcher;
 
-  public WekaUtils() {
-    machineLearningPatternMatcher = new MachineLearningPatternMatcher();
-  }
+  public static final List<String> nominal = Lists.newArrayList(MATCH, NO_MATCH);
 
   public Instances createInstances(String title) {
     ArrayList<Attribute> atts = new ArrayList<>();
@@ -162,52 +160,59 @@ public class WekaUtils {
     atts.add(new Attribute(DISTANCE_FROM_FIRST_OCCURRENCE));
     atts.add(new Attribute(RELATIVE_TERM_FREQUENCY));
     //TODO expand
-    //classification
-    ArrayList nominal = new ArrayList();
-    nominal.add(MATCH);
-    nominal.add(NO_MATCH);
     atts.add(new Attribute(CLASSIFICATION, nominal));
     Instances result = new Instances(title, atts, 0);
     result.setClassIndex(result.numAttributes() - 1);
     return result;
   }
 
+  /**
+   * Extract the features from the relations and add them to the instances.
+   *
+   * @param parser            for dependency graph features.
+   * @param relations         the relations to process
+   * @param title             title of the document
+   * @param qId               qid of the document
+   * @param instances         where to add the relations see {@link #createInstances(String)} for the definition.
+   * @param maxSentenceLength length of the longest sentence in the document, for normalisation.
+   * @return Instances where all provided relations have been added
+   */
   public Instances addRelationsToInstances(DependencyParser parser, List<Relation> relations, String title, String qId, Instances instances, double maxSentenceLength) {
-    List nominal = new ArrayList();
-    nominal.add(MATCH);
-    nominal.add(NO_MATCH);
     for (Relation relation : relations) {
-      double[] patternMatches = new MachineLearningPatternMatcher().match(relation.getSentence(), relation.getIdentifier(), relation.getDefinition(), relation.getIdentifierPosition(), relation.getWordPosition());
-      double[] values = new double[instances.numAttributes()];
-      addStringValue(values, instances, TITLE, title);
-      addStringValue(values, instances, Q_ID, qId);
-      addStringValue(values, instances, IDENTIFIER, relation.getIdentifier());
-      addStringValue(values, instances, DEFINIEN, relation.getDefinition());
-      values[instances.attribute(IDENTIFIER_POS).index()] = (double) relation.getIdentifierPosition() / maxSentenceLength;
-      values[instances.attribute(DEFINIENS_POS).index()] = (double) relation.getWordPosition() / maxSentenceLength;
-      //distance between identifier and definiens candidate
-      int wordDistance = relation.getIdentifierPosition() - relation.getWordPosition();
-      values[instances.attribute(WORD_DISTANCE).index()] = (double) Math.abs(wordDistance) / maxSentenceLength;
-      //weather or not the definiens is before or after the identifier
-      values[instances.attribute(WORD_POSITIONING).index()] = wordDistance > 0 ? 1 : 0;
-      values[instances.attribute(DEFINIENS_LENGTH).index()] = (double) relation.getDefinition().length() / maxSentenceLength;
-      for (int i = 0; i < patternMatches.length; i++) {
-        values[instances.attribute(PATTERN_1).index() + i] = patternMatches[i];
-      }
-
-      addStringFeatures(values, instances, relation);
-
-      addDependencyTreeFeatures(parser, values, instances, relation, maxSentenceLength);
-
-      values[instances.attribute(DISTANCE_FROM_FIRST_OCCURRENCE).index()] = relation.getDistanceFromFirstIdentifierOccurence();
-
-      values[instances.attribute(RELATIVE_TERM_FREQUENCY).index()] = relation.getRelativeTermFrequency();
-
-      values[values.length - 1] = relation.getRelevance() > 1 ? nominal.indexOf(MATCH) : nominal.indexOf(NO_MATCH);
-      DenseInstance instance = new DenseInstance(1.0, values);
-      instances.add(instance);
+      addRelationToInstances(parser, getPrecomputedGraphStore(), title, qId, instances, maxSentenceLength, relation);
     }
     return instances;
+  }
+
+  public void addRelationToInstances(DependencyParser parser, Map<Sentence, GrammaticalStructure> precomputedGraphs, String title, String qId, Instances instances, double maxSentenceLength, Relation relation) {
+    double[] patternMatches = new MachineLearningPatternMatcher().match(relation.getSentence(), relation.getIdentifier(), relation.getDefinition(), relation.getIdentifierPosition(), relation.getWordPosition());
+    double[] values = new double[instances.numAttributes()];
+    addStringValue(values, instances, TITLE, title);
+    addStringValue(values, instances, Q_ID, qId);
+    addStringValue(values, instances, IDENTIFIER, relation.getIdentifier());
+    addStringValue(values, instances, DEFINIEN, relation.getDefinition());
+    values[instances.attribute(IDENTIFIER_POS).index()] = (double) relation.getIdentifierPosition() / maxSentenceLength;
+    values[instances.attribute(DEFINIENS_POS).index()] = (double) relation.getWordPosition() / maxSentenceLength;
+    //distance between identifier and definiens candidate
+    int wordDistance = relation.getIdentifierPosition() - relation.getWordPosition();
+    values[instances.attribute(WORD_DISTANCE).index()] = (double) Math.abs(wordDistance) / maxSentenceLength;
+    //weather or not the definiens is before or after the identifier
+    values[instances.attribute(WORD_POSITIONING).index()] = wordDistance > 0 ? 1 : 0;
+    values[instances.attribute(DEFINIENS_LENGTH).index()] = (double) relation.getDefinition().length() / maxSentenceLength;
+    for (int i = 0; i < patternMatches.length; i++) {
+      values[instances.attribute(PATTERN_1).index() + i] = patternMatches[i];
+    }
+
+    addStringFeatures(values, instances, relation);
+
+    addDependencyTreeFeatures(parser, precomputedGraphs, values, instances, relation, maxSentenceLength);
+    values[instances.attribute(DISTANCE_FROM_FIRST_OCCURRENCE).index()] = relation.getDistanceFromFirstIdentifierOccurence();
+
+    values[instances.attribute(RELATIVE_TERM_FREQUENCY).index()] = relation.getRelativeTermFrequency();
+
+    values[values.length - 1] = relation.getRelevance() > 1 ? nominal.indexOf(MATCH) : nominal.indexOf(NO_MATCH);
+    DenseInstance instance = new DenseInstance(1.0, values);
+    instances.add(instance);
   }
 
   /**
@@ -260,16 +265,25 @@ public class WekaUtils {
    * {@link #INCOMING_TO_IDENTIFIER} to values.
    *
    * @param values    values object.
+   * @param graphs map to store graphs that were computed previously. may be null.
    * @param instances instances where the values will be added.
-   * @param relation  the relation from whitch to extract the features.
+   * @param relation  the relation from which to extract the features.
    */
-  private void addDependencyTreeFeatures(DependencyParser parser, double[] values, Instances instances, Relation relation, double maxSentenceLength) {
-    List<TaggedWord> taggedSentence = new ArrayList<>();
-    for (Word word : relation.getSentence().getWords()) {
-      taggedSentence.add(new TaggedWord(word.getWord(), word.getPosTag()));
+  private void addDependencyTreeFeatures(DependencyParser parser, Map<Sentence, GrammaticalStructure> graphs, double[] values, Instances instances, Relation relation, double maxSentenceLength) {
+    GrammaticalStructure dependencyTree;
+    if (graphs != null && graphs.containsKey(relation.getSentence())) {
+      dependencyTree = graphs.get(relation.getSentence());
+    } else {
+      List<TaggedWord> taggedSentence = new ArrayList<>();
+      for (Word word : relation.getSentence().getWords()) {
+        taggedSentence.add(new TaggedWord(word.getWord(), word.getPosTag()));
+      }
+      //create dependency graph
+      dependencyTree = parser.predict(taggedSentence);
+      //store to avoid recomputation
+      if (graphs != null)
+        graphs.put(relation.getSentence(), dependencyTree);
     }
-    //create dependency graph
-    GrammaticalStructure dependencyTree = parser.predict(taggedSentence);
     SemanticGraph semanticGraph = new SemanticGraph(dependencyTree.typedDependencies());
     IndexedWord identifier = semanticGraph.getNodeByIndex(relation.getIdentifierPosition() + 1);
     IndexedWord definiens = semanticGraph.getNodeByIndex(relation.getWordPosition() + 1);
@@ -408,5 +422,9 @@ public class WekaUtils {
 
   public static double average(double[] doubles) {
     return Arrays.stream(doubles).sum() / doubles.length;
+  }
+
+  public Map<Sentence, GrammaticalStructure> getPrecomputedGraphStore() {
+    return new HashMap<Sentence, GrammaticalStructure>();
   }
 }

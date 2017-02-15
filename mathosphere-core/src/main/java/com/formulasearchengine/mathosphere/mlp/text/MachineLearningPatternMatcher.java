@@ -28,7 +28,6 @@ public class MachineLearningPatternMatcher {
   public static final Matcher<Word> denotes = word(DENOTES).or(word(DENOTE));
   public static final Matcher<Word> denoted = word(DENOTED);
 
-  public static final Matcher<Word> otherMathExpression = posRegExp("(ID|MATH)").captureAs(OTHERMATH);
   public static final Matcher<Word> the = pos("DT");
 
   /**
@@ -42,6 +41,7 @@ public class MachineLearningPatternMatcher {
   public double[] match(Sentence sentence, String identifierText, String definiens, int identifierPosition, int definiensPosition) {
     Matcher<Word> identifier = BeanMatchers.eq(Word.class, "word", identifierText).captureAs(IDENTIFIER);
     Matcher<Word> definition = BeanMatchers.eq(Word.class, "word", definiens).captureAs(DEFINITION);
+    Matcher<Word> otherMathExpression = posRegExp("(ID|MATH)").captureAs(OTHERMATH);
 
     List<Pattern<Word>> patterns = Arrays.asList(
       //1 not in pagel

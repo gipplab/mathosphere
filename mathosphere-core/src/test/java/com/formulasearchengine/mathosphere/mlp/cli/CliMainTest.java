@@ -207,10 +207,7 @@ public class CliMainTest {
       "--nd", resourcePath("com/formulasearchengine/mathosphere/mlp/gold/nd.json"),
       "--tex",
       "--usePatternMatcher",
-      "-t", "0.8",
-      "--level", "2",
       "--texvcinfo", "http://localhost:10044/texvcinfo",
-      "--ref", resourcePath("com/formulasearchengine/mathosphere/mlp/nd")
     };
     final PrintStream stdout = System.out;
     final ByteArrayOutputStream myOut = new ByteArrayOutputStream();
@@ -239,7 +236,7 @@ public class CliMainTest {
   public void testMachineLearningClassification() throws Exception {
     final File temp = Files.createTempDir();
     String[] args = {CliParams.CLASSIFY,
-            "-in", "C:\\Users\\Leo\\Desktop\\mlp\\extract definiens from whole wikipedia\\lateralSurface.xml",
+      "-in", resourcePath("com/formulasearchengine/mathosphere/mlp/ml/datasets"),
       "-out", temp.getAbsolutePath(),
       "--tex",
       "--texvcinfo", "http://localhost:10044/texvcinfo",

@@ -3,6 +3,7 @@ package com.formulasearchengine.mathosphere.mlp.pojos;
 
 import com.formulasearchengine.mathosphere.mlp.text.PosTag;
 
+import edu.stanford.nlp.trees.GrammaticalStructure;
 import org.apache.flink.api.java.tuple.Tuple2;
 
 import java.util.Map;
@@ -46,6 +47,7 @@ public class Relation implements Comparable<Relation> {
    * The sentence containing the relation.
    */
   private Sentence sentence;
+
   /**
    * The relevance score, when compared to e.g. a gold standard.
    * 0 = irrelevant; 1 = partly relevant; 2 = correct definiens.
@@ -176,10 +178,6 @@ public class Relation implements Comparable<Relation> {
   public Relation setRelevance(int relevance) {
     this.relevance = relevance;
     return this;
-  }
-
-  public Tuple2<String, String> getTuple() {
-    return new Tuple2<>(identifier, definition);
   }
 
   public double getRelativeTermFrequency() {

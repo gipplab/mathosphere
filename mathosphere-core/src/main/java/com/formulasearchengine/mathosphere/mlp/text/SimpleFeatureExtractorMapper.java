@@ -42,7 +42,7 @@ public class SimpleFeatureExtractorMapper implements MapFunction<ParsedWikiDocum
 
     Multiset<String> frequencies = aggregateWords(sentences);
 
-    int maxFrequency = getMaxFrequency(frequencies);
+    int maxFrequency = getMaxFrequency(frequencies, doc.getTitle());
     if (extractionForTraining) {
       return getIdentifiersWithGoldInfo(doc, allIdentifierDefininesCandidates, sentences, identifierSentenceDistanceMap, frequencies, maxFrequency);
     } else {
@@ -110,8 +110,10 @@ public class SimpleFeatureExtractorMapper implements MapFunction<ParsedWikiDocum
         allIdentifierDefininesCandidates.add(match);
       }
     }
-    WikiDocumentOutput result = new WikiDocumentOutput(doc.getTitle(), "-1", allIdentifierDefininesCandidates, null);
-    result.setMaxSentenceLength(doc.getSentences().stream().map(s -> s.getWords().size()).max(Comparator.naturalOrder()).get());
+    WikiDocumentOutput result = new WikiDocumentOutput(doc.getTitle(), "-1", allIdentifierDefininesCandidates, doc.getIdentifiers());
+    Optional<Integer> lengthOfLongestSentence = doc.getSentences().stream().map(s -> s.getWords().size()).max(Comparator.naturalOrder());
+    //one as save value, since 0 would lead to NAN in division.
+    result.setMaxSentenceLength(lengthOfLongestSentence.isPresent() ? lengthOfLongestSentence.get() : 1);
     return result;
   }
 
@@ -148,9 +150,16 @@ public class SimpleFeatureExtractorMapper implements MapFunction<ParsedWikiDocum
     return counts;
   }
 
-  private int getMaxFrequency(Multiset<String> frequencies) {
-    Multiset.Entry<String> max = Collections.max(frequencies.entrySet(),
-      (e1, e2) -> Integer.compare(e1.getCount(), e2.getCount()));
-    return max.getCount();
+  private int getMaxFrequency(Multiset<String> frequencies, String title) {
+    try {
+      Multiset.Entry<String> max = Collections.max(frequencies.entrySet(),
+        (e1, e2) -> Integer.compare(e1.getCount(), e2.getCount()));
+      return max.getCount();
+    } catch (NoSuchElementException e) {
+      //no max present
+      LOGGER.error("Error in " + title + "Message: " + e.getMessage(), e);
+      //1 as save value if anything goes wrong
+      return 1;
+    }
   }
 }

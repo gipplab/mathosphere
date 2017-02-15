@@ -54,7 +54,7 @@ public class PatternMatcherMapper implements MapFunction<ParsedWikiDocument, Wik
     }
 
     LOGGER.info("extracted {} relations from {}", foundRelations.size(), doc.getTitle());
-    return new WikiDocumentOutput(doc.getTitle(), foundRelations, doc.getIdentifiers().elementSet());
+    return new WikiDocumentOutput(doc.getTitle(), foundRelations, doc.getIdentifiers());
   }
 
   private boolean relationWasFoundBefore(List<Relation> foundRelations, Relation relation) {
