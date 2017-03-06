@@ -32,7 +32,7 @@ public class Util {
           title,
           relation.getIdentifier(),
           relation.getDefinition(), "Word number: " + String.valueOf(relation.getIdentifierPosition()),
-          "\"" + relation.getSentence().toString() + "\"",
+          "\"" + "\"",
           getHumanReadableSentence(relation)};
         printer.printRecord(out);
       }
@@ -42,14 +42,14 @@ public class Util {
   }
 
   public static String getHumanReadableSentence(Relation relation) {
-    List<String> words = relation.getSentence().getWords()
-      //get words
-      .stream().map(word -> word.getWord()).collect(Collectors.toList());
-    //replace link
-    words.remove(relation.getWordPosition());
-    words.add(relation.getWordPosition(), relation.getDefinition());
-    return '"' + words.toString() + '"';
-
-
+    if (relation.getSentence() != null) {
+      List<String> words = relation.getSentence().getWords()
+        //get words
+        .stream().map(word -> word.getWord()).collect(Collectors.toList());
+      //replace link
+      words.remove(relation.getWordPosition());
+      words.add(relation.getWordPosition(), relation.getDefinition());
+      return '"' + words.toString() + '"';
+    } else return "";
   }
 }

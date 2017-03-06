@@ -52,29 +52,4 @@ public class MachineLearningRelationFinder {
   public static DataSource<String> readWikiDump(MachineLearningDefinienExtractionConfig config, ExecutionEnvironment env) {
     return FlinkMlpRelationFinder.readWikiDump(config, env);
   }
-
-  private static void generateSatuationData() throws Exception {
-    MachineLearningDefinienExtractionConfig config = MachineLearningDefinienExtractionConfig.test();
-    config.setPercent(new double[]{10, 20, 30, 40, 50, 60, 70, 80, 90, 100});
-    config.setMultiThreadedEvaluation(true);
-    find(config);
-  }
-
-  private static void generateCoraseParameterGrid() throws Exception {
-    MachineLearningDefinienExtractionConfig config = MachineLearningDefinienExtractionConfig.test();
-    config.setSvmCost(WekaLearner.C_corase);
-    config.setSvmGamma(WekaLearner.Y_corase);
-    config.setMultiThreadedEvaluation(true);
-    find(config);
-  }
-
-  private static void generateFineParameterGrid() throws Exception {
-    MachineLearningDefinienExtractionConfig config = MachineLearningDefinienExtractionConfig.testfine();
-    config.setSvmCost(WekaLearner.C_fine);
-    config.setSvmGamma(WekaLearner.Y_fine);
-    config.setMultiThreadedEvaluation(true);
-    find(config);
-  }
-
-
 }

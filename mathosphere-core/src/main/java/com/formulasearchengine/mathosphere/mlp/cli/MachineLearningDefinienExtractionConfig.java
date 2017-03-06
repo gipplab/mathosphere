@@ -13,9 +13,9 @@ public class MachineLearningDefinienExtractionConfig extends FlinkMlpCommandConf
   @Parameter(names = {"--samplePercent"}, description = "how much of the training data should be used for training.")
   protected List<Double> percent = Arrays.asList(100d);
   @Parameter(names = {"--svmCost"}, description = "Cost value for the svm.")
-  protected List<Double> svmCost = Arrays.asList(1d);
+  protected List<Double> svmCost = Arrays.asList(2d);
   @Parameter(names = {"--svmGamma"}, description = "Gamma value for the svm.")
-  protected List<Double> svmGamma = Arrays.asList(0.018581361d);
+  protected List<Double> svmGamma = Arrays.asList(0.022097087d);
   @Parameter(names = {"--writeSvmModel"}, description = "Writes the models from the cross evaluation to the output directory.")
   protected boolean writeSvmModel;
   @Parameter(names = {"--instances"}, description = "File location of the instances.arff file to use for the testing and training. " +
@@ -101,7 +101,7 @@ public class MachineLearningDefinienExtractionConfig extends FlinkMlpCommandConf
     MachineLearningDefinienExtractionConfig test = new MachineLearningDefinienExtractionConfig();
     test.dataset = "c:/tmp/mlp/input/eval_dataset.xml";
     test.outputdir = "c:/tmp/mlp/output/corase";
-    test.goldFile = "C:/tmp/mlp/input/gold.json";
+    test.goldFile = "C:/tmp/mlp/input/gold_with_alias.json";
     test.setUseTeXIdentifiers(true);
     test.texvcinfoUrl = "http://localhost:10044/texvcinfo";
     test.parallelism = 1;

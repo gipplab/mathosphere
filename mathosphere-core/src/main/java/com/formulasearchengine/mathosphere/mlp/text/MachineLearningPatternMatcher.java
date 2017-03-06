@@ -78,11 +78,7 @@ public class MachineLearningPatternMatcher {
       Pattern.create(word("(").or(pos("-LRB-"))),
       //15
       //identifier in parentheses, relative to definiens
-      Pattern.create(word(")").or(pos("-RRB-"))),
-      //16
-      Pattern.create(definition),
-      //17
-      Pattern.create(identifier)
+      Pattern.create(word(")").or(pos("-RRB-")))
     );
 
     double[] result = new double[patterns.size()];
@@ -141,12 +137,6 @@ public class MachineLearningPatternMatcher {
               //definiens in parentheses
               result[13] = 1;
           }
-        case 15:
-          //result[15] = ((double) matches.size()) / WekaUtils.LONGEST_SENTENCE_IN_ENGISH;
-          break;
-        case 16:
-          //result[16] = ((double) matches.size()) / WekaUtils.LONGEST_SENTENCE_IN_ENGISH;
-          break;
       }
     }
     return result;

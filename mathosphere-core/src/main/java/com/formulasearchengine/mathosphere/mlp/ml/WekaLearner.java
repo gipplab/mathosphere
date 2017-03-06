@@ -20,7 +20,6 @@ import weka.core.converters.ArffLoader;
 import weka.core.converters.ArffSaver;
 import weka.core.tokenizers.NGramTokenizer;
 import weka.filters.Filter;
-import weka.filters.MultiFilter;
 import weka.filters.supervised.instance.Resample;
 import weka.filters.supervised.instance.SMOTE;
 import weka.filters.unsupervised.attribute.Remove;
@@ -170,21 +169,19 @@ public class WekaLearner implements GroupReduceFunction<WikiDocumentOutput, Eval
    * @throws Exception
    */
   private void generateAndWriteFullModel(Instances instances) throws Exception {
-    Instances resampled = dumbResample(instances);
-    StringToWordVector stringToWordVector = getStringToWordVectorFilter(resampled);
-    Instances stringsReplacedData = Filter.useFilter(resampled, stringToWordVector);
+    StringToWordVector stringToWordVector = getStringToWordVectorFilter(instances);
+    Instances stringsReplacedData = Filter.useFilter(instances, stringToWordVector);
+    Instances resampled = dumbResample(stringsReplacedData);
     Remove removeFilter = getRemoveFilter(stringsReplacedData);
-    removeFilter.setInputFormat(stringsReplacedData);
     LibSVM svmForOut = new LibSVM();
     svmForOut.setCost(config.getSvmCost().get(0));
     svmForOut.setGamma(config.getSvmGamma().get(0));
-    MultiFilter multi = new MultiFilter();
-    multi.setFilters(new Filter[]{stringToWordVector, removeFilter});
     FilteredClassifier filteredClassifierForOut = new FilteredClassifier();
     filteredClassifierForOut.setClassifier(svmForOut);
-    filteredClassifierForOut.setFilter(multi);
+    filteredClassifierForOut.setFilter(removeFilter);
     filteredClassifierForOut.buildClassifier(resampled);
     weka.core.SerializationHelper.write(config.getOutputDir() + "/svm_model_" + "_c_" + config.getSvmCost().get(0) + "_gamma_" + config.getSvmGamma().get(0) + ".model", filteredClassifierForOut);
+    weka.core.SerializationHelper.write(config.getOutputDir() + "/string_filter_" + "_c_" + config.getSvmCost().get(0) + "_gamma_" + config.getSvmGamma().get(0) + ".model", stringToWordVector);
   }
 
   public List<EvaluationResult> processFromInstances() throws Exception {
@@ -244,7 +241,7 @@ public class WekaLearner implements GroupReduceFunction<WikiDocumentOutput, Eval
     }
     ForkJoinPool forkJoinPool = new ForkJoinPool(config.getParallelism());
     Stream<EvaluationResult> a = parameters.parallelStream().map(
-      parameter -> crossEvaluate(stringsReplacedData, removeFilter, stringToWordVector, parameter[0], parameter[1], parameter[2], parameter[3]));
+      parameter -> crossEvaluate(stringsReplacedData, removeFilter, parameter[0], parameter[1], parameter[2], parameter[3]));
     Callable<List<EvaluationResult>> task = () -> a.collect(toList());
     List<EvaluationResult> evaluationResults = forkJoinPool.submit(task).get();
     for (EvaluationResult evaluationResult : evaluationResults) {
@@ -291,7 +288,7 @@ public class WekaLearner implements GroupReduceFunction<WikiDocumentOutput, Eval
     return stringToWordVector;
   }
 
-  private Remove getRemoveFilter(Instances instances) {
+  private Remove getRemoveFilter(Instances instances) throws Exception {
     Remove removeFilter = new Remove();
     removeFilter.setAttributeIndices(indicesToRangeList(new int[]{
       instances.attribute(TITLE).index(),
@@ -299,14 +296,15 @@ public class WekaLearner implements GroupReduceFunction<WikiDocumentOutput, Eval
       instances.attribute(DEFINIEN).index(),
       instances.attribute(Q_ID).index(),
     }));
+    removeFilter.setInputFormat(instances);
     return removeFilter;
   }
 
-  private EvaluationResult crossEvaluate(Instances stringsReplacedData, Remove removeFilter, StringToWordVector stringToWordVector, double percent, double cost, double gamma, double oversample) {
+  private EvaluationResult crossEvaluate(Instances stringsReplacedData, Remove removeFilter, double percent, double cost, double gamma, double oversample) {
     try {
       System.out.println("Cost; " + Utils.doubleToString(cost, 10)
         + "; gamma; " + Utils.doubleToString(gamma, 10));
-      EvaluationResult result = new EvaluationResult(folds, percent, cost, gamma);
+      EvaluationResult result = new EvaluationResult(config.isLeaveOneOutEvaluation() ? totalQids : folds, percent, cost, gamma);
       result.prefix = "oversample; " + oversample;
       Instances reduced;
       if (percent != 100) {
@@ -319,15 +317,16 @@ public class WekaLearner implements GroupReduceFunction<WikiDocumentOutput, Eval
       int counter = 0;
       while (10 * counter < totalQids) {
         for (int n = 0; n < folds; n++) {
-          trainAndTest(10 * counter + n, removeFilter, cost, gamma, reduced, resampled, result);
+          trainAndTest(10 * counter + n, removeFilter, cost, gamma, stringsReplacedData, resampled, result);
         }
         if (!config.isLeaveOneOutEvaluation()) {
           break;
         }
+        counter++;
       }
       return result;
     } catch (Exception e) {
-      System.out.println(e.toString());
+      e.printStackTrace();
       return new EvaluationResult(folds, percent, cost, gamma);
     }
   }
@@ -400,7 +399,8 @@ public class WekaLearner implements GroupReduceFunction<WikiDocumentOutput, Eval
     filteredClassifier.setFilter(removeFilter);
     List<Integer> testIds;
     if (config.isLeaveOneOutEvaluation()) {
-      testIds = new ArrayList<>(n);
+      testIds = new ArrayList<>();
+      testIds.add(n);
     } else {
       testIds = Arrays.asList(Arrays.copyOfRange(rand, folds * n, folds * (n + 1)));
     }

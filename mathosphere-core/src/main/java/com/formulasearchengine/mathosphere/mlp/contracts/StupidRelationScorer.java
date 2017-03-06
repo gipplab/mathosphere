@@ -16,8 +16,6 @@ import java.io.StringReader;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static com.formulasearchengine.mathosphere.mlp.ml.WekaUtils.*;
-
 /**
  * All found candidates are equally good. Used to find a baseline how many definiens can be extracted at all.
  * Created by Leo on 30.01.2017.
@@ -61,7 +59,7 @@ public class StupidRelationScorer implements GroupReduceFunction<WikiDocumentOut
     }
     Evaluator evaluator = new Evaluator();
     StringReader reader = new StringReader(e.toString());
-    ScoreSummary s = evaluator.evaluate(evaluator.readExtractions(reader, gold, false), gold);
+    ScoreSummary s = evaluator.evaluate(evaluator.readExtractions(reader, gold, true), gold, true);
     System.out.println(s.toString());
   }
 }

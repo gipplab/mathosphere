@@ -25,17 +25,17 @@ public class StrippedWikiDocumentOutput {
     this.relations = relations;
   }
 
-  public Set<Multiset.Entry<String>> getIdentifiers() {
+  public Set<StringEntry> getIdentifiers() {
     return identifiers;
   }
 
-  public void setIdentifiers(Set<Multiset.Entry<String>> identifiers) {
+  public void setIdentifiers(Set<StringEntry> identifiers) {
     this.identifiers = identifiers;
   }
 
   public String title;
   public List<IdentifierDefinition> relations;
-  public Set<Multiset.Entry<String>> identifiers;
+  public Set<StringEntry> identifiers;
 
   public StrippedWikiDocumentOutput() {
   }

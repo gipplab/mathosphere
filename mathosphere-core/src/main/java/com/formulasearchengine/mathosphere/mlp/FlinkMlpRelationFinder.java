@@ -1,6 +1,10 @@
 package com.formulasearchengine.mathosphere.mlp;
 
+import com.formulasearchengine.mathosphere.mlp.cli.MachineLearningDefinienClassifierConfig;
 import com.formulasearchengine.mathosphere.mlp.contracts.*;
+import com.formulasearchengine.mathosphere.mlp.ml.WekaClassifier;
+import com.formulasearchengine.mathosphere.mlp.pojos.*;
+import com.formulasearchengine.mathosphere.mlp.text.SimpleFeatureExtractorMapper;
 import com.formulasearchengine.mathosphere.utils.Util;
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Multiset;
@@ -8,10 +12,6 @@ import com.google.common.collect.Multiset;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.formulasearchengine.mathosphere.mlp.cli.EvalCommandConfig;
 import com.formulasearchengine.mathosphere.mlp.cli.FlinkMlpCommandConfig;
-import com.formulasearchengine.mathosphere.mlp.pojos.MathTag;
-import com.formulasearchengine.mathosphere.mlp.pojos.ParsedWikiDocument;
-import com.formulasearchengine.mathosphere.mlp.pojos.Relation;
-import com.formulasearchengine.mathosphere.mlp.pojos.WikiDocumentOutput;
 import com.formulasearchengine.mathosphere.mlp.text.WikiTextUtils;
 
 import org.apache.commons.csv.CSVFormat;
@@ -227,7 +227,7 @@ public class FlinkMlpRelationFinder {
         while (iterator.hasNext()) {
           final Relation relation = iterator.next();
           final List<String> refList = getDefiniens(definitions, relation);
-          final String definition = relation.getDefinition().replaceAll("(\\[\\[|\\]\\])", "").trim().toLowerCase();
+          final String definition = relation.getDefinition().replaceAll("(\\[\\[|\\]\\])", "").replaceAll("_", " ").trim().toLowerCase();
           if (refList.contains(definition)) {
             relation.setRelevance(2);
           }
@@ -265,10 +265,11 @@ public class FlinkMlpRelationFinder {
         final Map nd = (Map) ndData.get(title);
         if (nd != null) {
           List relNS = (List) nd.get("namespace_relations");
-          for (Object o : relNS) {
-            Relation rel = new Relation(o);
-            relations.add(rel);
-          }
+          if (relNS != null)
+            for (Object o : relNS) {
+              Relation rel = new Relation(o);
+              relations.add(rel);
+            }
         }
       }
     };

@@ -12,6 +12,8 @@ import org.apache.flink.configuration.Configuration;
 import weka.classifiers.meta.FilteredClassifier;
 import weka.core.Instance;
 import weka.core.Instances;
+import weka.filters.Filter;
+import weka.filters.unsupervised.attribute.StringToWordVector;
 
 import java.io.*;
 import java.util.*;
@@ -28,6 +30,7 @@ public class WekaClassifier extends RichMapFunction<WikiDocumentOutput, WikiDocu
   public final MachineLearningDefinienClassifierConfig config;
   private FilteredClassifier svm;
   private DependencyParser parser;
+  private StringToWordVector stringToWordVector;
 
   public WekaClassifier(MachineLearningDefinienClassifierConfig config) throws IOException {
     this.config = config;
@@ -36,6 +39,7 @@ public class WekaClassifier extends RichMapFunction<WikiDocumentOutput, WikiDocu
   @Override
   public void open(Configuration parameters) throws Exception {
     svm = (FilteredClassifier) weka.core.SerializationHelper.read(config.getSvmModel());
+    stringToWordVector = (StringToWordVector) weka.core.SerializationHelper.read(config.getStringToWordVectorFilter());
     parser = DependencyParser.loadFromModelFile(config.dependencyParserModel());
   }
 
@@ -50,7 +54,10 @@ public class WekaClassifier extends RichMapFunction<WikiDocumentOutput, WikiDocu
     for (int i = 0; i < doc.getRelations().size(); i++) {
       Relation relation = doc.getRelations().get(i);
       wekaUtils.addRelationToInstances(parser, precomputedGraphStore, doc.getTitle(), doc.getqId(), instances, doc.getMaxSentenceLength(), relation);
-      Instance instance = instances.get(i);
+      Instances toStringReplace = new Instances(instances, 1);
+      toStringReplace.add(instances.get(i));
+      Instances stringReplaced = Filter.useFilter(toStringReplace, stringToWordVector);
+      Instance instance = stringReplaced.get(0);
       double[] distribution = svm.distributionForInstance(instance);
       String predictedClass = instances.classAttribute().value((int) svm.classifyInstance(instance));
       if (predictedClass.equals(MATCH)) {

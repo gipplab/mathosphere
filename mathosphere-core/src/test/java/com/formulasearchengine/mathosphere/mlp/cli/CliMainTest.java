@@ -233,15 +233,57 @@ public class CliMainTest {
   }
 
   @Test
+  public void testMachineLearningPercent() throws Exception {
+    final File temp = Files.createTempDir();
+    String[] args = {CliParams.ML,
+      "-in", resourcePath("com/formulasearchengine/mathosphere/mlp/gold/eval_dataset.xml"),
+      "-out", temp.getAbsolutePath(),
+      "--goldFile", resourcePath("com/formulasearchengine/mathosphere/mlp/gold/gold_with_alias.json"),
+      "--tex",
+      "--texvcinfo", "http://localhost:10044/texvcinfo",
+      "--threads", "10",
+      "--samplePercent", "10",
+      "--samplePercent", "20",
+      "--samplePercent", "30",
+      "--samplePercent", "40",
+      "--samplePercent", "50",
+      "--samplePercent", "60",
+      "--samplePercent", "70",
+      "--samplePercent", "80",
+      "--samplePercent", "90",
+      "--samplePercent", "100",
+    };
+    Main.main(args);
+  }
+
+  @Test
   public void testMachineLearningClassification() throws Exception {
     final File temp = Files.createTempDir();
     String[] args = {CliParams.CLASSIFY,
-      "-in", resourcePath("com/formulasearchengine/mathosphere/mlp/ml/datasets"),
+      "-in", resourcePath("com/formulasearchengine/mathosphere/mlp/gold/eval_dataset.xml"),
       "-out", temp.getAbsolutePath(),
       "--tex",
       "--texvcinfo", "http://localhost:10044/texvcinfo",
       "--threads", "5",
       "--svmModel", resourcePath("com/formulasearchengine/mathosphere/mlp/ml/svm_model_best_dumb_oversampling.model"),
+    };
+    Main.main(args);
+  }
+
+  @Test
+  public void testMachineLearningClassificationWithNamespaces() throws Exception {
+    final File temp = Files.createTempDir();
+    String[] args = {CliParams.CLASSIFY,
+      "-in", resourcePath("com/formulasearchengine/mathosphere/mlp/gold/eval_dataset.xml"),
+      "-out", temp.getAbsolutePath(),
+      "--tex",
+      "--namespace",
+      "--nd", "C:\\tmp\\mlp-tmp\\gold-weak-snowball-True-True-svd-150-kmeans-k=10000.json",
+      "--texvcinfo", "http://localhost:10044/texvcinfo",
+      "--threads", "5",
+      "--evaluate",
+      "--svmModel", resourcePath("com/formulasearchengine/mathosphere/mlp/ml/svm_model__c_1.0_gamma_0.022097087.model"),
+      "--stringFilter", resourcePath("com/formulasearchengine/mathosphere/mlp/ml/string_filter__c_1.0_gamma_0.022097087.model"),
     };
     Main.main(args);
   }
