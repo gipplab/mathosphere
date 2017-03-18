@@ -143,6 +143,7 @@
                             <!--<exclude>com/example/**/*Test.class</exclude>-->
                         </excludes>
                     </instrumentation>
+                    <check/>
                 </configuration>
                 <executions>
                     <execution>
