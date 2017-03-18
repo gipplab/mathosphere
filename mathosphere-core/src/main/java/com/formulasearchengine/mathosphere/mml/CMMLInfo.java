@@ -2,8 +2,8 @@ package com.formulasearchengine.mathosphere.mml;
 
 import com.formulasearchengine.mathmlquerygenerator.XQueryGenerator;
 import com.formulasearchengine.mathosphere.utils.XmlNamespaceTranslator;
-import com.formulasearchengine.mathmlquerygenerator.xmlhelper.XMLHelper;
-import com.formulasearchengine.mathmlquerygenerator.xmlhelper.NonWhitespaceNodeList;
+import com.formulasearchengine.mathmltools.xmlhelper.XMLHelper;
+import com.formulasearchengine.mathmltools.xmlhelper.NonWhitespaceNodeList;
 
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Multiset;
@@ -26,7 +26,7 @@ import javax.xml.xpath.XPathExpressionException;
 import java.io.IOException;
 import java.util.*;
 
-import static com.formulasearchengine.mathmlquerygenerator.xmlhelper.XMLHelper.getElementsB;
+import static com.formulasearchengine.mathmltools.xmlhelper.XMLHelper.getElementsB;
 
 
 public class CMMLInfo implements Document {

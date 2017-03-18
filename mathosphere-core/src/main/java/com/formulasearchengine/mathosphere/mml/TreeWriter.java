@@ -1,6 +1,6 @@
 package com.formulasearchengine.mathosphere.mml;
 
-import com.formulasearchengine.mathmlquerygenerator.xmlhelper.XMLHelper;
+import com.formulasearchengine.mathmltools.xmlhelper.XMLHelper;
 
 import org.w3c.dom.Node;
 

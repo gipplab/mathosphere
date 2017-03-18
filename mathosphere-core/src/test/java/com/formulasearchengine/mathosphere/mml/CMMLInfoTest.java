@@ -1,7 +1,7 @@
 package com.formulasearchengine.mathosphere.mml;
 
 import com.formulasearchengine.mathosphere.TestUtils;
-import com.formulasearchengine.mathmlquerygenerator.xmlhelper.XMLHelper;
+import com.formulasearchengine.mathmltools.xmlhelper.XMLHelper;
 
 import com.google.common.collect.ImmutableMultiset;
 import com.google.common.collect.Multiset;
