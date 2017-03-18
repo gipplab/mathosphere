@@ -1,4 +1,4 @@
-package com.formulasearchengine.mathosphere.mml;
+package com.formulasearchengine.mathmltools.mml;
 
 import com.formulasearchengine.mathmltools.xmlhelper.XMLHelper;
 
