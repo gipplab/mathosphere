@@ -47,7 +47,7 @@
         <dependency>
             <groupId>com.formulasearchengine</groupId>
             <artifactId>mathmlquerygenerator</artifactId>
-            <version>0.0.3-SNAPSHOT</version>
+            <version>1.0.0</version>
         </dependency>
         <dependency>
             <groupId>cz.muni.fi.mir</groupId>

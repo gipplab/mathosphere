@@ -49,7 +49,6 @@
     <modules>
         <module>mathosphere-core</module>
         <module>lib/MathMLCan</module>
-        <module>lib/MathMLQueryGenerator</module>
         <module>lib/RTED</module>
         <module>basex</module>
         <module>restd</module>
