@@ -7,6 +7,7 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.custommonkey.xmlunit.XMLAssert;
 import org.custommonkey.xmlunit.XMLUnit;
+import org.hamcrest.CoreMatchers;
 import org.junit.After;
 import org.junit.Assume;
 import org.junit.Before;
@@ -154,7 +155,8 @@ public final class ClientTest {
 		try {
 			String res = c.resultsToXML( c.runTexQuery( "++23424'ä#öä#ö\\exit" ) );
 		} catch ( final IOException expected ) {
-			assertTrue( expected.getMessage().startsWith( "Unable to process MathML conversion server response to Tex request." ) );
+            assertThat(expected.getMessage(), CoreMatchers.startsWith(
+                    "Tex request to MathML conversion server produced failed response."));
 		}
 	}
 
@@ -164,10 +166,11 @@ public final class ClientTest {
 		Client c = new Client();
 		try {
 			String res = c.resultsToXML( c.runTexQuery( "\\frac" ) );
-		} catch ( final IOException expected ) {
-			assertTrue( expected.getMessage().startsWith( "Unable to process MathML conversion server response to Tex request." ) );
-		}
-	}
+        } catch (final IOException expected) {
+            assertThat(expected.getMessage(), CoreMatchers.startsWith(
+                    "Tex request to MathML conversion server produced failed response."));
+        }
+    }
 	@Test
 	public void testEmptyMML() throws Exception {
 		Client c = new Client();
