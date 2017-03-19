@@ -50,6 +50,11 @@
             <version>1.0.0</version>
         </dependency>
         <dependency>
+            <groupId>com.formulasearchengine</groupId>
+            <artifactId>mathmltools</artifactId>
+            <version>0.2.0</version>
+        </dependency>
+        <dependency>
             <groupId>cz.muni.fi.mir</groupId>
             <artifactId>mathml-canonicalizer</artifactId>
             <version>1.2-Mathosphere-SNAPSHOT</version>
