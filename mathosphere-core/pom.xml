@@ -107,11 +107,6 @@
         </dependency>
         <dependency>
             <groupId>nz.ac.waikato.cms.weka</groupId>
-            <artifactId>weka-stable</artifactId>
-            <version>3.8.0</version>
-        </dependency>
-        <dependency>
-            <groupId>nz.ac.waikato.cms.weka</groupId>
             <artifactId>LibSVM</artifactId>
             <version>1.0.10</version>
         </dependency>
@@ -124,11 +119,6 @@
             <groupId>nz.ac.waikato.cms.weka</groupId>
             <artifactId>weka-stable</artifactId>
             <version>3.8.0</version>
-        </dependency>
-        <dependency>
-            <groupId>nz.ac.waikato.cms.weka</groupId>
-            <artifactId>LibSVM</artifactId>
-            <version>1.0.10</version>
         </dependency>
         <dependency>
             <groupId>uk.ac.ed.ph.snuggletex</groupId>
@@ -166,12 +156,6 @@
             <artifactId>stanford-corenlp</artifactId>
             <version>3.5.2</version>
             <classifier>models-german</classifier>  <!-- German models -->
-        </dependency>
-
-        <dependency>
-            <groupId>edu.stanford.nlp</groupId>
-            <artifactId>stanford-srparser</artifactId>
-            <version>3.5.2</version> <!-- sr-parser model-->
         </dependency>
 
         <dependency>

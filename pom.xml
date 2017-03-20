@@ -54,6 +54,7 @@
         <module>lib/RTED</module>
         <module>basex</module>
         <module>restd</module>
+        <module>evaluation</module>
     </modules>
 
     <build>
