@@ -1,13 +1,13 @@
 package com.formulasearchengine.mathosphere.mathpd;
 
-import com.formulasearchengine.mathmlquerygenerator.xmlhelper.NonWhitespaceNodeList;
-import com.formulasearchengine.mathmlquerygenerator.xmlhelper.XMLHelper;
+import com.formulasearchengine.mathmltools.xmlhelper.NonWhitespaceNodeList;
+import com.formulasearchengine.mathmltools.xmlhelper.XMLHelper;
 import com.formulasearchengine.mathosphere.mathpd.distances.earthmover.EarthMoverDistanceWrapper;
 import com.formulasearchengine.mathosphere.mathpd.distances.earthmover.JFastEMD;
 import com.formulasearchengine.mathosphere.mathpd.distances.earthmover.Signature;
 import com.formulasearchengine.mathosphere.mathpd.pojos.ArxivDocument;
 import com.formulasearchengine.mathosphere.mathpd.pojos.ExtractedMathPDDocument;
-import com.formulasearchengine.mathosphere.mml.CMMLInfo;
+import com.formulasearchengine.mathmltools.mml.CMMLInfo;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.w3c.dom.Node;

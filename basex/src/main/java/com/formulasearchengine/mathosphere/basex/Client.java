@@ -1,9 +1,8 @@
 package com.formulasearchengine.mathosphere.basex;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.formulasearchengine.mathmlquerygenerator.NtcirPattern;
 import com.formulasearchengine.mathmlquerygenerator.XQueryGenerator;
-import com.formulasearchengine.mathmlquerygenerator.xmlhelper.XMLHelper;
+import com.formulasearchengine.mathmltools.xmlhelper.XMLHelper;
 import com.formulasearchengine.mathosphere.basex.types.Hit;
 import com.formulasearchengine.mathosphere.basex.types.Result;
 import com.formulasearchengine.mathosphere.basex.types.Results;

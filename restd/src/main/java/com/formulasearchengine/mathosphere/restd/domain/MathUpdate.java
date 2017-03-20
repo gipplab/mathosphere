@@ -2,7 +2,7 @@ package com.formulasearchengine.mathosphere.restd.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.formulasearchengine.mathosphere.basex.Client;
-import com.formulasearchengine.mathmlquerygenerator.xmlhelper.XMLHelper;
+import com.formulasearchengine.mathmltools.xmlhelper.XMLHelper;
 import org.w3c.dom.Document;
 
 /**
