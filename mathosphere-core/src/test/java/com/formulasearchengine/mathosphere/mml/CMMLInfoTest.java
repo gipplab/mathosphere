@@ -1,13 +1,10 @@
 package com.formulasearchengine.mathosphere.mml;
 
+import com.formulasearchengine.mathmltools.xmlhelper.XMLHelper;
 import com.formulasearchengine.mathosphere.TestUtils;
-import com.formulasearchengine.mathmlquerygenerator.xmlhelper.XMLHelper;
-
 import com.google.common.collect.ImmutableMultiset;
 import com.google.common.collect.Multiset;
-
 import net.sf.saxon.s9api.XQueryExecutable;
-
 import org.custommonkey.xmlunit.XMLUnit;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -15,7 +12,6 @@ import org.w3c.dom.Document;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPathExpressionException;
-
 import java.io.IOException;
 
 import static org.custommonkey.xmlunit.XMLUnit.compareXML;

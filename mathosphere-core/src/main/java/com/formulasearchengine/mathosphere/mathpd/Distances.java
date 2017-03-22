@@ -1,7 +1,7 @@
 package com.formulasearchengine.mathosphere.mathpd;
 
-import com.formulasearchengine.mathmlquerygenerator.xmlhelper.NonWhitespaceNodeList;
-import com.formulasearchengine.mathmlquerygenerator.xmlhelper.XMLHelper;
+import com.formulasearchengine.mathmltools.xmlhelper.NonWhitespaceNodeList;
+import com.formulasearchengine.mathmltools.xmlhelper.XMLHelper;
 import com.formulasearchengine.mathosphere.mathpd.distances.earthmover.EarthMoverDistanceWrapper;
 import com.formulasearchengine.mathosphere.mathpd.distances.earthmover.JFastEMD;
 import com.formulasearchengine.mathosphere.mathpd.distances.earthmover.Signature;
@@ -337,10 +337,4 @@ public class Distances {
     private static boolean isNumeric(String str) {
         return str.matches("-?\\d+(\\.\\d+)?");  //match a number with optional '-' and decimal.
     }
-
-=======
-        }
-    }
-
->>>>>>> remotes/origin/master
 }

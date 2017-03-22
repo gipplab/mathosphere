@@ -1,17 +1,14 @@
 package com.formulasearchengine.mathosphere.mml;
 
 import com.formulasearchengine.mathmlquerygenerator.XQueryGenerator;
+import com.formulasearchengine.mathmltools.xmlhelper.NonWhitespaceNodeList;
+import com.formulasearchengine.mathmltools.xmlhelper.XMLHelper;
 import com.formulasearchengine.mathosphere.utils.XmlNamespaceTranslator;
-import com.formulasearchengine.mathmlquerygenerator.xmlhelper.XMLHelper;
-import com.formulasearchengine.mathmlquerygenerator.xmlhelper.NonWhitespaceNodeList;
-
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Multiset;
 import com.google.common.collect.Sets;
-
 import net.sf.saxon.s9api.SaxonApiException;
 import net.sf.saxon.s9api.XQueryExecutable;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.w3c.dom.*;
@@ -22,16 +19,16 @@ import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpression;
 import javax.xml.xpath.XPathExpressionException;
-
 import java.io.IOException;
 import java.util.*;
 
-import static com.formulasearchengine.mathmlquerygenerator.xmlhelper.XMLHelper.getElementsB;
+import static com.formulasearchengine.mathmltools.xmlhelper.XMLHelper.getElementsB;
 
 
 public class CMMLInfo implements Document {
   //For XML math processing
   public static final String NS_MATHML = "http://www.w3.org/1998/Math/MathML";
+  public static final String ROBERT_MINER_XSL = "com/formulasearchengine/mathosphere/mml/RobertMinerC2s.xsl";
   protected static final Log LOG = LogFactory.getLog(CMMLInfo.class);
   private static final String FN_PATH_FROM_ROOT = "declare namespace functx = \"http://www.functx.com\";\n" +
       "declare function functx:path-to-node\n" +
@@ -42,9 +39,6 @@ public class CMMLInfo implements Document {
   private static final String XQUERY_HEADER = "declare default element namespace \"http://www.w3.org/1998/Math/MathML\";\n" +
       FN_PATH_FROM_ROOT +
       "<result>{";
-  public static final String ROBERT_MINER_XSL = "com/formulasearchengine/mathosphere/mml/RobertMinerC2s.xsl";
-  final String XQUERY_FOOTER = "<element><x>{$x}</x><p>{data(functx:path-to-node($x))}</p></element>}\n" +
-      "</result>";
   private final static String FN_PATH_FROM_ROOT2 = "declare function path-from-root($x as node()) {\n" +
       " if ($x/parent::*) then\n" +
       " concat( path-from-root($x/parent::*), \"/\", node-name($x) )\n" +
@@ -65,6 +59,8 @@ public class CMMLInfo implements Document {
       "geq",
       "equivalent"
   );
+  final String XQUERY_FOOTER = "<element><x>{$x}</x><p>{data(functx:path-to-node($x))}</p></element>}\n" +
+          "</result>";
   private Document cmmlDoc;
   private XQueryExecutable xQueryExecutable;
   private boolean isStrict;

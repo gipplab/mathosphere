@@ -1,7 +1,6 @@
 package com.formulasearchengine.mathosphere.mlp.text;
 
 import com.formulasearchengine.mathosphere.mlp.pojos.MathTag;
-
 import com.formulasearchengine.mathosphere.mlp.pojos.ParsedWikiDocument;
 import com.formulasearchengine.mathosphere.mlp.pojos.WikidataLink;
 import com.formulasearchengine.mathosphere.mlp.pojos.Word;
@@ -14,15 +13,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class WikiTextUtils {
-  private static int i = 0;
-
   private static final Pattern MATH_TAG_PATTERN = Pattern.compile("<math.+?</math>", Pattern.DOTALL);
-
-
-  public enum MathMarkUpType {
-    LATEX, MATHML, MATH_TEMPLATE, MVAR_TEMPLATE, LATEXII
-  }
-
+    private static int i = 0;
 
   public static List<MathTag> findMathTags(String text) {
     List<MathTag> results = new ArrayList<>();
@@ -96,27 +88,31 @@ public class WikiTextUtils {
     return builder.getResult();
   }
 
-  /**
-   * Get a definiens from a link. I.e. convert LINK_******** to [[LinkContent]] or [[LinkDefiniens]].
-   * This method removes the explicit information where this link pints to and replaces it with a human readable representation.
-   *
-   * @param word Link the definiens is wanted for.
-   * @param doc  Document containing the link.
-   * @return The underlying, human readable definiens.
-   */
-  public static String deLinkify(Word word, ParsedWikiDocument doc) {
-    String definition;
-    if (word.getPosTag().equals(PosTag.LINK)) {
-      String hash = word.getWord().replaceAll("^LINK_", "");
-      WikidataLink link = doc.getLinkMap().get(hash);
-      if (link != null) {
-        definition = "[[" + link.getContent() + "]]";
-      } else {
-        definition = "[[" + word.getWord() + "]]";
-      }
-    } else {
-      definition = word.getWord();
+    /**
+     * Get a definiens from a link. I.e. convert LINK_******** to [[LinkContent]] or [[LinkDefiniens]].
+     * This method removes the explicit information where this link pints to and replaces it with a human readable representation.
+     *
+     * @param word Link the definiens is wanted for.
+     * @param doc  Document containing the link.
+     * @return The underlying, human readable definiens.
+     */
+    public static String deLinkify(Word word, ParsedWikiDocument doc) {
+        String definition;
+        if (word.getPosTag().equals(PosTag.LINK)) {
+            String hash = word.getWord().replaceAll("^LINK_", "");
+            WikidataLink link = doc.getLinkMap().get(hash);
+            if (link != null) {
+                definition = "[[" + link.getContent() + "]]";
+            } else {
+                definition = "[[" + word.getWord() + "]]";
+            }
+        } else {
+            definition = word.getWord();
+        }
+        return definition;
     }
-    return definition;
-  }
+
+    public enum MathMarkUpType {
+        LATEX, MATHML, MATH_TEMPLATE, MVAR_TEMPLATE, LATEXII
+    }
 }

@@ -1,10 +1,8 @@
 package com.formulasearchengine.mathosphere.mlp.cli;
 
+import com.formulasearchengine.mathosphere.mlp.Main;
 import com.google.common.base.Throwables;
 import com.google.common.io.Files;
-
-import com.formulasearchengine.mathosphere.mlp.Main;
-
 import org.apache.commons.io.output.TeeOutputStream;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -19,6 +17,14 @@ import java.net.URLDecoder;
 import static org.junit.Assert.assertTrue;
 
 public class CliMainTest {
+
+    private static String decodePath(String urlEncodedPath) {
+        try {
+            return URLDecoder.decode(urlEncodedPath, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            throw Throwables.propagate(e);
+        }
+    }
 
   @Test
   public void testMlpRus() throws Exception {
@@ -42,14 +48,6 @@ public class CliMainTest {
     ClassLoader classLoader = getClass().getClassLoader();
     URL resource = classLoader.getResource(resourceName);
     return decodePath(resource.getFile());
-  }
-
-  private static String decodePath(String urlEncodedPath) {
-    try {
-      return URLDecoder.decode(urlEncodedPath, "UTF-8");
-    } catch (UnsupportedEncodingException e) {
-      throw Throwables.propagate(e);
-    }
   }
 
   @Test
@@ -191,25 +189,25 @@ public class CliMainTest {
   }
 
 
-  @Test
-  public void testPatternMatcher() throws Exception {
-    final File temp = Files.createTempDir();
-    String[] args = {CliParams.EVAL,
-      "-in", resourcePath("com/formulasearchengine/mathosphere/mlp/gold/eval_dataset_sample.xml"),
-      "-out", temp.getAbsolutePath(),
-      "--queries", resourcePath("com/formulasearchengine/mathosphere/mlp/gold/gold_sample.json"),
-      "--nd", resourcePath("com/formulasearchengine/mathosphere/mlp/gold/nd.json"),
-      "--tex",
-      "--usePatternMatcher",
-      "-t", "0.8",
-      "--level", "2",
-      "--ref", resourcePath("com/formulasearchengine/mathosphere/mlp/nd")
-    };
-    final PrintStream stdout = System.out;
-    final ByteArrayOutputStream myOut = new ByteArrayOutputStream();
-    System.setOut(new PrintStream(myOut));
-    Main.main(args);
-    System.setOut(stdout);
+    @Test
+    public void testPatternMatcher() throws Exception {
+        final File temp = Files.createTempDir();
+        String[] args = {CliParams.EVAL,
+                "-in", resourcePath("com/formulasearchengine/mathosphere/mlp/gold/eval_dataset_sample.xml"),
+                "-out", temp.getAbsolutePath(),
+                "--queries", resourcePath("com/formulasearchengine/mathosphere/mlp/gold/gold_sample.json"),
+                "--nd", resourcePath("com/formulasearchengine/mathosphere/mlp/gold/nd.json"),
+                "--tex",
+                "--usePatternMatcher",
+                "-t", "0.8",
+                "--level", "2",
+                "--ref", resourcePath("com/formulasearchengine/mathosphere/mlp/nd")
+        };
+        final PrintStream stdout = System.out;
+        final ByteArrayOutputStream myOut = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(myOut));
+        Main.main(args);
+        System.setOut(stdout);
   }
 
 

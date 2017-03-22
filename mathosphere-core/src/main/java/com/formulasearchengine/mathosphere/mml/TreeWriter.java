@@ -1,11 +1,10 @@
 package com.formulasearchengine.mathosphere.mml;
 
-import com.formulasearchengine.mathmlquerygenerator.xmlhelper.XMLHelper;
 
+import com.formulasearchengine.mathmltools.xmlhelper.XMLHelper;
 import org.w3c.dom.Node;
 
 import javax.xml.xpath.XPathExpressionException;
-
 import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,38 +16,6 @@ import java.util.Map;
 @SuppressWarnings("AccessingNonPublicFieldOfAnotherObject")
 public class TreeWriter {
   private TreeWriter() {
-  }
-
-  /**
-   * The Class Mynode.
-   */
-  private static class MyNode {
-
-    /**
-     * The node.
-     */
-    private Node node;
-
-    /**
-     * The q var.
-     */
-    private Map<String, Integer> qVar;
-
-    /**
-     * The out.
-     */
-    private String out;
-
-    /**
-     * Instantiates a new mynode.
-     *
-     * @param node the node
-     * @param qVar the q var
-     */
-    private MyNode(Node node, Map<String, Integer> qVar) {
-      this.node = node;
-      this.qVar = qVar;
-    }
   }
 
   /**
@@ -166,5 +133,37 @@ public class TreeWriter {
     }
     return n;
 
+  }
+
+  /**
+   * The Class Mynode.
+   */
+  private static class MyNode {
+
+    /**
+     * The node.
+     */
+    private Node node;
+
+    /**
+     * The q var.
+     */
+    private Map<String, Integer> qVar;
+
+    /**
+     * The out.
+     */
+    private String out;
+
+    /**
+     * Instantiates a new mynode.
+     *
+     * @param node the node
+     * @param qVar the q var
+     */
+    private MyNode(Node node, Map<String, Integer> qVar) {
+      this.node = node;
+      this.qVar = qVar;
+    }
   }
 }

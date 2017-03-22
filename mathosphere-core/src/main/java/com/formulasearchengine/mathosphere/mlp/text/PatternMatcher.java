@@ -2,9 +2,7 @@ package com.formulasearchengine.mathosphere.mlp.text;
 
 import com.alexeygrigorev.rseq.*;
 import com.formulasearchengine.mathosphere.mlp.pojos.ParsedWikiDocument;
-import com.formulasearchengine.mathosphere.mlp.pojos.WikidataLink;
 import com.formulasearchengine.mathosphere.mlp.pojos.Word;
-
 import com.google.common.collect.Lists;
 
 import java.util.Arrays;
@@ -18,19 +16,6 @@ public class PatternMatcher {
 
   public PatternMatcher(List<Pattern<Word>> patterns) {
     this.patterns = patterns;
-  }
-
-  public List<IdentifierMatch> match(List<Word> words, ParsedWikiDocument doc) {
-    List<IdentifierMatch> result = Lists.newArrayList();
-    for (Pattern<Word> pattern : patterns) {
-      List<Match<Word>> matches = pattern.find(words);
-      for (Match<Word> match : matches) {
-        String id = match.getVariable("identifier").getWord();
-        String def = deLinkify(match.getVariable("definition"), doc);
-        result.add(new IdentifierMatch(id, def));
-      }
-    }
-    return result;
   }
 
   public static PatternMatcher generatePatterns(Set<String> identifiers) {
@@ -62,17 +47,30 @@ public class PatternMatcher {
 
   }
 
-  public static XMatcher<Word> word(String word) {
+    public static XMatcher<Word> word(String word) {
     return BeanMatchers.eq(Word.class, "word", word);
   }
 
-  public static XMatcher<Word> pos(String pos) {
+    public static XMatcher<Word> pos(String pos) {
     return BeanMatchers.eq(Word.class, "posTag", pos);
   }
 
-  public static XMatcher<Word> posRegExp(String regexp) {
+    public static XMatcher<Word> posRegExp(String regexp) {
     return BeanMatchers.regex(Word.class, "posTag", regexp);
   }
+
+    public List<IdentifierMatch> match(List<Word> words, ParsedWikiDocument doc) {
+        List<IdentifierMatch> result = Lists.newArrayList();
+        for (Pattern<Word> pattern : patterns) {
+            List<Match<Word>> matches = pattern.find(words);
+            for (Match<Word> match : matches) {
+                String id = match.getVariable("identifier").getWord();
+                String def = deLinkify(match.getVariable("definition"), doc);
+                result.add(new IdentifierMatch(id, def));
+            }
+        }
+        return result;
+    }
 
   public static class IdentifierMatch {
     private String identifier;
