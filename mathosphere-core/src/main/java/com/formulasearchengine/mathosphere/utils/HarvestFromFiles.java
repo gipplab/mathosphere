@@ -1,6 +1,5 @@
 package com.formulasearchengine.mathosphere.utils;
 
-
 import com.formulasearchengine.mathmltools.xmlhelper.XMLHelper;
 import org.apache.commons.cli.*;
 import org.w3c.dom.Attr;
@@ -33,20 +32,20 @@ public class HarvestFromFiles {
     Option help = new Option("help", "print this message");
 
     Option dataSource = OptionBuilder.withArgName("file")
-        .hasArg()
-        .isRequired()
-        .withDescription("use given file for data source")
-        .withLongOpt("datasource")
-        .create("d");
+            .hasArg()
+            .isRequired()
+            .withDescription("use given file for data source")
+            .withLongOpt("datasource")
+            .create("d");
     Option resultSink = OptionBuilder.withArgName("file")
-        .hasArg()
-        .withDescription("specify file for the output")
-        .withLongOpt("output")
-        .create("o");
+            .hasArg()
+            .withDescription("specify file for the output")
+            .withLongOpt("output")
+            .create("o");
     options.addOption(dataSource)
-        .addOption(resultSink)
-        .addOption(help)
-        .addOption("i", "ignoreUnderscores", false, "Ignores everything that comes after the last underscore in the filename.");
+            .addOption(resultSink)
+            .addOption(help)
+            .addOption("i", "ignoreUnderscores", false, "Ignores everything that comes after the last underscore in the filename.");
     CommandLineParser parser = new GnuParser();
     try {
       CommandLine line = parser.parse(options, args);
