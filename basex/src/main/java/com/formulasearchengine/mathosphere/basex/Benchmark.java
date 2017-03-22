@@ -25,8 +25,8 @@ public class Benchmark {
 	//By default, MathMLQueryGenerator constructs XQueries for a DB2 instance, so we need to change that into basex format
 	//Search <mws:expr> elements
 	public static final String BASEX_HEADER = "declare default element namespace \"http://www.w3.org/1998/Math/MathML\";\n" +
-		"for $m in //*:expr return \n";
-	//Return URL of <mws:expr> element containing matches for queries
+            "for $m in //*:expr return \n";
+    //Return URL of <mws:expr> element containing matches for queries
 	public static final String BASEX_FOOTER = " data($m/@url) \n";
 	//Return hit as XML with required NTCIR data and highlighting
 	public static final String NTCIR_FOOTER =
@@ -50,30 +50,30 @@ public class Benchmark {
 		//Option verbose = new Option( "verbose", "be extra verbose" );
 		//Option debug = new Option( "debug", "print debugging information" );
 		Option dataSource = OptionBuilder.withArgName( "file" )
-			.hasArg()
-			.isRequired()
-			.withDescription( "use given file for data source" )
-			.withLongOpt( "datasource" )
-			.create( "d" );
-		Option querySource = OptionBuilder.withArgName( "file" )
-			.hasArg()
-			.isRequired()
-			.withDescription( "use given file for query source" )
-			.withLongOpt( "querysource" )
-			.create( "q" );
-		Option resultSink = OptionBuilder.withArgName( "file" )
-			.hasArg()
-			.withDescription( "specify file for the output" )
-			.withLongOpt( "output" )
-			.create( "o" );
-		options.addOption( dataSource )
-			.addOption( querySource )
-			.addOption( resultSink )
-			.addOption( help )
-			.addOption( "c", "CSV", false, "Print CSV instead of XML output" )
-			.addOption( "i", "ignoreLength", false, "Includes matches were the matching is tree is longer" +
-				"than the search pattern. For example $x+y+z$ for the pattern $x+y$." );
-		CommandLineParser parser = new GnuParser();
+                .hasArg()
+                .isRequired()
+                .withDescription("use given file for data source")
+                .withLongOpt("datasource")
+                .create("d");
+        Option querySource = OptionBuilder.withArgName( "file" )
+                .hasArg()
+                .isRequired()
+                .withDescription("use given file for query source")
+                .withLongOpt("querysource")
+                .create("q");
+        Option resultSink = OptionBuilder.withArgName( "file" )
+                .hasArg()
+                .withDescription("specify file for the output")
+                .withLongOpt("output")
+                .create("o");
+        options.addOption( dataSource )
+                .addOption(querySource)
+                .addOption(resultSink)
+                .addOption(help)
+                .addOption("c", "CSV", false, "Print CSV instead of XML output")
+                .addOption("i", "ignoreLength", false, "Includes matches were the matching is tree is longer" +
+                        "than the search pattern. For example $x+y+z$ for the pattern $x+y$.");
+        CommandLineParser parser = new GnuParser();
 		try {
 			CommandLine line = parser.parse( options, args );
 			if ( line.hasOption( "help" ) ) {

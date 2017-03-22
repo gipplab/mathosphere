@@ -72,9 +72,9 @@
             <version>8.5.2</version>
         </dependency>
         <dependency>
-        <groupId>com.formulasearchengine</groupId>
-        <artifactId>mathmlquerygenerator</artifactId>
-        <version>0.0.3-SNAPSHOT</version>
+            <groupId>com.formulasearchengine</groupId>
+            <artifactId>mathmlquerygenerator</artifactId>
+            <version>1.0.0</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>

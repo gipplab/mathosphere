@@ -1,9 +1,8 @@
 package com.formulasearchengine.mathosphere.basex;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.formulasearchengine.mathmlquerygenerator.NtcirPattern;
 import com.formulasearchengine.mathmlquerygenerator.XQueryGenerator;
-import com.formulasearchengine.mathmlquerygenerator.xmlhelper.XMLHelper;
+import com.formulasearchengine.mathmltools.xmlhelper.XMLHelper;
 import com.formulasearchengine.mathosphere.basex.types.Hit;
 import com.formulasearchengine.mathosphere.basex.types.Result;
 import com.formulasearchengine.mathosphere.basex.types.Results;
@@ -36,17 +35,15 @@ import java.util.regex.Pattern;
  * Created by Moritz on 08.11.2014.
  */
 public class Client {
+	public static final String USER = "admin";
+	public static final String PASSWORD = "admin";
 	private static final Pattern CR_PATTERN = Pattern.compile("\r");
 	private Results results = new Results();
 	private Run currentRun = new Run( "baseX" + System.currentTimeMillis(), "automated" );
 	private Result currentResult = new Result( "NTCIR11-Math-" );
 	private Long lastQueryDuration;
 	private boolean useXQ = true;
-
 	private boolean showTime = true;
-
-	public static final String USER = "admin";
-	public static final String PASSWORD = "admin";
 
 	/**
 	 * Constructs a new empty Client. Used for running individual queries.
@@ -62,14 +59,6 @@ public class Client {
 			processPattern( pattern );
 		}
 		results.addRun( currentRun );
-	}
-
-	/**
-	 * @return Returns results in XML format.
-	 */
-	public String getXML() {
-		results.setShowTime( showTime );
-		return resultsToXML( results );
 	}
 
 	/**
@@ -115,6 +104,75 @@ public class Client {
 		return stream.fromXML( xml );
 	}
 
+	private static XQConnection getXqConnection() throws XQException {
+		final Server srv = Server.getInstance();
+		final XQDataSource xqs = new BaseXXQDataSource();
+		//Other properties: description, logLevel, loginTimeout, readOnly
+		xqs.setProperty("serverName", Server.SERVER_NAME);
+		xqs.setProperty("port", String.valueOf(Server.PORT));
+		xqs.setProperty("databaseName", Server.DATABASE_NAME);
+		xqs.setProperty("user", USER);
+		xqs.setProperty("password", PASSWORD);
+
+		return xqs.getConnection(USER, PASSWORD);
+	}
+
+	//Alternative API that enables XQuery v3.1
+	private static BaseXClient getBaseXClient() throws IOException {
+		final Server srv = Server.getInstance();
+		final BaseXClient session = new BaseXClient(Server.SERVER_NAME, Server.PORT, USER, PASSWORD);
+		session.execute("OPEN " + Server.DATABASE_NAME);
+		return session;
+	}
+
+	/**
+	 * @return Returns new StartElement with replaced value for given attribute
+	 */
+	public static StartElement replaceAttr(StartElement event, String attribute, String value) {
+		final XMLEventFactory eventFactory = XMLEventFactory.newInstance();
+		final Iterator<Attribute> attributeIterator = event.getAttributes();
+		final List<Attribute> attrs = new ArrayList<>();
+		while (attributeIterator.hasNext()) {
+			final Attribute curAttr = attributeIterator.next();
+			if (attribute.equals(curAttr.getName().getLocalPart())) {
+				attrs.add(eventFactory.createAttribute(new QName(attribute), value));
+			} else {
+				attrs.add(curAttr);
+			}
+		}
+		return eventFactory.createStartElement(new QName(event.getName().getLocalPart()), attrs.iterator(), event.getNamespaces());
+	}
+
+	/**
+	 * Runs a query with no timing or effects on {@link #currentResult}
+	 *
+	 * @param query XQuery string
+	 * @return XQResult in string format
+	 * @throws XQException
+	 */
+	static String directXQuery(String query) throws XQException {
+		final StringBuilder outputBuilder = new StringBuilder();
+		final XQConnection conn = getXqConnection();
+		try {
+			final XQPreparedExpression xqpe = conn.prepareExpression(query);
+			final XQResultSequence rs = xqpe.executeQuery();
+			while (rs.next()) {
+				outputBuilder.append(CR_PATTERN.matcher(rs.getItemAsString(null)).replaceAll(""));
+			}
+		} finally {
+			conn.close();
+		}
+		return outputBuilder.toString();
+	}
+
+	/**
+	 * @return Returns results in XML format.
+	 */
+	public String getXML() {
+		results.setShowTime(showTime);
+		return resultsToXML(results);
+	}
+
 	/**
 	 * Setter for whether or not to show time in results.
 	 * @param showTime Boolean for showing time or not
@@ -148,27 +206,6 @@ public class Client {
 	public Long basex(String query) throws XQException {
 		runQueryBaseXSimple( query );
 		return lastQueryDuration;
-	}
-
-    private static XQConnection getXqConnection() throws XQException {
-		final Server srv = Server.getInstance();
-		final XQDataSource xqs = new BaseXXQDataSource();
-		//Other properties: description, logLevel, loginTimeout, readOnly
-		xqs.setProperty( "serverName", Server.SERVER_NAME);
-		xqs.setProperty( "port", String.valueOf(Server.PORT) );
-		xqs.setProperty( "databaseName", Server.DATABASE_NAME );
-		xqs.setProperty( "user", USER );
-		xqs.setProperty( "password", PASSWORD );
-
-		return xqs.getConnection( USER, PASSWORD );
-	}
-
-	//Alternative API that enables XQuery v3.1
-	private static BaseXClient getBaseXClient() throws IOException {
-		final Server srv = Server.getInstance();
-		final BaseXClient session = new BaseXClient(Server.SERVER_NAME, Server.PORT, USER, PASSWORD);
-		session.execute("OPEN " + Server.DATABASE_NAME);
-		return session;
 	}
 
 	/**
@@ -231,24 +268,6 @@ public class Client {
 			}
 			return currentResult;
 		}
-	}
-
-	/**
-	 * @return Returns new StartElement with replaced value for given attribute
-	 */
-	public static StartElement replaceAttr( StartElement event, String attribute, String value ) {
-		final XMLEventFactory eventFactory = XMLEventFactory.newInstance();
-		final Iterator<Attribute> attributeIterator = event.getAttributes();
-		final List<Attribute> attrs = new ArrayList<>();
-		while ( attributeIterator.hasNext() ) {
-			final Attribute curAttr = attributeIterator.next();
-			if ( attribute.equals( curAttr.getName().getLocalPart() ) ) {
-				attrs.add( eventFactory.createAttribute( new QName( attribute ), value ) );
-			} else {
-				attrs.add( curAttr );
-			}
-		}
-		return eventFactory.createStartElement( new QName( event.getName().getLocalPart() ), attrs.iterator(), event.getNamespaces() );
 	}
 
 	/**
@@ -332,8 +351,8 @@ public class Client {
 		if ( mwsQuery == null ){
 			throw new IllegalArgumentException( "Got empty MathML document" );
 		}
-		final XQueryGenerator generator = new XQueryGenerator( mwsQuery );
-        generator.setPathToRoot("//*:expr");
+		final XQueryGenerator generator = new XQueryGenerator(mwsQuery);
+		generator.setPathToRoot("//*:expr");
 		generator.setReturnFormat(Benchmark.BASEX_FOOTER );
 		generator.setAddQvarMap( false );
 		return runQueryNtcirWrap(generator.toString());
@@ -356,27 +375,6 @@ public class Client {
 		final String mmlString = t.request(tex);
 		final Document doc = XMLHelper.String2Doc( mmlString, true );
 		return runMWSQuery( doc );
-	}
-
-	/**
-	 * Runs a query with no timing or effects on {@link #currentResult}
-	 * @param query XQuery string
-	 * @return XQResult in string format
-	 * @throws XQException
-	 */
-	static String directXQuery(String query) throws XQException {
-		final StringBuilder outputBuilder = new StringBuilder();
-		final XQConnection conn = getXqConnection();
-		try {
-			final XQPreparedExpression xqpe = conn.prepareExpression( query );
-			final XQResultSequence rs = xqpe.executeQuery();
-			while ( rs.next() ) {
-				outputBuilder.append( CR_PATTERN.matcher( rs.getItemAsString( null ) ).replaceAll( "" ) );
-			}
-		} finally {
-			conn.close();
-		}
-		return outputBuilder.toString();
 	}
 
 	/**
@@ -436,12 +434,12 @@ public class Client {
 	 * @param n Node to start with
 	 * @return Whether or not this operation succeeded
 	 */
-	public boolean updateFormula(Node n){
+	public boolean updateFormula(Node n) {
 		try {
-            @Language("XQuery") final String xUpdate = "declare namespace mws=\"http://search.mathweb.org/ns\";\n" +
-			"declare variable $input external;\n" +
-			"for $e in $input/mws:expr\n" +
-			"return ( delete node //*[@url=$e/@url], insert node $e into /mws:harvest[1])";
+			@Language("XQuery") final String xUpdate = "declare namespace mws=\"http://search.mathweb.org/ns\";\n" +
+					"declare variable $input external;\n" +
+					"for $e in $input/mws:expr\n" +
+					"return ( delete node //*[@url=$e/@url], insert node $e into /mws:harvest[1])";
 			final XQConnection conn = getXqConnection();
 			try {
 				final XQPreparedExpression xqpe = conn.prepareExpression( xUpdate );
