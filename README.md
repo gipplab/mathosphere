@@ -6,9 +6,9 @@ Mathosphere consists of the following components:
 * A flink batch processing system
 * A rest interface
 
-The baseX backend manages the data used for ad hock retrieval for MathSearch on
+The baseX backend manages the data used for ad hoc retrieval for MathSearch on
 Wikipedia or DRMF.
-The rest interface provides an interface for ad hock retrieval. The MediaWiki MathSearch
+The rest interface provides an interface for ad hoc retrieval. The MediaWiki MathSearch
 extension serves as a frontend.
 The flink batch processing component is used for long running data analysis and batch queries.
 

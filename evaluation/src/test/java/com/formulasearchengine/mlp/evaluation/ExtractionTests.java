@@ -1,5 +1,8 @@
 package com.formulasearchengine.mlp.evaluation;
 
+import com.formulasearchengine.mlp.evaluation.pojo.GoldEntry;
+import com.formulasearchengine.mlp.evaluation.pojo.IdentifierDefinition;
+import com.formulasearchengine.mlp.evaluation.pojo.ScoreSummary;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import org.junit.Assert;
@@ -22,6 +25,7 @@ public class ExtractionTests {
   public static final String GOLDFILE_UNSORTED = FOLDER + "gold_unsorted_sample.json";
   public static final String EXTRACTIONS = FOLDER + "extraction.csv";
   public static final String EXTRACTIONS_SAMPLE = FOLDER + "extraction_sample.csv";
+  public static final String EXTRACTIONS_SAMPLE_EXTRACTIONS_NO_QID = FOLDER + "extraction_sample_noQid.csv";
   public static final String EXTRACTIONS_UNSORTED = FOLDER + "extraction_unsorted.csv";
   public static final String EXTRACTIONS_SAMPLE_WRONG = FOLDER + "extraction_sample_wrong.csv";
   public static final String EXTRACTIONS_SAMPLE_WRONG_2 = FOLDER + "extraction_sample_wrong2.csv";
@@ -52,7 +56,7 @@ public class ExtractionTests {
     List<GoldEntry> gold_withWikidata = evaluator.readGoldEntries(getFile(GOLDFILE_SAMPLE));
     List<GoldEntry> gold_withoutWikidata = evaluator.readGoldEntries(getFile(GOLDFILE_SAMPLE_2));
     assertEquals(gold_withoutWikidata.size(), 1);
-    List<IdentifierDefinition> definitions = new ArrayList<>();
+    ArrayList<IdentifierDefinition> definitions = new ArrayList<>();
     definitions.add(new IdentifierDefinition("q", "probability"));
     //without wikidata
     assertEquals(1, gold_withoutWikidata.size());
@@ -75,7 +79,7 @@ public class ExtractionTests {
     assertEquals(TOTAL_NUMBER_OF_WIKIDATA_LINKS, gold.stream().flatMap(g -> g.getDefinitions().stream().filter(d -> d.getDefinition().matches("(^(q\\d+).*)$"))).count());
     //number of distinct identifiers
     assertEquals(TOTAL_NUMBER_OF_IDENTIFIERS, gold.stream().flatMap(g -> g.getDefinitions().stream().map(i -> i.getIdentifier()).distinct()).count());
-    List<IdentifierDefinition> definitions = new ArrayList<>();
+    ArrayList<IdentifierDefinition> definitions = new ArrayList<>();
     definitions.add(new IdentifierDefinition("q", "q9492"));
     definitions.add(new IdentifierDefinition("q", "probability"));
     //0 indexed but the first qId is 1 => 40 == 41
@@ -120,10 +124,27 @@ public class ExtractionTests {
     Evaluator evaluator = new Evaluator();
     List<GoldEntry> gold = evaluator.readGoldEntries(getFile(Evaluator.GOLDFILE));
     Multimap<String, IdentifierDefinition> extractions = evaluator.readExtractions(getFile(EXTRACTIONS), gold);
-    int[] result = evaluator.evaluate(extractions, gold);
-    Assert.assertArrayEquals(new int[]{TRUE_POSITIVES, TOTAL_NUMBER_OF_IDENTIFIERS - TRUE_POSITIVES, FALSE_POSITIVES, 0}, result);
-    System.out.println(String.format("tp: %d, fn: %d, fp: %d, wikidatalinks: %d"
-      , result[Evaluator.TP], result[Evaluator.FN], result[Evaluator.FP], result[Evaluator.WIKIDATALINK]));
+    ScoreSummary result = evaluator.evaluate(extractions, gold);
+    Assert.assertEquals(new ScoreSummary(TRUE_POSITIVES, TOTAL_NUMBER_OF_IDENTIFIERS - TRUE_POSITIVES, FALSE_POSITIVES, 0), result);
+  }
+
+  @Test
+  public void testEvaluationTitleKey() throws IOException {
+    Evaluator evaluator = new Evaluator();
+    List<GoldEntry> gold = evaluator.readGoldEntries(getFile(Evaluator.GOLDFILE));
+    Multimap<String, IdentifierDefinition> extractions = evaluator.readExtractions(getFile(EXTRACTIONS), gold, true);
+    ScoreSummary result = evaluator.evaluate(extractions, gold, true);
+    Assert.assertEquals(new ScoreSummary(TRUE_POSITIVES, TOTAL_NUMBER_OF_IDENTIFIERS - TRUE_POSITIVES, FALSE_POSITIVES, 0), result);
+  }
+
+
+  @Test
+  public void testEvaluation_no_qId() throws IOException {
+    Evaluator evaluator = new Evaluator();
+    List<GoldEntry> gold = evaluator.readGoldEntries(getFile(Evaluator.GOLDFILE));
+    Multimap<String, IdentifierDefinition> extractions = evaluator.readExtractions(getFile(EXTRACTIONS_SAMPLE_EXTRACTIONS_NO_QID), gold, true);
+    ScoreSummary result = evaluator.evaluate(extractions, gold, true);
+    Assert.assertEquals(new ScoreSummary(1, TOTAL_NUMBER_OF_IDENTIFIERS - 1, 0, 0), result);
   }
 
   @Test
@@ -132,10 +153,10 @@ public class ExtractionTests {
     List<GoldEntry> gold = evaluator.readGoldEntries(getFile(Evaluator.GOLDFILE));
     Multimap<String, IdentifierDefinition> extractionsWikidata = evaluator.readExtractions(getFile(EXTRACTIONS_SAMPLE_WIKIDATA), gold);
     Multimap<String, IdentifierDefinition> extractionsWikidata2 = evaluator.readExtractions(getFile(EXTRACTIONS_SAMPLE_WIKIDATA_2), gold);
-    int[] resultWikidata = evaluator.evaluate(extractionsWikidata, gold);
-    Assert.assertArrayEquals(new int[]{1, TOTAL_NUMBER_OF_IDENTIFIERS - 1, 0, 1}, resultWikidata);
-    int[] resultWikidata2 = evaluator.evaluate(extractionsWikidata2, gold);
-    Assert.assertArrayEquals(new int[]{1, TOTAL_NUMBER_OF_IDENTIFIERS - 1, 0, 1}, resultWikidata2);
+    ScoreSummary resultWikidata = evaluator.evaluate(extractionsWikidata, gold);
+    Assert.assertEquals(new ScoreSummary(1, TOTAL_NUMBER_OF_IDENTIFIERS - 1, 0, 1), resultWikidata);
+    ScoreSummary resultWikidata2 = evaluator.evaluate(extractionsWikidata2, gold);
+    Assert.assertEquals(new ScoreSummary(1, TOTAL_NUMBER_OF_IDENTIFIERS - 1, 0, 1), resultWikidata2);
   }
 
   @Test
@@ -143,7 +164,7 @@ public class ExtractionTests {
     Evaluator evaluator = new Evaluator();
     List<GoldEntry> gold = evaluator.readGoldEntries(getFile(GOLDFILE_UNSORTED));
     Multimap<String, IdentifierDefinition> extractions_unsorted = evaluator.readExtractions(getFile(EXTRACTIONS_UNSORTED), gold);
-    int[] result = evaluator.evaluate(extractions_unsorted, gold);
-    Assert.assertArrayEquals(new int[]{UNSORTED_TP, UNSORTED_TOTAL_IDENTIFIERS - UNSORTED_TP, UNSORTED_TOTAL_EXTRACTIONS - UNSORTED_TP, 0}, result);
+    ScoreSummary result = evaluator.evaluate(extractions_unsorted, gold);
+    Assert.assertEquals(new ScoreSummary(UNSORTED_TP, UNSORTED_TOTAL_IDENTIFIERS - UNSORTED_TP, UNSORTED_TOTAL_EXTRACTIONS - UNSORTED_TP, 0), result);
   }
 }

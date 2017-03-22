@@ -115,7 +115,7 @@ jobmanager.web.port: 8081
 # If not specified, the system-specific Java temporary directory (java.io.tmpdir
 # property) is taken.
 #
-# taskmanager.tmp.dirs: /tmp
+taskmanager.tmp.dirs: /data/b/tmp/:/data/c/tmp:/data/d/tmp:/data/e/tmp/
 
 
 # Path to the Hadoop configuration directory.
@@ -146,3 +146,5 @@ jobmanager.web.port: 8081
 # directory (see above) before configuring the storageDir.
 #
 # recovery.zookeeper.storageDir: hdfs:///recovery
+
+env.log.dir: /data/b/log

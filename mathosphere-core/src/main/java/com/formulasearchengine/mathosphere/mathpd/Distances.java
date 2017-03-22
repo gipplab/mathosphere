@@ -338,4 +338,9 @@ public class Distances {
         return str.matches("-?\\d+(\\.\\d+)?");  //match a number with optional '-' and decimal.
     }
 
+=======
+        }
+    }
+
+>>>>>>> remotes/origin/master
 }

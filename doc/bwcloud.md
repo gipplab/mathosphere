@@ -14,7 +14,7 @@ in the IP range 192.168.0.0/24.
 ## Prerequisites
 Install Java8
 ```
-sudo apt-get install openjdk-8-jdk
+sudo apt-get -y install openjdk-8-jdk
 ```
 Install flink
 ```
@@ -188,3 +188,16 @@ Host m
     LocalForward 8081 127.0.0.1:8081
     LocalForward 50070 127.0.0.1:50070
 ```
+
+## Run MathPD job
+Preprocessing
+```
+/srv/hadoop/bin/hadoop fs -rm -r -f /data/161214_allpdcases.xml_preprocessed; /srv/hadoop/bin/hadoop fs -rm -r -f /data/ntcir_and_pdcases.xml_preprocessed; /srv/flink/bin/flink run /data/mathosphere/mathosphere-core/target/mathosphere-core-3.0.0-SNAPSHOT-jar-with-dependencies.jar pd --inputDir hdfs://m:54310/data/ntcir_and_pdcases.xml --referenceDir hdfs://m:54310/data/161214_allpdcases.xml --outputDir hdfs://m:54310/data/170113run --preprocessing true
+```
+
+Similarity analysis (after boolean toogle in code has been changed)
+```
+/srv/flink/bin/flink run /data/mathosphere/mathosphere-core/target/mathosphere-core-3.0.0-SNAPSHOT-jar-with-dependencies.jar pd --inputDir hdfs://m:54310/data/ntcir_and_pdcases.xml --referenceDir hdfs://m:54310/data/161214_allpdcases.xml --outputDir hdfs://m:54310/data/170113run --preprocessing false
+```
+
+java -cp /data/mathosphere/mathosphere-core/target/mathosphere-core-3.0.0-SNAPSHOT-jar-with-dependencies.jar com.formulasearchengine.mathosphere.mathpd.ConverterPairCSVToMatrix

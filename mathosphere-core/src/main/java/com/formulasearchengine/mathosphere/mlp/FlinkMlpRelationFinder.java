@@ -1,15 +1,13 @@
 package com.formulasearchengine.mathosphere.mlp;
 
+import com.formulasearchengine.mathosphere.mlp.contracts.*;
+import com.formulasearchengine.mathosphere.utils.Util;
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Multiset;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.formulasearchengine.mathosphere.mlp.cli.EvalCommandConfig;
 import com.formulasearchengine.mathosphere.mlp.cli.FlinkMlpCommandConfig;
-import com.formulasearchengine.mathosphere.mlp.contracts.CreateCandidatesMapper;
-import com.formulasearchengine.mathosphere.mlp.contracts.JsonSerializerMapper;
-import com.formulasearchengine.mathosphere.mlp.contracts.TextAnnotatorMapper;
-import com.formulasearchengine.mathosphere.mlp.contracts.TextExtractorMapper;
 import com.formulasearchengine.mathosphere.mlp.pojos.MathTag;
 import com.formulasearchengine.mathosphere.mlp.pojos.ParsedWikiDocument;
 import com.formulasearchengine.mathosphere.mlp.pojos.Relation;
@@ -20,6 +18,7 @@ import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.csv.CSVRecord;
 import org.apache.flink.api.common.functions.GroupReduceFunction;
+import org.apache.flink.api.common.functions.MapFunction;
 import org.apache.flink.api.java.DataSet;
 import org.apache.flink.api.java.ExecutionEnvironment;
 import org.apache.flink.api.java.io.TextInputFormat;
@@ -28,6 +27,8 @@ import org.apache.flink.api.java.tuple.Tuple2;
 import org.apache.flink.core.fs.FileSystem.WriteMode;
 import org.apache.flink.core.fs.Path;
 import org.apache.flink.util.Collector;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.FileReader;
@@ -42,8 +43,11 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class FlinkMlpRelationFinder {
+
+  private static final Logger LOGGER = LoggerFactory.getLogger(FlinkMlpRelationFinder.class);
 
   public static void main(String[] args) throws Exception {
     FlinkMlpCommandConfig config = FlinkMlpCommandConfig.from(args);
@@ -97,7 +101,12 @@ public class FlinkMlpRelationFinder {
   public static void evaluate(EvalCommandConfig config) throws Exception {
     ExecutionEnvironment env = ExecutionEnvironment.getExecutionEnvironment();
     DataSource<String> source = readWikiDump(config, env);
-    final CreateCandidatesMapper candidatesMapper = new CreateCandidatesMapper(config);
+    final MapFunction<ParsedWikiDocument, WikiDocumentOutput> candidatesMapper;
+    if (config.isPatternMatcher()) {
+      candidatesMapper = new PatternMatcherMapper();
+    } else {
+      candidatesMapper = new CreateCandidatesMapper(config);
+    }
     DataSet<ParsedWikiDocument> documents =
       source.flatMap(new TextExtractorMapper())
         .map(new TextAnnotatorMapper(config));
@@ -131,15 +140,17 @@ public class FlinkMlpRelationFinder {
           try {
             Map goldElement = (Map) gold.get(title);
             Map formula = (Map) goldElement.get("formula");
-            final Integer fid = Integer.parseInt((String) formula.get("fid"));
+            final Integer formulaId = Integer.parseInt((String) formula.get("fid"));
             final String tex = (String) formula.get("math_inputtex");
             final String qId = (String) formula.get("qID");
-            int pos = getFormulaPos(parsedWikiDocument, fid);
-            final MathTag seed = parsedWikiDocument.getFormulas().get(pos);
+            final MathTag seed = parsedWikiDocument.getFormulas().stream()
+              .filter(f -> f.getMarkUpType().equals(WikiTextUtils.MathMarkUpType.LATEX)).collect(Collectors.toList())
+              .get(formulaId);
+            //WikiTextUtils.getLatexFormula(parsedWikiDocument, formulaId);
             if (!seed.getContent().equals(tex)) {
-              System.err.println("PROBLEM WITH" + title);
-              System.err.println(seed.getContent());
-              System.err.println(tex);
+              LOGGER.error("PROBLEM WITH" + title);
+              LOGGER.error(seed.getContent());
+              LOGGER.error(tex);
               throw new Exception("Invalid numbering.");
             }
             final WikiDocumentOutput wikiDocumentOutput = candidatesMapper.map(parsedWikiDocument);
@@ -162,14 +173,7 @@ public class FlinkMlpRelationFinder {
             tpOverall.addAll(tp);
             fnOverall.addAll(fn);
             fpOverall.addAll(fp);
-            double rec = ((double) tp.size()) / (tp.size() + fn.size());
-            double prec = ((double) tp.size()) / (tp.size() + fp.size());
-            //if (rec < 1. || prec < 1.) {
-            //System.err.println(title + " $" + tex + "$ Precision" + prec + "; Recall" + rec);
-            //System.err.println("fp:" + fp.toString());
-            // System.err.println("fn:" + fn.toString());
-            System.err.println("https://en.formulasearchengine.com/wiki/" + title + "#math." + formula.get("oldId") + "." + fid);
-            //}
+            LOGGER.info("https://en.formulasearchengine.com/wiki/" + title + "#math." + formula.get("oldId") + "." + formulaId);
             if (config.getNamespace()) {
               getNamespaceData(title, relations);
             }
@@ -177,6 +181,7 @@ public class FlinkMlpRelationFinder {
             Collections.sort(relations, Relation::compareToName);
             removeDuplicates(definitions, relations);
             writeRelevanceTemplates(qId, relations);
+            Util.writeExtractedDefinitionsAsCsv(config.getOutputDir() + "/extraction.csv", qId, wikiDocumentOutput.getTitle().replaceAll("\\s", "_"), relations);
             Map<Tuple2<String, String>, Integer> references = new HashMap<>();
             if (config.getRelevanceFolder() != null) {
               final FileReader relevance = new FileReader(config.getRelevanceFolder() + "/q" + qId + ".csv");
@@ -194,29 +199,29 @@ public class FlinkMlpRelationFinder {
                 Integer score = references.get(relation.getTuple());
                 if (score != null && score >= config.getLevel()) {
                   tpRelOverall.add(relation);
-                  System.err.println("tp: " + relation.getIdentifier() + ", " + relation.getDefinition());
+                  LOGGER.info("tp: " + relation.getIdentifier() + ", " + relation.getDefinition());
                   tpcnt++;
                 } else {
                   fpRelOverall.add(relation);
-                  System.err.println("fp: " + relation.getIdentifier() + ", " + relation.getDefinition());
+                  LOGGER.info("fp: " + relation.getIdentifier() + ", " + relation.getDefinition());
                 }
               }
               fnRelOverallCnt += (expected.size() - tpcnt);
             }
           } catch (Exception e) {
             e.printStackTrace();
-            System.err.println("Problem with " + title);
+            LOGGER.info("Problem with " + title);
           }
         }
-        System.err.println("Overall identifier evaluation");
-        System.err.println("fp:" + fpOverall.size());
-        System.err.println("fn:" + fnOverall.size());
-        System.err.println("tp:" + tpOverall.size());
+        LOGGER.info("Overall identifier evaluation");
+        LOGGER.info("fp:" + fpOverall.size());
+        LOGGER.info("fn:" + fnOverall.size());
+        LOGGER.info("tp:" + tpOverall.size());
 
-        System.err.println("Overall definition evaluation");
-        System.err.println("fp=" + fpRelOverall.size() + "; fn=" + fnRelOverallCnt
+        LOGGER.info("Overall definition evaluation - by this method, better use evaluation in Evaluation package.");
+        LOGGER.info("fp=" + fpRelOverall.size() + "; fn=" + fnRelOverallCnt
           + "; tp=" + tpRelOverall.size());
-        System.err.println(fpRelOverall.toString());
+        LOGGER.info(fpRelOverall.toString());
       }
 
       public void removeDuplicates(Map definitions, List<Relation> relations) {
@@ -260,23 +265,6 @@ public class FlinkMlpRelationFinder {
         }
       }
 
-      public void writeExtractedDefinitions(String qId, String title, List<Relation> relations) throws IOException {
-        if (config.getOutputDir() != null) {
-          final File output = new File(config.getOutputDir() + "extraction.csv");
-          if (!output.exists())
-            output.createNewFile();
-          OutputStreamWriter w = new FileWriter(output, true);
-          CSVPrinter printer = CSVFormat.DEFAULT.withRecordSeparator("\n").print(w);
-          for (Relation relation : relations) {
-            //qId, title, identifier, definition
-            String[] out = new String[]{qId, title, relation.getIdentifier(), relation.getDefinition()};
-            printer.printRecord(out);
-          }
-          w.flush();
-          w.close();
-        }
-      }
-
       public void getNamespaceData(String title, List<Relation> relations) {
         final Map nd = (Map) ndData.get(title);
         if (nd != null) {
@@ -308,20 +296,5 @@ public class FlinkMlpRelationFinder {
       }
     }
     return result;
-  }
-
-  private static int getFormulaPos(ParsedWikiDocument parsedWikiDocument, Integer fid) {
-    int count = -1;
-    int i;
-    for (i = 0; i < parsedWikiDocument.getFormulas().size(); i++) {
-      final MathTag t = parsedWikiDocument.getFormulas().get(i);
-      if (t.getMarkUpType() == WikiTextUtils.MathMarkUpType.LATEX) {
-        count++;
-        if (count == fid) {
-          break;
-        }
-      }
-    }
-    return i;
   }
 }

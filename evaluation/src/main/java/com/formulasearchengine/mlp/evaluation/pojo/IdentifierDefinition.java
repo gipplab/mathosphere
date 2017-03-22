@@ -1,9 +1,11 @@
-package com.formulasearchengine.mlp.evaluation;
+package com.formulasearchengine.mlp.evaluation.pojo;
+
+import java.io.Serializable;
 
 /**
  * Created by Leo on 04.10.2016.
  */
-public class IdentifierDefinition {
+public class IdentifierDefinition implements Serializable {
   private String identifier;
 
   public String getIdentifier() {
