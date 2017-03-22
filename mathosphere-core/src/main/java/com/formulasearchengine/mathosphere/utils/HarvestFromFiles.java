@@ -1,12 +1,25 @@
 package com.formulasearchengine.mathosphere.utils;
 
 import com.formulasearchengine.mathmltools.xmlhelper.XMLHelper;
-import org.apache.commons.cli.*;
+
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.CommandLineParser;
+import org.apache.commons.cli.GnuParser;
+import org.apache.commons.cli.HelpFormatter;
+import org.apache.commons.cli.Option;
+import org.apache.commons.cli.OptionBuilder;
+import org.apache.commons.cli.Options;
+import org.apache.commons.cli.ParseException;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.StringWriter;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.ParserConfigurationException;
@@ -16,10 +29,6 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.StringWriter;
 
 /**
  * Created by Moritz on 13.08.2015. <p> Creates a harvest file from a folder
@@ -32,20 +41,20 @@ public class HarvestFromFiles {
     Option help = new Option("help", "print this message");
 
     Option dataSource = OptionBuilder.withArgName("file")
-            .hasArg()
-            .isRequired()
-            .withDescription("use given file for data source")
-            .withLongOpt("datasource")
-            .create("d");
+        .hasArg()
+        .isRequired()
+        .withDescription("use given file for data source")
+        .withLongOpt("datasource")
+        .create("d");
     Option resultSink = OptionBuilder.withArgName("file")
-            .hasArg()
-            .withDescription("specify file for the output")
-            .withLongOpt("output")
-            .create("o");
+        .hasArg()
+        .withDescription("specify file for the output")
+        .withLongOpt("output")
+        .create("o");
     options.addOption(dataSource)
-            .addOption(resultSink)
-            .addOption(help)
-            .addOption("i", "ignoreUnderscores", false, "Ignores everything that comes after the last underscore in the filename.");
+        .addOption(resultSink)
+        .addOption(help)
+        .addOption("i", "ignoreUnderscores", false, "Ignores everything that comes after the last underscore in the filename.");
     CommandLineParser parser = new GnuParser();
     try {
       CommandLine line = parser.parse(options, args);

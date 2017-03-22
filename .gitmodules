@@ -1,6 +1,9 @@
 [submodule "lib/MathMLQueryGenerator"]
 	path = lib/MathMLQueryGenerator
 	url = https://github.com/physikerwelt/MathMLQueryGenerator.git
+[submodule "lib/MathMLTools"]
+    path = lib/MathMLTools
+    url = https://github.com/physikerwelt/MathMLTools.git
 [submodule "lib/MathMLCan"]
 	path = lib/MathMLCan
 	url = https://github.com/TU-Berlin/MathMLCan.git

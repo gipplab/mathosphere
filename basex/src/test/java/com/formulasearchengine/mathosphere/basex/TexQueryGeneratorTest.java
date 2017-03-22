@@ -2,20 +2,18 @@ package com.formulasearchengine.mathosphere.basex;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
+import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.Assume;
 
 import java.io.IOException;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class TexQueryGeneratorTest {
 
@@ -42,13 +40,13 @@ public class TexQueryGeneratorTest {
 		final String mml = "<math xmlns=\"http://www.w3.org/1998/Math/MathML\" id=\"p1.m1\" class=\"ltx_Math\" alttext=\"E=mc^{2}\" display=\"inline\">\n" +
 			"  <apply>\n" +
 			"    <eq/>\n" +
-			"    <ci>E</ci>\n" +
+			"    <ci>\uD835\uDC38</ci>\n" +
 			"    <apply>\n" +
 			"      <times/>\n" +
-			"      <ci>m</ci>\n" +
+			"      <ci>\uD835\uDC5A</ci>\n" +
 			"      <apply>\n" +
 			"        <csymbol cd=\"ambiguous\">superscript</csymbol>\n" +
-			"        <ci>c</ci>\n" +
+			"        <ci>\uD835\uDC50</ci>\n" +
 			"        <cn type=\"integer\">2</cn>\n" +
 			"      </apply>\n" +
 			"    </apply>\n" +
