@@ -1,5 +1,6 @@
 package com.formulasearchengine.mathosphere.mathpd.pojos;
 
+import com.formulasearchengine.mathosphere.mathpd.Distances;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.Serializable;
@@ -11,12 +12,15 @@ import java.util.HashMap;
  * Created by felix on 07.12.16.
  */
 public class ExtractedMathPDDocument implements Comparable<ExtractedMathPDDocument>, Serializable {
+    private static final String ID_SEPARATOR = "/";
     public String title;
     public String text;
-    private HashMap<String, Integer> histogramCn;
-    private HashMap<String, Integer> histogramCsymbol;
-    private HashMap<String, Integer> histogramCi;
-    private HashMap<String, Integer> histogramBvar;
+    public String name;
+    private String page;
+    private HashMap<String, Double> histogramCn = new HashMap<>();
+    private HashMap<String, Double> histogramCsymbol = new HashMap<>();
+    private HashMap<String, Double> histogramCi = new HashMap<>();
+    private HashMap<String, Double> histogramBvar = new HashMap<>();
 
     public ExtractedMathPDDocument() {
     }
@@ -26,35 +30,43 @@ public class ExtractedMathPDDocument implements Comparable<ExtractedMathPDDocume
         this.text = text;
     }
 
-    public HashMap<String, Integer> getHistogramBvar() {
+    public static String getNameFromId(String id) {
+        return id.split(ID_SEPARATOR)[0];
+    }
+
+    public static String getPageFromId(String id) {
+        return id.split(ID_SEPARATOR)[1];
+    }
+
+    public HashMap<String, Double> getHistogramBvar() {
         return histogramBvar;
     }
 
-    public void setHistogramBvar(HashMap<String, Integer> histogramBvar) {
+    public void setHistogramBvar(HashMap<String, Double> histogramBvar) {
         this.histogramBvar = histogramBvar;
     }
 
-    public HashMap<String, Integer> getHistogramCn() {
+    public HashMap<String, Double> getHistogramCn() {
         return histogramCn;
     }
 
-    public void setHistogramCn(HashMap<String, Integer> histogramCn) {
+    public void setHistogramCn(HashMap<String, Double> histogramCn) {
         this.histogramCn = histogramCn;
     }
 
-    public HashMap<String, Integer> getHistogramCsymbol() {
+    public HashMap<String, Double> getHistogramCsymbol() {
         return histogramCsymbol;
     }
 
-    public void setHistogramCsymbol(HashMap<String, Integer> histogramCsymbol) {
+    public void setHistogramCsymbol(HashMap<String, Double> histogramCsymbol) {
         this.histogramCsymbol = histogramCsymbol;
     }
 
-    public HashMap<String, Integer> getHistogramCi() {
+    public HashMap<String, Double> getHistogramCi() {
         return histogramCi;
     }
 
-    public void setHistogramCi(HashMap<String, Integer> histogramCi) {
+    public void setHistogramCi(HashMap<String, Double> histogramCi) {
         this.histogramCi = histogramCi;
     }
 
@@ -74,9 +86,13 @@ public class ExtractedMathPDDocument implements Comparable<ExtractedMathPDDocume
         this.text = text;
     }
 
+    public String getId() {
+        return this.getName() + ID_SEPARATOR + this.getPage();
+    }
+
     @Override
     public String toString() {
-        return "[title=" + title + ", text=" + StringUtils.abbreviate(text, 100) + "]";
+        return "[title=" + title + ", name=" + name + ", page=" + page + ", text=" + StringUtils.abbreviate(text, 100) + "]";
     }
 
     @Override
@@ -87,5 +103,32 @@ public class ExtractedMathPDDocument implements Comparable<ExtractedMathPDDocume
     @Override
     public int hashCode() {
         return this.getTitle().hashCode() + this.getText().hashCode();
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getPage() {
+        //return "none";
+        return page;
+    }
+
+    public void setPage(String page) {
+        this.page = page;
+    }
+
+    public void mergeOtherIntoThis(ExtractedMathPDDocument other) {
+        if (!this.name.equals(other.name)) {
+            throw new RuntimeException("name is not equal : " + name + " vs " + other.name);
+        }
+        this.histogramBvar = Distances.histogramsPlus(this.histogramBvar, other.histogramBvar);
+        this.histogramCi = Distances.histogramsPlus(this.histogramCi, other.histogramCi);
+        this.histogramCn = Distances.histogramsPlus(this.histogramCn, other.histogramCn);
+        this.histogramCsymbol = Distances.histogramsPlus(this.histogramCsymbol, other.histogramCsymbol);
     }
 }

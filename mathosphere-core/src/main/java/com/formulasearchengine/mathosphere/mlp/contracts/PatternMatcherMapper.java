@@ -1,7 +1,5 @@
 package com.formulasearchengine.mathosphere.mlp.contracts;
 
-import com.google.common.collect.Lists;
-
 import com.formulasearchengine.mathosphere.mlp.pojos.ParsedWikiDocument;
 import com.formulasearchengine.mathosphere.mlp.pojos.Relation;
 import com.formulasearchengine.mathosphere.mlp.pojos.Sentence;
@@ -9,7 +7,7 @@ import com.formulasearchengine.mathosphere.mlp.pojos.WikiDocumentOutput;
 import com.formulasearchengine.mathosphere.mlp.text.DefinitionUtils;
 import com.formulasearchengine.mathosphere.mlp.text.PatternMatcher;
 import com.formulasearchengine.mathosphere.mlp.text.PatternMatcher.IdentifierMatch;
-
+import com.google.common.collect.Lists;
 import org.apache.flink.api.common.functions.MapFunction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,7 +30,7 @@ public class PatternMatcherMapper implements MapFunction<ParsedWikiDocument, Wik
 
       Set<String> identifiers = sentence.getIdentifiers();
       PatternMatcher matcher = PatternMatcher.generatePatterns(identifiers);
-      List<IdentifierMatch> foundMatches = matcher.match(sentence.getWords(), doc);
+        List<IdentifierMatch> foundMatches = matcher.match(sentence.getWords(), doc);
 
       for (IdentifierMatch match : foundMatches) {
         if (!DefinitionUtils.isValid(match.getDefinition())) {
@@ -45,10 +43,10 @@ public class PatternMatcherMapper implements MapFunction<ParsedWikiDocument, Wik
         // relation.setSentence(sentence);
         relation.setScore(1.0d);
 
-        if (!relationWasFoundBefore(foundRelations, relation)) {
-          LOGGER.debug("found match {}", relation);
-          foundRelations.add(relation);
-        }
+          if (!relationWasFoundBefore(foundRelations, relation)) {
+              LOGGER.debug("found match {}", relation);
+              foundRelations.add(relation);
+          }
       }
     }
 
@@ -56,11 +54,11 @@ public class PatternMatcherMapper implements MapFunction<ParsedWikiDocument, Wik
     return new WikiDocumentOutput(doc.getTitle(), foundRelations, doc.getIdentifiers());
   }
 
-  private boolean relationWasFoundBefore(List<Relation> foundRelations, Relation relation) {
-    return foundRelations.stream().filter(
-      e -> e.getIdentifier().toLowerCase().equals(relation.getIdentifier().toLowerCase())
-        && e.getDefinition().toLowerCase().equals(relation.getDefinition().toLowerCase())
-    ).findAny().isPresent();
-  }
+    private boolean relationWasFoundBefore(List<Relation> foundRelations, Relation relation) {
+        return foundRelations.stream().filter(
+                e -> e.getIdentifier().toLowerCase().equals(relation.getIdentifier().toLowerCase())
+                        && e.getDefinition().toLowerCase().equals(relation.getDefinition().toLowerCase())
+        ).findAny().isPresent();
+    }
 
 }

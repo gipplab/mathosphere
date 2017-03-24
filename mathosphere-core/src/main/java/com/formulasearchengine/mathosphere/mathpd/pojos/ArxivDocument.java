@@ -18,12 +18,32 @@ public class ArxivDocument {
     public String title;
     public String text;
 
+    // optional
+    public String name;
+    public String page;
+
     public ArxivDocument() {
     }
 
     public ArxivDocument(String title, String text) {
         this.title = title;
         this.text = text;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getPage() {
+        return page;
+    }
+
+    public void setPage(String page) {
+        this.page = page;
     }
 
     public Document getDoc() {
