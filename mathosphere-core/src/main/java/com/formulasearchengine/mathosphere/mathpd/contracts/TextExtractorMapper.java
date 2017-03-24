@@ -70,8 +70,8 @@ public class TextExtractorMapper implements FlatMapFunction<String, Tuple2<Strin
         // extract all features we are or might be interested in later
 
         extractedMathPDDocument.setHistogramCn(Distances.getDocumentHistogram(document, "cn", mathTags));
-        extractedMathPDDocument.setHistogramCsymbol(Distances.getDocumentHistogram(document, "csymbol", mathTags));
         extractedMathPDDocument.setHistogramCi(Distances.getDocumentHistogram(document, "ci", mathTags));
+        extractedMathPDDocument.setHistogramCsymbol(Distances.getDocumentHistogram(document, "ci", mathTags));
         extractedMathPDDocument.setHistogramBvar(Distances.getDocumentHistogram(document, "bvar", mathTags));
 
         return extractedMathPDDocument;

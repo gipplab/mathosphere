@@ -18,6 +18,11 @@ import static junit.framework.TestCase.assertTrue;
  */
 public class FlinkPdTest {
 
+    /**
+     * Some tests can only be executed locally, as we cannot commit the files to git.
+     */
+    private static final boolean IS_LOCAL = false;
+
     private static String decodePath(String urlEncodedPath) {
         try {
             return URLDecoder.decode(urlEncodedPath, "UTF-8");
@@ -34,6 +39,8 @@ public class FlinkPdTest {
 
     @Test
     public void testCountTok() throws Exception {
+        if (!IS_LOCAL)
+            return;
         final File temp;
         temp = File.createTempFile("temp", Long.toString(System.nanoTime()));
         System.out.println(temp);
@@ -58,6 +65,8 @@ public class FlinkPdTest {
 
     @Test
     public void testDistances() throws Exception {
+        if (!IS_LOCAL)
+            return;
         String filename2 = "161214_allpdcases.xml";
         //filename = "161214_somepdcases.xml";
         //filename = "test9.xml";
