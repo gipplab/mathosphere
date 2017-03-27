@@ -1,12 +1,16 @@
 package com.formulasearchengine.mathosphere.mlp.cli;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.formulasearchengine.mathosphere.mlp.ml.WekaLearner;
+import com.formulasearchengine.mathosphere.mlp.pojos.IdentifierDefinition;
+import com.formulasearchengine.mathosphere.mlp.pojos.StrippedWikiDocumentOutput;
 import com.google.common.base.Throwables;
 import com.google.common.io.Files;
 
 import com.formulasearchengine.mathosphere.mlp.Main;
 
 import org.apache.commons.io.output.TeeOutputStream;
+import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -180,7 +184,7 @@ public class CliMainTest {
     temp = Files.createTempDir();
     System.out.println(temp.getAbsolutePath());
     String[] args = {"eval",
-      "-in", resourcePath("com/formulasearchengine/mathosphere/mlp/gold/eval_dataset.xml"),
+      "-in", resourcePath("com/formulasearchengine/mathosphere/mlp/gold/eval_dataset_sample.xml"),
       "-out", temp.getAbsolutePath(),
       "--queries", resourcePath("com/formulasearchengine/mathosphere/mlp/gold/gold.json"),
       "--nd", resourcePath("com/formulasearchengine/mathosphere/mlp/gold/nd.json"),
@@ -188,7 +192,7 @@ public class CliMainTest {
       "-t", "0.8",
       "--level", "2",
       "--ref", resourcePath("com/formulasearchengine/mathosphere/mlp/nd"),
-      "--texvcinfo", "http://localhost:10044/texvcinfo"};
+    };
     final PrintStream stdout = System.out;
     final ByteArrayOutputStream myOut = new ByteArrayOutputStream();
     System.setOut(new PrintStream(myOut));
@@ -201,13 +205,12 @@ public class CliMainTest {
   public void testPatternMatcher() throws Exception {
     final File temp = Files.createTempDir();
     String[] args = {CliParams.EVAL,
-      "-in", resourcePath("com/formulasearchengine/mathosphere/mlp/gold/eval_dataset.xml"),
+      "-in", resourcePath("com/formulasearchengine/mathosphere/mlp/gold/eval_dataset_sample.xml"),
       "-out", temp.getAbsolutePath(),
       "--queries", resourcePath("com/formulasearchengine/mathosphere/mlp/gold/gold.json"),
       "--nd", resourcePath("com/formulasearchengine/mathosphere/mlp/gold/nd.json"),
       "--tex",
       "--usePatternMatcher",
-      "--texvcinfo", "http://localhost:10044/texvcinfo",
     };
     final PrintStream stdout = System.out;
     final ByteArrayOutputStream myOut = new ByteArrayOutputStream();
@@ -217,6 +220,12 @@ public class CliMainTest {
   }
 
   @Test
+  @Ignore
+  /**
+   * Actually not a test but documentation of how the svm training is done.
+   * Takes long.
+   * Does not work with the eval_dataset_sample.xml because it has too little samples.
+   */
   public void testMachineLearning() throws Exception {
     final File temp = Files.createTempDir();
     String[] args = {CliParams.ML,
@@ -224,7 +233,6 @@ public class CliMainTest {
       "-out", temp.getAbsolutePath(),
       "--goldFile", resourcePath("com/formulasearchengine/mathosphere/mlp/gold/gold.json"),
       "--tex",
-      "--texvcinfo", "http://localhost:10044/texvcinfo",
       "--threads", "10",
       "--writeInstances",
       "--writeSvmModel"
@@ -233,6 +241,12 @@ public class CliMainTest {
   }
 
   @Test
+  @Ignore
+  /**
+   * Actually not a test but documentation of how the svm training is done.
+   * Takes long.
+   * Does not work with the eval_dataset_sample.xml because it has too little samples.
+   */
   public void testMachineLearningPercent() throws Exception {
     final File temp = Files.createTempDir();
     String[] args = {CliParams.ML,
@@ -256,21 +270,41 @@ public class CliMainTest {
     Main.main(args);
   }
 
+  /**
+   * Tests if the classification throws no error. Also tests if a correct definiens is extracted. Must have a good model!
+   *
+   * @throws Exception
+   */
   @Test
   public void testMachineLearningClassification() throws Exception {
     final File temp = Files.createTempDir();
     String[] args = {CliParams.CLASSIFY,
-      "-in", resourcePath("com/formulasearchengine/mathosphere/mlp/gold/eval_dataset.xml"),
+      "-in", resourcePath("com/formulasearchengine/mathosphere/mlp/gold/eval_dataset_sample.xml"),
       "-out", temp.getAbsolutePath(),
       "--tex",
-      "--texvcinfo", "http://localhost:10044/texvcinfo",
-      "--threads", "5",
-      "--svmModel", resourcePath("com/formulasearchengine/mathosphere/mlp/ml/svm_model_best_dumb_oversampling.model"),
+      "--threads", "1",
+      "--svmModel", resourcePath("com/formulasearchengine/mathosphere/mlp/ml/svm_model__c_1.0_gamma_0.022097087.model"),
+      "--stringFilter", resourcePath("com/formulasearchengine/mathosphere/mlp/ml/string_filter__c_1.0_gamma_0.022097087.model"),
     };
+    final PrintStream stdout = System.out;
+    final ByteArrayOutputStream myOut = new ByteArrayOutputStream();
+    System.setOut(new PrintStream(myOut));
     Main.main(args);
+    System.setOut(stdout);
+    final File extraction = new File(temp.getAbsolutePath() + "/extractedDefiniens/json");
+    //must be a rather small file, lets assume smaller than 2kb. This is also a sanity check not to deserialize a large file in case of error.
+    Assert.assertTrue(extraction.length() < 2 * 1024);
+    ObjectMapper mapper = new ObjectMapper();
+    StrippedWikiDocumentOutput strippedWikiDocumentOutput = mapper.readValue(extraction, StrippedWikiDocumentOutput.class);
+    Assert.assertEquals(strippedWikiDocumentOutput.getTitle(), "Martingale (betting system)");
+    Assert.assertTrue(strippedWikiDocumentOutput.getRelations().contains(new IdentifierDefinition("q", "probability")));
   }
 
   @Test
+  @Ignore
+  /**
+   * Actually not a test but documentation of how the svm optimisation is done.
+   */
   public void testMachineLearningClassificationWithNamespaces() throws Exception {
     final File temp = Files.createTempDir();
     String[] args = {CliParams.CLASSIFY,
@@ -289,6 +323,10 @@ public class CliMainTest {
   }
 
   @Test
+  @Ignore
+  /**
+   * Actually not a test but documentation of how the svm optimisation was done.
+   */
   public void testMachineLearningFromPreprocessedInstances() throws Exception {
     final File temp = Files.createTempDir();
     String[] args = {CliParams.ML,
@@ -302,6 +340,10 @@ public class CliMainTest {
   }
 
   @Test
+  @Ignore
+  /**
+   * Actually not a test but documentation of how the svm optimisation was done.
+   */
   public void testMachineLearningCorase() throws Exception {
     final File temp = Files.createTempDir();
     List<String> costAndGamma = new ArrayList<>();

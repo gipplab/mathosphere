@@ -26,12 +26,15 @@ public class IdentifierDefinition {
 
   private String definition;
 
+  public IdentifierDefinition() {
+  }
+
   public IdentifierDefinition(String identifier, String definition) {
     this.identifier = identifier;
     this.definition = definition.toLowerCase();
   }
 
-  public IdentifierDefinition(EvaluatedRelation evaluatedRelation){
+  public IdentifierDefinition(EvaluatedRelation evaluatedRelation) {
     this.identifier = evaluatedRelation.getIdentifier();
     this.definition = evaluatedRelation.getDefinition();
   }

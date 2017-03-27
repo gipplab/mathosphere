@@ -47,7 +47,7 @@ public class MachineLearningPatternMatcherTest {
     words.add(identifier);
     Sentence s = new Sentence(words, null, null);
     double[] result = new MachineLearningPatternMatcher().match(s, MachineLearningPatternMatcher.IDENTIFIER, MachineLearningPatternMatcher.DEFINITION, words.indexOf(identifier), words.indexOf(definiens));
-    Assert.assertArrayEquals(new double[]{0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ONE_OCCURRENCE, ONE_OCCURRENCE}, result, EPSILON);
+    Assert.assertArrayEquals(new double[]{0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, result, EPSILON);
   }
 
   @Test
@@ -56,7 +56,7 @@ public class MachineLearningPatternMatcherTest {
     words.add(identifier);
     Sentence s = new Sentence(words, null, null);
     double[] result = new MachineLearningPatternMatcher().match(s, MachineLearningPatternMatcher.IDENTIFIER, MachineLearningPatternMatcher.DEFINITION, words.indexOf(identifier), words.indexOf(definiens));
-    Assert.assertArrayEquals(new double[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ONE_OCCURRENCE}, result, EPSILON);
+    Assert.assertArrayEquals(new double[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, result, EPSILON);
   }
 
   @Test
@@ -65,7 +65,7 @@ public class MachineLearningPatternMatcherTest {
     words.add(definiens);
     Sentence s = new Sentence(words, null, null);
     double[] result = new MachineLearningPatternMatcher().match(s, MachineLearningPatternMatcher.IDENTIFIER, MachineLearningPatternMatcher.DEFINITION, words.indexOf(identifier), words.indexOf(definiens));
-    Assert.assertArrayEquals(new double[]{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ONE_OCCURRENCE, ONE_OCCURRENCE}, result, EPSILON);
+    Assert.assertArrayEquals(new double[]{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, result, EPSILON);
   }
 
   @Test
@@ -75,7 +75,7 @@ public class MachineLearningPatternMatcherTest {
     words.add(definiens);
     Sentence s = new Sentence(words, null, null);
     double[] result = new MachineLearningPatternMatcher().match(s, MachineLearningPatternMatcher.IDENTIFIER, MachineLearningPatternMatcher.DEFINITION, words.indexOf(identifier), words.indexOf(definiens));
-    Assert.assertArrayEquals(new double[]{0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, ONE_OCCURRENCE, ONE_OCCURRENCE}, result, EPSILON);
+    Assert.assertArrayEquals(new double[]{0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0}, result, EPSILON);
   }
 
   @Test
@@ -86,7 +86,7 @@ public class MachineLearningPatternMatcherTest {
     words.add(definiens);
     Sentence s = new Sentence(words, null, null);
     double[] result = new MachineLearningPatternMatcher().match(s, MachineLearningPatternMatcher.IDENTIFIER, MachineLearningPatternMatcher.DEFINITION, words.indexOf(identifier), words.indexOf(definiens));
-    Assert.assertArrayEquals(new double[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, ONE_OCCURRENCE, ONE_OCCURRENCE}, result, EPSILON);
+    Assert.assertArrayEquals(new double[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0}, result, EPSILON);
   }
 
   @Test
@@ -96,7 +96,7 @@ public class MachineLearningPatternMatcherTest {
     words.add(definiens);
     Sentence s = new Sentence(words, null, null);
     double[] result = new MachineLearningPatternMatcher().match(s, MachineLearningPatternMatcher.IDENTIFIER, MachineLearningPatternMatcher.DEFINITION, words.indexOf(identifier), words.indexOf(definiens));
-    Assert.assertArrayEquals(new double[]{0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ONE_OCCURRENCE, ONE_OCCURRENCE}, result, EPSILON);
+    Assert.assertArrayEquals(new double[]{0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, result, EPSILON);
   }
 
   @Test
@@ -107,7 +107,7 @@ public class MachineLearningPatternMatcherTest {
     words.add(definiens);
     Sentence s = new Sentence(words, null, null);
     double[] result = new MachineLearningPatternMatcher().match(s, MachineLearningPatternMatcher.IDENTIFIER, MachineLearningPatternMatcher.DEFINITION, words.indexOf(identifier), words.indexOf(definiens));
-    Assert.assertArrayEquals(new double[]{0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ONE_OCCURRENCE, ONE_OCCURRENCE}, result, EPSILON);
+    Assert.assertArrayEquals(new double[]{0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, result, EPSILON);
   }
 
   @Test
@@ -119,7 +119,7 @@ public class MachineLearningPatternMatcherTest {
     words.add(definiens);
     Sentence s = new Sentence(words, null, null);
     double[] result = new MachineLearningPatternMatcher().match(s, MachineLearningPatternMatcher.IDENTIFIER, MachineLearningPatternMatcher.DEFINITION, words.indexOf(identifier), words.indexOf(definiens));
-    Assert.assertArrayEquals(new double[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ONE_OCCURRENCE, ONE_OCCURRENCE}, result, EPSILON);
+    Assert.assertArrayEquals(new double[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, result, EPSILON);
   }
 
   @Test
@@ -132,7 +132,7 @@ public class MachineLearningPatternMatcherTest {
     words.add(definiens);
     Sentence s = new Sentence(words, null, null);
     double[] result = new MachineLearningPatternMatcher().match(s, MachineLearningPatternMatcher.IDENTIFIER, MachineLearningPatternMatcher.DEFINITION, words.indexOf(identifier), words.indexOf(definiens));
-    Assert.assertArrayEquals(new double[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ONE_OCCURRENCE, ONE_OCCURRENCE}, result, EPSILON);
+    Assert.assertArrayEquals(new double[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, result, EPSILON);
   }
 
   @Test
@@ -145,7 +145,7 @@ public class MachineLearningPatternMatcherTest {
     words.add(definiens);
     Sentence s = new Sentence(words, null, null);
     double[] result = new MachineLearningPatternMatcher().match(s, MachineLearningPatternMatcher.IDENTIFIER, MachineLearningPatternMatcher.DEFINITION, words.indexOf(identifier), words.indexOf(definiens));
-    Assert.assertArrayEquals(new double[]{0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ONE_OCCURRENCE, ONE_OCCURRENCE}, result, EPSILON);
+    Assert.assertArrayEquals(new double[]{0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, result, EPSILON);
   }
 
   @Test
@@ -159,11 +159,11 @@ public class MachineLearningPatternMatcherTest {
     words.add(definiens);
     Sentence s = new Sentence(words, null, null);
     double[] result = new MachineLearningPatternMatcher().match(s, MachineLearningPatternMatcher.IDENTIFIER, MachineLearningPatternMatcher.DEFINITION, words.indexOf(identifier), words.indexOf(definiens));
-    Assert.assertArrayEquals(new double[]{0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, ONE_OCCURRENCE, ONE_OCCURRENCE}, result, EPSILON);
+    Assert.assertArrayEquals(new double[]{0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0}, result, EPSILON);
     //destroy pattern test
     s.getWords().add(3, random);
     result = new MachineLearningPatternMatcher().match(s, MachineLearningPatternMatcher.IDENTIFIER, MachineLearningPatternMatcher.DEFINITION, words.indexOf(identifier), words.indexOf(definiens));
-    Assert.assertArrayEquals(new double[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ONE_OCCURRENCE, ONE_OCCURRENCE}, result, EPSILON);
+    Assert.assertArrayEquals(new double[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, result, EPSILON);
   }
 
   @Test
@@ -174,13 +174,13 @@ public class MachineLearningPatternMatcherTest {
     words.add(definiens);
     Sentence s = new Sentence(words, null, null);
     double[] result = new MachineLearningPatternMatcher().match(s, MachineLearningPatternMatcher.IDENTIFIER, MachineLearningPatternMatcher.DEFINITION, words.indexOf(identifier), words.indexOf(definiens));
-    Assert.assertArrayEquals(new double[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, ONE_OCCURRENCE, ONE_OCCURRENCE}, result, EPSILON);
+    Assert.assertArrayEquals(new double[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0}, result, EPSILON);
     //remove colon
     s.getWords().remove(COLON);
     //colon at end
     s.getWords().add(COLON);
     result = new MachineLearningPatternMatcher().match(s, MachineLearningPatternMatcher.IDENTIFIER, MachineLearningPatternMatcher.DEFINITION, words.indexOf(identifier), words.indexOf(definiens));
-    Assert.assertArrayEquals(new double[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ONE_OCCURRENCE, ONE_OCCURRENCE}, result, EPSILON);
+    Assert.assertArrayEquals(new double[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, result, EPSILON);
   }
 
   @Test
@@ -191,13 +191,13 @@ public class MachineLearningPatternMatcherTest {
     words.add(definiens);
     Sentence s = new Sentence(words, null, null);
     double[] result = new MachineLearningPatternMatcher().match(s, MachineLearningPatternMatcher.IDENTIFIER, MachineLearningPatternMatcher.DEFINITION, words.indexOf(identifier), words.indexOf(definiens));
-    Assert.assertArrayEquals(new double[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, ONE_OCCURRENCE, ONE_OCCURRENCE}, result, EPSILON);
+    Assert.assertArrayEquals(new double[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0}, result, EPSILON);
     //remove colon
     s.getWords().remove(COMMA);
     //colon at end
     s.getWords().add(COMMA);
     result = new MachineLearningPatternMatcher().match(s, MachineLearningPatternMatcher.IDENTIFIER, MachineLearningPatternMatcher.DEFINITION, words.indexOf(identifier), words.indexOf(definiens));
-    Assert.assertArrayEquals(new double[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ONE_OCCURRENCE, ONE_OCCURRENCE}, result, EPSILON);
+    Assert.assertArrayEquals(new double[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, result, EPSILON);
   }
 
   @Test
@@ -208,13 +208,13 @@ public class MachineLearningPatternMatcherTest {
     words.add(definiens);
     Sentence s = new Sentence(words, null, null);
     double[] result = new MachineLearningPatternMatcher().match(s, MachineLearningPatternMatcher.IDENTIFIER, MachineLearningPatternMatcher.DEFINITION, words.indexOf(identifier), words.indexOf(definiens));
-    Assert.assertArrayEquals(new double[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, ONE_OCCURRENCE, ONE_OCCURRENCE}, result, EPSILON);
+    Assert.assertArrayEquals(new double[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0}, result, EPSILON);
     //remove OTHERMATH
     s.getWords().remove(OTHERMATH);
     //OTHERMATH at beginning
     s.getWords().add(0, OTHERMATH);
     result = new MachineLearningPatternMatcher().match(s, MachineLearningPatternMatcher.IDENTIFIER, MachineLearningPatternMatcher.DEFINITION, words.indexOf(identifier), words.indexOf(definiens));
-    Assert.assertArrayEquals(new double[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ONE_OCCURRENCE, ONE_OCCURRENCE}, result, EPSILON);
+    Assert.assertArrayEquals(new double[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, result, EPSILON);
   }
 
   @Test
@@ -225,13 +225,13 @@ public class MachineLearningPatternMatcherTest {
     words.add(definiens);
     Sentence s = new Sentence(words, null, null);
     double[] result = new MachineLearningPatternMatcher().match(s, MachineLearningPatternMatcher.IDENTIFIER, MachineLearningPatternMatcher.DEFINITION, words.indexOf(identifier), words.indexOf(definiens));
-    Assert.assertArrayEquals(new double[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, ONE_OCCURRENCE, ONE_OCCURRENCE}, result, EPSILON);
+    Assert.assertArrayEquals(new double[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0}, result, EPSILON);
     //remove Parentheses
     s.getWords().remove(OPENING);
     //Parentheses at end
     s.getWords().add(OPENING);
     result = new MachineLearningPatternMatcher().match(s, MachineLearningPatternMatcher.IDENTIFIER, MachineLearningPatternMatcher.DEFINITION, words.indexOf(identifier), words.indexOf(definiens));
-    Assert.assertArrayEquals(new double[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ONE_OCCURRENCE, ONE_OCCURRENCE}, result, EPSILON);
+    Assert.assertArrayEquals(new double[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, result, EPSILON);
   }
 
   @Test
@@ -242,7 +242,7 @@ public class MachineLearningPatternMatcherTest {
     words.add(definiens);
     Sentence s = new Sentence(words, null, null);
     double[] result = new MachineLearningPatternMatcher().match(s, MachineLearningPatternMatcher.IDENTIFIER, MachineLearningPatternMatcher.DEFINITION, words.indexOf(identifier), words.indexOf(definiens));
-    Assert.assertArrayEquals(new double[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, ONE_OCCURRENCE, ONE_OCCURRENCE}, result, EPSILON);
+    Assert.assertArrayEquals(new double[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1}, result, EPSILON);
   }
 
   @Test
@@ -254,7 +254,7 @@ public class MachineLearningPatternMatcherTest {
     words.add(identifier);
     Sentence s = new Sentence(words, null, null);
     double[] result = new MachineLearningPatternMatcher().match(s, MachineLearningPatternMatcher.IDENTIFIER, MachineLearningPatternMatcher.DEFINITION, words.indexOf(identifier), words.indexOf(definiens));
-    Assert.assertArrayEquals(new double[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ONE_OCCURRENCE, ONE_OCCURRENCE}, result, EPSILON);
+    Assert.assertArrayEquals(new double[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, result, EPSILON);
   }
 
   @Test
@@ -268,7 +268,7 @@ public class MachineLearningPatternMatcherTest {
     words.add(CLOSING);
     Sentence s = new Sentence(words, null, null);
     double[] result = new MachineLearningPatternMatcher().match(s, MachineLearningPatternMatcher.IDENTIFIER, MachineLearningPatternMatcher.DEFINITION, words.indexOf(identifier), words.indexOf(definiens));
-    Assert.assertArrayEquals(new double[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, ONE_OCCURRENCE, ONE_OCCURRENCE}, result, EPSILON);
+    Assert.assertArrayEquals(new double[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1}, result, EPSILON);
   }
 
   @Test
@@ -282,7 +282,7 @@ public class MachineLearningPatternMatcherTest {
     words.add(identifier);
     Sentence s = new Sentence(words, null, null);
     double[] result = new MachineLearningPatternMatcher().match(s, MachineLearningPatternMatcher.IDENTIFIER, MachineLearningPatternMatcher.DEFINITION, words.indexOf(identifier), words.indexOf(definiens));
-    Assert.assertArrayEquals(new double[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, ONE_OCCURRENCE, ONE_OCCURRENCE}, result, EPSILON);
+    Assert.assertArrayEquals(new double[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0}, result, EPSILON);
   }
 
 
@@ -293,8 +293,8 @@ public class MachineLearningPatternMatcherTest {
     words.add(identifier);
     Sentence s = new Sentence(words, null, null);
     double[] result = new MachineLearningPatternMatcher().match(s, MachineLearningPatternMatcher.IDENTIFIER, MachineLearningPatternMatcher.DEFINITION, 2, 1);
-    Assert.assertArrayEquals(new double[]{1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ONE_OCCURRENCE, TWO_OCCURRENCES}, result, EPSILON);
+    Assert.assertArrayEquals(new double[]{1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, result, EPSILON);
     result = new MachineLearningPatternMatcher().match(s, MachineLearningPatternMatcher.IDENTIFIER, MachineLearningPatternMatcher.DEFINITION, 0, 1);
-    Assert.assertArrayEquals(new double[]{1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ONE_OCCURRENCE, TWO_OCCURRENCES}, result, EPSILON);
+    Assert.assertArrayEquals(new double[]{1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, result, EPSILON);
   }
 }

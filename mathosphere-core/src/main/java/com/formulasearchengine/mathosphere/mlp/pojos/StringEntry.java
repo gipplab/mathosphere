@@ -19,6 +19,9 @@ public class StringEntry implements Multiset.Entry {
     this.count = count;
   }
 
+  public StringEntry() {
+  }
+
   public StringEntry(String element, int count) {
     this.element = element;
     this.count = count;

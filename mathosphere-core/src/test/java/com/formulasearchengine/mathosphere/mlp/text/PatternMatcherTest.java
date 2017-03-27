@@ -105,12 +105,12 @@ public class PatternMatcherTest {
         case 0: //c
           Assert.assertEquals(C_2, match.getIdentifier());
           Assert.assertEquals(SPEED_OF_LIGHT, match.getDefinition());
-          Assert.assertEquals(1, match.getPosition());
+          Assert.assertEquals(2, match.getPosition());
           break;
-        case 1: //c
+        case 1: //E
           Assert.assertEquals(E, match.getIdentifier());
           Assert.assertEquals(ENERGY, match.getDefinition());
-          Assert.assertEquals(1, match.getPosition());
+          Assert.assertEquals(2, match.getPosition());
           break;
       }
     }
