@@ -91,8 +91,9 @@ public class PosTagger {
         .map(e -> e.matches(".") ? "\\mathit{" + e + "}" : e)
         .collect(Collectors.toList())
     ));
+
     List<List<Word>> annotated = annotate(cleanText, formulaIndex, allIdentifiers);
-    List<List<Word>> concatenated = concatenateTags(annotated);
+    List<List<Word>> concatenated = concatenateTags(annotated, allIdentifiers);
     return postprocess(concatenated, formulaIndex, allIdentifiers);
   }
 
@@ -195,24 +196,24 @@ public class PosTagger {
     return new Sentence(words, sentenceIdentifiers, formulas);
   }
 
-  public static List<List<Word>> concatenateTags(List<List<Word>> sentences) {
+  public static List<List<Word>> concatenateTags(List<List<Word>> sentences, Set<String> allIdentifiers) {
     List<List<Word>> results = Lists.newArrayListWithCapacity(sentences.size());
 
     for (List<Word> sentence : sentences) {
-      List<Word> res = postprocessSentence(sentence);
+      List<Word> res = postprocessSentence(sentence, allIdentifiers);
       results.add(res);
     }
 
     return results;
   }
 
-  private static List<Word> postprocessSentence(List<Word> sentence) {
+  private static List<Word> postprocessSentence(List<Word> sentence, Set<String> allIdentifiers) {
     // links
     List<Word> result;
     if (config.getUseTeXIdentifiers()) {
       result = sentence;
     } else {
-      result = concatenateLinks(sentence);
+      result = concatenateLinks(sentence, allIdentifiers);
     }
 
     // noun phrases
@@ -226,7 +227,7 @@ public class PosTagger {
     return result;
   }
 
-  public static List<Word> concatenateLinks(List<Word> in) {
+  public static List<Word> concatenateLinks(List<Word> in, Set<String> allIdentifiers) {
     Pattern<Word> linksPattern = Pattern.create(pos(PosTag.QUOTE), anyWord().oneOrMore()
       .captureAs("link"), pos(PosTag.UNQUOTE));
 
@@ -234,7 +235,11 @@ public class PosTagger {
       @Override
       public Word transform(Match<Word> match) {
         List<Word> words = match.getCapturedGroup("link");
-        return new Word(joinWords(words), PosTag.LINK);
+        if (words.size() == 1 && allIdentifiers.contains("\\mathit{" + words.get(0).getWord() + "}")) {
+          return new Word(joinWords(words), PosTag.IDENTIFIER);
+        } else {
+          return new Word(joinWords(words), PosTag.LINK);
+        }
       }
     });
   }

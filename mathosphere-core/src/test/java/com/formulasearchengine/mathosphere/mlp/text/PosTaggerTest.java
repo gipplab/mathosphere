@@ -13,7 +13,9 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -37,7 +39,7 @@ public class PosTaggerTest {
 
     List<Word> expected = Arrays.asList(w("where", "WRB"), w("Ψ", "ID"), w("is", "VBZ"), w("the", "DT"),
         w("wave function", "LNK"), w("of", "IN"), w("the", "DT"), w("quantum system", "NN+"),
-        w(",", ","), w("i", "ID"), w("is", "VBZ"), w("the", "DT"), w("imaginary unit", "LNK"),
+      w(",", ","), w("i", "FW"), w("is", "VBZ"), w("the", "DT"), w("imaginary unit", "LNK"),
         w(",", ","), w("ħ", "NN"), w("is", "VBZ"), w("the", "DT"),
         w("reduced Planck constant", "LNK"));
 
@@ -55,7 +57,7 @@ public class PosTaggerTest {
     List<Word> expected = Arrays.asList(w("Since", "IN"), w("energy", PosTag.LINK), w("and", "CC"),
         w("momentum", PosTag.LINK), w("are", "VBP"), w("related", "VBN"));
 
-    List<Word> actual = PosTagger.concatenateLinks(in);
+    List<Word> actual = PosTagger.concatenateLinks(in, new HashSet<String>());
     assertEquals(expected, actual);
   }
 
@@ -64,7 +66,7 @@ public class PosTaggerTest {
     List<Word> in = Arrays.asList(w("Since", "IN"), w("energy", "NN"), w("and", "CC"),
         w("momentum", "NN"), w("are", "VBP"), w("related", "VBN"));
     List<Word> expected = in;
-    List<Word> actual = PosTagger.concatenateLinks(in);
+    List<Word> actual = PosTagger.concatenateLinks(in, new HashSet<String>());
     assertEquals(expected, actual);
   }
 

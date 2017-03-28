@@ -93,6 +93,13 @@ public class PatternMatcher {
       return position;
     }
 
+    /**
+     * Constructor.
+     *
+     * @param identifier the identifier.
+     * @param definition the definiens candidate.
+     * @param position   the position of the pattern which this was found.
+     */
     public IdentifierMatch(String identifier, String definition, int position) {
       this.identifier = identifier;
       this.definition = definition;

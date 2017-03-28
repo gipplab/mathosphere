@@ -148,7 +148,7 @@ public class MathConverterTest {
     wikiText = TextExtractorMapper.unescape(wikiText);
     final MathConverter mathConverter = new MathConverter(wikiText);
     final String real = mathConverter.getOutput();
-    assertThat(real, containsString("<math>X_{0}"));
+    assertThat(real, containsString("<math>\\mathit{X}_{0}"));
   }
 
   @Test
