@@ -9,7 +9,7 @@ import java.io.Serializable;
 import java.util.Properties;
 
 public class BaseConfig implements Serializable {
-  protected static final String DEFAULT_POS_MODEL =
+    protected static final String DEFAULT_POS_MODEL =
     "edu/stanford/nlp/models/pos-tagger/english-left3words/english-left3words-distsim.tagger";
   @Parameter(names = {"-pos", "--posModel"}, description = "POS model to use")
   protected String model = DEFAULT_POS_MODEL;
@@ -41,10 +41,6 @@ public class BaseConfig implements Serializable {
   @Parameter(names = {"--definitionMerging"}, description = "apply definition merging algorithm")
   protected Boolean definitionMerging = false;
 
-  public Boolean getDefinitionMerging() {
-    return definitionMerging;
-  }
-
   public BaseConfig() {
     Properties prop = new Properties();
     String propFileName = "mathosphere.properties";
@@ -75,9 +71,17 @@ public class BaseConfig implements Serializable {
     this.useTeXIdentifiers = useTeXIdentifiers;
   }
 
+    public Boolean getDefinitionMerging() {
+        return definitionMerging;
+    }
+
   public String getModel() {
     return model;
   }
+
+    public void setModel(String model) {
+        this.model = model;
+    }
 
   public double getAlpha() {
     return alpha;
@@ -118,9 +122,5 @@ public class BaseConfig implements Serializable {
 
   public String getTexvcinfoUrl() {
     return texvcinfoUrl;
-  }
-
-  public void setModel(String model) {
-    this.model = model;
   }
 }

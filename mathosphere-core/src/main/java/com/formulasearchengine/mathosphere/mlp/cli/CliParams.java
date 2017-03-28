@@ -8,23 +8,17 @@ import java.io.Serializable;
 
 public class CliParams implements Serializable {
 
-  public static final String COUNT = "count";
-  public static final String LIST = "list";
-  public static final String EXTRACT = "extract";
-  public static final String MLP = "mlp";
-  public static final String EVAL = "eval";
+    public static final String COUNT = "count";
+    public static final String LIST = "list";
+    public static final String EXTRACT = "extract";
+    public static final String MLP = "mlp";
+    public static final String EVAL = "eval";
   public static final String ML = "ml";
   public static final String CLASSIFY = "classify";
-  public static final String PD = "pd";
-  public static final String HELP = "help";
+    public static final String PD = "pd";
+    public static final String HELP = "help";
   private EvalCommandConfig evalCommand;
-
-  @Parameters(commandDescription = "Prints this help message")
-  static private class HelpCommand {
-  }
-
   private JCommander jc;
-
   private CountCommandConfig countCommand;
   private ListCommandConfig listCommand;
   private MlpCommandConfig extractCommand;
@@ -32,7 +26,6 @@ public class CliParams implements Serializable {
   private FlinkMlpCommandConfig mlpCommand;
   private MachineLearningDefinienClassifierConfig classifyCommand;
   private FlinkPdCommandConfig pdCommand;
-
   private String command;
 
   private CliParams() {
@@ -51,15 +44,15 @@ public class CliParams implements Serializable {
     params.evalCommand = new EvalCommandConfig();
     params.pdCommand = new FlinkPdCommandConfig();
 
-    jc.addCommand(COUNT, params.countCommand);
-    jc.addCommand(LIST, params.listCommand);
-    jc.addCommand(EXTRACT, params.extractCommand);
-    jc.addCommand(MLP, params.mlpCommand);
-    jc.addCommand(EVAL, params.evalCommand);
+      jc.addCommand(COUNT, params.countCommand);
+      jc.addCommand(LIST, params.listCommand);
+      jc.addCommand(EXTRACT, params.extractCommand);
+      jc.addCommand(MLP, params.mlpCommand);
+      jc.addCommand(EVAL, params.evalCommand);
     jc.addCommand(ML, params.mlCommand);
     jc.addCommand(CLASSIFY, params.classifyCommand);
-    jc.addCommand(PD, params.pdCommand);
-    jc.addCommand(HELP, new HelpCommand());
+      jc.addCommand(PD, params.pdCommand);
+      jc.addCommand(HELP, new HelpCommand());
 
     jc.parse(args);
 
@@ -107,4 +100,8 @@ public class CliParams implements Serializable {
   public FlinkPdCommandConfig getPdCommandConfig() {
     return pdCommand;
   }
+
+    @Parameters(commandDescription = "Prints this help message")
+    static private class HelpCommand {
+    }
 }

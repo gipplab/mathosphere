@@ -14,23 +14,23 @@ public class Main {
     CliParams params = CliParams.from(args);
     String command = params.getCommand();
 
-    if (CliParams.HELP.equals(command)) {
+      if (CliParams.HELP.equals(command)) {
       params.printHelp();
-    } else if (CliParams.COUNT.equals(command)) {
+      } else if (CliParams.COUNT.equals(command)) {
       TokenCounter.run(params.getCount());
-    } else if (CliParams.LIST.equals(command)) {
+      } else if (CliParams.LIST.equals(command)) {
       RelationExtractor.list(params.getListCommandConfig());
-    } else if (CliParams.EXTRACT.equals(command)) {
+      } else if (CliParams.EXTRACT.equals(command)) {
       RelationExtractor.run(params.getExtractCommandConfig());
-    } else if (CliParams.MLP.equals(command)) {
+      } else if (CliParams.MLP.equals(command)) {
       FlinkMlpRelationFinder.run(params.getMlpCommandConfig());
-    } else if (CliParams.EVAL.equals(command)) {
+      } else if (CliParams.EVAL.equals(command)) {
       FlinkMlpRelationFinder.evaluate(params.getEvalCommandConfig());
     } else if (CliParams.ML.equals(command)) {
       MachineLearningModelGenerator.find(params.getMachineLearningCommand());
     } else if (CliParams.CLASSIFY.equals(command)) {
       MachineLearningRelationClassifier.find(params.getClassifyCommand());
-    } else if (CliParams.PD.equals(command)) {
+      } else if (CliParams.PD.equals(command)) {
       FlinkPd.run(params.getPdCommandConfig());
     } else {
       params.printHelp();

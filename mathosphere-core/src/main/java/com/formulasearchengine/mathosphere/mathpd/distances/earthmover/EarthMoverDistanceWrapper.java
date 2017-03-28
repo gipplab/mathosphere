@@ -9,7 +9,7 @@ import java.util.Map;
  * Created by Felix Hamborg on 13.12.16.
  */
 public class EarthMoverDistanceWrapper {
-    public static Signature histogramToSignature(Map<String, Integer> histogram) {
+    public static Signature histogramToSignature(Map<String, Double> histogram) {
         Signature signature = new Signature();
         Feature[] features = new Feature[histogram.size()];
         double[] weights = new double[histogram.size()];
