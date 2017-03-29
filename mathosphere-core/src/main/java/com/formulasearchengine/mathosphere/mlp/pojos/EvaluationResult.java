@@ -1,5 +1,6 @@
-package com.formulasearchengine.mathosphere.mlp.ml;
+package com.formulasearchengine.mathosphere.mlp.pojos;
 
+import com.formulasearchengine.mathosphere.mlp.ml.WekaUtils;
 import com.formulasearchengine.mlp.evaluation.pojo.ScoreSummary;
 import weka.core.Utils;
 

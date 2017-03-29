@@ -1,6 +1,5 @@
 package com.formulasearchengine.mathosphere.mlp.pojos;
 
-import com.formulasearchengine.mathosphere.mlp.evaluation.EvaluatedRelation;
 
 /**
  * Created by Leo on 04.10.2016.
@@ -32,11 +31,6 @@ public class IdentifierDefinition {
   public IdentifierDefinition(String identifier, String definition) {
     this.identifier = identifier;
     this.definition = definition.toLowerCase();
-  }
-
-  public IdentifierDefinition(EvaluatedRelation evaluatedRelation) {
-    this.identifier = evaluatedRelation.getIdentifier();
-    this.definition = evaluatedRelation.getDefinition();
   }
 
   @Override

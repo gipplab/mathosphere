@@ -1,6 +1,7 @@
 package com.formulasearchengine.mathosphere.mlp.ml;
 
 import com.formulasearchengine.mathosphere.mlp.cli.MachineLearningDefinienExtractionConfig;
+import com.formulasearchengine.mathosphere.mlp.pojos.EvaluationResult;
 import com.formulasearchengine.mathosphere.mlp.pojos.WikiDocumentOutput;
 import com.formulasearchengine.mlp.evaluation.Evaluator;
 import com.formulasearchengine.mlp.evaluation.pojo.GoldEntry;

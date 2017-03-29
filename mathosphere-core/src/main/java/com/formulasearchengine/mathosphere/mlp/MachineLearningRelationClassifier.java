@@ -7,14 +7,13 @@ import com.formulasearchengine.mathosphere.mlp.contracts.JsonSerializerMapper;
 import com.formulasearchengine.mathosphere.mlp.contracts.StupidRelationScorer;
 import com.formulasearchengine.mathosphere.mlp.contracts.TextAnnotatorMapper;
 import com.formulasearchengine.mathosphere.mlp.contracts.TextExtractorMapper;
-import com.formulasearchengine.mathosphere.mlp.ml.EvaluationResult;
+import com.formulasearchengine.mathosphere.mlp.pojos.EvaluationResult;
 import com.formulasearchengine.mathosphere.mlp.ml.WekaClassifier;
 import com.formulasearchengine.mathosphere.mlp.pojos.ParsedWikiDocument;
 import com.formulasearchengine.mathosphere.mlp.pojos.Relation;
 import com.formulasearchengine.mathosphere.mlp.pojos.StrippedWikiDocumentOutput;
 import com.formulasearchengine.mathosphere.mlp.pojos.WikiDocumentOutput;
 import com.formulasearchengine.mathosphere.mlp.text.SimpleFeatureExtractorMapper;
-import com.formulasearchengine.mathosphere.utils.Util;
 import org.apache.flink.api.common.functions.MapFunction;
 import org.apache.flink.api.java.DataSet;
 import org.apache.flink.api.java.ExecutionEnvironment;
@@ -28,7 +27,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * Created by Leo on 10.02.2017.

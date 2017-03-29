@@ -1,7 +1,7 @@
 package com.formulasearchengine.mathosphere.mlp.contracts;
 
 import com.formulasearchengine.mathosphere.mlp.cli.MachineLearningDefinienExtractionConfig;
-import com.formulasearchengine.mathosphere.mlp.ml.EvaluationResult;
+import com.formulasearchengine.mathosphere.mlp.pojos.EvaluationResult;
 import com.formulasearchengine.mathosphere.mlp.pojos.Relation;
 import com.formulasearchengine.mathosphere.mlp.pojos.WikiDocumentOutput;
 import com.formulasearchengine.mathosphere.utils.GoldUtil;

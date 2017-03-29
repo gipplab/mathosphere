@@ -5,7 +5,7 @@ import com.formulasearchengine.mathosphere.mlp.contracts.JsonSerializerMapper;
 import com.formulasearchengine.mathosphere.mlp.contracts.StupidRelationScorer;
 import com.formulasearchengine.mathosphere.mlp.contracts.TextAnnotatorMapper;
 import com.formulasearchengine.mathosphere.mlp.contracts.TextExtractorMapper;
-import com.formulasearchengine.mathosphere.mlp.ml.EvaluationResult;
+import com.formulasearchengine.mathosphere.mlp.pojos.EvaluationResult;
 import com.formulasearchengine.mathosphere.mlp.pojos.ParsedWikiDocument;
 import com.formulasearchengine.mathosphere.mlp.pojos.WikiDocumentOutput;
 import com.formulasearchengine.mathosphere.mlp.text.SimpleFeatureExtractorMapper;
