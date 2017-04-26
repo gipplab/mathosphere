@@ -112,8 +112,27 @@ public class BasicStringMatcher {
         return matches;
     }
 
+    /**
+     * Compares two texts and returns a score that represents its similarity.
+     *
+     * @param text1 Text 1
+     * @param text2 Text 2
+     * @return ordered list of matches between text1 and text2
+     * @throws Exception I would assume arrayoutofbound.
+     *                   The alphabet in BoyerMoore is too small?
+     */
+    double scoreSimilarity(String text1, String text2) throws Exception {
+
+        final java.util.List<int[]> matches = compare(text1, text2);
+        int sumMatchLength = 0;
+        for (int[] match : matches) {
+            sumMatchLength += match[4];
+        }
+       return Math.min(sumMatchLength / text1.length(), 1.0);
+    }
+
     private String normalizeString(String text1) {
-        text1 = text1.replaceAll("([\n\r ]+)", " ").toLowerCase();
+        text1 = text1.toLowerCase().replaceAll("([^a-z]+)", " ").toLowerCase();
         return text1;
     }
 
