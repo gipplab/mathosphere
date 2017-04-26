@@ -44,20 +44,6 @@ public class BasicStringMatcher {
     }
 
     /**
-     * A match-array is
-     * [start index text 1, end index text 1 , start index text 2, end index text 2 ]
-     *
-     * @param text1 Text 1
-     * @param text2 Text 2
-     * @return list of matches.
-     * @throws Exception ArrayOutOfBoundException
-     *                   The alphabet in BoyerMoore is too small?
-     */
-    public List<int[]> getMatches(String text1, String text2) throws Exception {
-        return reconcileOverlappings(compare(text1, text2));
-    }
-
-    /**
      * Compares two texts and returns every match with the exact length
      * of x words - whereby x is the parameter minWordLength.
      *
@@ -96,7 +82,8 @@ public class BasicStringMatcher {
             if (patternLng >= minPatternLength) {
                 startIdxB = bms.search(pattern, text2Array, startIdxB, 0);
                 if (startIdxB != -1) {
-                    matches.add(new int[]{startIdxA, startIdxA + patternLng, startIdxB, startIdxB + patternLng, patternLng});
+                    matches.add(new int[] {startIdxA,
+                            startIdxA + patternLng, startIdxB, startIdxB + patternLng, patternLng});
 
                     // jump over to the next words in docB after a complete match
                     startIdxB += patternLng + 1;
@@ -113,59 +100,17 @@ public class BasicStringMatcher {
     }
 
     /**
-     * Compares two texts and returns a score that represents its similarity.
+     * A match-array is
+     * [start index text 1, end index text 1 , start index text 2, end index text 2 ]
      *
      * @param text1 Text 1
      * @param text2 Text 2
-     * @return ordered list of matches between text1 and text2
-     * @throws Exception I would assume arrayoutofbound.
+     * @return list of matches.
+     * @throws Exception ArrayOutOfBoundException
      *                   The alphabet in BoyerMoore is too small?
      */
-    double scoreSimilarity(String text1, String text2) throws Exception {
-
-        final java.util.List<int[]> matches = compare(text1, text2);
-        int sumMatchLength = 0;
-        for (int[] match : matches) {
-            sumMatchLength += match[4];
-        }
-       return Math.min(sumMatchLength / text1.length(), 1.0);
-    }
-
-    private String normalizeString(String text1) {
-        text1 = text1.toLowerCase().replaceAll("([^a-z]+)", " ").toLowerCase();
-        return text1;
-    }
-
-    /**
-     * Mashes overlapping matches and saves every unique match into the textPattern.
-     *
-     * @param tmpMatches Ordered list of overlapping matches.
-     */
-    List<int[]> reconcileOverlappings(List<int[]> tmpMatches) {
-        List<int[]> resultMatches = new ArrayList<>();
-        if (tmpMatches.size() > 1) {
-            int[] curMatch = tmpMatches.get(0);
-            for (int i = 1; i < tmpMatches.size() - 1; i++) {
-                int[] nextMatch = tmpMatches.get(i);
-                if (isOverlapping(curMatch, nextMatch)) {
-                    // expand and mash up
-                    curMatch = new int[]{
-                            Math.min(curMatch[0], nextMatch[0]),
-                            Math.max(curMatch[1], nextMatch[1]),
-                            Math.min(curMatch[2], nextMatch[2]),
-                            Math.max(curMatch[3], nextMatch[3]),
-                            Math.max(curMatch[1], nextMatch[1]) - Math.min(curMatch[0], nextMatch[0])
-                    };
-                } else {
-                    // save as a unique match and move on
-                    resultMatches.add(curMatch);
-                    curMatch = nextMatch;
-                }
-            }
-            // save the last match
-            resultMatches.add(curMatch);
-        }
-        return resultMatches;
+    public List<int[]> getMatches(String text1, String text2) throws Exception {
+        return reconcileOverlappings(compare(text1, text2));
     }
 
     /**
@@ -186,4 +131,59 @@ public class BasicStringMatcher {
         return false;
     }
 
+    private String normalizeString(String text1) {
+        text1 = text1.toLowerCase().replaceAll("([^a-z]+)", " ").toLowerCase();
+        return text1;
+    }
+
+    /**
+     * Mashes overlapping matches and saves every unique match into the textPattern.
+     *
+     * @param tmpMatches Ordered list of overlapping matches.
+     */
+    List<int[]> reconcileOverlappings(final List<int[]> tmpMatches) {
+        final List<int[]> resultMatches = new ArrayList<>();
+        if (tmpMatches.size() > 1) {
+            int[] curMatch = tmpMatches.get(0);
+            for (int i = 1; i < tmpMatches.size() - 1; i++) {
+                final int[] nextMatch = tmpMatches.get(i);
+                if (isOverlapping(curMatch, nextMatch)) {
+                    // expand and mash up
+                    curMatch = new int[] {
+                            Math.min(curMatch[0], nextMatch[0]),
+                            Math.max(curMatch[1], nextMatch[1]),
+                            Math.min(curMatch[2], nextMatch[2]),
+                            Math.max(curMatch[3], nextMatch[3]),
+                            Math.max(curMatch[1], nextMatch[1]) - Math.min(curMatch[0], nextMatch[0])
+                    };
+                } else {
+                    // save as a unique match and move on
+                    resultMatches.add(curMatch);
+                    curMatch = nextMatch;
+                }
+            }
+            // save the last match
+            resultMatches.add(curMatch);
+        }
+        return resultMatches;
+    }
+
+    /**
+     * Compares two texts and returns a score that represents its similarity.
+     *
+     * @param text1 Text 1
+     * @param text2 Text 2
+     * @return ordered list of matches between text1 and text2
+     * @throws Exception I would assume arrayoutofbound.
+     *                   The alphabet in BoyerMoore is too small?
+     */
+    double scoreSimilarity(String text1, String text2) throws Exception {
+
+        final java.util.List<int[]> matches = compare(text1, text2);
+        int sumMatchLength = 0;
+        for (int[] match : matches) {
+            sumMatchLength += match[4];
+        }
+        return Math.min((double) sumMatchLength / text1.length(), 1.0);
+    }
 }
