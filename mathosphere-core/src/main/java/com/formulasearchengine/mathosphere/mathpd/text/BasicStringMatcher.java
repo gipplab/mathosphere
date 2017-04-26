@@ -73,10 +73,10 @@ public class BasicStringMatcher {
         List<int[]> matches = new ArrayList<>();
 
         // prepare text1 - simplistic tokenizer
-        text1 = text1.replace('\n', ' ').toLowerCase();
+        text1 = normalizeString(text1);
         String[] split1 = text1.split(" ");
         // prepare text2
-        text2 = text2.replace('\n', ' ').toLowerCase();
+        text2 = normalizeString(text2);
         char[] text2Array = text2.toCharArray();
 
         int startIdxA = 0; // our current pointer for document A
@@ -110,6 +110,11 @@ public class BasicStringMatcher {
         }
 
         return matches;
+    }
+
+    private String normalizeString(String text1) {
+        text1 = text1.replaceAll("([\n\r ]+)", " ").toLowerCase();
+        return text1;
     }
 
     /**
