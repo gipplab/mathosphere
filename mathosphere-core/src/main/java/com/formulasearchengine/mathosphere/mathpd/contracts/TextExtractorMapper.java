@@ -33,14 +33,20 @@ public class TextExtractorMapper implements FlatMapFunction<String, Tuple2<Strin
 
     private final Pattern filenamePattern;
     private final boolean isNtcir;
+    private final boolean textonly;
 
     public TextExtractorMapper(boolean isNtcir) {
+        this(isNtcir, false);
+    }
+
+    public TextExtractorMapper(boolean isNtcir, boolean textonly) {
         if (isNtcir) {
             filenamePattern = FILENAME_PATTERN_NTCIR;
         } else {
             filenamePattern = FILENAME_PATTERN_20PD;
         }
         this.isNtcir = isNtcir;
+        this.textonly = textonly;
     }
 
     public static ExtractedMathPDDocument convertArxivToExtractedMathPDDocument(ArxivDocument document) throws ParserConfigurationException, IOException, XPathExpressionException, TransformerException {
@@ -155,7 +161,12 @@ public class TextExtractorMapper implements FlatMapFunction<String, Tuple2<Strin
         }
 
         LOGGER.info("processing document '{}'...", document.title);
-        final ExtractedMathPDDocument extractedMathPDDocument = convertArxivToExtractedMathPDDocument(document);
+        final ExtractedMathPDDocument extractedMathPDDocument;
+        if (textonly){
+            extractedMathPDDocument = new ExtractedMathPDDocument(document.title, document.text);
+        } else {
+            extractedMathPDDocument = convertArxivToExtractedMathPDDocument(document);
+        }
         if (extractedMathPDDocument == null) {
             LOGGER.info("could not convert ArxivDocument to ExtractedMathPDDocument: {}", document.title);
             return;

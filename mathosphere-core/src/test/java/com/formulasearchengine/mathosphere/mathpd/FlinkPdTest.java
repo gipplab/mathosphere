@@ -64,6 +64,33 @@ public class FlinkPdTest {
     }
 
     @Test
+    public void testTextTok() throws Exception {
+        final File temp;
+        temp = File.createTempFile("temp", Long.toString(System.nanoTime()));
+        System.out.println(temp);
+        String[] args = new String[8];
+        args[0] = "pd";
+        args[1] = "-in";
+        args[2] = resourcePath("com/formulasearchengine/mathosphere/mathpd/test9.xml");
+        args[3] = "-ref";
+        args[4] = resourcePath("com/formulasearchengine/mathosphere/mathpd/ex1.html");
+        args[5] = "-out";
+        args[6] = temp.getAbsolutePath();
+        args[7] = "--text";
+        final PrintStream stdout = System.out;
+        final ByteArrayOutputStream myOut = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(myOut));
+        Main.main(args);
+        final String standardOutput = myOut.toString();
+
+        assertTrue(standardOutput.contains("switched to status FINISHED"));
+        System.setOut(stdout);
+        System.out.println(standardOutput);
+    }
+
+
+
+    @Test
     public void testDistances() throws Exception {
         if (!IS_LOCAL)
             return;
