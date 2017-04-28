@@ -195,7 +195,7 @@ public class FlinkPd {
                     final CosineDistance similarity = new CosineDistance();
                     //TODO: Implement ExtractedMathPDDocument::getPlainText
                     return new Tuple3<>(cand.f1.getTitle(), ref.f1.getTitle(),
-                            similarity.apply(cand.f1.getText(), ref.f1.getText()));
+                            similarity.apply(cand.f1.getText(), ref.f1.getPlainText()));
                 }
             }).writeAsCsv(config.getOutputDir(), org.apache.flink.core.fs.FileSystem.WriteMode.OVERWRITE);
         } else {

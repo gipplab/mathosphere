@@ -1,6 +1,7 @@
 package com.formulasearchengine.mathosphere.mathpd.pojos;
 
 import com.formulasearchengine.mathosphere.mathpd.Distances;
+import com.formulasearchengine.mathosphere.mlp.text.WikiTextUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.Serializable;
@@ -17,6 +18,7 @@ public class ExtractedMathPDDocument implements Comparable<ExtractedMathPDDocume
     public String text;
     public String name;
     private String page;
+    private String plainText = null;
     private HashMap<String, Double> histogramCn = new HashMap<>();
     private HashMap<String, Double> histogramCsymbol = new HashMap<>();
     private HashMap<String, Double> histogramCi = new HashMap<>();
@@ -40,6 +42,13 @@ public class ExtractedMathPDDocument implements Comparable<ExtractedMathPDDocume
 
     public HashMap<String, Double> getHistogramBvar() {
         return histogramBvar;
+    }
+
+    public CharSequence getPlainText() {
+        if ( plainText == null ){
+            plainText = WikiTextUtils.MATH_TAG_PATTERN.matcher(text).replaceAll("");
+        }
+        return plainText;
     }
 
     public void setHistogramBvar(HashMap<String, Double> histogramBvar) {
