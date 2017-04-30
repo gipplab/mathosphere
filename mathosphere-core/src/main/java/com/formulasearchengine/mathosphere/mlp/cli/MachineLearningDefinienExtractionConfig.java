@@ -99,11 +99,11 @@ public class MachineLearningDefinienExtractionConfig extends FlinkMlpCommandConf
 
   public static MachineLearningDefinienExtractionConfig test() {
     MachineLearningDefinienExtractionConfig test = new MachineLearningDefinienExtractionConfig();
-    test.dataset = "c:/tmp/mlp/input/eval_dataset.xml";
+    test.dataset = "c:/tmp/mlp/input/eval_dataset_sample.xml";
     test.outputdir = "c:/tmp/mlp/output/corase";
     test.goldFile = "C:/tmp/mlp/input/gold_with_alias.json";
     test.setUseTeXIdentifiers(true);
-    test.texvcinfoUrl = "http://localhost:10044/texvcinfo";
+    //test.texvcinfoUrl = "http://localhost:10044/texvcinfo";
     test.parallelism = 1;
     return test;
   }

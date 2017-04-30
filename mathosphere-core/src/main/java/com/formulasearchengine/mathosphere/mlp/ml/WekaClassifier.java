@@ -80,12 +80,5 @@ public class WekaClassifier extends RichMapFunction<WikiDocumentOutput, WikiDocu
     System.out.println("Classifying done " + doc.getTitle() + " considered  " + instances.size() + " definiens");
     return doc;
   }
-
-  private String identifierDefinitionToEscapedString(WikiDocumentOutput doc, IdentifierDefinition extraction) {
-    return doc.getqId() + ",\""
-      + doc.getTitle().replaceAll("\\s", "_") + "\",\""
-      + extraction.getIdentifier() + "\",\""
-      + extraction.getDefinition() + "\"";
-  }
 }
 

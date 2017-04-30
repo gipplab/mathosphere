@@ -23,15 +23,12 @@ import java.util.ArrayList;
 
 public class StupidRelationFinder {
 
-  public static void main(String[] args) throws Exception {
-    MachineLearningDefinienExtractionConfig config = MachineLearningDefinienExtractionConfig.from(args);
-    find(config);
-  }
-
-  public static void test() throws Exception {
-    find(MachineLearningDefinienExtractionConfig.test());
-  }
-
+  /**
+   * Finds identifier - definiens pairs. Simply lists everything it finds without scoring. Also does the evaluation.
+   *
+   * @param config
+   * @throws Exception
+   */
   public static void find(MachineLearningDefinienExtractionConfig config) throws Exception {
     ExecutionEnvironment env = ExecutionEnvironment.getExecutionEnvironment();
     env.setParallelism(config.getParallelism());
