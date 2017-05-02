@@ -108,18 +108,6 @@ public class MachineLearningDefinienExtractionConfig extends FlinkMlpCommandConf
     return test;
   }
 
-  public static MachineLearningDefinienExtractionConfig testSatuation() {
-    MachineLearningDefinienExtractionConfig test = test();
-    test.outputdir = "c:/tmp/mlp/output/satuation";
-    return test;
-  }
-
-  public static MachineLearningDefinienExtractionConfig testfine() {
-    MachineLearningDefinienExtractionConfig test = test();
-    test.outputdir = "c:/tmp/mlp/output/fine";
-    return test;
-  }
-
   public static MachineLearningDefinienExtractionConfig from(String[] args) {
     if (args.length == 0) {
       return test();

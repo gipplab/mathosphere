@@ -75,14 +75,22 @@ public class MachineLearningRelationClassifier {
       }
     });
     if (config.isEvaluate()) {
-      DataSet<EvaluationResult> evaluationResult = withNamespaces.reduceGroup(new StupidRelationScorer(MachineLearningDefinienExtractionConfig.test()));
+      String[] args = {
+        "-in", config.getDataset(),
+        "-out", config.getOutputDir(),
+        "--goldFile", config.getQueries(),
+        "--threads", "1",
+        "--tex",
+      };
+      MachineLearningDefinienExtractionConfig evaluationConfig = MachineLearningDefinienExtractionConfig.from(args);
+      DataSet<EvaluationResult> evaluationResult = withNamespaces.reduceGroup(new StupidRelationScorer(evaluationConfig));
       evaluationResult.map(new JsonSerializerMapper<>()).writeAsText(config.getOutputDir() + "/extractedDefiniens/evaluated", FileSystem.WriteMode.OVERWRITE);
     }
     DataSet<StrippedWikiDocumentOutput> stripped_result = withNamespaces.map(stripSentenceMapper);
 
     //write and kick off flink execution
     stripped_result.map(new JsonSerializerMapper<>())
-      .writeAsText(config.getOutputDir() + "/extractedDefiniens/json", FileSystem.WriteMode.OVERWRITE);
+      .writeAsText(config.getOutputDir() + "/extractedDefiniens", FileSystem.WriteMode.OVERWRITE);
     env.execute();
   }
 

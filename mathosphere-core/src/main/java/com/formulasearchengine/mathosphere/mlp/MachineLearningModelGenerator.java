@@ -29,10 +29,6 @@ public class MachineLearningModelGenerator {
     find(config);
   }
 
-  public static void test() throws Exception {
-    find(MachineLearningDefinienExtractionConfig.test());
-  }
-
   public static void find(MachineLearningDefinienExtractionConfig config) throws Exception {
     if (config.getInstancesFile() == null) {
       //parse wikipedia (subset) and process afterwards
