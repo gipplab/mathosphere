@@ -16,6 +16,7 @@ import static com.formulasearchengine.mathosphere.mlp.ml.WekaUtils.average;
  * Created by Leo on 17.01.2017.
  */
 public class EvaluationResult {
+  public static final float NUMBER_OF_GOLD_ENTRIES = 310f;
   public final double[] averagePrecision;
   public final double[] averageRecall;
   public final double[] accuracy;
@@ -53,19 +54,34 @@ public class EvaluationResult {
     return prefix + "Cost; " + Utils.doubleToString(cost, 10)
       + "; gamma; " + Utils.doubleToString(gamma, 10)
       + "; percentage_of_data_used; " + percent
-      + "; accuracy; " + Arrays.toString(accuracy).replaceAll("\\[|\\]", "").replaceAll(",", ";")
-      + "; avg_accuracy; " + average(accuracy)
-      + "; prec; " + Arrays.toString(averagePrecision).replaceAll("\\[|\\]", "").replaceAll(",", ";")
-      + "; avg_prec; " + average(averagePrecision)
-      + "; recall; " + Arrays.toString(averageRecall).replaceAll("\\[|\\]", "").replaceAll(",", ";")
-      + "; avg_recall; " + average(averageRecall)
-      + "; avg_F1; " + getF1()
+      + "; 10-folds_accuracy; " + Arrays.toString(accuracy).replaceAll("\\[|\\]", "").replaceAll(",", ";")
+      + "; avg_10-folds_accuracy; " + average(accuracy)
+      + "; 10-folds_prec; " + Arrays.toString(averagePrecision).replaceAll("\\[|\\]", "").replaceAll(",", ";")
+      + "; avg_10-folds_prec; " + average(averagePrecision)
+      + "; 10-folds_recall; " + Arrays.toString(averageRecall).replaceAll("\\[|\\]", "").replaceAll(",", ";")
+      + "; avg_10-folds_recall; " + average(averageRecall)
+      + "; avg_10-folds_F1; " + getF1()
       + "; tp; " + getScoreSummary().tp
       + "; fn; " + getScoreSummary().fn
-      + "; fp; " + getScoreSummary().fp;
+      + "; fp; " + getScoreSummary().fp
+      + "; precision for " + NUMBER_OF_GOLD_ENTRIES + " gold entries; " + getPrecision()
+      + "; recall for " + NUMBER_OF_GOLD_ENTRIES + " gold entries; " + getRecall()
+      + "; f1 for " + NUMBER_OF_GOLD_ENTRIES + " gold entries; " + calcF1(getPrecision(), getRecall());
   }
 
-  public double getF1() {
-    return 2 * WekaUtils.average(averageRecall) * WekaUtils.average(averagePrecision) / (WekaUtils.average(averageRecall) + WekaUtils.average(averagePrecision));
+  protected double getRecall() {
+    return (double) getScoreSummary().tp / NUMBER_OF_GOLD_ENTRIES;
+  }
+
+  protected double getPrecision() {
+    return (double) getScoreSummary().tp / (getScoreSummary().tp + getScoreSummary().fp);
+  }
+
+  protected double getF1() {
+    return calcF1(WekaUtils.average(averagePrecision), WekaUtils.average(averageRecall));
+  }
+
+  protected double calcF1(double precision, double recall) {
+    return 2 * precision * recall / (precision + recall);
   }
 }

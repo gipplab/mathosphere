@@ -118,7 +118,7 @@ public class WekaLearner implements GroupReduceFunction<WikiDocumentOutput, Eval
   public static final Double[] Y_best_recall = {Math.pow(2, -6.5)};
 
   /**
-   * Cost for highest F! in the evaluation. (Post SVM evaluation metric.)
+   * Cost for highest F1  in the evaluation. (Post SVM evaluation metric.)
    * tp: 70	fn: 240	fp: 44
    * c = 0.4204482076
    */
