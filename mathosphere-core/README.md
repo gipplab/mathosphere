@@ -18,7 +18,7 @@ How to use the machine learning classifier
 ==========================================
 
 # train & test
-* use test data from the aforementioned test data locations
+* use test data from the [eval_dataset.xml](https://github.com/TU-Berlin/mathosphere/blob/master/mathosphere-core/src/test/resources/com/formulasearchengine/mathosphere/mlp/gold/eval_dataset.xml) and [gold.json](https://github.com/TU-Berlin/mathosphere/blob/master/mathosphere-core/src/test/resources/com/formulasearchengine/mathosphere/mlp/gold/gold.json) 
 * `java -jar mathosphere-core-3.0.0-SNAPSHOT-jar-with-dependencies.jar ml -in eval_dataset.xml -out . --goldFile gold.json --tex --threads 10 --writeSvmModel --svmGamma 0.0185881361 --svmCost 1.0`
 * this will yield a model and a string2vector filter which can be used to classify instances and detailed statistics of the 10-fold cross evaluation that precedes the training process. 
 
@@ -26,7 +26,7 @@ How to use the machine learning classifier
 
 # classify
 * assuming yor machine has n cores, we advise you use n threads.
-* `java -jar mathosphere-core-3.0.0-SNAPSHOT-jar-with-dependencies.jar classify -in *wikipedia dump*.xml -out . --tex --threads 10 --stringFilter string_filter__c_1.0_gamma_0.0185881361.model --svmModel svm_model__c_1.0_gamma_0.0185881361.model`
+* `java -jar mathosphere-core-3.0.0-SNAPSHOT-jar-with-dependencies.jar classify -in *wikipedia dump*.xml -out . --tex --threads 10 --stringFilter string_filter_c_1.0_gamma_0.0185881361.model --svmModel svm_model_c_1.0_gamma_0.0185881361.model`
 * The result of this will be a folder called `extractedDefiniens/json` with *number of threads* files containing he classifications in json format.
 Remarks:
 * eval_dataset.xml can be used to test the classification, but that would be circular reasoning.

@@ -181,8 +181,8 @@ public class WekaLearner implements GroupReduceFunction<WikiDocumentOutput, Eval
     filteredClassifierForOut.setClassifier(svmForOut);
     filteredClassifierForOut.setFilter(removeFilter);
     filteredClassifierForOut.buildClassifier(resampled);
-    weka.core.SerializationHelper.write(config.getOutputDir() + "/svm_model_" + "_c_" + config.getSvmCost().get(0) + "_gamma_" + config.getSvmGamma().get(0) + ".model", filteredClassifierForOut);
-    weka.core.SerializationHelper.write(config.getOutputDir() + "/string_filter_" + "_c_" + config.getSvmCost().get(0) + "_gamma_" + config.getSvmGamma().get(0) + ".model", stringToWordVector);
+    weka.core.SerializationHelper.write(config.getOutputDir() + "/svm_model_c_" + config.getSvmCost().get(0) + "_gamma_" + config.getSvmGamma().get(0) + ".model", filteredClassifierForOut);
+    weka.core.SerializationHelper.write(config.getOutputDir() + "/string_filter_c_" + config.getSvmCost().get(0) + "_gamma_" + config.getSvmGamma().get(0) + ".model", stringToWordVector);
   }
 
   public List<EvaluationResult> processFromInstances() throws Exception {
