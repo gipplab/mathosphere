@@ -36,7 +36,7 @@ public class StupidRelationFinderTest {
     };
     MachineLearningDefinienExtractionConfig config = MachineLearningDefinienExtractionConfig.from(args);
     config.setUseTeXIdentifiers(true);
-    StupidRelationFinder.find(MachineLearningDefinienExtractionConfig.test());
+    StupidRelationFinder.find(config);
     System.setOut(stdout);
   }
 
