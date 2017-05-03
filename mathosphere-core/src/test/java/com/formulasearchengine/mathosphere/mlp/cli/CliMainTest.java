@@ -291,7 +291,7 @@ public class CliMainTest {
     System.setOut(new PrintStream(myOut));
     Main.main(args);
     System.setOut(stdout);
-    final File extraction = new File(temp.getAbsolutePath() + "/extractedDefiniens/json");
+    final File extraction = new File(temp.getAbsolutePath() + "/extractedDefiniens");
     //must be a rather small file, lets assume smaller than 2kb. This is also a sanity check not to deserialize a large file in case of error.
     Assert.assertTrue(extraction.length() < 2 * 1024);
     ObjectMapper mapper = new ObjectMapper();
