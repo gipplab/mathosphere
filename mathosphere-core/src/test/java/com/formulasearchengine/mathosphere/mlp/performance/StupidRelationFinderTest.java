@@ -28,7 +28,7 @@ public class StupidRelationFinderTest {
     final ByteArrayOutputStream myOut = new ByteArrayOutputStream();
     System.setOut(new PrintStream(myOut));
     String[] args = {
-      "-in", resourcePath("com/formulasearchengine/mathosphere/mlp/gold/eval_dataset.xml"),
+      "-in", resourcePath("com/formulasearchengine/mathosphere/mlp/gold/eval_dataset_sample.xml"),
       "-out", temp.getAbsolutePath(),
       "--goldFile", resourcePath("com/formulasearchengine/mathosphere/mlp/gold/gold_with_alias.json"),
       "--threads", "1",
