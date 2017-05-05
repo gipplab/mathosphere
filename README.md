@@ -42,6 +42,13 @@ training dataset.
 [![Build Status](https://travis-ci.org/TU-Berlin/mathosphere.svg?branch=master)](https://travis-ci.org/TU-Berlin/mathosphere)
 [![Coverage Status](https://coveralls.io/repos/TU-Berlin/mathosphere/badge.svg)](https://coveralls.io/r/TU-Berlin/mathosphere )
 
+### Checkout
+
+ if test fail on windows make sure to checkout the files with unix-style line endings. This is most easily done by
+`git config --global core.autocrlf false`
+
+(In the git for windows installation process this would be the option #2 Checkout as-is, commit Unix-style line endings Git will not perform any conversion when checking out text files.)
+
 ### Building this project
 Run the following to initialize submodules after cloning this project:
 ```

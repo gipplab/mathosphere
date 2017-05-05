@@ -12,7 +12,8 @@ import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.HttpClients;
+import org.apache.http.impl.client.cache.CacheConfig;
+import org.apache.http.impl.client.cache.CachingHttpClientBuilder;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.message.BasicNameValuePair;
 import org.xml.sax.SAXException;
@@ -37,9 +38,15 @@ public class TexInfo {
   private static String makeRequest(String tex, String url) {
     if (client == null) {
       PoolingHttpClientConnectionManager cm = new PoolingHttpClientConnectionManager();
-      client = HttpClients.custom()
-          .setConnectionManager(cm)
-          .build();
+      cm.setDefaultMaxPerRoute(1000);
+      cm.setMaxTotal(1000);
+      CachingHttpClientBuilder cachingHttpClientBuilder = CachingHttpClientBuilder.create();
+      CacheConfig cacheCfg = new CacheConfig();
+      cacheCfg.setMaxCacheEntries(100000);
+      cacheCfg.setMaxObjectSize(8192);
+      cachingHttpClientBuilder.setCacheConfig(cacheCfg);
+      cachingHttpClientBuilder.setConnectionManager(cm);
+      client = cachingHttpClientBuilder.build();
     }
     //HttpPost post = new HttpPost("http://localhost/convert");
     HttpPost post = new HttpPost(url);

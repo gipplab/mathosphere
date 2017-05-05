@@ -20,7 +20,6 @@ import java.util.Map;
 public class AddTitles {
 
   @Test
-  @Ignore
   public void addTitles() throws IOException {
     final File file = new File(getClass().getResource("gold.json").getFile());
     Map<Integer, String> titles = new HashMap<>();

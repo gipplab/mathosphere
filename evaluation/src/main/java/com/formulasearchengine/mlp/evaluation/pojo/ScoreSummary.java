@@ -14,6 +14,10 @@ public class ScoreSummary implements Serializable {
    */
   public int tp;
   /**
+   * Number of true positives.
+   */
+  public int duplicateTp;
+  /**
    * Number of false positives.
    */
   public int fp;
@@ -28,7 +32,8 @@ public class ScoreSummary implements Serializable {
    */
   public int wikidatalinks;
 
-  public ScoreSummary(int tp, int fn, int fp, int wikidatalinks) {
+  public ScoreSummary(int tp, int duplicateTp, int fn, int fp, int wikidatalinks) {
+    this.duplicateTp = duplicateTp;
     this.fp = fp;
     this.fn = fn;
     this.wikidatalinks = wikidatalinks;
@@ -37,7 +42,7 @@ public class ScoreSummary implements Serializable {
 
   @Override
   public String toString() {
-    return String.format("tp: %d, fn: %d, fp: %d, wikidatalinks: %d", tp, fn, fp, wikidatalinks);
+    return String.format("tp: %d, fn: %d, fp: %d, wikidatalinks: %d, duplicate tp: %d", tp, fn, fp, wikidatalinks, duplicateTp);
   }
 
   @Override
@@ -48,6 +53,7 @@ public class ScoreSummary implements Serializable {
     ScoreSummary that = (ScoreSummary) o;
 
     if (tp != that.tp) return false;
+    if (duplicateTp != that.duplicateTp) return false;
     if (fp != that.fp) return false;
     if (fn != that.fn) return false;
     return wikidatalinks == that.wikidatalinks;
@@ -57,6 +63,7 @@ public class ScoreSummary implements Serializable {
   @Override
   public int hashCode() {
     int result = tp;
+    result = 31 * result + duplicateTp;
     result = 31 * result + fp;
     result = 31 * result + fn;
     result = 31 * result + wikidatalinks;

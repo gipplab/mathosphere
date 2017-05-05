@@ -8,7 +8,8 @@ import org.apache.commons.lang3.CharUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.FileReader;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.util.Map;
 
 public class UnicodeMap {
@@ -21,7 +22,7 @@ public class UnicodeMap {
 
     ImmutableMap.Builder<Integer, String> unicode2tex = ImmutableMap.builder();
     try {
-      FileReader in = new FileReader(UnicodeMap.class.getClassLoader().getResource("unicode2tex.csv").getFile());
+      Reader in = new InputStreamReader(UnicodeMap.class.getClassLoader().getResourceAsStream("unicode2tex.csv"));
       Iterable<CSVRecord> records = CSVFormat.RFC4180.withHeader().parse(in);
       for (CSVRecord record : records) {
         String sUni = record.get("unicode");

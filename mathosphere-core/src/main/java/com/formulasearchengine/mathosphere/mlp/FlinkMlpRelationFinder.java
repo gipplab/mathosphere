@@ -1,13 +1,13 @@
 package com.formulasearchengine.mathosphere.mlp;
 
+import com.formulasearchengine.mathosphere.mlp.cli.MachineLearningDefinienClassifierConfig;
+import com.formulasearchengine.mathosphere.mlp.ml.WekaClassifier;
+import com.formulasearchengine.mathosphere.mlp.pojos.*;
+import com.formulasearchengine.mathosphere.mlp.text.SimpleFeatureExtractorMapper;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.formulasearchengine.mathosphere.mlp.cli.EvalCommandConfig;
 import com.formulasearchengine.mathosphere.mlp.cli.FlinkMlpCommandConfig;
 import com.formulasearchengine.mathosphere.mlp.contracts.*;
-import com.formulasearchengine.mathosphere.mlp.pojos.MathTag;
-import com.formulasearchengine.mathosphere.mlp.pojos.ParsedWikiDocument;
-import com.formulasearchengine.mathosphere.mlp.pojos.Relation;
-import com.formulasearchengine.mathosphere.mlp.pojos.WikiDocumentOutput;
 import com.formulasearchengine.mathosphere.mlp.text.WikiTextUtils;
 import com.formulasearchengine.mathosphere.utils.Util;
 import com.google.common.collect.HashMultiset;
@@ -127,13 +127,8 @@ public class FlinkMlpRelationFinder {
             }
             final WikiDocumentOutput wikiDocumentOutput = candidatesMapper.map(parsedWikiDocument);
             List<Relation> relations = wikiDocumentOutput.getRelations();
-            Set<String> relIdents = new HashSet<>();
-            for (Relation relation : relations) {
-              relIdents.add(relation.getIdentifier());
-            }
             final Set<String> real = seed.getIdentifiers(config).elementSet();
             //only keep identifiers that have a definition
-            //real.retainAll(relIdents);
             final Map definitions = (Map) goldElement.get("definitions");
             final Set expected = definitions.keySet();
             Set<String> tp = new HashSet<>(expected);
@@ -149,6 +144,7 @@ public class FlinkMlpRelationFinder {
             if (config.getNamespace()) {
               getNamespaceData(title, relations);
             }
+            //remove identifiers that are not in the gold standard -> these were errors of the identifier extraction.
             relations.removeIf(r -> !expected.contains(r.getIdentifier()));
             Collections.sort(relations, Relation::compareToName);
             removeDuplicates(definitions, relations);
@@ -168,7 +164,7 @@ public class FlinkMlpRelationFinder {
               }
               int tpcnt = 0;
               for (Relation relation : relations) {
-                Integer score = references.get(relation.getTuple());
+                Integer score = references.get(new Tuple2<>(relation.getIdentifier(), relation.getDefinition()));
                 if (score != null && score >= config.getLevel()) {
                   tpRelOverall.add(relation);
                     LOGGER.info("tp: " + relation.getIdentifier() + ", " + relation.getDefinition());
@@ -203,7 +199,7 @@ public class FlinkMlpRelationFinder {
         while (iterator.hasNext()) {
           final Relation relation = iterator.next();
           final List<String> refList = getDefiniens(definitions, relation);
-          final String definition = relation.getDefinition().replaceAll("(\\[\\[|\\]\\])", "").trim().toLowerCase();
+          final String definition = relation.getDefinition().replaceAll("(\\[\\[|\\]\\])", "").replaceAll("_", " ").trim().toLowerCase();
           if (refList.contains(definition)) {
             relation.setRelevance(2);
           }
@@ -241,10 +237,11 @@ public class FlinkMlpRelationFinder {
         final Map nd = (Map) ndData.get(title);
         if (nd != null) {
           List relNS = (List) nd.get("namespace_relations");
-          for (Object o : relNS) {
-            Relation rel = new Relation(o);
-            relations.add(rel);
-          }
+          if (relNS != null)
+            for (Object o : relNS) {
+              Relation rel = new Relation(o);
+              relations.add(rel);
+            }
         }
       }
     };

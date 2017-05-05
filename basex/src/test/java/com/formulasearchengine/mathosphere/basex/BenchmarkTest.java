@@ -12,10 +12,10 @@ public class BenchmarkTest {
 		args[ 1 ] = classLoader.getResource( "Ntcir11MathWikipediaTopicsParticipants.xml" ).getFile();
 		args[ 2 ] = "-d";
 		args[ 3 ] = classLoader.getResource( "sampleHarvest.xml" ).getFile();
-		//args[4] = "-o";
-		//args[5] = classLoader.getResource( "exampleOutput.txt" ).getFile();
-		args[ 4 ] = "-c";
-		args[ 5 ] = "-i";
+		args[4] = "-o";
+		args[5] = classLoader.getResource( "exampleOutput.txt" ).getFile();
+		//args[ 4 ] = "-c";
+		//args[ 5 ] = "-i";
 		Benchmark.main( args );
 	}
 }

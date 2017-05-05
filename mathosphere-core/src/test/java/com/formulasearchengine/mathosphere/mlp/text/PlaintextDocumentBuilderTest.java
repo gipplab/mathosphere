@@ -73,8 +73,8 @@ public class PlaintextDocumentBuilderTest {
 
     String actual = (new MathConverter(input)).getOutput();
     //TODO: add more templates
-    String expected = "For a constant potential, <math>V</math> , the solution is oscillatory for <math>E > V_{0}</math> "
-        + "and exponential for <math>E < V_{0}</math> , corresponding to energies that are allowed or disallowed "
+    String expected = "For a constant potential, <math>\\mathit{V}</math> , the solution is oscillatory for <math>\\mathit{E} > \\mathit{V}_{0}</math> "
+      + "and exponential for <math>\\mathit{E} < \\mathit{V}_{0}</math> , corresponding to energies that are allowed or disallowed "
         + "in classical mechanics. ";
     assertEquals(expected, actual);
   }

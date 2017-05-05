@@ -9,6 +9,9 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.client.cache.CacheConfig;
+import org.apache.http.impl.client.cache.CachingHttpClient;
+import org.apache.http.impl.client.cache.CachingHttpClientBuilder;
 import org.apache.http.message.BasicNameValuePair;
 import org.xml.sax.SAXException;
 
@@ -27,7 +30,12 @@ import javax.xml.xpath.XPathExpressionException;
  */
 public class TeX2MathML {
   private static String tex2json(String tex) throws IOException {
-    HttpClient client = new DefaultHttpClient();
+    CachingHttpClientBuilder cachingHttpClientBuilder = CachingHttpClientBuilder.create();
+    CacheConfig cacheCfg = new CacheConfig();
+    cacheCfg.setMaxCacheEntries(100000);
+    cacheCfg.setMaxObjectSize(8192);
+    cachingHttpClientBuilder.setCacheConfig(cacheCfg);
+    HttpClient client = cachingHttpClientBuilder.build();
     //HttpPost post = new HttpPost("http://localhost/convert");
     HttpPost post = new HttpPost("http://gw125.iu.xsede.org:8888");
     List<NameValuePair> nameValuePairs = new ArrayList<>(1);

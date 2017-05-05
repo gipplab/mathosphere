@@ -1,10 +1,7 @@
 package com.formulasearchengine.mathosphere.mlp.text;
 
 import com.google.common.base.Throwables;
-import com.google.common.collect.HashMultiset;
-import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Multiset;
+import com.google.common.collect.*;
 
 import com.formulasearchengine.mathosphere.mlp.pojos.MathTag;
 import com.formulasearchengine.mathosphere.mlp.text.WikiTextUtils.MathMarkUpType;
@@ -125,7 +122,7 @@ public class MathMLUtils {
       return tryExtractIdentifiers(math, useTeXIdentifiers, url);
     } catch (Exception e) {
       LOGGER.warn("exception occurred during 'extractIdentifiers'. Returning an empty set", e);
-      return HashMultiset.create();
+      return LinkedHashMultiset.create();
     }
   }
 

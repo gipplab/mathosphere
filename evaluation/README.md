@@ -13,7 +13,7 @@ The data where the gold standard belongs to can be found at https://github.com/T
 
 extraction.csv
 --
-The format for the extraction.csv is: `qId , Title, Identifier, Definiens` either qId or title can be used to identify the queries. qId is the default.
+The format for the extraction.csv is [RFC4180](https://tools.ietf.org/html/rfc4180) with fields: `qId,Title,Identifier,Definiens` either qId or title can be used to identify the queries. qId is the default.
 
 * **qId**
   The query id of the formula the identifier is found in, as found in the gold standard.

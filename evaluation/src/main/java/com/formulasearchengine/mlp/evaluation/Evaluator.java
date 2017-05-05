@@ -12,6 +12,7 @@ import org.apache.commons.csv.CSVRecord;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.Reader;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -55,7 +56,7 @@ public class Evaluator {
   public ScoreSummary evaluate(Multimap<String, IdentifierDefinition> extractions, List<GoldEntry> gold, boolean titleKey) {
     int totalNumberOfIdentifiers = (int) gold.stream().flatMap(ge -> ge.getDefinitions().stream().map(i -> i.getIdentifier()).distinct()).count();
     //initialize [true positives, false negatives, false positives, number of wikidata links matched] array
-    ScoreSummary result = new ScoreSummary(0, totalNumberOfIdentifiers, 0, 0);
+    ScoreSummary result = new ScoreSummary(0, 0, totalNumberOfIdentifiers, 0, 0);
     for (GoldEntry goldEntry : gold) {
       Collection<IdentifierDefinition> identifierDefinitions;
       if (titleKey) {
@@ -74,6 +75,7 @@ public class Evaluator {
             result.fn--;
           } else {
             System.out.print("duplicate matched,");
+            result.duplicateTp++;
           }
           if (i.getDefinition().matches("(^(q\\d+).*)$")) {
             result.wikidatalinks++;
@@ -111,13 +113,25 @@ public class Evaluator {
    * @throws IOException
    */
   public Multimap<String, IdentifierDefinition> readExtractions(File file, List<GoldEntry> goldEntries, boolean titleKey) throws IOException {
+    return readExtractions(new FileReader(file), goldEntries, titleKey);
+  }
+
+  /**
+   * Read a .csv file with extracted identifiers and perform some preliminary checks.
+   *
+   * @param extraction  the extractions to parse.
+   * @param goldEntries the goldstandard this file wil be checked against.
+   * @param titleKey    if true the title will be used as key instead of the qId.
+   * @return the parsed file in a format suitable for comparing to the gold standard.
+   * @throws IOException
+   */
+  public Multimap<String, IdentifierDefinition> readExtractions(Reader extraction, List<GoldEntry> goldEntries, boolean titleKey) throws IOException {
     Multimap<String, IdentifierDefinition> extractions = ArrayListMultimap.create();
-    final FileReader extraction = new FileReader(file);
     Iterable<CSVRecord> records = CSVFormat.RFC4180.parse(extraction);
     for (CSVRecord record : records) {
       //qId, title, identifier, definition
-      String qId2 = record.get(QID);
-      String title = record.get(TITLE);
+      String qId2 = record.get(QID).trim();
+      String title = record.get(TITLE).trim();
       //check for qId and title
       if (!titleKey && goldEntries.stream().filter(g -> g.getqID().equals(qId2)).collect(Collectors.toList()).size() == 0) {
         throw new IllegalArgumentException(String.format("The formula with qId: %s and title: %s does not exist in the gold standard.", qId2, title));
@@ -125,13 +139,22 @@ public class Evaluator {
       if (titleKey && goldEntries.stream().filter(g -> g.getTitle().equals(title)).collect(Collectors.toList()).size() == 0) {
         throw new IllegalArgumentException(String.format("The formula with qId: %s and title: %s does not exist in the gold standard.", qId2, title));
       }
-      String identifier = record.get(IDENTIFIER);
-      String definition = record.get(DEFINITION);
+      String identifier = record.get(IDENTIFIER).trim();
+      String definition = record.get(DEFINITION).trim();
 
       if (titleKey) {
         extractions.put(title, new IdentifierDefinition(identifier, definition));
       } else {
         extractions.put(qId2, new IdentifierDefinition(identifier, definition));
+      }
+    }
+    //sanity test
+    for (String key : extractions.keySet()) {
+      Collection<IdentifierDefinition> definitions = extractions.get(key);
+      for (IdentifierDefinition definition : definitions) {
+        if (definitions.stream().filter(e -> e.equals(definition)).count() > 1) {
+          throw new IllegalArgumentException("Identifier-definition pair \"" + definition.toString() + "\" occured more than once in formula: " + key);
+        }
       }
     }
     return extractions;
@@ -175,7 +198,7 @@ public class Evaluator {
         for (Map.Entry<String, String> stringStringEntry : var.entrySet()) {
           // there is only one entry
           //remove everything in brackets
-          final String def = stringStringEntry.getValue().trim().replaceAll("\\s*\\(.*?\\)$", "");
+          final String def = stringStringEntry.getValue().replaceAll("\\s*\\(.*?\\)$", "").trim();
           //extract wikidata link
           final String wikidataLink = stringStringEntry.getKey();
           result.add(wikidataLink);

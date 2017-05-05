@@ -13,6 +13,8 @@ public class CliParams implements Serializable {
     public static final String EXTRACT = "extract";
     public static final String MLP = "mlp";
     public static final String EVAL = "eval";
+  public static final String ML = "ml";
+  public static final String CLASSIFY = "classify";
     public static final String PD = "pd";
     public static final String HELP = "help";
   private EvalCommandConfig evalCommand;
@@ -20,7 +22,9 @@ public class CliParams implements Serializable {
   private CountCommandConfig countCommand;
   private ListCommandConfig listCommand;
   private MlpCommandConfig extractCommand;
+  private MachineLearningDefinienExtractionConfig mlCommand;
   private FlinkMlpCommandConfig mlpCommand;
+  private MachineLearningDefinienClassifierConfig classifyCommand;
   private FlinkPdCommandConfig pdCommand;
   private String command;
 
@@ -35,6 +39,8 @@ public class CliParams implements Serializable {
     params.listCommand = new ListCommandConfig();
     params.mlpCommand = new FlinkMlpCommandConfig();
     params.extractCommand = new MlpCommandConfig();
+    params.mlCommand = new MachineLearningDefinienExtractionConfig();
+    params.classifyCommand = new MachineLearningDefinienClassifierConfig();
     params.evalCommand = new EvalCommandConfig();
     params.pdCommand = new FlinkPdCommandConfig();
 
@@ -43,6 +49,8 @@ public class CliParams implements Serializable {
       jc.addCommand(EXTRACT, params.extractCommand);
       jc.addCommand(MLP, params.mlpCommand);
       jc.addCommand(EVAL, params.evalCommand);
+    jc.addCommand(ML, params.mlCommand);
+    jc.addCommand(CLASSIFY, params.classifyCommand);
       jc.addCommand(PD, params.pdCommand);
       jc.addCommand(HELP, new HelpCommand());
 
@@ -79,6 +87,14 @@ public class CliParams implements Serializable {
 
   public EvalCommandConfig getEvalCommandConfig() {
     return evalCommand;
+  }
+
+  public MachineLearningDefinienExtractionConfig getMachineLearningCommand() {
+    return mlCommand;
+  }
+
+  public MachineLearningDefinienClassifierConfig getClassifyCommand() {
+    return classifyCommand;
   }
 
   public FlinkPdCommandConfig getPdCommandConfig() {
