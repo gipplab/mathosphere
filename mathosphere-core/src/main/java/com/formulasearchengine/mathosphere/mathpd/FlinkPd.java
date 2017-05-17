@@ -209,7 +209,7 @@ public class FlinkPd {
                 DataSet<Tuple2<String, ExtractedMathPDDocument>> extractedMathPdDocumentsSources = aggregateSnippets(extractedMathPdSnippetsSources);
 
                 // write to disk
-                LOGGER.info("writing preprocesssed input to disk at {}", preprocessedRefsFiles);
+                LOGGER.info("writing preprocessed input to disk at {}", preprocessedRefsFiles);
                 extractedMathPdDocumentsSources.writeAsFormattedText(preprocessedSourcesFiles,
                         new TextOutputFormat.TextFormatter<Tuple2<String, ExtractedMathPDDocument>>() {
                             @Override
