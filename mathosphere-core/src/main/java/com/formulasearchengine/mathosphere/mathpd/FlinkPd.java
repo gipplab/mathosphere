@@ -43,7 +43,6 @@ import java.util.List;
 public class FlinkPd {
     private static final Logger LOGGER = LoggerFactory.getLogger(FlinkPd.class);
     private static final int NUMBER_OF_PARTITIONS = -1; // if -1 then partitioning is disabled and it will just be one document merge (all snippets into one doc)
-    public static boolean IS_MODE_PREPROCESSING = true;
     private static DecimalFormat decimalFormat = new DecimalFormat("0.0");
 
     public static void main(String[] args) throws Exception {
@@ -200,7 +199,7 @@ public class FlinkPd {
                 }
             }).writeAsCsv(config.getOutputDir(), org.apache.flink.core.fs.FileSystem.WriteMode.OVERWRITE);
         } else {
-            if (IS_MODE_PREPROCESSING) {
+            if (config.isPreProcessingMode()) {
                 DataSource<String> source = readWikiDump(config, env);
                 DataSource<String> refs = readRefs(config, env);
 
