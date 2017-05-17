@@ -5,7 +5,6 @@ import com.formulasearchengine.mathosphere.mathpd.Distances;
 import com.formulasearchengine.mathosphere.mathpd.pojos.ArxivDocument;
 import com.formulasearchengine.mathosphere.mathpd.pojos.ExtractedMathPDDocument;
 import org.apache.flink.api.common.functions.FlatMapFunction;
-import org.apache.flink.api.java.tuple.Tuple2;
 import org.apache.flink.api.java.tuple.Tuple4;
 import org.apache.flink.util.Collector;
 import org.slf4j.Logger;
@@ -18,7 +17,7 @@ import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class TextExtractorMapper implements FlatMapFunction<String, Tuple2<String, ExtractedMathPDDocument>> {
+public class TextExtractorMapper implements FlatMapFunction<String,ExtractedMathPDDocument> {
 
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TextExtractorMapper.class);
@@ -153,7 +152,7 @@ public class TextExtractorMapper implements FlatMapFunction<String, Tuple2<Strin
     }
 
     @Override
-    public void flatMap(String content, Collector<Tuple2<String, ExtractedMathPDDocument>> out) throws ParserConfigurationException, TransformerException, XPathExpressionException, IOException {
+    public void flatMap(String content, Collector<ExtractedMathPDDocument> out) throws ParserConfigurationException, TransformerException, XPathExpressionException, IOException {
         final ArxivDocument document = arxivTextToDocument(content);
         if (document == null) {
             LOGGER.trace("could not convert raw string to ArxivDocuemt: {}", content.substring(0, content.length() > 100 ? 100 : content.length() - 1));
@@ -174,6 +173,6 @@ public class TextExtractorMapper implements FlatMapFunction<String, Tuple2<Strin
 
         // store the doc in the collector
         LOGGER.info("finished processing document '{}'...", document.title);
-        out.collect(new Tuple2<>(extractedMathPDDocument.getName(), extractedMathPDDocument));
+        out.collect(extractedMathPDDocument);
     }
 }

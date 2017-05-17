@@ -22,6 +22,7 @@ import org.apache.flink.api.java.io.TextOutputFormat;
 import org.apache.flink.api.java.operators.DataSource;
 import org.apache.flink.api.java.operators.FlatMapOperator;
 import org.apache.flink.api.java.operators.GroupReduceOperator;
+import org.apache.flink.api.java.operators.ReduceOperator;
 import org.apache.flink.api.java.tuple.Tuple2;
 import org.apache.flink.api.java.tuple.Tuple3;
 import org.apache.flink.api.java.tuple.Tuple4;
@@ -36,7 +37,6 @@ import org.slf4j.LoggerFactory;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 
@@ -57,58 +57,50 @@ public class FlinkPd {
      * @param extractedMathPdSnippets
      * @return
      */
-    private static DataSet<Tuple2<String, ExtractedMathPDDocument>> aggregateSnippetsToPartitions(FlatMapOperator<String, Tuple2<String, ExtractedMathPDDocument>> extractedMathPdSnippets) {
-        DataSet<Tuple2<String, ExtractedMathPDDocument>> extractedMathPdDocuments = extractedMathPdSnippets
-                .groupBy(0)
-                .reduceGroup(new GroupReduceFunction<Tuple2<String, ExtractedMathPDDocument>, Tuple2<String, ExtractedMathPDDocument>>() {
-                    @Override
-                    public void reduce(Iterable<Tuple2<String, ExtractedMathPDDocument>> iterable, Collector<Tuple2<String, ExtractedMathPDDocument>> collector) throws Exception {
-                        final List<Tuple2<String, ExtractedMathPDDocument>> sortedNamesAndSnippets = new ArrayList<>();
-                        for (Tuple2<String, ExtractedMathPDDocument> nameAndSnippet : iterable) {
-                            sortedNamesAndSnippets.add(nameAndSnippet);
-                        }
-                        //LOGGER.warn("sorting {} entries", sortedNamesAndSnippets.size());
-                        Collections.sort(sortedNamesAndSnippets, new Comparator<Tuple2<String, ExtractedMathPDDocument>>() {
-                            @Override
-                            public int compare(Tuple2<String, ExtractedMathPDDocument> o1, Tuple2<String, ExtractedMathPDDocument> o2) {
-                                return o1.f1.getPage().compareTo(o2.f1.getPage());
-                            }
-                        });
+    private static DataSet< ExtractedMathPDDocument> aggregateSnippetsToPartitions(FlatMapOperator<String, ExtractedMathPDDocument> extractedMathPdSnippets) {
+        DataSet<ExtractedMathPDDocument> extractedMathPdDocuments = extractedMathPdSnippets
+                .groupBy("title")
+                .reduceGroup((GroupReduceFunction< ExtractedMathPDDocument, ExtractedMathPDDocument>) (iterable, collector) -> {
+                    final List<ExtractedMathPDDocument> sortedNamesAndSnippets = new ArrayList<>();
+                    for (ExtractedMathPDDocument nameAndSnippet : iterable) {
+                        sortedNamesAndSnippets.add(nameAndSnippet);
+                    }
+                    //LOGGER.warn("sorting {} entries", sortedNamesAndSnippets.size());
+                    Collections.sort(sortedNamesAndSnippets, (o1, o2) -> o1.getPage().compareTo(o2.getPage()));
 
-                        final List<List<Tuple2<String, ExtractedMathPDDocument>>> partitions = CollectionUtils.partition(sortedNamesAndSnippets, NUMBER_OF_PARTITIONS);
-                        List<Tuple3<String, String, String>> partitionFirstEntrysTitle = new ArrayList<>();
-                        for (List<Tuple2<String, ExtractedMathPDDocument>> partition : partitions) {
-                            partitionFirstEntrysTitle.add(new Tuple3<>(
-                                    partition.get(0).f1.getTitle(),
-                                    partition.get(0).f1.getName(),
-                                    partition.get(0).f1.getPage()));
-                        }
-                        final List<List<Tuple2<String, ExtractedMathPDDocument>>> overlappingPartitions = CollectionUtils.overlapInPercent(partitions, 0.25, 0.25);
+                    final List<List< ExtractedMathPDDocument>> partitions = CollectionUtils.partition(sortedNamesAndSnippets, NUMBER_OF_PARTITIONS);
+                    List<Tuple3<String, String, String>> partitionFirstEntrysTitle = new ArrayList<>();
+                    for (List< ExtractedMathPDDocument> partition : partitions) {
+                        partitionFirstEntrysTitle.add(new Tuple3<>(
+                                partition.get(0).getTitle(),
+                                partition.get(0).getName(),
+                                partition.get(0).getPage()));
+                    }
+                    final List<List<ExtractedMathPDDocument>> overlappingPartitions = CollectionUtils.overlapInPercent(partitions, 0.25, 0.25);
 
-                        //LOGGER.warn("overlappingPartitions number = {}", overlappingPartitions.size());
+                    //LOGGER.warn("overlappingPartitions number = {}", overlappingPartitions.size());
 
-                        int i = 0;
-                        for (List<Tuple2<String, ExtractedMathPDDocument>> overlappingPartition : overlappingPartitions) {
-                            //LOGGER.warn("merging partition with {} entries", overlappingPartition.size());
-                            final Tuple2<String, ExtractedMathPDDocument> mergedPartition = mergeToOne(overlappingPartition);
+                    int i = 0;
+                    for (List<ExtractedMathPDDocument> overlappingPartition : overlappingPartitions) {
+                        //LOGGER.warn("merging partition with {} entries", overlappingPartition.size());
+                        final ExtractedMathPDDocument mergedPartition = mergeToOne(overlappingPartition);
 
-                            // we need to overwrite these properties to avoid duplicates later. the duplicates were introduced during creating overlapping partitions.
-                            Tuple3<String, String, String> firstOriginalEntry = partitionFirstEntrysTitle.get(i++);
-                            mergedPartition.setField(firstOriginalEntry.f0, 0);
-                            mergedPartition.f1.setTitle(firstOriginalEntry.f0);
-                            mergedPartition.f1.setName(firstOriginalEntry.f1);
-                            mergedPartition.f1.setPage(firstOriginalEntry.f2);
+                        // we need to overwrite these properties to avoid duplicates later. the duplicates were introduced during creating overlapping partitions.
+                        Tuple3<String, String, String> firstOriginalEntry = partitionFirstEntrysTitle.get(i++);
+                        //mergedPartition.setField(firstOriginalEntry.f0, 0);
+                        mergedPartition.setTitle(firstOriginalEntry.f0);
+                        mergedPartition.setName(firstOriginalEntry.f1);
+                        mergedPartition.setPage(firstOriginalEntry.f2);
 
-                            collector.collect(mergedPartition);
-                            //LOGGER.warn(mergedPartition.f0);
-                        }
+                        collector.collect(mergedPartition);
+                        //LOGGER.warn(mergedPartition.f0);
                     }
                 });
 
         return extractedMathPdDocuments;
     }
 
-    private static Tuple2<String, ExtractedMathPDDocument> mergeToOne(List<Tuple2<String, ExtractedMathPDDocument>> list) {
+    private static ExtractedMathPDDocument mergeToOne(List<ExtractedMathPDDocument> list) {
         final List<HashMap<String, Double>> allHistogramsCi = new ArrayList<>();
         final List<HashMap<String, Double>> allHistogramsCn = new ArrayList<>();
         final List<HashMap<String, Double>> allHistogramsCsymbol = new ArrayList<>();
@@ -116,19 +108,18 @@ public class FlinkPd {
         String mainString = null;
         ExtractedMathPDDocument mainDoc = null;
 
-        for (Tuple2<String, ExtractedMathPDDocument> nameAndSnippet : list) {
-            final String name = nameAndSnippet.f0;
-            final ExtractedMathPDDocument snippet = nameAndSnippet.f1;
+        for ( ExtractedMathPDDocument nameAndSnippet : list) {
+            final String name = nameAndSnippet.getTitle();
             if (mainDoc == null) {
-                mainDoc = snippet;
+                mainDoc = nameAndSnippet;
                 mainString = name;
             }
 
-            allHistogramsCi.add(snippet.getHistogramCi());
-            allHistogramsCn.add(snippet.getHistogramCn());
-            allHistogramsCsymbol.add(snippet.getHistogramCsymbol());
-            allHistogramsBvar.add(snippet.getHistogramBvar());
-            mainDoc.text+=snippet.text;
+            allHistogramsCi.add(nameAndSnippet.getHistogramCi());
+            allHistogramsCn.add(nameAndSnippet.getHistogramCn());
+            allHistogramsCsymbol.add(nameAndSnippet.getHistogramCsymbol());
+            allHistogramsBvar.add(nameAndSnippet.getHistogramBvar());
+            mainDoc.text += nameAndSnippet.text;
         }
 
         mainDoc.setHistogramCi(Distances.histogramsPlus(allHistogramsCi));
@@ -136,10 +127,10 @@ public class FlinkPd {
         mainDoc.setHistogramCsymbol(Distances.histogramsPlus(allHistogramsCsymbol));
         mainDoc.setHistogramBvar(Distances.histogramsPlus(allHistogramsBvar));
 
-        return new Tuple2<>(mainString, mainDoc);
+        return mainDoc;
     }
 
-    private static DataSet<Tuple2<String, ExtractedMathPDDocument>> aggregateSnippets(FlatMapOperator<String, Tuple2<String, ExtractedMathPDDocument>> extractedMathPdSnippets) {
+    private static DataSet<ExtractedMathPDDocument> aggregateSnippets(FlatMapOperator<String, ExtractedMathPDDocument> extractedMathPdSnippets) {
         if (NUMBER_OF_PARTITIONS >= 0) {
             return aggregateSnippetsToPartitions(extractedMathPdSnippets);
         } else if (NUMBER_OF_PARTITIONS == -1) {
@@ -155,17 +146,14 @@ public class FlinkPd {
      * @param extractedMathPdSnippets
      * @return
      */
-    private static DataSet<Tuple2<String, ExtractedMathPDDocument>> aggregateSnippetsToSingleDocs(FlatMapOperator<String, Tuple2<String, ExtractedMathPDDocument>> extractedMathPdSnippets) {
-        DataSet<Tuple2<String, ExtractedMathPDDocument>> extractedMathPdDocuments = extractedMathPdSnippets
-                .groupBy(0)
-                .reduce(new ReduceFunction<Tuple2<String, ExtractedMathPDDocument>>() {
-                    @Override
-                    public Tuple2<String, ExtractedMathPDDocument> reduce(Tuple2<String, ExtractedMathPDDocument> t0, Tuple2<String, ExtractedMathPDDocument> t1) throws Exception {
-                        t1.f1.mergeOtherIntoThis(t0.f1);
-                        t1.f1.setText("removed");
-                        //LOGGER.info("merged {} into {}", new Object[]{t1.f0, t0.f0});
-                        return t1;
-                    }
+    private static DataSet<ExtractedMathPDDocument> aggregateSnippetsToSingleDocs(FlatMapOperator<String, ExtractedMathPDDocument> extractedMathPdSnippets) {
+        ReduceOperator<ExtractedMathPDDocument> extractedMathPdDocuments = extractedMathPdSnippets
+                .groupBy("title")
+                .reduce((ReduceFunction<ExtractedMathPDDocument>) (t0, t1) -> {
+                    t1.mergeOtherIntoThis(t0);
+                    t1.setText("removed");
+                    //LOGGER.info("merged {} into {}", new Object[]{t1.f0, t0.f0});
+                    return t1;
                 });
 
         return extractedMathPdDocuments;
@@ -184,55 +172,44 @@ public class FlinkPd {
 
             DataSource<String> source = readWikiDump(config, env);
             DataSource<String> refs = readRefs(config, env);
-            final FlatMapOperator<String, Tuple2<String, ExtractedMathPDDocument>> extractedMathPdSnippetsSources = source.flatMap(new TextExtractorMapper(true, true));
+            final FlatMapOperator<String, ExtractedMathPDDocument> extractedMathPdSnippetsSources = source.flatMap(new TextExtractorMapper(true, true));
             // now for the refs
-            final FlatMapOperator<String, Tuple2<String, ExtractedMathPDDocument>> extractedMathPdSnippetsRefs = refs.flatMap(new TextExtractorMapper(false, true));
-            extractedMathPdSnippetsSources.crossWithTiny(extractedMathPdSnippetsRefs).with(new CrossFunction<Tuple2<String, ExtractedMathPDDocument>, Tuple2<String, ExtractedMathPDDocument>, Tuple3<String, String, Double>>(
-
-            ) {
-                @Override
-                public Tuple3<String, String, Double> cross(Tuple2<String, ExtractedMathPDDocument> cand, Tuple2<String, ExtractedMathPDDocument> ref) throws Exception {
-                    final CosineDistance similarity = new CosineDistance();
-                    //TODO: Implement ExtractedMathPDDocument::getPlainText
-                    return new Tuple3<>(cand.f1.getTitle(), ref.f1.getTitle(),
-                            similarity.apply(cand.f1.getText(), ref.f1.getPlainText()));
-                }
-            }).writeAsCsv(config.getOutputDir(), org.apache.flink.core.fs.FileSystem.WriteMode.OVERWRITE);
+            final FlatMapOperator<String, ExtractedMathPDDocument> extractedMathPdSnippetsRefs = refs.flatMap(new TextExtractorMapper(false, true));
+            extractedMathPdSnippetsSources.crossWithTiny(extractedMathPdSnippetsRefs)
+                    .with(new CrossFunction<ExtractedMathPDDocument, ExtractedMathPDDocument, Tuple3<String, String, Double>>() {
+                        @Override
+                        public Tuple3<String, String, Double> cross(ExtractedMathPDDocument cand, ExtractedMathPDDocument ref) throws Exception {
+                            final CosineDistance similarity = new CosineDistance();
+                            //TODO: Implement ExtractedMathPDDocument::getPlainText
+                            return new Tuple3<>(cand.getTitle(), ref.getTitle(),
+                                    similarity.apply(cand.getText(), ref.getPlainText()));
+                        }
+                    }).writeAsCsv(config.getOutputDir(), org.apache.flink.core.fs.FileSystem.WriteMode.OVERWRITE);
         } else {
             if (config.isPreProcessingMode()) {
                 DataSource<String> source = readWikiDump(config, env);
                 DataSource<String> refs = readRefs(config, env);
 
-                final FlatMapOperator<String, Tuple2<String, ExtractedMathPDDocument>> extractedMathPdSnippetsSources = source.flatMap(new TextExtractorMapper(true));
+                final FlatMapOperator<String,ExtractedMathPDDocument> extractedMathPdSnippetsSources = source.flatMap(new TextExtractorMapper(true));
 
                 // first, merge all pages of one doc to one doc
-                DataSet<Tuple2<String, ExtractedMathPDDocument>> extractedMathPdDocumentsSources = aggregateSnippets(extractedMathPdSnippetsSources);
+                DataSet<ExtractedMathPDDocument> extractedMathPdDocumentsSources = aggregateSnippets(extractedMathPdSnippetsSources);
 
                 // write to disk
                 LOGGER.info("writing preprocessed input to disk at {}", preprocessedRefsFiles);
                 extractedMathPdDocumentsSources.writeAsFormattedText(preprocessedSourcesFiles,
-                        new TextOutputFormat.TextFormatter<Tuple2<String, ExtractedMathPDDocument>>() {
-                            @Override
-                            public String format(Tuple2<String, ExtractedMathPDDocument> stringExtractedMathPDDocumentTuple2) {
-                                return PreprocessedExtractedMathPDDocumentMapper.getFormattedWritableText(stringExtractedMathPDDocumentTuple2.f1);
-                            }
-                        });
+                        (TextOutputFormat.TextFormatter<ExtractedMathPDDocument>) PreprocessedExtractedMathPDDocumentMapper::getFormattedWritableText);
 
                 // now for the refs
-                final FlatMapOperator<String, Tuple2<String, ExtractedMathPDDocument>> extractedMathPdSnippetsRefs = refs.flatMap(new TextExtractorMapper(false));
+                final FlatMapOperator<String, ExtractedMathPDDocument> extractedMathPdSnippetsRefs = refs.flatMap(new TextExtractorMapper(false));
 
                 // first, merge all pages of one doc to one doc
-                final DataSet<Tuple2<String, ExtractedMathPDDocument>> extractedMathPdDocumentsRefs = aggregateSnippets(extractedMathPdSnippetsRefs);
+                final DataSet<ExtractedMathPDDocument> extractedMathPdDocumentsRefs = aggregateSnippets(extractedMathPdSnippetsRefs);
 
                 // write to disk
                 LOGGER.info("writing preprocesssed refs to disk at {}", preprocessedRefsFiles);
                 extractedMathPdDocumentsRefs.writeAsFormattedText(preprocessedRefsFiles,
-                        new TextOutputFormat.TextFormatter<Tuple2<String, ExtractedMathPDDocument>>() {
-                            @Override
-                            public String format(Tuple2<String, ExtractedMathPDDocument> stringExtractedMathPDDocumentTuple2) {
-                                return PreprocessedExtractedMathPDDocumentMapper.getFormattedWritableText(stringExtractedMathPDDocumentTuple2.f1);
-                            }
-                        });
+                        (TextOutputFormat.TextFormatter<ExtractedMathPDDocument>) PreprocessedExtractedMathPDDocumentMapper::getFormattedWritableText);
             } else {
                 final DataSet<Tuple2<String, ExtractedMathPDDocument>> extractedMathPdDocumentsSources = readPreprocessedFile(preprocessedSourcesFiles, env).flatMap(new PreprocessedExtractedMathPDDocumentMapper());
                 final DataSet<Tuple2<String, ExtractedMathPDDocument>> extractedMathPdDocumentsRefs = readPreprocessedFile(preprocessedRefsFiles, env).flatMap(new PreprocessedExtractedMathPDDocumentMapper());
