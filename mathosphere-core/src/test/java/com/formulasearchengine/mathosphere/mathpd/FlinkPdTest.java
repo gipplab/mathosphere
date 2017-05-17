@@ -113,9 +113,9 @@ public class FlinkPdTest {
         args[6] = temp.getAbsolutePath();
         final PrintStream stdout = System.out;
         final ByteArrayOutputStream myOut = new ByteArrayOutputStream();
-        FlinkPd.IS_MODE_PREPROCESSING = true;
-        Main.main(args);
-        FlinkPd.IS_MODE_PREPROCESSING = false;
+        String[] a2 = args.clone();
+        a2[8] = "--preprocess";
+        Main.main(a2);
         Main.main(args);
 
         //ConverterPairCSVToMatrix.main(new String[]{resourcePath("com/formulasearchengine/mathosphere/mathpd/" + filename1)});
