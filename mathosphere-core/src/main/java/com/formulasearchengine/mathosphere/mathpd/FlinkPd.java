@@ -129,6 +129,7 @@ public class FlinkPd {
             allHistogramsCn.add(snippet.getHistogramCn());
             allHistogramsCsymbol.add(snippet.getHistogramCsymbol());
             allHistogramsBvar.add(snippet.getHistogramBvar());
+            mainDoc.text+=snippet.text;
         }
 
         mainDoc.setHistogramCi(Distances.histogramsPlus(allHistogramsCi));

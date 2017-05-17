@@ -139,5 +139,7 @@ public class ExtractedMathPDDocument implements Comparable<ExtractedMathPDDocume
         this.histogramCi = Distances.histogramsPlus(this.histogramCi, other.histogramCi);
         this.histogramCn = Distances.histogramsPlus(this.histogramCn, other.histogramCn);
         this.histogramCsymbol = Distances.histogramsPlus(this.histogramCsymbol, other.histogramCsymbol);
+        this.text += other.text;
+        this.plainText = null;
     }
 }
