@@ -41,6 +41,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.apache.flink.core.fs.FileSystem.WriteMode.OVERWRITE;
 
@@ -105,10 +106,10 @@ public class FlinkPd {
     }
 
     private static ExtractedMathPDDocument mergeToOne(List<ExtractedMathPDDocument> list) {
-        final List<HashMap<String, Double>> allHistogramsCi = new ArrayList<>();
-        final List<HashMap<String, Double>> allHistogramsCn = new ArrayList<>();
-        final List<HashMap<String, Double>> allHistogramsCsymbol = new ArrayList<>();
-        final List<HashMap<String, Double>> allHistogramsBvar = new ArrayList<>();
+        final List<Map<String, Double>> allHistogramsCi = new ArrayList<>();
+        final List<Map<String, Double>> allHistogramsCn = new ArrayList<>();
+        final List<Map<String, Double>> allHistogramsCsymbol = new ArrayList<>();
+        final List<Map<String, Double>> allHistogramsBvar = new ArrayList<>();
         String mainString = null;
         ExtractedMathPDDocument mainDoc = null;
 

@@ -115,7 +115,7 @@ public class Distances {
      *
      * @return
      */
-    public static HashMap<String, Double> histogramsPlus(List<HashMap<String, Double>> histograms) {
+    public static Map<String, Double> histogramsPlus(List<Map<String, Double>> histograms) {
         return histogramsPlus(histograms.toArray(new HashMap[histograms.size()]));
     }
 
@@ -124,7 +124,8 @@ public class Distances {
      *
      * @return
      */
-    public static HashMap<String, Double> histogramsPlus(HashMap<String, Double>... histograms) {
+    @SafeVarargs
+    public static Map<String, Double> histogramsPlus(Map<String, Double>... histograms) {
         switch (histograms.length) {
             case 0:
                 throw new IllegalArgumentException("histograms.length=" + histograms.length + "; needs to be >= 2");
@@ -135,14 +136,14 @@ public class Distances {
 
 
         final Set<String> mergedKeys = new HashSet<>();
-        for (HashMap<String, Double> histogram : histograms) {
+        for (Map<String, Double> histogram : histograms) {
             mergedKeys.addAll(histogram.keySet());
         }
         final HashMap<String, Double> mergedHistogram = new HashMap<>();
 
         for (String key : mergedKeys) {
             double value = 0.0;
-            for (HashMap<String, Double> histogram : histograms) {
+            for (Map<String, Double> histogram : histograms) {
                 value += histogram.getOrDefault(key, 0.0);
             }
             mergedHistogram.put(key, value);
@@ -162,9 +163,9 @@ public class Distances {
      * @throws TransformerException
      * @throws IOException
      */
-    public static HashMap<String, Double> getDocumentHistogram(ArxivDocument d, String tagName, NonWhitespaceNodeList allMathTagsOfDOc) throws XPathExpressionException, ParserConfigurationException, TransformerException, IOException {
+    public static Map<String, Double> getDocumentHistogram(ArxivDocument d, String tagName, NonWhitespaceNodeList allMathTagsOfDOc) throws XPathExpressionException, ParserConfigurationException, TransformerException, IOException {
         LOG.debug("getDocumentHistogram(" + d.title + ", " + tagName + ")");
-        HashMap<String, Double> mergedHistogram = new HashMap<>();
+        Map<String, Double> mergedHistogram = new HashMap<>();
         final NonWhitespaceNodeList allMathTags = (allMathTagsOfDOc != null) ? allMathTagsOfDOc : d.getMathTags();
         for (int i = 0; i < allMathTags.getLength(); i++) {
             final Node mathTag = allMathTags.item(i);
@@ -174,7 +175,7 @@ public class Distances {
                 mergedHistogram = histogramsPlus(mergedHistogram, cmmlNodeToHistrogram(mathTag, tagName));
             } else {
                 final CMMLInfo curStrictCmml = new CMMLInfo(mathTag).toStrictCmml();
-                LOG.trace(curStrictCmml.toString());
+                LOG.debug(curStrictCmml.toString());
 
                 mergedHistogram = histogramsPlus(mergedHistogram, strictCmmlInfoToHistogram(curStrictCmml, tagName));
             }
@@ -227,7 +228,7 @@ public class Distances {
         return new Tuple4<>(absoluteDistanceContentNumbers, absoluteDistanceContentOperators, absoluteDistanceContentIdentifiers, absoluteDistanceBoundVariables);
     }
 
-    public static double computeCosineDistance(HashMap<String, Double> h1, HashMap<String, Double> h2) {
+    public static double computeCosineDistance(Map<String, Double> h1, Map<String, Double> h2) {
         final Set<String> mergedKeys = new HashSet<>(h1.keySet());
         mergedKeys.addAll(h2.keySet());
 
@@ -308,7 +309,7 @@ public class Distances {
      * @param tagName
      * @param histogram
      */
-    private static void cleanupHistogram(String tagName, HashMap<String, Double> histogram) {
+    private static void cleanupHistogram(String tagName, Map<String, Double> histogram) {
         switch (tagName) {
             case "csymbol":
                 histogram.remove("based_integer");

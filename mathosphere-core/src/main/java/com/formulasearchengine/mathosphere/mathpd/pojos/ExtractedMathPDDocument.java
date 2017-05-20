@@ -6,6 +6,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.io.Serializable;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Represents a document with only those features and data we are interested in our later analysis pipeline.
@@ -18,11 +19,16 @@ public class ExtractedMathPDDocument implements Comparable<ExtractedMathPDDocume
     public String text;
     public String name;
     private String page;
+
+    public void setPlainText(String plainText) {
+        this.plainText = plainText;
+    }
+
     private String plainText = null;
-    private HashMap<String, Double> histogramCn = new HashMap<>();
-    private HashMap<String, Double> histogramCsymbol = new HashMap<>();
-    private HashMap<String, Double> histogramCi = new HashMap<>();
-    private HashMap<String, Double> histogramBvar = new HashMap<>();
+    private Map<String, Double> histogramCn = new HashMap<>();
+    private Map<String, Double> histogramCsymbol = new HashMap<>();
+    private Map<String, Double> histogramCi = new HashMap<>();
+    private Map<String, Double> histogramBvar = new HashMap<>();
 
     public ExtractedMathPDDocument() {
     }
@@ -40,42 +46,42 @@ public class ExtractedMathPDDocument implements Comparable<ExtractedMathPDDocume
         return id.split(ID_SEPARATOR)[1];
     }
 
-    public HashMap<String, Double> getHistogramBvar() {
+    public Map<String, Double> getHistogramBvar() {
         return histogramBvar;
     }
 
-    public CharSequence getPlainText() {
+    public String getPlainText() {
         if ( plainText == null ){
             plainText = WikiTextUtils.MATH_TAG_PATTERN.matcher(text).replaceAll("");
         }
         return plainText;
     }
 
-    public void setHistogramBvar(HashMap<String, Double> histogramBvar) {
+    public void setHistogramBvar(Map<String, Double> histogramBvar) {
         this.histogramBvar = histogramBvar;
     }
 
-    public HashMap<String, Double> getHistogramCn() {
+    public Map<String, Double> getHistogramCn() {
         return histogramCn;
     }
 
-    public void setHistogramCn(HashMap<String, Double> histogramCn) {
+    public void setHistogramCn(Map<String, Double> histogramCn) {
         this.histogramCn = histogramCn;
     }
 
-    public HashMap<String, Double> getHistogramCsymbol() {
+    public Map<String, Double> getHistogramCsymbol() {
         return histogramCsymbol;
     }
 
-    public void setHistogramCsymbol(HashMap<String, Double> histogramCsymbol) {
+    public void setHistogramCsymbol(Map<String, Double> histogramCsymbol) {
         this.histogramCsymbol = histogramCsymbol;
     }
 
-    public HashMap<String, Double> getHistogramCi() {
+    public Map<String, Double> getHistogramCi() {
         return histogramCi;
     }
 
-    public void setHistogramCi(HashMap<String, Double> histogramCi) {
+    public void setHistogramCi(Map<String, Double> histogramCi) {
         this.histogramCi = histogramCi;
     }
 
