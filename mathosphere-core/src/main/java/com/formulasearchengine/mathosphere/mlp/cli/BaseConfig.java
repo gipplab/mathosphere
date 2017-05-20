@@ -36,7 +36,7 @@ public class BaseConfig implements Serializable {
   protected boolean useTeXIdentifiers = false;
 
   @Parameter(names = {"--texvcinfo"})
-  protected String texvcinfoUrl = "http://api.formulasearchengine.com/v1/media/math/check/tex";
+  protected String texvcinfoUrl = "https://en.wikipedia.org/api/rest_v1/media/math/check/tex";
 
   @Parameter(names = {"--definitionMerging"}, description = "apply definition merging algorithm")
   protected Boolean definitionMerging = false;
