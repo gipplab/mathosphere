@@ -155,7 +155,7 @@ public class TextExtractorMapper implements FlatMapFunction<String,ExtractedMath
     public void flatMap(String content, Collector<ExtractedMathPDDocument> out) throws ParserConfigurationException, TransformerException, XPathExpressionException, IOException {
         final ArxivDocument document = arxivTextToDocument(content);
         if (document == null) {
-            LOGGER.trace("could not convert raw string to ArxivDocuemt: {}", content.substring(0, content.length() > 100 ? 100 : content.length() - 1));
+            LOGGER.debug("could not convert raw string to ArxivDocuemt: {}", content.substring(0, content.length() > 100 ? 100 : content.length() - 1));
             return;
         }
 
