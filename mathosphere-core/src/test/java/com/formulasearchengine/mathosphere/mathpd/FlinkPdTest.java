@@ -79,7 +79,7 @@ public class FlinkPdTest {
         args[7] = "--text";
         final PrintStream stdout = System.out;
         final ByteArrayOutputStream myOut = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(myOut));
+        //System.setOut(new PrintStream(myOut));
         Main.main(args);
         final String standardOutput = myOut.toString();
 
