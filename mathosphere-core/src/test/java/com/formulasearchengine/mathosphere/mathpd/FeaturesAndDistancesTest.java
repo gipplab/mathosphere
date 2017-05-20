@@ -18,6 +18,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.util.HashMap;
+import java.util.Map;
 
 import static junit.framework.TestCase.assertTrue;
 
@@ -126,7 +127,7 @@ public class FeaturesAndDistancesTest {
 
     @Test
     public void testCosineSimilarity() {
-        HashMap<String, Double> h1 = new HashMap<>();
+        Map<String, Double> h1 = new HashMap<>();
         h1.put("minus", 1.0);
         h1.put("plus", 3.0);
         h1.put("times", 1.0);
@@ -134,7 +135,7 @@ public class FeaturesAndDistancesTest {
         h1.put("eq", 2.0);
         h1.put("list", 1.0);
 
-        HashMap<String, Double> h2 = new HashMap<>();
+        Map<String, Double> h2 = new HashMap<>();
         h2.put("minus", 1.0);
         h2.put("plus", 3.0);
         h2.put("times", 1.0);
