@@ -73,7 +73,7 @@ public class FlinkPdTest {
         args[1] = "-in";
         args[2] = resourcePath("com/formulasearchengine/mathosphere/mathpd/test9.xml");
         args[3] = "-ref";
-        args[4] = resourcePath("com/formulasearchengine/mathosphere/mathpd/ex1.html");
+        args[4] = "file:/C:/git/flink/readFileTest/target/classes/ex1.html";//resourcePath("com/formulasearchengine/mathosphere/mathpd/ex1.html");
         args[5] = "-out";
         args[6] = temp.getAbsolutePath();
         args[7] = "--text";
