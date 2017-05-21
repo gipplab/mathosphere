@@ -1,5 +1,6 @@
 package com.formulasearchengine.mathosphere.mathpd;
 
+import com.formulasearchengine.mathmltools.WordCount;
 import com.formulasearchengine.mathosphere.mathpd.cli.FlinkPdCommandConfig;
 import com.formulasearchengine.mathosphere.mathpd.contracts.PreprocessedExtractedMathPDDocumentMapper;
 import com.formulasearchengine.mathosphere.mathpd.contracts.TextExtractorMapper;
@@ -34,6 +35,7 @@ import org.apache.flink.util.Collector;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
 
+import java.net.URL;
 import java.net.URLDecoder;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -64,10 +66,10 @@ public class FlinkPd {
         final ExecutionEnvironment env = ExecutionEnvironment.getExecutionEnvironment();
 
         // get input data
-        //ClassLoader classLoader = WordCount.class.getClassLoader();
-        //URL resource = classLoader.getResource("ex1.html");
-        //final String filename = URLDecoder.decode(resource.getFile(), "UTF-8");
-        final String filename = URLDecoder.decode("file:/C:/git/flink/readFileTest/target/classes/ex1.html", "UTF-8");
+        ClassLoader classLoader = WordCount.class.getClassLoader();
+        URL resource = classLoader.getResource("com/formulasearchengine/mathosphere/mathpd/ex1.html");
+        final String filename = URLDecoder.decode(resource.getFile(), "UTF-8");
+        //final String filename = URLDecoder.decode("file:/C:/git/flink/readFileTest/target/classes/ex1.html", "UTF-8");
         Path filePath = new Path(filename);
         TextInputFormat inp = new TextInputFormat(filePath);
         inp.setCharsetName("UTF-8");
