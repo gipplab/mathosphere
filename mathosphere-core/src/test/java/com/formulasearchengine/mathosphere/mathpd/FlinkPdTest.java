@@ -92,9 +92,7 @@ public class FlinkPdTest {
 
     @Test
     public void testDistances() throws Exception {
-        if (!IS_LOCAL)
-            return;
-        String filename2 = "161214_allpdcases.xml";
+        String filename2 = "ex1.html";
         //filename = "161214_somepdcases.xml";
         //filename = "test9.xml";
         //filename = "twice.xhtml";
@@ -103,7 +101,7 @@ public class FlinkPdTest {
 
         final File temp;
         temp = File.createTempFile("temp", Long.toString(System.nanoTime()));
-        String[] args = new String[7];
+        String[] args = new String[8];
         args[0] = "pd";
         args[1] = "-in";
         args[2] = resourcePath("com/formulasearchengine/mathosphere/mathpd/" + filename1);
@@ -111,12 +109,13 @@ public class FlinkPdTest {
         args[4] = resourcePath("com/formulasearchengine/mathosphere/mathpd/" + filename2);
         args[5] = "-out";
         args[6] = temp.getAbsolutePath();
+        args[7] = "";
         final PrintStream stdout = System.out;
         final ByteArrayOutputStream myOut = new ByteArrayOutputStream();
         String[] a2 = args.clone();
-        a2[8] = "--preprocess";
+        a2[7] = "--preprocessing";
         Main.main(a2);
-        Main.main(args);
+        //Main.main(args);
 
         //ConverterPairCSVToMatrix.main(new String[]{resourcePath("com/formulasearchengine/mathosphere/mathpd/" + filename1)});
         ConverterPairCSVToMatrix.main(new String[]{temp.getAbsolutePath()});

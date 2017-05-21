@@ -15,20 +15,22 @@ import org.apache.flink.api.common.functions.GroupReduceFunction;
 import org.apache.flink.api.common.functions.MapFunction;
 import org.apache.flink.api.common.functions.ReduceFunction;
 import org.apache.flink.api.common.operators.Order;
+import org.apache.flink.api.common.typeinfo.TypeHint;
 import org.apache.flink.api.java.DataSet;
 import org.apache.flink.api.java.ExecutionEnvironment;
+import org.apache.flink.api.java.functions.KeySelector;
 import org.apache.flink.api.java.io.TextInputFormat;
-import org.apache.flink.api.java.io.TextOutputFormat;
+import org.apache.flink.api.java.io.TextOutputFormat.TextFormatter;
 import org.apache.flink.api.java.operators.DataSource;
 import org.apache.flink.api.java.operators.FlatMapOperator;
 import org.apache.flink.api.java.operators.GroupReduceOperator;
 import org.apache.flink.api.java.operators.ReduceOperator;
+import org.apache.flink.api.java.operators.SortPartitionOperator;
 import org.apache.flink.api.java.tuple.Tuple2;
 import org.apache.flink.api.java.tuple.Tuple3;
 import org.apache.flink.api.java.tuple.Tuple4;
 import org.apache.flink.api.java.tuple.Tuple5;
 import org.apache.flink.api.java.tuple.Tuple7;
-import org.apache.flink.core.fs.FileSystem.WriteMode;
 import org.apache.flink.core.fs.Path;
 import org.apache.flink.util.Collector;
 import org.slf4j.Logger;
@@ -39,6 +41,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+
+import static org.apache.flink.core.fs.FileSystem.WriteMode.OVERWRITE;
 
 public class FlinkPd {
     private static final Logger LOGGER = LoggerFactory.getLogger(FlinkPd.class);
@@ -57,10 +61,10 @@ public class FlinkPd {
      * @param extractedMathPdSnippets
      * @return
      */
-    private static DataSet< ExtractedMathPDDocument> aggregateSnippetsToPartitions(FlatMapOperator<String, ExtractedMathPDDocument> extractedMathPdSnippets) {
+    private static DataSet<ExtractedMathPDDocument> aggregateSnippetsToPartitions(FlatMapOperator<String, ExtractedMathPDDocument> extractedMathPdSnippets) {
         DataSet<ExtractedMathPDDocument> extractedMathPdDocuments = extractedMathPdSnippets
                 .groupBy("title")
-                .reduceGroup((GroupReduceFunction< ExtractedMathPDDocument, ExtractedMathPDDocument>) (iterable, collector) -> {
+                .reduceGroup((GroupReduceFunction<ExtractedMathPDDocument, ExtractedMathPDDocument>) (iterable, collector) -> {
                     final List<ExtractedMathPDDocument> sortedNamesAndSnippets = new ArrayList<>();
                     for (ExtractedMathPDDocument nameAndSnippet : iterable) {
                         sortedNamesAndSnippets.add(nameAndSnippet);
@@ -68,9 +72,9 @@ public class FlinkPd {
                     //LOGGER.warn("sorting {} entries", sortedNamesAndSnippets.size());
                     Collections.sort(sortedNamesAndSnippets, (o1, o2) -> o1.getPage().compareTo(o2.getPage()));
 
-                    final List<List< ExtractedMathPDDocument>> partitions = CollectionUtils.partition(sortedNamesAndSnippets, NUMBER_OF_PARTITIONS);
+                    final List<List<ExtractedMathPDDocument>> partitions = CollectionUtils.partition(sortedNamesAndSnippets, NUMBER_OF_PARTITIONS);
                     List<Tuple3<String, String, String>> partitionFirstEntrysTitle = new ArrayList<>();
-                    for (List< ExtractedMathPDDocument> partition : partitions) {
+                    for (List<ExtractedMathPDDocument> partition : partitions) {
                         partitionFirstEntrysTitle.add(new Tuple3<>(
                                 partition.get(0).getTitle(),
                                 partition.get(0).getName(),
@@ -108,7 +112,7 @@ public class FlinkPd {
         String mainString = null;
         ExtractedMathPDDocument mainDoc = null;
 
-        for ( ExtractedMathPDDocument nameAndSnippet : list) {
+        for (ExtractedMathPDDocument nameAndSnippet : list) {
             final String name = nameAndSnippet.getTitle();
             if (mainDoc == null) {
                 mainDoc = nameAndSnippet;
@@ -147,8 +151,9 @@ public class FlinkPd {
      * @return
      */
     private static DataSet<ExtractedMathPDDocument> aggregateSnippetsToSingleDocs(FlatMapOperator<String, ExtractedMathPDDocument> extractedMathPdSnippets) {
-        ReduceOperator<ExtractedMathPDDocument> extractedMathPdDocuments = extractedMathPdSnippets
-                .groupBy("title")
+        DataSet<ExtractedMathPDDocument> ds = extractedMathPdSnippets;
+        ReduceOperator<ExtractedMathPDDocument> extractedMathPdDocuments = ds
+                .groupBy(new SelectTitle())
                 .reduce((ReduceFunction<ExtractedMathPDDocument>) (t0, t1) -> {
                     t1.mergeOtherIntoThis(t0);
                     t1.setText("removed");
@@ -158,7 +163,6 @@ public class FlinkPd {
 
         return extractedMathPdDocuments;
     }
-
 
     public static void run(FlinkPdCommandConfig config) throws Exception {
         final ExecutionEnvironment env = ExecutionEnvironment.getExecutionEnvironment();
@@ -172,104 +176,112 @@ public class FlinkPd {
 
             DataSource<String> source = readWikiDump(config, env);
             DataSource<String> refs = readRefs(config, env);
-            final FlatMapOperator<String, ExtractedMathPDDocument> extractedMathPdSnippetsSources = source.flatMap(new TextExtractorMapper(true, true));
+            final FlatMapOperator<String, ExtractedMathPDDocument>
+                    extractedMathPdSnippetsSources = source.flatMap(new TextExtractorMapper(true, true));
             // now for the refs
-            final FlatMapOperator<String, ExtractedMathPDDocument> extractedMathPdSnippetsRefs = refs.flatMap(new TextExtractorMapper(false, true));
-            extractedMathPdSnippetsSources.crossWithTiny(extractedMathPdSnippetsRefs)
-                    .with(new CrossFunction<ExtractedMathPDDocument, ExtractedMathPDDocument, Tuple3<String, String, Double>>() {
-                        @Override
-                        public Tuple3<String, String, Double> cross(ExtractedMathPDDocument cand, ExtractedMathPDDocument ref) throws Exception {
-                            final CosineDistance similarity = new CosineDistance();
-                            //TODO: Implement ExtractedMathPDDocument::getPlainText
-                            return new Tuple3<>(cand.getTitle(), ref.getTitle(),
-                                    similarity.apply(cand.getText(), ref.getPlainText()));
-                        }
-                    }).writeAsCsv(config.getOutputDir(), org.apache.flink.core.fs.FileSystem.WriteMode.OVERWRITE);
+            final FlatMapOperator<String, ExtractedMathPDDocument>
+                    extractedMathPdSnippetsRefs = refs.flatMap(new TextExtractorMapper(false, true));
+            extractedMathPdSnippetsSources
+                    .crossWithTiny(extractedMathPdSnippetsRefs)
+                    .with(
+                            (CrossFunction<ExtractedMathPDDocument, ExtractedMathPDDocument, Tuple3<String, String, Double>>)
+                                    (cand, ref) -> {
+                                        final CosineDistance similarity = new CosineDistance();
+                                        return new Tuple3<>(cand.getTitle(), ref.getTitle(),
+                                                similarity.apply(cand.getText(), ref.getPlainText()));
+                                    })
+                    .returns(new TypeHint<Tuple3<String, String, Double>>() {
+                    })
+                    .writeAsCsv(config.getOutputDir(), OVERWRITE);
         } else {
             if (config.isPreProcessingMode()) {
                 DataSource<String> source = readWikiDump(config, env);
                 DataSource<String> refs = readRefs(config, env);
 
-                final FlatMapOperator<String,ExtractedMathPDDocument> extractedMathPdSnippetsSources = source.flatMap(new TextExtractorMapper(true));
+                final FlatMapOperator<String, ExtractedMathPDDocument>
+                        extractedMathPdSnippetsSources = source.flatMap(new TextExtractorMapper(true));
 
                 // first, merge all pages of one doc to one doc
-                DataSet<ExtractedMathPDDocument> extractedMathPdDocumentsSources = aggregateSnippets(extractedMathPdSnippetsSources);
+                DataSet<ExtractedMathPDDocument>
+                        extractedMathPdDocumentsSources = aggregateSnippets(extractedMathPdSnippetsSources);
 
                 // write to disk
                 LOGGER.info("writing preprocessed input to disk at {}", preprocessedRefsFiles);
-                extractedMathPdDocumentsSources.writeAsFormattedText(preprocessedSourcesFiles,
-                        (TextOutputFormat.TextFormatter<ExtractedMathPDDocument>) PreprocessedExtractedMathPDDocumentMapper::getFormattedWritableText);
+                extractedMathPdDocumentsSources
+                        .writeAsFormattedText(
+                                preprocessedSourcesFiles,
+                                OVERWRITE,
+                                (TextFormatter<ExtractedMathPDDocument>)
+                                        PreprocessedExtractedMathPDDocumentMapper::getFormattedWritableText);
 
                 // now for the refs
-                final FlatMapOperator<String, ExtractedMathPDDocument> extractedMathPdSnippetsRefs = refs.flatMap(new TextExtractorMapper(false));
+                final FlatMapOperator<String, ExtractedMathPDDocument>
+                        extractedMathPdSnippetsRefs = refs.flatMap(new TextExtractorMapper(false));
 
                 // first, merge all pages of one doc to one doc
-                final DataSet<ExtractedMathPDDocument> extractedMathPdDocumentsRefs = aggregateSnippets(extractedMathPdSnippetsRefs);
+                final DataSet<ExtractedMathPDDocument>
+                        extractedMathPdDocumentsRefs = aggregateSnippets(extractedMathPdSnippetsRefs);
 
                 // write to disk
                 LOGGER.info("writing preprocesssed refs to disk at {}", preprocessedRefsFiles);
-                extractedMathPdDocumentsRefs.writeAsFormattedText(preprocessedRefsFiles,
-                        (TextOutputFormat.TextFormatter<ExtractedMathPDDocument>) PreprocessedExtractedMathPDDocumentMapper::getFormattedWritableText);
+                extractedMathPdDocumentsRefs
+                        .writeAsFormattedText(
+                                preprocessedRefsFiles,
+                                OVERWRITE,
+                                (TextFormatter<ExtractedMathPDDocument>)
+                                        PreprocessedExtractedMathPDDocumentMapper::getFormattedWritableText);
             } else {
-                final DataSet<Tuple2<String, ExtractedMathPDDocument>> extractedMathPdDocumentsSources = readPreprocessedFile(preprocessedSourcesFiles, env).flatMap(new PreprocessedExtractedMathPDDocumentMapper());
-                final DataSet<Tuple2<String, ExtractedMathPDDocument>> extractedMathPdDocumentsRefs = readPreprocessedFile(preprocessedRefsFiles, env).flatMap(new PreprocessedExtractedMathPDDocumentMapper());
+                final DataSet<ExtractedMathPDDocument>
+                        extractedMathPdDocumentsSources = readPreprocessedFile(preprocessedSourcesFiles, env)
+                        .flatMap(new PreprocessedExtractedMathPDDocumentMapper());
+                final DataSet<ExtractedMathPDDocument> extractedMathPdDocumentsRefs
+                        = readPreprocessedFile(preprocessedRefsFiles, env).flatMap(new PreprocessedExtractedMathPDDocumentMapper());
 
-                GroupReduceOperator<Tuple2<Tuple2<String, ExtractedMathPDDocument>, Tuple3<String, String, Double>>, Tuple2<String, ExtractedMathPDDocument>> extractedMathPDDocsWithTFIDF = null;
+                GroupReduceOperator<Tuple2<
+                        Tuple2<String, ExtractedMathPDDocument>,
+                        Tuple3<String, String, Double>>,
+                        Tuple2<String, ExtractedMathPDDocument>> extractedMathPDDocsWithTFIDF = null;
 
 
-                DataSet<Tuple7<String, String, Double, Double, Double, Double, Double>> distancesAndSectionPairs =
+                SortPartitionOperator distancesAndSectionPairs =
                         extractedMathPdDocumentsSources
-                                .map(new MapFunction<Tuple2<String, ExtractedMathPDDocument>, ExtractedMathPDDocument>() {
-                                    @Override
-                                    public ExtractedMathPDDocument map(Tuple2<String, ExtractedMathPDDocument> stringExtractedMathPDDocumentTuple2) throws Exception {
-                                        return stringExtractedMathPDDocumentTuple2.f1;
-                                    }
-                                })
-                                .cross(extractedMathPdDocumentsRefs
-                                        .map(new MapFunction<Tuple2<String, ExtractedMathPDDocument>, ExtractedMathPDDocument>() {
-                                            @Override
-                                            public ExtractedMathPDDocument map(Tuple2<String, ExtractedMathPDDocument> stringExtractedMathPDDocumentTuple2) throws Exception {
-                                                return stringExtractedMathPDDocumentTuple2.f1;
+                                .cross(extractedMathPdDocumentsRefs)
+                                .map((MapFunction<
+                                        Tuple2<ExtractedMathPDDocument, ExtractedMathPDDocument>,
+                                        Tuple7<String, String, Double, Double, Double, Double, Double>>)
+                                        d -> {
+                                            if (d.f0 == null || d.f1 == null) {
+                                                return null;
                                             }
+
+                                            // Tuple4 contains (if cosine is used, the term distance actually means similarity, i.e.,
+                                            // -1=opposite, 0=unrelated, 1=same doc
+                                            // 1) total distance (accumulated distance of all others) - makes no sense in case of cosine distance
+                                            // 2) numbers
+                                            // 3) operators
+                                            // 4) identifiers
+                                            // 5) bound variables
+                                            Tuple4<Double, Double, Double, Double> distanceAllFeatures;
+
+                                            distanceAllFeatures = Distances.distanceRelativeAllFeatures(d.f0, d.f1);
+
+
+                                            return new Tuple7<>(
+                                                    d.f0.getId(),
+                                                    d.f1.getId(),
+                                                    Math.abs(distanceAllFeatures.f0) + Math.abs(distanceAllFeatures.f1)
+                                                            + Math.abs(distanceAllFeatures.f2)
+                                                            + Math.abs(distanceAllFeatures.f3),
+                                                    distanceAllFeatures.f0,
+                                                    distanceAllFeatures.f1,
+                                                    distanceAllFeatures.f2,
+                                                    distanceAllFeatures.f3
+                                            );
                                         })
-                                )
-                                .map(new MapFunction<Tuple2<ExtractedMathPDDocument, ExtractedMathPDDocument>, Tuple7<String, String, Double, Double, Double, Double, Double>>() {
-                                    @Override
-                                    public Tuple7<String, String, Double, Double, Double, Double, Double> map(Tuple2<ExtractedMathPDDocument, ExtractedMathPDDocument> extractedMathPDDocumentExtractedMathPDDocumentTuple2) throws Exception {
-                                        if (extractedMathPDDocumentExtractedMathPDDocumentTuple2.f0 == null
-                                                || extractedMathPDDocumentExtractedMathPDDocumentTuple2.f1 == null) {
-                                            return null;
-                                        }
-
-                                        // Tuple4 contains (if cosine is used, the term distance actually means similarity, i.e.,
-                                        // -1=opposite, 0=unrelated, 1=same doc
-                                        // 1) total distance (accumulated distance of all others) - makes no sense in case of cosine distance
-                                        // 2) numbers
-                                        // 3) operators
-                                        // 4) identifiers
-                                        // 5) bound variables
-                                        Tuple4<Double, Double, Double, Double> distanceAllFeatures;
-
-                                        distanceAllFeatures = Distances.distanceRelativeAllFeatures(extractedMathPDDocumentExtractedMathPDDocumentTuple2.f0, extractedMathPDDocumentExtractedMathPDDocumentTuple2.f1);
-
-
-                                        final Tuple7<String, String, Double, Double, Double, Double, Double> resultLine = new Tuple7<>(
-                                                extractedMathPDDocumentExtractedMathPDDocumentTuple2.f0.getId(),
-                                                extractedMathPDDocumentExtractedMathPDDocumentTuple2.f1.getId(),
-                                                Math.abs(distanceAllFeatures.f0) + Math.abs(distanceAllFeatures.f1)
-                                                        + Math.abs(distanceAllFeatures.f2)
-                                                        + Math.abs(distanceAllFeatures.f3),
-                                                distanceAllFeatures.f0,
-                                                distanceAllFeatures.f1,
-                                                distanceAllFeatures.f2,
-                                                distanceAllFeatures.f3
-                                        );
-
-                                        return resultLine;
-                                    }
+                                .returns(new TypeHint<Tuple7<String, String, Double, Double, Double, Double, Double>>() {
                                 })
                                 .sortPartition(1, Order.ASCENDING);
-                distancesAndSectionPairs.writeAsCsv(config.getOutputDir(), WriteMode.OVERWRITE);
+                distancesAndSectionPairs.writeAsCsv(config.getOutputDir(), OVERWRITE);
 
                 // also merge all partitions together of all document pairs, by taking the min distance in any field
                 final DataSet<Tuple7<String, String, Double, Double, Double, Double, Double>> minDistancesOfRemergedDocs = distancesAndSectionPairs
@@ -313,7 +325,7 @@ public class FlinkPd {
                             }
                         });
                 minDistancesOfRemergedDocs.writeAsCsv(
-                        config.getOutputDir() + "_remergedbymindist", WriteMode.OVERWRITE);
+                        config.getOutputDir() + "_remergedbymindist", OVERWRITE);
 
                 // we can now use the distances and section pairs dataset to aggregate the distances on document level in distance bins
                 //noinspection Convert2Lambda
@@ -365,7 +377,7 @@ public class FlinkPd {
                                 })
                                 .sortPartition(0, Order.ASCENDING)
                                 .sortPartition(1, Order.ASCENDING);
-                binnedDistancesForPairs.writeAsCsv(config.getOutputDir() + "_binned", WriteMode.OVERWRITE);
+                binnedDistancesForPairs.writeAsCsv(config.getOutputDir() + "_binned", OVERWRITE);
             }
         }
         env.execute(String.format("MathPD(IS_MODE_PREPROCESSING=%b)", config.isPreProcessingMode()));
@@ -420,5 +432,12 @@ public class FlinkPd {
     public String runFromText(FlinkPdCommandConfig config, String input) throws Exception {
         final JsonSerializerMapper<Object> serializerMapper = new JsonSerializerMapper<>();
         return serializerMapper.map(outDocFromText(config, input));
+    }
+
+    public static class SelectTitle implements KeySelector<ExtractedMathPDDocument, String> {
+        @Override
+        public String getKey(ExtractedMathPDDocument w) {
+            return w.title;
+        }
     }
 }

@@ -2,12 +2,16 @@ package com.formulasearchengine.mathosphere.mathpd.contracts;
 
 import com.formulasearchengine.mathosphere.mathpd.pojos.ExtractedMathPDDocument;
 import org.apache.flink.api.common.functions.FlatMapFunction;
-import org.apache.flink.api.java.tuple.Tuple2;
 import org.apache.flink.util.Collector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
@@ -15,7 +19,7 @@ import java.util.Base64;
 /**
  * Created by felix on 13.01.17.
  */
-public class PreprocessedExtractedMathPDDocumentMapper implements FlatMapFunction<String, Tuple2<String, ExtractedMathPDDocument>> {
+public class PreprocessedExtractedMathPDDocumentMapper implements FlatMapFunction<String, ExtractedMathPDDocument> {
     public static final Charset CHARSET = StandardCharsets.UTF_8;
     private static final Logger LOGGER = LoggerFactory.getLogger(PreprocessedExtractedMathPDDocumentMapper.class);
 
@@ -65,8 +69,8 @@ public class PreprocessedExtractedMathPDDocumentMapper implements FlatMapFunctio
     }
 
     @Override
-    public void flatMap(String s, Collector<Tuple2<String, ExtractedMathPDDocument>> collector) throws Exception {
+    public void flatMap(String s, Collector<ExtractedMathPDDocument> collector) throws Exception {
         ExtractedMathPDDocument doc = readExtractedMathPDDocumentFromText(s);
-        collector.collect(new Tuple2<>(doc.getName(), doc));
+        collector.collect(doc);
     }
 }
