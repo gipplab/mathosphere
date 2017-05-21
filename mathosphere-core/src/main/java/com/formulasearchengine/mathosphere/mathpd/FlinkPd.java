@@ -393,7 +393,7 @@ public class FlinkPd {
             binBoundary = binWidth * (flooredDivision + 1);
         }
 
-        return Double.valueOf(decimalFormat.format(binBoundary));
+        return Math.round(binBoundary*100)/100.;
     }
 
     public static DataSource<String> readWikiDump(FlinkPdCommandConfig config, ExecutionEnvironment env) {
