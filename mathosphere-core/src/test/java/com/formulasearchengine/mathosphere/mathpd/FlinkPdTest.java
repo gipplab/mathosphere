@@ -65,6 +65,8 @@ public class FlinkPdTest {
 
     @Test
     public void testTextTok() throws Exception {
+        if (!IS_LOCAL)
+            return;
         final File temp;
         temp = File.createTempFile("temp", Long.toString(System.nanoTime()));
         System.out.println(temp);
