@@ -25,6 +25,9 @@ public class FlinkPdCommandConfig extends BaseConfig implements Serializable {
     @Parameter(names = {"--preprocessing"}, description = "if MathPD is run in preprocessing mode")
     protected boolean isPreProcessingMode = false;
 
+    @Parameter(names = {"--text"}, description = "if MathPD is run in text mode")
+    protected boolean isText = false;
+
     public FlinkPdCommandConfig() {
     }
 
@@ -86,5 +89,9 @@ public class FlinkPdCommandConfig extends BaseConfig implements Serializable {
 
     public String getRef() {
         return ref;
+    }
+
+    public boolean isText() {
+        return isText;
     }
 }

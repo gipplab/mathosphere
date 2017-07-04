@@ -13,8 +13,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class WikiTextUtils {
-  private static final Pattern MATH_TAG_PATTERN = Pattern.compile("<math.+?</math>", Pattern.DOTALL);
+  public static final Pattern MATH_TAG_PATTERN = Pattern.compile("<math.+?</math>", Pattern.DOTALL);
     private static int i = 0;
+
 
   public static List<MathTag> findMathTags(String text) {
     List<MathTag> results = new ArrayList<>();

@@ -40,6 +40,23 @@ public class BasicStringMatcherTest {
         };
         runTest(expectedMatchLengths, f);
     }
+    @org.junit.Test
+    public void cosineSim() throws Exception {
+        Map<Tuple2<Integer, Integer>, Double> expectedMatchLengths = new HashMap<>();
+        expectedMatchLengths.put(Tuple2.of(1, 1), 1.);
+        expectedMatchLengths.put(Tuple2.of(1, 2), 1.);
+        expectedMatchLengths.put(Tuple2.of(1, 3), .8);
+        org.apache.commons.text.similarity.CosineDistance distance = new org.apache.commons.text.similarity.CosineDistance();
+        Function<Tuple2<Integer, Integer>, Double> f = entry -> {
+            try {
+                return 1. - distance.apply(testCases.get(entry.f0), testCases.get(entry.f1));
+            } catch (Exception e) {
+                e.printStackTrace();
+                return -1.;
+            }
+        };
+        runTest(expectedMatchLengths, f);
+    }
 
     @org.junit.Test
     public void getMatches() throws Exception {

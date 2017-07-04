@@ -17,12 +17,17 @@
 package com.formulasearchengine.mathosphere.mathpd;
 
 import com.formulasearchengine.mathosphere.mathpd.pojos.ExtractedMathPDDocument;
-import org.apache.flink.api.java.tuple.Tuple2;
 
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.ListIterator;
+import java.util.Map;
+import java.util.Properties;
 
 public class CollectionUtils {
 
@@ -89,10 +94,10 @@ public class CollectionUtils {
         return result;
     }
 
-    public static List<List<Tuple2<String, ExtractedMathPDDocument>>> overlapInPercent(List<List<Tuple2<String, ExtractedMathPDDocument>>> partitions,
+    public static List<List<ExtractedMathPDDocument>> overlapInPercent(List<List< ExtractedMathPDDocument>> partitions,
                                                                                        double before, double after) {
         double allElements = 0.0;
-        for (List<Tuple2<String, ExtractedMathPDDocument>> partition : partitions) {
+        for (List< ExtractedMathPDDocument> partition : partitions) {
             allElements += partition.size();
         }
         int beforeAbs = (int) (allElements * before);
