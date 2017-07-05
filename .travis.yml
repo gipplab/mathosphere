@@ -6,7 +6,7 @@ jdk:
 
 before_install:
   - mvn clean -q
-  - cp mathosphere.properties src/main/resources/
+  - cp mathosphere.properties mathosphere-core/src/main/resources/
 
 install:
   - mvn install -DskipTests=true -q
