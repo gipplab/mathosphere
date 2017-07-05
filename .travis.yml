@@ -20,3 +20,4 @@ before_script:
   - cd node_modules/mathoid
   - ./server.js -c ../../config.dev.yaml &
   - cd ../..
+  - cp mathosphere.properties src/main/resources

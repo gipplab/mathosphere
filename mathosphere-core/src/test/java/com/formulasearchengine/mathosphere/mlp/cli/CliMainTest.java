@@ -297,7 +297,8 @@ public class CliMainTest {
     ObjectMapper mapper = new ObjectMapper();
     StrippedWikiDocumentOutput strippedWikiDocumentOutput = mapper.readValue(extraction, StrippedWikiDocumentOutput.class);
     Assert.assertEquals(strippedWikiDocumentOutput.getTitle(), "Martingale (betting system)");
-    Assert.assertTrue(strippedWikiDocumentOutput.getRelations().contains(new IdentifierDefinition("q", "probability")));
+    final List<IdentifierDefinition> relations = strippedWikiDocumentOutput.getRelations();
+    Assert.assertTrue(relations.contains(new IdentifierDefinition("q", "probability")));
   }
 
   @Test
