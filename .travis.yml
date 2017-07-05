@@ -6,6 +6,7 @@ jdk:
 
 before_install:
   - mvn clean -q
+  - cp mathosphere.properties src/main/resources/
 
 install:
   - mvn install -DskipTests=true -q
@@ -20,4 +21,3 @@ before_script:
   - cd node_modules/mathoid
   - ./server.js -c ../../config.dev.yaml &
   - cd ../..
-  - cp mathosphere.properties src/main/resources/
