@@ -176,7 +176,8 @@ public class MathConverterTest {
   public void testChem1() throws Exception {
     String wikiText = IOUtils.toString(getClass().getResourceAsStream("../titration_wiki.txt"));
     final MathConverter mathConverter = new MathConverter(wikiText);
+    mathConverter.getOutput();
     final List<MathTag> mathTags = mathConverter.getMathTags();
-    assertEquals(0,mathTags.size());
+    assertEquals(12,mathTags.size());
   }
 }
