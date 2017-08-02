@@ -1,16 +1,16 @@
 package com.formulasearchengine.mathosphere.mlp.text;
 
 import com.formulasearchengine.mathosphere.mlp.contracts.TextExtractorMapper;
-
+import com.formulasearchengine.mathosphere.mlp.pojos.MathTag;
 import org.apache.commons.io.IOUtils;
-import org.junit.Ignore;
 import org.junit.Test;
+
+import java.util.List;
 
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.iterableWithSize;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Created by Moritz on 15.12.2015.
@@ -170,5 +170,13 @@ public class MathConverterTest {
     assertThat(real, containsString("\\mathbf{c}"));
     assertThat(real, containsString("\\mathit{d}"));
     assertThat(real, equalTo("_{a}, ^{b}, \\mathbf{c}, \\mathit{d}"));
+  }
+
+  @Test
+  public void testChem1() throws Exception {
+    String wikiText = IOUtils.toString(getClass().getResourceAsStream("../titration_wiki.txt"));
+    final MathConverter mathConverter = new MathConverter(wikiText);
+    final List<MathTag> mathTags = mathConverter.getMathTags();
+    assertEquals(0,mathTags.size());
   }
 }
