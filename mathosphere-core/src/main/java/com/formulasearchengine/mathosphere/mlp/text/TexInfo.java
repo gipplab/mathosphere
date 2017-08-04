@@ -2,66 +2,97 @@ package com.formulasearchengine.mathosphere.mlp.text;
 
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Multiset;
-
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import net.sf.json.JSONSerializer;
-
-import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
-import org.apache.http.client.HttpClient;
+import org.apache.http.client.cache.CacheResponseStatus;
+import org.apache.http.client.cache.HttpCacheContext;
+import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpRequestBase;
+import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.cache.CacheConfig;
-import org.apache.http.impl.client.cache.CachingHttpClientBuilder;
-import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
+import org.apache.http.impl.client.cache.CachingHttpClients;
 import org.apache.http.message.BasicNameValuePair;
 import org.xml.sax.SAXException;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.xpath.XPathExpressionException;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Moritz on 28.09.2015.
  */
 public class TexInfo {
 
-  private static HttpClient client = null;
-
-  private static String makeRequest(String tex, String url) {
-    if (client == null) {
-      PoolingHttpClientConnectionManager cm = new PoolingHttpClientConnectionManager();
-      cm.setDefaultMaxPerRoute(1000);
-      cm.setMaxTotal(1000);
-      CachingHttpClientBuilder cachingHttpClientBuilder = CachingHttpClientBuilder.create();
-      CacheConfig cacheCfg = new CacheConfig();
-      cacheCfg.setMaxCacheEntries(100000);
-      cacheCfg.setMaxObjectSize(8192);
-      cachingHttpClientBuilder.setCacheConfig(cacheCfg);
-      cachingHttpClientBuilder.setConnectionManager(cm);
-      client = cachingHttpClientBuilder.build();
+  private static CloseableHttpClient cachingClient = null;
+  private static HttpCacheContext context;
+  private static CacheResponseStatus cacheResponseStatus;
+  private static boolean USE_POST = true;
+  private static String makeRequest(String tex, String url)  {
+    HttpRequestBase post;
+    if (cachingClient == null || context == null) {
+      CacheConfig cacheConfig = CacheConfig.custom()
+              .setMaxCacheEntries(1000)
+              .setMaxObjectSize(8192)
+              .build();
+      RequestConfig requestConfig = RequestConfig.custom()
+              .setConnectTimeout(30000)
+              .setSocketTimeout(30000)
+              .build();
+      cachingClient = CachingHttpClients.custom()
+              .setCacheConfig(cacheConfig)
+              .setDefaultRequestConfig(requestConfig)
+              .build();
+      context = HttpCacheContext.create();
     }
-    //HttpPost post = new HttpPost("http://localhost/convert");
-    HttpPost post = new HttpPost(url);
-    try {
+    if (USE_POST){
+       post = new HttpPost(url);
       List<NameValuePair> nameValuePairs = new ArrayList<>(1);
       nameValuePairs.add(new BasicNameValuePair("q", tex));
-      post.setEntity(new UrlEncodedFormEntity(nameValuePairs, "utf-8"));
-      HttpResponse response = client.execute(post);
+      try {
+        ((HttpPost) post).setEntity(new UrlEncodedFormEntity(nameValuePairs, "utf-8"));
+      } catch (UnsupportedEncodingException e) {
+        e.printStackTrace();
+      }
+    } else {
+      String q = null;
+      try {
+        q = URLEncoder.encode(tex,"UTF-8").replace("+", "%20");
+      } catch (UnsupportedEncodingException e) {
+        q = tex;
+      }
+      post = new HttpGet(url +"/check/tex/" +q);
+    }
+
+    try {
+
+      CloseableHttpResponse response = cachingClient.execute(post, context);
       BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
       String line;
       String result = "";
       while ((line = rd.readLine()) != null) {
         result += line;
       }
-      post.releaseConnection();
+
+        cacheResponseStatus = context.getCacheResponseStatus();
+
+        post.releaseConnection();
+
+
+      //HttpResponse response = client.execute(post);
+
       return result;
     } catch (IOException e) {
       e.printStackTrace();
@@ -89,5 +120,9 @@ public class TexInfo {
       //e.printStackTrace();
     }
     return strings;
+  }
+
+  public static CacheResponseStatus getCacheResponseStatus() {
+    return cacheResponseStatus;
   }
 }

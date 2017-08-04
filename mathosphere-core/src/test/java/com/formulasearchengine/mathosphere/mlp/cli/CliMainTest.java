@@ -115,7 +115,6 @@ public class CliMainTest {
             temp.getAbsolutePath()
     };
     System.out.println(temp.getAbsolutePath());
-    System.out.println(args.toString());
     runTest(args);
   }
 
