@@ -2,7 +2,6 @@ package com.formulasearchengine.mathosphere.mlp;
 
 import com.formulasearchengine.mathosphere.mathpd.FlinkPd;
 import com.formulasearchengine.mathosphere.mlp.cli.CliParams;
-import com.formulasearchengine.mathosphere.mlp.cli.MachineLearningDefinienExtractionConfig;
 import com.formulasearchengine.mathosphere.mlp.text.TokenCounter;
 
 /**
@@ -10,30 +9,37 @@ import com.formulasearchengine.mathosphere.mlp.text.TokenCounter;
  */
 public class Main {
 
-  public static void main(String[] args) throws Exception {
-    CliParams params = CliParams.from(args);
-    String command = params.getCommand();
-
-      if (CliParams.HELP.equals(command)) {
-      params.printHelp();
-      } else if (CliParams.COUNT.equals(command)) {
-      TokenCounter.run(params.getCount());
-      } else if (CliParams.LIST.equals(command)) {
-      RelationExtractor.list(params.getListCommandConfig());
-      } else if (CliParams.EXTRACT.equals(command)) {
-      RelationExtractor.run(params.getExtractCommandConfig());
-      } else if (CliParams.MLP.equals(command)) {
-      FlinkMlpRelationFinder.run(params.getMlpCommandConfig());
-      } else if (CliParams.EVAL.equals(command)) {
-      FlinkMlpRelationFinder.evaluate(params.getEvalCommandConfig());
-    } else if (CliParams.ML.equals(command)) {
-      MachineLearningModelGenerator.find(params.getMachineLearningCommand());
-    } else if (CliParams.CLASSIFY.equals(command)) {
-      MachineLearningRelationClassifier.find(params.getClassifyCommand());
-      } else if (CliParams.PD.equals(command)) {
-      FlinkPd.run(params.getPdCommandConfig());
-    } else {
-      params.printHelp();
+    public static void main(String[] args) throws Exception {
+        CliParams params = CliParams.from(args);
+        String command = params.getCommand();
+        switch (command) {
+            case CliParams.COUNT:
+                TokenCounter.run(params.getCount());
+                break;
+            case CliParams.LIST:
+                RelationExtractor.list(params.getListCommandConfig());
+                break;
+            case CliParams.EXTRACT:
+                RelationExtractor.run(params.getExtractCommandConfig());
+                break;
+            case CliParams.MLP:
+                FlinkMlpRelationFinder.run(params.getMlpCommandConfig());
+                break;
+            case CliParams.EVAL:
+                FlinkMlpRelationFinder.evaluate(params.getEvalCommandConfig());
+                break;
+            case CliParams.ML:
+                MachineLearningModelGenerator.find(params.getMachineLearningCommand());
+                break;
+            case CliParams.CLASSIFY:
+                MachineLearningRelationClassifier.find(params.getClassifyCommand());
+                break;
+            case CliParams.PD:
+                FlinkPd.run(params.getPdCommandConfig());
+                break;
+            case CliParams.HELP:
+            default:
+                params.printHelp();
+        }
     }
-  }
 }
