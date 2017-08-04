@@ -50,9 +50,11 @@ public class BaseConfig implements Serializable {
     if (inputStream != null) {
       try {
         prop.load(inputStream);
-        final String texvcinfo = prop.getProperty("texvcinfo");
-        if (texvcinfo.length() > 0) {
-          texvcinfoUrl = texvcinfo;
+        if (prop.stringPropertyNames().contains("texvcinfo")) {
+          final String texvcinfo = prop.getProperty("texvcinfo");
+          if (texvcinfo.length() > 0) {
+            texvcinfoUrl = texvcinfo;
+          }
         }
       } catch (IOException e) {
         e.printStackTrace();
