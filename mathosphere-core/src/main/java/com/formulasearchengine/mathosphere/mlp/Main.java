@@ -37,6 +37,9 @@ public class Main {
             case CliParams.PD:
                 FlinkPd.run(params.getPdCommandConfig());
                 break;
+            case CliParams.TAGS:
+                WikiTagExtractor.run(params.getTagsCommandConfig());
+                break;
             case CliParams.HELP:
             default:
                 params.printHelp();

@@ -104,6 +104,22 @@ public class CliMainTest {
   }
 
   @Test
+  public void testTagEngPlain() throws Exception {
+    final File temp;
+    temp = Files.createTempDir();
+    String[] args = {
+            "tags",
+            "-in",
+            resourcePath("com/formulasearchengine/mathosphere/mlp/sample.xml"),
+            "-out",
+            temp.getAbsolutePath()
+    };
+    System.out.println(temp.getAbsolutePath());
+    System.out.println(args.toString());
+    runTest(args);
+  }
+
+  @Test
   public void testMlpEngPlainWithWikidata() throws Exception {
     final File temp;
     final String file = decodePath(getClass().getResource("../sample.xml").getFile());
