@@ -1,5 +1,6 @@
 package com.formulasearchengine.mathosphere.mlp.contracts;
 
+import com.formulasearchengine.mathosphere.mlp.cli.TagsCommandConfig;
 import com.formulasearchengine.mathosphere.mlp.pojos.MathTag;
 import com.formulasearchengine.mathosphere.mlp.pojos.RawWikiDocument;
 import com.formulasearchengine.mathosphere.mlp.text.MathConverter;
@@ -11,9 +12,15 @@ import org.apache.flink.util.Collector;
  */
 public class TagExtractionMapper implements FlatMapFunction<RawWikiDocument, String> {
 
+    private final TagsCommandConfig config;
+
+    public TagExtractionMapper(TagsCommandConfig c) {
+        config = c;
+    }
+
     @Override
     public void flatMap(RawWikiDocument rawWikiDocument, Collector<String> collector) throws Exception {
-        final MathConverter converter = new MathConverter(rawWikiDocument.text, rawWikiDocument.title);
+        final MathConverter converter = new MathConverter(rawWikiDocument.text, rawWikiDocument.title, config);
         converter.getStrippedOutput();
         for (MathTag tag : converter.getMathTags()) {
             collector.collect(tag.getContent());

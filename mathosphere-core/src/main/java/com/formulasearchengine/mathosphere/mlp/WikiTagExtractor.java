@@ -14,7 +14,7 @@ public class WikiTagExtractor {
         final DataSource<String> dump = FlinkMlpRelationFinder.readWikiDump(config, env);
         dump
                 .flatMap(new TextExtractorMapper())
-                .flatMap(new TagExtractionMapper())
+                .flatMap(new TagExtractionMapper(config))
                 .writeAsText(config.getOutputDir() + "/formulae.txt");
         env.execute();
     }
