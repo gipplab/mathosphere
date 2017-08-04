@@ -13,93 +13,101 @@ public class CliParams implements Serializable {
     public static final String EXTRACT = "extract";
     public static final String MLP = "mlp";
     public static final String EVAL = "eval";
-  public static final String ML = "ml";
-  public static final String CLASSIFY = "classify";
+    public static final String ML = "ml";
+    public static final String CLASSIFY = "classify";
     public static final String PD = "pd";
     public static final String HELP = "help";
-  private EvalCommandConfig evalCommand;
-  private JCommander jc;
-  private CountCommandConfig countCommand;
-  private ListCommandConfig listCommand;
-  private MlpCommandConfig extractCommand;
-  private MachineLearningDefinienExtractionConfig mlCommand;
-  private FlinkMlpCommandConfig mlpCommand;
-  private MachineLearningDefinienClassifierConfig classifyCommand;
-  private FlinkPdCommandConfig pdCommand;
-  private String command;
+    public static final String TAGS = "tags";
+    private EvalCommandConfig evalCommand;
+    private JCommander jc;
+    private CountCommandConfig countCommand;
+    private ListCommandConfig listCommand;
+    private MlpCommandConfig extractCommand;
+    private MachineLearningDefinienExtractionConfig mlCommand;
+    private FlinkMlpCommandConfig mlpCommand;
+    private MachineLearningDefinienClassifierConfig classifyCommand;
+    private FlinkPdCommandConfig pdCommand;
+    private TagsCommandConfig tagsCommandConfig;
+    private String command;
 
-  private CliParams() {
-  }
+    private CliParams() {
+    }
 
-  public static CliParams from(String[] args) {
-    JCommander jc = new JCommander();
+    public static CliParams from(String[] args) {
+        JCommander jc = new JCommander();
 
-    CliParams params = new CliParams();
-    params.countCommand = new CountCommandConfig();
-    params.listCommand = new ListCommandConfig();
-    params.mlpCommand = new FlinkMlpCommandConfig();
-    params.extractCommand = new MlpCommandConfig();
-    params.mlCommand = new MachineLearningDefinienExtractionConfig();
-    params.classifyCommand = new MachineLearningDefinienClassifierConfig();
-    params.evalCommand = new EvalCommandConfig();
-    params.pdCommand = new FlinkPdCommandConfig();
+        CliParams params = new CliParams();
+        params.countCommand = new CountCommandConfig();
+        params.listCommand = new ListCommandConfig();
+        params.mlpCommand = new FlinkMlpCommandConfig();
+        params.extractCommand = new MlpCommandConfig();
+        params.mlCommand = new MachineLearningDefinienExtractionConfig();
+        params.classifyCommand = new MachineLearningDefinienClassifierConfig();
+        params.evalCommand = new EvalCommandConfig();
+        params.pdCommand = new FlinkPdCommandConfig();
+        params.tagsCommandConfig = new TagsCommandConfig();
 
-      jc.addCommand(COUNT, params.countCommand);
-      jc.addCommand(LIST, params.listCommand);
-      jc.addCommand(EXTRACT, params.extractCommand);
-      jc.addCommand(MLP, params.mlpCommand);
-      jc.addCommand(EVAL, params.evalCommand);
-    jc.addCommand(ML, params.mlCommand);
-    jc.addCommand(CLASSIFY, params.classifyCommand);
-      jc.addCommand(PD, params.pdCommand);
-      jc.addCommand(HELP, new HelpCommand());
+        jc.addCommand(COUNT, params.countCommand);
+        jc.addCommand(LIST, params.listCommand);
+        jc.addCommand(EXTRACT, params.extractCommand);
+        jc.addCommand(MLP, params.mlpCommand);
+        jc.addCommand(EVAL, params.evalCommand);
+        jc.addCommand(ML, params.mlCommand);
+        jc.addCommand(CLASSIFY, params.classifyCommand);
+        jc.addCommand(PD, params.pdCommand);
+        jc.addCommand(HELP, new HelpCommand());
+        jc.addCommand(TAGS, params.tagsCommandConfig);
 
-    jc.parse(args);
+        jc.parse(args);
 
-    params.command = jc.getParsedCommand();
-    params.jc = jc;
-    return params;
-  }
+        params.command = jc.getParsedCommand();
+        params.jc = jc;
+        return params;
+    }
 
-  public void printHelp() {
-    jc.usage();
-  }
+    public MachineLearningDefinienClassifierConfig getClassifyCommand() {
+        return classifyCommand;
+    }
 
-  public String getCommand() {
-    return command;
-  }
+    public String getCommand() {
+        return command;
+    }
 
-  public CountCommandConfig getCount() {
-    return countCommand;
-  }
+    public CountCommandConfig getCount() {
+        return countCommand;
+    }
 
-  public ListCommandConfig getListCommandConfig() {
-    return listCommand;
-  }
+    public EvalCommandConfig getEvalCommandConfig() {
+        return evalCommand;
+    }
 
-  public FlinkMlpCommandConfig getMlpCommandConfig() {
-    return mlpCommand;
-  }
+    public MlpCommandConfig getExtractCommandConfig() {
+        return extractCommand;
+    }
 
-  public MlpCommandConfig getExtractCommandConfig() {
-    return extractCommand;
-  }
+    public ListCommandConfig getListCommandConfig() {
+        return listCommand;
+    }
 
-  public EvalCommandConfig getEvalCommandConfig() {
-    return evalCommand;
-  }
+    public MachineLearningDefinienExtractionConfig getMachineLearningCommand() {
+        return mlCommand;
+    }
 
-  public MachineLearningDefinienExtractionConfig getMachineLearningCommand() {
-    return mlCommand;
-  }
+    public FlinkMlpCommandConfig getMlpCommandConfig() {
+        return mlpCommand;
+    }
 
-  public MachineLearningDefinienClassifierConfig getClassifyCommand() {
-    return classifyCommand;
-  }
+    public FlinkPdCommandConfig getPdCommandConfig() {
+        return pdCommand;
+    }
 
-  public FlinkPdCommandConfig getPdCommandConfig() {
-    return pdCommand;
-  }
+    public TagsCommandConfig getTagsCommandConfig() {
+        return tagsCommandConfig;
+    }
+
+    public void printHelp() {
+        jc.usage();
+    }
 
     @Parameters(commandDescription = "Prints this help message")
     static private class HelpCommand {
