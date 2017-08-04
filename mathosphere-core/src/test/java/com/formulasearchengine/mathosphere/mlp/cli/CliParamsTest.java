@@ -2,7 +2,9 @@ package com.formulasearchengine.mathosphere.mlp.cli;
 
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class CliParamsTest {
 
@@ -11,6 +13,14 @@ public class CliParamsTest {
     String[] args = {"help"};
     CliParams params = CliParams.from(args);
     assertEquals("help", params.getCommand());
+  }
+
+
+  @Test
+  public void texvcinfo() {
+    String[] args = {"tags", "--texvcinfo", "expected"};
+    CliParams params = CliParams.from(args);
+    assertEquals("expected", params.getTagsCommandConfig().getTexvcinfoUrl());
   }
 
   @Test
