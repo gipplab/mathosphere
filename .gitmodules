@@ -13,3 +13,6 @@
 [submodule "lib/WikidataIdListGenerator"]
 	path = lib/WikidataIdListGenerator
 	url = https://github.com/physikerwelt/WikidataListGenerator.git
+[submodule "lib/MathMLConverters"]
+	path = lib/MathMLConverters
+	url = https://github.com/ag-gipp/MathMLConverters.git
