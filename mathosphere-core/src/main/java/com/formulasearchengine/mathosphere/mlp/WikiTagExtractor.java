@@ -13,12 +13,14 @@ public class WikiTagExtractor {
     public static void run(TagsCommandConfig config) throws Exception {
         ExecutionEnvironment env = ExecutionEnvironment.getExecutionEnvironment();
         final DataSource<String> dump = FlinkMlpRelationFinder.readWikiDump(config, env);
+        //DataSet<String> text = env.fromElements("[ ");
         dump
                 .flatMap(new TextExtractorMapper())
                 .flatMap(new TagExtractionMapper(config))
                 .distinct(MathTag::getContentHash)
                 .map(MathTag::toJson)
-                .writeAsText(config.getOutputDir() + "/formulae.txt");
+                .writeAsFormattedText(config.getOutputDir() + "/formulae.txt", s -> s + ",")
+                .setParallelism(1);
         env.execute();
     }
 }
