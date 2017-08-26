@@ -255,7 +255,12 @@ public class MathConverter
     }
 
     public String getStrippedOutput() {
-        return (String) this.go(page.getPage());
+        try {
+            return (String) this.go(page.getPage());
+        } catch (Exception e) {
+            Logger.error(e, "Error parsing page " + this.pageTitle);
+            return "";
+        }
     }
 
     private String getTex(WtNode i, boolean force) {
