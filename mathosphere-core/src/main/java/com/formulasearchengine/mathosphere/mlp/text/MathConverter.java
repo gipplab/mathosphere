@@ -113,6 +113,17 @@ public class MathConverter
     private PageTitle pageTitle;
     private String texInfoUrl;
 
+    public boolean isSkipHiddenMath() {
+        return skipHiddenMath;
+    }
+
+    public void setSkipHiddenMath(boolean skipHiddenMath) {
+        this.skipHiddenMath = skipHiddenMath;
+    }
+
+    private boolean skipHiddenMath;
+
+
     public MathConverter(String wikiText, String name) throws LinkTargetException, EngineException {
         pageTitle = PageTitle.make(config, name);
         PageId pageId = new PageId(pageTitle, -1);
@@ -160,6 +171,9 @@ public class MathConverter
     }
 
     private boolean detectHiddenMath(WtNode i) {
+        if (skipHiddenMath){
+            return false;
+        }
         if (i.size() == 1 && i.get(0) instanceof WtText) {
             final String tex = getTex(i, false);
             if (tex != null) {
