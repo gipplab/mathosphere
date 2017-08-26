@@ -17,6 +17,7 @@ public class WikiTagExtractor {
                 .flatMap(new TextExtractorMapper())
                 .flatMap(new TagExtractionMapper(config))
                 .distinct(MathTag::getContentHash)
+                .map(MathTag::toJson)
                 .writeAsText(config.getOutputDir() + "/formulae.txt");
         env.execute();
     }
