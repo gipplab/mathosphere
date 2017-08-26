@@ -16,7 +16,6 @@ import com.formulasearchengine.mathosphere.mlp.pojos.WikidataLink;
 import com.google.common.collect.Multiset;
 import com.jcabi.log.Logger;
 import de.fau.cs.osr.ptk.common.AstVisitor;
-import de.fau.cs.osr.utils.StringUtils;
 import org.sweble.wikitext.engine.EngineException;
 import org.sweble.wikitext.engine.PageId;
 import org.sweble.wikitext.engine.PageTitle;
@@ -69,6 +68,8 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.regex.Pattern;
+
+import static de.fau.cs.osr.utils.StringTools.strrep;
 
 /**
  * A visitor to convert an article AST into a pure text representation. To better understand the
@@ -157,7 +158,7 @@ public class MathConverter
     // =========================================================================
 
     @Override
-    protected boolean before(WtNode node) {
+    protected WtNode before(WtNode node) {
         // This method is called by go() before visitation starts
         sb = new StringBuilder();
         line = new StringBuilder();
@@ -471,7 +472,7 @@ public class MathConverter
         newline(2);
         write(title);
         newline(1);
-        write(StringUtils.strrep('-', title.length()));
+        write(strrep('-', title.length()));
         newline(2);
 
         noWrap = saveNoWrap;
@@ -479,7 +480,7 @@ public class MathConverter
             // Don't care about errors
             iterate(s.getBody());
         } catch (Exception e) {
-            Logger.info(e, "Problem prcessing page", pageTitle.getTitle());
+            Logger.info(e, "Problem processing page ", pageTitle.getTitle());
             e.printStackTrace();
         }
 
@@ -497,7 +498,7 @@ public class MathConverter
 
     public void visit(WtHorizontalRule hr) {
         newline(1);
-        write(StringUtils.strrep('-', 10));
+        write(strrep('-', 10));
         newline(2);
     }
 
@@ -701,7 +702,7 @@ public class MathConverter
 
     private void writeNewlines(int num) {
         finishLine();
-        sb.append(StringUtils.strrep('\n', num));
+        sb.append(strrep('\n', num));
         needNewlines = 0;
         needSpace = false;
     }
