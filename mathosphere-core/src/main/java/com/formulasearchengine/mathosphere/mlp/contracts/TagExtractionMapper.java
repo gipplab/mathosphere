@@ -22,7 +22,7 @@ public class TagExtractionMapper implements FlatMapFunction<RawWikiDocument, Mat
     public void flatMap(RawWikiDocument rawWikiDocument, Collector<MathTag> collector) throws Exception {
         final MathConverter converter = new MathConverter(rawWikiDocument.text, rawWikiDocument.title, config);
         converter.setSkipHiddenMath(true);
-        converter.getStrippedOutput();
+        converter.processTags();
         for (MathTag tag : converter.getMathTags()) {
             collector.collect(tag);
         }
