@@ -86,7 +86,7 @@ public class MathMLUtilsTest {
 
   private static String readResource(String file) throws IOException {
     InputStream inputStream = PatternMatchingRelationFinder.class.getResourceAsStream(file);
-    return IOUtils.toString(inputStream);
+    return IOUtils.toString(inputStream,"UTF-8");
   }
 
   @Test

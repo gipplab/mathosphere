@@ -19,7 +19,7 @@ public class TextExtractorMapperTest {
   @Test
   public void test() throws Exception {
     InputStream stream = PatternMatchingRelationFinder.class.getResourceAsStream("augmentendwikitext.xml");
-    String rawImput = IOUtils.toString(stream);
+    String rawImput = IOUtils.toString(stream,"UTF-8");
     assertTrue(rawImput.contains("&lt;math"));
 
     String[] pages = rawImput.split("</page>");
@@ -45,8 +45,8 @@ public class TextExtractorMapperTest {
   @Test
   public void testGer() throws Exception {
     InputStream stream = PatternMatchingRelationFinder.class.getResourceAsStream("dewikimath-20151213130534.xml");
-    String rawImput = IOUtils.toString(stream);
-    final String expected = IOUtils.toString(PatternMatchingRelationFinder.class.getResourceAsStream("text/deText.txt"));
+    String rawImput = IOUtils.toString(stream,"UTF-8");
+    final String expected = IOUtils.toString(PatternMatchingRelationFinder.class.getResourceAsStream("text/deText.txt"),"UTF-8");
     assertTrue(rawImput.contains("&lt;math"));
 
     String[] pages = rawImput.split("</page>");

@@ -32,7 +32,7 @@ public class PatternMatcherMapperTest {
   @Test
   public void testShrodingerPart() throws Exception {
     InputStream input = PatternMatchingRelationFinder.class.getResourceAsStream("escaped.txt");
-    String text = IOUtils.toString(input);
+    String text = IOUtils.toString(input,"UTF-8");
     RawWikiDocument documentText = new RawWikiDocument("Document", 0, text);
 
     TextAnnotatorMapper textAnnotator = TextAnnotatorMapperTest.TEST_INSTANCE;
