@@ -1,14 +1,12 @@
 package com.formulasearchengine.mathosphere.mlp.cli;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.formulasearchengine.mathosphere.mlp.Main;
 import com.formulasearchengine.mathosphere.mlp.ml.WekaLearner;
 import com.formulasearchengine.mathosphere.mlp.pojos.IdentifierDefinition;
 import com.formulasearchengine.mathosphere.mlp.pojos.StrippedWikiDocumentOutput;
 import com.google.common.base.Throwables;
 import com.google.common.io.Files;
-
-import com.formulasearchengine.mathosphere.mlp.Main;
-
 import org.apache.commons.io.output.TeeOutputStream;
 import org.junit.Assert;
 import org.junit.Ignore;
@@ -63,20 +61,16 @@ public class CliMainTest {
 
   @Test
   public void testMlpRusPlain() throws Exception {
-    String[] args = new String[11];
     final File temp;
     temp = File.createTempFile("temp", Long.toString(System.nanoTime()));
-    args[0] = "mlp";
-    args[1] = "-in";
-    args[2] = resourcePath("com/formulasearchengine/mathosphere/mlp/ru-sample.xml");
-    args[3] = "-out";
-    args[4] = temp.getAbsolutePath();
-    args[5] = "--language";
-    args[6] = "ru";
-    args[7] = "-pos";
-    args[8] = "";
-    args[9] = "--tex";
-    args[10] = "";
+    String[] args = {
+            "mlp",
+            "-in", resourcePath("com/formulasearchengine/mathosphere/mlp/ru-sample.xml"),
+            "-out", temp.getAbsolutePath(),
+            "--language", "ru",
+            "-pos", "",
+            "--tex"
+    };
     System.out.println(temp.getAbsolutePath());
     String res = runTest(args);
     System.out.println(res);
