@@ -13,6 +13,7 @@ import com.formulasearchengine.mathosphere.mlp.cli.BaseConfig;
 import com.formulasearchengine.mathosphere.mlp.contracts.TextExtractorMapper;
 import com.formulasearchengine.mathosphere.mlp.pojos.MathTag;
 import com.formulasearchengine.mathosphere.mlp.pojos.WikidataLink;
+import com.formulasearchengine.mathosphere.utils.sweble.MlpConfigEnWpImpl;
 import com.google.common.collect.Multiset;
 import com.jcabi.log.Logger;
 import de.fau.cs.osr.ptk.common.AstVisitor;
@@ -23,7 +24,6 @@ import org.sweble.wikitext.engine.WtEngineImpl;
 import org.sweble.wikitext.engine.config.WikiConfig;
 import org.sweble.wikitext.engine.nodes.EngPage;
 import org.sweble.wikitext.engine.nodes.EngProcessedPage;
-import org.sweble.wikitext.engine.utils.DefaultConfigEnWp;
 import org.sweble.wikitext.parser.nodes.WtBold;
 import org.sweble.wikitext.parser.nodes.WtExternalLink;
 import org.sweble.wikitext.parser.nodes.WtHorizontalRule;
@@ -92,7 +92,7 @@ public class MathConverter
         extends
         AstVisitor<WtNode> {
     private final static Pattern subMatch = Pattern.compile("[{<]sub[}>](.+?)[{<]/sub[}>]");
-    private final static WikiConfig config = DefaultConfigEnWp.generate();
+    private final static WikiConfig config = MlpConfigEnWpImpl.generate();
     private final static WtEngineImpl engine = new WtEngineImpl(config);
     private static final Pattern ws = Pattern.compile("\\s+");
     private static int i = 0;
