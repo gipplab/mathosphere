@@ -7,7 +7,7 @@ import com.beust.jcommander.Parameters;
 public class CountCommandConfig extends MlpCommandConfig {
 
   @Parameter(names = {"--formulas", "--formulae"}, arity = 0, description = "Counts how many formulas are there")
-  private boolean formulas = true;
+  private boolean formulas = false;
 
   @Parameter(names = {"--ids", "--identifiers"}, arity = 0, description = "Counts how identifiers are there in the formulas")
   private boolean identifiers = false;
