@@ -113,6 +113,7 @@ public class MathConverter
     private LinkedList<Integer> sections;
     private PageTitle pageTitle;
     private String texInfoUrl;
+    private boolean suppressOutput = false;
 
     public boolean isSkipHiddenMath() {
         return skipHiddenMath;
@@ -666,6 +667,9 @@ public class MathConverter
     }
 
     private void write(String s) {
+        if (suppressOutput){
+            return;
+        }
         if (s.isEmpty()) {
             return;
         }
@@ -724,6 +728,18 @@ public class MathConverter
         needSpace = false;
         pastBod = true;
         line.append(s);
+    }
+
+    /**
+     * Process only the tags without to generate text output.
+     * Suppressing the output might be useful if one is only interested in the math tags and not in the text.
+     * In that case this option speeds up the process
+     *
+     */
+    public void processTags() {
+        this.suppressOutput = true;
+        this.getStrippedOutput();
+        this.suppressOutput = false;
     }
 }
 
