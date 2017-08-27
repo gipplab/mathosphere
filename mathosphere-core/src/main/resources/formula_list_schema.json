@@ -16,7 +16,7 @@
       },
       "type": {
         "id": "/items/properties/type",
-        "pattern": "(LATEX|MATH_TEMPLATE|MVAR_TEMPLATE|LATEXCE)",
+        "pattern": "(LATEX|MATHML|MATH_TEMPLATE|MVAR_TEMPLATE|LATEXII|LATEXCE)",
         "type": "string"
       }
     },

@@ -78,6 +78,7 @@ public class MathTag {
         return position;
     }
 
+    @JsonIgnore
     public String getTagContent() {
         return content.replaceAll("<math.*?>", "").replaceAll("</math>", "");
     }
