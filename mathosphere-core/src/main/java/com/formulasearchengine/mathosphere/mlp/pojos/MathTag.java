@@ -1,11 +1,15 @@
 package com.formulasearchengine.mathosphere.mlp.pojos;
 
+import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.formulasearchengine.mathosphere.mlp.cli.BaseConfig;
 import com.formulasearchengine.mathosphere.mlp.text.WikiTextUtils.MathMarkUpType;
 import com.google.common.collect.Multiset;
 import com.google.common.hash.HashFunction;
 import com.google.common.hash.Hashing;
-import net.sf.json.JSONObject;
+import com.jcabi.log.Logger;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
@@ -24,6 +28,7 @@ public class MathTag {
     private final String content;
     private final MathMarkUpType markUpType;
     private Multiset<String> indentifiers = null;
+    private static final ObjectMapper objectMapper = new ObjectMapper();
 
     public MathTag(int position, String content, MathMarkUpType markUp) {
         this.position = position;
@@ -36,10 +41,12 @@ public class MathTag {
         return EqualsBuilder.reflectionEquals(this, obj);
     }
 
+    @JsonGetter("input")
     public String getContent() {
         return content;
     }
 
+    @JsonGetter("inputhash")
     public String getContentHash() {
         return HASHER.hashString(content, StandardCharsets.UTF_8).toString();
     }
@@ -56,14 +63,17 @@ public class MathTag {
         return indentifiers;
     }
 
+    @JsonIgnore
     public String getKey() {
         return placeholder();
     }
 
+    @JsonGetter("type")
     public MathMarkUpType getMarkUpType() {
         return markUpType;
     }
 
+    @JsonIgnore
     public int getPosition() {
         return position;
     }
@@ -77,13 +87,18 @@ public class MathTag {
         return HashCodeBuilder.reflectionHashCode(this);
     }
 
+    @JsonIgnore
     public String placeholder() {
         return "FORMULA_" + getContentHash();
     }
 
-    public String toJson() {
-        final JSONObject object = new JSONObject().element("inputhash", getContentHash()).element("input", getContent()).element("type", getMarkUpType());
-        return object.toString();
+    public String toJson()  {
+        try {
+            return objectMapper.writeValueAsString(this);
+        } catch (JsonProcessingException e) {
+            Logger.error(this,"Can't serialize to JSON object");
+            return "";
+        }
     }
 
     @Override

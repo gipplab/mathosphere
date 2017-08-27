@@ -19,7 +19,7 @@ public class WikiTagExtractor {
                 .flatMap(new TagExtractionMapper(config))
                 .distinct(MathTag::getContentHash)
                 .map(MathTag::toJson)
-                .writeAsFormattedText(config.getOutputDir() + "/formulae.txt", s -> s + ",")
+                .writeAsFormattedText(config.getOutputDir() + "/formulae.txt", s -> s.isEmpty() ?  "" : s + ",")
                 .setParallelism(1);
         env.execute();
     }
