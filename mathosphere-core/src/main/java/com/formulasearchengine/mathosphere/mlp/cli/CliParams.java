@@ -28,7 +28,7 @@ public class CliParams implements Serializable {
     private MachineLearningDefinienClassifierConfig classifyCommand;
     private FlinkPdCommandConfig pdCommand;
     private TagsCommandConfig tagsCommandConfig;
-    private String command;
+    private String command = "help";
 
     private CliParams() {
     }
