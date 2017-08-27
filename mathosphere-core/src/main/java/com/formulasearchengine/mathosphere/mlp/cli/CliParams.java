@@ -5,6 +5,7 @@ import com.beust.jcommander.Parameters;
 import com.formulasearchengine.mathosphere.mathpd.cli.FlinkPdCommandConfig;
 
 import java.io.Serializable;
+import java.util.Optional;
 
 public class CliParams implements Serializable {
 
@@ -28,7 +29,7 @@ public class CliParams implements Serializable {
     private MachineLearningDefinienClassifierConfig classifyCommand;
     private FlinkPdCommandConfig pdCommand;
     private TagsCommandConfig tagsCommandConfig;
-    private String command = "help";
+    private String command;
 
     private CliParams() {
     }
@@ -70,7 +71,7 @@ public class CliParams implements Serializable {
     }
 
     public String getCommand() {
-        return command;
+        return Optional.ofNullable(command).orElse("help");
     }
 
     public CountCommandConfig getCount() {
