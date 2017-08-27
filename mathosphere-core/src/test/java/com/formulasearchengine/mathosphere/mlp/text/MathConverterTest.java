@@ -28,7 +28,7 @@ public class MathConverterTest {
 
     @Test
     public void testChem1() throws Exception {
-        String wikiText = IOUtils.toString(getClass().getResourceAsStream("../titration_wiki.txt"));
+        String wikiText = IOUtils.toString(getClass().getResourceAsStream("../titration_wiki.txt"),"UTF-8");
         final MathConverter mathConverter = new MathConverter(wikiText);
         mathConverter.getStrippedOutput();
         final List<MathTag> mathTags = mathConverter.getMathTags();
@@ -39,7 +39,7 @@ public class MathConverterTest {
 
     @Test
     public void testGo() throws Exception {
-        String wikiText = IOUtils.toString(getClass().getResourceAsStream("legendre_wiki.txt"));
+        String wikiText = IOUtils.toString(getClass().getResourceAsStream("legendre_wiki.txt"),"UTF-8");
         final MathConverter mathConverter = new MathConverter(wikiText);
         final String real = mathConverter.getStrippedOutput();
         assertThat(real, containsString("Let FORMULA_"));
@@ -65,7 +65,7 @@ public class MathConverterTest {
 
     @Test
     public void testGo2() throws Exception {
-        String wikiText = IOUtils.toString(getClass().getResourceAsStream("../performance/hamiltonian_wiki.txt"));
+        String wikiText = IOUtils.toString(getClass().getResourceAsStream("../performance/hamiltonian_wiki.txt"),"UTF-8");
         final MathConverter mathConverter = new MathConverter(wikiText);
         final String real = mathConverter.getOutput();
         assertThat(real, containsString("denoted by <math>H</math> , also \"Ȟ\" or <math>\\hat{H}</math> . "));

@@ -53,7 +53,7 @@ public class PosTaggerTestGer {
 
   @Test
   public void mediumGermanTest() throws Exception {
-    final String text = IOUtils.toString(PosTaggerTest.class.getResourceAsStream("deText.txt"));
+    final String text = IOUtils.toString(PosTaggerTest.class.getResourceAsStream("deText.txt"),"UTF-8");
 
     FlinkMlpCommandConfig cfg = FlinkMlpCommandConfig.test();
     cfg.setModel(GER);
@@ -75,7 +75,7 @@ public class PosTaggerTestGer {
 
   public static String readText(String name) throws IOException {
     InputStream inputStream = PatternMatchingRelationFinder.class.getResourceAsStream(name);
-    return IOUtils.toString(inputStream);
+    return IOUtils.toString(inputStream,"UTF-8");
   }
 
 }

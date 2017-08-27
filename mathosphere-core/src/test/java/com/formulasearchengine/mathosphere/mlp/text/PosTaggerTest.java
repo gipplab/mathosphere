@@ -5,7 +5,6 @@ import com.formulasearchengine.mathosphere.mlp.cli.FlinkMlpCommandConfig;
 import com.formulasearchengine.mathosphere.mlp.pojos.MathTag;
 import com.formulasearchengine.mathosphere.mlp.pojos.Sentence;
 import com.formulasearchengine.mathosphere.mlp.pojos.Word;
-
 import org.apache.commons.io.IOUtils;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -13,7 +12,6 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -121,7 +119,7 @@ public class PosTaggerTest {
 
   public static String readText(String name) throws IOException {
     InputStream inputStream = PatternMatchingRelationFinder.class.getResourceAsStream(name);
-    return IOUtils.toString(inputStream);
+    return IOUtils.toString(inputStream,"UTF-8");
   }
 
 }
