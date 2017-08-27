@@ -9,10 +9,10 @@ import java.io.Serializable;
 @Parameters(commandDescription = "Runs the MLP algorithm (on Flink)")
 public class FlinkMlpCommandConfig extends BaseConfig implements Serializable {
 
-  @Parameter(names = {"-in", "--inputDir"}, description = "path to the directory with wikidump")
+  @Parameter(names = {"-in", "--inputDir"}, description = "path to the directory with wikidump", required = true)
   protected String dataset;
 
-  @Parameter(names = {"-out", "--outputDir"}, description = "path to output directory")
+  @Parameter(names = {"-out", "--outputDir"}, description = "path to output directory", required = true)
   protected String outputdir;
 
   @Parameter(names = {"--threads"}, description = "how many parallel threads should be used")
