@@ -2,8 +2,8 @@
 	path = lib/MathMLQueryGenerator
 	url = https://github.com/physikerwelt/MathMLQueryGenerator.git
 [submodule "lib/MathMLTools"]
-    path = lib/MathMLTools
-    url = https://github.com/physikerwelt/MathMLTools.git
+	path = lib/MathMLTools
+	url = https://github.com/physikerwelt/MathMLTools.git
 [submodule "lib/MathMLCan"]
 	path = lib/MathMLCan
 	url = https://github.com/TU-Berlin/MathMLCan.git
@@ -16,9 +16,9 @@
 [submodule "lib/MathMLConverters"]
 	path = lib/MathMLConverters
 	url = https://github.com/ag-gipp/MathMLConverters.git
-[submodule "lib/latex-grammar"]
-	path = lib/latex-grammar
-	url = https://github.com/TU-Berlin/latex-grammar.git
 [submodule "lib/GoUldI"]
 	path = lib/GoUldI
 	url = https://github.com/ag-gipp/GoUldI.git
+[submodule "lib/latex-grammar"]
+	path = lib/latex-grammar
+	url = https://github.com/TU-Berlin/latex-grammar.git
