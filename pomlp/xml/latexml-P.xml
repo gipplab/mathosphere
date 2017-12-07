@@ -1,0 +1,60 @@
+<math xmlns="http://www.w3.org/1998/Math/MathML" id="p1.1.m1.1" class="ltx_Math" alttext="P_{n}^{\left(\alpha,\beta\right)}\left(\cos\left(a\Theta\right)\right)" display="inline">
+  <semantics id="p1.1.m1.1a">
+    <mrow id="p1.1.m1.1.11" xref="p1.1.m1.1.11.cmml">
+      <msubsup id="p1.1.m1.1.11.2" xref="p1.1.m1.1.11.2.cmml">
+        <mi id="p1.1.m1.1.1" xref="p1.1.m1.1.1.cmml">P</mi>
+        <mi id="p1.1.m1.1.2.1" xref="p1.1.m1.1.2.1.cmml">n</mi>
+        <mrow id="p1.1.m1.1.3.1" xref="p1.1.m1.1.3.1.6.cmml">
+          <mo id="p1.1.m1.1.3.1.1" xref="p1.1.m1.1.3.1.6.cmml">(</mo>
+          <mi id="p1.1.m1.1.3.1.2" xref="p1.1.m1.1.3.1.2.cmml">α</mi>
+          <mo id="p1.1.m1.1.3.1.3" xref="p1.1.m1.1.3.1.6.cmml">,</mo>
+          <mi id="p1.1.m1.1.3.1.4" xref="p1.1.m1.1.3.1.4.cmml">β</mi>
+          <mo id="p1.1.m1.1.3.1.5" xref="p1.1.m1.1.3.1.6.cmml">)</mo>
+        </mrow>
+      </msubsup>
+      <mo id="p1.1.m1.1.11.1" xref="p1.1.m1.1.11.1.cmml">⁢</mo>
+      <mrow id="p1.1.m1.1.11.3" xref="p1.1.m1.1.11.cmml">
+        <mo id="p1.1.m1.1.4" xref="p1.1.m1.1.11.cmml">(</mo>
+        <mrow id="p1.1.m1.1.11.3.2.2" xref="p1.1.m1.1.11.3.2.1.cmml">
+          <mi id="p1.1.m1.1.5" xref="p1.1.m1.1.5.cmml">cos</mi>
+          <mo id="p1.1.m1.1.11.3.2.2a" xref="p1.1.m1.1.11.3.2.1.cmml">⁡</mo>
+          <mrow id="p1.1.m1.1.11.3.2.2.2" xref="p1.1.m1.1.11.3.2.1.cmml">
+            <mo id="p1.1.m1.1.6" xref="p1.1.m1.1.11.3.2.1.cmml">(</mo>
+            <mrow id="p1.1.m1.1.11.3.2.2.1" xref="p1.1.m1.1.11.3.2.2.1.cmml">
+              <mi id="p1.1.m1.1.7" xref="p1.1.m1.1.7.cmml">a</mi>
+              <mo id="p1.1.m1.1.11.3.2.2.1.1" xref="p1.1.m1.1.11.3.2.2.1.1.cmml">⁢</mo>
+              <mi mathvariant="normal" id="p1.1.m1.1.8" xref="p1.1.m1.1.8.cmml">Θ</mi>
+            </mrow>
+            <mo id="p1.1.m1.1.9" xref="p1.1.m1.1.11.3.2.1.cmml">)</mo>
+          </mrow>
+        </mrow>
+        <mo id="p1.1.m1.1.10" xref="p1.1.m1.1.11.cmml">)</mo>
+      </mrow>
+    </mrow>
+    <annotation-xml encoding="MathML-Content" id="p1.1.m1.1b">
+      <apply id="p1.1.m1.1.11.cmml" xref="p1.1.m1.1.11">
+        <times id="p1.1.m1.1.11.1.cmml" xref="p1.1.m1.1.11.1"/>
+        <apply id="p1.1.m1.1.11.2.cmml" xref="p1.1.m1.1.11.2">
+          <power xmlns:m="http://www.w3.org/1998/Math/MathML" xref="p1.1.m1.1.11.2"/>
+          <apply id="p1.1.m1.1.11.2.2.cmml" xref="p1.1.m1.1.11.2">
+            <csymbol cd="ambiguous" id="p1.1.m1.1.11.2.2.1.cmml" xref="p1.1.m1.1.11.2">subscript</csymbol>
+            <ci id="p1.1.m1.1.1.cmml" xref="p1.1.m1.1.1">𝑃</ci>
+            <ci id="p1.1.m1.1.2.1.cmml" xref="p1.1.m1.1.2.1">𝑛</ci>
+          </apply>
+          <interval closure="open" id="p1.1.m1.1.3.1.6.cmml" xref="p1.1.m1.1.3.1">
+            <ci id="p1.1.m1.1.3.1.2.cmml" xref="p1.1.m1.1.3.1.2">𝛼</ci>
+            <ci id="p1.1.m1.1.3.1.4.cmml" xref="p1.1.m1.1.3.1.4">𝛽</ci>
+          </interval>
+        </apply>
+        <apply id="p1.1.m1.1.11.3.2.1.cmml" xref="p1.1.m1.1.11.3.2.2">
+          <cos id="p1.1.m1.1.5.cmml" xref="p1.1.m1.1.5"/>
+          <apply id="p1.1.m1.1.11.3.2.2.1.cmml" xref="p1.1.m1.1.11.3.2.2.1">
+            <times id="p1.1.m1.1.11.3.2.2.1.1.cmml" xref="p1.1.m1.1.11.3.2.2.1.1"/>
+            <ci id="p1.1.m1.1.7.cmml" xref="p1.1.m1.1.7">𝑎</ci>
+            <ci id="p1.1.m1.1.8.cmml" xref="p1.1.m1.1.8">Θ</ci>
+          </apply>
+        </apply>
+      </apply>
+    </annotation-xml>
+  </semantics>
+</math>

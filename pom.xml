@@ -54,6 +54,7 @@
         <module>basex</module>
         <module>restd</module>
         <module>evaluation</module>
+        <module>pomlp</module>
     </modules>
 
     <build>
@@ -220,4 +221,3 @@
         </profile>
     </profiles>
 </project>
-
