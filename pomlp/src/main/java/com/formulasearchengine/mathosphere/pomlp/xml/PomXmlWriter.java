@@ -2,7 +2,6 @@ package com.formulasearchengine.mathosphere.pomlp.xml;
 
 import com.formulasearchengine.mathosphere.pomlp.util.PomlpConstants;
 import com.formulasearchengine.mathosphere.pomlp.util.PomlpInternalPaths;
-import com.sun.xml.internal.txw2.output.IndentingXMLStreamWriter;
 import gov.nist.drmf.interpreter.common.GlobalPaths;
 import mlp.MathTerm;
 import mlp.ParseException;
@@ -17,6 +16,7 @@ import javax.xml.stream.XMLStreamWriter;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -25,6 +25,9 @@ import java.util.List;
 
 import static com.formulasearchengine.mathosphere.pomlp.util.PomXmlConstants.*;
 
+/**
+ * A class to parse
+ */
 public class PomXmlWriter {
 
     private static final Logger LOG = LogManager.getLogger( PomXmlWriter.class.getName() );
@@ -61,14 +64,18 @@ public class PomXmlWriter {
         }
     }
 
-    public void generateStraightXML( PomTaggedExpression root )
+    public void writeStraightXML( PomTaggedExpression root )
             throws FileNotFoundException, XMLStreamException
+    {
+        writeStraightXML( root, new FileOutputStream( outputFile.toString() ) );
+    }
+
+    public static void writeStraightXML( PomTaggedExpression root, OutputStream outputStream )
+            throws XMLStreamException
     {
         LOG.debug("Start XML writing process...");
         XMLOutputFactory factory = XMLOutputFactory.newInstance();
-        XMLStreamWriter writer = factory.createXMLStreamWriter(
-                new FileOutputStream( outputFile.toString() )
-        );
+        XMLStreamWriter writer = factory.createXMLStreamWriter(outputStream);
 
         LOG.trace("Start document writing..");
         // start
@@ -89,7 +96,7 @@ public class PomXmlWriter {
         LOG.info("XML writing successful!");
     }
 
-    private void recursiveInnerXML( XMLStreamWriter writer, PomTaggedExpression root, int tabLevel )
+    private static void recursiveInnerXML( XMLStreamWriter writer, PomTaggedExpression root, int tabLevel )
             throws XMLStreamException
     {
         writer.writeCharacters( generateTab(tabLevel) );
@@ -162,11 +169,9 @@ public class PomXmlWriter {
 
     public static void main(String[] args) throws IOException {
         String eq = "P_n^{\\left(\\alpha,\\beta\\right)}\\left(\\cos\\left(a\\Theta\\right)\\right)";
+        //eq = "P_n^{(\\alpha,\\beta)}(\\cos(a\\Theta))";
 
         PomXmlWriter writer = new PomXmlWriter(Paths.get("xml/pom-genericP.xml"));
-
-        //System.out.println( Paths.get("").toAbsolutePath() );
-        //System.out.println( Paths.get("").toAbsolutePath().getParent() );
 
         Path refPath = Paths
                 .get("")
@@ -182,7 +187,8 @@ public class PomXmlWriter {
         PomParser parser = new PomParser( refPath.toAbsolutePath().toString() );
         try {
             PomTaggedExpression pte = parser.parse(eq);
-            writer.generateStraightXML( pte );
+            writer.writeStraightXML( pte );
+            LOG.info("Done, successfully created XML document.");
         } catch ( ParseException | FileNotFoundException | XMLStreamException e ){
             LOG.error("Cannot parse a+b or cannot write XML!", e);
         }

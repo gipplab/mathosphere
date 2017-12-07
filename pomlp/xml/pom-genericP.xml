@@ -33,5 +33,134 @@
       </expression>
       <term prime-tag="right-delimiter">\right)</term>
     </expression>
+    <term prime-tag="latex-command">\cdotP</term>
+    <expression prime-tag="subsuperscript">
+      <expression prime-tag="underscore" secondary-tags="subscript_operation">
+        <term prime-tag="letter" secondary-tags="Latin">n</term>
+      </expression>
+      <expression prime-tag="caret" secondary-tags="superscript_operation">
+        <expression prime-tag="balanced-expression" secondary-tags="superscript">
+          <term prime-tag="left-delimiter">\left(</term>
+          <expression prime-tag="sequence">
+            <term prime-tag="latex-command">\alpha</term>
+            <term prime-tag="comma" secondary-tags="punctuation">,</term>
+            <term prime-tag="latex-command">\beta</term>
+          </expression>
+          <term prime-tag="right-delimiter">\right)</term>
+        </expression>
+      </expression>
+    </expression>
+    <expression prime-tag="balanced-expression">
+      <term prime-tag="left-delimiter">\left(</term>
+      <expression prime-tag="sequence">
+        <term prime-tag="function">\cos</term>
+        <expression prime-tag="balanced-expression">
+          <term prime-tag="left-delimiter">\left(</term>
+          <expression prime-tag="sequence">
+            <term prime-tag="letter" secondary-tags="Latin">a</term>
+            <term prime-tag="latex-command">\Theta</term>
+          </expression>
+          <term prime-tag="right-delimiter">\right)</term>
+        </expression>
+      </expression>
+      <term prime-tag="right-delimiter">\right)</term>
+    </expression>
+    <term prime-tag="latex-command">\cdotP</term>
+    <expression prime-tag="subsuperscript">
+      <expression prime-tag="underscore" secondary-tags="subscript_operation">
+        <term prime-tag="letter" secondary-tags="Latin">n</term>
+      </expression>
+      <expression prime-tag="caret" secondary-tags="superscript_operation">
+        <expression prime-tag="balanced-expression" secondary-tags="superscript">
+          <term prime-tag="left-delimiter">\left(</term>
+          <expression prime-tag="sequence">
+            <term prime-tag="latex-command">\alpha</term>
+            <term prime-tag="comma" secondary-tags="punctuation">,</term>
+            <term prime-tag="latex-command">\beta</term>
+          </expression>
+          <term prime-tag="right-delimiter">\right)</term>
+        </expression>
+      </expression>
+    </expression>
+    <expression prime-tag="balanced-expression">
+      <term prime-tag="left-delimiter">\left(</term>
+      <expression prime-tag="sequence">
+        <term prime-tag="function">\cos</term>
+        <expression prime-tag="balanced-expression">
+          <term prime-tag="left-delimiter">\left(</term>
+          <expression prime-tag="sequence">
+            <term prime-tag="letter" secondary-tags="Latin">a</term>
+            <term prime-tag="latex-command">\Theta</term>
+          </expression>
+          <term prime-tag="right-delimiter">\right)</term>
+        </expression>
+      </expression>
+      <term prime-tag="right-delimiter">\right)</term>
+    </expression>
+    <term prime-tag="latex-command">\cdotP</term>
+    <expression prime-tag="subsuperscript">
+      <expression prime-tag="underscore" secondary-tags="subscript_operation">
+        <term prime-tag="letter" secondary-tags="Latin">n</term>
+      </expression>
+      <expression prime-tag="caret" secondary-tags="superscript_operation">
+        <expression prime-tag="balanced-expression" secondary-tags="superscript">
+          <term prime-tag="left-delimiter">\left(</term>
+          <expression prime-tag="sequence">
+            <term prime-tag="latex-command">\alpha</term>
+            <term prime-tag="comma" secondary-tags="punctuation">,</term>
+            <term prime-tag="latex-command">\beta</term>
+          </expression>
+          <term prime-tag="right-delimiter">\right)</term>
+        </expression>
+      </expression>
+    </expression>
+    <expression prime-tag="balanced-expression">
+      <term prime-tag="left-delimiter">\left(</term>
+      <expression prime-tag="sequence">
+        <term prime-tag="function">\cos</term>
+        <expression prime-tag="balanced-expression">
+          <term prime-tag="left-delimiter">\left(</term>
+          <expression prime-tag="sequence">
+            <term prime-tag="letter" secondary-tags="Latin">a</term>
+            <term prime-tag="latex-command">\Theta</term>
+          </expression>
+          <term prime-tag="right-delimiter">\right)</term>
+        </expression>
+      </expression>
+      <term prime-tag="right-delimiter">\right)</term>
+    </expression>
+    <term prime-tag="latex-command">\cdotP</term>
+    <expression prime-tag="subsuperscript">
+      <expression prime-tag="underscore" secondary-tags="subscript_operation">
+        <term prime-tag="letter" secondary-tags="Latin">n</term>
+      </expression>
+      <expression prime-tag="caret" secondary-tags="superscript_operation">
+        <expression prime-tag="balanced-expression" secondary-tags="superscript">
+          <term prime-tag="left-delimiter">\left(</term>
+          <expression prime-tag="sequence">
+            <term prime-tag="latex-command">\alpha</term>
+            <term prime-tag="comma" secondary-tags="punctuation">,</term>
+            <term prime-tag="latex-command">\beta</term>
+          </expression>
+          <term prime-tag="right-delimiter">\right)</term>
+        </expression>
+      </expression>
+    </expression>
+    <expression prime-tag="balanced-expression">
+      <term prime-tag="left-delimiter">\left(</term>
+      <expression prime-tag="sequence">
+        <term prime-tag="function">\cos</term>
+        <expression prime-tag="balanced-expression">
+          <term prime-tag="left-delimiter">\left(</term>
+          <expression prime-tag="sequence">
+            <term prime-tag="letter" secondary-tags="Latin">a</term>
+            <term prime-tag="latex-command">\Theta</term>
+          </expression>
+          <term prime-tag="right-delimiter">\right)</term>
+        </expression>
+      </expression>
+      <term prime-tag="right-delimiter">\right)</term>
+    </expression>
+    <term prime-tag="operation">\cdot</term>
   </expression>
 </math>
