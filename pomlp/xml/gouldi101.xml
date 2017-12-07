@@ -1,0 +1,86 @@
+<math xmlns="http://www.w3.org/1998/Math/MathML" id="p1.1.m1.1" class="ltx_Math" alttext="\abs{\ff{f}@{a+\alpha}{b+\beta}-\ff{f}@{a}{b}}&lt;\epsilon" display="inline">
+    <semantics id="p1.1.m1.1a">
+        <mrow id="p1.1.m1.1.4" xref="p1.1.m1.1.4.cmml">
+            <mrow id="p1.1.m1.1.1.5" xref="p1.1.m1.1.1.1.cmml">
+                <mo id="p1.1.m1.1.1.2" xref="p1.1.m1.1.1.1.1.cmml">|</mo>
+                <mrow id="p1.1.m1.1.1.3" xref="p1.1.m1.1.1.3.cmml">
+                    <mrow id="p1.1.m1.1.1.3.1.10.2" xref="p1.1.m1.1.1.3.1.1.cmml">
+                        <mpadded width="-1.7pt" id="p1.1.m1.1.1.3.1.2" xref="p1.1.m1.1.1.3.1.2.1.1.cmml">
+                            <mi id="p1.1.m1.1.1.3.1.2.1.2" xref="p1.1.m1.1.1.3.1.2.1.2.cmml">f</mi>
+                        </mpadded>
+                        <mo id="p1.1.m1.1.1.3.1.10.2a" xref="p1.1.m1.1.1.3.1.1.cmml">⁡</mo>
+                        <mrow id="p1.1.m1.1.1.3.1.10.2.1" xref="p1.1.m1.1.1.3.1.1.cmml">
+                            <mo id="p1.1.m1.1.1.3.1.5" xref="p1.1.m1.1.1.3.1.1.cmml">(</mo>
+                            <mrow id="p1.1.m1.1.1.3.1.6" xref="p1.1.m1.1.1.3.1.6.cmml">
+                                <mi id="p1.1.m1.1.1.3.1.6.1" xref="p1.1.m1.1.1.3.1.6.1.cmml">a</mi>
+                                <mo id="p1.1.m1.1.1.3.1.6.2" xref="p1.1.m1.1.1.3.1.6.2.cmml">+</mo>
+                                <mi id="p1.1.m1.1.1.3.1.6.3" xref="p1.1.m1.1.1.3.1.6.3.cmml">α</mi>
+                            </mrow>
+                            <mo id="p1.1.m1.1.1.3.1.7" xref="p1.1.m1.1.1.3.1.1.cmml">,</mo>
+                            <mrow id="p1.1.m1.1.1.3.1.8" xref="p1.1.m1.1.1.3.1.8.cmml">
+                                <mi id="p1.1.m1.1.1.3.1.8.1" xref="p1.1.m1.1.1.3.1.8.1.cmml">b</mi>
+                                <mo id="p1.1.m1.1.1.3.1.8.2" xref="p1.1.m1.1.1.3.1.8.2.cmml">+</mo>
+                                <mi id="p1.1.m1.1.1.3.1.8.3" xref="p1.1.m1.1.1.3.1.8.3.cmml">β</mi>
+                            </mrow>
+                            <mo id="p1.1.m1.1.1.3.1.9" xref="p1.1.m1.1.1.3.1.1.cmml">)</mo>
+                        </mrow>
+                    </mrow>
+                    <mo id="p1.1.m1.1.1.3.2" xref="p1.1.m1.1.1.3.2.cmml">-</mo>
+                    <mrow id="p1.1.m1.1.1.3.3.10.2" xref="p1.1.m1.1.1.3.3.1.cmml">
+                        <mpadded width="-1.7pt" id="p1.1.m1.1.1.3.3.2" xref="p1.1.m1.1.1.3.3.2.1.1.cmml">
+                            <mi id="p1.1.m1.1.1.3.3.2.1.2" xref="p1.1.m1.1.1.3.3.2.1.2.cmml">f</mi>
+                        </mpadded>
+                        <mo id="p1.1.m1.1.1.3.3.10.2a" xref="p1.1.m1.1.1.3.3.1.cmml">⁡</mo>
+                        <mrow id="p1.1.m1.1.1.3.3.10.2.1" xref="p1.1.m1.1.1.3.3.1.cmml">
+                            <mo id="p1.1.m1.1.1.3.3.5" xref="p1.1.m1.1.1.3.3.1.cmml">(</mo>
+                            <mi id="p1.1.m1.1.1.3.3.6" xref="p1.1.m1.1.1.3.3.6.cmml">a</mi>
+                            <mo id="p1.1.m1.1.1.3.3.7" xref="p1.1.m1.1.1.3.3.1.cmml">,</mo>
+                            <mi id="p1.1.m1.1.1.3.3.8" xref="p1.1.m1.1.1.3.3.8.cmml">b</mi>
+                            <mo id="p1.1.m1.1.1.3.3.9" xref="p1.1.m1.1.1.3.3.1.cmml">)</mo>
+                        </mrow>
+                    </mrow>
+                </mrow>
+                <mo id="p1.1.m1.1.1.4" xref="p1.1.m1.1.1.1.1.cmml">|</mo>
+            </mrow>
+            <mo id="p1.1.m1.1.2" xref="p1.1.m1.1.2.cmml">&lt;</mo>
+            <mi id="p1.1.m1.1.3" xref="p1.1.m1.1.3.cmml">ϵ</mi>
+        </mrow>
+        <annotation-xml encoding="MathML-Content" id="p1.1.m1.1b">
+            <apply id="p1.1.m1.1.4.cmml" xref="p1.1.m1.1.4">
+                <lt id="p1.1.m1.1.2.cmml" xref="p1.1.m1.1.2"/>
+                <apply id="p1.1.m1.1.1.1.cmml" xref="p1.1.m1.1.1.5">
+                    <abs id="p1.1.m1.1.1.1.1.cmml" xref="p1.1.m1.1.1.2"/>
+                    <apply id="p1.1.m1.1.1.3.cmml" xref="p1.1.m1.1.1.3">
+                        <minus id="p1.1.m1.1.1.3.2.cmml" xref="p1.1.m1.1.1.3.2"/>
+                        <apply id="p1.1.m1.1.1.3.1.1.cmml" xref="p1.1.m1.1.1.3.1.10.2">
+                            <apply id="p1.1.m1.1.1.3.1.2.1.1.cmml" xref="p1.1.m1.1.1.3.1.2">
+                                <csymbol cd="dlmf" id="p1.1.m1.1.1.3.1.2.1.1.1.cmml" xref="p1.1.m1.1.1.3.1.2">function</csymbol>
+                                <ci id="p1.1.m1.1.1.3.1.2.1.2.cmml" xref="p1.1.m1.1.1.3.1.2.1.2">𝑓</ci>
+                            </apply>
+                            <apply id="p1.1.m1.1.1.3.1.6.cmml" xref="p1.1.m1.1.1.3.1.6">
+                                <plus id="p1.1.m1.1.1.3.1.6.2.cmml" xref="p1.1.m1.1.1.3.1.6.2"/>
+                                <ci id="p1.1.m1.1.1.3.1.6.1.cmml" xref="p1.1.m1.1.1.3.1.6.1">𝑎</ci>
+                                <ci id="p1.1.m1.1.1.3.1.6.3.cmml" xref="p1.1.m1.1.1.3.1.6.3">𝛼</ci>
+                            </apply>
+                            <apply id="p1.1.m1.1.1.3.1.8.cmml" xref="p1.1.m1.1.1.3.1.8">
+                                <plus id="p1.1.m1.1.1.3.1.8.2.cmml" xref="p1.1.m1.1.1.3.1.8.2"/>
+                                <ci id="p1.1.m1.1.1.3.1.8.1.cmml" xref="p1.1.m1.1.1.3.1.8.1">𝑏</ci>
+                                <ci id="p1.1.m1.1.1.3.1.8.3.cmml" xref="p1.1.m1.1.1.3.1.8.3">𝛽</ci>
+                            </apply>
+                        </apply>
+                        <apply id="p1.1.m1.1.1.3.3.1.cmml" xref="p1.1.m1.1.1.3.3.10.2">
+                            <apply id="p1.1.m1.1.1.3.3.2.1.1.cmml" xref="p1.1.m1.1.1.3.3.2">
+                                <csymbol cd="dlmf" id="p1.1.m1.1.1.3.3.2.1.1.1.cmml" xref="p1.1.m1.1.1.3.3.2">function</csymbol>
+                                <ci id="p1.1.m1.1.1.3.3.2.1.2.cmml" xref="p1.1.m1.1.1.3.3.2.1.2">𝑓</ci>
+                            </apply>
+                            <ci id="p1.1.m1.1.1.3.3.6.cmml" xref="p1.1.m1.1.1.3.3.6">𝑎</ci>
+                            <ci id="p1.1.m1.1.1.3.3.8.cmml" xref="p1.1.m1.1.1.3.3.8">𝑏</ci>
+                        </apply>
+                    </apply>
+                </apply>
+                <ci id="p1.1.m1.1.3.cmml" xref="p1.1.m1.1.3">italic-ϵ</ci>
+            </apply>
+        </annotation-xml>
+        <annotation encoding="application/x-tex" id="p1.1.m1.1c">\abs{\ff{f}@{a+\alpha}{b+\beta}-\ff{f}@{a}{b}}&lt;\epsilon</annotation>
+    </semantics>
+</math>

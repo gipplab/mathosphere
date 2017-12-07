@@ -1,0 +1,36 @@
+[DEBUG] 17:14:41.581 [pomlp.xml.PomXmlWriter:49 | main] - Resources Path: /home/andreg-p/Projects/mathosphere/pomlp/target/classes
+[TRACE] 17:14:41.584 [pomlp.xml.PomXmlWriter:50 | main] - Na sowas
+[ERROR] 17:14:41.584 [pomlp.xml.PomXmlWriter:51 | main] - Critical
+java.lang.Exception: LOL
+	at com.formulasearchengine.mathosphere.pomlp.xml.PomXmlWriter.main(PomXmlWriter.java:51)
+[DEBUG] 17:15:59.519 [pomlp.xml.PomXmlWriter:49 | main] - Resources Path: /home/andreg-p/Projects/mathosphere/pomlp/target/classes
+[TRACE] 17:15:59.522 [pomlp.xml.PomXmlWriter:50 | main] - Na sowas
+[ERROR] 17:15:59.522 [pomlp.xml.PomXmlWriter:51 | main] - Critical
+java.lang.Exception: LOL
+	at com.formulasearchengine.mathosphere.pomlp.xml.PomXmlWriter.main(PomXmlWriter.java:51)
+[32m[DEBUG][m 17-12-06-17:18:05.068 [35m[pomlp.xml.PomXmlWriter:49 | main][m - Resources Path: /home/andreg-p/Projects/mathosphere/pomlp/target/classes
+[36m[TRACE][m 17-12-06-17:18:05.070 [35m[pomlp.xml.PomXmlWriter:50 | main][m - Na sowas
+[1;31m[ERROR][m 17-12-06-17:18:05.070 [35m[pomlp.xml.PomXmlWriter:51 | main][m - Critical
+java.lang.Exception: LOL
+	at com.formulasearchengine.mathosphere.pomlp.xml.PomXmlWriter.main(PomXmlWriter.java:51)
+[32m[DEBUG][m 17-12-06-17:21:35.567 [35m[pomlp.xml.PomXmlWriter:49 | main][m - Resources Path: /home/andreg-p/Projects/mathosphere/pomlp/target/classes
+[36m[TRACE][m 17-12-06-17:21:35.570 [35m[pomlp.xml.PomXmlWriter:50 | main][m - Na sowas
+[1;31m[ERROR][m 17-12-06-17:21:35.570 [35m[pomlp.xml.PomXmlWriter:51 | main][m - Critical
+java.lang.Exception: LOL
+	at com.formulasearchengine.mathosphere.pomlp.xml.PomXmlWriter.main(PomXmlWriter.java:51)
+[DEBUG] 17-12-07-14:18:42.795 [pomlp.xml.PomXmlWriter:151 | main] - Path: lib/latex-grammar/libs/ReferenceData
+[DEBUG] 17-12-07-14:18:58.455 [pomlp.xml.PomXmlWriter:151 | main] - Path: /home/andreg-p/Projects/mathosphere/pomlp/lib/latex-grammar/libs/ReferenceData
+[INFO ] 17-12-07-14:44:00.699 [pomlp.xml.PomXmlWriter:59 | main] - Overwrite mode is on -> overwriting existing file output.xml
+[INFO ] 17-12-07-14:47:12.776 [pomlp.xml.PomXmlWriter:59 | main] - Overwrite mode is on -> overwrite existing file output.xml
+[DEBUG] 17-12-07-14:47:12.783 [pomlp.xml.PomXmlWriter:179 | main] - Path: /home/andreg-p/Projects/mathosphere/lib/latex-grammar/libs/ReferenceData
+[DEBUG] 17-12-07-14:47:12.955 [pomlp.xml.PomXmlWriter:66 | main] - Start XML writing process...
+[TRACE] 17-12-07-14:47:12.960 [pomlp.xml.PomXmlWriter:72 | main] - Start document writing..
+[TRACE] 17-12-07-14:47:12.961 [pomlp.xml.PomXmlWriter:80 | main] - Start recursive writing..
+[TRACE] 17-12-07-14:47:12.967 [pomlp.xml.PomXmlWriter:84 | main] - Close document.
+[INFO ] 17-12-07-14:47:12.968 [pomlp.xml.PomXmlWriter:88 | main] - XML writing successful!
+[DEBUG] 17-12-07-14:49:23.821 [pomlp.xml.PomXmlWriter:179 | main] - Path to POM references: /home/andreg-p/Projects/mathosphere/lib/latex-grammar/libs/ReferenceData
+[DEBUG] 17-12-07-14:49:24.017 [pomlp.xml.PomXmlWriter:66 | main] - Start XML writing process...
+[TRACE] 17-12-07-14:49:24.022 [pomlp.xml.PomXmlWriter:72 | main] - Start document writing..
+[TRACE] 17-12-07-14:49:24.024 [pomlp.xml.PomXmlWriter:80 | main] - Start recursive writing..
+[TRACE] 17-12-07-14:49:24.030 [pomlp.xml.PomXmlWriter:84 | main] - Close document.
+[INFO ] 17-12-07-14:49:24.032 [pomlp.xml.PomXmlWriter:88 | main] - XML writing successful!

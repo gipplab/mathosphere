@@ -1,0 +1,7 @@
+[INFO ] 17-12-07-15:16:30.197 [pomlp.xml.PomXmlWriter:60 | main] - Overwrite mode is on -> overwrite existing file pom-genericP.xml
+[DEBUG] 17-12-07-15:16:30.205 [pomlp.xml.PomXmlWriter:180 | main] - Path to POM references: /home/andreg-p/Projects/mathosphere/lib/latex-grammar/libs/ReferenceData
+[DEBUG] 17-12-07-15:16:30.361 [pomlp.xml.PomXmlWriter:67 | main] - Start XML writing process...
+[TRACE] 17-12-07-15:16:30.365 [pomlp.xml.PomXmlWriter:73 | main] - Start document writing..
+[TRACE] 17-12-07-15:16:30.366 [pomlp.xml.PomXmlWriter:81 | main] - Start recursive writing..
+[TRACE] 17-12-07-15:16:30.370 [pomlp.xml.PomXmlWriter:85 | main] - Close document.
+[INFO ] 17-12-07-15:16:30.370 [pomlp.xml.PomXmlWriter:89 | main] - XML writing successful!

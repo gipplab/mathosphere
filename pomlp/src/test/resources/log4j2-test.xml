@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN">
+    <Appenders>
+        <Console name="system-console" target="SYSTEM_OUT">
+            <PatternLayout>
+                <Pattern>%highlight{[%-5level]}{FATAL=bg_red Bright white, ERROR=bright red, WARN=Bright yellow, INFO=Bright blue, DEBUG=green, TRACE=cyan} %d{HH:mm:ss.SSS} %highlight{[%t] %c{1}}{FATAL=magenta, ERROR=magenta, WARN=magenta, INFO=magenta, DEBUG=magenta, TRACE=magenta} - %msg%n</Pattern>
+            </PatternLayout>
+        </Console>
+        <RollingFile name="rolling-file-test-logger">
+            <FileName>pomlp/logs/pomlp-tests.log</FileName>
+            <FilePattern>logs/pomlp-tests-$d{yyyy-MM-dd}.log.zip</FilePattern>
+            <PatternLayout>
+                <Pattern>[%-5level] %d{yy-MM-dd-HH:mm:ss.SSS} [%logger{-3}:%line | %t] - %msg%n%throwable{full} </Pattern>
+            </PatternLayout>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="16 KB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="1"/>
+        </RollingFile>
+    </Appenders>
+    <Loggers>
+        <Root level="ALL">
+            <AppenderRef ref="system-console" level="DEBUG"/>
+            <AppenderRef ref="rolling-file-test-logger" level="ALL"/>
+        </Root>
+    </Loggers>
+</Configuration>
