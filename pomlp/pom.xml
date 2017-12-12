@@ -22,62 +22,6 @@
         <java.version>1.8</java.version>
     </properties>
 
-    <dependencies>
-        <dependency>
-            <groupId>gov.nist.drmf.interpreter</groupId>
-            <artifactId>interpreter.core</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
-
-        <dependency>
-            <groupId>it.unibz.inf</groupId>
-            <artifactId>RTED</artifactId>
-            <version>1.2-SNAPSHOT</version>
-        </dependency>
-
-        <!-- Logging via log4j2 -->
-        <dependency>
-            <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-api</artifactId>
-            <version>2.10.0</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-core</artifactId>
-            <version>2.10.0</version>
-        </dependency>
-
-        <!--command line options parser
-            http://jcommander.org/ -->
-        <dependency>
-            <groupId>com.beust</groupId>
-            <artifactId>jcommander</artifactId>
-            <version>1.72</version>
-        </dependency>
-
-        <!-- Assumes an already installed version at local maven (see plugins above) -->
-        <dependency>
-            <groupId>gov.nist.drmf.interpreter</groupId>
-            <artifactId>MLP</artifactId>
-            <version>1.0</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-api</artifactId>
-            <version>5.0.0-M5</version>
-            <scope>test</scope>
-        </dependency>
-
-        <!-- Needed for surefire, otherwise maven cannot find JUnit5 tests -->
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-engine</artifactId>
-            <version>5.0.0-M5</version>
-        </dependency>
-    </dependencies>
-
     <build>
         <plugins>
             <!--
@@ -139,4 +83,60 @@
             </plugin>
         </plugins>
     </build>
+
+    <dependencies>
+        <dependency>
+            <groupId>gov.nist.drmf.interpreter</groupId>
+            <artifactId>interpreter.core</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>it.unibz.inf</groupId>
+            <artifactId>RTED</artifactId>
+            <version>1.2-SNAPSHOT</version>
+        </dependency>
+
+        <!-- Logging via log4j2 -->
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-api</artifactId>
+            <version>2.10.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
+            <version>2.10.0</version>
+        </dependency>
+
+        <!--command line options parser
+            http://jcommander.org/ -->
+        <dependency>
+            <groupId>com.beust</groupId>
+            <artifactId>jcommander</artifactId>
+            <version>1.72</version>
+        </dependency>
+
+        <!-- Assumes an already installed version at local maven (see plugins above) -->
+        <dependency>
+            <groupId>gov.nist.drmf.interpreter</groupId>
+            <artifactId>MLP</artifactId>
+            <version>1.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>5.0.0-M5</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- Needed for surefire, otherwise maven cannot find JUnit5 tests -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>5.0.0-M5</version>
+        </dependency>
+    </dependencies>
 </project>
