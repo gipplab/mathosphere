@@ -1,8 +1,11 @@
-package com.formulasearchengine.mathosphere.pomlp.xml;
+package com.formulasearchengine.mathosphere.pomlp;
 
 import com.formulasearchengine.mathosphere.pomlp.util.PomlpInternalPaths;
+import com.formulasearchengine.mathosphere.pomlp.xml.PomXmlWriter;
+import com.formulasearchengine.mathosphere.pomlp.xml.XmlDocumentReader;
 import gov.nist.drmf.interpreter.common.GlobalPaths;
-import it.unibz.inf.rted.convenience.RTED;
+import it.unibz.inf.rted.distance.RTED_InfoTree_Opt;
+import it.unibz.inf.rted.util.LblTree;
 import mlp.ParseException;
 import mlp.PomParser;
 import mlp.PomTaggedExpression;
@@ -11,18 +14,15 @@ import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
-import javax.print.Doc;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
-import java.io.*;
+import java.io.ByteArrayOutputStream;
+import java.io.PipedInputStream;
+import java.io.PipedOutputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -158,14 +158,25 @@ public class MathParser {
         Node presP = XmlDocumentReader.getNodeFromXML( presentationP );
 
         LOG.info("Compute distances!");
-        double d1 = RTED.computeDistance( pomP, contP );
-        double d2 = RTED.computeDistance( pomP, presP );
-        double d3 = RTED.computeDistance( contP, presP );
-        double d4 = RTED.computeDistance( pomP, pomP );
+        // copy computeMapping by Moritz
+        RTED_InfoTree_Opt rted = new RTED_InfoTree_Opt(
+                1.0, // insertion costs
+                1.0, // deletion costs
+                0.0  // renaming costs
+        );
 
-        System.out.println( "D1: " + d1 );
-        System.out.println( "D2: " + d2 );
-        System.out.println( "D3: " + d3 );
-        System.out.println( "D4: " + d4 );
+        double distCont = rted.nonNormalizedTreeDist( LblTree.fromXML(pomP), LblTree.fromXML(contP) );
+        //double distPres = rted.nonNormalizedTreeDist( LblTree.fromXML(pomP), LblTree.fromXML(presP) );
+
+        LinkedList<int[]> ops = rted.computeEditMapping();
+        String str = "(";
+        for ( int[] arr : ops )
+            str += Arrays.toString(arr) + "; ";
+        str = str.substring(0, str.length()-"; ".length()) + ")";
+
+
+        LOG.info("Distance to ContentTree: " + distCont);
+//        LOG.info("Distance to PresentationTree: " + distPres);
+        LOG.info("Min-Operations: (" + ops.size() + ")" + System.lineSeparator() + str);
     }
 }

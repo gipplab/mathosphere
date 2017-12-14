@@ -85,16 +85,38 @@
     </build>
 
     <dependencies>
+        <!-- Useful to have the core package of our latex translator -->
         <dependency>
             <groupId>gov.nist.drmf.interpreter</groupId>
             <artifactId>interpreter.core</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
 
+        <!-- Assumes an already installed version at local maven (see plugins above) -->
+        <dependency>
+            <groupId>gov.nist.drmf.interpreter</groupId>
+            <artifactId>MLP</artifactId>
+            <version>1.0</version>
+        </dependency>
+
+        <!-- Robust Tree Edit Distance algorithm -->
         <dependency>
             <groupId>it.unibz.inf</groupId>
             <artifactId>RTED</artifactId>
             <version>1.2-SNAPSHOT</version>
+        </dependency>
+
+        <!-- Spring to communicate with GitHub -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
+            <version>5.0.2.RELEASE</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>2.9.3</version>
         </dependency>
 
         <!-- Logging via log4j2 -->
@@ -116,13 +138,6 @@
             <groupId>com.beust</groupId>
             <artifactId>jcommander</artifactId>
             <version>1.72</version>
-        </dependency>
-
-        <!-- Assumes an already installed version at local maven (see plugins above) -->
-        <dependency>
-            <groupId>gov.nist.drmf.interpreter</groupId>
-            <artifactId>MLP</artifactId>
-            <version>1.0</version>
         </dependency>
 
         <dependency>
