@@ -1,5 +1,7 @@
 package com.formulasearchengine.mathosphere.pomlp.util;
 
+import com.formulasearchengine.mathosphere.pomlp.util.config.PathBuilder;
+
 import java.nio.file.Path;
 import java.nio.file.Paths;
 

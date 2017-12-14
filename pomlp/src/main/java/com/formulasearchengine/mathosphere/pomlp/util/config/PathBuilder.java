@@ -1,4 +1,4 @@
-package com.formulasearchengine.mathosphere.pomlp.util;
+package com.formulasearchengine.mathosphere.pomlp.util.config;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -31,7 +31,7 @@ public class PathBuilder {
     }
 
     public PathBuilder addSubPath( String name ){
-        path.resolve(name);
+        path = path.resolve(name);
         return this;
     }
 
