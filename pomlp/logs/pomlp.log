@@ -1,2 +1,0 @@
-[DEBUG] 17-12-15-00:50:35.148 [pomlp.util.rest.GitHubFileResponse:60 | main] - Decode base64 encoded content.
-[INFO ] 17-12-15-00:50:35.208 [pomlp.util.GithubLoader:72 | main] - Hmm: [com.formulasearchengine.mathosphere.pomlp.gouldi.IdentifierExplanations@49c90a9c, com.formulasearchengine.mathosphere.pomlp.gouldi.IdentifierExplanations@5efa40fe]

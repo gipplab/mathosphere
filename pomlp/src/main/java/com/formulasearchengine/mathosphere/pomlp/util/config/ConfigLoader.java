@@ -21,6 +21,9 @@ public class ConfigLoader {
     public static final String GITHUB_REPO_OWNER = "github.repo.owner";
     public static final String GITHUB_REPO_PATH = "github.repo.subpath";
 
+    public static final String GOULDI_MAXIMUM_NUM = "gouldi.max";
+    public static final String GOULDI_LOCAL_PATH = "gouldi.local";
+
     public static Properties loadConfiguration()
             throws FileNotFoundException
     {
@@ -35,7 +38,8 @@ public class ConfigLoader {
             throws FileNotFoundException
     {
         File config = configFile.toFile();
-        if ( !config.exists() ) throw new FileNotFoundException("Cannot find configuration file!");
+        if ( !config.exists() )
+            throw new FileNotFoundException("Cannot find configuration file! " + configFile.toAbsolutePath().toString());
 
         Properties props = new Properties();
         try ( FileInputStream in = new FileInputStream(config) ) {

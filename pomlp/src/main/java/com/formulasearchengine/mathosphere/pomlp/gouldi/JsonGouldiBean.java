@@ -50,7 +50,7 @@ public class JsonGouldiBean {
         this.definitions = definitions;
     }
 
-    public String getMathTex() {
+    public String getOriginalTex() {
         return mathTex;
     }
 

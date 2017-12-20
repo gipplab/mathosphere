@@ -1,7 +1,7 @@
 package com.formulasearchengine.mathosphere.pomlp.util.rest;
 
 public class RESTPathBuilder {
-    private static final String BIND = "/";
+    public static final String BIND = "/";
     private static final String GH_REPO = "repos";
     private static final String GH_CONTENT = "contents";
 
