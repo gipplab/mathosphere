@@ -60,6 +60,18 @@ public class MathMLDocumentReader extends XmlDocumentReader {
         // presentation mml node
         Node parentNode = contentNode.getParentNode();
         parentNode.removeChild( contentNode );
+
+        // annotation tags?
+        NodeList childs = parentNode.getChildNodes();
+        if ( childs != null ){
+            Node n;
+            for ( int i = 0; i < childs.getLength(); i++ ){
+                n = childs.item(i);
+                if ( n.getNodeName().equals("annotation") )
+                    parentNode.removeChild(n);
+            }
+        }
+
         presentationNode = parentNode;
     }
 

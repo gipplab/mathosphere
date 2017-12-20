@@ -26,6 +26,7 @@ public class MLPWrapper {
 
         String test = "A_{k}(n)=\\sum_{\\begin{subarray}{c}1<h\\leq k" +
                 "\\left(h,k\\right)=1\\end{subarray}}{\\mathrm{e}^{\\pi\\mathrm{i}f(h,k)-(2\\pi\\mathrm{i}nh/k)}}";
+        test = "S'";
 
         PomTaggedExpression pte = parser.parse(test);
         pte = MLP.clean(pte);
