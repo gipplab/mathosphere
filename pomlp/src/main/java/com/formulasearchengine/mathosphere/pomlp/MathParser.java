@@ -1,18 +1,17 @@
 package com.formulasearchengine.mathosphere.pomlp;
 
+import com.formulasearchengine.mathosphere.pomlp.gouldi.JsonGouldiBean;
+import com.formulasearchengine.mathosphere.pomlp.util.GoldStandardLoader;
 import com.formulasearchengine.mathosphere.pomlp.util.PomlpInternalPaths;
 import com.formulasearchengine.mathosphere.pomlp.xml.PomXmlWriter;
-import com.formulasearchengine.mathosphere.pomlp.xml.XmlDocumentReader;
 import gov.nist.drmf.interpreter.common.GlobalPaths;
-import it.unibz.inf.rted.distance.RTED_InfoTree_Opt;
-import it.unibz.inf.rted.util.LblTree;
 import mlp.ParseException;
 import mlp.PomParser;
 import mlp.PomTaggedExpression;
+import org.apache.commons.text.StringEscapeUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
-import org.w3c.dom.Node;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -21,12 +20,12 @@ import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.LinkedList;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * This class is a wrapper of the MLP (POM-project) class.
@@ -79,6 +78,37 @@ public class MathParser {
         String out = outputStream.toString();
         outputStream.close();
         return out;
+    }
+
+    private static final String POM_BUG_AVOIDANCE_UNDERSCORE = "_(\\\\[^\\s\\n-+]+)";
+
+    private static final String ELEMINATE_ENDINGS = "[\\s,;.]*(\\\\])?[\\s,;.]*$";
+    private static final String ELEMINATE_STARTS = "^[\\s,;.]*(\\\\\\[)?[\\s,;.]*";
+
+    public static final char CR = (char)0x0D;
+    public static final char LF = (char)0x0A;
+    public static final String CRLF = ""+CR+LF;
+
+    private static final String COMMENTED_LINEBREAK = "%\\s*("+CR+"|"+LF+"|"+CRLF+")";
+
+    public static String latexPreProcessing(String latex ){
+        LOG.debug(" Pre-Processing for:   " + latex);
+
+        latex = latex.replaceAll( POM_BUG_AVOIDANCE_UNDERSCORE, "_{$1}" );
+        LOG.trace(" Surround underscore:  " + latex);
+
+        latex = StringEscapeUtils.unescapeHtml4(latex);
+        LOG.trace("HTML Unescaped:       " + latex);
+
+        latex = latex.replaceAll( COMMENTED_LINEBREAK, "" );
+        LOG.trace("Commented linebreaks: " + latex);
+
+        latex = latex.replaceAll( ELEMINATE_ENDINGS, "");
+        latex = latex.replaceAll( ELEMINATE_STARTS, "" );
+        LOG.trace("Replace bad end/start:" + latex);
+        LOG.debug("Finalize Pre-Processing for POM-Tagger: " + latex);
+
+        return latex;
     }
 
     /**
@@ -139,6 +169,24 @@ public class MathParser {
     }
 
     public static void main(String[] args) throws Exception {
+//
+//        MathMLDocumentReader mmlR = new MathMLDocumentReader(
+//                Paths.get("xml").resolve("latexml-P.mml.xml")
+//        );
+//
+//        Document doc = mmlR.getPresentationSubtree();
+//        String s = XmlDocumentReader.toString( doc, false );
+//        LOG.info("Da Content-Tree:" + System.lineSeparator() + s);
+
+//        GoldStandardLoader loader = GoldStandardLoader.getInstance();
+//        loader.initLocally();
+//
+//        LOG.info(loader.getGouldiJson(2).getCorrectTex());
+
+//        JsonGouldiBean b = loader.getGouldiJson(1);
+//        LOG.info("Bean1: " + b.getCorrectTex());
+
+        /*
         String eq = "P_n^{\\left(\\alpha,\\beta\\right)}\\left(\\cos\\left(a\\Theta\\right)\\right)";
 
         Path contentP = Paths.get("xml").resolve("latexml-P-content.xml");
@@ -178,5 +226,6 @@ public class MathParser {
         LOG.info("Distance to ContentTree: " + distCont);
 //        LOG.info("Distance to PresentationTree: " + distPres);
         LOG.info("Min-Operations: (" + ops.size() + ")" + System.lineSeparator() + str);
+        //*/
     }
 }

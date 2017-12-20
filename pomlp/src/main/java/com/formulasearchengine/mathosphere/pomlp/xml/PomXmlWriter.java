@@ -116,7 +116,7 @@ public class PomXmlWriter {
             if ( termMode ) writer.writeStartElement( TERM_NODE );
             else writer.writeEmptyElement( EXPR_NODE );
 
-            writer.writeAttribute( ATTR_PRIME_TAG, pTag );
+            if ( pTag != null ) writer.writeAttribute( ATTR_PRIME_TAG, pTag );
             if ( !secTags.isEmpty() )
                 writer.writeAttribute( ATTR_SEC_TAG, createListString(secTags) );
 
@@ -130,9 +130,8 @@ public class PomXmlWriter {
         }
 
         writer.writeStartElement( EXPR_NODE );
-        writer.writeAttribute( ATTR_PRIME_TAG, pTag );
-        if ( !secTags.isEmpty() )
-            writer.writeAttribute( ATTR_SEC_TAG, createListString(secTags) );
+        if ( pTag != null ) writer.writeAttribute( ATTR_PRIME_TAG, pTag );
+        if ( !secTags.isEmpty() ) writer.writeAttribute( ATTR_SEC_TAG, createListString(secTags) );
         writer.writeCharacters( NL );
 
         for ( PomTaggedExpression exp : comps ){

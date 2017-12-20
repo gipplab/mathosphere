@@ -16,7 +16,17 @@
     <packaging>jar</packaging>
     <name>POMLP: Part-of-Mathematical Language Processor</name>
 
+    <developers>
+        <developer>
+            <name>Andre Greiner-Petter</name>
+            <email>andre.greiner-petter@uni-konstanz.de</email>
+            <organization>Universitaet Konstanz</organization>
+            <organizationUrl>https://www.uni-konstanz.de/</organizationUrl>
+        </developer>
+    </developers>
+
     <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <java.version>1.8</java.version>
@@ -106,11 +116,24 @@
             <version>1.2-SNAPSHOT</version>
         </dependency>
 
+        <!-- MathML Query Handler -->
+        <dependency>
+            <groupId>com.formulasearchengine</groupId>
+            <artifactId>mathmlquerygenerator</artifactId>
+            <version>0.0.3-SNAPSHOT</version>
+        </dependency>
+
         <!-- Spring to communicate with GitHub -->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-web</artifactId>
             <version>5.0.2.RELEASE</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-text</artifactId>
+            <version>1.0</version>
         </dependency>
 
         <dependency>
@@ -143,6 +166,13 @@
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
+            <version>5.0.0-M5</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-params</artifactId>
             <version>5.0.0-M5</version>
             <scope>test</scope>
         </dependency>
