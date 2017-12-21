@@ -2,7 +2,7 @@ package com.formulasearchengine.mathosphere.pomlp.pom;
 
 import com.formulasearchengine.mathosphere.pomlp.MathParser;
 import com.formulasearchengine.mathosphere.pomlp.gouldi.JsonGouldiBean;
-import com.formulasearchengine.mathosphere.pomlp.util.GoldStandardLoader;
+import com.formulasearchengine.mathosphere.pomlp.GoldStandardLoader;
 import com.formulasearchengine.mathosphere.pomlp.xml.MathMLDocumentReader;
 import it.unibz.inf.rted.distance.RTED_InfoTree_Opt;
 import it.unibz.inf.rted.util.LblTree;

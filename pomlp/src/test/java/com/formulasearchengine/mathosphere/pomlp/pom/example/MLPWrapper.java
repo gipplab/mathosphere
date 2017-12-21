@@ -1,6 +1,6 @@
 package com.formulasearchengine.mathosphere.pomlp.pom.example;
 
-import com.formulasearchengine.mathosphere.pomlp.util.PomlpInternalPaths;
+import com.formulasearchengine.mathosphere.pomlp.util.PomlpPathConstants;
 import gov.nist.drmf.interpreter.common.GlobalPaths;
 import gov.nist.drmf.interpreter.examples.MLP;
 import mlp.PomParser;
@@ -16,7 +16,7 @@ public class MLPWrapper {
                 .get("")            // local path       -> mathosphere/pomlp
                 .toAbsolutePath()   // to absolute path
                 .getParent()        // parent directory -> mathosphere/
-                .resolve( PomlpInternalPaths
+                .resolve( PomlpPathConstants
                         .LatexGrammarBaseDir // -> mathosphere/lib/latex-grammar
                         .resolve(
                                 GlobalPaths.PATH_REFERENCE_DATA

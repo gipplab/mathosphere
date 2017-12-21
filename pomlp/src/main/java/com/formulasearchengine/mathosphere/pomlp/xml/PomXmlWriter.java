@@ -1,7 +1,6 @@
 package com.formulasearchengine.mathosphere.pomlp.xml;
 
-import com.formulasearchengine.mathosphere.pomlp.util.PomlpConstants;
-import com.formulasearchengine.mathosphere.pomlp.util.PomlpInternalPaths;
+import com.formulasearchengine.mathosphere.pomlp.util.PomlpPathConstants;
 import gov.nist.drmf.interpreter.common.GlobalPaths;
 import mlp.MathTerm;
 import mlp.ParseException;
@@ -23,7 +22,7 @@ import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static com.formulasearchengine.mathosphere.pomlp.util.PomXmlConstants.*;
+import static com.formulasearchengine.mathosphere.pomlp.util.Constants.*;
 
 /**
  * A class to parse
@@ -39,7 +38,7 @@ public class PomXmlWriter {
     private Path outputFile;
 
     public PomXmlWriter() throws IOException {
-        outputFile = PomlpInternalPaths.ResourceXMLExportsDir.resolve( GENERIC_FILE_NAME );
+        outputFile = PomlpPathConstants.ResourceXMLExportsDir.resolve( GENERIC_FILE_NAME );
         initOverwriteCheck();
     }
 
@@ -51,8 +50,8 @@ public class PomXmlWriter {
     private void initOverwriteCheck() throws IOException {
         if ( Files.exists(outputFile) && !overwrite ){
             String[] tmp = GENERIC_FILE_NAME.split("\\.");
-            String newFileName = tmp[0] + LocalDateTime.now().format(PomlpConstants.DATE_FORMAT);
-            outputFile = PomlpInternalPaths.ResourceXMLExportsDir.resolve(
+            String newFileName = tmp[0] + LocalDateTime.now().format( DATE_FORMAT );
+            outputFile = PomlpPathConstants.ResourceXMLExportsDir.resolve(
                     newFileName + "." + tmp[1]
             );
             LOG.info("Overwrite mode is off -> create different File: " + outputFile.getFileName());
@@ -176,7 +175,7 @@ public class PomXmlWriter {
                 .get("")
                 .toAbsolutePath()
                 .getParent()
-                .resolve( PomlpInternalPaths
+                .resolve( PomlpPathConstants
                         .LatexGrammarBaseDir
                         .resolve(GlobalPaths.PATH_REFERENCE_DATA)
                 );

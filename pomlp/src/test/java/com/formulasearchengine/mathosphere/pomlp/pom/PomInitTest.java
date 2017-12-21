@@ -1,8 +1,6 @@
 package com.formulasearchengine.mathosphere.pomlp.pom;
 
-import com.formulasearchengine.mathosphere.pomlp.util.PomlpInternalPaths;
-import com.formulasearchengine.mathosphere.pomlp.xml.PomXmlWriter;
-import gov.nist.drmf.interpreter.common.GlobalPaths;
+import com.formulasearchengine.mathosphere.pomlp.util.PomlpPathConstants;
 import mlp.PomParser;
 import mlp.PomTaggedExpression;
 import org.apache.logging.log4j.LogManager;
@@ -11,7 +9,6 @@ import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.Test;
 
 import java.nio.file.Path;
-import java.nio.file.Paths;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -25,7 +22,7 @@ public class PomInitTest {
 
     @Test
     public void testMLPPaths(){
-        Path globalLex = PomlpInternalPaths.LatexGrammarLexiconFolder;
+        Path globalLex = PomlpPathConstants.LatexGrammarLexiconFolder;
         assertTrue(
                 globalLex.resolve("global-lexicon.txt").toFile().exists(),
                 "Expected lexicon file for POM in submodule 'latex-grammar'!"
@@ -35,7 +32,7 @@ public class PomInitTest {
     @Test
     public void testMLPInit(){
         Path refPath =
-                PomlpInternalPaths.LatexGrammarReferenceDir;
+                PomlpPathConstants.LatexGrammarReferenceDir;
 
         LOG.debug("Reference directory: " + refPath.toAbsolutePath().toString());
         try {
