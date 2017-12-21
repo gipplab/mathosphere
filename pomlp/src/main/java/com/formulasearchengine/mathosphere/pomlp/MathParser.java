@@ -1,10 +1,7 @@
 package com.formulasearchengine.mathosphere.pomlp;
 
-import com.formulasearchengine.mathosphere.pomlp.gouldi.JsonGouldiBean;
-import com.formulasearchengine.mathosphere.pomlp.util.GoldStandardLoader;
-import com.formulasearchengine.mathosphere.pomlp.util.PomlpInternalPaths;
+import com.formulasearchengine.mathosphere.pomlp.util.PomlpPathConstants;
 import com.formulasearchengine.mathosphere.pomlp.xml.PomXmlWriter;
-import gov.nist.drmf.interpreter.common.GlobalPaths;
 import mlp.ParseException;
 import mlp.PomParser;
 import mlp.PomTaggedExpression;
@@ -19,13 +16,10 @@ import java.io.ByteArrayOutputStream;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * This class is a wrapper of the MLP (POM-project) class.
@@ -41,7 +35,7 @@ public class MathParser {
     private PomParser parser;
 
     public MathParser(){
-        referenceDir = PomlpInternalPaths.LatexGrammarReferenceDir;
+        referenceDir = PomlpPathConstants.LatexGrammarReferenceDir;
         parser = new PomParser(referenceDir);
     }
 

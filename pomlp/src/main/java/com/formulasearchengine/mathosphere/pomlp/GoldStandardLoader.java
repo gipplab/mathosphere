@@ -1,4 +1,4 @@
-package com.formulasearchengine.mathosphere.pomlp.util;
+package com.formulasearchengine.mathosphere.pomlp;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.formulasearchengine.mathosphere.pomlp.gouldi.JsonGouldiBean;
@@ -15,7 +15,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;

@@ -9,7 +9,7 @@ import java.nio.file.Paths;
 /**
  * Static class contains path constants
  */
-public final class PomlpInternalPaths {
+public final class PomlpPathConstants {
 
     /**
      * The base path to the latex-grammar project.
@@ -50,5 +50,5 @@ public final class PomlpInternalPaths {
     /**
      * Unable access to final, static class
      */
-    private PomlpInternalPaths(){}
+    private PomlpPathConstants(){}
 }
