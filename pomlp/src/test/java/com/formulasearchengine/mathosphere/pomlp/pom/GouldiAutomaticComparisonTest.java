@@ -6,8 +6,10 @@ import com.formulasearchengine.mathosphere.pomlp.util.GoldStandardLoader;
 import com.formulasearchengine.mathosphere.pomlp.xml.MathMLDocumentReader;
 import it.unibz.inf.rted.distance.RTED_InfoTree_Opt;
 import it.unibz.inf.rted.util.LblTree;
+import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.core.config.Configurator;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -25,6 +27,8 @@ import java.util.Collections;
 import java.util.stream.IntStream;
 
 public class GouldiAutomaticComparisonTest {
+    public static final String MAVEN_WRITE_RESULTS_KEY = "maven.writeresults";
+    public static final String MAVEN_LOG_LEVEL = "maven.loglevel";
 
     private static final Logger LOG = LogManager.getLogger( GouldiAutomaticComparisonTest.class.getName() );
 
@@ -41,14 +45,40 @@ public class GouldiAutomaticComparisonTest {
     private static int max;
 
     @BeforeAll
-    public static void init() throws Exception {
+    public static void init() {
         goldLoader = GoldStandardLoader.getInstance();
         max = goldLoader.initLocally();
         results = new ArrayList<>(max);
+
+        try {
+            String mavenLog = System.getProperty( MAVEN_LOG_LEVEL );
+            if ( mavenLog != null ){
+                Configurator.setAllLevels(
+                        "com.formulasearchengine.mathosphere.pomlp.MathParser",
+                        Level.getLevel(mavenLog)
+                );
+                Configurator.setRootLevel(Level.getLevel(mavenLog));
+            }
+        } catch ( Exception e ){
+            LOG.trace("No log level specified by maven. DebugMSG: " + e.getMessage() );
+        }
     }
 
     @AfterAll
     static void finish() throws IOException {
+        try {
+            String maven = System.getProperty( MAVEN_WRITE_RESULTS_KEY );
+            if ( maven != null ){
+                boolean mavenWrite = Boolean.parseBoolean(maven);
+                if ( !mavenWrite ){
+                    LOG.info("Maven test deactivated writing results. Process finish!");
+                    return;
+                }
+            }
+        } catch( Exception e ){
+            LOG.trace("Error while reading maven property. Ignoring the error and write results...");
+        }
+
         Collections.sort( results );
         LOG.info( "Finish all tests. Here the sorted results: " + System.lineSeparator() + results.toString());
 

@@ -88,11 +88,24 @@
                     </dependency>
                 </dependencies>
                 <configuration>
-                    <workingDirectory>${basedir}/../</workingDirectory>
+                    <workingDirectory>${basedir}</workingDirectory>
+                    <systemPropertyVariables>
+                        <!-- Set system variable to prevent java tests to overwrite results -->
+                        <maven.writeresults>false</maven.writeresults>
+                        <maven.loglevel>INFO</maven.loglevel>
+                    </systemPropertyVariables>
                 </configuration>
             </plugin>
         </plugins>
     </build>
+
+    <repositories>
+        <!-- SnuggleTeX -->
+        <repository>
+            <id>www2.ph.ed.ac.uk-releases</id>
+            <url>https://www2.ph.ed.ac.uk/maven2</url>
+        </repository>
+    </repositories>
 
     <dependencies>
         <!-- Useful to have the core package of our latex translator -->
@@ -123,23 +136,25 @@
             <version>0.0.3-SNAPSHOT</version>
         </dependency>
 
-        <!-- Spring to communicate with GitHub -->
+        <!-- Spring REST to communicate with GitHub -->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-web</artifactId>
             <version>5.0.2.RELEASE</version>
         </dependency>
 
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-text</artifactId>
-            <version>1.0</version>
-        </dependency>
-
+        <!-- JSON to Java parser -->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
             <version>2.9.3</version>
+        </dependency>
+
+        <!-- HTML4 Unescape for pre-processing latex input -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-text</artifactId>
+            <version>1.0</version>
         </dependency>
 
         <!-- Logging via log4j2 -->
@@ -182,6 +197,15 @@
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>
             <version>5.0.0-M5</version>
+        </dependency>
+
+        <!--
+               Several 3rd party tools to parse LaTeX to MathML!
+        -->
+        <dependency>
+            <groupId>uk.ac.ed.ph.snuggletex</groupId>
+            <artifactId>snuggletex-core</artifactId>
+            <version>1.2.2</version>
         </dependency>
     </dependencies>
 </project>
