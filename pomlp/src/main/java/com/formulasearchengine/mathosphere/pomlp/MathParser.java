@@ -41,16 +41,7 @@ public class MathParser {
     private PomParser parser;
 
     public MathParser(){
-        referenceDir = Paths
-                .get("")            // local path       -> mathosphere/pomlp
-                .toAbsolutePath()   // to absolute path
-                .getParent()        // parent directory -> mathosphere/
-                .resolve( PomlpInternalPaths
-                        .LatexGrammarBaseDir // -> mathosphere/lib/latex-grammar
-                        .resolve(
-                                GlobalPaths.PATH_REFERENCE_DATA
-                        )
-                );
+        referenceDir = PomlpInternalPaths.LatexGrammarReferenceDir;
         parser = new PomParser(referenceDir);
     }
 

@@ -25,10 +25,7 @@ public class PomInitTest {
 
     @Test
     public void testMLPPaths(){
-        Path globalLex =
-                PomlpInternalPaths
-                        .LatexGrammarBaseDir
-                        .resolve(GlobalPaths.PATH_LEXICONS);
+        Path globalLex = PomlpInternalPaths.LatexGrammarLexiconFolder;
         assertTrue(
                 globalLex.resolve("global-lexicon.txt").toFile().exists(),
                 "Expected lexicon file for POM in submodule 'latex-grammar'!"
@@ -38,9 +35,7 @@ public class PomInitTest {
     @Test
     public void testMLPInit(){
         Path refPath =
-                PomlpInternalPaths
-                        .LatexGrammarBaseDir
-                        .resolve(GlobalPaths.PATH_REFERENCE_DATA);
+                PomlpInternalPaths.LatexGrammarReferenceDir;
 
         LOG.debug("Reference directory: " + refPath.toAbsolutePath().toString());
         try {

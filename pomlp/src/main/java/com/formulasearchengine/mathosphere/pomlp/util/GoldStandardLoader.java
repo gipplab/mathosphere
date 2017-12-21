@@ -65,11 +65,18 @@ public class GoldStandardLoader {
         return loader;
     }
 
-    public void init() {
+    public void init(){
         String repo = props.getProperty( ConfigLoader.GITHUB_REPO_NAME );
         String owner = props.getProperty( ConfigLoader.GITHUB_REPO_OWNER );
         String path = props.getProperty( ConfigLoader.GITHUB_REPO_PATH );
         String githubLink = props.getProperty( ConfigLoader.GITHUB_URL );
+
+        if ( repo == null || owner == null || githubLink == null ){
+            LOG.info("Cannot find GitHub access -> switch to local initialization.");
+            initLocally();
+            return;
+        }
+
         LOG.debug("Load all github properties.");
         gitHubApiURL = new RESTPathBuilder( githubLink )
                 .setGithubContent(owner, repo)
@@ -83,23 +90,25 @@ public class GoldStandardLoader {
         rest = new RestTemplate(factory);
     }
 
-    public int initLocally() throws Exception {
+    public int initLocally() {
         String goldPath = props.getProperty( ConfigLoader.GOULDI_LOCAL_PATH );
         Path path = Paths.get(goldPath);
         gouldi = new JsonGouldiBean[max];
 
         ExecutorService executor = Executors.newFixedThreadPool( Runtime.getRuntime().availableProcessors()*2 );
-        for ( int i = 1; i < max; i++ ){
+        for ( int i = 1; i <= max; i++ ){
             executor.execute( new JSONReader( path, i ) );
         }
 
         executor.shutdown();
-        executor.awaitTermination( PARALLEL_READING_TIMEOUT, PARALLEL_READING_TIMEOUT_UNIT );
+
+        try {
+            executor.awaitTermination( PARALLEL_READING_TIMEOUT, PARALLEL_READING_TIMEOUT_UNIT );
+        } catch ( InterruptedException ie ){
+            LOG.warn("Executor service exceeds timeouts to read files. It maybe didn't properly load all gouldi-files.");
+        }
         this.local = true;
         return max;
-
-//        ObjectMapper mapper = new ObjectMapper();
-//        JsonGouldiBean bean = mapper.readValue( path.resolve("1.json").toFile(), JsonGouldiBean.class );
     }
 
     private class JSONReader implements Runnable {
@@ -147,9 +156,12 @@ public class GoldStandardLoader {
     public JsonGouldiBean getGouldiJson( int number )
             throws IOException
     {
-        if ( local ) return gouldi[number-1];
-        GitHubFileResponse response = getResponseFromGouldiRequest( number );
+        if ( local ) {
+            LOG.trace("Local mode. Get Json: " + number);
+            return gouldi[number-1];
+        }
 
+        GitHubFileResponse response = getResponseFromGouldiRequest( number );
         // TODO handle response codes here
         return response.getJsonBeanFromContent();
     }

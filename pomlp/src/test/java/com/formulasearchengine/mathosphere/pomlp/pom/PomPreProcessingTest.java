@@ -6,8 +6,6 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class PomPreProcessingTest {
-    private static final String NL = System.lineSeparator();
-
     @Test
     public void htmlEscapeSimple(){
         String simpleBad = "n_{j}%&#10;q";

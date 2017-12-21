@@ -1,4 +1,4 @@
-package com.formulasearchengine.mathosphere.pomlp.pom;
+package com.formulasearchengine.mathosphere.pomlp.pom.example;
 
 import com.formulasearchengine.mathosphere.pomlp.util.PomlpInternalPaths;
 import gov.nist.drmf.interpreter.common.GlobalPaths;

@@ -1,6 +1,7 @@
 package com.formulasearchengine.mathosphere.pomlp.util;
 
 import com.formulasearchengine.mathosphere.pomlp.util.config.PathBuilder;
+import gov.nist.drmf.interpreter.common.GlobalPaths;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -13,7 +14,22 @@ public final class PomlpInternalPaths {
     /**
      * The base path to the latex-grammar project.
      */
-    public static final Path LatexGrammarBaseDir = Paths.get( "lib", "latex-grammar" );
+    public static final Path LatexGrammarBaseDir = Paths
+            .get("") // local path
+            .toAbsolutePath()
+            .getParent()
+            .resolve( "lib" )
+            .resolve( "latex-grammar" );
+
+    public static final Path LatexGrammarReferenceDir = LatexGrammarBaseDir
+            .resolve(
+                    GlobalPaths.PATH_REFERENCE_DATA // -> reference folder
+            );
+
+    public static final Path LatexGrammarLexiconFolder = LatexGrammarBaseDir
+            .resolve(
+                    GlobalPaths.PATH_LEXICONS // -> lexicon folder
+            );
 
     /**
      * The path to the resources folder
