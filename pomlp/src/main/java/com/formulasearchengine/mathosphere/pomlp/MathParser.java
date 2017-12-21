@@ -94,8 +94,13 @@ public class MathParser {
     public static String latexPreProcessing(String latex ){
         LOG.debug(" Pre-Processing for:   " + latex);
 
+        if ( latex.contains("subarray") ){
+            latex = latex.replaceAll("subarray", "array");
+            LOG.trace(" Eval replacement of subarray: " + latex);
+        }
+
         latex = latex.replaceAll( POM_BUG_AVOIDANCE_UNDERSCORE, "_{$1}" );
-        LOG.trace(" Surround underscore:  " + latex);
+        LOG.trace("Surround underscore:  " + latex);
 
         latex = StringEscapeUtils.unescapeHtml4(latex);
         LOG.trace("HTML Unescaped:       " + latex);
