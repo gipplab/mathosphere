@@ -1,8 +1,6 @@
 package com.formulasearchengine.mathosphere.pomlp;
 
-import com.formulasearchengine.mathosphere.pomlp.convertor.MathParser;
-import com.formulasearchengine.mathosphere.pomlp.convertor.ParseAndExportable;
-import com.formulasearchengine.mathosphere.pomlp.convertor.SnuggleTexConverter;
+import com.formulasearchengine.mathosphere.pomlp.convertor.Converters;
 import com.formulasearchengine.mathosphere.pomlp.gouldi.JsonGouldiBean;
 import com.formulasearchengine.mathosphere.pomlp.util.config.ConfigLoader;
 import org.apache.logging.log4j.LogManager;
@@ -22,8 +20,6 @@ public class TreeFilesGenerator {
     private int maxNumber;
 
     private Path gouldiLibPath;
-
-    private MathParser pomParser;
 
     private TreeFilesGenerator(){}
 
@@ -51,7 +47,7 @@ public class TreeFilesGenerator {
                 Files.createDirectory( subPath );
             }
             try{
-                conv.parser.init();
+                conv.getParser().init();
             } catch ( Exception e ){
                 LOG.error( "Cannot initiate " + conv.name() + " converter!" );
             }
@@ -65,8 +61,8 @@ public class TreeFilesGenerator {
         try {
             LOG.info("Generate [" + number + ": " + converter.name()+"]!");
             String tex = bean.getOriginalTex();
-            Path outputF = converter.subPath.resolve(number+ converter.fileEnding );
-            converter.parser.parseToFile( tex, outputF );
+            Path outputF = converter.getSubPath().resolve(number+ converter.fileEnding() );
+            converter.getParser().parseToFile( tex, outputF );
         } catch ( Exception e ){
             LOG.error("Cannot generate file: " + number + " via " + converter.name());
         }
@@ -107,33 +103,12 @@ public class TreeFilesGenerator {
             try {
                 JsonGouldiBean bean = loader.getGouldiJson(i);
                 for ( Converters c : Converters.values() ){
-                    generate(i, bean, c);
+                    if (!c.skip()) generate(i, bean, c);
                 }
             } catch ( IOException e ){
                 LOG.error("SKIP: " + i, e);
             }
 
-        }
-    }
-
-    private enum Converters{
-        POM("pom", ".xml", new MathParser()),
-        SnuggleTeX("snuggletex", ".mml", new SnuggleTexConverter());
-
-        private final String name;
-        private final String fileEnding;
-        private final ParseAndExportable parser;
-        private Path subPath;
-
-        Converters( String name, String fileEnding, ParseAndExportable parser ){
-            this.name = name;
-            this.fileEnding = fileEnding;
-            this.parser = parser;
-        }
-
-        public Path initSubPath( Path baseDir ){
-            subPath = baseDir.resolve(name);
-            return subPath;
         }
     }
 
