@@ -3,21 +3,37 @@ package com.formulasearchengine.mathosphere.pomlp.convertor;
 import java.nio.file.Path;
 
 public enum Converters {
-    POM(        "pom",          ".xml", new MathParser(),           true),
-    SnuggleTeX( "snuggletex",   ".mml", new SnuggleTexConverter(),  true),
-    LatexML(    "latexml",      ".mml", new LatexmlGenerator(),     true);
+    POM(        0,  "pom",          ".xml", new MathParser()),
+    SnuggleTeX( 1,  "snuggletex",   ".mml", new SnuggleTexConverter()),
+    LatexML(    2,  "latexml",      ".mml", new LatexmlGenerator());
 
+    // just the position of this element in this enum (it's easier that way...)
+    private final int position;
+
+    // name of the converter (used for the sub directories)
     private final String name;
-    private final String fileEnding;
-    private final ParseAndExportable parser;
-    private Path subPath;
-    private boolean skip;
 
-    Converters( String name, String fileEnding, ParseAndExportable parser, boolean skip ){
+    // the file extension (usually only mml or xml)
+    private final String fileEnding;
+
+    // the parser class
+    private final Parser parser;
+
+    // the sub path to the directory, should be initialized first to set a base dir
+    private Path subPath;
+
+    // skip this in the generation process
+    private boolean skip = false;
+
+    // is the generated file XML or MML?
+    private final boolean xmlMode;
+
+    Converters(int pos, String name, String fileEnding, Parser parser){
+        this.position = pos;
         this.name = name;
         this.fileEnding = fileEnding;
         this.parser = parser;
-        this.skip = skip;
+        this.xmlMode = fileEnding.contains("xml");
     }
 
     public Path initSubPath( Path baseDir ){
@@ -25,11 +41,19 @@ public enum Converters {
         return subPath;
     }
 
+    public int getPosition(){
+        return position;
+    }
+
+    public Path getFile( int index ){
+        return subPath.resolve( index + fileEnding );
+    }
+
     public String fileEnding(){
         return fileEnding;
     }
 
-    public ParseAndExportable getParser(){
+    public Parser getParser(){
         return parser;
     }
 
@@ -37,11 +61,15 @@ public enum Converters {
         return subPath;
     }
 
+    public boolean isMML(){
+        return !xmlMode;
+    }
+
     public boolean skip(){
         return this.skip;
     }
 
-    public void skipMode( boolean skip ){
+    public void setSkipMode( boolean skip ){
         this.skip = skip;
     }
 }

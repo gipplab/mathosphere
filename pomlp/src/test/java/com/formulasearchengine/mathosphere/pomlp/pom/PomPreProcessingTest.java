@@ -1,11 +1,17 @@
 package com.formulasearchengine.mathosphere.pomlp.pom;
 
 import com.formulasearchengine.mathosphere.pomlp.util.Utility;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class PomPreProcessingTest {
+    @BeforeAll
+    public static void init(){
+        LoggingConfig.configLog();
+    }
+
     @Test
     public void htmlEscapeSimple(){
         String simpleBad = "n_{j}%&#10;q";
