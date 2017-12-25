@@ -1,8 +1,9 @@
 package com.formulasearchengine.mathosphere.pomlp.pom;
 
-import com.formulasearchengine.mathosphere.pomlp.MathParser;
+import com.formulasearchengine.mathosphere.pomlp.convertor.MathParser;
 import com.formulasearchengine.mathosphere.pomlp.gouldi.JsonGouldiBean;
 import com.formulasearchengine.mathosphere.pomlp.GoldStandardLoader;
+import com.formulasearchengine.mathosphere.pomlp.util.Utility;
 import com.formulasearchengine.mathosphere.pomlp.xml.MathMLDocumentReader;
 import it.unibz.inf.rted.distance.RTED_InfoTree_Opt;
 import it.unibz.inf.rted.util.LblTree;
@@ -54,7 +55,7 @@ public class GouldiAutomaticComparisonTest {
             String mavenLog = System.getProperty( MAVEN_LOG_LEVEL );
             if ( mavenLog != null ){
                 Configurator.setAllLevels(
-                        "com.formulasearchengine.mathosphere.pomlp.MathParser",
+                        "com.formulasearchengine.mathosphere.pomlp.convertor.MathParser",
                         Level.getLevel(mavenLog)
                 );
                 Configurator.setRootLevel(Level.getLevel(mavenLog));
@@ -127,7 +128,7 @@ public class GouldiAutomaticComparisonTest {
             MathParser parser = new MathParser();
 
             LOG.debug("Parse POM tree to XML...");
-            tex = MathParser.latexPreProcessing(tex);
+            tex = Utility.latexPreProcessing(tex);
             Document pomDocument = parser.parseLatexMathToDOM( tex );
 
             LOG.debug("Init tree comparison.");

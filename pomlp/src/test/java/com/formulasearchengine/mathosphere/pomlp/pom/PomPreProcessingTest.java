@@ -1,6 +1,6 @@
 package com.formulasearchengine.mathosphere.pomlp.pom;
 
-import com.formulasearchengine.mathosphere.pomlp.MathParser;
+import com.formulasearchengine.mathosphere.pomlp.util.Utility;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -10,49 +10,49 @@ public class PomPreProcessingTest {
     public void htmlEscapeSimple(){
         String simpleBad = "n_{j}%&#10;q";
         String simpleGood = "n_{j}q";
-        assertEquals( simpleGood, MathParser.latexPreProcessing(simpleBad));
+        assertEquals( simpleGood, Utility.latexPreProcessing(simpleBad));
     }
 
     @Test
     public void htmlEscapeMultiSimple(){
         String simpleMultiBad = "n_{%&#10;j}%&#10;q";
         String simpleMultiGood = "n_{j}q";
-        assertEquals( simpleMultiGood, MathParser.latexPreProcessing(simpleMultiBad) );
+        assertEquals( simpleMultiGood, Utility.latexPreProcessing(simpleMultiBad) );
     }
 
     @Test
     public void htmlEscapeIntermediate(){
         String intBad = "n_{%&#10;j&lt;i}%&#10;q";
         String intGood = "n_{j<i}q";
-        assertEquals( intGood, MathParser.latexPreProcessing(intBad) );
+        assertEquals( intGood, Utility.latexPreProcessing(intBad) );
     }
 
     @Test
     public void bugCheckUnderscore(){
         String simpleBad = "n_\\lol";
         String simpleGood = "n_{\\lol}";
-        assertEquals( simpleGood, MathParser.latexPreProcessing(simpleBad) );
+        assertEquals( simpleGood, Utility.latexPreProcessing(simpleBad) );
     }
 
     @Test
     public void bugCheckUnderscoreMulti(){
         String multiBad = "H^{*}_\\lambda = K_\\Deluxe deluxe";
         String multiGood = "H^{*}_{\\lambda} = K_{\\Deluxe} deluxe";
-        assertEquals( multiGood, MathParser.latexPreProcessing(multiBad) );
+        assertEquals( multiGood, Utility.latexPreProcessing(multiBad) );
     }
 
     @Test
     public void badEnding(){
         String bad = "ib\\sa,";
         String good = "ib\\sa";
-        assertEquals( good, MathParser.latexPreProcessing(bad) );
+        assertEquals( good, Utility.latexPreProcessing(bad) );
     }
 
     @Test
     public void badStartEnding(){
         String bad = "\\[\\{\\}\\]";
         String good = "\\{\\}";
-        assertEquals( good, MathParser.latexPreProcessing(bad) );
+        assertEquals( good, Utility.latexPreProcessing(bad) );
     }
     
     private String badExample =
@@ -65,6 +65,6 @@ public class PomPreProcessingTest {
 
     @Test
     public void realExample(){
-        assertEquals( goodExample, MathParser.latexPreProcessing(badExample) );
+        assertEquals( goodExample, Utility.latexPreProcessing(badExample) );
     }
 }

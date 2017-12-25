@@ -24,14 +24,19 @@ public class ConfigLoader {
     public static final String GOULDI_MAXIMUM_NUM = "gouldi.max";
     public static final String GOULDI_LOCAL_PATH = "gouldi.local";
 
-    public static Properties loadConfiguration()
-            throws FileNotFoundException
-    {
-        Path config = new PathBuilder()
-                .initResourcesPath()
-                .addSubPath("config.properties")
-                .build();
-        return loadConfiguration( config );
+    public static final Properties CONFIG = loadConfiguration();
+
+    public static Properties loadConfiguration() {
+        try {
+            Path config = new PathBuilder()
+                    .initResourcesPath()
+                    .addSubPath("config.properties")
+                    .build();
+            return loadConfiguration( config );
+        } catch ( FileNotFoundException e ){
+            LOG.error("Cannot find config file.");
+            return null;
+        }
     }
 
     public static Properties loadConfiguration( Path configFile )
