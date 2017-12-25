@@ -11,7 +11,6 @@ import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -49,14 +48,7 @@ public class GoldStandardLoader {
      *
      * @throws RuntimeException if the configurations cannot be loaded from config.properties
      */
-    private GoldStandardLoader() {
-        try {
-            props = ConfigLoader.loadConfiguration();
-            max = Integer.parseInt(props.getProperty( ConfigLoader.GOULDI_MAXIMUM_NUM ));
-        } catch ( FileNotFoundException e ){
-            throw new RuntimeException( "Cannot instantiate GoldStandardLoader.", e );
-        }
-    }
+    private GoldStandardLoader() {}
 
     private static final GoldStandardLoader loader = new GoldStandardLoader();
 
@@ -65,6 +57,9 @@ public class GoldStandardLoader {
     }
 
     public void init(){
+        props = ConfigLoader.CONFIG;
+        max = Integer.parseInt(props.getProperty( ConfigLoader.GOULDI_MAXIMUM_NUM ));
+
         String repo = props.getProperty( ConfigLoader.GITHUB_REPO_NAME );
         String owner = props.getProperty( ConfigLoader.GITHUB_REPO_OWNER );
         String path = props.getProperty( ConfigLoader.GITHUB_REPO_PATH );
@@ -90,6 +85,9 @@ public class GoldStandardLoader {
     }
 
     public int initLocally() {
+        props = ConfigLoader.CONFIG;
+        max = Integer.parseInt(props.getProperty( ConfigLoader.GOULDI_MAXIMUM_NUM ));
+
         String goldPath = props.getProperty( ConfigLoader.GOULDI_LOCAL_PATH );
         Path path = Paths.get(goldPath);
         gouldi = new JsonGouldiBean[max];
@@ -106,6 +104,7 @@ public class GoldStandardLoader {
         } catch ( InterruptedException ie ){
             LOG.warn("Executor service exceeds timeouts to read files. It maybe didn't properly load all gouldi-files.");
         }
+
         this.local = true;
         return max;
     }
@@ -163,5 +162,10 @@ public class GoldStandardLoader {
         GitHubFileResponse response = getResponseFromGouldiRequest( number );
         // TODO handle response codes here
         return response.getJsonBeanFromContent();
+    }
+
+    public static void main(String[] args){
+        GoldStandardLoader gold = new GoldStandardLoader();
+        gold.initLocally();
     }
 }

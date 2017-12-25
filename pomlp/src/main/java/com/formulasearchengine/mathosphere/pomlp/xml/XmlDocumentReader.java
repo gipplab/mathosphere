@@ -72,19 +72,4 @@ public class XmlDocumentReader {
         Document document = getDocumentFromXML( xmlF );
         return document.getDocumentElement();
     }
-
-    public static String toString( Document doc, boolean indent ){
-        try {
-            StringWriter sw = new StringWriter();
-            TransformerFactory tf = TransformerFactory.newInstance();
-            Transformer transer = tf.newTransformer();
-            transer.setOutputProperty(OutputKeys.METHOD, "xml");
-            if ( indent ) transer.setOutputProperty(OutputKeys.INDENT, "yes");
-            transer.transform( new DOMSource(doc), new StreamResult(sw));
-            return sw.toString();
-        } catch ( Exception e ){
-            LOG.error("Cannot convert document into string.", e);
-            return "";
-        }
-    }
 }

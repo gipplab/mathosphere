@@ -1,11 +1,10 @@
-package com.formulasearchengine.mathosphere.pomlp;
+package com.formulasearchengine.mathosphere.pomlp.convertor;
 
 import com.formulasearchengine.mathosphere.pomlp.util.PomlpPathConstants;
 import com.formulasearchengine.mathosphere.pomlp.xml.PomXmlWriter;
 import mlp.ParseException;
 import mlp.PomParser;
 import mlp.PomTaggedExpression;
-import org.apache.commons.text.StringEscapeUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
@@ -13,8 +12,10 @@ import org.w3c.dom.Document;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.ByteArrayOutputStream;
+import java.io.FileOutputStream;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
@@ -27,20 +28,18 @@ import java.util.concurrent.Future;
  * a tagged parse tree. Furthermore, it uses the PomXmlWriter
  * to parse it to XML trees.
  */
-public class MathParser {
+public class MathParser implements ParseAndExportable {
 
     private static final Logger LOG = LogManager.getLogger( MathParser.class.getName() );
 
     private Path referenceDir;
     private PomParser parser;
 
-    public MathParser(){
-        referenceDir = PomlpPathConstants.LatexGrammarReferenceDir;
-        parser = new PomParser(referenceDir);
-    }
+    public MathParser(){}
 
-    public MathParser( Path pomReferencePath ){
-        referenceDir = pomReferencePath;
+    @Override
+    public void init(){
+        referenceDir = PomlpPathConstants.LatexGrammarReferenceDir;
         parser = new PomParser(referenceDir);
     }
 
@@ -63,42 +62,6 @@ public class MathParser {
         String out = outputStream.toString();
         outputStream.close();
         return out;
-    }
-
-    private static final String POM_BUG_AVOIDANCE_UNDERSCORE = "_(\\\\[^\\s\\n-+]+)";
-
-    private static final String ELEMINATE_ENDINGS = "[\\s,;.]*(\\\\])?[\\s,;.]*$";
-    private static final String ELEMINATE_STARTS = "^[\\s,;.]*(\\\\\\[)?[\\s,;.]*";
-
-    public static final char CR = (char)0x0D;
-    public static final char LF = (char)0x0A;
-    public static final String CRLF = ""+CR+LF;
-
-    private static final String COMMENTED_LINEBREAK = "%\\s*("+CR+"|"+LF+"|"+CRLF+")";
-
-    public static String latexPreProcessing(String latex ){
-        LOG.debug(" Pre-Processing for:   " + latex);
-
-        if ( latex.contains("subarray") ){
-            latex = latex.replaceAll("subarray", "array");
-            LOG.trace(" Eval replacement of subarray: " + latex);
-        }
-
-        latex = latex.replaceAll( POM_BUG_AVOIDANCE_UNDERSCORE, "_{$1}" );
-        LOG.trace("Surround underscore:  " + latex);
-
-        latex = StringEscapeUtils.unescapeHtml4(latex);
-        LOG.trace("HTML Unescaped:       " + latex);
-
-        latex = latex.replaceAll( COMMENTED_LINEBREAK, "" );
-        LOG.trace("Commented linebreaks: " + latex);
-
-        latex = latex.replaceAll( ELEMINATE_ENDINGS, "");
-        latex = latex.replaceAll( ELEMINATE_STARTS, "" );
-        LOG.trace("Replace bad end/start:" + latex);
-        LOG.debug("Finalize Pre-Processing for POM-Tagger: " + latex);
-
-        return latex;
     }
 
     /**
@@ -158,64 +121,20 @@ public class MathParser {
         return document;
     }
 
-    public static void main(String[] args) throws Exception {
-//
-//        MathMLDocumentReader mmlR = new MathMLDocumentReader(
-//                Paths.get("xml").resolve("latexml-P.mml.xml")
-//        );
-//
-//        Document doc = mmlR.getPresentationSubtree();
-//        String s = XmlDocumentReader.toString( doc, false );
-//        LOG.info("Da Content-Tree:" + System.lineSeparator() + s);
+    @Override
+    public Document parse(String latex) throws Exception {
+        return parseLatexMathToDOM( latex );
+    }
 
-//        GoldStandardLoader loader = GoldStandardLoader.getInstance();
-//        loader.initLocally();
-//
-//        LOG.info(loader.getGouldiJson(2).getCorrectTex());
-
-//        JsonGouldiBean b = loader.getGouldiJson(1);
-//        LOG.info("Bean1: " + b.getCorrectTex());
-
-        /*
-        String eq = "P_n^{\\left(\\alpha,\\beta\\right)}\\left(\\cos\\left(a\\Theta\\right)\\right)";
-
-        Path contentP = Paths.get("xml").resolve("latexml-P-content.xml");
-        Path presentationP = Paths.get("xml").resolve("latexml-P-presentation.xml");
-
-        LOG.debug("ContentP Path: " + contentP.toAbsolutePath());
-        LOG.debug("PresentationP Path: " + presentationP.toAbsolutePath());
-
-        MathParser parser = new MathParser();
-        Document pomPdoc = parser.parseLatexMathToDOM(eq);
-
-        Node pomP = pomPdoc.getDocumentElement();
-
-        LOG.info("Read contentP...");
-        Node contP = XmlDocumentReader.getNodeFromXML( contentP );
-        LOG.info("Read presentationP...");
-        Node presP = XmlDocumentReader.getNodeFromXML( presentationP );
-
-        LOG.info("Compute distances!");
-        // copy computeMapping by Moritz
-        RTED_InfoTree_Opt rted = new RTED_InfoTree_Opt(
-                1.0, // insertion costs
-                1.0, // deletion costs
-                0.0  // renaming costs
-        );
-
-        double distCont = rted.nonNormalizedTreeDist( LblTree.fromXML(pomP), LblTree.fromXML(contP) );
-        //double distPres = rted.nonNormalizedTreeDist( LblTree.fromXML(pomP), LblTree.fromXML(presP) );
-
-        LinkedList<int[]> ops = rted.computeEditMapping();
-        String str = "(";
-        for ( int[] arr : ops )
-            str += Arrays.toString(arr) + "; ";
-        str = str.substring(0, str.length()-"; ".length()) + ")";
-
-
-        LOG.info("Distance to ContentTree: " + distCont);
-//        LOG.info("Distance to PresentationTree: " + distPres);
-        LOG.info("Min-Operations: (" + ops.size() + ")" + System.lineSeparator() + str);
-        //*/
+    @Override
+    public void parseToFile( String latex, Path outputFile ) throws Exception {
+        if ( !Files.exists(outputFile) ) {
+            LOG.info("Create output file: " + outputFile.toString());
+            Files.createFile(outputFile);
+        }
+        LOG.info("Parse LaTeX via POM.");
+        PomTaggedExpression pte = parseLatexMath( latex );
+        LOG.info("Write parsed POM tree to file.");
+        PomXmlWriter.writeStraightXML( pte, new FileOutputStream(outputFile.toFile()));
     }
 }
