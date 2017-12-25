@@ -2,6 +2,7 @@ package com.formulasearchengine.mathosphere.pomlp.convertor;
 
 import com.formulasearchengine.mathosphere.pomlp.util.PomlpPathConstants;
 import com.formulasearchengine.mathosphere.pomlp.xml.PomXmlWriter;
+import com.formulasearchengine.mathosphere.pomlp.xml.XmlDocumentReader;
 import mlp.ParseException;
 import mlp.PomParser;
 import mlp.PomTaggedExpression;
@@ -28,7 +29,7 @@ import java.util.concurrent.Future;
  * a tagged parse tree. Furthermore, it uses the PomXmlWriter
  * to parse it to XML trees.
  */
-public class MathParser implements ParseAndExportable {
+public class MathParser implements Parser {
 
     private static final Logger LOG = LogManager.getLogger( MathParser.class.getName() );
 
@@ -83,7 +84,7 @@ public class MathParser implements ParseAndExportable {
 
         // create a builder to parse input stream to a document
         LOG.trace("Create document builder factory");
-        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        DocumentBuilderFactory factory = XmlDocumentReader.FACTORY;
         DocumentBuilder builder = factory.newDocumentBuilder();
 
         // First step, parse the mathematical expression

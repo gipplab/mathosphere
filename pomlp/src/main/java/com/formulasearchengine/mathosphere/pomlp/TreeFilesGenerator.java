@@ -1,7 +1,9 @@
 package com.formulasearchengine.mathosphere.pomlp;
 
+import com.formulasearchengine.mathosphere.pomlp.convertor.Canonicalizable;
 import com.formulasearchengine.mathosphere.pomlp.convertor.Converters;
 import com.formulasearchengine.mathosphere.pomlp.gouldi.JsonGouldiBean;
+import com.formulasearchengine.mathosphere.pomlp.util.Utility;
 import com.formulasearchengine.mathosphere.pomlp.util.config.ConfigLoader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -61,10 +63,11 @@ public class TreeFilesGenerator {
         try {
             LOG.info("Generate [" + number + ": " + converter.name()+"]!");
             String tex = bean.getOriginalTex();
+            //tex = Utility.latexPreProcessing(tex);
             Path outputF = converter.getSubPath().resolve(number+ converter.fileEnding() );
             converter.getParser().parseToFile( tex, outputF );
         } catch ( Exception e ){
-            LOG.error("Cannot generate file: " + number + " via " + converter.name());
+            LOG.error("Cannot generate file: " + number + " via " + converter.name(),e);
         }
     }
 
@@ -102,6 +105,8 @@ public class TreeFilesGenerator {
         for ( int i = 1; i <= maxNumber; i++ ){
             try {
                 JsonGouldiBean bean = loader.getGouldiJson(i);
+                LOG.info("Start pre-processing of tex input.");
+                bean.setMathTex( Utility.latexPreProcessing(bean.getOriginalTex()) );
                 for ( Converters c : Converters.values() ){
                     if (!c.skip()) generate(i, bean, c);
                 }
@@ -113,6 +118,8 @@ public class TreeFilesGenerator {
     }
 
     public static void main(String[] args) throws Exception{
+//        Converters.SnuggleTeX.setSkipMode(true);
+//        Converters.LatexML.setSkipMode(true);
         TreeFilesGenerator gen = new TreeFilesGenerator();
         gen.init();
         gen.generateAllSubs();

@@ -92,9 +92,11 @@
                     <workingDirectory>${basedir}</workingDirectory>
                     <systemPropertyVariables>
                         <!-- Set system variable to prevent java tests to overwrite results -->
-                        <maven.writeresults>false</maven.writeresults>
                         <maven.loglevel>INFO</maven.loglevel>
                     </systemPropertyVariables>
+                    <excludes>
+                        <exclude>**/GoldstandardAutomaticComparisonTest.java</exclude>
+                    </excludes>
                 </configuration>
             </plugin>
         </plugins>

@@ -6,6 +6,7 @@ import mlp.PomTaggedExpression;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.nio.file.Path;
@@ -19,6 +20,11 @@ public class PomInitTest {
     public static final Logger LOG = LogManager.getLogger( PomInitTest.class.getName() );
 
     public static final String SIMPLE_LATEX = "a+b";
+
+    @BeforeAll
+    public static void init(){
+        LoggingConfig.configLog();
+    }
 
     @Test
     public void testMLPPaths(){

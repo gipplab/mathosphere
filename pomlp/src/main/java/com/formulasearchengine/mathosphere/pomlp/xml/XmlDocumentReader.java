@@ -1,5 +1,6 @@
 package com.formulasearchengine.mathosphere.pomlp.xml;
 
+import com.formulasearchengine.mathosphere.pomlp.util.Utility;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
@@ -15,10 +16,7 @@ import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.StringReader;
-import java.io.StringWriter;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
@@ -28,11 +26,19 @@ import java.nio.file.Path;
 public class XmlDocumentReader {
     private static final Logger LOG = LogManager.getLogger( XmlDocumentReader.class.getName() );
 
+    public static DocumentBuilderFactory FACTORY = DocumentBuilderFactory.newInstance();
+
+    static {
+        FACTORY.setIgnoringComments(true);
+        //FACTORY.setIgnoringElementContentWhitespace(true);
+        //FACTORY.setValidating(true);
+        FACTORY.setExpandEntityReferences(true);
+    }
+
     public static Document getDocumentFromXML( Path xmlF ){
-        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         try {
             LOG.debug("Start reading process from XML file.");
-            DocumentBuilder builder = factory.newDocumentBuilder();
+            DocumentBuilder builder = FACTORY.newDocumentBuilder();
             InputStream inputStream = Files.newInputStream( xmlF.toAbsolutePath() );
             Document doc = builder.parse( inputStream );
             LOG.debug("Successfully read from XML file.");
@@ -49,10 +55,9 @@ public class XmlDocumentReader {
     }
 
     public static Document getDocumentFromXMLString( String xml ){
-        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         try {
             LOG.debug("Start reading process from XML file.");
-            DocumentBuilder builder = factory.newDocumentBuilder();
+            DocumentBuilder builder = FACTORY.newDocumentBuilder();
             InputSource input = new InputSource( new StringReader(xml));
             Document doc = builder.parse( input );
             LOG.debug("Successfully read from XML file.");
@@ -71,5 +76,13 @@ public class XmlDocumentReader {
     public static Node getNodeFromXML( Path xmlF ){
         Document document = getDocumentFromXML( xmlF );
         return document.getDocumentElement();
+    }
+
+    public static void main(String[] args){
+        String s = "<math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n" +
+                "   <mi>a</mi>\n" +
+                "</math>";
+        MathMLDocumentReader r = new MathMLDocumentReader(s);
+        System.out.println(Utility.documentToString(r.getDocument(), true));
     }
 }

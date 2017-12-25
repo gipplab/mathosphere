@@ -1,10 +1,9 @@
-package com.formulasearchengine.mathosphere.pomlp;
+package com.formulasearchengine.mathosphere.pomlp.comparison;
 
 import it.unibz.inf.rted.distance.RTED_InfoTree_Opt;
 import it.unibz.inf.rted.util.LblTree;
+import org.w3c.dom.Node;
 
-import javax.xml.soap.Node;
-import java.util.Comparator;
 import java.util.LinkedList;
 
 public class RTEDTreeComparator {
@@ -50,7 +49,7 @@ public class RTEDTreeComparator {
         this.autoComputeMapping = autoComputeMapping;
     }
 
-    public double computeDistance( Node n1, Node n2 ){
+    public double computeDistance(Node n1, Node n2){
         double dist = rted.nonNormalizedTreeDist( LblTree.fromXML(n1), LblTree.fromXML(n2) );
         if ( autoComputeMapping ) this.operations = rted.computeEditMapping();
         else this.operations = null;

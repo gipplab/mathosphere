@@ -5,7 +5,7 @@ import org.w3c.dom.Document;
 
 import java.nio.file.Path;
 
-public interface ParseAndExportable {
+public interface Parser {
 
     void init() throws Exception;
 

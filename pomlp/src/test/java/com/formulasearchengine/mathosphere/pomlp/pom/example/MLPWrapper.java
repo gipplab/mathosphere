@@ -24,9 +24,7 @@ public class MLPWrapper {
                 );
         PomParser parser = new PomParser(referenceDir);
 
-        String test = "A_{k}(n)=\\sum_{\\begin{subarray}{c}1<h\\leq k" +
-                "\\left(h,k\\right)=1\\end{subarray}}{\\mathrm{e}^{\\pi\\mathrm{i}f(h,k)-(2\\pi\\mathrm{i}nh/k)}}";
-
+        String test = "R_{a}\\left(\\mathbf{b};\\mathbf{z}\\right)R_{-a}\\left(\\mathbf{b};\\mathbf{z}\\right)>1";
         PomTaggedExpression pte = parser.parse(test);
         pte = MLP.clean(pte);
         System.out.println(pte.toString("  "));

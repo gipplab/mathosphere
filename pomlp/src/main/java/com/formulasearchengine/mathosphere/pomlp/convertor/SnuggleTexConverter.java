@@ -2,6 +2,8 @@ package com.formulasearchengine.mathosphere.pomlp.convertor;
 
 import com.formulasearchengine.mathosphere.pomlp.util.Constants;
 import com.formulasearchengine.mathosphere.pomlp.util.Utility;
+import com.formulasearchengine.mathosphere.pomlp.xml.MathMLDocumentReader;
+import com.formulasearchengine.mathosphere.pomlp.xml.XmlDocumentReader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
@@ -16,9 +18,10 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
-public class SnuggleTexConverter implements ParseAndExportable, Canonicalizable {
+public class SnuggleTexConverter implements Parser, Canonicalizable {
 
     private static final Logger LOG = LogManager.getLogger( SnuggleTexConverter.class.getName() );
 
@@ -48,7 +51,7 @@ public class SnuggleTexConverter implements ParseAndExportable, Canonicalizable 
         options.setAddingMathSourceAnnotations(true);
         options.addDOMPostProcessors(upProcessor);
 
-        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        DocumentBuilderFactory factory = XmlDocumentReader.FACTORY;
         try {
             builder = factory.newDocumentBuilder();
         } catch ( ParserConfigurationException pe ){
@@ -117,5 +120,27 @@ public class SnuggleTexConverter implements ParseAndExportable, Canonicalizable 
             errorMsg += err.toString() + Constants.NL;
         }
         LOG.error("Error occurred while parsing latex: " + errorMsg);
+    }
+
+    public static void main(String[] args) throws Exception {
+        SnuggleTexConverter c = new SnuggleTexConverter();
+        c.init();
+        Document d = c.parse("a");
+        //d = Utility.getCanonicalizedDocument(d);
+        String s = Utility.documentToString(d, true);
+        System.out.println( s );
+
+        s = s.replaceAll("\"","\\\"");
+        MathMLDocumentReader r1 = new MathMLDocumentReader( s );
+        System.out.println( Utility.documentToString(r1.getDocument(),true) );
+
+        /*
+        MathMLDocumentReader r = new MathMLDocumentReader(Paths.get("../lib/GoUldI/data/snuggletex/1.mml") );
+        System.out.println("NEXT1");
+        System.out.println( Utility.documentToString(r.getDocument(),true));
+        r.canonicalize();
+        System.out.println("NEXT2");
+        System.out.println( Utility.documentToString(r.getDocument(),true));
+        */
     }
 }

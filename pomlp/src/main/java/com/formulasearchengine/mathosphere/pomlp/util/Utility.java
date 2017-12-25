@@ -44,7 +44,7 @@ public final class Utility {
      * @return pre processed latex string
      */
     public static String latexPreProcessing(String latex ){
-        LOG.debug(" Pre-Processing for:   " + latex);
+        LOG.debug(" Pre-Processing for:  " + latex);
 
         if ( latex.contains("subarray") ){
             latex = latex.replaceAll("subarray", "array");

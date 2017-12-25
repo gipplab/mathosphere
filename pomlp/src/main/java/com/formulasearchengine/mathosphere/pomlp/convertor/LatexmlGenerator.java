@@ -10,7 +10,7 @@ import org.w3c.dom.Document;
 
 import java.nio.file.Path;
 
-public class LatexmlGenerator implements ParseAndExportable, Canonicalizable{
+public class LatexmlGenerator implements Parser, Canonicalizable{
 
     private static Logger LOG = LogManager.getLogger(LatexmlGenerator.class.getName());
 
