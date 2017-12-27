@@ -77,12 +77,4 @@ public class XmlDocumentReader {
         Document document = getDocumentFromXML( xmlF );
         return document.getDocumentElement();
     }
-
-    public static void main(String[] args){
-        String s = "<math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n" +
-                "   <mi>a</mi>\n" +
-                "</math>";
-        MathMLDocumentReader r = new MathMLDocumentReader(s);
-        System.out.println(Utility.documentToString(r.getDocument(), true));
-    }
 }

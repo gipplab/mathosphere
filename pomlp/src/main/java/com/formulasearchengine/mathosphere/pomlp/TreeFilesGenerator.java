@@ -1,6 +1,5 @@
 package com.formulasearchengine.mathosphere.pomlp;
 
-import com.formulasearchengine.mathosphere.pomlp.convertor.Canonicalizable;
 import com.formulasearchengine.mathosphere.pomlp.convertor.Converters;
 import com.formulasearchengine.mathosphere.pomlp.gouldi.JsonGouldiBean;
 import com.formulasearchengine.mathosphere.pomlp.util.Utility;
