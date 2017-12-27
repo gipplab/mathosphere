@@ -121,26 +121,4 @@ public class SnuggleTexConverter implements Parser, Canonicalizable {
         }
         LOG.error("Error occurred while parsing latex: " + errorMsg);
     }
-
-    public static void main(String[] args) throws Exception {
-        SnuggleTexConverter c = new SnuggleTexConverter();
-        c.init();
-        Document d = c.parse("a");
-        //d = Utility.getCanonicalizedDocument(d);
-        String s = Utility.documentToString(d, true);
-        System.out.println( s );
-
-        s = s.replaceAll("\"","\\\"");
-        MathMLDocumentReader r1 = new MathMLDocumentReader( s );
-        System.out.println( Utility.documentToString(r1.getDocument(),true) );
-
-        /*
-        MathMLDocumentReader r = new MathMLDocumentReader(Paths.get("../lib/GoUldI/data/snuggletex/1.mml") );
-        System.out.println("NEXT1");
-        System.out.println( Utility.documentToString(r.getDocument(),true));
-        r.canonicalize();
-        System.out.println("NEXT2");
-        System.out.println( Utility.documentToString(r.getDocument(),true));
-        */
-    }
 }
