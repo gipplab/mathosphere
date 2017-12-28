@@ -51,6 +51,7 @@
                 <version>2.5</version>
                 <executions>
                     <execution>
+                        <id>init-mlp</id>
                         <phase>initialize</phase>
                         <goals>
                             <goal>install-file</goal>
@@ -61,6 +62,20 @@
                             <version>1.0</version>
                             <packaging>jar</packaging>
                             <file>${basedir}/../lib/latex-grammar/libs/MLP/MLP.jar</file>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>init-mathtoweb</id>
+                        <phase>initialize</phase>
+                        <goals>
+                            <goal>install-file</goal>
+                        </goals>
+                        <configuration>
+                            <groupId>mathtoweb.com</groupId>
+                            <artifactId>engine</artifactId>
+                            <version>4.0.0</version>
+                            <packaging>jar</packaging>
+                            <file>${basedir}/lib/MathToWeb.jar</file>
                         </configuration>
                     </execution>
                 </executions>
@@ -123,6 +138,13 @@
             <groupId>gov.nist.drmf.interpreter</groupId>
             <artifactId>MLP</artifactId>
             <version>1.0</version>
+        </dependency>
+
+        <!-- MathToWeb -->
+        <dependency>
+            <groupId>mathtoweb.com</groupId>
+            <artifactId>engine</artifactId>
+            <version>4.0.0</version>
         </dependency>
 
         <!-- Robust Tree Edit Distance algorithm -->

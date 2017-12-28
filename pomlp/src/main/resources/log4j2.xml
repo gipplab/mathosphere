@@ -13,7 +13,7 @@
                 <Pattern>[%-5level] %d{yy-MM-dd-HH:mm:ss.SSS} [%logger{-3}:%line | %t] - %msg%n%throwable{full} </Pattern>
             </PatternLayout>
             <Policies>
-                <SizeBasedTriggeringPolicy size="32 KB"/>
+                <SizeBasedTriggeringPolicy size="2 MB"/>
             </Policies>
             <DefaultRolloverStrategy max="1"/>
         </RollingFile>
@@ -24,7 +24,7 @@
                 <Pattern>[%-5level] %d{yy-MM-dd-HH:mm:ss.SSS} [%logger{-1}:%line | %t] - %msg%n%throwable{full} </Pattern>
             </PatternLayout>
             <Policies>
-                <SizeBasedTriggeringPolicy size="32 KB"/>
+                <SizeBasedTriggeringPolicy size="2 MB"/>
             </Policies>
             <DefaultRolloverStrategy max="1"/>
         </RollingFile>

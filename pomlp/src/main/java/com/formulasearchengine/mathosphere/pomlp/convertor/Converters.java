@@ -3,9 +3,11 @@ package com.formulasearchengine.mathosphere.pomlp.convertor;
 import java.nio.file.Path;
 
 public enum Converters {
-    POM(        0,  "pom",          ".xml", new MathParser()),
+    POM(        0,  "pom",          ".xml", new POMConverter()),
     SnuggleTeX( 1,  "snuggletex",   ".mml", new SnuggleTexConverter()),
-    LatexML(    2,  "latexml",      ".mml", new LatexmlGenerator());
+    LatexML(    2,  "latexml",      ".mml", new LatexmlGenerator()),
+    Mathematical(3, "mathematical", ".mml", new MathematicalRubyConverter()),
+    MathToWeb(  4,  "mathtoweb",    ".mml", new MathToWebConverter());
 
     // just the position of this element in this enum (it's easier that way...)
     private final int position;

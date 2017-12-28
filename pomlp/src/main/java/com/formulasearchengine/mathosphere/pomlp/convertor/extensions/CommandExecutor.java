@@ -1,6 +1,7 @@
 package com.formulasearchengine.mathosphere.pomlp.convertor.extensions;
 
-import com.formulasearchengine.mathmlconverters.latexml.LaTeXMLServiceResponse;
+import com.formulasearchengine.mathosphere.pomlp.convertor.Converters;
+import com.formulasearchengine.mathosphere.pomlp.convertor.Parser;
 import org.apache.commons.io.IOUtils;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
@@ -16,54 +17,57 @@ import java.util.concurrent.TimeUnit;
 /**
  * @author Andre Greiner-Petter
  */
-public class LatexMLCommandExecutor {
+public class CommandExecutor {
 
-    private static final Logger LOG = LogManager.getLogger( LatexMLCommandExecutor.class.getName() );
+    private static final Logger LOG = LogManager.getLogger( CommandExecutor.class.getName() );
 
     public static final long DEFAULT_TIMEOUT = 2000L;
 
     private ProcessBuilder pb;
 
-    public LatexMLCommandExecutor( String... args ){
+    private final String serviceName;
+
+    public CommandExecutor(String serviceName, String... args ){
         this.pb = new ProcessBuilder( args );
+        this.serviceName = serviceName;
     }
 
-    public LatexMLCommandExecutor( List<String> args ) {
+    public CommandExecutor(String serviceName, List<String> args ) {
         this.pb = new ProcessBuilder( args );
+        this.serviceName = serviceName;
     }
 
-    public LaTeXMLServiceResponse exec( long timeoutMs ) {
+    public NativeResponse exec( long timeoutMs ) {
         return exec( timeoutMs, TimeUnit.MILLISECONDS );
     }
 
-    public LaTeXMLServiceResponse exec( long timeoutMs, Level logLevel ){
+    public NativeResponse exec( long timeoutMs, Level logLevel ){
         return exec( timeoutMs, TimeUnit.MILLISECONDS, logLevel );
     }
 
-    public LaTeXMLServiceResponse exec( long timeout, TimeUnit unit ) {
+    public NativeResponse exec( long timeout, TimeUnit unit ) {
         return exec( timeout, unit, Level.DEBUG );
     }
 
-    public LaTeXMLServiceResponse exec(long timeout, TimeUnit unit, Level logLevel ) {
-        LaTeXMLServiceResponse response = new LaTeXMLServiceResponse();
+    public NativeResponse exec( long timeout, TimeUnit unit, Level logLevel ) {
+        int exitCode = 1;
         try {
             Process process = pb.start();
             logErrorStream( process.getErrorStream(), logLevel );
-            response.setResult(buildFromStream( process.getInputStream() ));
+            String result = buildFromStream( process.getInputStream() );
             process.waitFor( timeout, unit );
-            response.setStatusCode( process.exitValue() );
-            response.setStatus("OK");
+            exitCode = process.exitValue();
+            if ( exitCode != 0 ) throw new IOException( "Execution Fail!" );
             safetyExit( process );
             process.destroy();
+            return new NativeResponse( result );
         } catch ( InterruptedException ie ){
-            LOG.warn("Process exceeded timeout -> return null.", ie);
+            LOG.warn(serviceName + " - Process exceeded timeout -> return null.", ie);
             return null;
         } catch ( IOException ioe ){
-            LOG.error("Cannot execute LaTeXML!", ioe);
-            response.setStatus( "Error in LaTeXML: " + ioe.getMessage() );
+            LOG.error("Cannot execute " + serviceName, ioe);
+            return new NativeResponse(exitCode, exitCode + "-Error in " + serviceName + ": " + ioe.getMessage(), ioe );
         }
-
-        return response;
     }
 
     private void logErrorStream(InputStream err, Level logLevel){
@@ -71,7 +75,7 @@ public class LatexMLCommandExecutor {
             String line;
             while ( (line = br.readLine()) != null )
                 if (!line.isEmpty())
-                    LOG.log(logLevel, "LaTeXML - " + line);
+                    LOG.log(logLevel, serviceName + " - " + line);
             LOG.trace("Finished sub-process logging.");
         } catch ( IOException ioe ){
             LOG.error("Error while reading from error stream.", ioe);
@@ -92,5 +96,25 @@ public class LatexMLCommandExecutor {
         process.getErrorStream().close();
         process.getInputStream().close();
         process.getOutputStream().close();
+    }
+
+    public static void preStartCommandCheck(){
+        Parser p;
+        CommandExecutor executor;
+        NativeResponse res;
+        LOG.info("Check availability of native programs.");
+        for (Converters convs : Converters.values()){
+            p = convs.getParser();
+            if ( p != null && p.getNativeCommand() != null ){
+                executor = new CommandExecutor( "DefinitionCheck", "which", p.getNativeCommand() );
+                res = executor.exec( 100 );
+                if ( res.getStatusCode() != 0 ){
+                    convs.setSkipMode( true );
+                    LOG.info(convs.name() + " not available => Deactivate!");
+                } else {
+                    LOG.debug("Successfully checked " + convs.name());
+                }
+            }
+        }
     }
 }

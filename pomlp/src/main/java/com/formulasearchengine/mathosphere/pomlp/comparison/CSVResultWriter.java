@@ -4,11 +4,13 @@ import com.formulasearchengine.mathosphere.pomlp.convertor.Converters;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.LinkedList;
 
 import static com.formulasearchengine.mathosphere.pomlp.util.Constants.NL;
 
@@ -22,6 +24,7 @@ public class CSVResultWriter {
     public static final String CSV_SEP = ",";
 
     private Info[] results;
+    private LinkedList<ComparisonError> errors;
 
     public static final Path RESULT_PATH = Paths.get("results");
 
@@ -29,14 +32,19 @@ public class CSVResultWriter {
         results = new Info[max];
         for ( int i = 0; i < max; i++ )
             results[i] = new Info();
+        errors = new LinkedList<>();
     }
 
     public void addResult( ComparisonResult result ){
         results[result.getIndex()-1].all[result.getConverter().getPosition()] = result;
     }
 
+    public void addError( ComparisonError error ){
+        errors.addLast( error );
+    }
+
     public void writeToFile( Path output ) throws IOException {
-        Path filePath = RESULT_PATH.resolve("latest.csv");
+        Path filePath = RESULT_PATH.resolve("latest-results.csv");
         LOG.info("Write results to " + filePath.toAbsolutePath());
         if (!Files.exists(filePath)) Files.createFile(filePath);
 
@@ -54,6 +62,18 @@ public class CSVResultWriter {
             }
         } catch ( IOException ioe ){
             LOG.error("Cannot write result file.", ioe);
+        }
+
+        Path fileErrorPath = RESULT_PATH.resolve("latest-errors.txt");
+        LOG.info("Write errors to " + fileErrorPath.toAbsolutePath());
+        if ( !Files.exists(fileErrorPath) ) Files.createFile(fileErrorPath);
+
+        try (BufferedWriter w = Files.newBufferedWriter(fileErrorPath)){
+            for ( ComparisonError error : errors ){
+                w.write( error.toString() + NL);
+            }
+        } catch ( IOException ioe ){
+            LOG.error("Cannot write error file.", ioe);
         }
     }
 
