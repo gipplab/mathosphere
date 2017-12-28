@@ -1,6 +1,7 @@
 package com.formulasearchengine.mathosphere.pomlp;
 
 import com.formulasearchengine.mathosphere.pomlp.convertor.Converters;
+import com.formulasearchengine.mathosphere.pomlp.convertor.extensions.CommandExecutor;
 import com.formulasearchengine.mathosphere.pomlp.gouldi.JsonGouldiBean;
 import com.formulasearchengine.mathosphere.pomlp.util.Utility;
 import com.formulasearchengine.mathosphere.pomlp.util.config.ConfigLoader;
@@ -62,7 +63,7 @@ public class TreeFilesGenerator {
         try {
             LOG.info("Generate [" + number + ": " + converter.name()+"]!");
             String tex = bean.getOriginalTex();
-            //tex = Utility.latexPreProcessing(tex);
+            tex = Utility.latexPreProcessing(tex);
             Path outputF = converter.getSubPath().resolve(number+ converter.fileEnding() );
             converter.getParser().parseToFile( tex, outputF );
         } catch ( Exception e ){
@@ -73,28 +74,6 @@ public class TreeFilesGenerator {
     public void generate( int number, Converters converter ) throws Exception{
         JsonGouldiBean bean = loader.getGouldiJson(number);
         generate(number, bean, converter);
-    }
-
-    public void generatePomXMLs(){
-        for ( int i = 1; i <= maxNumber; i++ ){
-            try {
-                JsonGouldiBean bean = loader.getGouldiJson(i);
-                generate( i, bean, Converters.POM );
-            } catch ( Exception e ){
-                LOG.error("SKIPPED ->Cannot write POM-XML " + i + "<- SKIPPED", e);
-            }
-        }
-    }
-
-    public void generateSnuggleTexMMLs(){
-        for ( int i = 1; i <= maxNumber; i++ ){
-            try {
-                JsonGouldiBean bean = loader.getGouldiJson(i);
-                generate( i, bean, Converters.SnuggleTeX );
-            } catch ( Exception e ){
-                LOG.error("SKIPPED ->Cannot write POM-XML " + i + "<- SKIPPED", e);
-            }
-        }
     }
 
     /**
@@ -119,8 +98,13 @@ public class TreeFilesGenerator {
     public static void main(String[] args) throws Exception{
 //        Converters.SnuggleTeX.setSkipMode(true);
 //        Converters.LatexML.setSkipMode(true);
+        CommandExecutor.preStartCommandCheck();
         TreeFilesGenerator gen = new TreeFilesGenerator();
         gen.init();
-        gen.generateAllSubs();
+        for ( Converters c : Converters.values() ){
+            gen.generate( 248, c );
+        }
+        //gen.generateAllSubs();
+
     }
 }

@@ -28,6 +28,10 @@ public final class Utility {
     private static final String ELEMINATE_ENDINGS = "[\\s,;.]*(\\\\])?[\\s,;.]*$";
     private static final String ELEMINATE_STARTS = "^[\\s,;.]*(\\\\\\[)?[\\s,;.]*";
 
+    private static final String ELEMINATE_SIMPLE_ENDS = "\\\\+[\\s,.;]*$";
+    private static final String ELEMINATE_SIMPLE_STARTS = "^\\\\+[\\s,.;]+";
+
+
     // Possible line endings
     public static final char CR = (char)0x0D;   // Mac (pre-OSX)
     public static final char LF = (char)0x0A;   // Unix, Mac (OSX)
@@ -35,6 +39,14 @@ public final class Utility {
 
     // Commented line breaks in Latex looks like: %\r
     private static final String LATEX_COMMENTED_LINEBREAK = "%\\s*("+CR+"|"+LF+"|"+CRLF+")";
+
+    private static final String SPECIAL_UNESCPAE_OPEN = "&lt;";
+    private static final String SPECIAL_UNESCAPE_CLOSE = "&gt;";
+    private static final String PLACEHOLDER_OPEN = "xxxOxxx";
+    private static final String PLACEHOLDER_CLOSED = "xxxCxxx";
+
+    private static final String SINGLE_AND = "\\s+&\\s+";
+    private static final String TMP_SINGLE_AND = "---AND---";
 
     /**
      * Pre processing mathematical latex expressions with
@@ -54,7 +66,9 @@ public final class Utility {
         latex = latex.replaceAll( POM_BUG_AVOIDANCE_UNDERSCORE, "_{$1}" );
         LOG.trace("Surround underscore:  " + latex);
 
+        latex = latex.replaceAll( SINGLE_AND, TMP_SINGLE_AND );
         latex = HtmlEscape.unescapeHtml(latex);
+        latex = latex.replaceAll( TMP_SINGLE_AND, " & " );
         LOG.trace("HTML Unescaped:       " + latex);
 
         latex = latex.replaceAll( LATEX_COMMENTED_LINEBREAK, "" );
@@ -62,6 +76,8 @@ public final class Utility {
 
         latex = latex.replaceAll( ELEMINATE_ENDINGS, "");
         latex = latex.replaceAll( ELEMINATE_STARTS, "" );
+        latex = latex.replaceAll( ELEMINATE_SIMPLE_STARTS, "" );
+        latex = latex.replaceAll( ELEMINATE_SIMPLE_ENDS, "" );
         LOG.trace("Replace bad end/start:" + latex);
         LOG.debug("Finalize Pre-Processing for POM-Tagger: " + latex);
 
@@ -102,6 +118,17 @@ public final class Utility {
             LOG.error("Kann halt alles kaputt gehen irgendwie... ", e);
             return null;
         }
+    }
+
+    public static String safeUnescape( String escaped ){
+        escaped = escaped.replaceAll( SPECIAL_UNESCPAE_OPEN, PLACEHOLDER_OPEN );
+        escaped = escaped.replaceAll( SPECIAL_UNESCAPE_CLOSE, PLACEHOLDER_CLOSED );
+        escaped = escaped.replaceAll( SINGLE_AND, TMP_SINGLE_AND );
+        String unescaped = HtmlEscape.unescapeHtml(escaped);
+        unescaped = unescaped.replaceAll( TMP_SINGLE_AND, " & " );
+        unescaped = unescaped.replaceAll( PLACEHOLDER_OPEN, SPECIAL_UNESCPAE_OPEN );
+        unescaped = unescaped.replaceAll( PLACEHOLDER_CLOSED, SPECIAL_UNESCAPE_CLOSE );
+        return unescaped;
     }
 
     // static class usage only

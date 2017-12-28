@@ -1,9 +1,8 @@
 package com.formulasearchengine.mathosphere.pomlp.convertor;
 
 import com.formulasearchengine.mathmlconverters.latexml.LaTeXMLConverter;
-import com.formulasearchengine.mathmlconverters.latexml.LaTeXMLServiceResponse;
-import com.formulasearchengine.mathosphere.pomlp.convertor.extensions.LatexMLCommandExecutor;
-import com.formulasearchengine.mathosphere.pomlp.util.Utility;
+import com.formulasearchengine.mathosphere.pomlp.convertor.extensions.CommandExecutor;
+import com.formulasearchengine.mathosphere.pomlp.convertor.extensions.NativeResponse;
 import com.formulasearchengine.mathosphere.pomlp.xml.MathMLDocumentReader;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
@@ -19,7 +18,11 @@ public class LatexmlGenerator implements Parser, Canonicalizable{
 
     private static Logger LOG = LogManager.getLogger(LatexmlGenerator.class.getName());
 
-    private static final String[] DEFAULT_CMD = new String[]{"latexmlc",
+    private static final String NAME = "LaTeXML";
+    private static final String COMMAND = "latexmlc";
+
+    private static final String[] DEFAULT_CMD = new String[]{
+            COMMAND,
             "--includestyles",
             "--format=xhtml",
             "--whatsin=math",
@@ -43,7 +46,7 @@ public class LatexmlGenerator implements Parser, Canonicalizable{
     };
 
     private LaTeXMLConverter converter;
-    private LaTeXMLServiceResponse response;
+    private NativeResponse response;
 
     public LatexmlGenerator(){}
 
@@ -56,29 +59,26 @@ public class LatexmlGenerator implements Parser, Canonicalizable{
     @Override
     public Document parse(String latex) {
         LOG.info("Start parsing process of installed latexml version! " + latex);
-        LatexMLCommandExecutor executor = new LatexMLCommandExecutor(buildArguments(latex));
-        response = executor.exec( LatexMLCommandExecutor.DEFAULT_TIMEOUT, Level.TRACE );
-        if ( response.getStatusCode() != 0 ){
-            LOG.warn("Error in latexml conversion. " + response.getStatus() + System.lineSeparator() +
-                    response.getLog()
-            );
-            return null;
-        }
-        LOG.info("Conversion successful.");
+        CommandExecutor executor = new CommandExecutor( NAME, buildArguments(latex));
+        response = executor.exec( CommandExecutor.DEFAULT_TIMEOUT, Level.TRACE );
+        if ( handleResponseCode(response, NAME, LOG) != 0 ) return null;
+        LOG.info(NAME + " conversion successful.");
         return MathMLDocumentReader.getDocumentFromXMLString( response.getResult() );
     }
 
     @Override
     public void parseToFile(String latex, Path outputFile) {
         LOG.info("Call native latexmlc for " + latex);
-        LatexMLCommandExecutor executor = new LatexMLCommandExecutor(buildArguments(latex, outputFile));
-        response = executor.exec( LatexMLCommandExecutor.DEFAULT_TIMEOUT, Level.TRACE );
-        LOG.info("Response: " + response.getResult());
-        if ( response.getStatusCode() != 0 ){
-            LOG.error("Cannot write parse expression via latexmlc.");
-        } else {
+        CommandExecutor executor = new CommandExecutor(NAME, buildArguments(latex, outputFile));
+        response = executor.exec( CommandExecutor.DEFAULT_TIMEOUT, Level.TRACE );
+        if ( handleResponseCode(response, NAME, LOG) == 0 ) {
             LOG.info("Successfully write parsed expression to " + outputFile);
         }
+    }
+
+    @Override
+    public String getNativeCommand(){
+        return COMMAND;
     }
 
     public ArrayList<String> buildArguments(String latex ){

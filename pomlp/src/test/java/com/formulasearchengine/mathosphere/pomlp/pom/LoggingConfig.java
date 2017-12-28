@@ -18,7 +18,7 @@ public class LoggingConfig {
             String mavenLog = System.getProperty( MAVEN_LOG_LEVEL );
             if ( mavenLog != null ){
                 Configurator.setAllLevels(
-                        "com.formulasearchengine.mathosphere.pomlp.convertor.MathParser",
+                        "com.formulasearchengine.mathosphere.pomlp.convertor.POMConverter",
                         Level.getLevel(mavenLog)
                 );
                 Configurator.setRootLevel(Level.getLevel(mavenLog));

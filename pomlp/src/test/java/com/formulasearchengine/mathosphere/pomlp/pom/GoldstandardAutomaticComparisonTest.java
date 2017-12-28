@@ -2,6 +2,7 @@ package com.formulasearchengine.mathosphere.pomlp.pom;
 
 import com.formulasearchengine.mathosphere.pomlp.GoldStandardLoader;
 import com.formulasearchengine.mathosphere.pomlp.comparison.CSVResultWriter;
+import com.formulasearchengine.mathosphere.pomlp.comparison.ComparisonError;
 import com.formulasearchengine.mathosphere.pomlp.comparison.ComparisonResult;
 import com.formulasearchengine.mathosphere.pomlp.comparison.RTEDTreeComparator;
 import com.formulasearchengine.mathosphere.pomlp.convertor.Canonicalizable;
@@ -89,6 +90,7 @@ public class GoldstandardAutomaticComparisonTest {
 
         MathMLDocumentReader reader;
         Node xmlN;
+        boolean failed = false;
 
         for ( Converters converter : Converters.values() ){
             ComparisonResult result = new ComparisonResult( number, converter );
@@ -135,8 +137,11 @@ public class GoldstandardAutomaticComparisonTest {
                 resultsWriter.addResult( result );
             } catch ( Exception e ){
                 LOG.error("Cannot compare " + fileP, e);
-                fail("Comparison throws an exception. See logs for details!");
+                resultsWriter.addError(new ComparisonError(converter, number, e));
+                failed = true;
             }
         }
+
+        if ( failed ) fail("Comparison throws an exception. See logs for details!");
     }
 }

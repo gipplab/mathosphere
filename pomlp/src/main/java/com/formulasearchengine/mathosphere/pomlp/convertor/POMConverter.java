@@ -29,14 +29,14 @@ import java.util.concurrent.Future;
  * a tagged parse tree. Furthermore, it uses the PomXmlWriter
  * to parse it to XML trees.
  */
-public class MathParser implements Parser {
+public class POMConverter implements Parser {
 
-    private static final Logger LOG = LogManager.getLogger( MathParser.class.getName() );
+    private static final Logger LOG = LogManager.getLogger( POMConverter.class.getName() );
 
     private Path referenceDir;
     private PomParser parser;
 
-    public MathParser(){}
+    public POMConverter(){}
 
     @Override
     public void init(){
