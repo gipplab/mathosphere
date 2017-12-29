@@ -21,8 +21,7 @@ public interface Parser {
                             + " finished with exit "
                             + response.getStatusCode()
                             + ": "
-                            + response.getMessage(),
-                    response.getThrowedException());
+                            + response.getMessage());
         }
         return response.getStatusCode();
     }

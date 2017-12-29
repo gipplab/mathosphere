@@ -15,14 +15,18 @@ public class ConfigLoader {
 
     private static final Logger LOG = LogManager.getLogger( ConfigLoader.class.getName() );
 
-    public static final String GITHUB_URL = "github";
+    public static final String GITHUB_URL           = "github";
 
-    public static final String GITHUB_REPO_NAME = "github.repo.name";
-    public static final String GITHUB_REPO_OWNER = "github.repo.owner";
-    public static final String GITHUB_REPO_PATH = "github.repo.subpath";
+    public static final String GITHUB_REPO_NAME     = "github.repo.name";
+    public static final String GITHUB_REPO_OWNER    = "github.repo.owner";
+    public static final String GITHUB_REPO_PATH     = "github.repo.subpath";
 
-    public static final String GOULDI_MAXIMUM_NUM = "gouldi.max";
-    public static final String GOULDI_LOCAL_PATH = "gouldi.local";
+    public static final String GOULDI_MAXIMUM_NUM   = "gouldi.max";
+    public static final String GOULDI_LOCAL_PATH    = "gouldi.local";
+
+    private static final String THIRDPARTY_PREFIX   = "thirdparty.";
+    public static final String MATHEMATICAL         = THIRDPARTY_PREFIX + "mathematical";
+    public static final String LATEX2MML            = THIRDPARTY_PREFIX + "latex2mathml";
 
     public static final Properties CONFIG = loadConfiguration();
 

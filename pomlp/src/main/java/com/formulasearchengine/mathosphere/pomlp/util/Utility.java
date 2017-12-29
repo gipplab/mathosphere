@@ -25,11 +25,11 @@ public final class Utility {
     private static final String POM_BUG_AVOIDANCE_UNDERSCORE = "_(\\\\[^\\s\\n-+]+)";
 
     // Start/End with ,;. or \[ \] will be deleted
-    private static final String ELEMINATE_ENDINGS = "[\\s,;.]*(\\\\])?[\\s,;.]*$";
-    private static final String ELEMINATE_STARTS = "^[\\s,;.]*(\\\\\\[)?[\\s,;.]*";
+    private static final String ELEMINATE_ENDINGS = "[\\s,;.!]*(\\\\])?[\\s,;.!]*$";
+    private static final String ELEMINATE_STARTS = "^[\\s,;.!]*(\\\\\\[)?[\\s,;.!]*";
 
-    private static final String ELEMINATE_SIMPLE_ENDS = "\\\\+[\\s,.;]*$";
-    private static final String ELEMINATE_SIMPLE_STARTS = "^\\\\+[\\s,.;]+";
+    private static final String ELEMINATE_SIMPLE_ENDS = "\\\\+[\\s,.;!]*$";
+    private static final String ELEMINATE_SIMPLE_STARTS = "^\\\\+[\\s,.;!]+";
 
 
     // Possible line endings
