@@ -20,8 +20,16 @@ public class ComparisonResult {
         this.contDist = distance;
     }
 
+    public Double getContentDistance(){
+        return contDist;
+    }
+
     public void setPresentationDistance( double distance ){
         this.presDist = distance;
+    }
+
+    public Double getPresentationDistance(){
+        return presDist;
     }
 
     public int getIndex() {

@@ -7,7 +7,9 @@ public enum Converters {
     SnuggleTeX( 1,  "snuggletex",   ".mml", new SnuggleTexConverter()),
     LatexML(    2,  "latexml",      ".mml", new LatexmlGenerator()),
     Mathematical(3, "mathematical", ".mml", new MathematicalRubyConverter()),
-    MathToWeb(  4,  "mathtoweb",    ".mml", new MathToWebConverter());
+    MathToWeb(  4,  "mathtoweb",    ".mml", new MathToWebConverter()),
+    Latex2MML(  5,  "latex2mathml", ".mml", new LatexToMMLConverter()),
+    TeXZilla(   6,  "texzilla",     ".mml", null);
 
     // just the position of this element in this enum (it's easier that way...)
     private final int position;
@@ -36,6 +38,7 @@ public enum Converters {
         this.fileEnding = fileEnding;
         this.parser = parser;
         this.xmlMode = fileEnding.contains("xml");
+        this.skip = parser == null;
     }
 
     public Path initSubPath( Path baseDir ){
@@ -72,6 +75,6 @@ public enum Converters {
     }
 
     public void setSkipMode( boolean skip ){
-        this.skip = skip;
+        if ( parser != null ) this.skip = skip;
     }
 }

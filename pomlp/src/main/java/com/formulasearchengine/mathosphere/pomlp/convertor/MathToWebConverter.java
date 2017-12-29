@@ -84,18 +84,13 @@ public class MathToWebConverter implements Cloneable, Parser{
     }
 
     public static void main(String[] args) throws Exception {
-        String latex = "\\ [A]_t = -kt + [A]_0";
+        String latex = "\\[{(n+\\lambda)^{1-\\lambda}(1-x^{2})^{\\frac{1}{2}\\lambda}|C^{(\\lambda)}_{n}\\left(%\nx\\right)|<\\frac{2^{1-\\lambda}}{\\Gamma\\left(\\lambda\\right)}},\\]";
         latex = Utility.latexPreProcessing(latex);
-        MathToWebConverter m = new MathToWebConverter();
-        m.init();
 
-        MathematicalRubyConverter mr = new MathematicalRubyConverter();
-        mr.init();
+        Parser p = new LatexToMMLConverter();
+        p.init();
 
-        Document dm = m.parse(latex);
-//        Document dmr = mr.parse(latex);
-
-        System.out.println( Utility.documentToString(dm,true) );
-//        System.out.println( Utility.documentToString(dmr,true));
+        Document d = p.parse(latex);
+        System.out.println( Utility.documentToString(d,true));
     }
 }

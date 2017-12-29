@@ -31,13 +31,17 @@ public class ComparisonError {
 
     @Override
     public String toString(){
-        String stack = "";
+        String stack = "    ";
         for ( StackTraceElement s : exception.getStackTrace() ){
-            stack += s.toString() + System.lineSeparator();
+            stack += "    " + s.toString() + System.lineSeparator();
         }
         return converter.name() + ":" + index + " - "
-                + exception.getLocalizedMessage() + ": "
+                + exception.getClass().getName() + ": "
                 + exception.getMessage()
                 + System.lineSeparator() + stack;
+    }
+
+    public String simpleToString(){
+        return converter.name() + ":" + index + " - " + exception.getClass().getName();
     }
 }

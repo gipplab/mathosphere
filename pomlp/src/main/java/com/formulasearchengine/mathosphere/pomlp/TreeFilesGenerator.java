@@ -12,6 +12,9 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 public class TreeFilesGenerator {
     private static final Logger LOG = LogManager.getLogger( TreeFilesGenerator.class.getName() );
@@ -49,7 +52,7 @@ public class TreeFilesGenerator {
                 Files.createDirectory( subPath );
             }
             try{
-                conv.getParser().init();
+                if ( !conv.skip() ) conv.getParser().init();
             } catch ( Exception e ){
                 LOG.error( "Cannot initiate " + conv.name() + " converter!" );
             }
@@ -63,7 +66,7 @@ public class TreeFilesGenerator {
         try {
             LOG.info("Generate [" + number + ": " + converter.name()+"]!");
             String tex = bean.getOriginalTex();
-            tex = Utility.latexPreProcessing(tex);
+            //tex = Utility.latexPreProcessing(tex);
             Path outputF = converter.getSubPath().resolve(number+ converter.fileEnding() );
             converter.getParser().parseToFile( tex, outputF );
         } catch ( Exception e ){
@@ -80,31 +83,45 @@ public class TreeFilesGenerator {
      * Generates all third party MMLs at once
      */
     public void generateAllSubs(){
+//        ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(16);
+
+        // each number 1-300
         for ( int i = 1; i <= maxNumber; i++ ){
             try {
                 JsonGouldiBean bean = loader.getGouldiJson(i);
                 LOG.info("Start pre-processing of tex input.");
                 bean.setMathTex( Utility.latexPreProcessing(bean.getOriginalTex()) );
+                // each converter which is available
                 for ( Converters c : Converters.values() ){
-                    if (!c.skip()) generate(i, bean, c);
+                    final int index = i;
+                    if (!c.skip()) {
+//                        executor.submit( () -> generate(index, bean, c) );
+                        generate(index, bean, c);
+                    }
                 }
             } catch ( IOException e ){
                 LOG.error("SKIP: " + i, e);
             }
-
         }
+
+//        LOG.info("Shutdown thread pool. All threads in queue.");
+//        executor.shutdown();
+//        LOG.info("Wait for termination now.");
+//        try {
+//            executor.awaitTermination( 10, TimeUnit.MINUTES );
+//            LOG.info("Finished all threads in thread pool.");
+//        } catch ( InterruptedException ie ){
+//            LOG.error( "Waited 10 Minutes but still the thread pool is not terminated.", ie );
+//            LOG.error( "Shutdown now!" );
+//            executor.shutdownNow();
+//        }
     }
 
     public static void main(String[] args) throws Exception{
-//        Converters.SnuggleTeX.setSkipMode(true);
-//        Converters.LatexML.setSkipMode(true);
         CommandExecutor.preStartCommandCheck();
         TreeFilesGenerator gen = new TreeFilesGenerator();
         gen.init();
-        for ( Converters c : Converters.values() ){
-            gen.generate( 248, c );
-        }
-        //gen.generateAllSubs();
+        gen.generateAllSubs();
 
     }
 }
