@@ -2,6 +2,7 @@ package com.formulasearchengine.mathosphere.pomlp.convertor.extensions;
 
 import com.formulasearchengine.mathosphere.pomlp.convertor.Converters;
 import com.formulasearchengine.mathosphere.pomlp.convertor.Parser;
+import com.formulasearchengine.mathosphere.pomlp.util.POMLoader;
 import org.apache.commons.io.IOUtils;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
@@ -115,6 +116,17 @@ public class CommandExecutor {
                     LOG.debug("Successfully checked " + convs.name());
                 }
             }
+        }
+
+        try {
+            LOG.info("Check POM-Tagger!");
+            POMLoader pom = new POMLoader();
+            pom.init();
+            pom.parse("a"); // test pars
+        } catch ( Exception e ){
+            LOG.info("Cannot call POM-Tagger: " + e.getMessage());
+            LOG.trace("Reason: ", e);
+            Converters.POM.setSkipMode(true);
         }
     }
 }
