@@ -27,6 +27,8 @@ public class ConfigLoader {
     private static final String THIRDPARTY_PREFIX   = "thirdparty.";
     public static final String MATHEMATICAL         = THIRDPARTY_PREFIX + "mathematical";
     public static final String LATEX2MML            = THIRDPARTY_PREFIX + "latex2mathml";
+    public static final String POM_MLP              = THIRDPARTY_PREFIX + "pom.jar";
+    public static final String POM_REFERENCE_DIR    = THIRDPARTY_PREFIX + "pom.referenceData";
 
     public static final Properties CONFIG = loadConfiguration();
 

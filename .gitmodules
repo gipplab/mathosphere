@@ -19,6 +19,3 @@
 [submodule "lib/GoUldI"]
 	path = lib/GoUldI
 	url = https://github.com/ag-gipp/GoUldI.git
-[submodule "lib/latex-grammar"]
-	path = lib/latex-grammar
-	url = https://github.com/TU-Berlin/latex-grammar.git
