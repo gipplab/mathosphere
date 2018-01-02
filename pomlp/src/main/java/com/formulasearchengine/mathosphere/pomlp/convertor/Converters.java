@@ -9,7 +9,9 @@ public enum Converters {
     Mathematical(3, "mathematical", ".mml", new MathematicalRubyConverter()),
     MathToWeb(  4,  "mathtoweb",    ".mml", new MathToWebConverter()),
     Latex2MML(  5,  "latex2mathml", ".mml", new LatexToMMLConverter()),
-    TeXZilla(   6,  "texzilla",     ".mml", null);
+    TeXZilla(   6,  "texzilla",     ".mml", null),
+    Mathoid(    7,  "mathoid",      ".mml", null),
+    Mathematica(8,  "mathematica",  ".mml", null);
 
     // just the position of this element in this enum (it's easier that way...)
     private final int position;
