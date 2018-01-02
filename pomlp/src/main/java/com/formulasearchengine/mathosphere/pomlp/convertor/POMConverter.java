@@ -1,11 +1,8 @@
 package com.formulasearchengine.mathosphere.pomlp.convertor;
 
-import com.formulasearchengine.mathosphere.pomlp.util.PomlpPathConstants;
+import com.formulasearchengine.mathosphere.pomlp.util.POMLoader;
 import com.formulasearchengine.mathosphere.pomlp.xml.PomXmlWriter;
 import com.formulasearchengine.mathosphere.pomlp.xml.XmlDocumentReader;
-import mlp.ParseException;
-import mlp.PomParser;
-import mlp.PomTaggedExpression;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
@@ -34,30 +31,29 @@ public class POMConverter implements Parser {
     private static final Logger LOG = LogManager.getLogger( POMConverter.class.getName() );
 
     private Path referenceDir;
-    private PomParser parser;
+    private POMLoader pom;
 
     public POMConverter(){}
 
     @Override
     public void init(){
-        referenceDir = PomlpPathConstants.LatexGrammarReferenceDir;
-        parser = new PomParser(referenceDir);
-    }
-
-    public PomTaggedExpression parseLatexMath( String latex )
-            throws ParseException {
-        return parser.parse(latex);
+        try{
+            pom = new POMLoader();
+            pom.init();
+        } catch ( Exception e ){
+            LOG.error("Cannot instantiate POMLoader.", e);
+        }
     }
 
     public String parseLatexMathToStringXML( String latex )
             throws Exception {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
-        LOG.debug("Parse latex expression by POM-Tagger");
-        PomTaggedExpression pte = parseLatexMath(latex);
+        LOG.debug("Parse latex expression by POM-Tagger.");
+        pom.parse( latex );
 
         LOG.debug("Write XML to output stream");
-        PomXmlWriter.writeStraightXML( pte, outputStream );
+        PomXmlWriter.writeStraightXML( pom, outputStream );
 
         LOG.debug("Convert output stream to string and close output stream.");
         String out = outputStream.toString();
@@ -89,7 +85,7 @@ public class POMConverter implements Parser {
 
         // First step, parse the mathematical expression
         LOG.debug("Parse latex expression by POM-Tagger");
-        PomTaggedExpression pte = parseLatexMath( latex );
+        pom.parse( latex );
 
         // Run the Document building parser in a separate thread
         // it needs work until the writing process of the PomXmlWriter is finished
@@ -102,7 +98,7 @@ public class POMConverter implements Parser {
 
         // Write to the output stream in XML format
         LOG.debug("Starting writing process to connected piped output stream...");
-        PomXmlWriter.writeStraightXML( pte, outputStream );
+        PomXmlWriter.writeStraightXML( pom, outputStream );
 
         // flush and finally close the stream => the second thread finished here
         LOG.trace("Done writing to output stream. Close stream");
@@ -134,8 +130,9 @@ public class POMConverter implements Parser {
             Files.createFile(outputFile);
         }
         LOG.info("Parse LaTeX via POM.");
-        PomTaggedExpression pte = parseLatexMath( latex );
+        pom.parse( latex );
         LOG.info("Write parsed POM tree to file.");
-        PomXmlWriter.writeStraightXML( pte, new FileOutputStream(outputFile.toFile()));
+        PomXmlWriter.writeStraightXML( pom, new FileOutputStream(outputFile.toFile()));
     }
+
 }

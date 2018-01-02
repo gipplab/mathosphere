@@ -36,52 +36,6 @@
     <build>
         <plugins>
             <!--
-                Just install the MLP.jar from latex-grammar/libs/MLP to local maven.
-                After this initialization process, maven can find the dependency
-                    <dependency>
-                        <groupId>gov.nist.drmf.interpreter</groupId>
-                        <artifactId>MLP</artifactId>
-                        <version>1.0</version>
-                    </dependency>
-                as described in the configuration of this plugin
-            -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-install-plugin</artifactId>
-                <version>2.5</version>
-                <executions>
-                    <execution>
-                        <id>init-mlp</id>
-                        <phase>initialize</phase>
-                        <goals>
-                            <goal>install-file</goal>
-                        </goals>
-                        <configuration>
-                            <groupId>gov.nist.drmf.interpreter</groupId>
-                            <artifactId>MLP</artifactId>
-                            <version>1.0</version>
-                            <packaging>jar</packaging>
-                            <file>${basedir}/../lib/latex-grammar/libs/MLP/MLP.jar</file>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>init-mathtoweb</id>
-                        <phase>initialize</phase>
-                        <goals>
-                            <goal>install-file</goal>
-                        </goals>
-                        <configuration>
-                            <groupId>mathtoweb.com</groupId>
-                            <artifactId>engine</artifactId>
-                            <version>4.0.0</version>
-                            <packaging>jar</packaging>
-                            <file>${basedir}/lib/MathToWeb.jar</file>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-
-            <!--
                 This is needed to that IntelliJ can find, handle and invoke JUnit5
                 test suites.
             -->
@@ -126,20 +80,6 @@
     </repositories>
 
     <dependencies>
-        <!-- Useful to have the core package of our latex translator -->
-        <dependency>
-            <groupId>gov.nist.drmf.interpreter</groupId>
-            <artifactId>interpreter.core</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
-
-        <!-- Assumes an already installed version at local maven (see plugins above) -->
-        <dependency>
-            <groupId>gov.nist.drmf.interpreter</groupId>
-            <artifactId>MLP</artifactId>
-            <version>1.0</version>
-        </dependency>
-
         <!-- MathToWeb -->
         <dependency>
             <groupId>mathtoweb.com</groupId>

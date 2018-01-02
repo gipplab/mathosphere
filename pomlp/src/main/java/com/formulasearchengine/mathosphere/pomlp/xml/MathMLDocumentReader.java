@@ -8,7 +8,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
@@ -18,7 +17,6 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.StringWriter;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 
 public class MathMLDocumentReader extends XmlDocumentReader {
 
@@ -58,7 +56,7 @@ public class MathMLDocumentReader extends XmlDocumentReader {
     private void init(){
         // first copy...
         Document copy = MathMLDocumentReader.createNewDocumentSubtree( mmlDoc.getDocumentElement() );
-
+        
         try {
             contentNode = XQueryGenerator.getMainElement( copy );
             if ( contentNode.getNodeName().equals("math") ){
