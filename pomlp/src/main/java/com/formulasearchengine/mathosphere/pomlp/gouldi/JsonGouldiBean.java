@@ -20,7 +20,7 @@ public class JsonGouldiBean {
     @JsonProperty("correct_tex")
     private String correctTex;
 
-    @JsonProperty("usi")
+    @JsonProperty("uri")
     private String uri;
 
     @JsonProperty("correct_mml")
