@@ -82,9 +82,9 @@
     <dependencies>
         <!-- Usually should be avoided... however, maven install-plugin won't work here -->
         <dependency>
-            <groupId>mathtoweb.com</groupId>
-            <artifactId>engine</artifactId>
-            <version>4.0.0</version>
+            <groupId>TEST</groupId>
+            <artifactId>HEUTE</artifactId>
+            <version>1.2.3</version>
             <scope>system</scope>
             <systemPath>${basedir}/lib/MathToWeb.jar</systemPath>
         </dependency>
