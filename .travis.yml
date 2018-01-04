@@ -9,8 +9,6 @@ before_install:
   - cp mathosphere.properties mathosphere-core/src/main/resources/
 
 install:
-  - ls -al /home/travis/build/TU-Berlin/mathosphere/pomlp
-  - ls -al /home/travis/build/TU-Berlin/mathosphere/pomlp/lib
   - mvn install -DskipTests=true -q
 
 after_success:
