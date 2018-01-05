@@ -109,7 +109,7 @@ public class MathRequest {
 				}
 				break;
 			default:
-				Document doc = XMLHelper.String2Doc( query, true );
+				Document doc = XMLHelper.string2Doc( query, true );
 				if ( doc != null ) {
 					try {
 						results = client.runMWSQuery( doc );

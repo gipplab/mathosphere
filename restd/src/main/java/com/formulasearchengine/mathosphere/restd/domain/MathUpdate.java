@@ -51,7 +51,7 @@ public class MathUpdate {
 		Client client = new Client();
 		client.setShowTime( false ); //for testing
 		if ( harvest.length()>0 ){
-			Document doc = XMLHelper.String2Doc( harvest, true );
+			Document doc = XMLHelper.string2Doc( harvest, true );
 			//TODO: validate document
 			if ( doc == null ){
 				this.response = "harvest is not valid XML.";

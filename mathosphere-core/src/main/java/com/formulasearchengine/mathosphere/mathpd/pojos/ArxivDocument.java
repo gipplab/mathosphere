@@ -47,7 +47,7 @@ public class ArxivDocument {
     }
 
     public Document getDoc() {
-        return XMLHelper.String2Doc(text, true);
+        return XMLHelper.string2Doc(text, true);
     }
 
     public NonWhitespaceNodeList getMathTags() throws XPathExpressionException {
