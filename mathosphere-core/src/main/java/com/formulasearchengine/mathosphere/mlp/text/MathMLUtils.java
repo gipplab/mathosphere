@@ -189,7 +189,7 @@ public class MathMLUtils {
 
 
         try {
-            list = new NonWhitespaceNodeList(XMLHelper.getElementsB(root, xpath.compile("//m:sub")));
+            list = new NonWhitespaceNodeList(XMLHelper.getElementsB(root, xpath.compile("//m:msub")));
             //List<XML> subscript = doc.get.nodes("//m:msub");
             Multiset<String> result = HashMultiset.create();
 
