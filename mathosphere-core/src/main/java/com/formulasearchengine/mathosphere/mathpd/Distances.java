@@ -8,9 +8,9 @@ import com.formulasearchengine.mathosphere.mathpd.distances.earthmover.JFastEMD;
 import com.formulasearchengine.mathosphere.mathpd.distances.earthmover.Signature;
 import com.formulasearchengine.mathosphere.mathpd.pojos.ArxivDocument;
 import com.formulasearchengine.mathosphere.mathpd.pojos.ExtractedMathPDDocument;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.flink.api.java.tuple.Tuple4;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
@@ -25,7 +25,7 @@ import java.util.*;
  * Created by Felix Hamborg <felixhamborg@gmail.com> on 05.12.16.
  */
 public class Distances {
-    private static final Log LOG = LogFactory.getLog(Distances.class);
+    private static final Logger LOG = LogManager.getLogger(Distances.class.getName());
 
     private static final DecimalFormat decimalFormat = new DecimalFormat("#.###");
 

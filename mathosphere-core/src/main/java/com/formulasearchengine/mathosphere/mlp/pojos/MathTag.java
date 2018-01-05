@@ -9,9 +9,10 @@ import com.formulasearchengine.mathosphere.mlp.text.WikiTextUtils.MathMarkUpType
 import com.google.common.collect.Multiset;
 import com.google.common.hash.HashFunction;
 import com.google.common.hash.Hashing;
-import com.jcabi.log.Logger;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.nio.charset.StandardCharsets;
 import java.util.regex.Pattern;
@@ -21,6 +22,8 @@ import static com.formulasearchengine.mathosphere.mlp.text.MathMLUtils.extractId
 
 
 public class MathTag {
+    private static final Logger logger = LogManager.getLogger(MathTag.class.getName());
+
     public final static Pattern FORMULA_PATTERN =
             Pattern.compile("FORMULA_[0-9a-f+]");
     private static final HashFunction HASHER = Hashing.md5();
@@ -97,7 +100,7 @@ public class MathTag {
         try {
             return objectMapper.writeValueAsString(this);
         } catch (JsonProcessingException e) {
-            Logger.error(this,"Can't serialize to JSON object");
+            logger.error("Can't serialize to JSON object: " + this, e);
             return "";
         }
     }

@@ -15,8 +15,6 @@ import org.apache.flink.api.java.DataSet;
 import org.apache.flink.api.java.ExecutionEnvironment;
 import org.apache.flink.api.java.operators.DataSource;
 import org.apache.flink.core.fs.FileSystem.WriteMode;
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -35,7 +33,6 @@ public class StupidRelationFinder {
     DataSource<String> source = readWikiDump(config, env);
     DataSet<ParsedWikiDocument> documents = source.flatMap(new TextExtractorMapper())
       .map(new TextAnnotatorMapper(config));
-    Logger.getRootLogger().setLevel(Level.ERROR);
     ArrayList<GoldEntry> gold = (new Evaluator()).readGoldEntries(new File(config.getGoldFile()));
     DataSet<WikiDocumentOutput> instances = documents.map(new SimpleFeatureExtractorMapper(config, gold));
     //get extraction results and rate all of them without selecting
