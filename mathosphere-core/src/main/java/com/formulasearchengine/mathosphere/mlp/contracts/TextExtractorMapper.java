@@ -8,15 +8,15 @@ import org.apache.commons.lang3.text.translate.EntityArrays;
 import org.apache.commons.lang3.text.translate.LookupTranslator;
 import org.apache.flink.api.common.functions.FlatMapFunction;
 import org.apache.flink.util.Collector;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class TextExtractorMapper implements FlatMapFunction<String, RawWikiDocument> {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(TextExtractorMapper.class);
+  private static final Logger LOGGER = LogManager.getLogger(TextExtractorMapper.class.getName());
 
   private static final Pattern TITLE_PATTERN = Pattern.compile("(?:<title>)(.*?)(?:</title>)");
   private static final Pattern NAMESPACE_PATTERN = Pattern.compile("(?:<ns>)(.*?)(?:</ns>)");

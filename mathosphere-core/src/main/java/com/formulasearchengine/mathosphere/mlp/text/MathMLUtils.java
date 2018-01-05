@@ -8,8 +8,9 @@ import com.formulasearchengine.mathosphere.mlp.text.WikiTextUtils.MathMarkUpType
 import com.google.common.base.Throwables;
 import com.google.common.collect.*;
 import org.apache.commons.lang3.CharUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -30,7 +31,7 @@ import java.util.regex.Pattern;
 
 public class MathMLUtils {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(MathMLUtils.class);
+    private static final Logger LOGGER = LogManager.getLogger(MathMLUtils.class.getName());
     private static final SnuggleEngine SNUGGLE_ENGINE = new SnuggleEngine();
 
     /**

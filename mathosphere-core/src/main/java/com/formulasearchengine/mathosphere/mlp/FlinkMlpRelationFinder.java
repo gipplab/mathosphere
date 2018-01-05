@@ -28,8 +28,8 @@ import org.apache.flink.api.java.tuple.Tuple2;
 import org.apache.flink.core.fs.FileSystem.WriteMode;
 import org.apache.flink.core.fs.Path;
 import org.apache.flink.util.Collector;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.formulasearchengine.mathosphere.mlp.cli.EvalCommandConfig;
@@ -50,7 +50,7 @@ import com.google.common.collect.Multiset;
 
 public class FlinkMlpRelationFinder {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(FlinkMlpRelationFinder.class);
+    private static final Logger LOGGER = LogManager.getLogger(FlinkMlpRelationFinder.class.getName());
 
     public static void main(String[] args) throws Exception {
         FlinkMlpCommandConfig config = FlinkMlpCommandConfig.from(args);

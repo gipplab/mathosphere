@@ -7,8 +7,8 @@ import com.formulasearchengine.mathosphere.mlp.pojos.Sentence;
 import com.formulasearchengine.mathosphere.mlp.pojos.Word;
 import org.apache.commons.io.IOUtils;
 import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -20,7 +20,7 @@ import static org.junit.Assert.assertEquals;
 
 public class PosTaggerTest {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(PosTaggerTest.class);
+  private static final Logger LOGGER = LogManager.getLogger(PosTaggerTest.class.getName());
 
   @Test
   public void annotation() throws Exception {

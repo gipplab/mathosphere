@@ -5,8 +5,8 @@ import com.google.common.collect.ImmutableMap;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.csv.CSVRecord;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import java.io.FileOutputStream;
 import java.io.FileReader;
@@ -19,7 +19,7 @@ import java.util.Map;
 
 public class WikidataLinkMap implements Serializable {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(WikidataLinkMap.class);
+  private static final Logger LOGGER = LogManager.getLogger(WikidataLinkMap.class.getName());
   private final Map<String, String> map;
 
   public WikidataLinkMap(String fn) {

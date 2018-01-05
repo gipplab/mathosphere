@@ -21,8 +21,8 @@ import com.formulasearchengine.mathosphere.mlp.pojos.Word;
 import com.formulasearchengine.mathosphere.mlp.rus.RusPosAnnotator;
 
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import java.util.List;
 import java.util.Map;
@@ -43,7 +43,7 @@ import edu.stanford.nlp.util.CoreMap;
 public class PosTagger {
   private static BaseConfig config;
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(PosTagger.class);
+  private static final Logger LOGGER = LogManager.getLogger(PosTagger.class.getName());
 
   private static final Set<String> SYMBOLS = ImmutableSet.of("<", "=", ">", "≥", "≤", "|", "/", "\\", "[",
     "]", "*");

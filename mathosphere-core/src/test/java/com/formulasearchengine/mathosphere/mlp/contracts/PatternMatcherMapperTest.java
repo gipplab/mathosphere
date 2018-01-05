@@ -8,14 +8,14 @@ import com.formulasearchengine.mathosphere.mlp.pojos.WikiDocumentOutput;
 
 import org.apache.commons.io.IOUtils;
 import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import java.io.InputStream;
 
 public class PatternMatcherMapperTest {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(PatternMatcherMapperTest.class);
+  private static final Logger LOGGER = LogManager.getLogger(PatternMatcherMapperTest.class.getName());
 
   @Test
   public void testShodingerFull() throws Exception {

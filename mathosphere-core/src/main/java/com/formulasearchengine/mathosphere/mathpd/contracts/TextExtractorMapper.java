@@ -7,8 +7,8 @@ import com.formulasearchengine.mathosphere.mathpd.pojos.ExtractedMathPDDocument;
 import org.apache.flink.api.common.functions.FlatMapFunction;
 import org.apache.flink.api.java.tuple.Tuple4;
 import org.apache.flink.util.Collector;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
@@ -20,7 +20,7 @@ import java.util.regex.Pattern;
 public class TextExtractorMapper implements FlatMapFunction<String,ExtractedMathPDDocument> {
 
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(TextExtractorMapper.class);
+    private static final Logger LOGGER = LogManager.getLogger(TextExtractorMapper.class.getName());
 
     private static final Pattern FILENAME_PATTERN_20PD = Pattern.compile("<ARXIVFILESPLIT(?:\\\\n?|[\\s\\r\\n]+)" +
             "Filename=\"(.*?).xhtml\">(?:\\s*)(.*)", Pattern.DOTALL);

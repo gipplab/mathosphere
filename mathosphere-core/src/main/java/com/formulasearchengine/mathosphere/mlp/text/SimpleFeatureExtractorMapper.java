@@ -6,8 +6,8 @@ import com.formulasearchengine.mlp.evaluation.pojo.GoldEntry;
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Multiset;
 import org.apache.flink.api.common.functions.MapFunction;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -21,7 +21,7 @@ import static com.formulasearchengine.mathosphere.utils.GoldUtil.matchesGold;
  */
 public class SimpleFeatureExtractorMapper implements MapFunction<ParsedWikiDocument, WikiDocumentOutput> {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(SimpleFeatureExtractorMapper.class);
+  private static final Logger LOGGER = LogManager.getLogger(SimpleFeatureExtractorMapper.class.getName());
 
   private final FlinkMlpCommandConfig config;
   private final List<GoldEntry> goldEntries;

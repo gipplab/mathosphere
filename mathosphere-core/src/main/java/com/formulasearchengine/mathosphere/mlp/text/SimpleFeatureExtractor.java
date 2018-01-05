@@ -9,15 +9,15 @@ import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multiset;
 import org.apache.flink.api.common.functions.MapFunction;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
 public class SimpleFeatureExtractor implements MapFunction<ParsedWikiDocument, WikiDocumentOutput> {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(SimpleFeatureExtractor.class);
+  private static final Logger LOGGER = LogManager.getLogger(SimpleFeatureExtractor.class.getName());
 
   private final MachineLearningDefinienExtractionConfig config;
   private final List<GoldEntry> goldEntries;

@@ -9,15 +9,15 @@ import com.formulasearchengine.mathosphere.mlp.text.PatternMatcher;
 import com.formulasearchengine.mathosphere.mlp.text.PatternMatcher.IdentifierMatch;
 import com.google.common.collect.Lists;
 import org.apache.flink.api.common.functions.MapFunction;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import java.util.List;
 import java.util.Set;
 
 public class PatternMatcherMapper implements MapFunction<ParsedWikiDocument, WikiDocumentOutput> {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(PatternMatcherMapper.class);
+  private static final Logger LOGGER = LogManager.getLogger(PatternMatcherMapper.class.getName());
 
   @Override
   public WikiDocumentOutput map(ParsedWikiDocument doc) throws Exception {

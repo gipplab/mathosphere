@@ -3,8 +3,8 @@ package com.formulasearchengine.mathosphere.mathpd.contracts;
 import com.formulasearchengine.mathosphere.mathpd.pojos.ExtractedMathPDDocument;
 import org.apache.flink.api.common.functions.FlatMapFunction;
 import org.apache.flink.util.Collector;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -21,7 +21,7 @@ import java.util.Base64;
  */
 public class PreprocessedExtractedMathPDDocumentMapper implements FlatMapFunction<String, ExtractedMathPDDocument> {
     public static final Charset CHARSET = StandardCharsets.UTF_8;
-    private static final Logger LOGGER = LoggerFactory.getLogger(PreprocessedExtractedMathPDDocumentMapper.class);
+    private static final Logger LOGGER = LogManager.getLogger(PreprocessedExtractedMathPDDocumentMapper.class.getName());
 
     public static ExtractedMathPDDocument readExtractedMathPDDocumentFromText(String text) {
         LOGGER.info("text = " + text);

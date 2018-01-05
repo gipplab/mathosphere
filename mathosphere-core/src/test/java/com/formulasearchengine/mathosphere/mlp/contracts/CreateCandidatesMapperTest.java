@@ -7,8 +7,8 @@ import com.formulasearchengine.mathosphere.mlp.cli.FlinkMlpCommandConfig;
 import com.formulasearchengine.mathosphere.mlp.pojos.*;
 
 import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -18,7 +18,7 @@ import static org.junit.Assert.assertEquals;
 
 public class CreateCandidatesMapperTest {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(CreateCandidatesMapperTest.class);
+  private static final Logger LOGGER = LogManager.getLogger(CreateCandidatesMapperTest.class.getName());
 
   final FlinkMlpCommandConfig config = FlinkMlpCommandConfig.test();
 

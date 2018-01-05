@@ -33,8 +33,8 @@ import org.apache.flink.api.java.tuple.Tuple5;
 import org.apache.flink.api.java.tuple.Tuple7;
 import org.apache.flink.core.fs.Path;
 import org.apache.flink.util.Collector;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -45,7 +45,7 @@ import java.util.List;
 import static org.apache.flink.core.fs.FileSystem.WriteMode.OVERWRITE;
 
 public class FlinkPd {
-    private static final Logger LOGGER = LoggerFactory.getLogger(FlinkPd.class);
+    private static final Logger LOGGER = LogManager.getLogger(FlinkPd.class.getName());
     private static final int NUMBER_OF_PARTITIONS = -1; // if -1 then partitioning is disabled and it will just be one document merge (all snippets into one doc)
     private static DecimalFormat decimalFormat = new DecimalFormat("0.0");
 

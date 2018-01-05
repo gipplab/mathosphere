@@ -7,8 +7,8 @@ import com.formulasearchengine.mathosphere.mathpd.pojos.ExtractedMathPDDocument;
 import com.google.common.base.Throwables;
 import org.apache.flink.api.java.tuple.Tuple4;
 import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
@@ -27,7 +27,7 @@ import static junit.framework.TestCase.assertTrue;
  */
 public class FeaturesAndDistancesTest {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(TextExtractorMapper.class);
+    private static final Logger LOGGER = LogManager.getLogger(TextExtractorMapper.class.getName());
 
     private static String decodePath(String urlEncodedPath) {
         try {

@@ -5,8 +5,8 @@ import com.google.common.collect.ImmutableMap;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
 import org.apache.commons.lang3.CharUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import java.io.InputStreamReader;
 import java.io.Reader;
@@ -36,7 +36,7 @@ public class UnicodeMap {
     MAP =  unicode2tex.build();
   }
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(UnicodeMap.class);
+  private static final Logger LOGGER = LogManager.getLogger(UnicodeMap.class.getName());
 
   public static String string2TeX(String in) {
 

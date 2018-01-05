@@ -15,15 +15,15 @@ import com.formulasearchengine.mathosphere.mlp.text.WikiTextUtils;
 
 import org.apache.flink.api.common.functions.RichMapFunction;
 import org.apache.flink.configuration.Configuration;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class TextAnnotatorMapper extends RichMapFunction<RawWikiDocument, ParsedWikiDocument> {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(TextAnnotatorMapper.class);
+  private static final Logger LOGGER = LogManager.getLogger(TextAnnotatorMapper.class.getName());
 
   private final BaseConfig config;
 
