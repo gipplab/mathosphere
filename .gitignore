@@ -79,3 +79,5 @@ release.properties
 
 
 restd/logs
+
+dependency-reduced-pom.xml
