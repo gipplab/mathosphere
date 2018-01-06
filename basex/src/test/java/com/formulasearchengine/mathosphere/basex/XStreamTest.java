@@ -1,6 +1,9 @@
 package com.formulasearchengine.mathosphere.basex;
 
 import com.formulasearchengine.mathosphere.basex.types.*;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.custommonkey.xmlunit.XMLAssert;
 import org.custommonkey.xmlunit.XMLUnit;
 import org.junit.Test;
@@ -10,6 +13,8 @@ import org.junit.Test;
  * Created by jjl4 on 6/24/15.
  */
 public class XStreamTest {
+	private static final Logger log = LogManager.getLogger(XStreamTest.class.getName());
+
 	@Test
 	public void testResultToXML() throws Exception {
 		final Result result = new Result( "NTCIR11-Math-1", 21L );
@@ -68,7 +73,7 @@ public class XStreamTest {
 
 		result.setShowTime( true );
 
-		System.out.println( "RES:\n" + Client.resultToXML( result ) );
+		log.info( "RES:\n" + Client.resultToXML( result ) );
 
 		XMLUnit.setIgnoreWhitespace( true );
 		XMLUnit.setIgnoreAttributeOrder( true );

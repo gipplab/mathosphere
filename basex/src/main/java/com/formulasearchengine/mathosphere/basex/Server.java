@@ -3,6 +3,8 @@ package com.formulasearchengine.mathosphere.basex;
 import java.io.File;
 import java.io.IOException;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.basex.BaseXServer;
 import org.jetbrains.annotations.NotNull;
 
@@ -16,6 +18,8 @@ public final class Server {
 	public static final String SERVER_NAME = "localhost";
 	public static final int PORT = 1984;
 	public static final String DATABASE_NAME = "math";
+	private static final Logger log = LogManager.getLogger(Server.class.getName());
+
 
 	private Server() {
 	}
@@ -57,7 +61,7 @@ public final class Server {
 		/* [CG] I dropped all health checks. If something should be going wrong here, please give me a note;
 		 * it should definitely be fixed! */
 
-		System.out.println("Import completed.");
+		log.info("Import completed.");
 	}
 
 	/**

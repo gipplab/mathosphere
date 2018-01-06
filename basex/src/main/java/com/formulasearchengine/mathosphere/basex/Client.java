@@ -1,6 +1,7 @@
 package com.formulasearchengine.mathosphere.basex;
 
 import com.formulasearchengine.mathmlquerygenerator.NtcirPattern;
+import com.formulasearchengine.mathmlquerygenerator.QVarXQueryGenerator;
 import com.formulasearchengine.mathmlquerygenerator.XQueryGenerator;
 import com.formulasearchengine.mathmltools.xmlhelper.XMLHelper;
 import com.formulasearchengine.mathosphere.basex.types.Hit;
@@ -351,7 +352,7 @@ public class Client {
 		if ( mwsQuery == null ){
 			throw new IllegalArgumentException( "Got empty MathML document" );
 		}
-		final XQueryGenerator generator = new XQueryGenerator(mwsQuery);
+		final QVarXQueryGenerator generator = new QVarXQueryGenerator(mwsQuery);
 		generator.setPathToRoot("//*:expr");
 		generator.setReturnFormat(Benchmark.BASEX_FOOTER );
 		generator.setAddQvarMap( false );
@@ -373,7 +374,7 @@ public class Client {
 		}
 		final TexQueryGenerator t = new TexQueryGenerator();
 		final String mmlString = t.request(tex);
-		final Document doc = XMLHelper.String2Doc( mmlString, true );
+		final Document doc = XMLHelper.string2Doc( mmlString, true );
 		return runMWSQuery( doc );
 	}
 

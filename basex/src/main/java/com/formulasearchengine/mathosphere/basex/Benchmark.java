@@ -116,7 +116,6 @@ public class Benchmark {
 		List<NtcirPattern> patterns = ntcirTopicReader.extractPatterns();
 		final Client client = new Client( patterns );
 		srv.shutdown();
-		srv = null;
 		String result;
 		if ( line.hasOption( "c" ) ) {
 			result = "CSV option has been disabled for now. Use https://github.com/physikerwelt/xstlprocJ/blob/master/test/transform.xsl";
@@ -130,7 +129,7 @@ public class Benchmark {
 				org.apache.commons.io.FileUtils.writeStringToFile( dest, result );
 				written = true;
 			} catch ( Exception e ) {
-				System.out.println( "Could not print to file" + e.getMessage() );
+				System.err.println( "Could not print to file" + e.getMessage() );
 			}
 		}
 		if ( !written ) {

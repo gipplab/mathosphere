@@ -5,6 +5,8 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.custommonkey.xmlunit.XMLAssert;
 import org.custommonkey.xmlunit.XMLUnit;
 import org.hamcrest.CoreMatchers;
@@ -26,6 +28,7 @@ import java.util.Scanner;
 import static org.junit.Assert.*;
 
 public final class ClientTest {
+	private static final Logger log = LogManager.getLogger(ClientTest.class.getName());
 
 	/**
 	 * Checks if there is a working connection to the xsede server, stops the test if there isn't.
@@ -38,11 +41,11 @@ public final class ClientTest {
 		try {
 			response = httpClient.execute( httppost );
 			if ( response.getStatusLine().getStatusCode() == 4 ) {
-				System.out.println( "Ignoring unit test. Xsede connection unstable." );
+				log.warn( "Ignoring unit test. Xsede connection unstable." );
 				Assume.assumeTrue( false );
 			}
 		}  catch ( final IOException e ) {
-			System.out.println( "Ignoring unit test. Xsede connection unstable." );
+			log.error(  "Ignoring unit test. Xsede connection unstable.", e );
 			Assume.assumeTrue( false );
 		}
 	}
@@ -84,7 +87,7 @@ public final class ClientTest {
 			"    </result>\n"+
 			"  </run>\n" +
 			"</results>";
-		Document query = XMLHelper.String2Doc( testInput, true );
+		Document query = XMLHelper.string2Doc( testInput, true );
 		Client c = new Client();
 		c.setShowTime( false );
 		String res = Client.resultsToXML( c.runMWSQuery( query ) );
@@ -108,7 +111,7 @@ public final class ClientTest {
 			"    </result>\n"+
 			"  </run>\n" +
 			"</results>";
-		Document query = XMLHelper.String2Doc( testInput, true );
+		Document query = XMLHelper.string2Doc( testInput, true );
 		Client c = new Client();
 		c.setShowTime( false );
 		c.setUseXQ( true );
@@ -205,7 +208,7 @@ public final class ClientTest {
 	}
 	@Test
 	public void testInsert() throws Exception{
-		Document doc = XMLHelper.String2Doc( getFileContents( "math.4.3.xml" ), true );
+		Document doc = XMLHelper.string2Doc( getFileContents( "math.4.3.xml" ), true );
 		Client c = new Client(  );
 		assertEquals( 0, c.countRevisionFormula( 800 ) );
 		c.updateFormula( doc.getDocumentElement() );
@@ -231,7 +234,7 @@ public final class ClientTest {
 
 	@Test
 	public void testNTCIRReturn() throws Exception {
-		final Document doc = XMLHelper.String2Doc(getFileContents( "mws.xml" ), true);
+		final Document doc = XMLHelper.string2Doc(getFileContents( "mws.xml" ), true);
 		final String query = "declare default element namespace \"http://www.w3.org/1998/Math/MathML\";\n" +
 			"for $m in //*:expr return \n" +
 			"for $x in $m//*:apply\n" +
