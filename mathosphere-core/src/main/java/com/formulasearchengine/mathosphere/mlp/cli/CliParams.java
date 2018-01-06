@@ -15,6 +15,7 @@ public class CliParams implements Serializable {
     public static final String MLP = "mlp";
     public static final String EVAL = "eval";
     public static final String ML = "ml";
+    public static final String MLLIST = "mllist";
     public static final String CLASSIFY = "classify";
     public static final String PD = "pd";
     public static final String HELP = "help";
@@ -25,6 +26,7 @@ public class CliParams implements Serializable {
     private ListCommandConfig listCommand;
     private MlpCommandConfig extractCommand;
     private MachineLearningDefinienExtractionConfig mlCommand;
+    private MachineLearningDefinienListConfig mlListCommand;
     private FlinkMlpCommandConfig mlpCommand;
     private MachineLearningDefinienClassifierConfig classifyCommand;
     private FlinkPdCommandConfig pdCommand;
@@ -47,6 +49,7 @@ public class CliParams implements Serializable {
         params.evalCommand = new EvalCommandConfig();
         params.pdCommand = new FlinkPdCommandConfig();
         params.tagsCommandConfig = new TagsCommandConfig();
+        params.mlListCommand = new MachineLearningDefinienListConfig();
 
         jc.addCommand(COUNT, params.countCommand);
         jc.addCommand(LIST, params.listCommand);
@@ -54,6 +57,7 @@ public class CliParams implements Serializable {
         jc.addCommand(MLP, params.mlpCommand);
         jc.addCommand(EVAL, params.evalCommand);
         jc.addCommand(ML, params.mlCommand);
+        jc.addCommand(MLLIST, params.mlListCommand);
         jc.addCommand(CLASSIFY, params.classifyCommand);
         jc.addCommand(PD, params.pdCommand);
         jc.addCommand(HELP, new HelpCommand());
