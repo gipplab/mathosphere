@@ -58,6 +58,7 @@ public class MathMLDocumentReader extends XmlDocumentReader {
         Document copy = MathMLDocumentReader.createNewDocumentSubtree( mmlDoc.getDocumentElement() );
 
         try {
+
             contentNode = XQueryGenerator.getMainElement( copy );
             if ( contentNode.getNodeName().equals("math") ){
                 presentationNode = contentNode;
