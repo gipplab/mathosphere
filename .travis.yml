@@ -11,6 +11,10 @@ before_install:
 install:
   - mvn install -DskipTests=true -q
 
+script:
+   - mvn test -q -fae
+
+
 after_success:
   - mvn cobertura:cobertura coveralls:report
 
