@@ -12,7 +12,7 @@ install:
   - mvn install -DskipTests=true -q
 
 script:
-   - mvn test -q -fae
+   - mvn test -q -fae -Dlog4j.configurationFile=mathosphere-core/src/main/resources/log4j2-travis.xml
 
 
 after_success:
