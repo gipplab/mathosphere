@@ -18,7 +18,7 @@ import java.io.InputStream;
 import java.util.*;
 
 public class TexQueryGenerator {
-	private String LaTeXMLURL = "http://gw125.iu.xsede.org:8888";
+	private String LaTeXMLURL = "http://drmf-latexml.wmflabs.org";
 	private Map ob = new LinkedHashMap();
 	private List<NameValuePair> params;
 
