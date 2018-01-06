@@ -1,0 +1,53 @@
+@relation AllRelations
+
+@attribute title string
+@attribute qId string
+@attribute identifier string
+@attribute definiens string
+@attribute 'pattern 1 identifier, definition' numeric
+@attribute 'pattern 2 definition, identifier' numeric
+@attribute 'pattern 3 identifier, isOrAre, definition' numeric
+@attribute 'pattern 4 identifier, isOrAre, the, definition' numeric
+@attribute 'pattern 5 let, identifier, be, denoted, by, definition' numeric
+@attribute 'pattern 6 let, identifier, be, denoted, by, the_one_or_more, definition' numeric
+@attribute 'pattern 7 definition, isOrAre, denoted, by, identifier' numeric
+@attribute 'pattern 8 definition, isOrAre, denoted, by, the_one_or_more, identifier' numeric
+@attribute 'pattern 9 identifier, denotes, definition' numeric
+@attribute 'pattern 10 identifier, denotes, the_one_or_more, definition' numeric
+@attribute 'colon between' numeric
+@attribute 'commma between' numeric
+@attribute 'other math between' numeric
+@attribute 'definiens in parentheses in sentence' numeric
+@attribute 'identifier in parentheses in sentence' numeric
+@attribute wordDistance numeric
+@attribute wordPositioning numeric
+@attribute 'Surface text and POS tag of two preceding and following tokens around the desc candidate' string
+@attribute 'Surface text and POS tag of three preceding and following tokens around the paired math expr' string
+@attribute 'Surface text of the first verb that appears between the desc candidate and the target math expr' string
+@attribute graphDistance numeric
+@attribute 'dependency with length 3 from identifier' string
+@attribute 'direction of dependency with length 3 from identifier' numeric
+@attribute 'dependency with length 3 from definien' string
+@attribute 'direction of dependency with length 3 from definien' numeric
+@attribute distance_from_first_occurence numeric
+@attribute relative_term_frequency numeric
+@attribute classification {match,'no match'}
+
+@data
+'Martingale (betting system)',41,q,probability,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0.118421,1,'The_DT  of_IN losing_VBG ','42_CD tosses_NNS is_VBZ  which_WDT will_MD ',losing,0.013158,'definiens_candidate_NN ',0,'identifier_candidate_ID ',1,0,0.084158,match
+'Martingale (betting system)',41,q,tosses,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0.026316,1,'first_JJ 42_CD  is_VBZ identifier_candidate_ID ','42_CD definiens_candidate_NNS is_VBZ  which_WDT will_MD ',is,0.039474,'probability_NN losing_VBG definiens_candidate_NNS ',0,'losing_VBG probability_NN identifier_candidate_ID ',1,0,0.029703,'no match'
+'Martingale (betting system)',41,q,'small number',0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0.092105,0,'a_DT very_RB  unless_IN tails_NNS ','42_CD tosses_NNS is_VBZ  which_WDT will_MD ',be,0.013158,'definiens_candidate_NP ',0,'identifier_candidate_ID ',1,0,0.00495,'no match'
+'Martingale (betting system)',41,q,tails,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0.118421,0,'small_number_NP unless_IN  are_VBP nearly_RB ','42_CD tosses_NNS is_VBZ  which_WDT will_MD ',be,0.052632,'small_number_NP toss_VBP certain_JJ ',0,'certain_JJ toss_VBP small_number_NP ',1,0,0.024752,'no match'
+'Martingale (betting system)',41,q,'fair case',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0.026316,1,'In_IN the_DT  where_WRB identifier_candidate_ID ','the_DT definiens_candidate_NP where_WRB  we_PRP could_MD ','',0.013158,'definiens_candidate_NP ',1,'identifier_candidate_ID ',0,0.009259,0.00495,'no match'
+'Martingale (betting system)',41,q,something,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0.092105,0,'to_TO wait_VB  on_IN the_DT ','the_DT fair_case_NP where_WRB  we_PRP could_MD ',expect,0.052632,'fair_case_NP expect_VB wait_VB ',1,'wait_VB expect_VB fair_case_NP ',1,0.009259,0.009901,'no match'
+'Martingale (betting system)',41,q,order,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0.131579,0,'on_IN the_DT  of_IN FORMULA_9ecfe2ac84875164b7ae7611f85f2d88_MATH ','the_DT fair_case_NP where_WRB  we_PRP could_MD ',expect,0.052632,'fair_case_NP expect_VB wait_VB ',1,'wait_VB expect_VB fair_case_NP ',1,0.009259,0.009901,'no match'
+'Martingale (betting system)',41,q,tosses,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0.171053,0,'of_IN FORMULA_9ecfe2ac84875164b7ae7611f85f2d88_MATH  before_IN seeing_VBG ','the_DT fair_case_NP where_WRB  we_PRP could_MD ',expect,0.065789,'fair_case_NP expect_VB wait_VB ',1,'order_NN wait_VB expect_VB ',1,0.009259,0.029703,'no match'
+'Martingale (betting system)',41,q,'consecutive tails',0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0.223684,0,'seeing_VBG 42_CD  tossing_VBG ','the_DT fair_case_NP where_WRB  we_PRP could_MD ',expect,0.065789,'fair_case_NP expect_VB wait_VB ',1,'seeing_VBG wait_VB expect_VB ',1,0.009259,0.00495,'no match'
+'Martingale (betting system)',41,q,coins,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,0.263158,0,'tossing_VBG  at_IN the_DT ','the_DT fair_case_NP where_WRB  we_PRP could_MD ',expect,0.065789,'fair_case_NP expect_VB require_VB ',1,'tossing_VBG require_VB expect_VB ',1,0.009259,0.00495,'no match'
+'Martingale (betting system)',41,q,rate,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,0.302632,0,'at_IN the_DT  of_IN one_CD ','the_DT fair_case_NP where_WRB  we_PRP could_MD ',expect,0.065789,'fair_case_NP expect_VB require_VB ',1,'tossing_VBG require_VB expect_VB ',1,0.009259,0.00495,'no match'
+'Martingale (betting system)',41,q,years,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,0.460526,0,'approximately_RB 279000_CD  ','the_DT fair_case_NP where_WRB  we_PRP could_MD ',expect,0.052632,'fair_case_NP expect_VB require_VB ',1,'require_VB expect_VB fair_case_NP ',1,0.009259,0.009901,'no match'
+'Martingale (betting system)',41,q,version,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0.039474,0,'this_DT  of_IN the_DT ','If_IN  this_DT definiens_candidate_NN ','',0.026316,'unfavorable_JJ definiens_candidate_NN ',1,'unfavorable_JJ identifier_candidate_ID ',1,0.055556,0.009901,'no match'
+'Martingale (betting system)',41,q,game,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0.078947,0,'of_IN the_DT  is_VBZ also_RB ','If_IN  this_DT version_NN ','',0.039474,'unfavorable_JJ version_NN definiens_candidate_NN ',1,'version_NN unfavorable_JJ identifier_candidate_ID ',1,0.055556,0.019802,'no match'
+'Martingale (betting system)',41,q,'first player',0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0.157895,0,'to_TO the_DT  in_IN the_DT ','If_IN  this_DT version_NN ',is,0.026316,'unfavorable_JJ definiens_candidate_NP ',1,'unfavorable_JJ identifier_candidate_ID ',1,0.055556,0.00495,'no match'
+'Martingale (betting system)',41,q,sense,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0.197368,0,'in_IN the_DT  that_IN it_PRP ','If_IN  this_DT version_NN ',is,0.039474,'unfavorable_JJ first_player_NP definiens_candidate_NN ',1,'first_player_NP unfavorable_JJ identifier_candidate_ID ',1,0.055556,0.009901,'no match'
+'Martingale (betting system)',41,q,winnings,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0.289474,0,'negative_JJ expected_VBN  ','If_IN  this_DT version_NN ',is,0.052632,'unfavorable_JJ first_player_NP sense_NN ',1,'sense_NN first_player_NP unfavorable_JJ ',1,0.055556,0.00495,'no match'
