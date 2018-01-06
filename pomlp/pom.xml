@@ -82,9 +82,9 @@
     <dependencies>
         <!-- Usually should be avoided... however, maven install-plugin won't work here -->
         <dependency>
-            <groupId>TEST</groupId>
-            <artifactId>HEUTE</artifactId>
-            <version>1.2.3</version>
+            <groupId>com.mathtoweb</groupId>
+            <artifactId>MathToWeb</artifactId>
+            <version>4.0.0</version>
             <scope>system</scope>
             <systemPath>${basedir}/lib/MathToWeb.jar</systemPath>
         </dependency>
@@ -108,6 +108,13 @@
             <groupId>com.formulasearchengine</groupId>
             <artifactId>mathmlconverters</artifactId>
             <version>1.0.0-SNAPSHOT</version>
+        </dependency>
+
+        <!-- MathML Converter -->
+        <dependency>
+            <groupId>com.formulasearchengine</groupId>
+            <artifactId>mathmltools</artifactId>
+            <version>0.3.1-SNAPSHOT</version>
         </dependency>
 
         <!-- Spring REST to communicate with GitHub -->

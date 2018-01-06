@@ -175,6 +175,8 @@ public class MathMLUtils {
     private static Multiset<String> tryParseWithXpath(String mathML, boolean useTeX, boolean useBlacklist) {
         Document doc = XMLHelper.string2Doc(mathML, true);
 
+
+
         new XmlNamespaceTranslator()
                 .setDefaultNamespace( "http://www.w3.org/1998/Math/MathML" )
                 .addTranslation(null, "http://www.w3.org/1998/Math/MathML")

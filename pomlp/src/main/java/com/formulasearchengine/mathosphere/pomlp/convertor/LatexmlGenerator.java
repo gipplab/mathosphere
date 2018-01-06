@@ -1,9 +1,9 @@
 package com.formulasearchengine.mathosphere.pomlp.convertor;
 
 import com.formulasearchengine.mathmlconverters.latexml.LaTeXMLConverter;
-import com.formulasearchengine.mathosphere.pomlp.convertor.extensions.CommandExecutor;
-import com.formulasearchengine.mathosphere.pomlp.convertor.extensions.NativeResponse;
 import com.formulasearchengine.mathosphere.pomlp.xml.MathMLDocumentReader;
+import com.formulasearchengine.nativetools.CommandExecutor;
+import com.formulasearchengine.nativetools.NativeResponse;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

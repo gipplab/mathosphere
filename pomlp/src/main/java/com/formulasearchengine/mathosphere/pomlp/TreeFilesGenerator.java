@@ -1,10 +1,13 @@
 package com.formulasearchengine.mathosphere.pomlp;
 
 import com.formulasearchengine.mathosphere.pomlp.convertor.Converters;
-import com.formulasearchengine.mathosphere.pomlp.convertor.extensions.CommandExecutor;
+import com.formulasearchengine.mathosphere.pomlp.convertor.Parser;
 import com.formulasearchengine.mathosphere.pomlp.gouldi.JsonGouldiBean;
+import com.formulasearchengine.mathosphere.pomlp.util.POMLoader;
 import com.formulasearchengine.mathosphere.pomlp.util.Utility;
 import com.formulasearchengine.mathosphere.pomlp.util.config.ConfigLoader;
+import com.formulasearchengine.nativetools.CommandExecutor;
+import com.formulasearchengine.nativetools.NativeResponse;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -12,9 +15,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
 
 public class TreeFilesGenerator {
     private static final Logger LOG = LogManager.getLogger( TreeFilesGenerator.class.getName() );
@@ -118,10 +118,44 @@ public class TreeFilesGenerator {
     }
 
     public static void main(String[] args) throws Exception{
-        CommandExecutor.preStartCommandCheck();
+        preStartCommandCheck();
         TreeFilesGenerator gen = new TreeFilesGenerator();
         gen.init();
         gen.generateAllSubs();
 
+    }
+
+    /**
+     * Checks the
+     */
+    public static void preStartCommandCheck(){
+        Parser p;
+        CommandExecutor executor;
+        NativeResponse res;
+        LOG.info("Check availability of native programs.");
+        for (Converters convs : Converters.values()){
+            p = convs.getParser();
+            if ( p != null && p.getNativeCommand() != null ){
+                executor = new CommandExecutor( "DefinitionCheck", "which", p.getNativeCommand() );
+                res = executor.exec( 100 );
+                if ( res.getStatusCode() != 0 ){
+                    convs.setSkipMode( true );
+                    LOG.info(convs.name() + " not available => Deactivate!");
+                } else {
+                    LOG.debug("Successfully checked " + convs.name());
+                }
+            }
+        }
+
+        try {
+            LOG.info("Check POM-Tagger!");
+            POMLoader pom = new POMLoader();
+            pom.init();
+            pom.parse("a"); // test pars
+        } catch ( Exception e ){
+            LOG.info("Cannot call POM-Tagger: " + e.getMessage());
+            LOG.trace("Reason: ", e);
+            Converters.POM.setSkipMode(true);
+        }
     }
 }

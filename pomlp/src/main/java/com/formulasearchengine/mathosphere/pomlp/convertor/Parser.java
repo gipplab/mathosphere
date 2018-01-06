@@ -1,7 +1,7 @@
 package com.formulasearchengine.mathosphere.pomlp.convertor;
 
 
-import com.formulasearchengine.mathosphere.pomlp.convertor.extensions.NativeResponse;
+import com.formulasearchengine.nativetools.NativeResponse;
 import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 
