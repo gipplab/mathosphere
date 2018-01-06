@@ -39,9 +39,9 @@ training dataset.
   * in the git for windows installation process this would be the option #2 Checkout as-is, commit Unix-style line endings Git will not perform any conversion when checking out text files.
 
 ### Master branch tests
-[![Build Status](https://travis-ci.org/TU-Berlin/mathosphere.svg?branch=master)](https://travis-ci.org/TU-Berlin/mathosphere)
-[![Coverage Status](https://coveralls.io/repos/TU-Berlin/mathosphere/badge.svg)](https://coveralls.io/r/TU-Berlin/mathosphere )
-[![Known Vulnerabilities](https://snyk.io/test/github/tu-berlin/mathosphere/badge.svg)](https://snyk.io/test/github/tu-berlin/mathosphere)
+[![Build Status](https://travis-ci.org/ag-gipp/mathosphere.svg?branch=master)](https://travis-ci.org/ag-gipp/mathosphere)
+[![Coverage Status](https://coveralls.io/repos/ag-gipp/mathosphere/badge.svg)](https://coveralls.io/r/ag-gipp/mathosphere )
+[![Known Vulnerabilities](https://snyk.io/test/github/ag-gipp/mathosphere/badge.svg)](https://snyk.io/test/github/ag-gipp/mathosphere)
 
           
 ### Checkout
