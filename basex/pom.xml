@@ -66,8 +66,8 @@
         </dependency>
         <dependency>
             <groupId>com.formulasearchengine</groupId>
-            <artifactId>mathmlquerygenerator</artifactId>
-            <version>1.0.0</version>
+            <artifactId>mathmltools</artifactId>
+            <version>0.3.1-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
