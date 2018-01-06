@@ -73,7 +73,7 @@ public class TexQueryGeneratorTest {
 		try {
 			t.request( "\\sen" );
 		} catch( final IOException expected ) {
-			assertEquals( "2", t.getOb().get( "status_code" ) );
+			assertEquals( 2, t.getOb().get( "status_code" ) );
 			assertEquals( withoutTexvc, t.getOb().get( "result" ) );
 			assertEquals( "Tex request to MathML conversion server produced failed response.", expected.getMessage() );
 		}
@@ -115,7 +115,7 @@ public class TexQueryGeneratorTest {
 		try {
 			t.request( "E=mc^2" );
 		} catch( final IOException expected ) {
-			assertEquals( "com.fasterxml.jackson.core.JsonParseException",
+			assertEquals( "java.io.IOException",
 					expected.getClass().getCanonicalName() );
 		}
 
@@ -124,8 +124,8 @@ public class TexQueryGeneratorTest {
 		try {
 			t.request( "E=mc^2" );
 		} catch( final IOException expected ) {
-			assertEquals( "org.apache.http.client.ClientProtocolException",
-				expected.getClass().getCanonicalName() );
+			assertEquals( "java.net.MalformedURLException",
+				expected.getCause().getCause().getClass().getCanonicalName() );
 		}
 	}
 }
