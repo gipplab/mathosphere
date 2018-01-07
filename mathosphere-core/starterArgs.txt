@@ -1,2 +1,0 @@
-java -jar mathosphere-core-3.0.0-SNAPSHOT-jar-with-dependencies.jar ml -in ../eval_dataset_sample.xml -out ../output/ --goldFile ../gold.json --threads 8 --tex --texvcinfo http://localhost:10044/texvcinfo --writeInstances --writeSvmModel
-
