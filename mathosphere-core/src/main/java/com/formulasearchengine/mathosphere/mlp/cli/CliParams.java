@@ -110,6 +110,10 @@ public class CliParams implements Serializable {
         return tagsCommandConfig;
     }
 
+    public MachineLearningDefinienListConfig getMLListCommandConfig() {
+        return mlListCommand;
+    }
+
     public void printHelp() {
         jc.usage();
     }

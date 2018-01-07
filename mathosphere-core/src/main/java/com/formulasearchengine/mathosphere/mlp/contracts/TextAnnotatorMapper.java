@@ -28,7 +28,7 @@ public class TextAnnotatorMapper extends RichMapFunction<RawWikiDocument, Parsed
   private final BaseConfig config;
 
 
-  private PosTagger posTagger;
+  private transient PosTagger posTagger;
 
   public TextAnnotatorMapper(BaseConfig config) {
     this.config = config;
