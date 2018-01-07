@@ -9,7 +9,11 @@
     </Appenders>
     <Loggers>
         <Root level="ALL">
+<<<<<<< HEAD
             <AppenderRef ref="system-console" level="INFO"/>
+=======
+            <AppenderRef ref="system-console" level="DEBUG"/>
+>>>>>>> Still some problems with the new MLLIST here.
         </Root>
     </Loggers>
 </Configuration>

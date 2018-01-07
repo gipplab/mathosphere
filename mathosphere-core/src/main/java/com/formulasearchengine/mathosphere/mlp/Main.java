@@ -31,7 +31,9 @@ public class Main {
             case CliParams.ML:
                 MachineLearningModelGenerator.find(params.getMachineLearningCommand());
                 break;
-                // TODO MLLIST here
+            case CliParams.MLLIST:
+                MachineLearningRelationExtractor.start(params.getMLListCommandConfig());
+                break;
             case CliParams.CLASSIFY:
                 MachineLearningRelationClassifier.find(params.getClassifyCommand());
                 break;
