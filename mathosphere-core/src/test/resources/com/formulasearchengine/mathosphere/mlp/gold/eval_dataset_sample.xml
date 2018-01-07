@@ -1,34 +1,4 @@
 <mediawiki xmlns="http://www.mediawiki.org/xml/export-0.10/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mediawiki.org/xml/export-0.10/ http://www.mediawiki.org/xml/export-0.10.xsd" version="0.10" xml:lang="en">
-  <siteinfo>
-    <sitename>enwikimath</sitename>
-    <dbname>enwikimath</dbname>
-    <base>https://en.formulasearchengine.com/wiki/Main_Page</base>
-    <generator>MediaWiki 1.27alpha</generator>
-    <case>first-letter</case>
-    <namespaces>
-      <namespace key="-2" case="first-letter">Media</namespace>
-      <namespace key="-1" case="first-letter">Special</namespace>
-      <namespace key="0" case="first-letter" />
-      <namespace key="1" case="first-letter">Talk</namespace>
-      <namespace key="2" case="first-letter">User</namespace>
-      <namespace key="3" case="first-letter">User talk</namespace>
-      <namespace key="4" case="first-letter">enmath</namespace>
-      <namespace key="5" case="first-letter">enmath talk</namespace>
-      <namespace key="6" case="first-letter">File</namespace>
-      <namespace key="7" case="first-letter">File talk</namespace>
-      <namespace key="8" case="first-letter">MediaWiki</namespace>
-      <namespace key="9" case="first-letter">MediaWiki talk</namespace>
-      <namespace key="10" case="first-letter">Template</namespace>
-      <namespace key="11" case="first-letter">Template talk</namespace>
-      <namespace key="12" case="first-letter">Help</namespace>
-      <namespace key="13" case="first-letter">Help talk</namespace>
-      <namespace key="14" case="first-letter">Category</namespace>
-      <namespace key="15" case="first-letter">Category talk</namespace>
-      <namespace key="828" case="first-letter">Module</namespace>
-      <namespace key="829" case="first-letter">Module talk</namespace>
-    </namespaces>
-  </siteinfo>
-
     <page>
         <title>Martingale (betting system)</title>
         <ns>0</ns>
@@ -44,36 +14,6 @@
             <format>text/x-wiki</format>
             <text xml:space="preserve" bytes="19293">{{For|the generalised mathematical concept|Martingale (probability theory)}}
 {{Refimprove|date=October 2010}}
-
-A '''martingale''' is any of a class of [[betting strategy|betting strategies]] that originated from and were popular in 18th century [[France]]. The simplest of these strategies was designed for a game in which the gambler wins his stake if a coin comes up heads and loses it if the coin comes up tails.  The strategy had the gambler double his bet after every loss, so that the first win would recover all previous losses plus win a profit equal to the original stake.  The martingale strategy has been applied to [[roulette]] as well, as the probability of hitting either red or black is close to 50%.
-
-Since a gambler with infinite wealth will, [[almost surely]], eventually flip heads, the martingale betting strategy was seen as a [[certainty|sure thing]] by those who advocated it.  Of course, none of the gamblers in fact possessed infinite wealth, and the [[exponential growth]] of the bets would eventually bankrupt &quot;unlucky&quot; gamblers who chose to use the martingale. It is therefore a good example of a [[Taleb distribution]] – the gambler usually wins a small net reward, thus appearing to have a sound strategy. However, the gambler's expected value does indeed remain zero (or less than zero) because the small probability that he will suffer a catastrophic loss exactly balances with his expected gain. (In a casino, the expected value is ''negative'', due to the house's edge.) The likelihood of catastrophic loss may not even be very small. The bet size rises exponentially. This, combined with the fact that strings of consecutive losses actually occur more often than common intuition suggests, can bankrupt a gambler quickly.
-
-Casino betting limits eliminate the effectiveness of using the martingale strategy.&lt;ref&gt;{{cite web|url=http://www.goodbonusguide.com/casino-articles/roulette-systems-destroying-the-martingale-theory-myth.html|title=Roulette Systems: Destroying The Martingale System Myth |publisher=Good Bonus Guide|accessdate=31 March 2012}}&lt;/ref&gt;
-
-==Effect of variance==
-Sometimes, by temporarily avoiding a losing streak, a bettor achieves a better result than the expected negative return. A straight string of losses is the only sequence of outcomes that results in a loss of money, so even when a player has lost the majority of his bets, he can still be ahead overall, since he always wins 1 unit when a bet wins, regardless of how many previous losses.&lt;ref&gt;{{cite web|url=http://www.blackjackincolor.com/useless4.htm |title=Martingale Long Term vs. Short Term Charts |publisher=Blackjackincolor.com |date= |accessdate=2009-08-04}}&lt;/ref&gt;
-
-==Intuitive analysis==
-
-Assuming that the win/loss outcomes of each bet are [[independent and identically distributed random variables]], the stopping time has finite [[expected value]]. This justifies the following argument, explaining why the betting system fails: Since [[expected value#Linearity|expectation is linear]], the expected value of a series of bets is just the sum of the expected value of each bet. Since in such games of chance the bets are [[statistical independence|independent]], the expectation of each bet does not depend on whether you previously won or lost. In most casino games, the expected value of any individual bet is negative, so the sum of lots of negative numbers is also always going to be negative.
-
-The martingale strategy fails even with unbounded stopping time, as long as there is a limit on earnings or on the bets (which are also true in practice).&lt;ref name=mitzenmacherupfal&gt;{{citation | year=2005 | title = Probability and computing: randomized algorithms and probabilistic analysis | author1=Michael Mitzenmacher | author2=Eli Upfal | publisher=Cambridge University Press | isbn=978-0-521-83540-4 | page=298 | url=http://books.google.com/books?id=0bAYl6d7hvkC&amp;pg=PA298&amp;dq=%22martingale+stopping%22}}&lt;/ref&gt; It is only with unbounded wealth, bets ''and'' time that the martingale becomes a [[winning strategy]].
-
-==Mathematical analysis==
-One round of the idealized martingale without time or credit constraints can be formulated mathematically as follows.  Let the coin tosses be represented by a sequence {{nowrap|1=''X''&lt;sub&gt;0&lt;/sub&gt;, ''X''&lt;sub&gt;1&lt;/sub&gt;, &amp;hellip;}} of independent random variables, each of which is equal to ''H'' with probability ''p'', and ''T'' with probability {{nowrap|1=''q'' = 1 – ''p''.}}  Let ''N'' be time of appearance of the first ''H''; in other words, {{nowrap|1=''X''&lt;sub&gt;0&lt;/sub&gt;, ''X''&lt;sub&gt;1&lt;/sub&gt;, &amp;hellip;, ''X''&lt;sub&gt;''N''–1&lt;/sub&gt; = ''T''}}, and {{nowrap|1=''X''&lt;sub&gt;''N''&lt;/sub&gt; = ''H''.}}  If the coin never shows ''H'', we write {{nowrap|1=''N'' = ∞.}}  ''N'' is itself a random variable because it depends on the random outcomes of the coin tosses.
-
-In the first {{nowrap|1=''N'' – 1}} coin tosses, the player following the martingale strategy loses {{nowrap|1=1, 2, &amp;hellip;, 2&lt;sup&gt;''N''–1&lt;/sup&gt;}} units, accumulating a total loss of {{nowrap|1=2&lt;sup&gt;''N''&lt;/sup&gt; − 1.}}  On the ''N''&lt;sup&gt;th&lt;/sup&gt; toss, there is a win of 2&lt;sup&gt;''N''&lt;/sup&gt; units, resulting in a net gain of 1 unit over the first ''N'' tosses. For example, suppose the first four coin tosses are ''T'', ''T'', ''T'', ''H'' making {{nowrap|1=''N'' = 3.}}  The bettor loses 1, 2, and 4 units on the first three tosses, for a total loss of 7 units, then wins 8 units on the fourth toss, for a net gain of 1 unit. As long as the coin eventually shows heads, the betting player realizes a gain.
-
-What is the probability that {{nowrap|1=''N'' = ∞,}} i.e., that the coin never shows heads?  Clearly it can be no greater than the probability that the first ''k'' tosses are all ''T''; this probability is ''q&lt;sup&gt;k''&lt;/sup&gt;.  Unless {{nowrap|1=''q'' = 1}}, the only nonnegative number less than or equal to ''q&lt;sup&gt;k''&lt;/sup&gt; for all values of ''k'' is zero.  It follows that ''N'' is finite with probability 1; therefore with probability 1, the coin will eventually show heads and the bettor will realize a net gain of 1 unit.
-
-This property of the idealized version of the martingale accounts for the attraction of the idea.  In practice, the idealized version can only be approximated, for two reasons.  Unlimited credit to finance possibly astronomical losses during long runs of tails is not available, and there is a limit to the number of coin tosses that can be performed in any finite period of time, precluding the possibility of playing long enough to observe very long runs of tails.
-
-As an example, consider a bettor with an available fortune, or credit, of &lt;math&gt;2^{43}&lt;/math&gt; (approximately 9 trillion) units, roughly half the size of the current US national debt in dollars.  With this very large fortune, the player can afford to lose on the first 42 tosses, but a loss on the 43rd cannot be covered.  The probability of losing on the first 42 tosses is &lt;math&gt;q^{42}&lt;/math&gt;, which will be a very small number unless tails are nearly certain on each toss.  In the fair case where &lt;math&gt;q=1/2&lt;/math&gt;, we could expect to wait something on the order of &lt;math&gt;2^{42}&lt;/math&gt; tosses before seeing 42 consecutive tails; tossing coins at the rate of one toss per second, this would require approximately 279,000 years.
-
-This version of the game is likely to be unattractive to both players.  The player with the fortune can expect to see a head and gain one unit on average every two tosses, or two seconds, corresponding to an annual income of about 31.6 million units until disaster (42 tails) occurs.  This is only a 0.0036 ''percent'' return on the fortune at risk.  The other player can look forward to steady losses of 31.6 million units per year until hitting an incredibly large jackpot, probably in something like 279,000 years, a period far longer than any currency has yet existed.  If &lt;math&gt;q &gt; 1/2&lt;/math&gt;, this version of the game is also unfavorable to the first player in the sense that it would have negative expected winnings.
-
-The impossibility of winning over the long run, given a limit of the size of bets or a limit in the size of one's bankroll or line of credit, is proven by the [[optional stopping theorem]].&lt;ref name=mitzenmacherupfal/&gt;
 
 ==Mathematical analysis of a single round==
 Let one round be defined as a sequence of consecutive losses followed by either a win, or bankruptcy of the gambler. After a win, the gambler &quot;resets&quot; and is considered to have started a new round. A continuous sequence of martingale bets can thus be partitioned into a sequence of independent rounds. Following is an analysis of the expected value of one round.
@@ -102,48 +42,7 @@ The expected amount won is  (1 &amp;times; 0.978744) = 0.978744.&lt;br&gt;
 The expected amount lost is (63 &amp;times; 0.021256)= 1.339118.&lt;br&gt;
 Thus, the total expected value for each application of the betting system is (0.978744&amp;nbsp;&amp;minus;&amp;nbsp;1.339118) = &amp;minus;0.360374 .
 
-In a unique circumstance, this strategy can make sense. Suppose the gambler possesses exactly 63 units but desperately needs a total of 64. Assuming ''q''&amp;nbsp;&gt;&amp;nbsp;1/2 (it is a real casino) and he may only place bets at even odds, his best strategy is '''bold play''': at each spin, he should bet the smallest amount such that if he wins he reaches his target immediately, and if he doesn't have enough for this, he should simply bet everything. Eventually he either goes bust or reaches his target. This strategy gives him a probability of 97.8744% of achieving the goal of winning one unit vs. a 2.1256% chance of losing all 63 units, and that is the best probability possible in this circumstance.&lt;ref name=dubinssavage&gt;{{citation | year=1965 | title = How to gamble if you must: inequalities for stochastic processes | author1=Lester E. Dubins |authorlink1=Lester Dubins| author2=Leonard J. Savage|authorlink2=Leonard Jimmie Savage | publisher=McGraw Hill | url=http://books.google.nl/books?id=kt9QAAAAMAAJ }}&lt;/ref&gt;  However, bold play is not always the optimal strategy for having the biggest possible chance to increase an initial capital to some desired higher amount. If the gambler can bet arbitrarily small amounts at arbitrarily long odds (but still with the same expected loss of 2/38 of the stake at each bet), and can only place one bet at each spin, then there are strategies with above 98% chance of attaining his goal, and these use very timid play unless the gambler is close to losing all his capital, in which case he does switch to extremely bold play.&lt;ref name=shepp&gt;{{citation | year=2006 | title = Bold play and the optimal policy for Vardi's casino, pp 150–156 in: Random Walk, Sequential Analysis and Related Topics  | author1=Larry Shepp | publisher=World Scientific | url=http://eproceedings.worldscinet.com/9789812772558/9789812772558_0010.html }}&lt;/ref&gt;
-
-==Alternative mathematical analysis==
-The previous analysis calculates ''expected value'', but we can ask another question: what is the chance that one can play a casino game using the martingale strategy, and avoid the losing streak long enough to double one's bankroll.
-
-As before, this depends on the likelihood of losing 6 roulette spins in a row assuming we are betting red/black or even/odd. Many gamblers believe that the chances of losing 6 in a row are remote, and that with a patient adherence to the strategy they will slowly increase their bankroll.
-
-In reality, the odds of a streak of 6 losses in a row are much higher than the many people intuitively believe. Psychological studies have shown that since people know that the odds of losing 6 times in a row out of 6 plays are low, they incorrectly assume that in a longer string of plays the odds are also very low. When people are asked to invent data representing 200 coin tosses, they often do not add streaks of more than 5 because they believe that these streaks are very unlikely.&lt;ref&gt;{{cite web|url=http://wizardofodds.com/image/ask-the-wizard/streaks.pdf|title=What were the Odds of Having Such a Terrible Streak at the Casino?|last=Martin|first=Frank A.|date=February 2009|publisher=WizardOfOdds.com|accessdate=31 March 2012}}&lt;/ref&gt; This intuitive belief is sometimes referred to as the [[representativeness heuristic]].
-
-The odds of losing a single spin at roulette are {{math|q {{=}} 20/38 {{=}} 52.6316%}}.  If you play a total of 6 spins, the odds of losing 6 times are {{math|q&lt;sup&gt;6&lt;/sup&gt; {{=}} 2.1256%}}, as stated above.  However if you play more and more spins, the odds of losing 6 times in a row begin to increase rapidly.
-* In 73 spins, there is a 50.3% chance that you will at some point have lost at least 6 spins in a row. (The chance of still being solvent after the first six spins is 0.978744, and the chance of becoming bankrupt at each subsequent spin is (1&amp;nbsp;&amp;minus;&amp;nbsp;0.526316)&amp;times;0.021256 =&amp;nbsp;0.010069, where the first term is the chance that you won the (''n''&amp;nbsp;&amp;minus;&amp;nbsp;6)th spin – if you had lost the (''n''&amp;nbsp;&amp;minus;&amp;nbsp;6)th spin, you would have become bankrupt on the (''n''&amp;nbsp;&amp;minus;&amp;nbsp;1)th spin. Thus over 73 spins the probability of remaining solvent is 0.978744 x (1-0.010069)^67 = 0.49683, and thus the chance of becoming bankrupt is 1&amp;nbsp;&amp;minus;&amp;nbsp;0.49683 = 50.3%.)
-* Similarly, in 150 spins, there is a 77.2% chance that you will lose at least 6 spins in a row at some point.
-* And in 250 spins, there is a 91.1% chance that you will lose at least 6 spins in a row at some point.
-
-To double the initial bankroll of 6,300 with initial bets of 100 would require a minimum of 63 spins (in the unlikely event you win every time), and a maximum of 378 spins (in the even more unlikely event that you win every single round on the sixth spin).  Each round will last an average of approximately 2 spins, so, 63 rounds can be expected to take about 126 spins on average. Computer simulations show that the required number will almost{{Clarify|date=August 2009}} never exceed 150 spins.  Thus many gamblers believe that they can play the martingale strategy with very little chance of failure long enough to double their bankroll.  However, the odds of losing 6 in a row are 77.2% over 150 spins, as above.
-
-We can replace the roulette game in the analysis with either the ''pass line'' at [[craps]], where the odds of losing are lower {{math|q{{=}}(251:244}}, or {{math|251/495){{=}}50.7071%}}, or a ''coin toss'' game where the odds of losing are 50.0%.  We should note that games like coin toss with no house edge are not played in a commercial casino and thus represent a ''limiting case''.
-* In 150 turns, there is a 70.7% chance that you will lose 6 times in a row on the ''pass line''.
-* In 150 turns, there is a 68.2% chance that you will lose 6 times in a row at ''coin tossing''.
-
-In larger casinos, the maximum table limit is higher, so you can double 7, 8, or 9 times without exceeding the limit.  However, in order to end up with twice your initial bankroll, you must play even longer.  The calculations produce the same results.  The probabilities are overwhelming that you will reach the ''bust streak'' before you can even double your bankroll.
-
-The conclusion is that players using martingale strategy pose no threat to a casino.  The odds are high that the player will go bust before he is even able to double his money.
-
-Contrary to popular belief, [[table limit]]s are not designed to limit players from exploiting a martingale strategy.  Instead, table limits exist to reduce the variance for the casino.  For example, a casino which wins an average of $1000 a day on a given roulette table might not accept a $7000 bet on black at that table. While that bet would represent a positive expectation of over $368 ({{math|10/19 &amp;middot; 7000 &amp;minus; 18/38 &amp;middot; 7000 {{=}} 368.42}}) to the casino, it would also have a 47.37% chance of negating an entire week's profit. The effect however is the same - the ability of the player to use the martingale system to win is curtailed.
-
-==Anti-martingale==
-This is also known as the reverse martingale.  In a classic martingale betting style, gamblers increase bets after each loss in hopes that an eventual win will recover all previous losses. The anti-martingale approach instead increases bets after wins, while reducing them after a loss. The perception is that the gambler will benefit from a winning streak or a &quot;hot hand&quot;, while reducing losses while &quot;cold&quot; or otherwise having a losing streak. As the single bets are independent from each other (and from the gambler's expectations), the concept of winning &quot;streaks&quot; is merely an example of [[gambler's fallacy]], and the anti-martingale strategy fails to make any money. If on the other hand, real-life stock returns are serially correlated (for instance due to economic cycles and delayed reaction to news of larger market participants), &quot;streaks&quot; of wins or losses do happen more often and are longer than those under a purely random process, the anti-martingale strategy could theoretically apply and can be used in trading systems (as trend-following or &quot;doubling up&quot;).
-
-== See also ==
-{{Portal|Mathematics}}
-
-*[[St. Petersburg paradox]]
-
-==References==
-
-{{Reflist}}
-
-{{DEFAULTSORT:Martingale (Betting System)}}
-[[Category:Betting systems]]
-[[Category:Roulette and wheel games]]
-[[Category:Gambling terminology]]</text>
+In a unique circumstance, this strategy can make sense. Suppose the gambler possesses exactly 63 units but desperately needs a total of 64. Assuming ''q''&amp;nbsp;&gt;&amp;nbsp;1/2 (it is a real casino) and he may only place bets at even odds, his best strategy is '''bold play''': at each spin, he should bet the smallest amount such that if he wins he reaches his target immediately, and if he doesn't have enough for this, he should simply bet everything. Eventually he either goes bust or reaches his target. This strategy gives him a probability of 97.8744% of achieving the goal of winning one unit vs. a 2.1256% chance of losing all 63 units, and that is the best probability possible in this circumstance.&lt;ref name=dubinssavage&gt;{{citation | year=1965 | title = How to gamble if you must: inequalities for stochastic processes | author1=Lester E. Dubins |authorlink1=Lester Dubins| author2=Leonard J. Savage|authorlink2=Leonard Jimmie Savage | publisher=McGraw Hill | url=http://books.google.nl/books?id=kt9QAAAAMAAJ }}&lt;/ref&gt;  However, bold play is not always the optimal strategy for having the biggest possible chance to increase an initial capital to some desired higher amount. If the gambler can bet arbitrarily small amounts at arbitrarily long odds (but still with the same expected loss of 2/38 of the stake at each bet), and can only place one bet at each spin, then there are strategies with above 98% chance of attaining his goal, and these use very timid play unless the gambler is close to losing all his capital, in which case he does switch to extremely bold play.&lt;ref name=shepp&gt;{{citation | year=2006 | title = Bold play and the optimal policy for Vardi's casino, pp 150–156 in: Random Walk, Sequential Analysis and Related Topics  | author1=Larry Shepp | publisher=World Scientific | url=http://eproceedings.worldscinet.com/9789812772558/9789812772558_0010.html }}&lt;/ref&gt;</text>
             <sha1>3wnogoecv939va0ky4sgwlkebx78n6w</sha1>
         </revision>
     </page>
