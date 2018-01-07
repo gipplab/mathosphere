@@ -35,12 +35,12 @@ public class TextAnnotatorMapper extends RichMapFunction<RawWikiDocument, Parsed
   }
 
   @Override
-  public void open(Configuration cfg) throws Exception {
+  public void open(Configuration cfg) {
     posTagger = PosTagger.create(config);
   }
 
   @Override
-  public ParsedWikiDocument map(RawWikiDocument doc) throws Exception {
+  public ParsedWikiDocument map(RawWikiDocument doc) {
     LOGGER.info("processing \"{}\"...", doc.title);
 
     final ParsedWikiDocument parse = parse(doc.text, doc.title);
