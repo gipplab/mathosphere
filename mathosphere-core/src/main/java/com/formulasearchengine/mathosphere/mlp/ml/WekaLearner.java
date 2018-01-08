@@ -135,17 +135,11 @@ public class WekaLearner implements GroupReduceFunction<WikiDocumentOutput, Eval
   public static final Double[] Y_best_F1 = {Math.pow(2, -5.75)};
   public static final String INSTANCES_ARFF_FILE_NAME = "/instances.arff";
 
-  private ArrayList<GoldEntry> gold = null;
+  private final ArrayList<GoldEntry> gold;
 
-  public WekaLearner(MachineLearningDefinienExtractionConfig config)  {
+  public WekaLearner(MachineLearningDefinienExtractionConfig config) throws IOException {
     this.config = config;
-    if ( config.getGoldFile() != null ){
-      try {
-        this.gold = (new Evaluator()).readGoldEntries(new File(config.getGoldFile()));
-      } catch ( IOException ioe ){
-        LOG.error("Cannot load gold standard in WekaLearner.", ioe);
-      }
-    }
+    this.gold = (new Evaluator()).readGoldEntries(new File(config.getGoldFile()));
   }
 
   public final MachineLearningDefinienExtractionConfig config;
@@ -268,11 +262,7 @@ public class WekaLearner implements GroupReduceFunction<WikiDocumentOutput, Eval
       }
       Evaluator evaluator = new Evaluator();
       StringReader reader = new StringReader(e.toString());
-      if ( gold == null ){
-        LOG.debug("Skip scoring on evaluation results with gold standard.");
-      } else {
-        evaluationResult.setScoreSummary(evaluator.evaluate(evaluator.readExtractions(reader, gold, false), gold));
-      }
+      evaluationResult.setScoreSummary(evaluator.evaluate(evaluator.readExtractions(reader, gold, false), gold));
       //Output files
       FileUtils.write(extractedDefiniens, "Cost; "
         + Utils.doubleToString(evaluationResult.cost, 10)
@@ -280,8 +270,7 @@ public class WekaLearner implements GroupReduceFunction<WikiDocumentOutput, Eval
         + "; percentage_of_data_used; " + evaluationResult.percent
         + "\n", true);
       FileUtils.write(extractedDefiniens, e.toString(), true);
-      if ( gold != null )
-        FileUtils.write(output, evaluationResult.toString() + "\n", true);
+      FileUtils.write(output, evaluationResult.toString() + "\n", true);
       out.collect(evaluationResult);
     }
   }

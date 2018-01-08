@@ -95,16 +95,21 @@ public class MachineLearningRelationExtractor {
 
         LOG.debug("Reduce groups by machine learning weka api");
         // deleted comparison with gouldi in this WekaLearner
-        WekaLearner learner = new WekaLearner(config);
-        DataSet<EvaluationResult> evaluationResults = outputDocuments.reduceGroup( learner );
+        try{
+            WekaLearner learner = new WekaLearner(config);
+            DataSet<EvaluationResult> evaluationResults = outputDocuments.reduceGroup( learner );
 
-        LOG.debug("Write results to the tmp.txt output file.");
-        evaluationResults
-                .map( new JsonSerializerMapper<>() )
-                .writeAsText(
-                        config.getOutputDir() + File.separator + "tmp.txt",
-                        FileSystem.WriteMode.OVERWRITE
-                );
+            LOG.debug("Write results to the tmp.txt output file.");
+            evaluationResults
+                    .map( new JsonSerializerMapper<>() )
+                    .writeAsText(
+                            config.getOutputDir() + File.separator + "tmp.txt",
+                            FileSystem.WriteMode.OVERWRITE
+                    );
+        }catch(IOException ioe){
+            LOG.error("LOL: ", ioe);
+            return;
+        }
         try {
             LOG.info("Execute flink environment");
             flinkEnv.execute();
