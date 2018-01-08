@@ -11,7 +11,6 @@ import org.apache.logging.log4j.LogManager;
 
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static com.formulasearchengine.mathosphere.utils.GoldUtil.getGoldEntryByTitle;
 import static com.formulasearchengine.mathosphere.utils.GoldUtil.matchesGold;
@@ -54,19 +53,9 @@ public class SimpleFeatureExtractorMapper implements MapFunction<ParsedWikiDocum
   private WikiDocumentOutput getIdentifiersWithGoldInfo(ParsedWikiDocument doc, List<Relation> allIdentifierDefininesCandidates, List<Sentence> sentences, Map<String, Integer> identifierSentenceDistanceMap, Multiset<String> frequencies, double maxFrequency) {
     GoldEntry goldEntry = getGoldEntryByTitle(goldEntries, doc.getTitle());
     final Integer fid = Integer.parseInt(goldEntry.getFid());
-    Stream<MathTag> stream = doc.getFormulas().stream();
-    stream = stream.filter( e -> e.getMarkUpType().equals(WikiTextUtils.MathMarkUpType.LATEX) );
-    List<MathTag> list = stream.collect( Collectors.toList() );
-    MathTag seed = null;
-    if ( list == null || list.size() <= fid ){
-      LOGGER.warn("FID is bigger than the list of documents... this will produce an IndexedOutOfBoundsException!");
-    } else {
-      seed = list.get(fid);
-    }
-
-//    MathTag seed = doc.getFormulas()
-//      .stream().filter(e -> e.getMarkUpType().equals(WikiTextUtils.MathMarkUpType.LATEX)).collect(Collectors.toList())
-//      .get(fid);
+    MathTag seed = doc.getFormulas()
+      .stream().filter(e -> e.getMarkUpType().equals(WikiTextUtils.MathMarkUpType.LATEX)).collect(Collectors.toList())
+      .get(fid);
     for (int i = 0; i < sentences.size(); i++) {
       Sentence sentence = sentences.get(i);
       if (!sentence.getIdentifiers().isEmpty()) {
