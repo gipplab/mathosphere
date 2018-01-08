@@ -9,6 +9,9 @@ import com.formulasearchengine.mathosphere.mlp.contracts.TextExtractorMapper;
 import com.formulasearchengine.mathosphere.mlp.ml.WekaLearner;
 import com.formulasearchengine.mathosphere.mlp.pojos.*;
 import com.formulasearchengine.mathosphere.mlp.text.SimpleFeatureExtractorMapper;
+import com.formulasearchengine.mathosphere.utils.GoldUtil;
+import com.formulasearchengine.mlp.evaluation.Evaluator;
+import com.formulasearchengine.mlp.evaluation.pojo.GoldEntry;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.lang.StringUtils;
@@ -27,6 +30,7 @@ import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -55,21 +59,39 @@ public class MachineLearningRelationExtractor {
         LOG.debug("Open text annotator mapper");
         TextAnnotatorMapper annotatorMapper = new TextAnnotatorMapper(config);
         // ML approach doesn't create PosTagger here ... strange, so I will use it now.
-        annotatorMapper.open(null);
+        try {
+            annotatorMapper.open(null);
+        } catch ( Exception e ){
+            return; // TODO blödsinn
+        }
         DataSet<ParsedWikiDocument> parsedDocuments = mapOperator.map( annotatorMapper );
 
         LOG.debug("Create feature Extractor without Gouldi");
         // use mlp instead of simple pattern matching as in machine learner...
-        /*
-         TODO compare: <qids are missing in createCandidatesMapper...>
-         TODO mlp.contracts.CreateCandidatesMapper
-         TODO mlp.text.     SimpleFeatureExtractorMapper
-          */
         CreateCandidatesMapper mlp = new CreateCandidatesMapper(config);
         DataSet<WikiDocumentOutput> outputDocuments = parsedDocuments.map( mlp );
 
         LOG.debug("Write extracted identifiers and definiens before we apply machine learning");
         outputDocuments = writeMLPResults( config, outputDocuments );
+
+        LOG.info("Find corresponding gold ideas, just for the weka learner");
+        try {
+            final ArrayList<GoldEntry> gold = (new Evaluator()).readGoldEntries(new File(config.getGoldFile()));
+            outputDocuments = outputDocuments.map(new MapFunction<WikiDocumentOutput, WikiDocumentOutput>() {
+                @Override
+                public WikiDocumentOutput map(WikiDocumentOutput wikiDocumentOutput) {
+                    try{
+                        GoldEntry entry = GoldUtil.getGoldEntryByTitle( gold, wikiDocumentOutput.getTitle() );
+                        wikiDocumentOutput.setqId(entry.getqID());
+                    } catch ( Exception e ){
+                        LOG.warn("Cannot find qID for " + wikiDocumentOutput.getTitle(), e);
+                    }
+                    return wikiDocumentOutput;
+                }
+            });
+        } catch ( IOException ioe ){
+            LOG.error("Cannot add gold qID to each wiki document.");
+        }
 
         LOG.debug("Reduce groups by machine learning weka api");
         // deleted comparison with gouldi in this WekaLearner

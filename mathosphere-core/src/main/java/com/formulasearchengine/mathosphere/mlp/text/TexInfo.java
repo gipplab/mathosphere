@@ -39,7 +39,7 @@ public class TexInfo {
   private static CloseableHttpClient cachingClient = null;
   private static HttpCacheContext context;
   private static CacheResponseStatus cacheResponseStatus;
-  private static boolean USE_POST = true;
+  private static boolean USE_POST = false;
   private static String makeRequest(String tex, String url)  {
     HttpRequestBase post;
     if (cachingClient == null || context == null) {
@@ -73,7 +73,8 @@ public class TexInfo {
       } catch (UnsupportedEncodingException e) {
         q = tex;
       }
-      post = new HttpGet(url +"/check/tex/" +q);
+      url = url.replace("texvcinfo", "get/texvcinfo");
+      post = new HttpGet(url +"/tex/" + q);
     }
 
     try {
