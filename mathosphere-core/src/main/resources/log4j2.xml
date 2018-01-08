@@ -9,19 +9,7 @@
     </Appenders>
     <Loggers>
         <Root level="ALL">
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
             <AppenderRef ref="system-console" level="INFO"/>
-=======
-            <AppenderRef ref="system-console" level="DEBUG"/>
->>>>>>> Still some problems with the new MLLIST here.
-=======
-            <AppenderRef ref="system-console" level="INFO"/>
->>>>>>> Still something broken in TexInfo.java line 82
-=======
-            <AppenderRef ref="system-console" level="DEBUG"/>
->>>>>>> Still some problems with the new MLLIST here.
         </Root>
     </Loggers>
 </Configuration>
