@@ -1,30 +1,30 @@
-2018-01-02T18:46:59.263
+2018-01-09T13:35:34.710
 Final Analization:
 Converters: [POM, SnuggleTeX, LatexML, Mathematical, MathToWeb, Latex2MML, TeXZilla, Mathoid, Mathematica]
 
-       Total Content Distance: 5177.166269841269
-  Total Presentation Distance: 4529.500000000002
+       Total Content Distance: 5176.9440476190475
+  Total Presentation Distance: 4531.833333333335
      Maximum Content Distance: [POM - 0: 271.0]
       Lowest Content Distance: [POM - 0: 0.0]
 Maximum Presentation Distance: [TeXZilla - 6: 511.0]
  Lowest Presentation Distance: [LatexML - 2: 0.0]
-     Average Content Distance: 0.4468853059854354
-Average Presentation Distance: 0.11289317581376805
-        # Content Comparisons: 11585
-   # Presentation Comparisons: 40122
+     Average Content Distance: 0.44667334319405066
+Average Presentation Distance: 0.11287537257050823
+        # Content Comparisons: 11590
+   # Presentation Comparisons: 40149
     # Not Content Comparisons: 0
 #Not Presentation Comparisons: 0
 
 Different Presentation: 
 POM:
-          Total Content Distance: 7129.0
-     Total Presentation Distance: 5851.0
+          Total Content Distance: 7119.0
+     Total Presentation Distance: 5849.0
         Maximum Content Distance: [ Idx: 0 / Distance: 271.0]
          Lowest Content Distance: [ Idx: 0 / Distance: 0.0]
    Maximum Presentation Distance: [ Idx: 0 / Distance: 251.0]
     Lowest Presentation Distance: [ Idx: 0 / Distance: 1.0]
-        Average Content Distance: 25.370106761565836
-   Average Presentation Distance: 20.822064056939503
+        Average Content Distance: 25.334519572953738
+   Average Presentation Distance: 20.814946619217082
            # Content Comparisons: 281
       # Presentation Comparisons: 281
        # Not Content Comparisons: 0
@@ -32,27 +32,27 @@ POM:
 
 SnuggleTeX:
           Total Content Distance: 0.0
-     Total Presentation Distance: 6521.0
+     Total Presentation Distance: 6525.0
         Maximum Content Distance: [ Idx: 0 / Distance: 4.9E-324]
          Lowest Content Distance: [ Idx: 0 / Distance: 1.7976931348623157E308]
    Maximum Presentation Distance: [ Idx: 1 / Distance: 171.0]
     Lowest Presentation Distance: [ Idx: 1 / Distance: 1.0]
         Average Content Distance: NaN
-   Average Presentation Distance: 23.206405693950177
+   Average Presentation Distance: 23.22064056939502
            # Content Comparisons: 0
       # Presentation Comparisons: 281
        # Not Content Comparisons: 281
    #Not Presentation Comparisons: 0
 
 LatexML:
-          Total Content Distance: 1767.0
-     Total Presentation Distance: 3972.0
+          Total Content Distance: 1797.0
+     Total Presentation Distance: 3968.0
         Maximum Content Distance: [ Idx: 2 / Distance: 165.0]
          Lowest Content Distance: [ Idx: 2 / Distance: 0.0]
    Maximum Presentation Distance: [ Idx: 2 / Distance: 278.0]
     Lowest Presentation Distance: [ Idx: 2 / Distance: 0.0]
-        Average Content Distance: 6.4963235294117645
-   Average Presentation Distance: 14.135231316725978
+        Average Content Distance: 6.606617647058823
+   Average Presentation Distance: 14.12099644128114
            # Content Comparisons: 272
       # Presentation Comparisons: 281
        # Not Content Comparisons: 9
@@ -60,13 +60,13 @@ LatexML:
 
 Mathematical:
           Total Content Distance: 0.0
-     Total Presentation Distance: 3806.0
+     Total Presentation Distance: 3802.0
         Maximum Content Distance: [ Idx: 0 / Distance: 4.9E-324]
          Lowest Content Distance: [ Idx: 0 / Distance: 1.7976931348623157E308]
    Maximum Presentation Distance: [ Idx: 3 / Distance: 167.0]
     Lowest Presentation Distance: [ Idx: 3 / Distance: 0.0]
         Average Content Distance: NaN
-   Average Presentation Distance: 14.201492537313433
+   Average Presentation Distance: 14.186567164179104
            # Content Comparisons: 0
       # Presentation Comparisons: 268
        # Not Content Comparisons: 268
@@ -74,13 +74,13 @@ Mathematical:
 
 MathToWeb:
           Total Content Distance: 0.0
-     Total Presentation Distance: 4031.0
+     Total Presentation Distance: 4035.0
         Maximum Content Distance: [ Idx: 0 / Distance: 4.9E-324]
          Lowest Content Distance: [ Idx: 0 / Distance: 1.7976931348623157E308]
-   Maximum Presentation Distance: [ Idx: 4 / Distance: 93.0]
+   Maximum Presentation Distance: [ Idx: 4 / Distance: 88.0]
     Lowest Presentation Distance: [ Idx: 4 / Distance: 0.0]
         Average Content Distance: NaN
-   Average Presentation Distance: 15.385496183206106
+   Average Presentation Distance: 15.400763358778626
            # Content Comparisons: 0
       # Presentation Comparisons: 262
        # Not Content Comparisons: 262
@@ -88,13 +88,13 @@ MathToWeb:
 
 Latex2MML:
           Total Content Distance: 0.0
-     Total Presentation Distance: 4211.0
+     Total Presentation Distance: 4217.0
         Maximum Content Distance: [ Idx: 0 / Distance: 4.9E-324]
          Lowest Content Distance: [ Idx: 0 / Distance: 1.7976931348623157E308]
    Maximum Presentation Distance: [ Idx: 5 / Distance: 103.0]
     Lowest Presentation Distance: [ Idx: 5 / Distance: 1.0]
         Average Content Distance: NaN
-   Average Presentation Distance: 15.771535580524345
+   Average Presentation Distance: 15.794007490636703
            # Content Comparisons: 0
       # Presentation Comparisons: 267
        # Not Content Comparisons: 267
@@ -102,13 +102,13 @@ Latex2MML:
 
 TeXZilla:
           Total Content Distance: 0.0
-     Total Presentation Distance: 6927.0
+     Total Presentation Distance: 6945.0
         Maximum Content Distance: [ Idx: 0 / Distance: 4.9E-324]
          Lowest Content Distance: [ Idx: 0 / Distance: 1.7976931348623157E308]
    Maximum Presentation Distance: [ Idx: 6 / Distance: 511.0]
     Lowest Presentation Distance: [ Idx: 6 / Distance: 0.0]
         Average Content Distance: NaN
-   Average Presentation Distance: 24.651245551601424
+   Average Presentation Distance: 24.715302491103202
            # Content Comparisons: 0
       # Presentation Comparisons: 281
        # Not Content Comparisons: 281
@@ -116,26 +116,26 @@ TeXZilla:
 
 Mathoid:
           Total Content Distance: 0.0
-     Total Presentation Distance: 1890.0
+     Total Presentation Distance: 1895.0
         Maximum Content Distance: [ Idx: 0 / Distance: 4.9E-324]
          Lowest Content Distance: [ Idx: 0 / Distance: 1.7976931348623157E308]
    Maximum Presentation Distance: [ Idx: 7 / Distance: 82.0]
     Lowest Presentation Distance: [ Idx: 7 / Distance: 0.0]
         Average Content Distance: NaN
-   Average Presentation Distance: 7.745901639344262
+   Average Presentation Distance: 7.766393442622951
            # Content Comparisons: 0
       # Presentation Comparisons: 244
        # Not Content Comparisons: 244
    #Not Presentation Comparisons: 0
 
 Mathematica:
-          Total Content Distance: 2689.0
+          Total Content Distance: 2674.0
      Total Presentation Distance: 2913.0
-        Maximum Content Distance: [ Idx: 8 / Distance: 94.0]
+        Maximum Content Distance: [ Idx: 8 / Distance: 91.0]
          Lowest Content Distance: [ Idx: 8 / Distance: 0.0]
    Maximum Presentation Distance: [ Idx: 8 / Distance: 168.0]
     Lowest Presentation Distance: [ Idx: 8 / Distance: 0.0]
-        Average Content Distance: 12.804761904761905
+        Average Content Distance: 12.733333333333333
    Average Presentation Distance: 13.871428571428572
            # Content Comparisons: 210
       # Presentation Comparisons: 210

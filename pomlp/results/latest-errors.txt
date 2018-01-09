@@ -1,4 +1,4 @@
-2018-01-02T18:46:59.263
+2018-01-09T13:35:34.710
 Mathematica:2 - java.lang.NullPointerException: null
         com.formulasearchengine.mathosphere.pomlp.xml.MathMLDocumentReader.init(MathMLDocumentReader.java:58)
     com.formulasearchengine.mathosphere.pomlp.xml.MathMLDocumentReader.init(MathMLDocumentReader.java:53)

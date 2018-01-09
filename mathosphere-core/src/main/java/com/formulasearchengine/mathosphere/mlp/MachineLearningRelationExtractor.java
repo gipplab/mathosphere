@@ -16,6 +16,7 @@ import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.lang.StringUtils;
 import org.apache.flink.api.common.functions.MapFunction;
+import org.apache.flink.api.common.functions.ReduceFunction;
 import org.apache.flink.api.java.DataSet;
 import org.apache.flink.api.java.ExecutionEnvironment;
 import org.apache.flink.api.java.operators.DataSource;
@@ -59,43 +60,15 @@ public class MachineLearningRelationExtractor {
         LOG.debug("Open text annotator mapper");
         TextAnnotatorMapper annotatorMapper = new TextAnnotatorMapper(config);
         // ML approach doesn't create PosTagger here ... strange, so I will use it now.
-        try {
-            annotatorMapper.open(null);
-        } catch ( Exception e ){
-            return; // TODO blödsinn
-        }
+        annotatorMapper.open(null);
         DataSet<ParsedWikiDocument> parsedDocuments = mapOperator.map( annotatorMapper );
 
         LOG.debug("Create feature Extractor without Gouldi");
-        // use mlp instead of simple pattern matching as in machine learner...
-        CreateCandidatesMapper mlp = new CreateCandidatesMapper(config);
-        DataSet<WikiDocumentOutput> outputDocuments = parsedDocuments.map( mlp );
+        SimpleFeatureExtractorMapper featureExtractorMapper = new SimpleFeatureExtractorMapper(config, null);
+        DataSet<WikiDocumentOutput> outputDocuments = parsedDocuments.map(featureExtractorMapper);
 
-        LOG.debug("Write extracted identifiers and definiens before we apply machine learning");
-        outputDocuments = writeMLPResults( config, outputDocuments );
-
-        LOG.info("Find corresponding gold ideas, just for the weka learner");
         try {
-            final ArrayList<GoldEntry> gold = (new Evaluator()).readGoldEntries(new File(config.getGoldFile()));
-            outputDocuments = outputDocuments.map(new MapFunction<WikiDocumentOutput, WikiDocumentOutput>() {
-                @Override
-                public WikiDocumentOutput map(WikiDocumentOutput wikiDocumentOutput) {
-                    try{
-                        GoldEntry entry = GoldUtil.getGoldEntryByTitle( gold, wikiDocumentOutput.getTitle() );
-                        wikiDocumentOutput.setqId(entry.getqID());
-                    } catch ( Exception e ){
-                        LOG.warn("Cannot find qID for " + wikiDocumentOutput.getTitle(), e);
-                    }
-                    return wikiDocumentOutput;
-                }
-            });
-        } catch ( IOException ioe ){
-            LOG.error("Cannot add gold qID to each wiki document.");
-        }
-
-        LOG.debug("Reduce groups by machine learning weka api");
-        // deleted comparison with gouldi in this WekaLearner
-        try{
+            LOG.debug("Reduce groups by machine learning weka api");
             WekaLearner learner = new WekaLearner(config);
             DataSet<EvaluationResult> evaluationResults = outputDocuments.reduceGroup( learner );
 
@@ -106,11 +79,7 @@ public class MachineLearningRelationExtractor {
                             config.getOutputDir() + File.separator + "tmp.txt",
                             FileSystem.WriteMode.OVERWRITE
                     );
-        }catch(IOException ioe){
-            LOG.error("LOL: ", ioe);
-            return;
-        }
-        try {
+
             LOG.info("Execute flink environment");
             flinkEnv.execute();
         } catch ( Exception e ){
@@ -122,7 +91,7 @@ public class MachineLearningRelationExtractor {
 
     private static DataSet<WikiDocumentOutput> writeMLPResults( final FlinkMlpCommandConfig flinkConfig, DataSet<WikiDocumentOutput> dataSetWikiOuts ){
         return dataSetWikiOuts.map(
-                (MapFunction<WikiDocumentOutput, WikiDocumentOutput>) wikiDocumentOutput
+                (MapFunction<WikiDocumentOutput,WikiDocumentOutput>) wikiDocumentOutput
                         -> {
                     LOG.debug("Create not printer task and write current results of MLP to files.");
                     try (PrintWriter pw = createPrintWriter(flinkConfig)) {
@@ -153,4 +122,26 @@ public class MachineLearningRelationExtractor {
 
         return new PrintWriter(outputF.toFile());
     }
+
+    /*
+    LOG.info("Find corresponding gold ideas, just for the weka learner");
+        try {
+            final ArrayList<GoldEntry> gold = (new Evaluator()).readGoldEntries(new File(config.getGoldFile()));
+            outputDocuments = outputDocuments.map(new MapFunction<WikiDocumentOutput, WikiDocumentOutput>() {
+                @Override
+                public WikiDocumentOutput map(WikiDocumentOutput wikiDocumentOutput) {
+                    try{
+                        GoldEntry entry = GoldUtil.getGoldEntryByTitle( gold, wikiDocumentOutput.getTitle() );
+                        LOG.info("Found gold entry by title: " + entry.getqID());
+                        wikiDocumentOutput.setqId(entry.getqID());
+                    } catch ( Exception e ){
+                        LOG.warn("Cannot find qID for " + wikiDocumentOutput.getTitle(), e);
+                    }
+                    return wikiDocumentOutput;
+                }
+            });
+        } catch ( IOException ioe ){
+            LOG.error("Cannot add gold qID to each wiki document.");
+        }
+     */
 }
