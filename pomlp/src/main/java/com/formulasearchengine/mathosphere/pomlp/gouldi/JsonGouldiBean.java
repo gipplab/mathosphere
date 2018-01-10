@@ -1,18 +1,41 @@
 package com.formulasearchengine.mathosphere.pomlp.gouldi;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.formulasearchengine.mathosphere.pomlp.util.config.ConfigLoader;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.*;
 
 @JsonIgnoreProperties( ignoreUnknown = true )
+@JsonPropertyOrder({
+        "definitions",
+        "constraints",
+        "math_inputtex",
+        "math_inputtex_semantic",
+        "correct_tex",
+        "correct_mml",
+        "uri",
+        "title",
+        "comment",
+        "type",
+        "check"
+})
+@JsonAutoDetect(
+        fieldVisibility = JsonAutoDetect.Visibility.ANY,
+        getterVisibility = JsonAutoDetect.Visibility.NONE,
+        setterVisibility = JsonAutoDetect.Visibility.NONE)
+@JsonInclude( JsonInclude.Include.NON_NULL )
 public class JsonGouldiBean {
-
     @JsonProperty("math_inputtex")
     private String mathTex;
+
+    @JsonProperty("math_inputtex_semantic")
+    private String mathTexSemantic;
 
     @JsonProperty("title")
     private String title;
@@ -26,28 +49,66 @@ public class JsonGouldiBean {
     @JsonProperty("correct_mml")
     private String mml;
 
-    private Map<String, List<IdentifierExplanations>> definitions;
+    @JsonProperty("constraints")
+    private String[] constraints;
+
+    @JsonProperty("comment")
+    private String comment;
+
+    @JsonProperty("type")
+    private String type;
+
+    @JsonProperty("check")
+    private JsonGouldiCheckBean check;
+
+    @JsonIgnore
+    private JsonGouldiDefinitionsBean definitionsBean;
 
     public JsonGouldiBean(){}
 
     @JsonProperty("definitions")
     private void unpackNested( Map<String, Object> defs ){
-        definitions = new HashMap<>();
+        definitionsBean = new JsonGouldiDefinitionsBean();
+        LinkedList<JsonGouldiIdentifierDefinienBean> list = new LinkedList<>();
+        definitionsBean.setIdentifierDefiniens(list);
+
         for ( String key : defs.keySet() ){
+            JsonGouldiIdentifierDefinienBean bean = new JsonGouldiIdentifierDefinienBean();
+            ArrayList<JsonGouldiWikidataDefinienBean> arrList = new ArrayList<>();
+            bean.setName( key );
+
             ArrayList<Object> identifierList = (ArrayList<Object>)defs.get(key);
+            for ( Object obj : identifierList ){
+                if ( obj instanceof String ){
+                    JsonGouldiTextDefinienBean textBean = new JsonGouldiTextDefinienBean();
+                    textBean.setDiscription( (String)obj );
+                    arrList.add( textBean );
+                } else {
+                    Map<String, String> qidMappings = (Map<String, String>)obj;
+                    for ( String qID : qidMappings.keySet() ){
+                        JsonGouldiWikidataDefinienBean wikidefbean = new JsonGouldiWikidataDefinienBean();
+                        wikidefbean.setWikiID( qID );
+                        wikidefbean.setDiscription( qidMappings.get(qID) );
+                        arrList.add( wikidefbean );
+                    }
+                }
+            }
 
-            List<IdentifierExplanations> list = IdentifierExplanations.buildIdentifierList( identifierList );
-            definitions.put( key, list );
-
+            JsonGouldiWikidataDefinienBean[] arr = new JsonGouldiWikidataDefinienBean[arrList.size()];
+            arr = arrList.toArray(arr);
+            bean.setDefiniens( arr );
+            list.add(bean);
         }
     }
 
-    public Map<String, List<IdentifierExplanations>> getDefinitions() {
-        return definitions;
+    @JsonGetter("definitions")
+    @JsonSerialize( using = JsonGouldiDefinitionSerializer.class )
+    public JsonGouldiDefinitionsBean getDefinitions(){
+        return definitionsBean;
     }
 
-    public void setDefinitions(Map<String, List<IdentifierExplanations>> definitions) {
-        this.definitions = definitions;
+    public void setDefinitions( JsonGouldiDefinitionsBean definitionsBean ){
+        this.definitionsBean = definitionsBean;
     }
 
     public String getOriginalTex() {
@@ -88,5 +149,61 @@ public class JsonGouldiBean {
 
     public void setMml(String mml) {
         this.mml = mml;
+    }
+
+    public String getMathTex() {
+        return mathTex;
+    }
+
+    public String[] getConstraints() {
+        return constraints;
+    }
+
+    public void setConstraints(String[] constraints) {
+        this.constraints = constraints;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public JsonGouldiCheckBean getCheck() {
+        return check;
+    }
+
+    public void setCheck(JsonGouldiCheckBean check) {
+        this.check = check;
+    }
+
+
+    public String getMathTexSemantic() {
+        return mathTexSemantic;
+    }
+
+    public void setMathTexSemantic(String mathTexSemantic) {
+        this.mathTexSemantic = mathTexSemantic;
+    }
+
+    @Override
+    public String toString(){
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.enable(SerializationFeature.INDENT_OUTPUT);
+        try {
+            return mapper.writeValueAsString(this);
+        } catch ( Exception e ){
+            return e.getMessage();
+        }
     }
 }

@@ -2,6 +2,7 @@ package com.formulasearchengine.mathosphere.pomlp;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.formulasearchengine.mathosphere.pomlp.gouldi.JsonGouldiBean;
+import com.formulasearchengine.mathosphere.pomlp.util.GoldUtils;
 import com.formulasearchengine.mathosphere.pomlp.util.config.ConfigLoader;
 import com.formulasearchengine.mathosphere.pomlp.util.rest.GitHubFileResponse;
 import com.formulasearchengine.mathosphere.pomlp.util.rest.RESTPathBuilder;
@@ -120,23 +121,11 @@ public class GoldStandardLoader {
             this.number = number;
         }
 
-        /**
-         * When an object implementing interface <code>Runnable</code> is used
-         * to create a thread, starting the thread causes the object's
-         * <code>run</code> method to be called in that separately executing
-         * thread.
-         * <p>
-         * The general contract of the method <code>run</code> is that it may
-         * take any action whatsoever.
-         *
-         * @see Thread#run()
-         */
         @Override
         public void run() {
             try {
-                File f = path.resolve( number + ".json" ).toFile();
-                ObjectMapper mapper = new ObjectMapper();
-                gouldi[number-1] = mapper.readValue( f, JsonGouldiBean.class );
+                Path p = path.resolve( number + ".json" );
+                gouldi[number-1] = GoldUtils.readGoldFile(p);
             } catch ( Exception e ){
                 IN_LOG.error("Parallel process cannot parse " + path.toString() + number + ".json - " + e.getMessage(), e);
             }
