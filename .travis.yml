@@ -14,7 +14,7 @@ script:
    - mvn test -q -fae -Dlog4j.configurationFile="$TRAVIS_BUILD_DIR/mathosphere-core/src/main/resources/log4j2-travis.xml"
 
 after_success:
-  - mvn jacoco:report coveralls:report -Dlog4j.configurationFile="$TRAVIS_BUILD_DIR/mathosphere-core/src/main/resources/log4j2-travis.xml"
+  - mvn clean test org.jacoco:jacoco-maven-plugin:report org.eluder.coveralls:coveralls-maven-plugin:report-Dlog4j.configurationFile="$TRAVIS_BUILD_DIR/mathosphere-core/src/main/resources/log4j2-travis.xml"
 
 before_script:
   - sudo apt-get install -y nodejs librsvg2-dev
