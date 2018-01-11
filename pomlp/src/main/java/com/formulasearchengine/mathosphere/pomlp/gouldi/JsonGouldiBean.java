@@ -1,13 +1,22 @@
 package com.formulasearchengine.mathosphere.pomlp.gouldi;
 
-import com.fasterxml.jackson.annotation.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Map;
+
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.Map;
 
 @JsonIgnoreProperties( ignoreUnknown = true )
 @JsonPropertyOrder({
@@ -203,5 +212,20 @@ public class JsonGouldiBean {
         } catch ( Exception e ){
             return e.getMessage();
         }
+    }
+
+    @JsonIgnore
+    private Map<String, Object> other = new HashMap<>();
+    @JsonAnyGetter
+    public Map<String, Object> any() {
+        return other;
+    }
+
+    @JsonAnySetter
+    public void set(String name, Object value) {
+        other.put(name, value);
+    }
+    public boolean hasUnknowProperties() {
+        return !other.isEmpty();
     }
 }
