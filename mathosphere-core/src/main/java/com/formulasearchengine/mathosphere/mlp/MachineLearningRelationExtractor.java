@@ -12,16 +12,21 @@ import com.formulasearchengine.mathosphere.mlp.text.SimpleFeatureExtractorMapper
 import com.formulasearchengine.mathosphere.utils.GoldUtil;
 import com.formulasearchengine.mlp.evaluation.Evaluator;
 import com.formulasearchengine.mlp.evaluation.pojo.GoldEntry;
+import javafx.scene.control.TextFormatter;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.lang.StringUtils;
+import org.apache.flink.api.common.functions.FlatMapFunction;
+import org.apache.flink.api.common.functions.GroupReduceFunction;
 import org.apache.flink.api.common.functions.MapFunction;
 import org.apache.flink.api.common.functions.ReduceFunction;
 import org.apache.flink.api.java.DataSet;
 import org.apache.flink.api.java.ExecutionEnvironment;
+import org.apache.flink.api.java.io.TextOutputFormat;
 import org.apache.flink.api.java.operators.DataSource;
 import org.apache.flink.api.java.operators.FlatMapOperator;
 import org.apache.flink.core.fs.FileSystem;
+import org.apache.flink.util.Collector;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -32,6 +37,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -64,29 +70,28 @@ public class MachineLearningRelationExtractor {
         DataSet<ParsedWikiDocument> parsedDocuments = mapOperator.map( annotatorMapper );
 
         LOG.debug("Create feature Extractor without Gouldi");
-        SimpleFeatureExtractorMapper featureExtractorMapper = new SimpleFeatureExtractorMapper(config, null);
-        DataSet<WikiDocumentOutput> outputDocuments = parsedDocuments.map(featureExtractorMapper);
+        CreateCandidatesMapper candidatesMapper = new CreateCandidatesMapper(config);
+        DataSet<WikiDocumentOutput> outputDataSet = parsedDocuments.map( candidatesMapper );
 
-        try {
-            LOG.debug("Reduce groups by machine learning weka api");
-            WekaLearner learner = new WekaLearner(config);
-            DataSet<EvaluationResult> evaluationResults = outputDocuments.reduceGroup( learner );
 
-            LOG.debug("Write results to the tmp.txt output file.");
-            evaluationResults
-                    .map( new JsonSerializerMapper<>() )
-                    .writeAsText(
-                            config.getOutputDir() + File.separator + "tmp.txt",
-                            FileSystem.WriteMode.OVERWRITE
-                    );
+        Path outputPath = Paths.get(config.getOutputDir(), "extractions.csv");
 
-            LOG.info("Execute flink environment");
-            flinkEnv.execute();
-        } catch ( Exception e ){
-            LOG.error("Cannot execute flink environment.", e);
+        outputDataSet.writeAsCsv(outputPath.toAbsolutePath().toString());
+    }
+
+    private static class RelationMapper implements MapFunction<WikiDocumentOutput, String[]> {
+        @Override
+        public String[] map(WikiDocumentOutput wikiDocumentOutput) throws Exception {
+            return new String[0];
         }
     }
 
+    private class DocumentInformation {
+        private String name;
+        private String[] relations;
+    }
+
+    /*
     public static int counter = 1;
 
     private static DataSet<WikiDocumentOutput> writeMLPResults( final FlinkMlpCommandConfig flinkConfig, DataSet<WikiDocumentOutput> dataSetWikiOuts ){
@@ -122,6 +127,31 @@ public class MachineLearningRelationExtractor {
 
         return new PrintWriter(outputF.toFile());
     }
+    */
+
+    /*
+    SimpleFeatureExtractorMapper featureExtractorMapper = new SimpleFeatureExtractorMapper(config, null);
+        DataSet<WikiDocumentOutput> outputDocuments = parsedDocuments.map(featureExtractorMapper);
+
+        try {
+            LOG.debug("Reduce groups by machine learning weka api");
+            WekaLearner learner = new WekaLearner(config);
+            DataSet<EvaluationResult> evaluationResults = outputDocuments.reduceGroup( learner );
+
+            LOG.debug("Write results to the tmp.txt output file.");
+            evaluationResults
+                    .map( new JsonSerializerMapper<>() )
+                    .writeAsText(
+                            config.getOutputDir() + File.separator + "tmp.txt",
+                            FileSystem.WriteMode.OVERWRITE
+                    );
+
+            LOG.info("Execute flink environment");
+            flinkEnv.execute();
+        } catch ( Exception e ){
+            LOG.error("Cannot execute flink environment.", e);
+        }
+     */
 
     /*
     LOG.info("Find corresponding gold ideas, just for the weka learner");
