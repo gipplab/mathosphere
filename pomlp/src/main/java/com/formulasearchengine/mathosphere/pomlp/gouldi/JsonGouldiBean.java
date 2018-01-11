@@ -1,9 +1,6 @@
 package com.formulasearchengine.mathosphere.pomlp.gouldi;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Map;
+import java.util.*;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
@@ -57,7 +54,7 @@ public class JsonGouldiBean {
     private String mml;
 
     @JsonProperty("constraints")
-    private String[] constraints;
+    private List<String> constraints;
 
     @JsonProperty("comment")
     private String comment;
@@ -162,11 +159,11 @@ public class JsonGouldiBean {
         return mathTex;
     }
 
-    public String[] getConstraints() {
+    public List<String> getConstraints() {
         return constraints;
     }
 
-    public void setConstraints(String[] constraints) {
+    public void setConstraints(List<String> constraints) {
         this.constraints = constraints;
     }
 

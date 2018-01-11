@@ -45,7 +45,7 @@ public class DLMFWebLoader {
 
     private RestTemplate restTemplate;
 
-    private static final int min = 101, max = 200;
+    private static final int min = 101, max = 103;
 
     public DLMFWebLoader(){
         gouldi = GoldStandardLoader.getInstance();
@@ -60,7 +60,7 @@ public class DLMFWebLoader {
                 .get( gouldiPath )
                 .resolve("..")
                 .resolve("dlmfSource")
-                .resolve("dlmf.xml");
+                .resolve("dlmf-small.xml");
 
         if ( !Files.exists(outputFile) ) Files.createFile(outputFile);
 
