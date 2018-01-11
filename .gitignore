@@ -76,8 +76,9 @@ pom.xml.versionsBackup
 pom.xml.next
 release.properties
 
-
-
 restd/logs
 
 dependency-reduced-pom.xml
+
+# Introducing the t-standard (copyrights reserved)
+t/

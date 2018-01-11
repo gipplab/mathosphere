@@ -10,6 +10,4 @@ import java.io.Serializable;
 @Parameters(commandDescription = "Finds, extracts and lists identifier-definien pairs with the machine learning approach of MLP.")
 public class MachineLearningDefinienListConfig extends MachineLearningDefinienExtractionConfig implements Serializable {
 
-
-
 }
