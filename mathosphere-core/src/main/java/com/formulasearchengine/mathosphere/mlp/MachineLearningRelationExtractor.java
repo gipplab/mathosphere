@@ -1,7 +1,9 @@
 package com.formulasearchengine.mathosphere.mlp;
 
+import com.formulasearchengine.mathosphere.mlp.cli.BaseConfig;
 import com.formulasearchengine.mathosphere.mlp.cli.FlinkMlpCommandConfig;
 import com.formulasearchengine.mathosphere.mlp.cli.MachineLearningDefinienListConfig;
+import com.formulasearchengine.mathosphere.mlp.cli.MlpCommandConfig;
 import com.formulasearchengine.mathosphere.mlp.contracts.CreateCandidatesMapper;
 import com.formulasearchengine.mathosphere.mlp.contracts.JsonSerializerMapper;
 import com.formulasearchengine.mathosphere.mlp.contracts.TextAnnotatorMapper;
@@ -27,16 +29,17 @@ import org.apache.flink.api.java.operators.DataSource;
 import org.apache.flink.api.java.operators.FlatMapOperator;
 import org.apache.flink.core.fs.FileSystem;
 import org.apache.flink.util.Collector;
+import org.apache.flink.util.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.attribute.FileAttribute;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -50,6 +53,10 @@ import java.util.List;
 public class MachineLearningRelationExtractor {
 
     private static final Logger LOG = LogManager.getLogger( MachineLearningRelationExtractor.class.getName() );
+
+    private static final String NL = System.lineSeparator();
+
+    private static final String OUTPUT_FILE_NAME = "extractions.csv";
 
     public static void start( MachineLearningDefinienListConfig config ){
         LOG.info("Start machine learning approach for listing identifier-definien pairs");
@@ -73,23 +80,71 @@ public class MachineLearningRelationExtractor {
         CreateCandidatesMapper candidatesMapper = new CreateCandidatesMapper(config);
         DataSet<WikiDocumentOutput> outputDataSet = parsedDocuments.map( candidatesMapper );
 
+        LOG.debug("Map to output format.");
+        RelationMapper outputMapper = new RelationMapper();
+        DataSet<LinkedList<String[]>> outputs = outputDataSet.map(outputMapper);
 
-        Path outputPath = Paths.get(config.getOutputDir(), "extractions.csv");
+        Path outputPath = Paths.get(config.getOutputDir(), OUTPUT_FILE_NAME);
+        LOG.info("Write output file " + outputPath.toString() );
+        outputs.writeAsFormattedText(
+            outputPath.toString(),
+            FileSystem.WriteMode.OVERWRITE,
+            new OutputFormatter()
+        ).setParallelism(1);
 
-        outputDataSet.writeAsCsv(outputPath.toAbsolutePath().toString());
-    }
-
-    private static class RelationMapper implements MapFunction<WikiDocumentOutput, String[]> {
-        @Override
-        public String[] map(WikiDocumentOutput wikiDocumentOutput) throws Exception {
-            return new String[0];
+        try {
+            flinkEnv.execute();
+        } catch (Exception e) {
+            LOG.error("Error due execution of flink process.", e);
         }
     }
 
-    private class DocumentInformation {
-        private String name;
-        private String[] relations;
+    private static class RelationMapper implements MapFunction<WikiDocumentOutput, LinkedList<String[]>> {
+        @Override
+        public LinkedList<String[]> map(WikiDocumentOutput wikiDocumentOutput) {
+            LinkedList<String[]> relationArray = new LinkedList<>();
+            relationArray.add( new String[]{ wikiDocumentOutput.getTitle() } );
+
+            List<Relation> relations = wikiDocumentOutput.getRelations();
+            for (Relation r : relations) {
+                String[] record = {r.getIdentifier(), r.getDefinition(), Double.toString(r.getScore())};
+                relationArray.add( record );
+            }
+
+            return relationArray;
+        }
     }
+
+    private static class OutputFormatter implements TextOutputFormat.TextFormatter<LinkedList<String[]>> {
+        @Override
+        public String format(LinkedList<String[]> in) {
+            StringBuffer buffer = new StringBuffer( in.size()*3 );
+            buffer.append( in.removeFirst()[0] ).append(NL);
+
+            while ( !in.isEmpty() ){
+                String tmp = Arrays.toString(in.removeFirst());
+                buffer.append(tmp.substring(1, tmp.length() - 1)).append(NL);
+            }
+
+            return buffer.append(NL).toString();
+        }
+    }
+
+    /*
+    private static PrintWriter createPrinter( FlinkMlpCommandConfig config ) {
+        if (StringUtils.isNotBlank(config.getOutputDir())) {
+            Path outFilePath = Paths.get( config.getOutputDir() ).resolve( OUTPUT_FILE_NAME );
+            try {
+                return new PrintWriter(new FileOutputStream( outFilePath.toString(), false ));
+            } catch ( FileNotFoundException ioe ){
+                LOG.error("Cannot write to file. Switch to console mode.", ioe);
+                return new PrintWriter(System.out);
+            }
+        }
+
+        LOG.info("No output directory specified -> printing to console.");
+        return new PrintWriter(System.out);
+    }*/
 
     /*
     public static int counter = 1;
