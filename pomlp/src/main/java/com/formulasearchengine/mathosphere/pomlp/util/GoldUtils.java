@@ -1,13 +1,16 @@
 package com.formulasearchengine.mathosphere.pomlp.util;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import com.formulasearchengine.mathosphere.pomlp.gouldi.JsonGouldiBean;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -46,10 +49,10 @@ public class GoldUtils {
             } catch (FileAlreadyExistsException e) {
                 LOG.warn("File already exists!");
             }
-            ObjectMapper mapper = new ObjectMapper();
-            mapper.enable(SerializationFeature.INDENT_OUTPUT);
-
-            mapper.writeValue(outputPath.toFile(), goldEntry);
+            try (Writer out = new BufferedWriter(new OutputStreamWriter(
+                    new FileOutputStream(outputPath.toFile()), "UTF-8"))) {
+                out.write(goldEntry.toString());
+            }
         } catch (IOException e) {
             LOG.error(e);
             throw new RuntimeException(e);

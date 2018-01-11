@@ -3,11 +3,13 @@ package com.formulasearchengine.mathosphere.pomlp;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Arrays;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.IntStream;
 
 import com.formulasearchengine.mathosphere.pomlp.gouldi.JsonGouldiBean;
 import com.formulasearchengine.mathosphere.pomlp.util.GoldUtils;
@@ -125,7 +127,6 @@ public class GoldStandardLoader {
             try {
                 Path p = path.resolve( number + ".json" );
                 gouldi[number-1] = GoldUtils.readGoldFile(p);
-                Arrays.stream(gouldi).forEach(g-> GoldUtils.writeGoldFile(p,g));
             } catch ( Exception e ){
                 IN_LOG.error("Parallel process cannot parse " + path.toString() + number + ".json - " + e.getMessage(), e);
             }
@@ -156,5 +157,14 @@ public class GoldStandardLoader {
     public static void main(String[] args){
         GoldStandardLoader gold = new GoldStandardLoader();
         gold.initLocally();
+        String goldPath = ConfigLoader.CONFIG.getProperty( ConfigLoader.GOULDI_LOCAL_PATH );
+        Path path = Paths.get(goldPath);
+        final Map<Integer, JsonGouldiBean> map = new LinkedHashMap<>();
+        IntStream.range(1,gouldi.length).forEach(i->map.put(i,gouldi[i-1]));
+        map.forEach((key, value) -> {
+            Path p = path.resolve(key + ".json");
+            GoldUtils.writeGoldFile(p, value);
+        });
+
     }
 }
