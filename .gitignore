@@ -83,3 +83,4 @@ dependency-reduced-pom.xml
 
 # Introducing the t-standard (copyrights reserved)
 t/
+/mathosphere-core/test/
