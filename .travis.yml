@@ -11,11 +11,10 @@ install:
   - mvn install -DskipTests=true -q
 
 script:
-   - mvn test -q -fae -Dlog4j.configurationFile=$TRAVIS_BUILD_DIRmathosphere-core/src/main/resources/log4j2-travis.xml
-
+   - mvn test -q -fae -Dlog4j.configurationFile="$TRAVIS_BUILD_DIR/mathosphere-core/src/main/resources/log4j2-travis.xml"
 
 after_success:
-  - mvn cobertura:cobertura coveralls:report -Dlog4j.configurationFile=$TRAVIS_BUILD_DIRmathosphere-core/src/main/resources/log4j2-travis.xml
+  - mvn jacoco:report coveralls:report -Dlog4j.configurationFile="$TRAVIS_BUILD_DIR/mathosphere-core/src/main/resources/log4j2-travis.xml"
 
 before_script:
   - sudo apt-get install -y nodejs librsvg2-dev

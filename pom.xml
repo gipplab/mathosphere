@@ -134,37 +134,30 @@
                 </executions>
             </plugin>
             <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>cobertura-maven-plugin</artifactId>
-                <version>2.6</version>
-                <configuration>
-                    <format>xml</format>
-                    <maxmem>256m</maxmem>
-                    <!-- aggregated reports for multi-module projects -->
-                    <aggregate>true</aggregate>
-                    <!-- ignore generated sources -->
-                    <instrumentation>
-                        <ignores>
-                            <ignore>BaseXResourceFactoryMachine</ignore>
-                            <ignore>BaseXResourceRouter</ignore>
-                            <ignore>BaseXResourceRouterFactoryMachine</ignore>
-                            <ignore>AppModuleFactoryMachine</ignore>
-                        </ignores>
-                        <excludes>
-                            <exclude>com/formulasearchengine/**/*BaseXResource*.class</exclude>
-                            <exclude>com/formulasearchengine/**/*FactoryMachine*.class</exclude>
-                            <!--<exclude>com/example/**/*Test.class</exclude>-->
-                        </excludes>
-                    </instrumentation>
-                    <check/>
-                </configuration>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>0.7.6.201602180812</version>
                 <executions>
                     <execution>
+                        <id>prepare-agent</id>
                         <goals>
-                            <goal>clean</goal>
+                            <goal>prepare-agent</goal>
                         </goals>
                     </execution>
                 </executions>
+                <!--<instrumentation>-->
+                    <!--<ignores>-->
+                        <!--<ignore>BaseXResourceFactoryMachine</ignore>-->
+                        <!--<ignore>BaseXResourceRouter</ignore>-->
+                        <!--<ignore>BaseXResourceRouterFactoryMachine</ignore>-->
+                        <!--<ignore>AppModuleFactoryMachine</ignore>-->
+                    <!--</ignores>-->
+                    <!--<excludes>-->
+                        <!--<exclude>com/formulasearchengine/**/*BaseXResource*.class</exclude>-->
+                        <!--<exclude>com/formulasearchengine/**/*FactoryMachine*.class</exclude>-->
+                        <!--&lt;!&ndash;<exclude>com/example/**/*Test.class</exclude>&ndash;&gt;-->
+                    <!--</excludes>-->
+                <!--</instrumentation>-->
             </plugin>
             <plugin>
                 <groupId>org.eluder.coveralls</groupId>
