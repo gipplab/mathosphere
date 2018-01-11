@@ -1,6 +1,14 @@
 package com.formulasearchengine.mathosphere.pomlp;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Arrays;
+import java.util.Properties;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+
 import com.formulasearchengine.mathosphere.pomlp.gouldi.JsonGouldiBean;
 import com.formulasearchengine.mathosphere.pomlp.util.GoldUtils;
 import com.formulasearchengine.mathosphere.pomlp.util.config.ConfigLoader;
@@ -10,15 +18,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
-
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.Properties;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 
 public class GoldStandardLoader {
     private static final Logger LOG = LogManager.getLogger( GoldStandardLoader.class.getName() );
@@ -126,6 +125,7 @@ public class GoldStandardLoader {
             try {
                 Path p = path.resolve( number + ".json" );
                 gouldi[number-1] = GoldUtils.readGoldFile(p);
+                Arrays.stream(gouldi).forEach(g-> GoldUtils.writeGoldFile(p,g));
             } catch ( Exception e ){
                 IN_LOG.error("Parallel process cannot parse " + path.toString() + number + ".json - " + e.getMessage(), e);
             }
