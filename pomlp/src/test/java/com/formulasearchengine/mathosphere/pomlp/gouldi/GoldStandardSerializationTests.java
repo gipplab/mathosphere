@@ -63,6 +63,16 @@ public class GoldStandardSerializationTests {
     }
 
     @Test
+    public void loadUnknownTest() throws Exception{
+        final Path testFile = Paths.get(getClass().getResource("103.json").toURI());
+        JsonGouldiBean gold = GoldUtils.readGoldFile(testFile);
+        GoldUtils.writeGoldFile(tmpOutput.resolve("103.json" ),gold);
+        final String out = new String(Files.readAllBytes(tmpOutput.resolve("103.json")));
+        final String in = new String(Files.readAllBytes(testFile));
+        assertEquals(in,out);
+    }
+
+    @Test
     public void specialDefinitionsReloadTest(){
         try {
             JsonGouldiBean gold = GoldUtils.readGoldFile( folderPath.resolve("13.json") );
