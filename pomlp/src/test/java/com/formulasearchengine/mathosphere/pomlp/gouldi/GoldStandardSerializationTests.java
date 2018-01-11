@@ -1,7 +1,16 @@
 package com.formulasearchengine.mathosphere.pomlp.gouldi;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.LinkedList;
+import java.util.Properties;
+
 import com.formulasearchengine.mathosphere.pomlp.util.GoldUtils;
 import com.formulasearchengine.mathosphere.pomlp.util.config.ConfigLoader;
 import org.apache.commons.io.FileUtils;
@@ -11,23 +20,11 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.LinkedList;
-import java.util.Properties;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
-
 /**
  * @author Andre Greiner-Petter
  */
-public class GoldstandardSerializationTests {
-    private static final Logger LOG = LogManager.getLogger( GoldstandardSerializationTests.class.getName() );
+public class GoldStandardSerializationTests {
+    private static final Logger LOG = LogManager.getLogger( GoldStandardSerializationTests.class.getName() );
 
     private static Path folderPath;
     private static Path tmpOutput;
