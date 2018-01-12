@@ -4,10 +4,7 @@ import com.formulasearchengine.mathosphere.mlp.cli.BaseConfig;
 import com.formulasearchengine.mathosphere.mlp.cli.FlinkMlpCommandConfig;
 import com.formulasearchengine.mathosphere.mlp.cli.MachineLearningDefinienListConfig;
 import com.formulasearchengine.mathosphere.mlp.cli.MlpCommandConfig;
-import com.formulasearchengine.mathosphere.mlp.contracts.CreateCandidatesMapper;
-import com.formulasearchengine.mathosphere.mlp.contracts.JsonSerializerMapper;
-import com.formulasearchengine.mathosphere.mlp.contracts.TextAnnotatorMapper;
-import com.formulasearchengine.mathosphere.mlp.contracts.TextExtractorMapper;
+import com.formulasearchengine.mathosphere.mlp.contracts.*;
 import com.formulasearchengine.mathosphere.mlp.ml.WekaLearner;
 import com.formulasearchengine.mathosphere.mlp.pojos.*;
 import com.formulasearchengine.mathosphere.mlp.text.SimpleFeatureExtractorMapper;
@@ -68,7 +65,7 @@ public class MachineLearningRelationExtractor {
         DataSource<String> dataSource = FlinkMlpRelationFinder.readWikiDump( config, flinkEnv );
 
         LOG.debug("Parse documents via flink");
-        FlatMapOperator<String, RawWikiDocument> mapOperator = dataSource.flatMap(new TextExtractorMapper());
+        FlatMapOperator<String, RawWikiDocument> mapOperator = dataSource.flatMap(new HtmlTextExtractorMapper());
 
         LOG.debug("Open text annotator mapper");
         TextAnnotatorMapper annotatorMapper = new TextAnnotatorMapper(config);

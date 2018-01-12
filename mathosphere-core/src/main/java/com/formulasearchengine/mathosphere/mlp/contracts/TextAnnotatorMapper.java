@@ -27,7 +27,7 @@ public class TextAnnotatorMapper extends RichMapFunction<RawWikiDocument, Parsed
 
   private final BaseConfig config;
 
-
+  // Needs to be transient for flink
   private transient PosTagger posTagger;
 
   public TextAnnotatorMapper(BaseConfig config) {
@@ -49,7 +49,7 @@ public class TextAnnotatorMapper extends RichMapFunction<RawWikiDocument, Parsed
     return parse;
   }
 
-  public ParsedWikiDocument parse(String wikitext, String title) {
+  private ParsedWikiDocument parse(String wikitext, String title) {
     List<Sentence> sentences;
     List<WikidataLink> links = null;
     List<MathTag> mathTags;

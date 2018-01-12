@@ -8,8 +8,10 @@ public class RawWikiDocument {
   public int namespace;
   public String text;
 
-  public RawWikiDocument() {
-  }
+  // the content type - might be null but that's fine.
+  private ContentType type;
+
+  public RawWikiDocument() {}
 
   public RawWikiDocument(String title, int namespace, String text) {
     this.title = title;
@@ -22,4 +24,11 @@ public class RawWikiDocument {
     return "[title=" + title + ", text=" + StringUtils.abbreviate(text, 100) + "]";
   }
 
+  public ContentType getType() {
+    return type;
+  }
+
+  public void setType(ContentType type) {
+    this.type = type;
+  }
 }

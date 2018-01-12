@@ -18,7 +18,7 @@ public class TextExtractorMapper implements FlatMapFunction<String, RawWikiDocum
 
   private static final Logger LOGGER = LogManager.getLogger(TextExtractorMapper.class.getName());
 
-  private static final Pattern TITLE_PATTERN = Pattern.compile("(?:<title>)(.*?)(?:</title>)");
+  static final Pattern TITLE_PATTERN = Pattern.compile("(?:<title>)(.*?)(?:</title>)");
   private static final Pattern NAMESPACE_PATTERN = Pattern.compile("(?:<ns>)(.*?)(?:</ns>)");
   private static final Pattern TEXT_PATTERN = Pattern.compile("(?:<text.*?>)(.*?)(?:</text>)",
       Pattern.DOTALL);
@@ -29,10 +29,17 @@ public class TextExtractorMapper implements FlatMapFunction<String, RawWikiDocum
       new LookupTranslator(EntityArrays.HTML40_EXTENDED_UNESCAPE()));
 
   @Override
-  public void flatMap(String content, Collector<RawWikiDocument> out) throws Exception {
+  public void flatMap(String content, Collector<RawWikiDocument> out) {
+    RawWikiDocument rawWikiDoc = internalFlatMap( content );
+    if ( rawWikiDoc != null ){
+      out.collect(rawWikiDoc);
+    }
+  }
+
+  RawWikiDocument internalFlatMap( String content ){
     Matcher titleMatcher = TITLE_PATTERN.matcher(content);
     if (!titleMatcher.find()) {
-      return;
+      return null;
     }
 
     String title = titleMatcher.group(1);
@@ -40,26 +47,25 @@ public class TextExtractorMapper implements FlatMapFunction<String, RawWikiDocum
 
     Matcher namespaceMatcher = NAMESPACE_PATTERN.matcher(content);
     if (!namespaceMatcher.find()) {
-      return;
+      return null;
     }
 
     int ns = Integer.parseInt(namespaceMatcher.group(1));
     if (ns != 0) {
       // skip docs from namespaces other than 0
-      return;
+      return null;
     }
 
     // parse text
     Matcher textMatcher = TEXT_PATTERN.matcher(content);
     if (!textMatcher.find()) {
-      return;
+      return null;
     }
 
     String rawText = textMatcher.group(1);
     String text = unescape(rawText);
 
-    out.collect(new RawWikiDocument(title, ns, text));
-
+    return new RawWikiDocument(title, ns, text);
   }
 
   /**
