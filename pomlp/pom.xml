@@ -110,7 +110,7 @@
             <version>1.0.0-SNAPSHOT</version>
         </dependency>
 
-        <!-- MathML Converter -->
+        <!-- MathML Tools -->
         <dependency>
             <groupId>com.formulasearchengine</groupId>
             <artifactId>mathmltools</artifactId>

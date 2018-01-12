@@ -104,14 +104,14 @@ public class GoldStandardSerializationTests {
     public void loadAndWriteTest(){
         try {
             JsonGouldiBean gold = GoldUtils.readGoldFile( folderPath.resolve("2.json") );
-            gold.setMathTex("WRONG");
+            gold.setOriginalTex("WRONG");
             boolean oldQIDCheck = gold.getCheck().isQid();
             gold.getCheck().setQid( !oldQIDCheck );
             Path tmpP = tmpOutput.resolve( "loadAndWriteTest.json" );
             GoldUtils.writeGoldFile( tmpP, gold );
             JsonGouldiBean gouldNew = GoldUtils.readGoldFile( tmpP );
             assertEquals( !oldQIDCheck, gouldNew.getCheck().isQid() );
-            assertEquals( "WRONG", gouldNew.getMathTex() );
+            assertEquals( "WRONG", gouldNew.getOriginalTex() );
         } catch ( Exception e ){
             fail("Exception during writing test.", e);
         }

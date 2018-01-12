@@ -9,9 +9,9 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.IntStream;
 
-import com.formulasearchengine.mathosphere.pomlp.gouldi.Gouldies;
 import com.formulasearchengine.mathosphere.pomlp.gouldi.JsonGouldiBean;
 import com.formulasearchengine.mathosphere.pomlp.util.GoldUtils;
+import com.formulasearchengine.mathosphere.pomlp.util.GouldiRegenerator;
 import com.formulasearchengine.mathosphere.pomlp.util.config.ConfigLoader;
 import com.formulasearchengine.mathosphere.pomlp.util.rest.GitHubFileResponse;
 import com.formulasearchengine.mathosphere.pomlp.util.rest.RESTPathBuilder;
@@ -153,17 +153,13 @@ public class GoldStandardLoader {
     }
 
     public static void main(String[] args) {
-        GoldStandardLoader gold = new GoldStandardLoader();
-        gold.initLocally();
-    }
+        // TODO: DO NOT USE THIS MAIN, IF YOU DON'T KNOW WHAT YOU ARE DOING!
+        // it's just a main for manually executions and changes constantly
 
-    public static void main2(String[] args) {
-        main(new String[]{});
-        String goldPath = ConfigLoader.CONFIG.getProperty(ConfigLoader.GOULDI_LOCAL_PATH);
-        Path path = Paths.get(goldPath);
-        final Gouldies beans = new Gouldies();
-        IntStream.range(1, gouldi.length).forEach(i -> beans.put(i, gouldi[i - 1]));
-        beans.setOutputPath(path);
-        beans.augment();
+        // regenerate all gold files once!
+        Path outputPath = Paths.get( "tmpOutput" );
+        GouldiRegenerator regenerator = new GouldiRegenerator(outputPath);
+        regenerator.init();
+        regenerator.regenerateAllMML();
     }
 }

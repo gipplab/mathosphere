@@ -1,6 +1,5 @@
 package com.formulasearchengine.mathosphere.pomlp.convertor;
 
-import com.formulasearchengine.mathmlconverters.latexml.LaTeXMLConverter;
 import com.formulasearchengine.mathosphere.pomlp.xml.MathMLDocumentReader;
 import com.formulasearchengine.nativetools.CommandExecutor;
 import com.formulasearchengine.nativetools.NativeResponse;
@@ -11,50 +10,22 @@ import org.w3c.dom.Document;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+
+import static com.formulasearchengine.mathosphere.pomlp.util.config.LatexMLConfig.*;
 
 public class LatexmlGenerator implements Parser, Canonicalizable{
 
     private static Logger LOG = LogManager.getLogger(LatexmlGenerator.class.getName());
 
     private static final String NAME = "LaTeXML";
-    private static final String COMMAND = "latexmlc";
 
-    private static final String[] DEFAULT_CMD = new String[]{
-            COMMAND,
-            "--includestyles",
-            "--format=xhtml",
-            "--whatsin=math",
-            "--whatsout=math",
-            "--pmml",
-            "--cmml",
-            "--nodefaultresources",
-            "--linelength=90",
-            "--preload", "LaTeX.pool",
-            "--preload", "article.cls",
-            "--preload", "amsmath.sty",
-            "--preload", "amsthm.sty",
-            "--preload", "amstext.sty",
-            "--preload", "amssymb.sty",
-            "--preload", "eucal.sty",
-            "--preload", "[dvipsnames]xcolor.sty",
-            "--preload", "url.sty",
-            "--preload", "hyperref.sty",
-            "--preload", "[ids]latexml.sty",
-            "--preload", "texvc"
-    };
-
-    private LaTeXMLConverter converter;
     private NativeResponse response;
 
     public LatexmlGenerator(){}
 
     @Override
-    public void init() {
-        // we only need latexmlc -> no configuration needed
-        converter = new LaTeXMLConverter(null);
-    }
+    public void init() {}
 
     @Override
     public Document parse(String latex) {
@@ -78,17 +49,17 @@ public class LatexmlGenerator implements Parser, Canonicalizable{
 
     @Override
     public String getNativeCommand(){
-        return COMMAND;
+        return NATIVE_COMMAND;
     }
 
     public ArrayList<String> buildArguments(String latex ){
-        ArrayList<String> args = new ArrayList<>(Arrays.asList(DEFAULT_CMD));
+        ArrayList<String> args = asList( GENERIC_CONFIG );
         args.add( "literal:" + latex );
         return args;
     }
 
     public List<String> buildArguments(String latex, Path outputFile ){
-        ArrayList<String> args = new ArrayList<>(Arrays.asList(DEFAULT_CMD));
+        ArrayList<String> args = asList( GENERIC_CONFIG );
         args.add( "--dest=" + outputFile.toAbsolutePath().toString() );
         args.add( "literal:" + latex );
         return args;
