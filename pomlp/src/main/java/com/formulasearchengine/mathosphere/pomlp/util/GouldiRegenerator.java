@@ -4,6 +4,7 @@ import com.formulasearchengine.mathmltools.mml.elements.MathDoc;
 import com.formulasearchengine.mathmltools.mml.elements.MathDocWrapper;
 import com.formulasearchengine.mathosphere.pomlp.GoldStandardLoader;
 import com.formulasearchengine.mathosphere.pomlp.gouldi.JsonGouldiBean;
+import com.formulasearchengine.mathosphere.pomlp.gouldi.JsonGouldiCheckBean;
 import com.formulasearchengine.mathosphere.pomlp.util.config.ConfigLoader;
 import com.formulasearchengine.mathosphere.pomlp.util.config.LatexMLConfig;
 import com.formulasearchengine.nativetools.CommandExecutor;
@@ -15,6 +16,7 @@ import org.apache.logging.log4j.Logger;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.LinkedList;
+import java.util.regex.Pattern;
 
 /**
  * @author Andre Greiner-Petter
@@ -55,12 +57,17 @@ public class GouldiRegenerator {
      * Will change all cached gold files MML.
      */
     public void regenerateAllMML(){
-        for ( int i = 1; i <= 2; i++){
+        for ( int i = 1; i <= max; i++){
             try {
                 JsonGouldiBean bean = loader.getGouldiJson( i );
                 regenerateMMLViaLatexML( bean );
+                postLatexmlProcessing( bean );
                 augmentSingleGouldiEntry( bean );
-                GoldUtils.writeGoldFile( outputPath.resolve( i+".json" ), bean );
+                JsonGouldiCheckBean checker = bean.getCheck();
+                checker.setQid( false );
+                checker.setTree( false );
+                bean.setCheck( checker );
+                //GoldUtils.writeGoldFile( outputPath.resolve( i+".json" ), bean );
                 LOG.info("Successfully augmented gouldi entry with QID: " + i);
             } catch ( Exception e ){
                 LOG.warn("Cannot augment gould entry with QID: " + i, e);
@@ -84,6 +91,12 @@ public class GouldiRegenerator {
         }
 
         arguments.removeLast();
+    }
+
+    public void postLatexmlProcessing( JsonGouldiBean bean ){
+        String latexmml = bean.getMml();
+        latexmml = latexmml.replaceAll("xmlns:m=\"http://www.w3.org/1998/Math/MathML\"","");
+        bean.setMml(latexmml);
     }
 
     public void augmentSingleGouldiEntry(JsonGouldiBean bean) throws Exception {
