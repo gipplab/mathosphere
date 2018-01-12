@@ -9,24 +9,24 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 @JsonPropertyOrder({"tree", "qid"})
 public class JsonGouldiCheckBean {
     @JsonProperty("tree")
-    private boolean tree;
+    private Boolean tree;
 
     @JsonProperty("qid")
-    private boolean qid;
+    private Boolean qid;
 
-    public boolean isTree() {
+    public Boolean isTree() {
         return tree;
     }
 
-    public void setTree(boolean tree) {
+    public void setTree(Boolean tree) {
         this.tree = tree;
     }
 
-    public boolean isQid() {
+    public Boolean isQid() {
         return qid;
     }
 
-    public void setQid(boolean qid) {
+    public void setQid(Boolean qid) {
         this.qid = qid;
     }
 }
