@@ -1,6 +1,7 @@
 package com.formulasearchengine.mathosphere.pomlp.util;
 
 import com.formulasearchengine.mathmlconverters.canonicalize.MathMLCanUtil;
+import com.formulasearchengine.mathmltools.xmlhelper.XmlDocumentReader;
 import com.formulasearchengine.mathosphere.pomlp.xml.MathMLDocumentReader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -108,7 +109,7 @@ public final class Utility {
     public static Document getCanonicalizedDocument( Document doc ) {
         String strDoc = documentToString(doc, false);
         String canonical = getCanoicalizedString( strDoc );
-        return MathMLDocumentReader.getDocumentFromXMLString(canonical);
+        return XmlDocumentReader.getDocumentFromXMLString(canonical);
     }
 
     public static String getCanoicalizedString( String doc ){

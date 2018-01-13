@@ -2,8 +2,6 @@ package com.formulasearchengine.mathosphere.pomlp.convertor;
 
 import com.formulasearchengine.mathosphere.pomlp.util.Constants;
 import com.formulasearchengine.mathosphere.pomlp.util.Utility;
-import com.formulasearchengine.mathosphere.pomlp.xml.MathMLDocumentReader;
-import com.formulasearchengine.mathosphere.pomlp.xml.XmlDocumentReader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
@@ -18,7 +16,6 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 
 public class SnuggleTexConverter implements Parser, Canonicalizable {
@@ -51,7 +48,9 @@ public class SnuggleTexConverter implements Parser, Canonicalizable {
         options.setAddingMathSourceAnnotations(true);
         options.addDOMPostProcessors(upProcessor);
 
-        DocumentBuilderFactory factory = XmlDocumentReader.FACTORY;
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        factory.setIgnoringComments(true);
+        factory.setExpandEntityReferences(true);
         try {
             builder = factory.newDocumentBuilder();
         } catch ( ParserConfigurationException pe ){

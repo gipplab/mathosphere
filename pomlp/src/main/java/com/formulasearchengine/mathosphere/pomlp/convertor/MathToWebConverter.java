@@ -1,8 +1,7 @@
 package com.formulasearchengine.mathosphere.pomlp.convertor;
 
+import com.formulasearchengine.mathmltools.xmlhelper.XmlDocumentReader;
 import com.formulasearchengine.mathosphere.pomlp.util.Utility;
-import com.formulasearchengine.mathosphere.pomlp.xml.MathMLDocumentReader;
-import com.formulasearchengine.mathosphere.pomlp.xml.XmlDocumentReader;
 import mathtoweb.engine.MathToWeb;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

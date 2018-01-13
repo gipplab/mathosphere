@@ -1,5 +1,6 @@
 package com.formulasearchengine.mathosphere.pomlp.convertor;
 
+import com.formulasearchengine.mathmltools.xmlhelper.XmlDocumentReader;
 import com.formulasearchengine.mathosphere.pomlp.xml.MathMLDocumentReader;
 import com.formulasearchengine.nativetools.CommandExecutor;
 import com.formulasearchengine.nativetools.NativeResponse;
@@ -34,7 +35,7 @@ public class LatexmlGenerator implements Parser, Canonicalizable{
         response = executor.exec( CommandExecutor.DEFAULT_TIMEOUT, Level.TRACE );
         if ( handleResponseCode(response, NAME, LOG) != 0 ) return null;
         LOG.info(NAME + " conversion successful.");
-        return MathMLDocumentReader.getDocumentFromXMLString( response.getResult() );
+        return XmlDocumentReader.getDocumentFromXMLString( response.getResult() );
     }
 
     @Override
