@@ -157,8 +157,9 @@ public class GoldStandardLoader {
         // it's just a main for manually executions and changes constantly
 
         // regenerate all gold files once!
-        String goldPath = ConfigLoader.CONFIG.getProperty(ConfigLoader.GOULDI_LOCAL_PATH);
-        Path outputPath = Paths.get( goldPath );
+        //String goldPath = ConfigLoader.CONFIG.getProperty(ConfigLoader.GOULDI_LOCAL_PATH);
+        //Path outputPath = Paths.get( goldPath );
+        Path outputPath = Paths.get("outputTmp");
         GouldiRegenerator regenerator = new GouldiRegenerator(outputPath);
         regenerator.init();
         regenerator.regenerateAllMML();

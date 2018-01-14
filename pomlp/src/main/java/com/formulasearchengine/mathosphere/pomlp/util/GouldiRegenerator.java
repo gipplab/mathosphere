@@ -64,8 +64,10 @@ public class GouldiRegenerator {
                 postLatexmlProcessing( bean );
                 augmentSingleGouldiEntry( bean );
                 JsonGouldiCheckBean checker = bean.getCheck();
-                checker.setQid( false );
-                checker.setTree( false );
+                if ( checker != null ){
+                    checker.setQid( false );
+                    checker.setTree( false );
+                }
                 bean.setCheck( checker );
                 //GoldUtils.writeGoldFile( outputPath.resolve( i+".json" ), bean );
                 LOG.info("Successfully augmented gouldi entry with QID: " + i);
