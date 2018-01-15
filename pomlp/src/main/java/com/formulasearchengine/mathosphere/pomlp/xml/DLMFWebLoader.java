@@ -2,8 +2,11 @@ package com.formulasearchengine.mathosphere.pomlp.xml;
 
 import com.formulasearchengine.mathosphere.pomlp.GoldStandardLoader;
 import com.formulasearchengine.mathosphere.pomlp.gouldi.JsonGouldiBean;
+import com.formulasearchengine.mathosphere.pomlp.util.GoldUtils;
 import com.formulasearchengine.mathosphere.pomlp.util.config.ConfigLoader;
 import net.sf.saxon.expr.flwor.Tuple;
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVPrinter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
@@ -18,6 +21,7 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Scanner;
@@ -36,16 +40,21 @@ public class DLMFWebLoader {
     private GoldStandardLoader gouldi;
 
     private Path outputFile;
+    private Path outputCSVTranslations;
+    private Path baseGouldiPath;
 
-    private HashSet<String> loadedSet;
+    private HashMap<String, Integer> loadedSet;
+    private HashMap<Integer, Integer> crossNames;
+    private String[] nameMap;
 
-    private LinkedList<URI> websitesList;
+    private LinkedList<SimpleInfoHolder> websitesList;
     private LinkedBlockingQueue<SimpleInfoHolder> rawLoadedWebsitesQueue;
     private LinkedBlockingQueue<SimpleInfoHolder> postProcessedWebsitesQueue;
 
+
     private RestTemplate restTemplate;
 
-    private static final int min = 101, max = 101;
+    private static final int min = 101, max = 200;
 
     public DLMFWebLoader(){
         gouldi = GoldStandardLoader.getInstance();
@@ -56,18 +65,26 @@ public class DLMFWebLoader {
         gouldi.initLocally();
 
         String gouldiPath = ConfigLoader.CONFIG.getProperty( ConfigLoader.GOULDI_LOCAL_PATH );
-        outputFile = Paths.get("..")
-                .resolve("mathosphere-core")
-                .resolve("t")
-                .resolve("dlmf-very-small.xml");
+        baseGouldiPath = Paths.get(gouldiPath);
+
+        Path base = Paths.get("..")
+                .resolve("lib")
+                .resolve("GoUldI")
+                .resolve("dlmfSource");
+
+        outputFile = base.resolve("dlmf-complete.xml");
+        outputCSVTranslations = base.resolve("name-translations.csv");
 
         if ( !Files.exists(outputFile) ) Files.createFile(outputFile);
 
-        loadedSet = new HashSet<>();
 
         websitesList = new LinkedList<>();
         rawLoadedWebsitesQueue = new LinkedBlockingQueue<>();
         postProcessedWebsitesQueue = new LinkedBlockingQueue<>();
+
+        loadedSet = new HashMap<>();
+        crossNames = new HashMap<>();
+        nameMap = new String[max+1];
 
         SimpleClientHttpRequestFactory factory = new SimpleClientHttpRequestFactory();
         factory.setConnectTimeout( 2000 );
@@ -82,11 +99,13 @@ public class DLMFWebLoader {
             url = new URL(currBean.getUri());
             URI uri = new URI(url.getProtocol(), url.getHost(), url.getPath(), null);
 
-            if ( !loadedSet.contains( uri.toString() ) ){
-                loadedSet.add(uri.toString());
-                websitesList.add( uri );
+            if ( !loadedSet.keySet().contains( uri.toString() ) ){
+                loadedSet.put(uri.toString(), idx);
+                websitesList.add( new SimpleInfoHolder( uri, null, idx ) );
             } else {
                 LOG.debug("Skip ID " + idx + " to avoid duplicated page loading.");
+                crossNames.put( idx, loadedSet.get(uri.toString()) ); // set cross referencing
+                LOG.info("Cross reference: qID {} uses the same website as qID {}.", idx, loadedSet.get(uri.toString()));
             }
         }
     }
@@ -123,11 +142,52 @@ public class DLMFWebLoader {
 
             pageLoaderPool.awaitTermination( 10, TimeUnit.MINUTES );
             LOG.info("Loading process finished. Inform others about the end of the process.");
-            rawLoadedWebsitesQueue.add(new SimpleInfoHolder(null, EXIT_CODE));
+            rawLoadedWebsitesQueue.add(new SimpleInfoHolder(null, EXIT_CODE, -1));
             postProcessorPool.awaitTermination( 2, TimeUnit.MINUTES );
-            postProcessedWebsitesQueue.add(new SimpleInfoHolder(null, EXIT_CODE));
+            postProcessedWebsitesQueue.add(new SimpleInfoHolder(null, EXIT_CODE, -1));
+
+            LOG.info("Done, all process finished.");
+            LOG.info("Resolve cross referencing.");
+            for ( Integer idxCross : crossNames.keySet() ){
+                nameMap[ idxCross ] = nameMap[ crossNames.get(idxCross) ];
+            }
+            LOG.info("Done cross referencing, every number between 101-200 should has a title now.");
+            LOG.info("Write CSV file.");
+            writeCsvNameFile();
+            LOG.info("Done. Update gold files!");
+            writeGouldiNames();
         } catch (InterruptedException e) {
             LOG.error("Cannot wait until end of termination.", e);
+        }
+    }
+
+    private void writeCsvNameFile(){
+        try (
+                BufferedWriter bf = Files.newBufferedWriter( outputCSVTranslations );
+                CSVPrinter csvPrinter = new CSVPrinter(bf, CSVFormat.RFC4180.withHeader(
+                        "QID", "NAME"
+                ))
+        ){
+            for ( int i = 101; i <= max; i++ ){
+                csvPrinter.printRecord( i, nameMap[i] );
+            }
+            csvPrinter.flush();
+        } catch ( IOException ioe ){
+            LOG.error("Cannot write csv file for name references.", ioe);
+        }
+    }
+
+    private void writeGouldiNames(){
+        for ( int i = 101; i <= max; i++ ){
+            try {
+                JsonGouldiBean bean = gouldi.getGouldiJson( i );
+                if ( bean.getTitle() != null )
+                    bean.set( "specific_title", bean.getTitle() );
+                bean.setTitle( nameMap[i] );
+                GoldUtils.writeGoldFile( baseGouldiPath.resolve( i+".json" ), bean );
+            } catch ( Exception e ){
+                LOG.warn("Cannot update name of qID " + i, e);
+            }
         }
     }
 
@@ -142,10 +202,12 @@ public class DLMFWebLoader {
     private class SimpleInfoHolder {
         private URI uri;
         private String input;
+        private Integer qid;
 
-        public SimpleInfoHolder(URI uri, String input){
+        public SimpleInfoHolder(URI uri, String input, Integer qid){
             this.uri = uri;
             this.input = input;
+            this.qid = qid;
         }
     }
 
@@ -153,21 +215,21 @@ public class DLMFWebLoader {
         private final Logger LOG = LogManager.getLogger(WebsiteLoader.class.getName());
 
         private LinkedBlockingQueue<SimpleInfoHolder> rawWebPageQueue;
-        private final URI uri;
+        private final SimpleInfoHolder info;
         private final RestTemplate rest;
 
-        public WebsiteLoader( RestTemplate rest, URI uri, LinkedBlockingQueue rawWebPageQueue){
+        public WebsiteLoader( RestTemplate rest, SimpleInfoHolder info, LinkedBlockingQueue rawWebPageQueue){
             this.rawWebPageQueue = rawWebPageQueue;
-            this.uri = uri;
+            this.info = info;
             this.rest = rest;
         }
 
         @Override
         public void run() {
             try {
-                LOG.info( "Wait for response: " + uri.toString() );
-                String webPage = rest.getForObject( uri, String.class );
-                rawWebPageQueue.put( new SimpleInfoHolder(uri, webPage) );
+                LOG.info( "Wait for response: " + info.uri.toString() );
+                String webPage = rest.getForObject( info.uri, String.class );
+                rawWebPageQueue.put( new SimpleInfoHolder(info.uri, webPage, info.qid) );
             } catch ( Exception e ){
                 LOG.error("Cannot load websites.", e);
             }
@@ -182,11 +244,13 @@ public class DLMFWebLoader {
 
         private static final int OPEN_BODY_IDX = 1;
         private static final int CLOSE_BODY_IDX = 2;
+        private static final int TITLE_IDX = 3;
         private static final String TAGS =
                 "<link.+?>\r?\n?|" +
                         "<script.+</script>\r?\n?|" +
                         "(<body)|" +
                         "(</body>)|" +
+                        "<title>(.*?)</title>|" +
                         "<a((?!<math).)*</a>\r?\n?|" +
                         "<dt>(?:" +
                             "See also|" +
@@ -203,9 +267,9 @@ public class DLMFWebLoader {
             this.pattern = Pattern.compile( TAGS, Pattern.DOTALL );
         }
 
-        private String postProcess(String in){
+        private String postProcess(SimpleInfoHolder info){
             StringBuffer buffer = new StringBuffer();
-            Matcher matcher = pattern.matcher( in );
+            Matcher matcher = pattern.matcher( info.input );
             while( matcher.find() ){
                 if ( matcher.group(OPEN_BODY_IDX) != null ){
 //                    LOG.trace("Found body start, wrap it by text block. " + matcher.group(0));
@@ -214,6 +278,12 @@ public class DLMFWebLoader {
                 else if ( matcher.group(CLOSE_BODY_IDX) != null ){
 //                    LOG.trace("Found body end, close text wrapping." + matcher.group(0));
                     matcher.appendReplacement( buffer, "</body></text>" );
+                }
+                else if ( matcher.group(TITLE_IDX) != null ){
+                    String title = matcher.group(TITLE_IDX);
+                    LOG.debug("Extract name '{}' for qID: {}.", title, info.qid);
+                    matcher.appendReplacement( buffer, "<title>" + title + "</title>" );
+                    nameMap[info.qid] = title.replaceAll(" ", "_");
                 }
                 else {
 //                    LOG.trace("Found something else, delete: " + matcher.group(0));
@@ -232,7 +302,7 @@ public class DLMFWebLoader {
                 SimpleInfoHolder info;
                 while( !( info = rawWebPageQueue.take()).input.equals(EXIT_CODE) ){
                     LOG.info("Start post processing: " + info.uri.toString());
-                    info.input = postProcess(info.input);
+                    info.input = postProcess(info);
                     LOG.info("Finished post processing: " + info.uri.toString());
                     processedPageQueue.put( info );
                 }
