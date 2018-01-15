@@ -152,14 +152,18 @@ public class WekaLearner implements GroupReduceFunction<WikiDocumentOutput, Eval
 
   @Override
   public void reduce(Iterable<WikiDocumentOutput> values, Collector<EvaluationResult> out) throws Exception {
+    LOG.debug("Start reduce weka process.");
     Instances instances;
     DependencyParser parser = DependencyParser.loadFromModelFile(config.dependencyParserModel());
     WekaUtils wekaUtils = new WekaUtils();
     instances = wekaUtils.createInstances("AllRelations");
     for (WikiDocumentOutput value : values) {
+      LOG.debug("Add relations to weka utils: '{}'", value.getTitle());
       wekaUtils.addRelationsToInstances(parser, value.getRelations(), value.getTitle(), value.getqId(), instances, value.getMaxSentenceLength());
+      LOG.debug("Done, add all relations to instance for '{}'", value.getTitle());
     }
     if (config.isWriteInstances()) {
+      LOG.debug("Write instances activated, setup everything for it...");
       File instancesFile = new File(config.getOutputDir() + INSTANCES_ARFF_FILE_NAME);
       ArffSaver arffSaver = new ArffSaver();
       arffSaver.setFile(instancesFile);
@@ -168,8 +172,10 @@ public class WekaLearner implements GroupReduceFunction<WikiDocumentOutput, Eval
     }
     //do model once with all data
     if (config.getWriteSvmModel()) {
+      LOG.debug("Write svm model activated. Setup everything for it...");
       generateAndWriteFullModel(instances);
     }
+    LOG.debug("Start learning process.");
     process(out, instances);
   }
 
@@ -227,16 +233,19 @@ public class WekaLearner implements GroupReduceFunction<WikiDocumentOutput, Eval
     List<Double> percentages = config.getPercent();
     List<Double> C_used = config.getSvmCost();
     List<Double> Y_used = config.getSvmGamma();
+
     File output = new File(config.getOutputDir() + "/svm_cross_eval_statistics.csv");
     File outputDetails = new File(config.getOutputDir() + "/svm_cross_eval_detailed_statistics.txt");
     File extractedDefiniens = new File(config.getOutputDir() + "/classifications.csv");
 
+    LOG.debug("Get string to wordVector filter");
     StringToWordVector stringToWordVector = getStringToWordVectorFilter(instances);
     Instances stringsReplacedData = Filter.useFilter(instances, stringToWordVector);
 
     Remove removeFilter = getRemoveFilter(stringsReplacedData);
     removeFilter.setInputFormat(stringsReplacedData);
 
+    LOG.debug("Delete files from previous run.");
     FileUtils.deleteQuietly(output);
     FileUtils.deleteQuietly(outputDetails);
     FileUtils.deleteQuietly(extractedDefiniens);
@@ -250,11 +259,16 @@ public class WekaLearner implements GroupReduceFunction<WikiDocumentOutput, Eval
         }
       }
     }
+
+    LOG.debug("Weka Process: Instantiation finished.");
     ForkJoinPool forkJoinPool = new ForkJoinPool(config.getParallelism());
     Stream<EvaluationResult> a = parameters.parallelStream().map(
       parameter -> crossEvaluate(stringsReplacedData, removeFilter, parameter[0], parameter[1], parameter[2], parameter[3]));
     Callable<List<EvaluationResult>> task = () -> a.collect(toList());
+
+    LOG.debug("Start cross evaluation.");
     List<EvaluationResult> evaluationResults = forkJoinPool.submit(task).get();
+    LOG.debug("Finished cross evaluation! Collecting results.");
     for (EvaluationResult evaluationResult : evaluationResults) {
       FileUtils.write(outputDetails, "Cost; " + Utils.doubleToString(evaluationResult.cost, 10) + "; gamma; " + Utils.doubleToString(evaluationResult.gamma, 10) + "\n" + Arrays.toString(evaluationResult.text) + "\n", true);
       //remove duplicates from extraction
@@ -280,8 +294,7 @@ public class WekaLearner implements GroupReduceFunction<WikiDocumentOutput, Eval
         + "; percentage_of_data_used; " + evaluationResult.percent
         + "\n", true);
       FileUtils.write(extractedDefiniens, e.toString(), true);
-      if ( gold != null )
-        FileUtils.write(output, evaluationResult.toString() + "\n", true);
+      FileUtils.write(output, evaluationResult.toString() + "\n", true);
       out.collect(evaluationResult);
     }
   }
@@ -351,7 +364,7 @@ public class WekaLearner implements GroupReduceFunction<WikiDocumentOutput, Eval
     Instances resampled;
 
     //oversampling to deal with the ratio of the classes
-    if (true) {
+    if (true) { // TODO really? Hard-Coded? was originally on TRUE...
       resampled = dumbResample(reduced);
     } else {
       resampled = smote(reduced, oversample);

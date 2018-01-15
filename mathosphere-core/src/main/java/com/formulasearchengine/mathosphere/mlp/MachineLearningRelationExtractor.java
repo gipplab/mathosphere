@@ -67,27 +67,38 @@ public class MachineLearningRelationExtractor {
         LOG.debug("Parse documents via flink");
         FlatMapOperator<String, RawWikiDocument> mapOperator = dataSource.flatMap(new HtmlTextExtractorMapper());
 
-        LOG.debug("Open text annotator mapper");
+        LOG.debug("Create text annotator mapper with PoS");
         TextAnnotatorMapper annotatorMapper = new TextAnnotatorMapper(config);
-        // ML approach doesn't create PosTagger here ... strange, so I will use it now.
-        annotatorMapper.open(null);
         DataSet<ParsedWikiDocument> parsedDocuments = mapOperator.map( annotatorMapper );
 
-        LOG.debug("Create feature Extractor without Gouldi");
-        CreateCandidatesMapper candidatesMapper = new CreateCandidatesMapper(config);
-        DataSet<WikiDocumentOutput> outputDataSet = parsedDocuments.map( candidatesMapper );
+//        LOG.debug("Create feature Extractor without Gouldi");
+//        CreateCandidatesMapper candidatesMapper = new CreateCandidatesMapper(config);
+//        DataSet<WikiDocumentOutput> outputDataSet = parsedDocuments.map( candidatesMapper );
 
-        LOG.debug("Map to output format.");
-        RelationMapper outputMapper = new RelationMapper();
-        DataSet<LinkedList<String[]>> outputs = outputDataSet.map(outputMapper);
+        LOG.debug("Create feature extractor based on GoUldI");
+        ArrayList<GoldEntry> gold = null;
+        try { gold = (new Evaluator()).readGoldEntries(new File(config.getGoldFile())); }
+        catch ( IOException ioe ){ LOG.error("Cannot read gold file.", ioe); return; }
+        SimpleFeatureExtractorMapper featureMapper = new SimpleFeatureExtractorMapper( config, gold );
+        DataSet<WikiDocumentOutput> outputDataSet = parsedDocuments.map( featureMapper );
 
-        Path outputPath = Paths.get(config.getOutputDir(), OUTPUT_FILE_NAME);
-        LOG.info("Write output file " + outputPath.toString() );
-        outputs.writeAsFormattedText(
-            outputPath.toString(),
-            FileSystem.WriteMode.OVERWRITE,
-            new OutputFormatter()
-        ).setParallelism(1);
+        LOG.debug("Give Weka a shot...");
+        DataSet<EvaluationResult> result = outputDataSet.reduceGroup(new WekaLearner(config));
+        result // map to json and write to tmp
+                .map(new JsonSerializerMapper<>())
+                .writeAsText(config.getOutputDir() + "/tmp", FileSystem.WriteMode.OVERWRITE);
+
+//        LOG.debug("Map to output format.");
+//        RelationMapper outputMapper = new RelationMapper();
+//        DataSet<LinkedList<String[]>> outputs = outputDataSet.map(outputMapper);
+//
+//        Path outputPath = Paths.get(config.getOutputDir(), OUTPUT_FILE_NAME);
+//        LOG.info("Write output file " + outputPath.toString() );
+//        outputs.writeAsFormattedText(
+//            outputPath.toString(),
+//            FileSystem.WriteMode.OVERWRITE,
+//            new OutputFormatter()
+//        ).setParallelism(1);
 
         try {
             flinkEnv.execute();

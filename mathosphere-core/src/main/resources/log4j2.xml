@@ -3,13 +3,13 @@
     <Appenders>
         <Console name="system-console" target="SYSTEM_OUT">
             <PatternLayout>
-                <Pattern>%highlight{[%-5level]}{FATAL=bg_red Bright white, ERROR=bright red, WARN=Bright yellow, INFO=Bright blue, DEBUG=green, TRACE=cyan} %d{HH:mm:ss.SSS} %highlight{[%t] %c{1}:%line}{FATAL=magenta, ERROR=magenta, WARN=magenta, INFO=magenta, DEBUG=magenta, TRACE=magenta} - %msg%n</Pattern>
+                <Pattern>%highlight{[%-5level]}{FATAL=bg_red Bright white, ERROR=bright red, WARN=Bright yellow, INFO=Bright blue, DEBUG=green, TRACE=cyan} %d{HH:mm:ss.SSS} %highlight{[-] %c{1}:%line}{FATAL=magenta, ERROR=magenta, WARN=magenta, INFO=magenta, DEBUG=magenta, TRACE=magenta} - %msg%n</Pattern>
             </PatternLayout>
         </Console>
     </Appenders>
     <Loggers>
         <Root level="ALL">
-            <AppenderRef ref="system-console" level="INFO"/>
+            <AppenderRef ref="system-console" level="DEBUG"/>
         </Root>
     </Loggers>
 </Configuration>

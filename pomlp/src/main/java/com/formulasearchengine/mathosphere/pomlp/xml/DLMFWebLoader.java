@@ -45,7 +45,7 @@ public class DLMFWebLoader {
 
     private RestTemplate restTemplate;
 
-    private static final int min = 101, max = 200;
+    private static final int min = 101, max = 101;
 
     public DLMFWebLoader(){
         gouldi = GoldStandardLoader.getInstance();
@@ -56,11 +56,10 @@ public class DLMFWebLoader {
         gouldi.initLocally();
 
         String gouldiPath = ConfigLoader.CONFIG.getProperty( ConfigLoader.GOULDI_LOCAL_PATH );
-        outputFile = Paths
-                .get( gouldiPath )
-                .resolve("..")
-                .resolve("dlmfSource")
-                .resolve("dlmf.xml");
+        outputFile = Paths.get("..")
+                .resolve("mathosphere-core")
+                .resolve("t")
+                .resolve("dlmf-very-small.xml");
 
         if ( !Files.exists(outputFile) ) Files.createFile(outputFile);
 
@@ -183,13 +182,25 @@ public class DLMFWebLoader {
 
         private static final int OPEN_BODY_IDX = 1;
         private static final int CLOSE_BODY_IDX = 2;
-        private static final String TAGS = "<link.+?>\r?\n?|<script.+</script>\r?\n?|(<body)|(</body>)|<a((?!<math).)*</a>\r?\n?";
+        private static final String TAGS =
+                "<link.+?>\r?\n?|" +
+                        "<script.+</script>\r?\n?|" +
+                        "(<body)|" +
+                        "(</body>)|" +
+                        "<a((?!<math).)*</a>\r?\n?|" +
+                        "<dt>(?:" +
+                            "See also|" +
+                            "Permalink|"+
+                            "Encodings|"+
+                            "Notes|"    +
+                            "Referenced"+
+                        ").+?</dd>\r?\n?";
         private Pattern pattern;
 
         public PostProcessor( LinkedBlockingQueue rawWebPageQueue, LinkedBlockingQueue processedPageQueue ){
             this.rawWebPageQueue = rawWebPageQueue;
             this.processedPageQueue = processedPageQueue;
-            this.pattern = Pattern.compile( TAGS );
+            this.pattern = Pattern.compile( TAGS, Pattern.DOTALL );
         }
 
         private String postProcess(String in){

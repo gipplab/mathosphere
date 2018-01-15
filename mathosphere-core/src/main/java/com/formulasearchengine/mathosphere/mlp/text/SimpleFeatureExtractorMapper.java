@@ -3,6 +3,7 @@ package com.formulasearchengine.mathosphere.mlp.text;
 import com.formulasearchengine.mathosphere.mlp.cli.FlinkMlpCommandConfig;
 import com.formulasearchengine.mathosphere.mlp.pojos.*;
 import com.formulasearchengine.mlp.evaluation.pojo.GoldEntry;
+import com.formulasearchengine.mlp.evaluation.pojo.IdentifierDefinition;
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Multiset;
 import org.apache.flink.api.common.functions.MapFunction;
@@ -10,6 +11,7 @@ import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
 
 import java.util.*;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -55,13 +57,32 @@ public class SimpleFeatureExtractorMapper implements MapFunction<ParsedWikiDocum
     GoldEntry goldEntry = getGoldEntryByTitle(goldEntries, doc.getTitle());
     final Integer fid = Integer.parseInt(goldEntry.getFid());
     Stream<MathTag> stream = doc.getFormulas().stream();
-    stream = stream.filter( e -> e.getMarkUpType().equals(WikiTextUtils.MathMarkUpType.LATEX) );
+    stream = stream.filter(
+            e -> e.getMarkUpType().equals(WikiTextUtils.MathMarkUpType.LATEX) ||
+                    e.getMarkUpType().equals( WikiTextUtils.MathMarkUpType.MATHML ));
     List<MathTag> list = stream.collect( Collectors.toList() );
     MathTag seed = null;
     if ( list == null || list.size() <= fid ){
       LOGGER.warn("FID is bigger than the list of documents... this will produce an IndexedOutOfBoundsException!");
     } else {
       seed = list.get(fid);
+    }
+
+    if ( seed.getMarkUpType() == WikiTextUtils.MathMarkUpType.MATHML ){
+      HashMap<String, String> backTranslation = new HashMap<>();
+      for ( String uniString : seed.getIdentifiers(config) ){
+        String asciString = UnicodeMap.string2TeX(uniString);
+        backTranslation.put( asciString, uniString );
+      }
+
+      // change gouldi to unicode characters
+      List<String> identifiersInGold = goldEntry.getDefinitions().stream().map(id -> id.getIdentifier()).collect(Collectors.toList());
+      ArrayList<IdentifierDefinition> defs = goldEntry.getDefinitions();
+      for ( int i = 0; i < defs.size(); i++ ){
+        String backTrans = backTranslation.get( defs.get(i).getIdentifier() );
+        if ( backTrans != null )
+          defs.get(i).setIdentifier( backTrans );
+      }
     }
 
 //    MathTag seed = doc.getFormulas()
@@ -72,15 +93,17 @@ public class SimpleFeatureExtractorMapper implements MapFunction<ParsedWikiDocum
       if (!sentence.getIdentifiers().isEmpty()) {
         LOGGER.debug("sentence {}", sentence);
       }
+
       Set<String> identifiers = sentence.getIdentifiers();
-      //only identifiers that were extracted by the MPL pipeline
       identifiers.retainAll(seed.getIdentifiers(config).elementSet());
+
       SimplePatternMatcher matcher = SimplePatternMatcher.generatePatterns(identifiers);
       Collection<Relation> foundMatches = matcher.match(sentence, doc);
       for (Relation match : foundMatches) {
         List<String> identifiersInGold = goldEntry.getDefinitions().stream().map(id -> id.getIdentifier()).collect(Collectors.toList());
+
         //take only the identifiers that were extracted correctly to avoid false negatives in the training set.
-        if (identifiersInGold.contains(match.getIdentifier())) {
+        if (identifiersInGold.contains( match.getIdentifier() )) {
           LOGGER.debug("found match {}", match);
           int freq = frequencies.count(match.getSentence().getWords().get(match.getWordPosition()).toLowerCase());
           match.setRelativeTermFrequency((double) freq / maxFrequency);
@@ -121,7 +144,9 @@ public class SimpleFeatureExtractorMapper implements MapFunction<ParsedWikiDocum
         allIdentifierDefininesCandidates.add(match);
       }
     }
-    WikiDocumentOutput result = new WikiDocumentOutput(doc.getTitle(), "-1", allIdentifierDefininesCandidates, doc.getIdentifiers());
+    LOGGER.info("extracted {} relations from {}", allIdentifierDefininesCandidates.size(), doc.getTitle());
+    //TODO hardcoded QID just for tests
+    WikiDocumentOutput result = new WikiDocumentOutput(doc.getTitle(), "101", allIdentifierDefininesCandidates, doc.getIdentifiers());
     Optional<Integer> lengthOfLongestSentence = doc.getSentences().stream().map(s -> s.getWords().size()).max(Comparator.naturalOrder());
     //one as save value, since 0 would lead to NAN in division.
     result.setMaxSentenceLength(lengthOfLongestSentence.isPresent() ? lengthOfLongestSentence.get() : 1);

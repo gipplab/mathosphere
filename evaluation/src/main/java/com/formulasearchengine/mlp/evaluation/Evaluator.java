@@ -165,7 +165,8 @@ public class Evaluator {
     List goldData = mapper.readValue(goldfile, List.class);
     ArrayList<GoldEntry> goldEntries = new ArrayList<>();
     for (Object o : goldData) {
-      goldEntries.add(parseGold((Map<String, Object>) o));
+      if ( o != null )
+        goldEntries.add(parseGold((Map<String, Object>) o));
     }
     goldEntries.sort((e1, e2) -> Integer.parseInt(e1.getqID()) - Integer.parseInt(e2.getqID()));
     return goldEntries;

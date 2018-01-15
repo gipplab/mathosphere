@@ -12,6 +12,8 @@ import edu.stanford.nlp.parser.nndep.DependencyParser;
 import edu.stanford.nlp.semgraph.SemanticGraph;
 import edu.stanford.nlp.semgraph.SemanticGraphEdge;
 import edu.stanford.nlp.trees.GrammaticalStructure;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import weka.core.*;
 
 import java.util.*;
@@ -22,6 +24,8 @@ import java.util.stream.Collectors;
  * Source [1]: Extracting Textual Descriptions of Mathematical Expressions in Scientific Papers;Giovanni Yoko Kristianto, Goran Topić, Akiko Aizawa
  */
 public class WekaUtils {
+  private static final Logger LOG = LogManager.getLogger( WekaUtils.class.getName() );
+
   public static final String MATCH = "match";
   public static final String NO_MATCH = "no match";
   public static final String DEFINIEN = "definiens";
@@ -163,6 +167,7 @@ public class WekaUtils {
    */
   public Instances addRelationsToInstances(DependencyParser parser, List<Relation> relations, String title, String qId, Instances instances, double maxSentenceLength) {
     for (Relation relation : relations) {
+      //LOG.debug("Add relation: " + relation);
       addRelationToInstances(parser, getPrecomputedGraphStore(), title, qId, instances, maxSentenceLength, relation);
     }
     return instances;
@@ -175,15 +180,21 @@ public class WekaUtils {
     addStringValue(values, instances, Q_ID, qId);
     addStringValue(values, instances, IDENTIFIER, relation.getIdentifier());
     addStringValue(values, instances, DEFINIEN, relation.getDefinition());
+
+    LOG.debug("Calculate distances for qID {} between identifier '{}' and definien '{}'.",
+            qId, relation.getIdentifier(), relation.getDefinition());
+
     //distance between identifier and definiens candidate
     int wordDistance = relation.getIdentifierPosition() - relation.getWordPosition();
     values[instances.attribute(WORD_DISTANCE).index()] = (double) Math.abs(wordDistance) / maxSentenceLength;
+
     //weather or not the definiens is before or after the identifier
     if (!NO_PM) {
       for (int i = 0; i < patternMatches.length - 5; i++) {
         values[instances.attribute(PATTERN_1).index() + i] = patternMatches[i];
       }
     }
+
     if (!NO_BASIC) {
       values[instances.attribute(WORD_POSITIONING).index()] = wordDistance > 0 ? 1 : 0;
       values[instances.attribute(COLON_BETWEEN).index()] = patternMatches[10];
@@ -193,8 +204,10 @@ public class WekaUtils {
       values[instances.attribute(IDENTIFIER_IN_PARENTHESES).index()] = patternMatches[14];
     }
 
+    LOG.trace("Start to add String features.");
     addStringFeatures(values, instances, relation);
 
+    LOG.trace("Start to add dependency tree features.");
     addDependencyTreeFeatures(parser, precomputedGraphs, values, instances, relation, maxSentenceLength);
 
     values[instances.attribute(DISTANCE_FROM_FIRST_OCCURRENCE).index()] = relation.getDistanceFromFirstIdentifierOccurence();
@@ -208,6 +221,7 @@ public class WekaUtils {
     values[values.length - 1] = relation.getRelevance() > 1 ? nominal.indexOf(MATCH) : nominal.indexOf(NO_MATCH);
     DenseInstance instance = new DenseInstance(1.0, values);
     instances.add(instance);
+    LOG.trace("Done!");
   }
 
   /**
