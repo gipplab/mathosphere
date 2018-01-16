@@ -8,7 +8,7 @@ import com.formulasearchengine.mathosphere.mlp.contracts.TextExtractorMapper;
 import com.formulasearchengine.mathosphere.mlp.pojos.EvaluationResult;
 import com.formulasearchengine.mathosphere.mlp.pojos.ParsedWikiDocument;
 import com.formulasearchengine.mathosphere.mlp.pojos.WikiDocumentOutput;
-import com.formulasearchengine.mathosphere.mlp.text.SimpleFeatureExtractorMapper;
+import com.formulasearchengine.mathosphere.mlp.contracts.SimpleFeatureExtractorMapper;
 import com.formulasearchengine.mlp.evaluation.Evaluator;
 import com.formulasearchengine.mlp.evaluation.pojo.GoldEntry;
 import org.apache.flink.api.java.DataSet;

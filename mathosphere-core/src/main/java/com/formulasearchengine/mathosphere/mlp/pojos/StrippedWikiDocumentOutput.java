@@ -1,8 +1,5 @@
 package com.formulasearchengine.mathosphere.mlp.pojos;
 
-import com.formulasearchengine.mlp.evaluation.pojo.*;
-import com.google.common.collect.Multiset;
-
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -37,12 +34,22 @@ public class StrippedWikiDocumentOutput {
   public List<IdentifierDefinition> relations;
   public Set<StringEntry> identifiers;
 
-  public StrippedWikiDocumentOutput() {
-  }
+  public StrippedWikiDocumentOutput() {}
 
   public StrippedWikiDocumentOutput(WikiDocumentOutput doc) {
     this.title = doc.getTitle();
-    this.relations = doc.getRelations().stream().map(r -> new IdentifierDefinition(r.getIdentifier(), r.getDefinition())).collect(Collectors.toList());
     this.identifiers = doc.getIdentifiers();
+    this.relations = doc
+            .getRelations()
+            .stream()
+            .map(r -> new IdentifierDefinition(
+                    r.getIdentifier(),
+                    r.getDefinition(),
+                    r.getScore(),
+                    r.getDistanceFromFirstIdentifierOccurence(),
+                    r.getIdentifierPosition(),
+                    r.getWordPosition())
+            )
+            .collect(Collectors.toList());
   }
 }

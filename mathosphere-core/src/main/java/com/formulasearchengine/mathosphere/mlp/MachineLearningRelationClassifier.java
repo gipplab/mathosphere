@@ -9,7 +9,7 @@ import com.formulasearchengine.mathosphere.mlp.contracts.TextAnnotatorMapper;
 import com.formulasearchengine.mathosphere.mlp.contracts.TextExtractorMapper;
 import com.formulasearchengine.mathosphere.mlp.ml.WekaClassifier;
 import com.formulasearchengine.mathosphere.mlp.pojos.*;
-import com.formulasearchengine.mathosphere.mlp.text.SimpleFeatureExtractorMapper;
+import com.formulasearchengine.mathosphere.mlp.contracts.SimpleFeatureExtractorMapper;
 import org.apache.flink.api.common.functions.MapFunction;
 import org.apache.flink.api.java.DataSet;
 import org.apache.flink.api.java.ExecutionEnvironment;

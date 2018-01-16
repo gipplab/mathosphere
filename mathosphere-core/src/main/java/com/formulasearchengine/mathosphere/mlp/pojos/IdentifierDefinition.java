@@ -25,12 +25,58 @@ public class IdentifierDefinition {
 
   private String definition;
 
+  private double score, distanceFromFirstOccurrence;
+
+  private int identifierPosition, wordPosition;
+
+  public double getScore() {
+    return score;
+  }
+
+  public void setScore(double score) {
+    this.score = score;
+  }
+
+  public double getDistanceFromFirstOccurrence() {
+    return distanceFromFirstOccurrence;
+  }
+
+  public void setDistanceFromFirstOccurrence(double distanceFromFirstOccurrence) {
+    this.distanceFromFirstOccurrence = distanceFromFirstOccurrence;
+  }
+
+  public int getIdentifierPosition() {
+    return identifierPosition;
+  }
+
+  public void setIdentifierPosition(int identifierPosition) {
+    this.identifierPosition = identifierPosition;
+  }
+
+  public int getWordPosition() {
+    return wordPosition;
+  }
+
+  public void setWordPosition(int wordPosition) {
+    this.wordPosition = wordPosition;
+  }
+
   public IdentifierDefinition() {
   }
 
   public IdentifierDefinition(String identifier, String definition) {
     this.identifier = identifier;
     this.definition = definition.toLowerCase();
+  }
+
+  public IdentifierDefinition(String identifier, String definition,
+                              double score, double distanceFromFirstOccurrence,
+                              int identifierPosition, int wordPosition ){
+    this(identifier, definition);
+    this.score = score;
+    this.distanceFromFirstOccurrence = distanceFromFirstOccurrence;
+    this.identifierPosition = identifierPosition;
+    this.wordPosition = wordPosition;
   }
 
   @Override

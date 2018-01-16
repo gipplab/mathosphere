@@ -1,40 +1,21 @@
 package com.formulasearchengine.mathosphere.mlp;
 
-import com.formulasearchengine.mathosphere.mlp.cli.BaseConfig;
-import com.formulasearchengine.mathosphere.mlp.cli.FlinkMlpCommandConfig;
-import com.formulasearchengine.mathosphere.mlp.cli.MachineLearningDefinienListConfig;
-import com.formulasearchengine.mathosphere.mlp.cli.MlpCommandConfig;
+import com.formulasearchengine.mathosphere.mlp.cli.*;
 import com.formulasearchengine.mathosphere.mlp.contracts.*;
 import com.formulasearchengine.mathosphere.mlp.ml.WekaLearner;
 import com.formulasearchengine.mathosphere.mlp.pojos.*;
-import com.formulasearchengine.mathosphere.mlp.text.SimpleFeatureExtractorMapper;
-import com.formulasearchengine.mathosphere.utils.GoldUtil;
-import com.formulasearchengine.mlp.evaluation.Evaluator;
+import com.formulasearchengine.mathosphere.mlp.contracts.SimpleFeatureExtractorMapper;
 import com.formulasearchengine.mlp.evaluation.pojo.GoldEntry;
-import javafx.scene.control.TextFormatter;
-import org.apache.commons.csv.CSVFormat;
-import org.apache.commons.csv.CSVPrinter;
-import org.apache.commons.lang.StringUtils;
-import org.apache.flink.api.common.functions.FlatMapFunction;
-import org.apache.flink.api.common.functions.GroupReduceFunction;
 import org.apache.flink.api.common.functions.MapFunction;
-import org.apache.flink.api.common.functions.ReduceFunction;
 import org.apache.flink.api.java.DataSet;
 import org.apache.flink.api.java.ExecutionEnvironment;
 import org.apache.flink.api.java.io.TextOutputFormat;
 import org.apache.flink.api.java.operators.DataSource;
 import org.apache.flink.api.java.operators.FlatMapOperator;
 import org.apache.flink.core.fs.FileSystem;
-import org.apache.flink.util.Collector;
-import org.apache.flink.util.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.attribute.FileAttribute;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -71,34 +52,44 @@ public class MachineLearningRelationExtractor {
         TextAnnotatorMapper annotatorMapper = new TextAnnotatorMapper(config);
         DataSet<ParsedWikiDocument> parsedDocuments = mapOperator.map( annotatorMapper );
 
-//        LOG.debug("Create feature Extractor without Gouldi");
-//        CreateCandidatesMapper candidatesMapper = new CreateCandidatesMapper(config);
-//        DataSet<WikiDocumentOutput> outputDataSet = parsedDocuments.map( candidatesMapper );
-
         LOG.debug("Create feature extractor based on GoUldI");
         ArrayList<GoldEntry> gold = null;
-        try { gold = (new Evaluator()).readGoldEntries(new File(config.getGoldFile())); }
-        catch ( IOException ioe ){ LOG.error("Cannot read gold file.", ioe); return; }
+        //try { gold = (new Evaluator()).readGoldEntries(new File(config.getGoldFile())); }
+        //catch ( IOException ioe ){ LOG.error("Cannot read gold file.", ioe); return; }
         SimpleFeatureExtractorMapper featureMapper = new SimpleFeatureExtractorMapper( config, gold );
-        DataSet<WikiDocumentOutput> outputDataSet = parsedDocuments.map( featureMapper );
+        DataSet<WikiDocumentOutput> outputDataSet = parsedDocuments.flatMap( featureMapper );
 
+        // TODO here weka classifier
+//        try {
+//            MachineLearningDefinienClassifierConfig conf = MachineLearningDefinienClassifierConfig.from(
+//                    new String[]{
+//                            "--stringFilter", "t/myFilter.model",
+//                            "--svmModel", "t/mySvm.model",
+//                            "-in", "t/dlmf-very-small.xml",
+//                            "-out", "t/output/"
+//                    }
+//            );
+//            DataSet<WikiDocumentOutput> results = outputDataSet.map( new WekaClassifier(conf) );
+//
+//            DataSet<StrippedWikiDocumentOutput> stripped_result = results.map(
+//                    (MapFunction<WikiDocumentOutput, StrippedWikiDocumentOutput>) wikiDocumentOutput ->
+//                            new StrippedWikiDocumentOutput(wikiDocumentOutput)
+//            );
+//
+//            //write and kick off flink execution
+//            stripped_result.map(new JsonSerializerMapper<>())
+//                    .writeAsText(config.getOutputDir() + "/extractedDefiniens.json", FileSystem.WriteMode.OVERWRITE);
+//        } catch ( IOException ioe ){
+//            LOG.error("Cannot start weka classifier.", ioe);
+//        }
+
+
+        // TODO here weka learner
         LOG.debug("Give Weka a shot...");
         DataSet<EvaluationResult> result = outputDataSet.reduceGroup(new WekaLearner(config));
         result // map to json and write to tmp
                 .map(new JsonSerializerMapper<>())
                 .writeAsText(config.getOutputDir() + "/tmp", FileSystem.WriteMode.OVERWRITE);
-
-//        LOG.debug("Map to output format.");
-//        RelationMapper outputMapper = new RelationMapper();
-//        DataSet<LinkedList<String[]>> outputs = outputDataSet.map(outputMapper);
-//
-//        Path outputPath = Paths.get(config.getOutputDir(), OUTPUT_FILE_NAME);
-//        LOG.info("Write output file " + outputPath.toString() );
-//        outputs.writeAsFormattedText(
-//            outputPath.toString(),
-//            FileSystem.WriteMode.OVERWRITE,
-//            new OutputFormatter()
-//        ).setParallelism(1);
 
         try {
             flinkEnv.execute();
@@ -137,6 +128,18 @@ public class MachineLearningRelationExtractor {
             return buffer.append(NL).toString();
         }
     }
+
+    //        LOG.debug("Map to output format.");
+//        RelationMapper outputMapper = new RelationMapper();
+//        DataSet<LinkedList<String[]>> outputs = outputDataSet.map(outputMapper);
+//
+//        Path outputPath = Paths.get(config.getOutputDir(), OUTPUT_FILE_NAME);
+//        LOG.info("Write output file " + outputPath.toString() );
+//        outputs.writeAsFormattedText(
+//            outputPath.toString(),
+//            FileSystem.WriteMode.OVERWRITE,
+//            new OutputFormatter()
+//        ).setParallelism(1);
 
     /*
     private static PrintWriter createPrinter( FlinkMlpCommandConfig config ) {
