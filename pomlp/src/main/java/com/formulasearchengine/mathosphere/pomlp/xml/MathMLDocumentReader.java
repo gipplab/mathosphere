@@ -1,6 +1,8 @@
 package com.formulasearchengine.mathosphere.pomlp.xml;
 
 import com.formulasearchengine.mathmlquerygenerator.XQueryGenerator;
+import com.formulasearchengine.mathmltools.mml.CMMLInfo;
+import com.formulasearchengine.mathmltools.xmlhelper.XMLHelper;
 import com.formulasearchengine.mathosphere.pomlp.util.Utility;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -18,15 +20,12 @@ import javax.xml.transform.stream.StreamResult;
 import java.io.StringWriter;
 import java.nio.file.Path;
 
-public class MathMLDocumentReader extends XmlDocumentReader {
+import static com.formulasearchengine.mathmltools.xmlhelper.XmlDocumentReader.getDocumentFromXML;
+import static com.formulasearchengine.mathmltools.xmlhelper.XmlDocumentReader.getDocumentFromXMLString;
+
+public class MathMLDocumentReader {
 
     private static final Logger LOG = LogManager.getLogger( MathMLDocumentReader.class.getName() );
-
-    /* TODO
-        XML getContentMML();
-        XML getPresentationMML();
-        String getBlaBla
-     */
 
     private Document mmlDoc;
     private Node presentationNode, contentNode;
@@ -54,11 +53,10 @@ public class MathMLDocumentReader extends XmlDocumentReader {
     }
 
     private void init(){
-        // first copy...
-        Document copy = MathMLDocumentReader.createNewDocumentSubtree( mmlDoc.getDocumentElement() );
+        // first copy..
+        Document copy = (Document) mmlDoc.cloneNode(true);
 
         try {
-
             contentNode = XQueryGenerator.getMainElement( copy );
             if ( contentNode.getNodeName().equals("math") ){
                 presentationNode = contentNode;
@@ -81,37 +79,9 @@ public class MathMLDocumentReader extends XmlDocumentReader {
         presentationNode = copy.getDocumentElement();
     }
 
-    private static Document createNewDocumentSubtree( Node subtree ) {
-        try {
-            Document copy = FACTORY.newDocumentBuilder().newDocument();
-            Node parent = copy.importNode( subtree, true );
-            copy.appendChild(parent);
-            return copy;
-        } catch ( ParserConfigurationException e ){
-            LOG.error("Something went wrong when copying subtree from MML.", e);
-            return null;
-        }
-    }
-
     public void canonicalize(){
         this.mmlDoc = Utility.getCanonicalizedDocument(mmlDoc);
         this.init();
-    }
-
-    /**
-     * Returns a copy of the presentation MML subtree
-     * @return
-     */
-    public Document getPresentationSubtree(){
-        return createNewDocumentSubtree(presentationNode);
-    }
-
-    /**
-     * Returns a copy of the content MML subtree
-     * @return
-     */
-    public Document getContentSubtree(){
-        return createNewDocumentSubtree(contentNode);
     }
 
     public Node getContentNode(){

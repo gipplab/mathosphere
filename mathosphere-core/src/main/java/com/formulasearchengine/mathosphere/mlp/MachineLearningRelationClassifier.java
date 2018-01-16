@@ -36,7 +36,7 @@ public class MachineLearningRelationClassifier {
     DataSource<String> source = readWikiDump(config, env);
     DataSet<ParsedWikiDocument> documents = source.flatMap(new TextExtractorMapper())
       .map(new TextAnnotatorMapper(config));
-    DataSet<WikiDocumentOutput> instances = documents.map(new SimpleFeatureExtractorMapper(config, null));
+    DataSet<WikiDocumentOutput> instances = documents.flatMap(new SimpleFeatureExtractorMapper(config, null));
     //process parsed wikipedia
     DataSet<WikiDocumentOutput> result = instances.map(new WekaClassifier(config));
     ObjectMapper mapper = new ObjectMapper();

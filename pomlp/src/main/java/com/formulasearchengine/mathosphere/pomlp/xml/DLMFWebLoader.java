@@ -54,7 +54,7 @@ public class DLMFWebLoader {
 
     private RestTemplate restTemplate;
 
-    private static final int min = 101, max = 200;
+    private static final int min = 101, max = 103;
 
     public DLMFWebLoader(){
         gouldi = GoldStandardLoader.getInstance();
@@ -65,6 +65,7 @@ public class DLMFWebLoader {
         gouldi.initLocally();
 
         String gouldiPath = ConfigLoader.CONFIG.getProperty( ConfigLoader.GOULDI_LOCAL_PATH );
+
         baseGouldiPath = Paths.get(gouldiPath);
 
         Path base = Paths.get("..")
@@ -182,7 +183,7 @@ public class DLMFWebLoader {
             try {
                 JsonGouldiBean bean = gouldi.getGouldiJson( i );
                 if ( bean.getTitle() != null )
-                    bean.set( "specific_title", bean.getTitle() );
+                    bean.unknownPropertySet( "specific_title", bean.getTitle() );
                 bean.setTitle( nameMap[i] );
                 GoldUtils.writeGoldFile( baseGouldiPath.resolve( i+".json" ), bean );
             } catch ( Exception e ){

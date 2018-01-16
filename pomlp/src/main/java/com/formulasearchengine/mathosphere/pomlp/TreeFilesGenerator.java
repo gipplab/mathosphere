@@ -83,46 +83,30 @@ public class TreeFilesGenerator {
      * Generates all third party MMLs at once
      */
     public void generateAllSubs(){
-//        ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(16);
-
-        // each number 1-300
         for ( int i = 1; i <= maxNumber; i++ ){
             try {
                 JsonGouldiBean bean = loader.getGouldiJson(i);
                 LOG.info("Start pre-processing of tex input.");
-                bean.setMathTex( Utility.latexPreProcessing(bean.getOriginalTex()) );
-                // each converter which is available
+                bean.setOriginalTex( Utility.latexPreProcessing(bean.getOriginalTex()) );
+                // use all available converters
                 for ( Converters c : Converters.values() ){
-                    final int index = i;
                     if (!c.skip()) {
-//                        executor.submit( () -> generate(index, bean, c) );
-                        generate(index, bean, c);
+                        generate(i, bean, c);
                     }
                 }
             } catch ( IOException e ){
                 LOG.error("SKIP: " + i, e);
             }
         }
-
-//        LOG.info("Shutdown thread pool. All threads in queue.");
-//        executor.shutdown();
-//        LOG.info("Wait for termination now.");
-//        try {
-//            executor.awaitTermination( 10, TimeUnit.MINUTES );
-//            LOG.info("Finished all threads in thread pool.");
-//        } catch ( InterruptedException ie ){
-//            LOG.error( "Waited 10 Minutes but still the thread pool is not terminated.", ie );
-//            LOG.error( "Shutdown now!" );
-//            executor.shutdownNow();
-//        }
     }
 
     public static void main(String[] args) throws Exception{
+        // TODO: WILL GENERATE AND OVERWRITE ALL MML FILES BY THIRD PARTY TOOLS
+        // TODO: DO NOT START IF YOU DON'T KNOW WHAT YOU ARE DOING HERE!
         preStartCommandCheck();
         TreeFilesGenerator gen = new TreeFilesGenerator();
         gen.init();
         gen.generateAllSubs();
-
     }
 
     /**

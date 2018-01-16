@@ -34,7 +34,7 @@ public class StupidRelationFinder {
     DataSet<ParsedWikiDocument> documents = source.flatMap(new TextExtractorMapper())
       .map(new TextAnnotatorMapper(config));
     ArrayList<GoldEntry> gold = (new Evaluator()).readGoldEntries(new File(config.getGoldFile()));
-    DataSet<WikiDocumentOutput> instances = documents.map(new SimpleFeatureExtractorMapper(config, gold));
+    DataSet<WikiDocumentOutput> instances = documents.flatMap(new SimpleFeatureExtractorMapper(config, gold));
     //get extraction results and rate all of them without selecting
     DataSet<EvaluationResult> result = instances.reduceGroup(new StupidRelationScorer(config));
     //write to kick off flink execution

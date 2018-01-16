@@ -1,5 +1,13 @@
 package com.formulasearchengine.mathosphere.pomlp.pom;
 
+import static org.junit.jupiter.api.Assertions.fail;
+
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.stream.IntStream;
+
+import com.formulasearchengine.mathmltools.xmlhelper.XmlDocumentReader;
 import com.formulasearchengine.mathosphere.pomlp.GoldStandardLoader;
 import com.formulasearchengine.mathosphere.pomlp.comparison.CSVResultWriter;
 import com.formulasearchengine.mathosphere.pomlp.comparison.ComparisonError;
@@ -10,23 +18,14 @@ import com.formulasearchengine.mathosphere.pomlp.convertor.Converters;
 import com.formulasearchengine.mathosphere.pomlp.gouldi.JsonGouldiBean;
 import com.formulasearchengine.mathosphere.pomlp.util.config.ConfigLoader;
 import com.formulasearchengine.mathosphere.pomlp.xml.MathMLDocumentReader;
-import com.formulasearchengine.mathosphere.pomlp.xml.XmlDocumentReader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.w3c.dom.Node;
-
-import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.stream.IntStream;
-
-import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * This class should be excluded in the maven tests because

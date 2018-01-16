@@ -3,6 +3,7 @@ package com.formulasearchengine.mathosphere.pomlp.gouldi;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -18,6 +19,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
+@SuppressWarnings( "unused" )
 @JsonIgnoreProperties( ignoreUnknown = true )
 @JsonPropertyOrder({
         "definitions",
@@ -57,7 +59,7 @@ public class JsonGouldiBean {
     private String mml;
 
     @JsonProperty("constraints")
-    private String[] constraints;
+    private List<String> constraints;
 
     @JsonProperty("comment")
     private String comment;
@@ -68,13 +70,25 @@ public class JsonGouldiBean {
     @JsonProperty("check")
     private JsonGouldiCheckBean check;
 
+    // stores definitions -> ignore because the annotated functions should be used
+    // for serialization and deserialization
     @JsonIgnore
     private JsonGouldiDefinitionsBean definitionsBean;
 
+    // stores unknown properties
+    @JsonIgnore
+    private Map<String, Object> other = new HashMap<>();
+
+    // Just a default constructor
     public JsonGouldiBean(){}
 
+    /**
+     * Provide a custom deserialization for definitions
+     * @param defs the generic object for definitions field in gouldi
+     */
+    @SuppressWarnings( "unchecked" ) // bla bla, we know what we are doing here...
     @JsonProperty("definitions")
-    private void unpackNested( Map<String, Object> defs ){
+    private void deserializeDefinitionsField( Map<String, Object> defs ){
         definitionsBean = new JsonGouldiDefinitionsBean();
         LinkedList<JsonGouldiIdentifierDefinienBean> list = new LinkedList<>();
         definitionsBean.setIdentifierDefiniens(list);
@@ -114,16 +128,38 @@ public class JsonGouldiBean {
         return definitionsBean;
     }
 
-    public void setDefinitions( JsonGouldiDefinitionsBean definitionsBean ){
-        this.definitionsBean = definitionsBean;
+    @JsonAnyGetter
+    public Map<String, Object> getUnknownProperties() {
+        return other;
+    }
+
+    @JsonAnySetter
+    public void unknownPropertySet(String name, Object value) {
+        other.put(name, value);
+    }
+
+    /**
+     * Debugger function to find out if the current bean object has stored unknown properties.
+     * @return true if there are unknown properties in this object.
+     */
+    public boolean hasUnknowProperties() {
+        return !other.isEmpty();
     }
 
     public String getOriginalTex() {
         return mathTex;
     }
 
-    public void setMathTex(String mathTex) {
+    public void setOriginalTex(String mathTex) {
         this.mathTex = mathTex;
+    }
+
+    public String getSemanticTex() {
+        return mathTexSemantic;
+    }
+
+    public void setSemanticTex(String mathTexSemantic) {
+        this.mathTexSemantic = mathTexSemantic;
     }
 
     public String getTitle() {
@@ -134,11 +170,11 @@ public class JsonGouldiBean {
         this.title = title;
     }
 
-    public String getCorrectTex() {
+    public String getCorrectedTex() {
         return correctTex;
     }
 
-    public void setCorrectTex(String correctTex) {
+    public void setCorrectedTex(String correctTex) {
         this.correctTex = correctTex;
     }
 
@@ -158,15 +194,11 @@ public class JsonGouldiBean {
         this.mml = mml;
     }
 
-    public String getMathTex() {
-        return mathTex;
-    }
-
-    public String[] getConstraints() {
+    public List<String> getConstraints() {
         return constraints;
     }
 
-    public void setConstraints(String[] constraints) {
+    public void setConstraints(List<String> constraints) {
         this.constraints = constraints;
     }
 
@@ -194,13 +226,12 @@ public class JsonGouldiBean {
         this.check = check;
     }
 
-
-    public String getMathTexSemantic() {
-        return mathTexSemantic;
+    public JsonGouldiDefinitionsBean getDefinitionsBean() {
+        return definitionsBean;
     }
 
-    public void setMathTexSemantic(String mathTexSemantic) {
-        this.mathTexSemantic = mathTexSemantic;
+    public void setDefinitionsBean(JsonGouldiDefinitionsBean definitionsBean) {
+        this.definitionsBean = definitionsBean;
     }
 
     @Override
@@ -212,20 +243,5 @@ public class JsonGouldiBean {
         } catch ( Exception e ){
             return e.getMessage();
         }
-    }
-
-    @JsonIgnore
-    private Map<String, Object> other = new HashMap<>();
-    @JsonAnyGetter
-    public Map<String, Object> any() {
-        return other;
-    }
-
-    @JsonAnySetter
-    public void set(String name, Object value) {
-        other.put(name, value);
-    }
-    public boolean hasUnknowProperties() {
-        return !other.isEmpty();
     }
 }
