@@ -89,6 +89,18 @@
             <systemPath>${basedir}/lib/MathToWeb.jar</systemPath>
         </dependency>
 
+        <dependency>
+            <groupId>com.formulasearchengine.mathosphere</groupId>
+            <artifactId>mathosphere-core</artifactId>
+            <version>3.0.0-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.formulasearchengine</groupId>
+            <artifactId>mathmlsim</artifactId>
+            <version>1.0.1-SNAPSHOT</version>
+        </dependency>
+
         <!-- Robust Tree Edit Distance algorithm -->
         <dependency>
             <groupId>it.unibz.inf</groupId>
@@ -96,12 +108,6 @@
             <version>1.2-SNAPSHOT</version>
         </dependency>
 
-        <!-- MathML Query Handler -->
-        <dependency>
-            <groupId>com.formulasearchengine</groupId>
-            <artifactId>mathmlquerygenerator</artifactId>
-            <version>1.0.0</version>
-        </dependency>
 
         <!-- MathML Converter -->
         <dependency>
@@ -110,12 +116,6 @@
             <version>1.0.0-SNAPSHOT</version>
         </dependency>
 
-        <!-- MathML Tools -->
-        <dependency>
-            <groupId>com.formulasearchengine</groupId>
-            <artifactId>mathmltools</artifactId>
-            <version>0.3.1-SNAPSHOT</version>
-        </dependency>
 
         <!-- Spring REST to communicate with GitHub -->
         <dependency>

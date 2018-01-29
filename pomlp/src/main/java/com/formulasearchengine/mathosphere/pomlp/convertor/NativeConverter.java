@@ -54,7 +54,7 @@ public abstract class NativeConverter implements Parser {
         LOG.debug("Writing file " + outputFile + " successful.");
     }
 
-    protected Document parseInternal(LinkedList<String> args, String latex, String name) {
+    protected String parseInternalToString( LinkedList<String> args, String latex, String name ){
         args.addLast( latex );
         LOG.debug("Create command executor for " + name + ".");
         CommandExecutor executor = new CommandExecutor( name, args );
@@ -68,7 +68,10 @@ public abstract class NativeConverter implements Parser {
 
         // post-processing &alpha; HTML unescape
         String res = response.getResult();
-        res = Utility.safeUnescape(res);
-        return XmlDocumentReader.getDocumentFromXMLString( res );
+        return Utility.safeUnescape(res);
+    }
+
+    protected Document parseInternal(LinkedList<String> args, String latex, String name) {
+        return XmlDocumentReader.getDocumentFromXMLString( parseInternalToString(args, latex, name) );
     }
 }

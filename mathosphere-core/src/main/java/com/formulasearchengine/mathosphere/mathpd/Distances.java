@@ -97,7 +97,7 @@ public class Distances {
      * @param nodes
      * @return
      */
-    protected static HashMap<String, Double> contentElementsToHistogram(NodeList nodes) {
+    public static HashMap<String, Double> contentElementsToHistogram(NodeList nodes) {
         final HashMap<String, Double> histogram = new HashMap<>();
 
         for (int i = 0; i < nodes.getLength(); i++) {

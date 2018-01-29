@@ -2,6 +2,7 @@ package com.formulasearchengine.mathosphere.pomlp.xml;
 
 import com.formulasearchengine.mathmlquerygenerator.XQueryGenerator;
 import com.formulasearchengine.mathmltools.mml.CMMLInfo;
+import com.formulasearchengine.mathmltools.mml.elements.MathDoc;
 import com.formulasearchengine.mathmltools.xmlhelper.XMLHelper;
 import com.formulasearchengine.mathosphere.pomlp.util.Utility;
 import org.apache.logging.log4j.LogManager;
@@ -17,6 +18,7 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
+import javax.xml.xpath.XPathExpressionException;
 import java.io.StringWriter;
 import java.nio.file.Path;
 
@@ -40,9 +42,14 @@ public class MathMLDocumentReader {
         init( mmlString );
     }
 
+    public MathMLDocumentReader( Document document ){
+        this.mmlDoc = document;
+        init();
+    }
+
     private void init( String mmlString ){
         filename = "-StringInput-";
-        mmlDoc = getDocumentFromXMLString( mmlString );
+        mmlDoc = getDocumentFromXMLString(mmlString);
         init();
     }
 
@@ -57,7 +64,7 @@ public class MathMLDocumentReader {
         Document copy = (Document) mmlDoc.cloneNode(true);
 
         try {
-            contentNode = XQueryGenerator.getMainElement( copy );
+            contentNode = XMLHelper.getMainElement( copy );
             if ( contentNode.getNodeName().equals("math") ){
                 presentationNode = contentNode;
                 contentNode = null;
@@ -77,6 +84,18 @@ public class MathMLDocumentReader {
         for ( int i = 0; i < l.getLength(); i++ )
             l.item(i).getParentNode().removeChild( l.item(i) );
         presentationNode = copy.getDocumentElement();
+    }
+
+    public NodeList getAllContentNodes() throws XPathExpressionException {
+        return XMLHelper.getElementsB(mmlDoc.getDocumentElement(), "*:math/*:semantics/*:annotation-xml[@encoding='MathML-Content']/" );
+    }
+
+    public NodeList getAllNotApplyNodes() throws XPathExpressionException {
+        return XMLHelper.getElementsB( mmlDoc.getDocumentElement(), "*:math/*:semantics/*:annotation-xml[@encoding='MathML-Content']//child::*[not(self::apply)]" );
+    }
+
+    public NodeList getAllPresentationNodes() throws XPathExpressionException {
+        return XMLHelper.getElementsB( mmlDoc.getDocumentElement(), "./*:math/*:semantics//child::*[self::mi|self::mn|self::mtext]" );
     }
 
     public void canonicalize(){

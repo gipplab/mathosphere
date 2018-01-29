@@ -1,6 +1,8 @@
 package com.formulasearchengine.mathosphere.pomlp.comparison;
 
 import com.formulasearchengine.mathosphere.pomlp.convertor.Converters;
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVPrinter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -25,34 +27,97 @@ import static com.formulasearchengine.mathosphere.pomlp.util.Constants.NL;
 public class CSVResultWriter {
     private static final Logger LOG = LogManager.getLogger( CSVResultWriter.class.getName() );
 
-    public static final String CSV_SEP = ",";
-
-    private Info[] results;
-    private LinkedList<ComparisonError> errors;
+    private ComparisonResult[][] results;
+    private LinkedList<ComparisonError>[] errors;
+    private static final Converters[] CONVERTERS = Converters.values();
 
     public static final Path RESULT_PATH = Paths.get("results");
 
     public CSVResultWriter( int max ){
-        results = new Info[max];
-        for ( int i = 0; i < max; i++ )
-            results[i] = new Info();
-        errors = new LinkedList<>();
+        errors = new LinkedList[CONVERTERS.length];
+        for ( int i = 0; i < errors.length; i++ )
+            errors[i] = new LinkedList<>();
+        results = new ComparisonResult[max][CONVERTERS.length];
     }
 
     public void addResult( ComparisonResult result ){
-        results[result.getIndex()-1].all[result.getConverter().getPosition()] = result;
+        int qid = result.getIndex()-1;
+        int convPos = result.getConverter().getPosition();
+        results[qid][convPos] = result;
     }
 
     public void addError( ComparisonError error ){
-        errors.addLast( error );
+        int convPos = error.getConverter().getPosition();
+        errors[convPos].addLast( error );
     }
 
-    public void writeToFile( Path output ) throws IOException {
-        LocalDateTime localDateTime = LocalDateTime.now();
+    public void writeToFile() throws IOException {
         Path filePath = RESULT_PATH.resolve("latest-results.csv");
         LOG.info("Write results to " + filePath.toAbsolutePath());
         if (!Files.exists(filePath)) Files.createFile(filePath);
 
+        // header
+        String header[] = new String[1 + ComparisonResult.HEADER.length*CONVERTERS.length];
+        header[0] = "QID";
+        for ( int i = 0; i < CONVERTERS.length; i++ ){
+            String[] inHeader = ComparisonResult.personalHeader( CONVERTERS[i] );
+            for ( int j = 0; j < inHeader.length; j++ ){
+                header[1 + i*inHeader.length + j] = inHeader[j];
+            }
+        }
+
+        try (
+                BufferedWriter bf = Files.newBufferedWriter( filePath );
+                CSVPrinter csvPrinter = new CSVPrinter(bf, CSVFormat.RFC4180.withHeader(
+                        header
+                ))
+        ){
+            // print records
+            for ( int i = 1; i <= results.length; i++ ){
+                String[] line = new String[1 + ComparisonResult.HEADER.length*CONVERTERS.length];
+                line[0] = ""+i; // QID in first column
+                for ( int j = 0; j < CONVERTERS.length; j++ ){
+                    ComparisonResult result = results[i-1][j];
+                    Double[] values = null;
+                    if ( result != null ) values = result.getResults();
+
+                    if ( values == null ){
+                        for ( int k = 0; k < ComparisonResult.HEADER.length; k++ ){
+                            line[1 + j*ComparisonResult.HEADER.length + k] = "";
+                        }
+                    } else {
+                        for ( int k = 0; k < values.length; k++ ){
+                            line[1 + j*values.length + k] = values[k] == null ? "" : Double.toString(values[k]);
+                        }
+                    }
+                }
+                csvPrinter.printRecord(line);
+            }
+            csvPrinter.flush();
+        } catch ( IOException ioe ){
+            LOG.error("Cannot write csv file for name references.", ioe);
+        }
+
+        LocalDateTime localDateTime = LocalDateTime.now();
+        Path fileErrorPath = RESULT_PATH.resolve("latest-errors.txt");
+        LOG.info("Write errors to " + fileErrorPath.toAbsolutePath());
+        if ( !Files.exists(fileErrorPath) ) Files.createFile(fileErrorPath);
+
+        try (BufferedWriter w = Files.newBufferedWriter(fileErrorPath)){
+            w.write( localDateTime.toString() + NL );
+
+            for ( int i = 0; i < CONVERTERS.length; i++ ){
+                LinkedList<ComparisonError> convErrors = errors[i];
+                w.write( CONVERTERS[i].name() + " Errors: ---------------------------------- " + NL );
+                for ( ComparisonError e : convErrors )
+                    w.write( e.toString() + NL);
+                w.write(NL);
+            }
+        } catch ( IOException ioe ){
+            LOG.error("Cannot write error file.", ioe);
+        }
+
+        /*
         String header = "GOLD" + CSV_SEP;
         for ( Converters c : Converters.values() )
             header += c.name() + CSV_SEP;
@@ -69,18 +134,7 @@ public class CSVResultWriter {
             LOG.error("Cannot write result file.", ioe);
         }
 
-        Path fileErrorPath = RESULT_PATH.resolve("latest-errors.txt");
-        LOG.info("Write errors to " + fileErrorPath.toAbsolutePath());
-        if ( !Files.exists(fileErrorPath) ) Files.createFile(fileErrorPath);
 
-        try (BufferedWriter w = Files.newBufferedWriter(fileErrorPath)){
-            w.write( localDateTime.toString() + NL );
-            for ( ComparisonError error : errors ){
-                w.write( error.toString() + NL);
-            }
-        } catch ( IOException ioe ){
-            LOG.error("Cannot write error file.", ioe);
-        }
 
         analyzeResults();
         Path fileAnalizationPath = RESULT_PATH.resolve("latest-analization.txt");
@@ -93,8 +147,26 @@ public class CSVResultWriter {
         } catch ( IOException ioe ){
             LOG.error("Cannot write error file.", ioe);
         }
+        */
+
+        /*
+        try (
+                BufferedWriter bf = Files.newBufferedWriter( outputCSVTranslations );
+                CSVPrinter csvPrinter = new CSVPrinter(bf, CSVFormat.RFC4180.withHeader(
+                        "QID", "NAME"
+                ))
+        ){
+            for ( int i = 101; i <= max; i++ ){
+                csvPrinter.printRecord( i, nameMap[i] );
+            }
+            csvPrinter.flush();
+        } catch ( IOException ioe ){
+            LOG.error("Cannot write csv file for name references.", ioe);
+        }
+        */
     }
 
+    /*
     private double[] averagesCont, averagesPres;
     private double[] totalCont, totalPres;
     private HighLow[] highestCont, highestPres, lowestCont, lowestPres;
@@ -318,4 +390,5 @@ public class CSVResultWriter {
             return str;
         }
     }
+    */
 }

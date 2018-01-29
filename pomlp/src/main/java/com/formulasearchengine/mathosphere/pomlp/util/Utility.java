@@ -1,6 +1,7 @@
 package com.formulasearchengine.mathosphere.pomlp.util;
 
 import com.formulasearchengine.mathmlconverters.canonicalize.MathMLCanUtil;
+import com.formulasearchengine.mathmltools.mml.elements.MathDoc;
 import com.formulasearchengine.mathmltools.xmlhelper.XmlDocumentReader;
 import com.formulasearchengine.mathosphere.pomlp.xml.MathMLDocumentReader;
 import org.apache.logging.log4j.LogManager;
@@ -14,6 +15,8 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.StringWriter;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Static utility class for some typical functions we need
@@ -109,6 +112,7 @@ public final class Utility {
     public static Document getCanonicalizedDocument( Document doc ) {
         String strDoc = documentToString(doc, false);
         String canonical = getCanoicalizedString( strDoc );
+        canonical = MathDoc.tryFixHeader( canonical );
         return XmlDocumentReader.getDocumentFromXMLString(canonical);
     }
 
@@ -130,6 +134,17 @@ public final class Utility {
         unescaped = unescaped.replaceAll( PLACEHOLDER_OPEN, SPECIAL_UNESCPAE_OPEN );
         unescaped = unescaped.replaceAll( PLACEHOLDER_CLOSED, SPECIAL_UNESCAPE_CLOSE );
         return unescaped;
+    }
+
+    private static final Pattern ALTTEXT_PATTERN = Pattern.compile( "alttext=\"(.*?)\"" );
+
+    public static String unescapeJustAlttext( String MML ){
+        Matcher matcher = ALTTEXT_PATTERN.matcher( MML );
+        if ( matcher.find() ){
+            String orig = matcher.group(1);
+            String unescape = HtmlEscape.unescapeHtml( orig );
+            return MML.replace( matcher.group(0), "alttext=\"" + unescape + "\"" );
+        } else return MML;
     }
 
     // static class usage only

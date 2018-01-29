@@ -20,6 +20,7 @@ public class LatexMLConfig {
             "--whatsout=math",
             "--pmml",
             "--cmml",
+            "--quiet",
             "--nodefaultresources",
             "--linelength=90",
             "--preload", "LaTeX.pool",

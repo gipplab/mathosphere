@@ -80,6 +80,7 @@ public class SnuggleTexConverter implements Parser, Canonicalizable {
         String prettyPrint = Utility.documentToString(doc, true);
         if ( !Files.exists(outputFile) ) Files.createFile(outputFile);
         Files.write( outputFile, prettyPrint.getBytes() );
+        LOG.info("Writing file " + outputFile + " successful.");
         session.reset();
     }
 

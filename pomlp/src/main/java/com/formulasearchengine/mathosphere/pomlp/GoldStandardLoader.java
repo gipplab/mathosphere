@@ -12,6 +12,7 @@ import java.util.stream.IntStream;
 import com.formulasearchengine.mathosphere.pomlp.gouldi.JsonGouldiBean;
 import com.formulasearchengine.mathosphere.pomlp.util.GoldUtils;
 import com.formulasearchengine.mathosphere.pomlp.util.GouldiRegenerator;
+import com.formulasearchengine.mathosphere.pomlp.util.Utility;
 import com.formulasearchengine.mathosphere.pomlp.util.config.ConfigLoader;
 import com.formulasearchengine.mathosphere.pomlp.util.rest.GitHubFileResponse;
 import com.formulasearchengine.mathosphere.pomlp.util.rest.RESTPathBuilder;
@@ -140,8 +141,7 @@ public class GoldStandardLoader {
         );
     }
 
-    public JsonGouldiBean getGouldiJson(int number)
-            throws IOException {
+    public JsonGouldiBean getGouldiJson(int number) {
         if (local) {
             LOG.trace("Local mode. Get Json: " + number);
             return gouldi[number - 1];
@@ -149,7 +149,12 @@ public class GoldStandardLoader {
 
         GitHubFileResponse response = getResponseFromGouldiRequest(number);
         // TODO handle response codes here
-        return response.getJsonBeanFromContent();
+        try {
+            return response.getJsonBeanFromContent();
+        } catch ( IOException ioe ){
+            LOG.error("Cannot provide gouldi bean for qid {} from github.", number , ioe);
+            return null;
+        }
     }
 
     public static void main(String[] args) {
@@ -159,9 +164,13 @@ public class GoldStandardLoader {
         // regenerate all gold files once!
         //String goldPath = ConfigLoader.CONFIG.getProperty(ConfigLoader.GOULDI_LOCAL_PATH);
         //Path outputPath = Paths.get( goldPath );
-        Path outputPath = Paths.get("outputTmp");
-        GouldiRegenerator regenerator = new GouldiRegenerator(outputPath);
-        regenerator.init();
-        regenerator.regenerateAllMML();
+//        Path outputPath = Paths.get("outputTmp");
+//        GouldiRegenerator regenerator = new GouldiRegenerator(outputPath);
+//        regenerator.init();
+
+        GoldStandardLoader loader = GoldStandardLoader.getInstance();
+        loader.initLocally();
+        String s = loader.getGouldiJson(1).getMml();
+        Utility.getCanoicalizedString( s );
     }
 }

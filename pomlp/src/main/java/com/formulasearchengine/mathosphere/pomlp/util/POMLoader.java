@@ -72,10 +72,10 @@ public class POMLoader {
             throws Exception
     {
         if ( arguments == null || arguments.length == 0 ){
-            LOG.trace(obj.getClass().getName() + "." + method.internalname + "();");
+            //LOG.trace(obj.getClass().getName() + "." + method.internalname + "();");
             return method.method.invoke( obj );
         } else {
-            LOG.trace(obj.getClass().getName() + "." + method.internalname + "(" + Arrays.toString(arguments) + ")");
+            //LOG.trace(obj.getClass().getName() + "." + method.internalname + "(" + Arrays.toString(arguments) + ")");
             return method.method.invoke( obj, arguments );
         }
     }

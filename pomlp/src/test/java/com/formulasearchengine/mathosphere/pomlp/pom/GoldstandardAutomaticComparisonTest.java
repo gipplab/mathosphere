@@ -2,7 +2,9 @@ package com.formulasearchengine.mathosphere.pomlp.pom;
 
 import static org.junit.jupiter.api.Assertions.fail;
 
+import java.io.BufferedWriter;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.stream.IntStream;
@@ -16,8 +18,11 @@ import com.formulasearchengine.mathosphere.pomlp.comparison.RTEDTreeComparator;
 import com.formulasearchengine.mathosphere.pomlp.convertor.Canonicalizable;
 import com.formulasearchengine.mathosphere.pomlp.convertor.Converters;
 import com.formulasearchengine.mathosphere.pomlp.gouldi.JsonGouldiBean;
+import com.formulasearchengine.mathosphere.pomlp.util.DistanceCalculator;
 import com.formulasearchengine.mathosphere.pomlp.util.config.ConfigLoader;
 import com.formulasearchengine.mathosphere.pomlp.xml.MathMLDocumentReader;
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVPrinter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.AfterAll;
@@ -52,7 +57,9 @@ public class GoldstandardAutomaticComparisonTest {
         LOG.info("Load gold standard and initialize result handler.");
         goldLoader = GoldStandardLoader.getInstance();
         max = goldLoader.initLocally();
+
         resultsWriter = new CSVResultWriter(max);
+
         String goldPath = ConfigLoader.CONFIG.getProperty( ConfigLoader.GOULDI_LOCAL_PATH );
         Path goldLibPath = Paths.get(goldPath);
         for ( Converters conv : Converters.values() )
@@ -64,8 +71,7 @@ public class GoldstandardAutomaticComparisonTest {
     @AfterAll
     void finish() throws IOException {
         LOG.info("Finished all comparisons. Write results to CSV file.");
-        Path resultsPath = Paths.get("results");
-        resultsWriter.writeToFile( resultsPath );
+        resultsWriter.writeToFile();
     }
 
     /**
@@ -78,69 +84,33 @@ public class GoldstandardAutomaticComparisonTest {
 
     @ParameterizedTest
     @MethodSource( "gouldiRange" )
-    void treeComparison( int number ) throws IOException {
+    void treeComparison( int number ) {
         LOG.info("Start [TEST: " + number + "]");
         LOG.debug("Load Goldstandard MML.");
         JsonGouldiBean goldBean = goldLoader.getGouldiJson(number);
-        String goldmmlStr = goldBean.getMml();
-        MathMLDocumentReader gold = new MathMLDocumentReader(goldmmlStr);
-        Node goldPMML = gold.getPresentationNode();
-        Node goldCMML = gold.getContentNode();
-
-        MathMLDocumentReader reader;
-        Node xmlN;
-        boolean failed = false;
+        DistanceCalculator distanceCalculator = new DistanceCalculator( goldBean.getMml(), false );
 
         for ( Converters converter : Converters.values() ){
-            ComparisonResult result = new ComparisonResult( number, converter );
             Path fileP = converter.getFile(number);
-            LOG.info("Load saved " + converter.name() + " file with number " + number + ".");
+            LOG.info("Load " + converter.name() + " file with number " + number + ".");
+            Exception ie = null;
+
             try {
-                if ( converter.isMML() ){
-                    reader = new MathMLDocumentReader( fileP );
-                    if ( converter.getParser() instanceof Canonicalizable ){
-                        LOG.debug("Canonicalize MML: " + fileP);
-                        reader.canonicalize();
-                    }
+                MathMLDocumentReader reader = new MathMLDocumentReader( fileP );
 
-                    LOG.trace( "Content: " + MathMLDocumentReader.debugToString(reader.getContentNode()) );
-                    LOG.trace( "Present: " + MathMLDocumentReader.debugToString(reader.getPresentationNode()) );
-
-                    if ( reader.getContentNode() != null ){
-                        result.setContentDistance(
-                                RTED.computeDistance(
-                                        reader.getContentNode(),
-                                        goldCMML
-                                )
-                        );
-                    } else {
-                        LOG.debug("File " + fileP + " has no content MML.");
-                    }
-                    if ( reader.getPresentationNode() != null ){
-                        result.setPresentationDistance(
-                                RTED.computeDistance(
-                                        reader.getPresentationNode(),
-                                        goldPMML
-                                )
-                        );
-                    } else {
-                        LOG.debug("File " + fileP + " has no presentation MML.");
-                    }
-                } else {
-                    // just xml
-                    xmlN = XmlDocumentReader.getNodeFromXML( fileP );
-                    result.setPresentationDistance(RTED.computeDistance( xmlN, goldPMML ));
-                    result.setContentDistance(RTED.computeDistance( xmlN, goldCMML ));
-                }
-                LOG.debug("Comparison finished: " + result.toString());
+                ComparisonResult result = distanceCalculator.calculateDistances( converter, number, reader );
                 resultsWriter.addResult( result );
+                ie = distanceCalculator.getException();
             } catch ( Exception e ){
-                LOG.error("Cannot compare " + fileP, e);
-                resultsWriter.addError(new ComparisonError(converter, number, e));
-                failed = true;
+                ComparisonError ce = new ComparisonError( converter, number, e );
+                resultsWriter.addError( ce );
+            }
+            if ( ie != null ){
+                ComparisonError ce = new ComparisonError( converter, number, ie );
+                resultsWriter.addError( ce );
             }
         }
-
-        if ( failed ) fail("Comparison throws an exception. See logs for details!");
     }
+
+
 }
