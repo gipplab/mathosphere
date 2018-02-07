@@ -1,8 +1,8 @@
 package com.formulasearchengine.mathosphere.pomlp.convertor;
 
+import com.formulasearchengine.mathmltools.xmlhelper.XmlDocumentReader;
 import com.formulasearchengine.mathosphere.pomlp.util.POMLoader;
 import com.formulasearchengine.mathosphere.pomlp.xml.PomXmlWriter;
-import com.formulasearchengine.mathosphere.pomlp.xml.XmlDocumentReader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
@@ -80,7 +80,9 @@ public class POMConverter implements Parser {
 
         // create a builder to parse input stream to a document
         LOG.trace("Create document builder factory");
-        DocumentBuilderFactory factory = XmlDocumentReader.FACTORY;
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        factory.setIgnoringComments(true);
+        factory.setExpandEntityReferences(true);
         DocumentBuilder builder = factory.newDocumentBuilder();
 
         // First step, parse the mathematical expression
