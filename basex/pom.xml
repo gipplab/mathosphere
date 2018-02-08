@@ -2,9 +2,9 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.formulasearchengine.mathosphere</groupId>
-    <artifactId>basex</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <groupId>com.formulasearchengine</groupId>
+    <artifactId>basex-backend</artifactId>
+    <version>1.0.0</version>
     <name>Core BaseX backend for MathSearch</name>
     <description>Answers MathSearch patterns with a BaseX backend.</description>
     <url>http://www.formulasearchengine.com/BaseXBackend</url>
@@ -67,12 +67,12 @@
         <dependency>
             <groupId>com.formulasearchengine</groupId>
             <artifactId>mathmltools</artifactId>
-            <version>0.3.1-SNAPSHOT</version>
+            <version>0.4.0</version>
         </dependency>
         <dependency>
             <groupId>com.formulasearchengine</groupId>
             <artifactId>mathmlconverters</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
+            <version>1.0.0</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
