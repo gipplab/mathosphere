@@ -5,14 +5,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>com.formulasearchengine.mathosphere</groupId>
+        <groupId>com.formulasearchengine</groupId>
         <artifactId>mathosphere-parent</artifactId>
-        <version>3.0.0-SNAPSHOT</version>
+        <version>3.0.0</version>
         <relativePath>..</relativePath>
     </parent>
-
-    <artifactId>pomlp</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <artifactId>mathosphere-pomlp</artifactId>
     <packaging>jar</packaging>
     <name>POMLP: Part-of-Mathematical Language Processor</name>
 
@@ -91,9 +89,9 @@
 
         <!-- Robust Tree Edit Distance algorithm -->
         <dependency>
-            <groupId>it.unibz.inf</groupId>
-            <artifactId>RTED</artifactId>
-            <version>1.2-SNAPSHOT</version>
+            <groupId>com.formulasearchengine</groupId>
+            <artifactId>lib-RTED</artifactId>
+            <version>${project.version}</version>
         </dependency>
 
         <!-- MathML Query Handler -->
@@ -107,14 +105,14 @@
         <dependency>
             <groupId>com.formulasearchengine</groupId>
             <artifactId>mathmlconverters</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
+            <version>1.0.0</version>
         </dependency>
 
         <!-- MathML Converter -->
         <dependency>
             <groupId>com.formulasearchengine</groupId>
             <artifactId>mathmltools</artifactId>
-            <version>0.3.1-SNAPSHOT</version>
+            <version>0.4.0</version>
         </dependency>
 
         <!-- Spring REST to communicate with GitHub -->

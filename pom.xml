@@ -2,9 +2,9 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.formulasearchengine.mathosphere</groupId>
+    <groupId>com.formulasearchengine</groupId>
     <artifactId>mathosphere-parent</artifactId>
-    <version>3.0.0-SNAPSHOT</version>
+    <version>3.0.0</version>
     <name>Mathosphere 2 (Parent)</name>
     <description>Batch processing and evaluation of Math queries</description>
     <url>http://www.formulasearchengine.com/Mathosphere</url>
@@ -52,9 +52,7 @@
         <module>lib/MathMLCan</module>
         <module>lib/RTED</module>
         <module>basex</module>
-        <module>restd</module>
         <module>evaluation</module>
-        <module>pomlp</module>
     </modules>
 
     <build>

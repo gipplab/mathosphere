@@ -5,9 +5,9 @@
 
 
     <parent>
-        <groupId>com.formulasearchengine.mathosphere</groupId>
+        <groupId>com.formulasearchengine</groupId>
         <artifactId>mathosphere-parent</artifactId>
-        <version>3.0.0-SNAPSHOT</version>
+        <version>3.0.0</version>
         <relativePath>..</relativePath>
     </parent>
     <artifactId>mathosphere-core</artifactId>
@@ -66,9 +66,9 @@
 
         <!-- Other things -->
         <dependency>
-            <groupId>com.formulasearchengine.evaluation</groupId>
-            <artifactId>evaluation</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
+            <groupId>com.formulasearchengine</groupId>
+            <artifactId>mathosphere-evaluation</artifactId>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
@@ -89,12 +89,12 @@
         <dependency>
             <groupId>com.formulasearchengine</groupId>
             <artifactId>mathmltools</artifactId>
-            <version>0.3.1-SNAPSHOT</version>
+            <version>0.4.0</version>
         </dependency>
         <dependency>
-            <groupId>cz.muni.fi.mir</groupId>
-            <artifactId>mathml-canonicalizer</artifactId>
-            <version>1.2-Mathosphere-SNAPSHOT</version>
+            <groupId>com.formulasearchengine</groupId>
+            <artifactId>lib-mathml-canonicalizer</artifactId>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>
@@ -242,11 +242,6 @@
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpclient-cache</artifactId>
             <version>4.5.3</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-text</artifactId>
-            <version>1.0</version>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>

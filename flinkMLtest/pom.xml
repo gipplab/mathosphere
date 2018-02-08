@@ -20,14 +20,12 @@ under the License.
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>com.formulasearchengine.mathosphere</groupId>
+        <groupId>com.formulasearchengine</groupId>
         <artifactId>mathosphere-parent</artifactId>
         <relativePath>../pom.xml</relativePath>
-        <version>3.0.0-SNAPSHOT</version>
+        <version>3.0.0</version>
     </parent>
-    <groupId>test</groupId>
-    <artifactId>flinkMLtest</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <artifactId>lib-flinkMLtest</artifactId>
     <packaging>jar</packaging>
 
     <name>MLMLP</name>
@@ -53,9 +51,9 @@ under the License.
             <version>${flink.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.formulasearchengine.mathosphere</groupId>
+            <groupId>com.formulasearchengine</groupId>
             <artifactId>mathosphere-core</artifactId>
-            <version>3.0.0-SNAPSHOT</version>
+            <version>3.0.0</version>
         </dependency>
         <!-- Use this dependency if you are using the DataSet API -->
         <dependency>
