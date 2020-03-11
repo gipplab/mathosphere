@@ -1,13 +1,13 @@
 package com.formulasearchengine.mathosphere.pomlp;
 
+import com.formulasearchengine.mathmltools.nativetools.CommandExecutor;
+import com.formulasearchengine.mathmltools.nativetools.NativeResponse;
 import com.formulasearchengine.mathosphere.pomlp.convertor.Converters;
 import com.formulasearchengine.mathosphere.pomlp.convertor.Parser;
 import com.formulasearchengine.mathosphere.pomlp.gouldi.JsonGouldiBean;
 import com.formulasearchengine.mathosphere.pomlp.util.POMLoader;
 import com.formulasearchengine.mathosphere.pomlp.util.Utility;
 import com.formulasearchengine.mathosphere.pomlp.util.config.ConfigLoader;
-import com.formulasearchengine.nativetools.CommandExecutor;
-import com.formulasearchengine.nativetools.NativeResponse;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

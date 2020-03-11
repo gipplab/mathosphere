@@ -1,47 +1,30 @@
 package com.formulasearchengine.mathosphere.mlp;
 
-import com.formulasearchengine.mathosphere.mlp.cli.BaseConfig;
-import com.formulasearchengine.mathosphere.mlp.cli.FlinkMlpCommandConfig;
 import com.formulasearchengine.mathosphere.mlp.cli.MachineLearningDefinienListConfig;
-import com.formulasearchengine.mathosphere.mlp.cli.MlpCommandConfig;
 import com.formulasearchengine.mathosphere.mlp.contracts.CreateCandidatesMapper;
-import com.formulasearchengine.mathosphere.mlp.contracts.JsonSerializerMapper;
 import com.formulasearchengine.mathosphere.mlp.contracts.TextAnnotatorMapper;
 import com.formulasearchengine.mathosphere.mlp.contracts.TextExtractorMapper;
-import com.formulasearchengine.mathosphere.mlp.ml.WekaLearner;
-import com.formulasearchengine.mathosphere.mlp.pojos.*;
-import com.formulasearchengine.mathosphere.mlp.text.SimpleFeatureExtractorMapper;
-import com.formulasearchengine.mathosphere.utils.GoldUtil;
-import com.formulasearchengine.mlp.evaluation.Evaluator;
-import com.formulasearchengine.mlp.evaluation.pojo.GoldEntry;
-import javafx.scene.control.TextFormatter;
-import org.apache.commons.csv.CSVFormat;
-import org.apache.commons.csv.CSVPrinter;
-import org.apache.commons.lang.StringUtils;
-import org.apache.flink.api.common.functions.FlatMapFunction;
-import org.apache.flink.api.common.functions.GroupReduceFunction;
+import com.formulasearchengine.mathosphere.mlp.pojos.ParsedWikiDocument;
+import com.formulasearchengine.mathosphere.mlp.pojos.RawWikiDocument;
+import com.formulasearchengine.mathosphere.mlp.pojos.Relation;
+import com.formulasearchengine.mathosphere.mlp.pojos.WikiDocumentOutput;
 import org.apache.flink.api.common.functions.MapFunction;
-import org.apache.flink.api.common.functions.ReduceFunction;
 import org.apache.flink.api.java.DataSet;
 import org.apache.flink.api.java.ExecutionEnvironment;
 import org.apache.flink.api.java.io.TextOutputFormat;
 import org.apache.flink.api.java.operators.DataSource;
 import org.apache.flink.api.java.operators.FlatMapOperator;
 import org.apache.flink.core.fs.FileSystem;
-import org.apache.flink.util.Collector;
-import org.apache.flink.util.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.*;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.attribute.FileAttribute;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+
+//import javafx.scene.control.TextFormatter;
 
 /**
  * A combination of the {@link RelationExtractor} and {@link MachineLearningModelGenerator}.

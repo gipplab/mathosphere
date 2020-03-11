@@ -1,6 +1,6 @@
 package com.formulasearchengine.mathosphere.pomlp.util;
 
-import com.formulasearchengine.mathmlconverters.canonicalize.MathMLCanUtil;
+import com.formulasearchengine.mathmltools.converters.canonicalize.MathMLCanUtil;
 import com.formulasearchengine.mathosphere.pomlp.xml.MathMLDocumentReader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

@@ -84,3 +84,7 @@ dependency-reduced-pom.xml
 # Introducing the t-standard (copyrights reserved)
 t/
 /mathosphere-core/test/
+
+# ignore node folder (necessary to run mathoid service locally)
+node_modules/
+

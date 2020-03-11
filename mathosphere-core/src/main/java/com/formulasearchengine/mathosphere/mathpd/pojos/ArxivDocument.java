@@ -1,7 +1,9 @@
 package com.formulasearchengine.mathosphere.mathpd.pojos;
 
-import com.formulasearchengine.mathmltools.xmlhelper.NonWhitespaceNodeList;
-import com.formulasearchengine.mathmltools.xmlhelper.XMLHelper;
+//import com.formulasearchengine.mathmltools.xmlhelper.NonWhitespaceNodeList;
+//import com.formulasearchengine.mathmltools.xmlhelper.XMLHelper;
+import com.formulasearchengine.mathmltools.helper.XMLHelper;
+import com.formulasearchengine.mathmltools.xml.NonWhitespaceNodeList;
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Multiset;
 import org.apache.commons.lang3.StringUtils;
@@ -47,7 +49,7 @@ public class ArxivDocument {
     }
 
     public Document getDoc() {
-        return XMLHelper.string2Doc(text, true);
+        return XMLHelper.string2Doc(text, false);
     }
 
     public NonWhitespaceNodeList getMathTags() throws XPathExpressionException {

@@ -48,6 +48,7 @@
     </distributionManagement>
 
     <modules>
+        <module>lib/MathMLTools</module>
         <module>mathosphere-core</module>
         <module>lib/MathMLCan</module>
         <module>lib/RTED</module>

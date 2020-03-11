@@ -10,3 +10,7 @@
 	path = lib/GoUldI
 	url = https://github.com/ag-gipp/GoUldI.git
 	branch = master
+[submodule "lib/MathMLTools"]
+	path = lib/MathMLTools
+	url = https://github.com/ag-gipp/MathMLTools.git
+	branch = mathosphere-fix

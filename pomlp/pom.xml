@@ -49,7 +49,7 @@
             </plugin>
             <plugin>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.19.1</version>
+                <version>2.20</version>
                 <dependencies>
                     <dependency>
                         <groupId>org.junit.platform</groupId>
@@ -105,16 +105,16 @@
 
         <!-- MathML Converter -->
         <dependency>
-            <groupId>com.formulasearchengine</groupId>
-            <artifactId>mathmlconverters</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
+            <groupId>com.formulasearchengine.mathmltools</groupId>
+            <artifactId>mathml-converters</artifactId>
+            <version>2.0.4</version>
         </dependency>
 
-        <!-- MathML Converter -->
+        <!-- MathML Core -->
         <dependency>
-            <groupId>com.formulasearchengine</groupId>
-            <artifactId>mathmltools</artifactId>
-            <version>0.3.1-SNAPSHOT</version>
+            <groupId>com.formulasearchengine.mathmltools</groupId>
+            <artifactId>mathml-core</artifactId>
+            <version>2.0.4</version>
         </dependency>
 
         <!-- Spring REST to communicate with GitHub -->
