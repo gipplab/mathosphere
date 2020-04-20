@@ -1,0 +1,439 @@
+{
+    "identifiers": [
+        {
+            "count": 125,
+            "element": "n"
+        },
+        {
+            "count": 2,
+            "element": "y"
+        },
+        {
+            "count": 1,
+            "element": "y'"
+        },
+        {
+            "count": 15,
+            "element": "x"
+        },
+        {
+            "count": 20,
+            "element": "m"
+        },
+        {
+            "count": 11,
+            "element": "d"
+        },
+        {
+            "count": 2,
+            "element": "\\gamma"
+        },
+        {
+            "count": 6,
+            "element": "\\theta"
+        },
+        {
+            "count": 1,
+            "element": "F"
+        },
+        {
+            "count": 3,
+            "element": "\\mathit{P}"
+        },
+        {
+            "count": 1,
+            "element": "i"
+        },
+        {
+            "count": 6,
+            "element": "t"
+        },
+        {
+            "count": 1,
+            "element": "\\mathit{z}"
+        },
+        {
+            "count": 94,
+            "element": "\\alpha"
+        },
+        {
+            "count": 1,
+            "element": "\\delta_{nm}"
+        },
+        {
+            "count": 3,
+            "element": "e"
+        },
+        {
+            "count": 1,
+            "element": "H"
+        },
+        {
+            "count": 7,
+            "element": "m'"
+        },
+        {
+            "count": 2,
+            "element": "\\mathit{x}"
+        },
+        {
+            "count": 11,
+            "element": "k"
+        },
+        {
+            "count": 3,
+            "element": "\\mathit{\\beta}"
+        },
+        {
+            "count": 85,
+            "element": "\\beta"
+        },
+        {
+            "count": 3,
+            "element": "O"
+        },
+        {
+            "count": 3,
+            "element": "a"
+        },
+        {
+            "count": 2,
+            "element": "p"
+        },
+        {
+            "count": 4,
+            "element": "\\phi"
+        },
+        {
+            "count": 4,
+            "element": "\\mathit{n}"
+        },
+        {
+            "count": 2,
+            "element": "N"
+        },
+        {
+            "count": 7,
+            "element": "j"
+        },
+        {
+            "count": 1,
+            "element": "F_{1}"
+        },
+        {
+            "count": 53,
+            "element": "z"
+        },
+        {
+            "count": 3,
+            "element": "\\mathit{\\alpha}"
+        },
+        {
+            "count": 1,
+            "element": "J_{\\beta}"
+        },
+        {
+            "count": 14,
+            "element": "s"
+        },
+        {
+            "count": 1,
+            "element": "P_{n}"
+        },
+        {
+            "count": 1,
+            "element": "J_{\\alpha}"
+        },
+        {
+            "count": 7,
+            "element": "R"
+        },
+        {
+            "count": 3,
+            "element": "\\pi"
+        },
+        {
+            "count": 1,
+            "element": "c"
+        },
+        {
+            "count": 2,
+            "element": "l"
+        },
+        {
+            "count": 2,
+            "element": "o"
+        },
+        {
+            "count": 1,
+            "element": "y''"
+        },
+        {
+            "count": 13,
+            "element": "\\Gamma"
+        },
+        {
+            "count": 38,
+            "element": "P"
+        }
+    ],
+    "relations": [
+        {
+            "definition": "march",
+            "identifier": "\\mathit{P}"
+        },
+        {
+            "definition": "asymptotics",
+            "identifier": "n"
+        },
+        {
+            "definition": "polynomials",
+            "identifier": "d"
+        },
+        {
+            "definition": "solution",
+            "identifier": "\\mathit{P}"
+        },
+        {
+            "definition": "[[wigner d-matrix]]",
+            "identifier": "d"
+        },
+        {
+            "definition": "[[principal branch]]",
+            "identifier": "z"
+        },
+        {
+            "definition": "hypergeometric polynomials",
+            "identifier": "\\mathit{P}"
+        },
+        {
+            "definition": "jacobi",
+            "identifier": "x"
+        },
+        {
+            "definition": "expression",
+            "identifier": "j"
+        },
+        {
+            "definition": "limits",
+            "identifier": "z"
+        },
+        {
+            "definition": "[[orthogonal polynomials]]",
+            "identifier": "\\alpha"
+        },
+        {
+            "definition": "[[mathematics]]",
+            "identifier": "\\mathit{P}"
+        },
+        {
+            "definition": "[[wigner d-matrix]]",
+            "identifier": "m"
+        },
+        {
+            "definition": "[[orthogonal polynomials]]",
+            "identifier": "\\mathit{P}"
+        },
+        {
+            "definition": "polynomials",
+            "identifier": "\\beta"
+        },
+        {
+            "definition": "factorials",
+            "identifier": "s"
+        },
+        {
+            "definition": "polynomial",
+            "identifier": "\\mathit{P}"
+        },
+        {
+            "definition": "darboux",
+            "identifier": "x"
+        },
+        {
+            "definition": "integer",
+            "identifier": "n"
+        },
+        {
+            "definition": "formula",
+            "identifier": "n"
+        },
+        {
+            "definition": "jacobi",
+            "identifier": "j"
+        },
+        {
+            "definition": "[[linear homogeneous differential equation]]",
+            "identifier": "\\mathit{P}"
+        },
+        {
+            "definition": "asymptotics",
+            "identifier": "\\mathit{P}"
+        },
+        {
+            "definition": "terms",
+            "identifier": "m"
+        },
+        {
+            "definition": "interval",
+            "identifier": "O"
+        },
+        {
+            "definition": "[[domain (mathematical analysis)]]",
+            "identifier": "z"
+        },
+        {
+            "definition": "expression",
+            "identifier": "m"
+        },
+        {
+            "definition": "derivative",
+            "identifier": "k"
+        },
+        {
+            "definition": "terms",
+            "identifier": "d"
+        },
+        {
+            "definition": "jacobi",
+            "identifier": "\\mathit{P}"
+        },
+        {
+            "definition": "sum",
+            "identifier": "s"
+        },
+        {
+            "definition": "second order",
+            "identifier": "\\mathit{P}"
+        },
+        {
+            "definition": "polynomials",
+            "identifier": "\\mathit{P}"
+        },
+        {
+            "definition": "sequence",
+            "identifier": "\\mathit{P}"
+        },
+        {
+            "definition": "interior",
+            "identifier": "x"
+        },
+        {
+            "definition": "darboux",
+            "identifier": "\\mathit{P}"
+        },
+        {
+            "definition": "term",
+            "identifier": "O"
+        },
+        {
+            "definition": "integer values",
+            "identifier": "s"
+        },
+        {
+            "definition": "asymptotics",
+            "identifier": "x"
+        },
+        {
+            "definition": "polynomials",
+            "identifier": "j"
+        },
+        {
+            "definition": "expression",
+            "identifier": "d"
+        },
+        {
+            "definition": "terms",
+            "identifier": "j"
+        },
+        {
+            "definition": "square root",
+            "identifier": "z"
+        },
+        {
+            "definition": "[[principal branch]]",
+            "identifier": "R"
+        },
+        {
+            "definition": "formula",
+            "identifier": "\\mathit{P}"
+        },
+        {
+            "definition": "several variables",
+            "identifier": "\\mathit{P}"
+        },
+        {
+            "definition": "jacobi",
+            "identifier": "d"
+        },
+        {
+            "definition": "jacobi",
+            "identifier": "\\beta"
+        },
+        {
+            "definition": "polynomials",
+            "identifier": "m"
+        },
+        {
+            "definition": "square root",
+            "identifier": "R"
+        },
+        {
+            "definition": "interior",
+            "identifier": "\\mathit{P}"
+        },
+        {
+            "definition": "arguments",
+            "identifier": "s"
+        },
+        {
+            "definition": "formula",
+            "identifier": "x"
+        },
+        {
+            "definition": "[[orthogonal polynomials]]",
+            "identifier": "\\beta"
+        },
+        {
+            "definition": "[[wigner d-matrix]]",
+            "identifier": "j"
+        },
+        {
+            "definition": "polynomials",
+            "identifier": "\\alpha"
+        },
+        {
+            "definition": "jacobi",
+            "identifier": "\\alpha"
+        },
+        {
+            "definition": "jacobi",
+            "identifier": "m"
+        },
+        {
+            "definition": "class",
+            "identifier": "\\mathit{P}"
+        },
+        {
+            "definition": "interior",
+            "identifier": "n"
+        },
+        {
+            "definition": "explicit expression",
+            "identifier": "k"
+        },
+        {
+            "definition": "darboux",
+            "identifier": "n"
+        },
+        {
+            "definition": "[[classical orthogonal polynomials]]",
+            "identifier": "\\mathit{P}"
+        },
+        {
+            "definition": "polynomial",
+            "identifier": "x"
+        }
+    ],
+    "title": "Jacobi polynomials"
+}

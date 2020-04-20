@@ -1,0 +1,54 @@
+{
+  "identifiers": [
+    {
+      "count": 2,
+      "element": "\\bar{\\bar{\\alpha}}"
+    },
+    {
+      "count": 2,
+      "element": "\\bar{\\alpha}"
+    },
+    {
+      "count": 2,
+      "element": "\\theta_{i}"
+    },
+    {
+      "count": 1,
+      "element": "\\theta"
+    },
+    {
+      "count": 1,
+      "element": "d"
+    },
+    {
+      "count": 2,
+      "element": "A"
+    },
+    {
+      "count": 2,
+      "element": "H"
+    },
+    {
+      "count": 1,
+      "element": "i"
+    },
+    {
+      "count": 1,
+      "element": "l"
+    },
+    {
+      "count": 5,
+      "element": "D"
+    },
+    {
+      "count": 2,
+      "element": "\\alpha"
+    },
+    {
+      "count": 1,
+      "element": "b"
+    }
+  ],
+  "relations": [],
+  "title": "Albedo"
+}

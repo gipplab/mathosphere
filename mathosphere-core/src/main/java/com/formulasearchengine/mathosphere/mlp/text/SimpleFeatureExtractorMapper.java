@@ -44,7 +44,8 @@ public class SimpleFeatureExtractorMapper implements MapFunction<ParsedWikiDocum
     Multiset<String> frequencies = aggregateWords(sentences);
 
     int maxFrequency = getMaxFrequency(frequencies, doc.getTitle());
-    if (extractionForTraining) {
+    GoldEntry goldEntry = getGoldEntryByTitle(goldEntries, doc.getTitle());
+    if (extractionForTraining && goldEntry != null) {
       return getIdentifiersWithGoldInfo(doc, allIdentifierDefininesCandidates, sentences, identifierSentenceDistanceMap, frequencies, maxFrequency);
     } else {
       return getAllIdentifiers(doc, allIdentifierDefininesCandidates, sentences, identifierSentenceDistanceMap, frequencies, maxFrequency);
@@ -95,7 +96,7 @@ public class SimpleFeatureExtractorMapper implements MapFunction<ParsedWikiDocum
     }
     LOGGER.info("extracted {} relations from {}", allIdentifierDefininesCandidates.size(), doc.getTitle());
     WikiDocumentOutput result = new WikiDocumentOutput(doc.getTitle(), goldEntry.getqID(), allIdentifierDefininesCandidates, null);
-    result.setMaxSentenceLength(doc.getSentences().stream().map(s -> s.getWords().size()).max(Comparator.naturalOrder()).get());
+    result.setMaxSentenceLength(doc.getSentences().stream().map(s -> s.getWords().size()).max(Comparator.naturalOrder()).orElse(0));
     return result;
   }
 

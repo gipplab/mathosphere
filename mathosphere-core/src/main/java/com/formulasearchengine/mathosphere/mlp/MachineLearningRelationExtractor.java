@@ -24,8 +24,6 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
-//import javafx.scene.control.TextFormatter;
-
 /**
  * A combination of the {@link RelationExtractor} and {@link MachineLearningModelGenerator}.
  * The idea is to provide a program that can extract and list all identifier-definien

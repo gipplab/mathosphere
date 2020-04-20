@@ -1,3 +1,73 @@
 Jacobi polynomials
+\alpha, [[Orthogonal polynomials]], 0.646204026982865
+\alpha, Jacobi, 0.8293871184673581
+\alpha, polynomials, 0.8948402760288094
+O, interval, 0.646204026982865
+O, term, 0.9500119385371297
+R, [[principal branch]], 0.646204026982865
+R, square root, 0.7619047619047619
+\mathit{P}, formula, 0.4162113064364041
+\mathit{P}, Darboux, 0.44656005733432935
+\mathit{P}, interior, 0.48820430292149974
+\mathit{P}, March, 0.4920636952926403
+\mathit{P}, Polynomial, 0.4920658234355216
+\mathit{P}, sequence, 0.49207075815352186
+\mathit{P}, several variables, 0.49245725383449407
+\mathit{P}, [[mathematics]], 0.4964570659527389
+\mathit{P}, polynomials, 0.5079962708775105
+\mathit{P}, Jacobi, 0.5238309481552457
+\mathit{P}, Jacobi, 0.5535714285714286
+\mathit{P}, polynomials, 0.5583380146247536
+\mathit{P}, [[linear homogeneous differential equation]], 0.5791602391831622
+\mathit{P}, second order, 0.6322739761635234
+\mathit{P}, [[orthogonal polynomials]], 0.6675717322171946
+\mathit{P}, [[Classical orthogonal polynomials]], 0.7301587301587302
+\mathit{P}, asymptotics, 0.7920122144757643
+\mathit{P}, solution, 0.8277964882291066
+\mathit{P}, class, 0.8630942442827777
+\mathit{P}, hypergeometric polynomials, 0.8630942442827777
+\mathit{P}, Jacobi, 0.9147141824834585
+d, polynomials, 0.5000023313720295
+d, Jacobi, 0.5000072660900298
+d, terms, 0.5000597629410026
+d, expression, 0.5535714285714286
+d, expression, 0.8293871184673581
+d, [[Wigner D-matrix]], 0.9631690225772787
+j, polynomials, 0.5000072660900298
+j, Jacobi, 0.5000214243457218
+j, terms, 0.5001577153468479
+j, expression, 0.5404358205070271
+j, expression, 0.7619047619047619
+j, [[Wigner D-matrix]], 0.9262024147276059
+k, explicit expression, 0.7619047619047619
+k, derivative, 0.9500119385371297
+m, polynomials, 0.5003937617710019
+m, Jacobi, 0.5009300595238095
+m, terms, 0.5043935738892468
+m, expression, 0.5325966715880174
+m, expression, 0.6993177639632263
+m, [[Wigner D-matrix]], 0.8710307522192856
+n, interior, 0.4273177362560949
+n, formula, 0.5730640716478927
+n, Darboux, 0.6356510695894283
+n, asymptotics, 0.6356510695894283
+n, integer, 0.9869785463868026
+\beta, [[Orthogonal polynomials]], 0.5742110304977694
+\beta, Jacobi, 0.6993177639632263
+\beta, polynomials, 0.7619047619047619
+s, factorials, 0.646204026982865
+s, sum, 0.6993177639632263
+s, arguments, 0.8293871184673581
+s, integer values, 0.9500119385371297
+x, formula, 0.48853319210157453
+x, Darboux, 0.4885715306968552
+x, asymptotics, 0.5692620253420236
+x, interior, 0.8595425199751383
+x, polynomial, 0.8948402760288094
+x, Jacobi, 0.9500119385371297
+z, [[principal branch]], 0.5742110304977694
+z, square root, 0.646204026982865
+z, [[Domain (mathematical analysis)]], 0.7940893624136869
+z, limits, 0.7940893624136869
 
 

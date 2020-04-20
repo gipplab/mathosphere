@@ -1,0 +1,182 @@
+{
+  "identifiers": [
+    {
+      "count": 2,
+      "element": "N"
+    },
+    {
+      "count": 85,
+      "element": "\\beta"
+    },
+    {
+      "count": 1,
+      "element": "\\mathit{z}"
+    },
+    {
+      "count": 4,
+      "element": "\\mathit{n}"
+    },
+    {
+      "count": 3,
+      "element": "\\mathit{\\beta}"
+    },
+    {
+      "count": 53,
+      "element": "z"
+    },
+    {
+      "count": 7,
+      "element": "m'"
+    },
+    {
+      "count": 2,
+      "element": "y"
+    },
+    {
+      "count": 38,
+      "element": "P"
+    },
+    {
+      "count": 2,
+      "element": "\\mathit{x}"
+    },
+    {
+      "count": 4,
+      "element": "\\phi"
+    },
+    {
+      "count": 1,
+      "element": "J_{\\alpha}"
+    },
+    {
+      "count": 2,
+      "element": "o"
+    },
+    {
+      "count": 11,
+      "element": "k"
+    },
+    {
+      "count": 7,
+      "element": "R"
+    },
+    {
+      "count": 1,
+      "element": "i"
+    },
+    {
+      "count": 125,
+      "element": "n"
+    },
+    {
+      "count": 1,
+      "element": "J_{\\beta}"
+    },
+    {
+      "count": 3,
+      "element": "\\mathit{P}"
+    },
+    {
+      "count": 7,
+      "element": "j"
+    },
+    {
+      "count": 11,
+      "element": "d"
+    },
+    {
+      "count": 3,
+      "element": "a"
+    },
+    {
+      "count": 2,
+      "element": "p"
+    },
+    {
+      "count": 6,
+      "element": "t"
+    },
+    {
+      "count": 1,
+      "element": "y'"
+    },
+    {
+      "count": 3,
+      "element": "e"
+    },
+    {
+      "count": 2,
+      "element": "\\gamma"
+    },
+    {
+      "count": 1,
+      "element": "H"
+    },
+    {
+      "count": 3,
+      "element": "O"
+    },
+    {
+      "count": 6,
+      "element": "\\theta"
+    },
+    {
+      "count": 1,
+      "element": "P_{n}"
+    },
+    {
+      "count": 1,
+      "element": "F"
+    },
+    {
+      "count": 3,
+      "element": "\\pi"
+    },
+    {
+      "count": 1,
+      "element": "c"
+    },
+    {
+      "count": 1,
+      "element": "F_{1}"
+    },
+    {
+      "count": 2,
+      "element": "l"
+    },
+    {
+      "count": 94,
+      "element": "\\alpha"
+    },
+    {
+      "count": 1,
+      "element": "y''"
+    },
+    {
+      "count": 15,
+      "element": "x"
+    },
+    {
+      "count": 20,
+      "element": "m"
+    },
+    {
+      "count": 14,
+      "element": "s"
+    },
+    {
+      "count": 3,
+      "element": "\\mathit{\\alpha}"
+    },
+    {
+      "count": 1,
+      "element": "\\delta_{nm}"
+    },
+    {
+      "count": 13,
+      "element": "\\Gamma"
+    }
+  ],
+  "relations": [],
+  "title": "Jacobi polynomials"
+}

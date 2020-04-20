@@ -49,24 +49,24 @@ public class MachineLearningRelationClassifier {
         ndData.put(((String) entry.get("document_title")).replaceAll(" ", "_"), o);
       }
     }
-    DataSet<WikiDocumentOutput> withNamespaces = result.map(new MapFunction<WikiDocumentOutput, WikiDocumentOutput>() {
-      @Override
-      public WikiDocumentOutput map(WikiDocumentOutput wikiDocumentOutput) throws Exception {
-        if (config.getNamespace()) {
-          wikiDocumentOutput.setRelations(new ArrayList<>());
-          final Map nd = (Map) ndData.get(wikiDocumentOutput.getTitle().replaceAll("\\s", "_"));
-          if (nd != null) {
-            List relNS = (List) nd.get("namespace_relations");
-            if (relNS != null)
-              for (Object o : relNS) {
-                Relation rel = new Relation(o);
-                wikiDocumentOutput.getRelations().add(rel);
-              }
-          }
-        }
-        return wikiDocumentOutput;
-      }
-    });
+//    DataSet<WikiDocumentOutput> withNamespaces = result.map(new MapFunction<WikiDocumentOutput, WikiDocumentOutput>() {
+//      @Override
+//      public WikiDocumentOutput map(WikiDocumentOutput wikiDocumentOutput) throws Exception {
+//        if (config.getNamespace()) {
+//          wikiDocumentOutput.setRelations(new ArrayList<>());
+//          final Map nd = (Map) ndData.get(wikiDocumentOutput.getTitle().replaceAll("\\s", "_"));
+//          if (nd != null) {
+//            List relNS = (List) nd.get("namespace_relations");
+//            if (relNS != null)
+//              for (Object o : relNS) {
+//                Relation rel = new Relation(o);
+//                wikiDocumentOutput.getRelations().add(rel);
+//              }
+//          }
+//        }
+//        return wikiDocumentOutput;
+//      }
+//    });
     if (config.isEvaluate()) {
       String[] args = {
         "-in", config.getDataset(),
@@ -76,14 +76,15 @@ public class MachineLearningRelationClassifier {
         "--tex",
       };
       MachineLearningDefinienExtractionConfig evaluationConfig = MachineLearningDefinienExtractionConfig.from(args);
-      DataSet<EvaluationResult> evaluationResult = withNamespaces.reduceGroup(new StupidRelationScorer(evaluationConfig));
-      evaluationResult.map(new JsonSerializerMapper<>()).writeAsText(config.getOutputDir() + "/extractedDefiniens/evaluated", FileSystem.WriteMode.OVERWRITE);
+//      DataSet<EvaluationResult> evaluationResult = withNamespaces.reduceGroup(new StupidRelationScorer(evaluationConfig));
+//      evaluationResult.map(new JsonSerializerMapper<>()).writeAsText(config.getOutputDir() + "/extractedDefiniens/evaluated", FileSystem.WriteMode.OVERWRITE);
     }
-    DataSet<StrippedWikiDocumentOutput> stripped_result = withNamespaces.map(stripSentenceMapper);
+//    DataSet<StrippedWikiDocumentOutput> stripped_result = withNamespaces.map(stripSentenceMapper);
+    DataSet<StrippedWikiDocumentOutput> stripped_result = result.map(stripSentenceMapper);
 
     //write and kick off flink execution
     stripped_result.map(new JsonSerializerMapper<>())
-      .writeAsText(config.getOutputDir() + "/extractedDefiniens", FileSystem.WriteMode.OVERWRITE);
+      .writeAsText(config.getOutputDir() + "/extractedDefiniens.json", FileSystem.WriteMode.OVERWRITE);
     env.execute();
   }
 

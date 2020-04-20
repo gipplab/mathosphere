@@ -5,6 +5,7 @@ import com.formulasearchengine.mlp.evaluation.pojo.IdentifierDefinition;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 /**
  * Created by Leo on 21.01.2017.
@@ -34,6 +35,13 @@ public class GoldUtil {
    * @return the entry or throws an {@link NoSuchElementException} if the title is not in the list.
    */
   public static GoldEntry getGoldEntryByTitle(List<GoldEntry> goldEntries, String title) {
-    return goldEntries.stream().filter(e -> e.getTitle().equals(title.replaceAll(" ", "_"))).findFirst().get();
+    try {
+      return goldEntries.stream()
+              .filter(e -> e.getTitle().equals(title.replaceAll(" ", "_")))
+              .findFirst()
+              .orElse(null);
+    } catch ( NullPointerException npe ){
+      return null;
+    }
   }
 }

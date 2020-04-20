@@ -40,6 +40,8 @@ import edu.stanford.nlp.pipeline.POSTaggerAnnotator;
 import edu.stanford.nlp.pipeline.StanfordCoreNLP;
 import edu.stanford.nlp.util.CoreMap;
 
+import javax.xml.soap.Text;
+
 public class PosTagger {
   private static BaseConfig config;
 
@@ -107,16 +109,28 @@ public class PosTagger {
       List<Word> words = Lists.newArrayList();
 
       final List<CoreLabel> coreLabels = sentence.get(TokensAnnotation.class);
-      for (CoreLabel token : coreLabels) {
+      for ( int i = 0; i < coreLabels.size(); i++ ) {
+        CoreLabel token = coreLabels.get(i);
         String textToken = token.get(TextAnnotation.class);
         String pos = token.get(PartOfSpeechAnnotation.class);
-        if (textToken.startsWith("FORMULA_")) {
+        // TODO underscores are split in v3.9.2, see: https://github.com/stanfordnlp/CoreNLP/issues/942
+        if (textToken.startsWith("FORMULA")) {
+          String underscore = handleUnderscore(coreLabels, i);
+          if ( underscore != null ){
+            i = i+2; // skip underscore tokens
+            textToken += underscore;
+          }
           words.add(new Word(textToken, PosTag.MATH));
         } else if (SYMBOLS.contains(textToken)) {
           words.add(new Word(textToken, PosTag.SYMBOL));
         } else if (BRACKET_CODES.containsKey(textToken)) {
           words.add(new Word(BRACKET_CODES.get(textToken), pos));
-        } else if (textToken.startsWith("LINK_")) {
+        } else if (textToken.startsWith("LINK")) {
+          String underscore = handleUnderscore(coreLabels, i);
+          if ( underscore != null ){
+            i = i+2; // skip underscore tokens
+            textToken += underscore;
+          }
           words.add(new Word(textToken, PosTag.LINK));
         } else {
           words.add(new Word(textToken, pos));
@@ -126,6 +140,21 @@ public class PosTagger {
     }
 
     return result;
+  }
+
+  /**
+   * Since 3.9.2, underscore expressions are split (e.g., LINK_3 is split into three tokens LINK, _, 3).
+   * It was promised to be fixed in an issue: https://github.com/stanfordnlp/CoreNLP/issues/942
+   * However, the latest release is still 3.9.2, even though they working on release 4.0.0
+   */
+  private String handleUnderscore(List<CoreLabel> coreLabels, int i) {
+    if ( i >= coreLabels.size()-2 ) return null;
+    CoreLabel next = coreLabels.get(i+1);
+    if ( next.get(TextAnnotation.class).equals("_") ) {
+      next = coreLabels.get(i+2);
+      return "_" + next.get(TextAnnotation.class);
+    }
+    return null;
   }
 
   public static List<Sentence> postprocess(List<List<Word>> input, Map<String, MathTag> formulaIndex,
@@ -217,12 +246,12 @@ public class PosTagger {
     }
 
     // noun phrases
+    // TODO fix jacobi polynomials bug
     result = concatenateSuccessiveNounsToNounSequence(result);
 
     result = contatenateSuccessive2Tags(result, PosTag.ADJECTIVE, PosTag.NOUN, PosTag.NOUN_PHRASE);
     result = contatenateSuccessive2Tags(result, PosTag.ADJECTIVE, PosTag.NOUN_PLURAL, PosTag.NOUN_PHRASE);
-    result = contatenateSuccessive2Tags(result, PosTag.ADJECTIVE, PosTag.NOUN_SEQUENCE,
-      PosTag.NOUN_SEQUENCE_PHRASE);
+    result = contatenateSuccessive2Tags(result, PosTag.ADJECTIVE, PosTag.NOUN_SEQUENCE, PosTag.NOUN_SEQUENCE_PHRASE);
 
     return result;
   }
