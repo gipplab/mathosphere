@@ -246,17 +246,17 @@ public class PosTagger {
     }
 
     // noun phrases
-    // TODO fix jacobi polynomials bug
+    return concatenatePhrases(result);
+  }
+
+  protected static List<Word> concatenatePhrases(List<Word> result) {
     result = concatenateSuccessiveNounsToNounSequence(result);
-
-    result = contatenateSuccessive2Tags(result, PosTag.ADJECTIVE, PosTag.NOUN, PosTag.NOUN_PHRASE);
-    result = contatenateSuccessive2Tags(result, PosTag.ADJECTIVE, PosTag.NOUN_PLURAL, PosTag.NOUN_PHRASE);
-    result = contatenateSuccessive2Tags(result, PosTag.ADJECTIVE, PosTag.NOUN_SEQUENCE, PosTag.NOUN_SEQUENCE_PHRASE);
-
+    result = concatenateSuccessiveAdjectives(result);
+    result = concatenateTwoSuccessiveRegexTags(result, PosTag.ANY_ADJECTIVE_REGEX, PosTag.ANY_NOUN_REGEX, PosTag.NOUN_PHRASE);
     return result;
   }
 
-  public static List<Word> concatenateLinks(List<Word> in, Set<String> allIdentifiers) {
+  protected static List<Word> concatenateLinks(List<Word> in, Set<String> allIdentifiers) {
     Pattern<Word> linksPattern = Pattern.create(pos(PosTag.QUOTE), anyWord().oneOrMore()
       .captureAs("link"), pos(PosTag.UNQUOTE));
 
@@ -273,10 +273,18 @@ public class PosTagger {
     });
   }
 
-  public static List<Word> concatenateSuccessiveNounsToNounSequence(List<Word> in) {
-    XMatcher<Word> noun = posIn(PosTag.NOUN, PosTag.NOUN_PLURAL);
-    Pattern<Word> nounPattern = Pattern.create(noun.oneOrMore());
+  protected static List<Word> concatenateSuccessiveNounsToNounSequence(List<Word> in) {
+    XMatcher<Word> noun = posIn(PosTag.FOREIGN_WORD, PosTag.NOUN, PosTag.NOUN_PHRASE, PosTag.NOUN_PROPER, PosTag.NOUN_PLURAL, PosTag.NOUN_PROPER_PLURAL);
+    return concatenateSuccessiveTags(in, noun, PosTag.NOUN_PHRASE);
+  }
 
+  protected static List<Word> concatenateSuccessiveAdjectives(List<Word> in) {
+    XMatcher<Word> adjs = posIn(PosTag.ADJECTIVE, PosTag.ADJECTIVE_COMPARATIVE, PosTag.ADJECTIVE_SUPERLATIVE);
+    return concatenateSuccessiveTags(in, adjs, PosTag.ADJECTIVE_SEQUENCE);
+  }
+
+  private static List<Word> concatenateSuccessiveTags(List<Word> in, XMatcher<Word> matcher, String newTag) {
+    Pattern<Word> nounPattern = Pattern.create(matcher.oneOrMore());
     return nounPattern.replaceToOne(in, new TransformerToElement<Word>() {
       @Override
       public Word transform(Match<Word> match) {
@@ -285,33 +293,32 @@ public class PosTagger {
           return words.get(0);
         }
 
-        return new Word(joinWords(words), PosTag.NOUN_SEQUENCE);
+        return new Word(joinWords(words), newTag);
       }
     });
-
   }
 
-  public static List<Word> contatenateSuccessive2Tags(List<Word> in, String tag1, String tag2,
+  protected static List<Word> concatenateTwoSuccessiveRegexTags(List<Word> in, String tag1, String tag2,
                                                       String outputTag) {
     Pattern<Word> pattern = Pattern.create(pos(tag1), pos(tag2));
     return pattern.replaceToOne(in, m -> new Word(joinWords(m.getMatchedSubsequence()), outputTag));
   }
 
-  public static String joinWords(List<Word> list) {
+  private static String joinWords(List<Word> list) {
     List<String> toJoin = Lists.newArrayList();
     list.forEach(w -> toJoin.add(w.getWord()));
     return StringUtils.join(toJoin, " ");
   }
 
-  public static XMatcher<Word> pos(String tag) {
-    return BeanMatchers.eq(Word.class, "posTag", tag);
+  private static XMatcher<Word> pos(String tag) {
+    return BeanMatchers.regex(Word.class, "posTag", tag);
   }
 
-  public static XMatcher<Word> posIn(String... tags) {
+  private static XMatcher<Word> posIn(String... tags) {
     return BeanMatchers.in(Word.class, "posTag", ImmutableSet.copyOf(tags));
   }
 
-  public static XMatcher<Word> anyWord() {
+  private static XMatcher<Word> anyWord() {
     return Matchers.anything();
   }
 }
