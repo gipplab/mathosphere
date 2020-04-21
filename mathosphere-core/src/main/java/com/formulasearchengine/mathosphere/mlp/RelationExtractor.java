@@ -51,7 +51,7 @@ public class RelationExtractor {
 
     String filePath = config.getInput();
     String text = FileUtils.readFileToString(new File(filePath), "UTF-8");
-    RawWikiDocument doc = new RawWikiDocument(text);
+    RawWikiDocument doc = new RawWikiDocument(filePath, 0, text);
     ParsedWikiDocument parsedDocument = annotator.map(doc);
 
     CreateCandidatesMapper mlp = new CreateCandidatesMapper(config);

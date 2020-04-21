@@ -17,6 +17,7 @@ import com.formulasearchengine.mathosphere.utils.sweble.MlpConfigEnWpImpl;
 import com.google.common.collect.Multiset;
 import com.jcabi.log.Logger;
 import de.fau.cs.osr.ptk.common.AstVisitor;
+import org.apache.commons.text.StringEscapeUtils;
 import org.sweble.wikitext.engine.EngineException;
 import org.sweble.wikitext.engine.PageId;
 import org.sweble.wikitext.engine.PageTitle;
@@ -35,6 +36,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static de.fau.cs.osr.utils.StringTools.strrep;
@@ -56,9 +58,9 @@ import static de.fau.cs.osr.utils.StringTools.strrep;
  * return value of the call to <code>visit(c)</code>.</li> </ul>
  */
 @SuppressWarnings("unused")
-public class MathConverter
-        extends
-        AstVisitor<WtNode> {
+public class MathConverter extends AstVisitor<WtNode> {
+    private final static Pattern TEXT_PATTERN = Pattern.compile("<text(.*?)>(.*?)</text>", Pattern.DOTALL);
+
     private final static Pattern subMatch = Pattern.compile("[{<]sub[}>](.+?)[{<]/sub[}>]");
     private final static WikiConfig config = MlpConfigEnWpImpl.generate();
     private final static WtEngineImpl engine = new WtEngineImpl(config);
@@ -95,6 +97,7 @@ public class MathConverter
 
 
     public MathConverter(String wikiText, String name) throws LinkTargetException, EngineException {
+        wikiText = preProcessWikiText(wikiText);
         pageTitle = PageTitle.make(config, name);
         PageId pageId = new PageId(pageTitle, -1);
         page = engine.postprocess(pageId, wikiText, null);
@@ -113,6 +116,27 @@ public class MathConverter
             wl = null;
         }
         texInfoUrl = config.getTexvcinfoUrl();
+    }
+
+    /**
+     * The standard wiki dump escapes xml tags in <text> (which is the content of a page).
+     * However, when escaped, the AstVisitor is not able to discover them as xml-tags.
+     * This method unescapes all xml tags only within the <text></text> block.
+     * @param wikitext with escaped xml strings in <text></text>
+     * @return the same wikitext but unescaped xml within <text></text>
+     */
+    private String preProcessWikiText(String wikitext) {
+        Matcher textMatcher = TEXT_PATTERN.matcher(wikitext);
+        StringBuffer sb = new StringBuffer();
+        while ( textMatcher.find() ) {
+            String attributes = textMatcher.group(1);
+            String content = textMatcher.group(2);
+            content = StringEscapeUtils.unescapeXml(content);
+            String newText = "<text" + attributes + ">" + content + "</text>";
+            textMatcher.appendReplacement(sb, newText);
+        }
+        textMatcher.appendTail(sb);
+        return sb.toString();
     }
 
     @Override
@@ -349,8 +373,13 @@ public class MathConverter
         write(Character.toChars(cr.getCodePoint()));
     }
 
+    private boolean currentlyOpenXmlTag = false;
+
+    // TODO here, an xml tag might open, so we should handle that in case of <math> and <ref>
     public void visit(WtXmlEntityRef er) {
         String ch = er.getResolved();
+        if ( er.getName().equals("<") ) currentlyOpenXmlTag = true;
+
         if (ch == null) {
             write('&');
             write(er.getName());
@@ -535,7 +564,8 @@ public class MathConverter
         try {
             WtTemplateArgument arg0;
             String content;
-            switch (n.getName().getAsString().toLowerCase()) {
+            String name = n.getName().getAsString();
+            switch (name.toLowerCase()) {
                 case "math":
                     arg0 = (WtTemplateArgument) n.getArgs().get(0);
                     content = ((WtText) arg0.getValue().get(0)).getContent().trim();
@@ -552,10 +582,14 @@ public class MathConverter
                     needSpace = true;
                     break;
                 case "numblk":
+                    // https://en.wikipedia.org/wiki/Template:NumBlk
+                    // the second argument is always math, so iterate just over the math
                     arg0 = (WtTemplateArgument) n.getArgs().get(1);
+                    iterate(arg0.getValue());
                     break;
                 default:
-                    iterate(n.getArgs());
+                    Logger.warn(n, "Ignore unknown template: " + name);
+//                    iterate(n.getArgs());
             }
         } catch (Exception e) {
             Logger.info(e, "Problem prcessing page", pageTitle.getTitle());
@@ -584,17 +618,8 @@ public class MathConverter
                 } else {
                     markUpType= WikiTextUtils.MathMarkUpType.LATEX;
                 }
-                MathTag tag = new MathTag(n.getLocation().line, n.getBody().getContent(), markUpType);
-                // System.err.println(i+++" : "+ n.getBody().getContent());
-                mathTags.add(tag);
-                if (needNewlines > 0) {
-                    write(" ");
-                }
-                needSpace = true;
-                writeWord(tag.placeholder());
-                needSpace = true;
+                addMathTag(n.getLocation().line, n.getBody().getContent(), markUpType);
                 break;
-
             case "ref":
                 String content = n.getBody().getContent();
                 if (!content.contains("<math")) {
@@ -607,6 +632,17 @@ public class MathConverter
                 write(content);
                 write("}");
         }
+    }
+
+    private void addMathTag(int location, String content, WikiTextUtils.MathMarkUpType type) {
+        MathTag tag = new MathTag(location, content, type);
+        mathTags.add(tag);
+        if (needNewlines > 0) {
+            write(" ");
+        }
+        needSpace = true;
+        writeWord(tag.placeholder());
+        needSpace = true;
     }
 
     public void visit(WtPageSwitch n) {
