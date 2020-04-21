@@ -22,6 +22,12 @@
             <organization>TU Berlin</organization>
             <organizationUrl>http://www.tu-berlin.de</organizationUrl>
         </developer>
+        <developer>
+            <name>Andre Greiner-Petter</name>
+            <email>andre.greiner-petter@zbmath.org</email>
+            <organization>University of Wuppertal</organization>
+            <organizationUrl>http://www.uni-wuppertal.de</organizationUrl>
+        </developer>
     </developers>
     <scm>
         <connection>scm:git:git@github.com:TU-Berlin/mathosphere2.git</connection>
