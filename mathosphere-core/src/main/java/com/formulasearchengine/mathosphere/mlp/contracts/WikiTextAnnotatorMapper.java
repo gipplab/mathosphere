@@ -9,7 +9,7 @@ import com.formulasearchengine.mathosphere.mlp.pojos.ParsedWikiDocument;
 import com.formulasearchengine.mathosphere.mlp.pojos.RawWikiDocument;
 import com.formulasearchengine.mathosphere.mlp.pojos.Sentence;
 import com.formulasearchengine.mathosphere.mlp.pojos.WikidataLink;
-import com.formulasearchengine.mathosphere.mlp.text.MathConverter;
+import com.formulasearchengine.mathosphere.mlp.text.WikiTextParser;
 import com.formulasearchengine.mathosphere.mlp.text.PosTagger;
 import com.formulasearchengine.mathosphere.mlp.text.WikiTextUtils;
 
@@ -21,16 +21,16 @@ import org.apache.logging.log4j.LogManager;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TextAnnotatorMapper extends RichMapFunction<RawWikiDocument, ParsedWikiDocument> {
+public class WikiTextAnnotatorMapper extends RichMapFunction<RawWikiDocument, ParsedWikiDocument> {
 
-  private static final Logger LOGGER = LogManager.getLogger(TextAnnotatorMapper.class.getName());
+  private static final Logger LOGGER = LogManager.getLogger(WikiTextAnnotatorMapper.class.getName());
 
   private final BaseConfig config;
 
 
   private transient PosTagger posTagger;
 
-  public TextAnnotatorMapper(BaseConfig config) {
+  public WikiTextAnnotatorMapper(BaseConfig config) {
     this.config = config;
   }
 
@@ -41,34 +41,34 @@ public class TextAnnotatorMapper extends RichMapFunction<RawWikiDocument, Parsed
 
   @Override
   public ParsedWikiDocument map(RawWikiDocument doc) {
-    LOGGER.info("processing \"{}\"...", doc.title);
+    LOGGER.info("processing \"{}\"...", doc.getTitle());
 
-    final ParsedWikiDocument parse = parse(doc.text, doc.title);
-    LOGGER.debug("identifiers in \"{}\" from {} formulas: {}", doc.title, parse.getFormulas().size(),
+    final ParsedWikiDocument parse = parse(doc);
+    LOGGER.debug("identifiers in \"{}\" from {} formulas: {}", doc.getTitle(), parse.getFormulas().size(),
         parse.getIdentifiers());
     return parse;
   }
 
-  public ParsedWikiDocument parse(String wikitext, String title) {
+  public ParsedWikiDocument parse(RawWikiDocument doc) {
     List<Sentence> sentences;
     List<WikidataLink> links = null;
     List<MathTag> mathTags;
     try {
       String cleanText;
       if (config.getUseTeXIdentifiers()) {
-        MathConverter c = new MathConverter(wikitext, title, config);
-        cleanText = c.getStrippedOutput();
+        WikiTextParser c = new WikiTextParser(doc, config);
+        cleanText = c.parse();
         mathTags = c.getMathTags();
         links = c.getLinks();
       } else {
-        mathTags = WikiTextUtils.findMathTags(wikitext);
-        String newText = WikiTextUtils.replaceAllFormulas(wikitext, mathTags);
+        mathTags = WikiTextUtils.findMathTags(doc.getPageContent());
+        String newText = WikiTextUtils.replaceAllFormulas(doc.getPageContent(), mathTags);
         cleanText = WikiTextUtils.extractPlainText(newText);
       }
       //formulas = toFormulas(mathTags, config.getUseTeXIdentifiers(),config.getTexvcinfoUrl());
       sentences = posTagger.process(cleanText, mathTags);
     } catch (Exception e) {
-      LOGGER.warn("Problem with text processing", title, e);
+      LOGGER.warn("Problem with text processing", doc.getTitle(), e);
       mathTags = new ArrayList<>();
       sentences = new ArrayList<>();
     }
@@ -78,11 +78,11 @@ public class TextAnnotatorMapper extends RichMapFunction<RawWikiDocument, Parsed
         allIdentifiers.add(entry.getElement(), entry.getCount());
       }
     }
-    return new ParsedWikiDocument(title, allIdentifiers, mathTags, sentences, links);
+    return new ParsedWikiDocument(doc.getTitle(), allIdentifiers, mathTags, sentences, links);
   }
 
   public ParsedWikiDocument parse(String wikitext) {
-    return parse(wikitext, "no title specified");
+    return parse(new RawWikiDocument("no title specified", -1, wikitext));
   }
 
 

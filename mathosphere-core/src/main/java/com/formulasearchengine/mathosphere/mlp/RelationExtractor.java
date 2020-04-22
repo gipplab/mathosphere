@@ -6,7 +6,7 @@ import com.formulasearchengine.mathosphere.mlp.cli.CliParams;
 import com.formulasearchengine.mathosphere.mlp.cli.ListCommandConfig;
 import com.formulasearchengine.mathosphere.mlp.cli.MlpCommandConfig;
 import com.formulasearchengine.mathosphere.mlp.contracts.CreateCandidatesMapper;
-import com.formulasearchengine.mathosphere.mlp.contracts.TextAnnotatorMapper;
+import com.formulasearchengine.mathosphere.mlp.contracts.WikiTextAnnotatorMapper;
 import com.formulasearchengine.mathosphere.mlp.pojos.ParsedWikiDocument;
 import com.formulasearchengine.mathosphere.mlp.pojos.RawWikiDocument;
 import com.formulasearchengine.mathosphere.mlp.pojos.Relation;
@@ -46,12 +46,12 @@ public class RelationExtractor {
   }
 
   private static WikiDocumentOutput getWikiDocumentOutput(MlpCommandConfig config) throws Exception {
-    TextAnnotatorMapper annotator = new TextAnnotatorMapper(config);
+    WikiTextAnnotatorMapper annotator = new WikiTextAnnotatorMapper(config);
     annotator.open(null);
 
     String filePath = config.getInput();
     String text = FileUtils.readFileToString(new File(filePath), "UTF-8");
-    RawWikiDocument doc = new RawWikiDocument(filePath, 0, text);
+    RawWikiDocument doc = new RawWikiDocument(text);
     ParsedWikiDocument parsedDocument = annotator.map(doc);
 
     CreateCandidatesMapper mlp = new CreateCandidatesMapper(config);

@@ -39,7 +39,7 @@ public class CreateCandidatesMapperTest {
 
   public static ParsedWikiDocument read(String testFile, int docNo) throws Exception {
     RawWikiDocument doc1 = TextAnnotatorMapperTest.readWikiTextDocuments(testFile).get(docNo);
-    TextAnnotatorMapper textAnnotator = TextAnnotatorMapperTest.TEST_INSTANCE;
+    WikiTextAnnotatorMapper textAnnotator = TextAnnotatorMapperTest.TEST_INSTANCE;
     return textAnnotator.map(doc1);
   }
 

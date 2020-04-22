@@ -26,7 +26,7 @@ public class MathTag {
 
     public final static Pattern FORMULA_PATTERN =
             Pattern.compile("FORMULA_[0-9a-f+]");
-    private static final HashFunction HASHER = Hashing.md5();
+    private static final HashFunction HASHER = Hashing.goodFastHash(64);
     private final int position;
     private final String content;
     private final MathMarkUpType markUpType;

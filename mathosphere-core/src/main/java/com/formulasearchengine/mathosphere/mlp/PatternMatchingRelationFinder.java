@@ -3,8 +3,8 @@ package com.formulasearchengine.mathosphere.mlp;
 import com.formulasearchengine.mathosphere.mlp.cli.FlinkMlpCommandConfig;
 import com.formulasearchengine.mathosphere.mlp.contracts.JsonSerializerMapper;
 import com.formulasearchengine.mathosphere.mlp.contracts.PatternMatcherMapper;
-import com.formulasearchengine.mathosphere.mlp.contracts.TextAnnotatorMapper;
-import com.formulasearchengine.mathosphere.mlp.contracts.TextExtractorMapper;
+import com.formulasearchengine.mathosphere.mlp.contracts.WikiTextAnnotatorMapper;
+import com.formulasearchengine.mathosphere.mlp.contracts.WikiTextPageExtractorMapper;
 import com.formulasearchengine.mathosphere.mlp.pojos.ParsedWikiDocument;
 import com.formulasearchengine.mathosphere.mlp.pojos.WikiDocumentOutput;
 
@@ -21,8 +21,8 @@ public class PatternMatchingRelationFinder {
     ExecutionEnvironment env = ExecutionEnvironment.getExecutionEnvironment();
 
     DataSource<String> source = readWikiDump(config, env);
-    DataSet<ParsedWikiDocument> documents = source.flatMap(new TextExtractorMapper())
-        .map(new TextAnnotatorMapper(config));
+    DataSet<ParsedWikiDocument> documents = source.flatMap(new WikiTextPageExtractorMapper())
+        .map(new WikiTextAnnotatorMapper(config));
 
     DataSet<WikiDocumentOutput> relations = documents.map(new PatternMatcherMapper());
     relations.map(new JsonSerializerMapper<>())

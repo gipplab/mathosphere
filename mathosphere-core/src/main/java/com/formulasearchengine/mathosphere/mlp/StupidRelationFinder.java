@@ -3,8 +3,8 @@ package com.formulasearchengine.mathosphere.mlp;
 import com.formulasearchengine.mathosphere.mlp.cli.MachineLearningDefinienExtractionConfig;
 import com.formulasearchengine.mathosphere.mlp.contracts.JsonSerializerMapper;
 import com.formulasearchengine.mathosphere.mlp.contracts.StupidRelationScorer;
-import com.formulasearchengine.mathosphere.mlp.contracts.TextAnnotatorMapper;
-import com.formulasearchengine.mathosphere.mlp.contracts.TextExtractorMapper;
+import com.formulasearchengine.mathosphere.mlp.contracts.WikiTextAnnotatorMapper;
+import com.formulasearchengine.mathosphere.mlp.contracts.WikiTextPageExtractorMapper;
 import com.formulasearchengine.mathosphere.mlp.pojos.EvaluationResult;
 import com.formulasearchengine.mathosphere.mlp.pojos.ParsedWikiDocument;
 import com.formulasearchengine.mathosphere.mlp.pojos.WikiDocumentOutput;
@@ -31,8 +31,8 @@ public class StupidRelationFinder {
     ExecutionEnvironment env = ExecutionEnvironment.getExecutionEnvironment();
     env.setParallelism(config.getParallelism());
     DataSource<String> source = readWikiDump(config, env);
-    DataSet<ParsedWikiDocument> documents = source.flatMap(new TextExtractorMapper())
-      .map(new TextAnnotatorMapper(config));
+    DataSet<ParsedWikiDocument> documents = source.flatMap(new WikiTextPageExtractorMapper())
+      .map(new WikiTextAnnotatorMapper(config));
     ArrayList<GoldEntry> gold = (new Evaluator()).readGoldEntries(new File(config.getGoldFile()));
     DataSet<WikiDocumentOutput> instances = documents.map(new SimpleFeatureExtractorMapper(config, gold));
     //get extraction results and rate all of them without selecting

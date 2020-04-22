@@ -37,8 +37,8 @@ import com.formulasearchengine.mathosphere.mlp.cli.FlinkMlpCommandConfig;
 import com.formulasearchengine.mathosphere.mlp.contracts.CreateCandidatesMapper;
 import com.formulasearchengine.mathosphere.mlp.contracts.JsonSerializerMapper;
 import com.formulasearchengine.mathosphere.mlp.contracts.PatternMatcherMapper;
-import com.formulasearchengine.mathosphere.mlp.contracts.TextAnnotatorMapper;
-import com.formulasearchengine.mathosphere.mlp.contracts.TextExtractorMapper;
+import com.formulasearchengine.mathosphere.mlp.contracts.WikiTextAnnotatorMapper;
+import com.formulasearchengine.mathosphere.mlp.contracts.WikiTextPageExtractorMapper;
 import com.formulasearchengine.mathosphere.mlp.pojos.MathTag;
 import com.formulasearchengine.mathosphere.mlp.pojos.ParsedWikiDocument;
 import com.formulasearchengine.mathosphere.mlp.pojos.Relation;
@@ -62,8 +62,8 @@ public class FlinkMlpRelationFinder {
 
         DataSource<String> source = readWikiDump(config, env);
         DataSet<ParsedWikiDocument> documents =
-                source.flatMap(new TextExtractorMapper())
-                        .map(new TextAnnotatorMapper(config));
+                source.flatMap(new WikiTextPageExtractorMapper())
+                        .map(new WikiTextAnnotatorMapper(config));
 
         DataSet<WikiDocumentOutput> result = documents.map(new CreateCandidatesMapper(config));
 
@@ -82,7 +82,8 @@ public class FlinkMlpRelationFinder {
         Path filePath = new Path(config.getDataset());
         TextInputFormat inp = new TextInputFormat(filePath);
         inp.setCharsetName("UTF-8");
-        inp.setDelimiter("</page>");
+        // no longer necessary, The wikitextpageextractormapper does the splitting
+//        inp.setDelimiter("</mediawiki>");
         return env.readFile(inp, config.getDataset());
     }
 
@@ -91,8 +92,8 @@ public class FlinkMlpRelationFinder {
         DataSource<String> source = readWikiDump(config, env);
 
         DataSet<ParsedWikiDocument> documents =
-                source.flatMap(new TextExtractorMapper())
-                        .map(new TextAnnotatorMapper(config));
+                source.flatMap(new WikiTextPageExtractorMapper())
+                        .map(new WikiTextAnnotatorMapper(config));
         final File file = new File(config.getQueries());
         ObjectMapper mapper = new ObjectMapper();
         List userData = mapper.readValue(file, List.class);
@@ -296,7 +297,7 @@ public class FlinkMlpRelationFinder {
     }
 
     public WikiDocumentOutput outDocFromText(FlinkMlpCommandConfig config, String input) throws Exception {
-        final TextAnnotatorMapper textAnnotatorMapper = new TextAnnotatorMapper(config);
+        final WikiTextAnnotatorMapper textAnnotatorMapper = new WikiTextAnnotatorMapper(config);
         textAnnotatorMapper.open(null);
         final CreateCandidatesMapper candidatesMapper = new CreateCandidatesMapper(config);
 

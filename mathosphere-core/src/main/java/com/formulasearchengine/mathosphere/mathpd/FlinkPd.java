@@ -7,7 +7,7 @@ import com.formulasearchengine.mathosphere.mathpd.contracts.TextExtractorMapper;
 import com.formulasearchengine.mathosphere.mathpd.pojos.ExtractedMathPDDocument;
 import com.formulasearchengine.mathosphere.mlp.contracts.CreateCandidatesMapper;
 import com.formulasearchengine.mathosphere.mlp.contracts.JsonSerializerMapper;
-import com.formulasearchengine.mathosphere.mlp.contracts.TextAnnotatorMapper;
+import com.formulasearchengine.mathosphere.mlp.contracts.WikiTextAnnotatorMapper;
 import com.formulasearchengine.mathosphere.mlp.pojos.ParsedWikiDocument;
 import com.formulasearchengine.mathosphere.mlp.pojos.WikiDocumentOutput;
 
@@ -459,7 +459,7 @@ public class FlinkPd {
     }
 
     public WikiDocumentOutput outDocFromText(FlinkPdCommandConfig config, String input) throws Exception {
-        final TextAnnotatorMapper textAnnotatorMapper = new TextAnnotatorMapper(config);
+        final WikiTextAnnotatorMapper textAnnotatorMapper = new WikiTextAnnotatorMapper(config);
         textAnnotatorMapper.open(null);
         final CreateCandidatesMapper candidatesMapper = new CreateCandidatesMapper(config);
 

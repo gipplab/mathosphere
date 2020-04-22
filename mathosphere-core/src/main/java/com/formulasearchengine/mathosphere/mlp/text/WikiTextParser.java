@@ -10,14 +10,14 @@ package com.formulasearchengine.mathosphere.mlp.text;
  */
 
 import com.formulasearchengine.mathosphere.mlp.cli.BaseConfig;
-import com.formulasearchengine.mathosphere.mlp.contracts.TextExtractorMapper;
 import com.formulasearchengine.mathosphere.mlp.pojos.MathTag;
+import com.formulasearchengine.mathosphere.mlp.pojos.RawWikiDocument;
+import com.formulasearchengine.mathosphere.mlp.pojos.WikiCitation;
 import com.formulasearchengine.mathosphere.mlp.pojos.WikidataLink;
 import com.formulasearchengine.mathosphere.utils.sweble.MlpConfigEnWpImpl;
 import com.google.common.collect.Multiset;
 import com.jcabi.log.Logger;
 import de.fau.cs.osr.ptk.common.AstVisitor;
-import org.apache.commons.text.StringEscapeUtils;
 import org.sweble.wikitext.engine.EngineException;
 import org.sweble.wikitext.engine.PageId;
 import org.sweble.wikitext.engine.PageTitle;
@@ -33,9 +33,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.xpath.XPathExpressionException;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -56,23 +54,39 @@ import static de.fau.cs.osr.utils.StringTools.strrep;
  * values of the <code>visit()</code> calls in a list,</li> <li><code>mapInPlace(n)</code> - visit
  * the <b>children</b> of node <code>n</code> and replace each child node <code>c</code> with the
  * return value of the call to <code>visit(c)</code>.</li> </ul>
+ * </p>
+ * <p>
+ *     The source code of sweble wikitext extension can be found here:<br>
+ *     <a href="https://github.com/sweble/sweble-wikitext">https://github.com/sweble/sweble-wikitext</a><br><br>
+ *     A complete list of AST wikitext nodes can be found here: <br>
+ *     <a href="https://github.com/sweble/sweble-wikitext/blob/develop/sweble-wikitext-components-parent/swc-engine/doc/ast-nodes.txt">
+ *         sweble-wikitext/sweble-wikitext-components-parent/swc-engine/doc/ast-nodes.txt</a>
+ * </p>
  */
 @SuppressWarnings("unused")
-public class MathConverter extends AstVisitor<WtNode> {
-    private final static Pattern TEXT_PATTERN = Pattern.compile("<text(.*?)>(.*?)</text>", Pattern.DOTALL);
-
+public class WikiTextParser extends AstVisitor<WtNode> {
     private final static Pattern subMatch = Pattern.compile("[{<]sub[}>](.+?)[{<]/sub[}>]");
+
+    private final static Pattern MML_TOKENS_PATTERN = Pattern.compile(
+            "<(?:m[a-z]+|apply|c[in]|csymbol|semantics)>"
+    );
+
     private final static WikiConfig config = MlpConfigEnWpImpl.generate();
     private final static WtEngineImpl engine = new WtEngineImpl(config);
     private static final Pattern ws = Pattern.compile("\\s+");
     private static int i = 0;
+
     private final EngProcessedPage page;
+
     private List<MathTag> mathTags = new ArrayList<>();
     private List<WikidataLink> links = new ArrayList<>();
+    private Map<Integer, WikiCitation> citations = new HashMap<>();
+
     private StringBuilder sb;
     private StringBuilder line;
     private int extLinkNum;
     private WikidataLinkMap wl = null;
+
     /**
      * Becomes true if we are no long at the Beginning Of the whole Document.
      */
@@ -85,31 +99,21 @@ public class MathConverter extends AstVisitor<WtNode> {
     private String texInfoUrl;
     private boolean suppressOutput = false;
 
-    public boolean isSkipHiddenMath() {
-        return skipHiddenMath;
-    }
-
-    public void setSkipHiddenMath(boolean skipHiddenMath) {
-        this.skipHiddenMath = skipHiddenMath;
-    }
-
     private boolean skipHiddenMath;
 
+    public WikiTextParser(String partialWikiDoc) throws LinkTargetException, EngineException {
+        this(new RawWikiDocument("unknown-title", -1, partialWikiDoc));
+    }
 
-    public MathConverter(String wikiText, String name) throws LinkTargetException, EngineException {
-        wikiText = preProcessWikiText(wikiText);
-        pageTitle = PageTitle.make(config, name);
+    public WikiTextParser(RawWikiDocument wikidoc) throws LinkTargetException, EngineException {
+        pageTitle = PageTitle.make(config, wikidoc.getTitle());
         PageId pageId = new PageId(pageTitle, -1);
-        page = engine.postprocess(pageId, wikiText, null);
+        page = engine.postprocess(pageId, wikidoc.getPageContent(), null);
         texInfoUrl = (new BaseConfig()).getTexvcinfoUrl();
     }
 
-    public MathConverter(String wikiText) throws LinkTargetException, EngineException {
-        this(wikiText, "noname");
-    }
-
-    public MathConverter(String wikitext, String title, BaseConfig config) throws LinkTargetException, EngineException {
-        this(wikitext, title);
+    public WikiTextParser(RawWikiDocument wikidoc, BaseConfig config) throws LinkTargetException, EngineException {
+        this(wikidoc);
         if (config.getWikiDataFile() != null) {
             wl = new WikidataLinkMap(config.getWikiDataFile());
         } else {
@@ -118,25 +122,21 @@ public class MathConverter extends AstVisitor<WtNode> {
         texInfoUrl = config.getTexvcinfoUrl();
     }
 
-    /**
-     * The standard wiki dump escapes xml tags in <text> (which is the content of a page).
-     * However, when escaped, the AstVisitor is not able to discover them as xml-tags.
-     * This method unescapes all xml tags only within the <text></text> block.
-     * @param wikitext with escaped xml strings in <text></text>
-     * @return the same wikitext but unescaped xml within <text></text>
-     */
-    private String preProcessWikiText(String wikitext) {
-        Matcher textMatcher = TEXT_PATTERN.matcher(wikitext);
-        StringBuffer sb = new StringBuffer();
-        while ( textMatcher.find() ) {
-            String attributes = textMatcher.group(1);
-            String content = textMatcher.group(2);
-            content = StringEscapeUtils.unescapeXml(content);
-            String newText = "<text" + attributes + ">" + content + "</text>";
-            textMatcher.appendReplacement(sb, newText);
+    public String parse() {
+        try {
+            return (String) this.go(page.getPage());
+        } catch (Exception e) {
+            Logger.error(e, "Error parsing page " + this.pageTitle);
+            return "";
         }
-        textMatcher.appendTail(sb);
-        return sb.toString();
+    }
+
+    public boolean isSkipHiddenMath() {
+        return skipHiddenMath;
+    }
+
+    public void setSkipHiddenMath(boolean skipHiddenMath) {
+        this.skipHiddenMath = skipHiddenMath;
     }
 
     @Override
@@ -231,40 +231,15 @@ public class MathConverter extends AstVisitor<WtNode> {
         return mathTags;
     }
 
-    public String getOutput() {
-        String output = getStrippedOutput();
-        for (WikidataLink link : links) {
-            if (link.getTitle() == null) {
-                output = output.replace("LINK_" + link.getContentHash(), "[[" + link.getContent() + "]]");
-            } else {
-                output = output.replace(
-                        "LINK_" + link.getContentHash(), "[[" + link.getContent() + "|" + link.getTitle() + "]]");
-            }
-        }
-        for (MathTag tag : mathTags) {
-            output = output.replace("FORMULA_" + tag.getContentHash(),
-                    "<math>" + tag.getContent() + "</math>");
-        }
-        return output;
-    }
-
-    public String getStrippedOutput() {
-        try {
-            return (String) this.go(page.getPage());
-        } catch (Exception e) {
-            Logger.error(e, "Error parsing page " + this.pageTitle);
-            return "";
-        }
-    }
-
     private String getTex(WtNode i, boolean force) {
         if (i.get(0) instanceof WtText) {
             String content = ((WtText) i.get(0)).getContent().trim();
-            content = TextExtractorMapper.unescape(content);
             String tex = wiki2Tex(content);
             if (tex.length() > 0 && (
-                    content.length() == 1
-                            || (content.length() < 100 && !content.equals(tex)))) {
+                    content.length() == 1 || (
+                            content.length() < 100 && !content.equals(tex)
+                    )
+            )) {
                 Multiset<String> idents;
                 try {
                     idents = TexInfo.getIdentifiers(tex, texInfoUrl);
@@ -288,8 +263,6 @@ public class MathConverter extends AstVisitor<WtNode> {
     }
 
     private void handeLatexMathTag(WtNode n, String content) {
-
-        content = TextExtractorMapper.unescape(content);
         //content = content.replaceAll("'''([a-zA-Z]+)'''","\\mathbf{$1}");
         content = wiki2Tex(content);
         int location = 0;
@@ -373,13 +346,9 @@ public class MathConverter extends AstVisitor<WtNode> {
         write(Character.toChars(cr.getCodePoint()));
     }
 
-    private boolean currentlyOpenXmlTag = false;
-
     // TODO here, an xml tag might open, so we should handle that in case of <math> and <ref>
     public void visit(WtXmlEntityRef er) {
         String ch = er.getResolved();
-        if ( er.getName().equals("<") ) currentlyOpenXmlTag = true;
-
         if (ch == null) {
             write('&');
             write(er.getName());
@@ -501,22 +470,27 @@ public class MathConverter extends AstVisitor<WtNode> {
     }
 
     public void visit(WtXmlElement e) {
-        if (e.getName().equalsIgnoreCase("br")) {
-            newline(1);
-        } else if (e.getName().equalsIgnoreCase("var")) {
-            WtNode wtNodes = e.getBody().get(0);
-            String content;
-            if (wtNodes instanceof WtText) {
-                content = ((WtText) wtNodes).getContent().trim();
-                handeLatexMathTag(e, content);
-            } else if (wtNodes instanceof WtInternalLink) {
-                //TODO: do not throw away the information of the link from WtInternalLink.getTarget()
-                //Identifier is more important than link. Link maybe helpful for wikidata.
-                content = ((WtText) ((WtInternalLink) e.getBody().get(0)).getTitle().get(0)).getContent().trim();
-                handeLatexMathTag(e, content);
-            }
-        } else {
-            iterate(e.getBody());
+        String name = e.getName();
+        switch ( name.toLowerCase() ) {
+            case "br":
+                newline(1);
+                break;
+            case "var":
+                WtNode wtNodes = e.getBody().get(0);
+                String content;
+                if (wtNodes instanceof WtText) {
+                    content = ((WtText) wtNodes).getContent().trim();
+                    handeLatexMathTag(e, content);
+                } else if (wtNodes instanceof WtInternalLink) {
+                    //TODO: do not throw away the information of the link from WtInternalLink.getTarget()
+                    //Identifier is more important than link. Link maybe helpful for wikidata.
+                    content = ((WtText) ((WtInternalLink) e.getBody().get(0)).getTitle().get(0)).getContent().trim();
+                    handeLatexMathTag(e, content);
+                }
+                break;
+            case "text":
+                iterate(e.getBody());
+                break;
         }
     }
 
@@ -564,11 +538,24 @@ public class MathConverter extends AstVisitor<WtNode> {
         try {
             WtTemplateArgument arg0;
             String content;
+            WikiCitation cite;
             String name = n.getName().getAsString();
+
             switch (name.toLowerCase()) {
                 case "math":
                     arg0 = (WtTemplateArgument) n.getArgs().get(0);
-                    content = ((WtText) arg0.getValue().get(0)).getContent().trim();
+                    content = "";
+                    for ( int i = 0; i < arg0.getValue().size(); i++ ){
+                        WtNode node = arg0.getValue().get(i);
+                        if ( node instanceof WtText ) {
+                            content += ((WtText) node).getContent().trim();
+                        } else if ( node instanceof WtTemplate ) {
+                            content += innerMathTemplateReplacement((WtTemplate)node);
+                        } else {
+                            Logger.warn(node, "Ignore unknown node within math template: " + node.toString());
+                        }
+                    }
+
                     handeLatexMathTag(n, content);
                     break;
                 case "mvar":
@@ -587,13 +574,72 @@ public class MathConverter extends AstVisitor<WtNode> {
                     arg0 = (WtTemplateArgument) n.getArgs().get(1);
                     iterate(arg0.getValue());
                     break;
+                case "Citation":
+                    cite = new WikiCitation(n.toString());
+                    citations.put(cite.hashCode(), cite);
+                    break;
+                case "dlmf":
+                    cite = new WikiCitation("dlmf", n.toString());
+                    citations.put(cite.hashCode(), cite);
+                    break;
+                case "short description":
+                case "for":
+                case "use american english":
+                    Logger.warn(n, "Ignore template: " + name);
+                    break;
                 default:
-                    Logger.warn(n, "Ignore unknown template: " + name);
-//                    iterate(n.getArgs());
+                    iterate(n.getArgs());
             }
         } catch (Exception e) {
             Logger.info(e, "Problem prcessing page", pageTitle.getTitle());
         }
+    }
+
+    public String innerMathTemplateReplacement(WtTemplate t) {
+        String name = t.getName().getAsString();
+        WtTemplateArgument arg;
+        String result = "";
+        switch (name.toLowerCase()) {
+            case "pi":
+                result = " {\\pi} ";
+                break;
+            case "=":
+                result = " = ";
+                break;
+            case "su":
+                WtTemplateArguments args = t.getArgs();
+                String sub = "", sup = "";
+                for ( int i = 0; i < args.size(); i++ ) {
+                    arg = (WtTemplateArgument)args.get(i);
+                    String key = arg.getName().getAsString();
+                    Boolean subKey = null;
+                    if ( key.equals("b") ) {
+                        subKey = true;
+                    } else if ( key.equals("p") ) {
+                        subKey = false;
+                    }
+
+                    if ( subKey != null ) {
+                        String c = ((WtText)arg.getValue().get(0)).getContent();
+                        if ( subKey ) sub = "_{"+c+"}";
+                        else sup = "^{"+c+"}";
+                    }
+                }
+                result = sub+sup;
+                break;
+            case "sub":
+                arg = (WtTemplateArgument) t.getArgs().get(0);
+                result = ((WtText)arg.getValue().get(0)).getContent();
+                result = "_{"+result+"}";
+                break;
+            case "sup":
+                arg = (WtTemplateArgument) t.getArgs().get(0);
+                result = ((WtText)arg.getValue().get(0)).getContent();
+                result = "^{"+result+"}";
+                break;
+            default: return null;
+        }
+        return result;
     }
 
     public void visit(WtTemplateArgument n) {
@@ -613,25 +659,68 @@ public class MathConverter extends AstVisitor<WtNode> {
                 chem = true;
             case "math":
                 WikiTextUtils.MathMarkUpType markUpType;
+                String content = "";
                 if (chem) {
                     markUpType = WikiTextUtils.MathMarkUpType.LATEXCE;
+                } else if ( hasMathMLNamespaceAttribute(n.getXmlAttributes()) || hasMathMLTokens(n.getBody()) ) {
+                    Logger.debug(n, "Identified MathML");
+                    markUpType = WikiTextUtils.MathMarkUpType.MATHML;
                 } else {
                     markUpType= WikiTextUtils.MathMarkUpType.LATEX;
                 }
                 addMathTag(n.getLocation().line, n.getBody().getContent(), markUpType);
                 break;
             case "ref":
-                String content = n.getBody().getContent();
-                if (!content.contains("<math")) {
-                    return;
+                String attribute = "";
+                if ( n.getXmlAttributes().size() > 0 ) {
+                    for (WtNode wtNode : n.getXmlAttributes()) {
+                        WtXmlAttribute att = (WtXmlAttribute) wtNode;
+                        if (att.getName().getAsString().equals("name")) {
+                            attribute = ((WtText) att.getValue().get(0)).getContent();
+                            break;
+                        }
+                    }
                 }
-                final List<MathTag> tags = WikiTextUtils.findMathTags(content);
-                content = WikiTextUtils.replaceAllFormulas(content, tags);
-                mathTags.addAll(tags);
-                write("(");
-                write(content);
-                write("}");
+
+                WikiCitation cite = new WikiCitation(
+                        attribute,
+                        n.getBody().toString()
+                );
+
+                citations.put(cite.hashCode(), cite);
+                write("CITE_"+cite.hashCode());
+//                String content = n.getBody().getContent();
+//                if (!content.contains("<math")) {
+//                    return;
+//                }
+//                final List<MathTag> tags = WikiTextUtils.findMathTags(content);
+//                content = WikiTextUtils.replaceAllFormulas(content, tags);
+//                mathTags.addAll(tags);
+//                write("(");
+//                write(content);
+//                write("}");
         }
+    }
+
+    private boolean hasMathMLNamespaceAttribute(WtXmlAttributes attributes) {
+        for (Iterator<WtNode> it = attributes.iterator(); it.hasNext(); ) {
+            WtXmlAttribute att = (WtXmlAttribute) it.next();
+            String name = att.getName().getAsString();
+            if ( "xmlns".equals(name.toLowerCase()) ) {
+                // ok its xmlns, lets check if its actually mathml
+                String value = ((WtText)att.getValue().get(0)).getContent();
+                if ( "http://www.w3.org/1998/Math/MathML".equals(value) ) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    private boolean hasMathMLTokens(WtTagExtensionBody body) {
+        String mightBeMathML = body.getContent();
+        Matcher mmlMatcher = MML_TOKENS_PATTERN.matcher(mightBeMathML);
+        return mmlMatcher.find();
     }
 
     private void addMathTag(int location, String content, WikiTextUtils.MathMarkUpType type) {
@@ -654,11 +743,12 @@ public class MathConverter extends AstVisitor<WtNode> {
         }
     }
 
-    String wiki2Tex(String content) {
-        content = subMatch.matcher(content).replaceAll("_{$1}")
+    public static String wiki2Tex(String content) {
+        content = subMatch.matcher(content)
+                .replaceAll("_{$1}")
                 .replaceAll("[{<]sup[}>](.+?)[{<]/sup[}>]", "^{$1}")
-                .replaceAll("'''(.+?)'''", "\\\\mathbf{$1}")
-                .replaceAll("''(.+?)''", "\\\\mathit{$1}");
+                .replaceAll("'''(\\S)'''", "\\\\mathbf{$1}")
+                .replaceAll("''(\\S)''", "\\\\mathit{$1}");
         return UnicodeMap.string2TeX(content);
 //    int[] chars = content.codePoints().toArray();
 //    StringBuilder res = new StringBuilder();
@@ -745,7 +835,7 @@ public class MathConverter extends AstVisitor<WtNode> {
      */
     public void processTags() {
         this.suppressOutput = true;
-        this.getStrippedOutput();
+        this.parse();
         this.suppressOutput = false;
     }
 }

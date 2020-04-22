@@ -28,17 +28,22 @@ public class PosTaggerTest {
     PosTagger nlpProcessor = PosTagger.create(cfg);
     String text = readText("escaped.txt");
 
-    List<MathTag> mathTags = WikiTextUtils.findMathTags(text);
+    WikiTextParser parser = new WikiTextParser(text);
+    String cleanText = parser.parse();
+    List<MathTag> mathTags = parser.getMathTags();
 
-    String newText = WikiTextUtils.replaceAllFormulas(text, mathTags);
-    String cleanText = WikiTextUtils.extractPlainText(newText);
+//    List<MathTag> mathTags = WikiTextUtils.findMathTags(text);
+//    String newText = WikiTextUtils.replaceAllFormulas(text, mathTags);
+//    String cleanText = WikiTextUtils.extractPlainText(newText);
+    System.out.println(cleanText);
 
     List<Sentence> result = nlpProcessor.process(cleanText, mathTags);
 
-    List<Word> expected = Arrays.asList(w("where", "WRB"), w("Ψ", "ID"), w("is", "VBZ"), w("the", "DT"),
+    List<Word> expected = Arrays.asList(
+            w("where", "WRB"), w("Ψ", "ID"), w("is", "VBZ"), w("the", "DT"),
         w("wave function", "LNK"), w("of", "IN"), w("the", "DT"), w("quantum system", "NP"),
-      w(",", ","), w("i", "FW"), w("is", "VBZ"), w("the", "DT"), w("imaginary unit", "LNK"),
-        w(",", ","), w("ħ", "NN"), w("is", "VBZ"), w("the", "DT"),
+      w(",", ","), w("i", "ID"), w("is", "VBZ"), w("the", "DT"), w("imaginary unit", "LNK"),
+        w(",", ","), w("ħ", "ID"), w("is", "VBZ"), w("the", "DT"),
         w("reduced Planck constant", "LNK"));
 
     List<Word> sentence = result.get(0).getWords();

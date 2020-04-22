@@ -94,13 +94,17 @@ public class PosTagger {
         .collect(Collectors.toList())
     ));
 
-    List<List<Word>> annotated = annotate(cleanText, formulaIndex, allIdentifiers);
+    List<List<Word>> annotated = annotate(cleanText);
     List<List<Word>> concatenated = concatenateTags(annotated, allIdentifiers);
-    return postprocess(concatenated, formulaIndex, allIdentifiers);
+    return convertToSentences(concatenated, formulaIndex, allIdentifiers);
   }
 
-  public List<List<Word>> annotate(String cleanText, Map<String, MathTag> formulas,
-                                   Set<String> allIdentifiers) {
+  /**
+   * Performs POS-Tagging via CoreNLP lib and returns a list of sentences (a sentence is a list of words).
+   * @param cleanText the cleaned wikitext (formulae replaced by FORMULA tags etc)
+   * @return POS-tagged list of sentences.
+   */
+  public List<List<Word>> annotate(String cleanText) {
     Annotation document = new Annotation(cleanText);
     nlpPipeline.annotate(document);
 
@@ -113,7 +117,7 @@ public class PosTagger {
         CoreLabel token = coreLabels.get(i);
         String textToken = token.get(TextAnnotation.class);
         String pos = token.get(PartOfSpeechAnnotation.class);
-        // TODO underscores are split in v3.9.2, see: https://github.com/stanfordnlp/CoreNLP/issues/942
+        // underscores are split in v3.9.2, see: https://github.com/stanfordnlp/CoreNLP/issues/942
         if (textToken.startsWith("FORMULA")) {
           String underscore = handleUnderscore(coreLabels, i);
           if ( underscore != null ){
@@ -132,6 +136,13 @@ public class PosTagger {
             textToken += underscore;
           }
           words.add(new Word(textToken, PosTag.LINK));
+        } else if (textToken.startsWith("CITE")) {
+          String underscore = handleUnderscore(coreLabels, i);
+          if ( underscore != null ){
+            i = i+2; // skip underscore tokens
+            textToken += underscore;
+          }
+          words.add(new Word(textToken, PosTag.CITE));
         } else {
           words.add(new Word(textToken, pos));
         }
@@ -157,7 +168,7 @@ public class PosTagger {
     return null;
   }
 
-  public static List<Sentence> postprocess(List<List<Word>> input, Map<String, MathTag> formulaIndex,
+  protected static List<Sentence> convertToSentences(List<List<Word>> input, Map<String, MathTag> formulaIndex,
                                            Set<String> allIdentifiers) {
     List<Sentence> result = Lists.newArrayListWithCapacity(input.size());
 
@@ -169,8 +180,12 @@ public class PosTagger {
     return result;
   }
 
-  public static Sentence toSentence(List<Word> input, Map<String, MathTag> formulaIndex,
-                                    Set<String> allIdentifiers) {
+  // TODO something is strange here... sentences has almost no identifiers anymore... why?
+  protected static Sentence toSentence(
+          List<Word> input,
+          Map<String, MathTag> formulaIndex,
+          Set<String> allIdentifiers
+  ) {
     List<Word> words = Lists.newArrayListWithCapacity(input.size());
     Set<String> sentenceIdentifiers = Sets.newHashSet();
     List<MathTag> formulas = Lists.newArrayList();
@@ -204,7 +219,7 @@ public class PosTagger {
         // only one occurrence of one single idendifier
         if (formulaIdentifiers.size() == 1) {
           String id = Iterables.get(formulaIdentifiers, 0);
-          LOGGER.debug("convering formula {} to idenfier {}", formula.getKey(), id);
+          LOGGER.debug("Converting formula {} to identifier {}", formula.getKey(), id);
           words.add(new Word(id, PosTag.IDENTIFIER));
           sentenceIdentifiers.add(id);
         } else {
@@ -225,18 +240,24 @@ public class PosTagger {
     return new Sentence(words, sentenceIdentifiers, formulas);
   }
 
+  /**
+   * Concatenate words according to their POS-tags (eg multiple nouns are merged to noun phrases).
+   * @param sentences list of sentences
+   * @param allIdentifiers identifiers
+   * @return concatenated version of the input sentences
+   */
   public static List<List<Word>> concatenateTags(List<List<Word>> sentences, Set<String> allIdentifiers) {
     List<List<Word>> results = Lists.newArrayListWithCapacity(sentences.size());
 
     for (List<Word> sentence : sentences) {
-      List<Word> res = postprocessSentence(sentence, allIdentifiers);
+      List<Word> res = concatenateSingleWordList(sentence, allIdentifiers);
       results.add(res);
     }
 
     return results;
   }
 
-  private static List<Word> postprocessSentence(List<Word> sentence, Set<String> allIdentifiers) {
+  private static List<Word> concatenateSingleWordList(List<Word> sentence, Set<String> allIdentifiers) {
     // links
     List<Word> result;
     if (config.getUseTeXIdentifiers()) {

@@ -1,11 +1,12 @@
 package com.formulasearchengine.mathosphere.mlp.text;
 
 import com.formulasearchengine.mathosphere.mlp.PatternMatchingRelationFinder;
-import com.formulasearchengine.mathosphere.mlp.contracts.TextExtractorMapper;
+import com.formulasearchengine.mathosphere.mlp.contracts.WikiTextPageExtractorMapper;
 import com.formulasearchengine.mathosphere.mlp.pojos.MathTag;
 import com.formulasearchengine.mathosphere.mlp.text.WikiTextUtils.MathMarkUpType;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.text.StringEscapeUtils;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -90,7 +91,7 @@ public class WikiTextUtilsTest {
   @Test
   public void findFormulaFromWikiText() throws Exception {
     String text = getTestResource("com/formulasearchengine/mathosphere/mlp/gold/eval_dataset_sample.xml");
-    text = TextExtractorMapper.unescape(text);
+    text = StringEscapeUtils.unescapeXml(text);
     WikiTextUtils.findMathTags(text);
   }
 

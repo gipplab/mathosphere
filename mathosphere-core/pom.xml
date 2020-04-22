@@ -112,16 +112,30 @@
             <artifactId>commons-lang3</artifactId>
             <version>3.10</version>
         </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.eclipse.mylyn.wikitext/wikitext.mediawiki -->
         <dependency>
-            <groupId>org.fusesource.wikitext</groupId>
-            <artifactId>wikitext-core</artifactId>
-            <version>1.4</version>
+            <groupId>org.eclipse.mylyn.wikitext</groupId>
+            <artifactId>wikitext.mediawiki</artifactId>
+            <version>0.9.4.I20090220-1600-e3x</version>
         </dependency>
+
         <dependency>
-            <groupId>org.fusesource.wikitext</groupId>
-            <artifactId>mediawiki-core</artifactId>
-            <version>1.4</version>
+            <groupId>org.netbeans.external</groupId>
+            <artifactId>org-eclipse-mylyn-wikitext-core</artifactId>
+            <version>RELEASE113</version>
         </dependency>
+
+        <!--        <dependency>-->
+<!--            <groupId>org.fusesource.wikitext</groupId>-->
+<!--            <artifactId>wikitext-core</artifactId>-->
+<!--            <version>1.4</version>-->
+<!--        </dependency>-->
+<!--        <dependency>-->
+<!--            <groupId>org.fusesource.wikitext</groupId>-->
+<!--            <artifactId>mediawiki-core</artifactId>-->
+<!--            <version>1.4</version>-->
+<!--        </dependency>-->
         <dependency>
             <groupId>com.beust</groupId>
             <artifactId>jcommander</artifactId>

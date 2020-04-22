@@ -4,9 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.formulasearchengine.mathosphere.mlp.cli.MachineLearningDefinienClassifierConfig;
 import com.formulasearchengine.mathosphere.mlp.cli.MachineLearningDefinienExtractionConfig;
 import com.formulasearchengine.mathosphere.mlp.contracts.JsonSerializerMapper;
-import com.formulasearchengine.mathosphere.mlp.contracts.StupidRelationScorer;
-import com.formulasearchengine.mathosphere.mlp.contracts.TextAnnotatorMapper;
-import com.formulasearchengine.mathosphere.mlp.contracts.TextExtractorMapper;
+import com.formulasearchengine.mathosphere.mlp.contracts.WikiTextAnnotatorMapper;
+import com.formulasearchengine.mathosphere.mlp.contracts.WikiTextPageExtractorMapper;
 import com.formulasearchengine.mathosphere.mlp.ml.WekaClassifier;
 import com.formulasearchengine.mathosphere.mlp.pojos.*;
 import com.formulasearchengine.mathosphere.mlp.text.SimpleFeatureExtractorMapper;
@@ -17,7 +16,6 @@ import org.apache.flink.api.java.operators.DataSource;
 import org.apache.flink.core.fs.FileSystem;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,8 +32,8 @@ public class MachineLearningRelationClassifier {
     ExecutionEnvironment env = ExecutionEnvironment.getExecutionEnvironment();
     env.setParallelism(config.getParallelism());
     DataSource<String> source = readWikiDump(config, env);
-    DataSet<ParsedWikiDocument> documents = source.flatMap(new TextExtractorMapper())
-      .map(new TextAnnotatorMapper(config));
+    DataSet<ParsedWikiDocument> documents = source.flatMap(new WikiTextPageExtractorMapper())
+      .map(new WikiTextAnnotatorMapper(config));
     DataSet<WikiDocumentOutput> instances = documents.map(new SimpleFeatureExtractorMapper(config, null));
     //process parsed wikipedia
     DataSet<WikiDocumentOutput> result = instances.map(new WekaClassifier(config));

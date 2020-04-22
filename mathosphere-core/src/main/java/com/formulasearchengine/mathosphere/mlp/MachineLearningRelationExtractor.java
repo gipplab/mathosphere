@@ -2,8 +2,8 @@ package com.formulasearchengine.mathosphere.mlp;
 
 import com.formulasearchengine.mathosphere.mlp.cli.MachineLearningDefinienListConfig;
 import com.formulasearchengine.mathosphere.mlp.contracts.CreateCandidatesMapper;
-import com.formulasearchengine.mathosphere.mlp.contracts.TextAnnotatorMapper;
-import com.formulasearchengine.mathosphere.mlp.contracts.TextExtractorMapper;
+import com.formulasearchengine.mathosphere.mlp.contracts.WikiTextAnnotatorMapper;
+import com.formulasearchengine.mathosphere.mlp.contracts.WikiTextPageExtractorMapper;
 import com.formulasearchengine.mathosphere.mlp.pojos.ParsedWikiDocument;
 import com.formulasearchengine.mathosphere.mlp.pojos.RawWikiDocument;
 import com.formulasearchengine.mathosphere.mlp.pojos.Relation;
@@ -49,10 +49,10 @@ public class MachineLearningRelationExtractor {
         DataSource<String> dataSource = FlinkMlpRelationFinder.readWikiDump( config, flinkEnv );
 
         LOG.debug("Parse documents via flink");
-        FlatMapOperator<String, RawWikiDocument> mapOperator = dataSource.flatMap(new TextExtractorMapper());
+        FlatMapOperator<String, RawWikiDocument> mapOperator = dataSource.flatMap(new WikiTextPageExtractorMapper());
 
         LOG.debug("Open text annotator mapper");
-        TextAnnotatorMapper annotatorMapper = new TextAnnotatorMapper(config);
+        WikiTextAnnotatorMapper annotatorMapper = new WikiTextAnnotatorMapper(config);
         // ML approach doesn't create PosTagger here ... strange, so I will use it now.
         annotatorMapper.open(null);
         DataSet<ParsedWikiDocument> parsedDocuments = mapOperator.map( annotatorMapper );
