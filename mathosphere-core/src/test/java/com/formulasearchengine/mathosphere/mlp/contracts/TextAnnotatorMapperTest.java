@@ -36,7 +36,7 @@ public class TextAnnotatorMapperTest {
     List<RawWikiDocument> docs = readWikiTextDocuments("com/formulasearchengine/mathosphere/mlp/augmentendwikitext.xml");
 
     RawWikiDocument schroedingerIn = docs.get(0);
-    assertTrue("the seed math tag was not found", schroedingerIn.getPageContent().contains(mathMLExtract));
+    assertTrue("the seed math tag was not found", schroedingerIn.getContent().contains(mathMLExtract));
     MathTag tag = new MathTag(0, mathMLExtract, WikiTextUtils.MathMarkUpType.MATHML);
     String placeholder = tag.placeholder();
     ParsedWikiDocument shroedingerOut = TEST_INSTANCE.map(schroedingerIn);
@@ -44,9 +44,8 @@ public class TextAnnotatorMapperTest {
     Set<String> identifiers = shroedingerOut.getIdentifiers().elementSet();
     assertTrue(identifiers.containsAll(Arrays.asList("Ψ", "V", "h", "λ", "ρ", "τ")));
 
-    List<MathTag> formulas = shroedingerOut.getFormulas();
     MathTag formula = null;
-    for (MathTag f : formulas) {
+    for (MathTag f : shroedingerOut.getFormulas().values()) {
       if (placeholder.equals(f.getKey())) {
         formula = f;
         break;
@@ -102,8 +101,7 @@ public class TextAnnotatorMapperTest {
     RawWikiDocument doc = new RawWikiDocument("some doc", 1, text);
     ParsedWikiDocument result = TEST_INSTANCE.map(doc);
 
-    List<MathTag> formulas = result.getFormulas();
-    assertEquals(1, formulas.size());
+    assertEquals(1, result.getFormulas().size());
 
     Sentence sentence = result.getSentences().get(0);
 

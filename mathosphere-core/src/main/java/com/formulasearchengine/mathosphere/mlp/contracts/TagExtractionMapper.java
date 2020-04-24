@@ -23,7 +23,7 @@ public class TagExtractionMapper implements FlatMapFunction<RawWikiDocument, Mat
         final WikiTextParser converter = new WikiTextParser(rawWikiDocument, config);
         converter.setSkipHiddenMath(true);
         converter.processTags();
-        for (MathTag tag : converter.getMathTags()) {
+        for (MathTag tag : converter.getMetaLibrary().getFormulaLib().values()) {
             collector.collect(tag);
         }
     }

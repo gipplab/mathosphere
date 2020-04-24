@@ -1,9 +1,6 @@
 package com.formulasearchengine.mathosphere.mlp.text;
 
-import com.formulasearchengine.mathosphere.mlp.pojos.MathTag;
-import com.formulasearchengine.mathosphere.mlp.pojos.ParsedWikiDocument;
-import com.formulasearchengine.mathosphere.mlp.pojos.WikidataLink;
-import com.formulasearchengine.mathosphere.mlp.pojos.Word;
+import com.formulasearchengine.mathosphere.mlp.pojos.*;
 import org.eclipse.mylyn.wikitext.core.parser.MarkupParser;
 import org.eclipse.mylyn.wikitext.mediawiki.core.MediaWikiLanguage;
 
@@ -101,7 +98,7 @@ public class WikiTextUtils {
         String definition;
         if (word.getPosTag().equals(PosTag.LINK)) {
             String hash = word.getWord().replaceAll("^LINK_", "");
-            WikidataLink link = doc.getLinkMap().get(hash);
+            SpecialToken link = doc.getLinkMap().get(hash);
             if (link != null) {
                 definition = "[[" + link.getContent() + "]]";
             } else {

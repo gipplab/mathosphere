@@ -40,8 +40,6 @@ import edu.stanford.nlp.pipeline.POSTaggerAnnotator;
 import edu.stanford.nlp.pipeline.StanfordCoreNLP;
 import edu.stanford.nlp.util.CoreMap;
 
-import javax.xml.soap.Text;
-
 public class PosTagger {
   private static BaseConfig config;
 
@@ -79,24 +77,6 @@ public class PosTagger {
 
   public PosTagger(StanfordCoreNLP nlpPipeline) {
     this.nlpPipeline = nlpPipeline;
-  }
-
-  public List<Sentence> process(String cleanText, List<MathTag> formulas) {
-    Map<String, MathTag> formulaIndex = Maps.newHashMap();
-    Set<String> allIdentifiers = Sets.newHashSet();
-
-    formulas.forEach(f -> formulaIndex.put(f.getKey(), f));
-    //wrap all single character identifiers in \\mathit{} tag
-    formulas.forEach(f -> allIdentifiers.addAll(
-      f.getIdentifiers(config)
-        .stream()
-        .map(e -> e.matches(".") ? "\\mathit{" + e + "}" : e)
-        .collect(Collectors.toList())
-    ));
-
-    List<List<Word>> annotated = annotate(cleanText);
-    List<List<Word>> concatenated = concatenateTags(annotated, allIdentifiers);
-    return convertToSentences(concatenated, formulaIndex, allIdentifiers);
   }
 
   /**
@@ -180,7 +160,6 @@ public class PosTagger {
     return result;
   }
 
-  // TODO something is strange here... sentences has almost no identifiers anymore... why?
   protected static Sentence toSentence(
           List<Word> input,
           Map<String, MathTag> formulaIndex,

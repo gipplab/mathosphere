@@ -55,7 +55,7 @@ public class SimpleFeatureExtractorMapper implements MapFunction<ParsedWikiDocum
   private WikiDocumentOutput getIdentifiersWithGoldInfo(ParsedWikiDocument doc, List<Relation> allIdentifierDefininesCandidates, List<Sentence> sentences, Map<String, Integer> identifierSentenceDistanceMap, Multiset<String> frequencies, double maxFrequency) {
     GoldEntry goldEntry = getGoldEntryByTitle(goldEntries, doc.getTitle());
     final Integer fid = Integer.parseInt(goldEntry.getFid());
-    Stream<MathTag> stream = doc.getFormulas().stream();
+    Stream<MathTag> stream = doc.getFormulas().values().stream();
     stream = stream.filter( e -> e.getMarkUpType().equals(WikiTextUtils.MathMarkUpType.LATEX) );
     List<MathTag> list = stream.collect( Collectors.toList() );
     MathTag seed = null;

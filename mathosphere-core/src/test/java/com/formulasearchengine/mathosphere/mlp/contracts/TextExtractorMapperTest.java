@@ -35,8 +35,8 @@ public class TextExtractorMapperTest {
 
     RawWikiDocument doc1 = output.get(0);
     assertEquals("Schrödinger equation", doc1.getTitle());
-    assertFalse(doc1.getPageContent().contains("&lt;math"));
-    assertTrue(doc1.getPageContent().contains("<math"));
+    assertFalse(doc1.getContent().contains("&lt;math"));
+    assertTrue(doc1.getContent().contains("<math"));
 
     RawWikiDocument doc2 = output.get(1);
     assertEquals(doc2.getTitle(), "Gas constant");
@@ -62,8 +62,8 @@ public class TextExtractorMapperTest {
 
     RawWikiDocument doc1 = output.get(0);
     assertEquals("Clapeyron-Gleichung", doc1.getTitle());
-    assertThat(doc1.getPageContent(), not(containsString("&lt;math")));
-    assertThat(doc1.getPageContent(), containsString("<math"));
+    assertThat(doc1.getContent(), not(containsString("&lt;math")));
+    assertThat(doc1.getContent(), containsString("<math"));
     assertEquals(expected, doc1.getTitle());
   }
 

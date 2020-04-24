@@ -97,6 +97,7 @@ public class UnicodeUtils {
     }
 
     if (block == Character.UnicodeBlock.LETTERLIKE_SYMBOLS) {
+      // TODO why replacing planck constant by h?
       return normalizeLetterLike(codePoint);
     }
 

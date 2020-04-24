@@ -10,10 +10,7 @@ package com.formulasearchengine.mathosphere.mlp.text;
  */
 
 import com.formulasearchengine.mathosphere.mlp.cli.BaseConfig;
-import com.formulasearchengine.mathosphere.mlp.pojos.MathTag;
-import com.formulasearchengine.mathosphere.mlp.pojos.RawWikiDocument;
-import com.formulasearchengine.mathosphere.mlp.pojos.WikiCitation;
-import com.formulasearchengine.mathosphere.mlp.pojos.WikidataLink;
+import com.formulasearchengine.mathosphere.mlp.pojos.*;
 import com.formulasearchengine.mathosphere.utils.sweble.MlpConfigEnWpImpl;
 import com.google.common.collect.Multiset;
 import com.jcabi.log.Logger;
@@ -78,9 +75,11 @@ public class WikiTextParser extends AstVisitor<WtNode> {
 
     private final EngProcessedPage page;
 
-    private List<MathTag> mathTags = new ArrayList<>();
-    private List<WikidataLink> links = new ArrayList<>();
-    private Map<Integer, WikiCitation> citations = new HashMap<>();
+//    private List<MathTag> mathTags = new ArrayList<>();
+//    private List<WikidataLink> links = new ArrayList<>();
+//    private Map<Integer, WikiCitation> citations = new HashMap<>();
+
+    private DocumentMetaLib lib;
 
     private StringBuilder sb;
     private StringBuilder line;
@@ -108,8 +107,9 @@ public class WikiTextParser extends AstVisitor<WtNode> {
     public WikiTextParser(RawWikiDocument wikidoc) throws LinkTargetException, EngineException {
         pageTitle = PageTitle.make(config, wikidoc.getTitle());
         PageId pageId = new PageId(pageTitle, -1);
-        page = engine.postprocess(pageId, wikidoc.getPageContent(), null);
+        page = engine.postprocess(pageId, wikidoc.getContent(), null);
         texInfoUrl = (new BaseConfig()).getTexvcinfoUrl();
+        lib = new DocumentMetaLib();
     }
 
     public WikiTextParser(RawWikiDocument wikidoc, BaseConfig config) throws LinkTargetException, EngineException {
@@ -129,6 +129,10 @@ public class WikiTextParser extends AstVisitor<WtNode> {
             Logger.error(e, "Error parsing page " + this.pageTitle);
             return "";
         }
+    }
+
+    public DocumentMetaLib getMetaLibrary() {
+        return lib;
     }
 
     public boolean isSkipHiddenMath() {
@@ -178,7 +182,7 @@ public class WikiTextParser extends AstVisitor<WtNode> {
                     location = 0;
                 }
                 MathTag tag = new MathTag(location, tex, WikiTextUtils.MathMarkUpType.MATH_TEMPLATE);
-                mathTags.add(tag);
+                lib.addFormula(tag);
                 needSpace = true;
                 writeWord(tag.placeholder());
                 needSpace = true;
@@ -203,7 +207,7 @@ public class WikiTextParser extends AstVisitor<WtNode> {
                             location = 0;
                         }
                         MathTag tag = new MathTag(location, tex, WikiTextUtils.MathMarkUpType.MATH_TEMPLATE);
-                        mathTags.add(tag);
+                        lib.addFormula(tag);
                         needSpace = true;
                         writeWord(tag.placeholder());
                         needSpace = true;
@@ -223,37 +227,31 @@ public class WikiTextParser extends AstVisitor<WtNode> {
         line.setLength(0);
     }
 
-    public List<WikidataLink> getLinks() {
-        return links;
-    }
-
-    public List<MathTag> getMathTags() {
-        return mathTags;
-    }
-
     private String getTex(WtNode i, boolean force) {
         if (i.get(0) instanceof WtText) {
             String content = ((WtText) i.get(0)).getContent().trim();
-            String tex = wiki2Tex(content);
-            if (tex.length() > 0 && (
-                    content.length() == 1 || (
-                            content.length() < 100 && !content.equals(tex)
-                    )
-            )) {
+            String tex = replaceClearMath(content);
+            if (tex.length() == 1 || !content.equals(tex)) {
+                // it triggered a math replacement... so first we have to fix unicode, if exists
+                String unicodeTex = replaceMathUnicode(tex);
                 Multiset<String> idents;
                 try {
-                    idents = TexInfo.getIdentifiers(tex, texInfoUrl);
+                    idents = TexInfo.getIdentifiers(unicodeTex, texInfoUrl);
                 } catch (XPathExpressionException | ParserConfigurationException | IOException
                         | SAXException | TransformerException ignored) {
                     return null;
+                }
+                // a single UTF character should always be interpreted as math, no?
+                if ( tex.length() == 1 && !tex.equals(unicodeTex) ){
+                    return unicodeTex;
                 }
                 if (idents.size() == 0 && !force) {
                     return null;
                 }
                 if (i instanceof WtBold) {
-                    tex = "\\mathbf{" + tex + "}";
+                    unicodeTex = "\\mathbf{" + unicodeTex + "}";
                 }
-                return tex;
+                return unicodeTex;
             }
             if (force) {
                 return tex;
@@ -264,7 +262,7 @@ public class WikiTextParser extends AstVisitor<WtNode> {
 
     private void handeLatexMathTag(WtNode n, String content) {
         //content = content.replaceAll("'''([a-zA-Z]+)'''","\\mathbf{$1}");
-        content = wiki2Tex(content);
+        content = replaceMathUnicode(replaceClearMath(content));
         int location = 0;
         try {
             location = n.getLocation().line;
@@ -273,7 +271,7 @@ public class WikiTextParser extends AstVisitor<WtNode> {
         }
         MathTag tag = new MathTag(location, content, WikiTextUtils.MathMarkUpType.MATH_TEMPLATE);
 
-        mathTags.add(tag);
+        lib.addFormula(tag);
         needSpace = true;
         writeWord(tag.placeholder());
         needSpace = true;
@@ -325,7 +323,7 @@ public class WikiTextParser extends AstVisitor<WtNode> {
     }
 
     public void visit(WtBold b) {
-        if (detectHiddenMath(b)) {
+        if ( checkItalicBoldForMath(b) ) {
             return;
         }
         write("\"");
@@ -334,12 +332,24 @@ public class WikiTextParser extends AstVisitor<WtNode> {
     }
 
     public void visit(WtItalics i) {
-        if (detectHiddenMath(i)) {
+        if ( checkItalicBoldForMath(i) ) {
             return;
         }
         write("\"");
         iterate(i);
         write("\"");
+    }
+
+    private boolean checkItalicBoldForMath(WtNode n) {
+        if ( n.get(0) instanceof WtInternalLink ) {
+            WtInternalLink in = (WtInternalLink)n.get(0);
+            WtNode title = in.getTitle();
+            if ( title == null || title.size() == 0) title = in.getTarget();
+            if ( title != null && title.size() != 0) {
+                return detectHiddenMath(title);
+            }
+        }
+        return detectHiddenMath(n);
     }
 
     public void visit(WtXmlCharRef cr) {
@@ -394,7 +404,7 @@ public class WikiTextParser extends AstVisitor<WtNode> {
             wl.setTitle(this.line.toString());
             this.line = tmp;
         }
-        links.add(wl);
+        lib.addLink(wl);
     }
 
     public void visit(WtSection s) {
@@ -541,6 +551,11 @@ public class WikiTextParser extends AstVisitor<WtNode> {
             WikiCitation cite;
             String name = n.getName().getAsString();
 
+            if ( name.toLowerCase().startsWith("equation") ) {
+                handleEquationTemplate(n);
+                return;
+            }
+
             switch (name.toLowerCase()) {
                 case "math":
                     arg0 = (WtTemplateArgument) n.getArgs().get(0);
@@ -561,9 +576,9 @@ public class WikiTextParser extends AstVisitor<WtNode> {
                 case "mvar":
                     arg0 = (WtTemplateArgument) n.getArgs().get(0);
                     content = ((WtText) arg0.getValue().get(0)).getContent().trim();
-                    content = wiki2Tex(content);
+                    content = replaceMathUnicode(replaceClearMath(content));
                     MathTag tag = new MathTag(n.getLocation().line, content, WikiTextUtils.MathMarkUpType.MVAR_TEMPLATE);
-                    mathTags.add(tag);
+                    lib.addFormula(tag);
                     needSpace = true;
                     writeWord(tag.placeholder());
                     needSpace = true;
@@ -575,12 +590,12 @@ public class WikiTextParser extends AstVisitor<WtNode> {
                     iterate(arg0.getValue());
                     break;
                 case "Citation":
-                    cite = new WikiCitation(n.toString());
-                    citations.put(cite.hashCode(), cite);
+                    cite = new WikiCitation(n.getLocation().line, n.toString());
+                    lib.addCite(cite);
                     break;
                 case "dlmf":
-                    cite = new WikiCitation("dlmf", n.toString());
-                    citations.put(cite.hashCode(), cite);
+                    cite = new WikiCitation(n.getLocation().line, "dlmf", n.toString());
+                    lib.addCite(cite);
                     break;
                 case "short description":
                 case "for":
@@ -592,6 +607,30 @@ public class WikiTextParser extends AstVisitor<WtNode> {
             }
         } catch (Exception e) {
             Logger.info(e, "Problem prcessing page", pageTitle.getTitle());
+        }
+    }
+
+    private void handleEquationTemplate(WtTemplate equation) {
+        WtTemplateArguments args = equation.getArgs();
+        WtTemplateArgument titleArg = null, equationArg = null;
+        for (WtNode wtNode : args) {
+            WtTemplateArgument arg = (WtTemplateArgument) wtNode;
+            if ( arg.getName().size() < 1 ) continue;
+            String name = arg.getName().getAsString();
+            if ( "title".equals(name) ) {
+                titleArg = arg;
+            } else if ( "equation".equals(name) ) {
+                equationArg = arg;
+            }
+        }
+
+        if ( titleArg != null ) {
+            dispatch(titleArg.getValue());
+            write(": ");
+        }
+
+        if ( equationArg != null ) {
+            dispatch(equationArg.getValue());
         }
     }
 
@@ -683,33 +722,24 @@ public class WikiTextParser extends AstVisitor<WtNode> {
                 }
 
                 WikiCitation cite = new WikiCitation(
+                        n.getLocation().line,
                         attribute,
                         n.getBody().toString()
                 );
 
-                citations.put(cite.hashCode(), cite);
-                write("CITE_"+cite.hashCode());
-//                String content = n.getBody().getContent();
-//                if (!content.contains("<math")) {
-//                    return;
-//                }
-//                final List<MathTag> tags = WikiTextUtils.findMathTags(content);
-//                content = WikiTextUtils.replaceAllFormulas(content, tags);
-//                mathTags.addAll(tags);
-//                write("(");
-//                write(content);
-//                write("}");
+                lib.addCite(cite);
+                write(cite.placeholder());
         }
     }
 
     private boolean hasMathMLNamespaceAttribute(WtXmlAttributes attributes) {
-        for (Iterator<WtNode> it = attributes.iterator(); it.hasNext(); ) {
-            WtXmlAttribute att = (WtXmlAttribute) it.next();
+        for (WtNode attribute : attributes) {
+            WtXmlAttribute att = (WtXmlAttribute) attribute;
             String name = att.getName().getAsString();
-            if ( "xmlns".equals(name.toLowerCase()) ) {
+            if ("xmlns".equals(name.toLowerCase())) {
                 // ok its xmlns, lets check if its actually mathml
-                String value = ((WtText)att.getValue().get(0)).getContent();
-                if ( "http://www.w3.org/1998/Math/MathML".equals(value) ) {
+                String value = ((WtText) att.getValue().get(0)).getContent();
+                if ("http://www.w3.org/1998/Math/MathML".equals(value)) {
                     return true;
                 }
             }
@@ -725,7 +755,7 @@ public class WikiTextParser extends AstVisitor<WtNode> {
 
     private void addMathTag(int location, String content, WikiTextUtils.MathMarkUpType type) {
         MathTag tag = new MathTag(location, content, type);
-        mathTags.add(tag);
+        lib.addFormula(tag);
         if (needNewlines > 0) {
             write(" ");
         }
@@ -743,24 +773,16 @@ public class WikiTextParser extends AstVisitor<WtNode> {
         }
     }
 
-    public static String wiki2Tex(String content) {
-        content = subMatch.matcher(content)
+    public static String replaceClearMath(String content) {
+        return subMatch.matcher(content)
                 .replaceAll("_{$1}")
                 .replaceAll("[{<]sup[}>](.+?)[{<]/sup[}>]", "^{$1}")
-                .replaceAll("'''(\\S)'''", "\\\\mathbf{$1}")
-                .replaceAll("''(\\S)''", "\\\\mathit{$1}");
+                .replaceAll("'''\\[{0,2}(\\S)]{0,2}'''", "\\\\mathbf{$1}")
+                .replaceAll("''\\[{0,2}(\\S)]{0,2}''", "\\\\mathit{$1}");
+    }
+
+    public static String replaceMathUnicode(String content) {
         return UnicodeMap.string2TeX(content);
-//    int[] chars = content.codePoints().toArray();
-//    StringBuilder res = new StringBuilder();
-//
-//    for (int code : chars) {
-//      if (code > 128) {
-//        res.append(UnicodeMap.char2TeX(code));
-//      } else {
-//        res.append((char) code);
-//      }
-//    }
-//    return res.toString().trim();
     }
 
     private void write(String s) {

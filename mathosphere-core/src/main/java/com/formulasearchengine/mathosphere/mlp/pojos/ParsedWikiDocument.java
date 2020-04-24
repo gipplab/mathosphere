@@ -7,31 +7,19 @@ import java.util.List;
 import java.util.Map;
 
 public class ParsedWikiDocument {
-
-  private List<WikidataLink> links;
   private String title;
   private Multiset<String> identifiers;
-  private List<MathTag> formulas;
   private List<Sentence> sentences;
-  private Map<String, WikidataLink> linkMap = null;
+  private DocumentMetaLib lib;
 
   public ParsedWikiDocument() {
   }
 
-  public ParsedWikiDocument(String title, Multiset<String> identifiers, List<MathTag> formulas,
-                            List<Sentence> sentences) {
+  public ParsedWikiDocument(String title, Multiset<String> identifiers, List<Sentence> sentences, DocumentMetaLib lib) {
     this.title = title;
     this.identifiers = identifiers;
-    this.formulas = formulas;
+    this.lib = lib;
     this.sentences = sentences;
-  }
-
-  public ParsedWikiDocument(String title, Multiset<String> identifiers, List<MathTag> formulas, List<Sentence> sentences, List<WikidataLink> links) {
-    this.title = title;
-    this.identifiers = identifiers;
-    this.formulas = formulas;
-    this.sentences = sentences;
-    this.links = links;
   }
 
 
@@ -55,37 +43,19 @@ public class ParsedWikiDocument {
     this.identifiers = identifiers;
   }
 
-  public List<MathTag> getFormulas() {
-    return formulas;
+  public Map<String, MathTag> getFormulas() {
+    return lib.getFormulaLib();
   }
 
   public void setFormulas(List<MathTag> formulas) {
-    this.formulas = formulas;
+    lib.setAllFormula(formulas);
   }
 
   public void setSentences(List<Sentence> sentences) {
     this.sentences = sentences;
   }
 
-  public List<WikidataLink> getLinks() {
-    return links;
-  }
-
-  public ParsedWikiDocument setLinks(List<WikidataLink> links) {
-    this.links = links;
-    this.linkMap = null;
-    return this;
-  }
-
-  public Map<String, WikidataLink> getLinkMap() {
-    if (linkMap == null) {
-      linkMap = new HashMap<>();
-      if (links != null) {
-        for (WikidataLink i : links) {
-          linkMap.put(i.getContentHash(), i);
-        }
-      }
-    }
-    return linkMap;
+  public Map<String, SpecialToken> getLinkMap() {
+    return lib.getLinkLib();
   }
 }

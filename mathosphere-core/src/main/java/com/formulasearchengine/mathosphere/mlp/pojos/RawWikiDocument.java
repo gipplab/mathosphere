@@ -10,7 +10,7 @@ import org.apache.commons.text.translate.LookupTranslator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class RawWikiDocument {
+public class RawWikiDocument extends RawDocument {
   private static final Pattern TITLE_PATTERN = Pattern.compile("<title>(.+?)</title>", Pattern.DOTALL);
   private static final Pattern NAMESPACE_PATTERN = Pattern.compile("<ns>(\\d+)</ns>", Pattern.DOTALL);
   private static final Pattern TEXT_PATTERN = Pattern.compile("<text(.*?)>(.+?)</text>", Pattern.DOTALL);
@@ -25,36 +25,32 @@ public class RawWikiDocument {
           new LookupTranslator(EntityArrays.HTML40_EXTENDED_UNESCAPE)
   );
 
-  private String title;
   private int namespace;
-  private String pageContent;
-
-  public RawWikiDocument(){}
 
   public RawWikiDocument(String singleDoc) {
+    super();
     setMeta(singleDoc);
-    setContent(singleDoc);
+    setContentInternal(singleDoc);
   }
 
-  public RawWikiDocument(String title, int namespace, String text) {
-    this.title = title;
+  public RawWikiDocument(String title, int namespace, String content) {
+    super(title, ""+namespace, content);
     this.namespace = namespace;
-    this.pageContent = text;
   }
 
   private void setMeta(String page) {
     Matcher titleMatcher = TITLE_PATTERN.matcher(page);
     if ( titleMatcher.find() ) {
-      this.title = titleMatcher.group(1);
+      setTitle(titleMatcher.group(1));
     } else {
-      this.title = "unknown-title";
+      setTitle("unknown-title");
     }
 
     Matcher nsMatcher = NAMESPACE_PATTERN.matcher(page);
     if ( nsMatcher.find() ) {
-      this.namespace = Integer.parseInt(nsMatcher.group(1));
+      setNamespace(nsMatcher.group(1));
     } else {
-      this.namespace = Integer.MIN_VALUE;
+      setNamespace(""+Integer.MIN_VALUE);
     }
 
     if ( titleMatcher.find() || nsMatcher.find() )
@@ -68,7 +64,7 @@ public class RawWikiDocument {
    * This method unescapes all xml tags only within the <text></text> block.
    * @param wikitext with escaped xml strings in <text></text>
    */
-  private void setContent(String wikitext) {
+  private void setContentInternal(String wikitext) {
     Matcher textMatcher = TEXT_PATTERN.matcher(wikitext);
     StringBuffer sb = new StringBuffer();
     if ( textMatcher.find() ) {
@@ -88,19 +84,21 @@ public class RawWikiDocument {
               " Use TextExtractorMapper instead.");
 
     textMatcher.appendTail(sb);
-    this.pageContent = sb.toString();
+    setContent(sb.toString());
   }
 
-  public String getTitle() {
-    return title;
+  @Override
+  public void setNamespace(String namespace) {
+    try {
+      this.namespace = Integer.parseInt(namespace);
+    } catch (NumberFormatException nfe) {
+      throw new IllegalArgumentException("Wiki documents have only " +
+              "integer namespaces but received " + namespace);
+    }
   }
 
-  public int getNamespace() {
+  public int getWikiNamespace() {
     return namespace;
-  }
-
-  public String getPageContent() {
-    return pageContent;
   }
 
   public static String unescapeText(String content) {
@@ -109,7 +107,6 @@ public class RawWikiDocument {
 
   @Override
   public String toString() {
-    return "[title=" + title + ", text=" + StringUtils.abbreviate(pageContent, 100) + "]";
+    return "[title=" + getTitle() + ", text=" + StringUtils.abbreviate(getContent(), 100) + "]";
   }
-
 }

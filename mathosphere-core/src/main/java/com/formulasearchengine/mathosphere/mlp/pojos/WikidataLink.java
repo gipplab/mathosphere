@@ -9,7 +9,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import java.nio.charset.StandardCharsets;
 
 
-public class WikidataLink {
+public class WikidataLink implements SpecialToken {
   private static final HashFunction HASHER = Hashing.md5();
   private final int position;
   private final String content;

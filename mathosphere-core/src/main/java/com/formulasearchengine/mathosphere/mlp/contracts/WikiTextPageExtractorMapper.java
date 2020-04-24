@@ -25,7 +25,7 @@ public class WikiTextPageExtractorMapper implements FlatMapFunction<String, RawW
       RawWikiDocument rwd = getRawWikiDocumentFromSinglePage(page);
       LOGGER.info("Processing document '{}'...", rwd.getTitle());
 
-      if ( rwd.getNamespace() != 0 ) {
+      if ( rwd.getWikiNamespace() != 0 ) {
         LOGGER.warn("Skip document '{}' because the namespace is different to 0.", rwd.getTitle());
         // skip docs from namespaces other than 0
         continue;

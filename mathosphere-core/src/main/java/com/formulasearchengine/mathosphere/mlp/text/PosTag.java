@@ -5,7 +5,6 @@ public class PosTag {
   public static final String LINK = "LNK";
   public static final String MATH = "MATH";
   public static final String CITE = "CITE";
-
   public static final String SYMBOL = "SYM";
 
   public static final String ADJECTIVE = "JJ";
