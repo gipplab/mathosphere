@@ -37,7 +37,7 @@ public class TextAnnotatorMapperTest {
 
     RawWikiDocument schroedingerIn = docs.get(0);
     assertTrue("the seed math tag was not found", schroedingerIn.getContent().contains(mathMLExtract));
-    MathTag tag = new MathTag(0, mathMLExtract, WikiTextUtils.MathMarkUpType.MATHML);
+    MathTag tag = new MathTag(mathMLExtract, WikiTextUtils.MathMarkUpType.MATHML);
     String placeholder = tag.placeholder();
     ParsedWikiDocument shroedingerOut = TEST_INSTANCE.map(schroedingerIn);
 

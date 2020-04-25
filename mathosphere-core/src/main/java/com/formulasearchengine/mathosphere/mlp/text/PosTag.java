@@ -18,7 +18,7 @@ public class PosTag {
   public static final String NOUN_PROPER = "NNP";
   public static final String NOUN_PLURAL = "NNS";
   public static final String NOUN_PROPER_PLURAL = "NNPS";
-  public static final String ANY_NOUN_REGEX = "N(P|N[PS]|NPS)";
+  public static final String ANY_NOUN_REGEX = "N(?:P|N[PS]?|NPS)";
 
   public static final String QUOTE = "``";
   public static final String UNQUOTE = "''";

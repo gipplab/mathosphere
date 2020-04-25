@@ -7,11 +7,13 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import java.nio.charset.StandardCharsets;
+import java.util.LinkedList;
+import java.util.List;
 
 
 public class WikidataLink implements SpecialToken {
   private static final HashFunction HASHER = Hashing.md5();
-  private final int position;
+  private final List<Position> positions;
   private final String content;
   private String title;
 
@@ -24,18 +26,19 @@ public class WikidataLink implements SpecialToken {
     return this;
   }
 
-  public WikidataLink(int position, String content) {
-    this.position = position;
+  public WikidataLink(String content) {
+    this.positions = new LinkedList<>();
     this.content = content;
   }
 
-  public WikidataLink(String linkName) {
-    content = linkName;
-    position = 0;
+  @Override
+  public List<Position> getPositions() {
+    return positions;
   }
 
-  public int getPosition() {
-    return position;
+  @Override
+  public void addPosition(Position p) {
+    positions.add(p);
   }
 
   public String getContent() {
@@ -56,7 +59,7 @@ public class WikidataLink implements SpecialToken {
 
   @Override
   public String toString() {
-    return "Link [position=" + position + ", content=" + content + "]";
+    return "Link [position=" + positions + ", content=" + content + "]";
   }
 
   @Override

@@ -1,43 +1,50 @@
 package com.formulasearchengine.mathosphere.mlp.pojos;
 
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
+/**
+ * A sentence is a list of words. For convenience, it contains information about all special tokens
+ */
 public class Sentence {
+  private final int section;
+  private final List<Word> words;
+  private final Set<String> sentenceIdentifier;
+  private final Set<MathTag> sentenceMath;
 
-  private List<Word> words;
-  private Set<String> identifiers;
-  private List<MathTag> formulas;
+  public Sentence(List<Word> words, Set<String> identifier, Set<MathTag> formulae) {
+    this(0, words, identifier, formulae);
+  }
 
-  public Sentence(List<Word> words, Set<String> identifiers, List<MathTag> formulas) {
+  public Sentence(int section, List<Word> words, Set<String> identifier, Set<MathTag> formulae) {
+    this.section = section;
     this.words = words;
-    this.identifiers = identifiers;
-    this.formulas = formulas;
+    this.sentenceIdentifier = identifier;
+    this.sentenceMath = formulae;
   }
 
   public List<Word> getWords() {
     return words;
   }
 
-  public boolean contains(String identifier) {
-    return identifiers.contains(identifier);
+  public boolean containsIdentifier(String identifier) {
+    return sentenceIdentifier.contains(identifier);
+  }
+
+  public int getSection() {
+    return section;
   }
 
   public Set<String> getIdentifiers() {
-    return identifiers;
+    return sentenceIdentifier;
   }
 
-  public List<MathTag> getFormulas() {
-    return formulas;
-  }
-
-  public void setFormulas(List<MathTag> formulas) {
-    this.formulas = formulas;
+  public Set<MathTag> getMath() {
+    return sentenceMath;
   }
 
   @Override
   public String toString() {
-    return "Sentence [words=" + words + ", identifiers=" + identifiers + "]";
+    return "Sentence [words=" + words + ", identifiers=" + sentenceIdentifier + "]";
   }
 
 }

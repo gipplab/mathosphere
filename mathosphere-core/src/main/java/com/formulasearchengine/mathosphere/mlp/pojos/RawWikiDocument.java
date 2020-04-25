@@ -20,7 +20,6 @@ public class RawWikiDocument extends RawDocument {
   );
 
   private static final CharSequenceTranslator TRANSLATOR = new AggregateTranslator(
-//          new LookupTranslator(EntityArrays.BASIC_UNESCAPE),
           new LookupTranslator(EntityArrays.ISO8859_1_UNESCAPE),
           new LookupTranslator(EntityArrays.HTML40_EXTENDED_UNESCAPE)
   );

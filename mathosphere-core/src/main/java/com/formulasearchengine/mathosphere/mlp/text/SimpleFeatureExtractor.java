@@ -85,7 +85,7 @@ public class SimpleFeatureExtractor implements MapFunction<ParsedWikiDocument, W
     for (String identifier : identifiers) {
       for (int i = 0; i < sentences.size(); i++) {
         Sentence sentence = sentences.get(i);
-        if (sentence.contains(identifier)) {
+        if (sentence.containsIdentifier(identifier)) {
           result.put(identifier, i);
           break;
         }

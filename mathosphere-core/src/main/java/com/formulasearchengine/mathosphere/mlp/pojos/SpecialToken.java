@@ -1,7 +1,11 @@
 package com.formulasearchengine.mathosphere.mlp.pojos;
 
+import java.util.List;
+
 public interface SpecialToken {
-    int getPosition();
+    List<Position> getPositions();
+
+    void addPosition(Position pos);
 
     String getContent();
 

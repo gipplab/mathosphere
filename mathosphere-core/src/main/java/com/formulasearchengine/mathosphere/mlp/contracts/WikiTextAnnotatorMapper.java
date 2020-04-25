@@ -47,9 +47,9 @@ public class WikiTextAnnotatorMapper extends RichMapFunction<RawWikiDocument, Pa
     List<Sentence> sentences;
     try {
       WikiTextParser c = new WikiTextParser(doc, config);
-      String cleanText = c.parse();
+      List<String> cleanText = c.parse();
       lib = c.getMetaLibrary();
-      sentences = annotator.annotate(cleanText, lib.getFormulaLib());
+      sentences = annotator.annotate(cleanText, lib);
     } catch (Exception e) {
       LOGGER.warn("Unable to parse wikitext", doc.getTitle(), e);
       sentences = new ArrayList<>();

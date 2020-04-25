@@ -93,7 +93,7 @@ public class WikiTextParser extends AstVisitor<WtNode> {
     private int needNewlines;
     private boolean needSpace;
     private boolean noWrap;
-    private LinkedList<Integer> sections;
+    private LinkedList<String> sections;
     private PageTitle pageTitle;
     private String texInfoUrl;
     private boolean suppressOutput = false;
@@ -122,12 +122,14 @@ public class WikiTextParser extends AstVisitor<WtNode> {
         texInfoUrl = config.getTexvcinfoUrl();
     }
 
-    public String parse() {
+    public List<String> parse() {
         try {
-            return (String) this.go(page.getPage());
+            return (List<String>) this.go(page.getPage());
         } catch (Exception e) {
             Logger.error(e, "Error parsing page " + this.pageTitle);
-            return "";
+            List<String> txt = new LinkedList<>();
+            txt.add("");
+            return txt;
         }
     }
 
@@ -149,7 +151,10 @@ public class WikiTextParser extends AstVisitor<WtNode> {
 
         // This method is called by go() after visitation has finished
         // The return value will be passed to go() which passes it to the caller
-        return sb.toString();
+
+        // flush the last section
+        sections.addLast(sb.toString());
+        return sections;
     }
 
     // =========================================================================
@@ -175,13 +180,7 @@ public class WikiTextParser extends AstVisitor<WtNode> {
         if (i.size() == 1 && i.get(0) instanceof WtText) {
             final String tex = getTex(i, false);
             if (tex != null) {
-                int location;
-                try {
-                    location = i.getLocation().line;
-                } catch (NullPointerException n) {
-                    location = 0;
-                }
-                MathTag tag = new MathTag(location, tex, WikiTextUtils.MathMarkUpType.MATH_TEMPLATE);
+                MathTag tag = new MathTag(tex, WikiTextUtils.MathMarkUpType.MATH_TEMPLATE);
                 lib.addFormula(tag);
                 needSpace = true;
                 writeWord(tag.placeholder());
@@ -200,13 +199,7 @@ public class WikiTextParser extends AstVisitor<WtNode> {
                     final String mainTex = getTex(i, true);
                     if (mainTex != null) {
                         String tex = mainTex + "_{" + subTex + "}";
-                        int location;
-                        try {
-                            location = i.getLocation().line;
-                        } catch (NullPointerException n) {
-                            location = 0;
-                        }
-                        MathTag tag = new MathTag(location, tex, WikiTextUtils.MathMarkUpType.MATH_TEMPLATE);
+                        MathTag tag = new MathTag(tex, WikiTextUtils.MathMarkUpType.MATH_TEMPLATE);
                         lib.addFormula(tag);
                         needSpace = true;
                         writeWord(tag.placeholder());
@@ -263,13 +256,7 @@ public class WikiTextParser extends AstVisitor<WtNode> {
     private void handeLatexMathTag(WtNode n, String content) {
         //content = content.replaceAll("'''([a-zA-Z]+)'''","\\mathbf{$1}");
         content = replaceMathUnicode(replaceClearMath(content));
-        int location = 0;
-        try {
-            location = n.getLocation().line;
-        } catch (Exception ignored) {
-            //we don't really need this
-        }
-        MathTag tag = new MathTag(location, content, WikiTextUtils.MathMarkUpType.MATH_TEMPLATE);
+        MathTag tag = new MathTag(content, WikiTextUtils.MathMarkUpType.MATH_TEMPLATE);
 
         lib.addFormula(tag);
         needSpace = true;
@@ -409,50 +396,57 @@ public class WikiTextParser extends AstVisitor<WtNode> {
 
     public void visit(WtSection s) {
         finishLine();
-        StringBuilder saveSb = sb;
-        boolean saveNoWrap = noWrap;
+//        StringBuilder saveSb = sb;
+//        boolean saveNoWrap = noWrap;
+//
+//        // TODO shall we ignore title of section
+//        sb = new StringBuilder();
+//        noWrap = true;
+//
+//        iterate(s.getHeading());
+//        finishLine();
+//        String title = sb.toString().trim();
+//
+//        sb = saveSb;
 
-        sb = new StringBuilder();
-        noWrap = true;
+//        if (s.getLevel() >= 1) {
+//            while (sections.size() > s.getLevel()) {
+//                sections.removeLast();
+//            }
+//            while (sections.size() < s.getLevel()) {
+//                sections.add(1);
+//            }
+//
+//            StringBuilder sb2 = new StringBuilder();
+//            for (int i = 0; i < sections.size(); ++i) {
+//                if (i < 1) {
+//                    continue;
+//                }
+//
+//                sb2.append(sections.get(i));
+//                sb2.append('.');
+//            }
+//
+//            if (sb2.length() > 0) {
+//                sb2.append(' ');
+//            }
+//            sb2.append(title);
+//            title = sb2.toString();
+//        }
+//
+//        newline(2);
+//        write(title);
+//        newline(1);
+//        write(strrep('-', title.length()));
+//        newline(2);
 
-        iterate(s.getHeading());
-        finishLine();
-        String title = sb.toString().trim();
-
-        sb = saveSb;
-
-        if (s.getLevel() >= 1) {
-            while (sections.size() > s.getLevel()) {
-                sections.removeLast();
-            }
-            while (sections.size() < s.getLevel()) {
-                sections.add(1);
-            }
-
-            StringBuilder sb2 = new StringBuilder();
-            for (int i = 0; i < sections.size(); ++i) {
-                if (i < 1) {
-                    continue;
-                }
-
-                sb2.append(sections.get(i));
-                sb2.append('.');
-            }
-
-            if (sb2.length() > 0) {
-                sb2.append(' ');
-            }
-            sb2.append(title);
-            title = sb2.toString();
+        // if there is stuff already in the string builder, flush it to sections
+        if ( sb.length() > 1 ) {
+            sections.addLast(sb.toString());
+            sb = new StringBuilder();
         }
 
-        newline(2);
-        write(title);
-        newline(1);
-        write(strrep('-', title.length()));
-        newline(2);
-
-        noWrap = saveNoWrap;
+//        noWrap = saveNoWrap;
         try {
             // Don't care about errors
             iterate(s.getBody());
@@ -461,11 +455,10 @@ public class WikiTextParser extends AstVisitor<WtNode> {
             e.printStackTrace();
         }
 
-
-        while (sections.size() > s.getLevel()) {
-            sections.removeLast();
-        }
-        sections.add(sections.removeLast() + 1);
+//        while (sections.size() > s.getLevel()) {
+//            sections.removeLast();
+//        }
+//        sections.add(sections.removeLast() + 1);
     }
 
     public void visit(WtParagraph p) {
@@ -577,7 +570,7 @@ public class WikiTextParser extends AstVisitor<WtNode> {
                     arg0 = (WtTemplateArgument) n.getArgs().get(0);
                     content = ((WtText) arg0.getValue().get(0)).getContent().trim();
                     content = replaceMathUnicode(replaceClearMath(content));
-                    MathTag tag = new MathTag(n.getLocation().line, content, WikiTextUtils.MathMarkUpType.MVAR_TEMPLATE);
+                    MathTag tag = new MathTag(content, WikiTextUtils.MathMarkUpType.MVAR_TEMPLATE);
                     lib.addFormula(tag);
                     needSpace = true;
                     writeWord(tag.placeholder());
@@ -590,11 +583,11 @@ public class WikiTextParser extends AstVisitor<WtNode> {
                     iterate(arg0.getValue());
                     break;
                 case "Citation":
-                    cite = new WikiCitation(n.getLocation().line, n.toString());
+                    cite = new WikiCitation(n.toString());
                     lib.addCite(cite);
                     break;
                 case "dlmf":
-                    cite = new WikiCitation(n.getLocation().line, "dlmf", n.toString());
+                    cite = new WikiCitation("dlmf", n.toString());
                     lib.addCite(cite);
                     break;
                 case "short description":
@@ -722,13 +715,12 @@ public class WikiTextParser extends AstVisitor<WtNode> {
                 }
 
                 WikiCitation cite = new WikiCitation(
-                        n.getLocation().line,
                         attribute,
                         n.getBody().toString()
                 );
 
                 lib.addCite(cite);
-                write(cite.placeholder());
+                write(" "+cite.placeholder());
         }
     }
 
@@ -754,7 +746,7 @@ public class WikiTextParser extends AstVisitor<WtNode> {
     }
 
     private void addMathTag(int location, String content, WikiTextUtils.MathMarkUpType type) {
-        MathTag tag = new MathTag(location, content, type);
+        MathTag tag = new MathTag(content, type);
         lib.addFormula(tag);
         if (needNewlines > 0) {
             write(" ");

@@ -17,6 +17,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.nio.charset.StandardCharsets;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -30,17 +31,15 @@ import static com.formulasearchengine.mathosphere.mlp.text.MathMLUtils.extractId
 public class MathTag implements SpecialToken {
     private static final Logger logger = LogManager.getLogger(MathTag.class.getName());
 
-    public final static Pattern FORMULA_PATTERN =
-            Pattern.compile("FORMULA_[0-9a-f+]");
     private static final HashFunction HASHER = Hashing.goodFastHash(64);
-    private final int position;
+    private final List<Position> positions;
     private final String content;
     private final MathMarkUpType markUpType;
     private Multiset<String> indentifiers = null;
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
-    public MathTag(int position, String content, MathMarkUpType markUp) {
-        this.position = position;
+    public MathTag(String content, MathMarkUpType markUp) {
+        this.positions = new LinkedList<>();
         this.content = content.trim();
         this.markUpType = markUp;
     }
@@ -67,10 +66,15 @@ public class MathTag implements SpecialToken {
     }
 
     public Multiset<String> getIdentifiers(BaseConfig config) {
-        if (indentifiers == null || indentifiers.size() == 0) {
+        if (indentifiers == null) {
+            // TODO we might don't want to differ between tex/mathml anymore. decide on the fly instead
             indentifiers = extractIdentifiers(this, config.getUseTeXIdentifiers(), config.getTexvcinfoUrl());
         }
         return indentifiers;
+    }
+
+    public boolean containsIdentifier(String identifier, BaseConfig config) {
+        return getIdentifiers(config).contains(identifier);
     }
 
     @JsonIgnore
@@ -84,8 +88,12 @@ public class MathTag implements SpecialToken {
     }
 
     @JsonIgnore
-    public int getPosition() {
-        return position;
+    public List<Position> getPositions() {
+        return positions;
+    }
+
+    public void addPosition(Position p) {
+        this.positions.add(p);
     }
 
     @JsonIgnore
@@ -114,8 +122,10 @@ public class MathTag implements SpecialToken {
 
     @Override
     public String toString() {
-        return "MathTag [position=" + position + ", content=" + content + "]";
+        return "MathTag [position=" + positions + ", content=" + content + "]";
     }
+
+
 
     /**
      * Builds a map from ID to MathTag

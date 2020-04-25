@@ -1,5 +1,6 @@
 package com.formulasearchengine.mathosphere.mlp.text;
 
+import com.formulasearchengine.mathosphere.mlp.pojos.*;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;
@@ -15,9 +16,6 @@ import com.alexeygrigorev.rseq.Pattern;
 import com.alexeygrigorev.rseq.TransformerToElement;
 import com.alexeygrigorev.rseq.XMatcher;
 import com.formulasearchengine.mathosphere.mlp.cli.BaseConfig;
-import com.formulasearchengine.mathosphere.mlp.pojos.MathTag;
-import com.formulasearchengine.mathosphere.mlp.pojos.Sentence;
-import com.formulasearchengine.mathosphere.mlp.pojos.Word;
 import com.formulasearchengine.mathosphere.mlp.rus.RusPosAnnotator;
 
 import org.apache.commons.lang3.StringUtils;
@@ -81,53 +79,68 @@ public class PosTagger {
 
   /**
    * Performs POS-Tagging via CoreNLP lib and returns a list of sentences (a sentence is a list of words).
-   * @param cleanText the cleaned wikitext (formulae replaced by FORMULA tags etc)
+   * @param sections the cleaned wikitext (formulae replaced by FORMULA tags etc)
+   * @param lib the meta information library will be updated with new positions according to their appearance after
+   *            tokenize by the StanfordNLP tagger.
    * @return POS-tagged list of sentences.
    */
-  public List<List<Word>> annotate(String cleanText) {
-    Annotation document = new Annotation(cleanText);
-    nlpPipeline.annotate(document);
+  public List<List<List<Word>>> annotate(List<String> sections, DocumentMetaLib lib) {
+    List<List<List<Word>>> result = Lists.newArrayList();
+    for ( int sec = 0; sec < sections.size(); sec++ ) {
+      String cleanText = sections.get(sec);
+      Annotation document = new Annotation(cleanText);
+      nlpPipeline.annotate(document);
+      List<List<Word>> sentences = Lists.newArrayList();
 
-    List<List<Word>> result = Lists.newArrayList();
-    for (CoreMap sentence : document.get(SentencesAnnotation.class)) {
-      List<Word> words = Lists.newArrayList();
+      for (CoreMap sentence : document.get(SentencesAnnotation.class)) {
+        List<Word> words = Lists.newArrayList();
 
-      final List<CoreLabel> coreLabels = sentence.get(TokensAnnotation.class);
-      for ( int i = 0; i < coreLabels.size(); i++ ) {
-        CoreLabel token = coreLabels.get(i);
-        String textToken = token.get(TextAnnotation.class);
-        String pos = token.get(PartOfSpeechAnnotation.class);
-        // underscores are split in v3.9.2, see: https://github.com/stanfordnlp/CoreNLP/issues/942
-        if (textToken.startsWith("FORMULA")) {
-          String underscore = handleUnderscore(coreLabels, i);
-          if ( underscore != null ){
-            i = i+2; // skip underscore tokens
-            textToken += underscore;
+        final List<CoreLabel> coreLabels = sentence.get(TokensAnnotation.class);
+        for ( int i = 0; i < coreLabels.size(); i++ ) {
+          CoreLabel token = coreLabels.get(i);
+          String textToken = token.get(TextAnnotation.class);
+          String pos = token.get(PartOfSpeechAnnotation.class);
+          SpecialToken specialToken = null;
+          // underscores are split in v3.9.2, see: https://github.com/stanfordnlp/CoreNLP/issues/942
+          if (textToken.startsWith(PlaceholderLib.FORMULA)) {
+            String underscore = handleUnderscore(coreLabels, i);
+            if ( underscore != null ){
+              i = i+2; // skip underscore tokens
+              textToken += underscore;
+            }
+            specialToken = lib.getFormulaLib().get(textToken);
+            words.add(new Word(textToken, PosTag.MATH));
+          } else if (SYMBOLS.contains(textToken)) {
+            words.add(new Word(textToken, PosTag.SYMBOL));
+          } else if (BRACKET_CODES.containsKey(textToken)) {
+            words.add(new Word(BRACKET_CODES.get(textToken), pos));
+          } else if (textToken.startsWith(PlaceholderLib.LINK)) {
+            String underscore = handleUnderscore(coreLabels, i);
+            if ( underscore != null ){
+              i = i+2; // skip underscore tokens
+              textToken += underscore;
+            }
+            specialToken = lib.getLinkLib().get(textToken);
+            words.add(new Word(specialToken.getContent(), PosTag.LINK));
+          } else if (textToken.startsWith(PlaceholderLib.CITE)) {
+            String underscore = handleUnderscore(coreLabels, i);
+            if ( underscore != null ){
+              i = i+2; // skip underscore tokens
+              textToken += underscore;
+            }
+            specialToken = lib.getCiteLib().get(textToken);
+            words.add(new Word(textToken, PosTag.CITE));
+          } else {
+            words.add(new Word(textToken, pos));
           }
-          words.add(new Word(textToken, PosTag.MATH));
-        } else if (SYMBOLS.contains(textToken)) {
-          words.add(new Word(textToken, PosTag.SYMBOL));
-        } else if (BRACKET_CODES.containsKey(textToken)) {
-          words.add(new Word(BRACKET_CODES.get(textToken), pos));
-        } else if (textToken.startsWith("LINK")) {
-          String underscore = handleUnderscore(coreLabels, i);
-          if ( underscore != null ){
-            i = i+2; // skip underscore tokens
-            textToken += underscore;
+          if ( specialToken != null ) {
+            Position p = new Position(result.size(), sentences.size(), words.size());
+            specialToken.addPosition(p);
           }
-          words.add(new Word(textToken, PosTag.LINK));
-        } else if (textToken.startsWith("CITE")) {
-          String underscore = handleUnderscore(coreLabels, i);
-          if ( underscore != null ){
-            i = i+2; // skip underscore tokens
-            textToken += underscore;
-          }
-          words.add(new Word(textToken, PosTag.CITE));
-        } else {
-          words.add(new Word(textToken, pos));
         }
+        sentences.add(words);
       }
-      result.add(words);
+      result.add(sentences);
     }
 
     return result;
@@ -148,36 +161,49 @@ public class PosTagger {
     return null;
   }
 
-  protected static List<Sentence> convertToSentences(List<List<Word>> input, Map<String, MathTag> formulaIndex,
-                                           Set<String> allIdentifiers) {
+  protected static List<Sentence> convertToSentences(
+          List<List<List<Word>>> input,
+          Map<String, MathTag> formulaIndex
+  ) {
     List<Sentence> result = Lists.newArrayListWithCapacity(input.size());
 
-    for (List<Word> words : input) {
-      Sentence sentence = toSentence(words, formulaIndex, allIdentifiers);
-      result.add(sentence);
+    for ( int i = 0; i < input.size(); i++ ) {
+      List<List<Word>> sentence = input.get(i);
+      for (List<Word> words : sentence) {
+        Sentence s = toSentence(i, words, formulaIndex);
+        result.add(s);
+      }
     }
 
     return result;
   }
 
+  /**
+   * Converts a given list of words (considered as a single sentence) to a list of sentences.
+   * @param input
+   * @param formulaIndex
+   * @return
+   */
   protected static Sentence toSentence(
+          int section,
           List<Word> input,
-          Map<String, MathTag> formulaIndex,
-          Set<String> allIdentifiers
+          Map<String, MathTag> formulaIndex
   ) {
     List<Word> words = Lists.newArrayListWithCapacity(input.size());
     Set<String> sentenceIdentifiers = Sets.newHashSet();
-    List<MathTag> formulas = Lists.newArrayList();
+    Set<MathTag> formulas = Sets.newHashSet();
 
-    for (Word w : input) {
+    for (int position = 0; position < input.size(); position++) {
+      Word w = input.get(position);
       String word = w.getWord();
       String pos = w.getPosTag();
 
-      if (allIdentifiers.contains(word) && !PosTag.IDENTIFIER.equals(pos)) {
-        words.add(new Word(word, PosTag.IDENTIFIER));
-        sentenceIdentifiers.add(word);
-        continue;
-      }
+      // there are no identifiers anymore, only MOI/complex math
+//      if (allIdentifiers.contains(word) && !PosTag.IDENTIFIER.equals(pos)) {
+//        words.add(new Word(word, PosTag.IDENTIFIER));
+//        sentenceIdentifiers.add(word);
+//        continue;
+//      }
 
       if (PosTag.MATH.equals(pos)) {
         String formulaKey = word;
@@ -195,15 +221,17 @@ public class PosTagger {
         formulas.add(formula);
 
         Multiset<String> formulaIdentifiers = formula.getIdentifiers(config);
+        sentenceIdentifiers.addAll(formulaIdentifiers);
+        words.add(w);
         // only one occurrence of one single idendifier
-        if (formulaIdentifiers.size() == 1) {
-          String id = Iterables.get(formulaIdentifiers, 0);
-          LOGGER.debug("Converting formula {} to identifier {}", formula.getKey(), id);
-          words.add(new Word(id, PosTag.IDENTIFIER));
-          sentenceIdentifiers.add(id);
-        } else {
-          words.add(w);
-        }
+//        if (formulaIdentifiers.size() == 1) {
+//          String id = Iterables.get(formulaIdentifiers, 0);
+//          LOGGER.debug("Converting formula {} to identifier {}", formula.getKey(), id);
+//          words.add(new Word(id, PosTag.IDENTIFIER));
+//          sentenceIdentifiers.add(id);
+//        } else {
+//          words.add(w);
+//        }
 
         if (word.length() > 40) {
           String rest = word.substring(40, word.length());
@@ -216,26 +244,36 @@ public class PosTagger {
       words.add(w);
     }
 
-    return new Sentence(words, sentenceIdentifiers, formulas);
+    return new Sentence(section, words, sentenceIdentifiers, formulas);
   }
 
   /**
    * Concatenate words according to their POS-tags (eg multiple nouns are merged to noun phrases).
    * @param sentences list of sentences
-   * @param allIdentifiers identifiers
    * @return concatenated version of the input sentences
    */
-  public static List<List<Word>> concatenateTags(List<List<Word>> sentences, Set<String> allIdentifiers) {
-    List<List<Word>> results = Lists.newArrayListWithCapacity(sentences.size());
+  public static List<List<List<Word>>> concatenateTags(List<List<List<Word>>> sentences) {
+    List<List<List<Word>>> results = Lists.newArrayListWithCapacity(sentences.size());
 
-    for (List<Word> sentence : sentences) {
-      List<Word> res = concatenateSingleWordList(sentence, allIdentifiers);
-      results.add(res);
+    for ( List<List<Word>> sec : sentences ) {
+      List<List<Word>> innerRes = Lists.newArrayListWithCapacity(sec.size());
+      for (List<Word> sentence : sec) {
+        List<Word> res = concatenatePhrases(sentence);
+        innerRes.add(res);
+      }
+      results.add(innerRes);
     }
 
     return results;
   }
 
+  /**
+   * See {@link #concatenateLinks(List, Set)}. Use {@link #concatenatePhrases(List)} directly.
+   * @param sentence ..
+   * @param allIdentifiers ..
+   * @return ..
+   */
+  @Deprecated
   private static List<Word> concatenateSingleWordList(List<Word> sentence, Set<String> allIdentifiers) {
     // links
     List<Word> result;
@@ -256,9 +294,21 @@ public class PosTagger {
     return result;
   }
 
+  /**
+   * With the new sweble parser {@link WikiTextParser}, we do not need to take of links or identifiers in quotes
+   * anymore. Please do not use this function anymore.
+   *
+   * @param in ...
+   * @param allIdentifiers ...
+   * @return ...
+   */
+  @Deprecated
   protected static List<Word> concatenateLinks(List<Word> in, Set<String> allIdentifiers) {
-    Pattern<Word> linksPattern = Pattern.create(pos(PosTag.QUOTE), anyWord().oneOrMore()
-      .captureAs("link"), pos(PosTag.UNQUOTE));
+    Pattern<Word> linksPattern = Pattern.create(
+            pos(PosTag.QUOTE),
+            anyWord().oneOrMore().captureAs("link"),
+            pos(PosTag.UNQUOTE)
+    );
 
     return linksPattern.replaceToOne(in, new TransformerToElement<Word>() {
       @Override

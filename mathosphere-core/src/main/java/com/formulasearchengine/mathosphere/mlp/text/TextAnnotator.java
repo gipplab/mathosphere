@@ -2,14 +2,12 @@ package com.formulasearchengine.mathosphere.mlp.text;
 
 import com.formulasearchengine.mathosphere.mlp.cli.BaseConfig;
 import com.formulasearchengine.mathosphere.mlp.pojos.*;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * @author Andre Greiner-Petter
@@ -17,42 +15,28 @@ import java.util.stream.Collectors;
 public class TextAnnotator {
 
     private final PosTagger posTagger;
-    private final BaseConfig config;
 
     public TextAnnotator(BaseConfig config) {
-        this.config = config;
         this.posTagger = PosTagger.create(config);
     }
 
-    public List<Sentence> annotate(String text, List<MathTag> mathTags) {
-        Map<String, MathTag> formulaIndex = MathTag.getMathIDMap(mathTags);
-        return annotate(text, formulaIndex);
-    }
-
-    /**
-     * Annotates the given text (PoS-Tags) and returns a list of sentences,
-     * including identifier.
-     * @param text clean text
-     * @param formulaIndex list of all math expressions
-     * @return list of annotated sentences
-     */
-    public List<Sentence> annotate(String text, Map<String, MathTag> formulaIndex) {
-        Set<String> identifiers = MathTag.getAllIdentifier(formulaIndex, config);
-        return annotate(text, formulaIndex, identifiers);
+    protected List<Sentence> annotate(String text, DocumentMetaLib lib) {
+        List<String> l = Lists.newArrayListWithCapacity(1);
+        l.add(text);
+        return annotate(l, lib);
     }
 
     /**
      * Annotates the given text (with PoS-tags) and returns a list of sentences,
      * including math information.
      * @param text clean text
-     * @param formulaIndex all formulae (keys are MathTag IDs) that appear in the text
-     * @param identifiers a set of all existing identifiers in the text
+     * @param lib ..
      * @return annotated sentences
      */
-    public List<Sentence> annotate(String text, Map<String, MathTag> formulaIndex, Set<String> identifiers) {
-        List<List<Word>> annotated = posTagger.annotate(text);
-        List<List<Word>> concatenated = PosTagger.concatenateTags(annotated, identifiers);
-        return PosTagger.convertToSentences(concatenated, formulaIndex, identifiers);
+    public List<Sentence> annotate(List<String> text, DocumentMetaLib lib) {
+        List<List<List<Word>>> annotated = posTagger.annotate(text, lib);
+        List<List<List<Word>>> concatenated = PosTagger.concatenateTags(annotated);
+        return PosTagger.convertToSentences(concatenated, lib.getFormulaLib());
     }
 
     /**

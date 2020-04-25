@@ -31,11 +31,11 @@ public class PosTaggerTest {
     String text = readText("escaped.txt");
 
     WikiTextParser parser = new WikiTextParser(text);
-    String cleanText = parser.parse();
+    List<String> cleanText = parser.parse();
     DocumentMetaLib lib = parser.getMetaLibrary();
     System.out.println(cleanText);
 
-    List<Sentence> result = annotator.annotate(cleanText, lib.getFormulaLib());
+    List<Sentence> result = annotator.annotate(cleanText, lib);
 
     // TODO planck constant is replaced by normal 'h' in UnicodeUtils.java Line 101 (why so ever)
     List<Word> expected = Arrays.asList(

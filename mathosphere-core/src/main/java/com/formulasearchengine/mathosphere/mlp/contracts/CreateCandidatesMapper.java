@@ -1,5 +1,6 @@
 package com.formulasearchengine.mathosphere.mlp.contracts;
 
+import com.formulasearchengine.mathosphere.mlp.text.PosTag;
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multiset;
@@ -229,16 +230,16 @@ public class CreateCandidatesMapper implements MapFunction<ParsedWikiDocument, W
     if ("ID".equals(posTag)) {
       return false;
     }*/
-    if (word.length() < 3) {
-      return false;
-    }
-    if (word.contains("<")) {
-      // remove tags and so
-      //TODO: Make a white-list of allowed chars.
-      return false;
-    }
+//    if (word.length() < 3) {
+//      return false;
+//    }
+//    if (word.contains("<")) {
+//      // remove tags and so
+//      //TODO: Make a white-list of allowed chars.
+//      return false;
+//    }
     // we're only interested in nouns, entities and links
-    return posTag.matches("NN[PS]{0,2}|NP\\+?|NN\\+|LNK");
+    return posTag.matches(PosTag.ANY_NOUN_REGEX+"|"+PosTag.FOREIGN_WORD+"|LNK");
 
   }
 
@@ -251,7 +252,7 @@ public class CreateCandidatesMapper implements MapFunction<ParsedWikiDocument, W
     List<Sentence> result = Lists.newArrayList();
 
     for (Sentence sentence : sentences) {
-      if (sentence.contains(identifier)) {
+      if (sentence.containsIdentifier(identifier)) {
         result.add(sentence);
       }
     }
