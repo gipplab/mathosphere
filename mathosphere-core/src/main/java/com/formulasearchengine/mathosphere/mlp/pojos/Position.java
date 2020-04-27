@@ -8,7 +8,7 @@ import java.util.List;
  */
 public class Position implements Comparable<Position> {
     private int section;
-    private int line;
+    private int sentence;
     private int word;
 
     private DocumentMetaLib lib;
@@ -21,13 +21,13 @@ public class Position implements Comparable<Position> {
         this(section, 0, 0);
     }
 
-    public Position(int section, int line) {
-        this(section, line, 0);
+    public Position(int section, int sentence) {
+        this(section, sentence, 0);
     }
 
-    public Position(int section, int line, int word) {
+    public Position(int section, int sentence, int word) {
         this.section = section;
-        this.line = line;
+        this.sentence = sentence;
         this.word = word;
     }
 
@@ -35,8 +35,8 @@ public class Position implements Comparable<Position> {
         return section;
     }
 
-    public int getLine() {
-        return line;
+    public int getSentence() {
+        return sentence;
     }
 
     public int getWord() {
@@ -47,8 +47,8 @@ public class Position implements Comparable<Position> {
         this.section = section;
     }
 
-    public void setLine(int line) {
-        this.line = line;
+    public void setSentence(int sentence) {
+        this.sentence = sentence;
     }
 
     public void setWord(int word) {
@@ -67,12 +67,12 @@ public class Position implements Comparable<Position> {
 
         p.sort(Position::compareTo);
 
-        int startLine = p.get(0).line;
+        int startLine = p.get(0).sentence;
         int endLine = startLine;
         for ( int i = p.get(0).section+1; i < p.get(1).section; i++ ) {
             endLine += lib.getSectionLength(i);
         }
-        endLine += p.get(1).line;
+        endLine += p.get(1).sentence;
         return endLine - startLine;
     }
 
@@ -80,9 +80,14 @@ public class Position implements Comparable<Position> {
     public int compareTo(Position position) {
         int d = section - position.section;
         if ( d != 0 ) return d;
-        d = line - position.line;
+        d = sentence - position.sentence;
         if ( d != 0 ) return d;
         d = word - position.word;
         return d;
+    }
+
+    @Override
+    public String toString(){
+        return "Sec: " + section + "; Sen: " + sentence + "; Word: " + word;
     }
 }

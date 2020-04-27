@@ -64,6 +64,8 @@ import static de.fau.cs.osr.utils.StringTools.strrep;
 public class WikiTextParser extends AstVisitor<WtNode> {
     private final static Pattern subMatch = Pattern.compile("[{<]sub[}>](.+?)[{<]/sub[}>]");
 
+    private final static Pattern MATH_END_PATTERN = Pattern.compile("^\\s*(.*)\\s*([.,;!?]+)\\s*$");
+
     private final static Pattern MML_TOKENS_PATTERN = Pattern.compile(
             "<(?:m[a-z]+|apply|c[in]|csymbol|semantics)>"
     );
@@ -180,11 +182,7 @@ public class WikiTextParser extends AstVisitor<WtNode> {
         if (i.size() == 1 && i.get(0) instanceof WtText) {
             final String tex = getTex(i, false);
             if (tex != null) {
-                MathTag tag = new MathTag(tex, WikiTextUtils.MathMarkUpType.MATH_TEMPLATE);
-                lib.addFormula(tag);
-                needSpace = true;
-                writeWord(tag.placeholder());
-                needSpace = true;
+                addMathTag(tex, WikiTextUtils.MathMarkUpType.MATH_TEMPLATE);
                 return true;
             }
         } else {
@@ -199,11 +197,7 @@ public class WikiTextParser extends AstVisitor<WtNode> {
                     final String mainTex = getTex(i, true);
                     if (mainTex != null) {
                         String tex = mainTex + "_{" + subTex + "}";
-                        MathTag tag = new MathTag(tex, WikiTextUtils.MathMarkUpType.MATH_TEMPLATE);
-                        lib.addFormula(tag);
-                        needSpace = true;
-                        writeWord(tag.placeholder());
-                        needSpace = true;
+                        addMathTag(tex, WikiTextUtils.MathMarkUpType.MATH_TEMPLATE);
                         return true;
                     }
                 }
@@ -256,12 +250,7 @@ public class WikiTextParser extends AstVisitor<WtNode> {
     private void handeLatexMathTag(WtNode n, String content) {
         //content = content.replaceAll("'''([a-zA-Z]+)'''","\\mathbf{$1}");
         content = replaceMathUnicode(replaceClearMath(content));
-        MathTag tag = new MathTag(content, WikiTextUtils.MathMarkUpType.MATH_TEMPLATE);
-
-        lib.addFormula(tag);
-        needSpace = true;
-        writeWord(tag.placeholder());
-        needSpace = true;
+        addMathTag(content, WikiTextUtils.MathMarkUpType.MATH_TEMPLATE);
     }
 
     private void newline(int num) {
@@ -294,6 +283,7 @@ public class WikiTextParser extends AstVisitor<WtNode> {
 
     public void visit(WtListItem item) {
         writeNewlines(1);
+//        finishLine();
         iterate(item);
     }
 
@@ -343,7 +333,6 @@ public class WikiTextParser extends AstVisitor<WtNode> {
         write(Character.toChars(cr.getCodePoint()));
     }
 
-    // TODO here, an xml tag might open, so we should handle that in case of <math> and <ref>
     public void visit(WtXmlEntityRef er) {
         String ch = er.getResolved();
         if (ch == null) {
@@ -468,8 +457,8 @@ public class WikiTextParser extends AstVisitor<WtNode> {
 
     public void visit(WtHorizontalRule hr) {
         newline(1);
-        write(strrep('-', 10));
-        newline(2);
+//        write(strrep('-', 10));
+//        newline(2);
     }
 
     public void visit(WtXmlElement e) {
@@ -532,6 +521,7 @@ public class WikiTextParser extends AstVisitor<WtNode> {
     }
 
     public void visit(WtNewline n) {
+        // ignore new lines
         writeNewlines(1);
     }
 
@@ -570,11 +560,7 @@ public class WikiTextParser extends AstVisitor<WtNode> {
                     arg0 = (WtTemplateArgument) n.getArgs().get(0);
                     content = ((WtText) arg0.getValue().get(0)).getContent().trim();
                     content = replaceMathUnicode(replaceClearMath(content));
-                    MathTag tag = new MathTag(content, WikiTextUtils.MathMarkUpType.MVAR_TEMPLATE);
-                    lib.addFormula(tag);
-                    needSpace = true;
-                    writeWord(tag.placeholder());
-                    needSpace = true;
+                    addMathTag(content, WikiTextUtils.MathMarkUpType.MVAR_TEMPLATE);
                     break;
                 case "numblk":
                     // https://en.wikipedia.org/wiki/Template:NumBlk
@@ -633,7 +619,7 @@ public class WikiTextParser extends AstVisitor<WtNode> {
         String result = "";
         switch (name.toLowerCase()) {
             case "pi":
-                result = " {\\pi} ";
+                result = " \\pi ";
                 break;
             case "=":
                 result = " = ";
@@ -700,7 +686,7 @@ public class WikiTextParser extends AstVisitor<WtNode> {
                 } else {
                     markUpType= WikiTextUtils.MathMarkUpType.LATEX;
                 }
-                addMathTag(n.getLocation().line, n.getBody().getContent(), markUpType);
+                addMathTag(n.getBody().getContent(), markUpType);
                 break;
             case "ref":
                 String attribute = "";
@@ -745,14 +731,24 @@ public class WikiTextParser extends AstVisitor<WtNode> {
         return mmlMatcher.find();
     }
 
-    private void addMathTag(int location, String content, WikiTextUtils.MathMarkUpType type) {
+    private void addMathTag(String content, WikiTextUtils.MathMarkUpType type) {
+        Matcher m = MATH_END_PATTERN.matcher(content);
+        String end = null;
+        if ( m.matches() ){
+            content = m.group(1);
+            end = m.group(2);
+        }
+
         MathTag tag = new MathTag(content, type);
+
         lib.addFormula(tag);
         if (needNewlines > 0) {
             write(" ");
         }
+
         needSpace = true;
         writeWord(tag.placeholder());
+        if ( end != null ) write(end);
         needSpace = true;
     }
 
@@ -770,7 +766,7 @@ public class WikiTextParser extends AstVisitor<WtNode> {
                 .replaceAll("_{$1}")
                 .replaceAll("[{<]sup[}>](.+?)[{<]/sup[}>]", "^{$1}")
                 .replaceAll("'''\\[{0,2}(\\S)]{0,2}'''", "\\\\mathbf{$1}")
-                .replaceAll("''\\[{0,2}(\\S)]{0,2}''", "{$1}");
+                .replaceAll("''\\[{0,2}(\\S)]{0,2}''", "$1");
     }
 
     public static String replaceMathUnicode(String content) {
@@ -815,9 +811,16 @@ public class WikiTextParser extends AstVisitor<WtNode> {
         writeWord(String.valueOf(num));
     }
 
+    /**
+     * New lines are problematic for the PoS-Tagger. Hence, it is better to not add line breaks, since we
+     * have a system implemented that handles sections well.
+     * @param num .
+     * @deprecated just do not use new lines anymore.
+     */
+    @Deprecated
     private void writeNewlines(int num) {
         finishLine();
-        sb.append(strrep('\n', num));
+//        sb.append(strrep('\n', num));
         needNewlines = 0;
         needSpace = false;
     }

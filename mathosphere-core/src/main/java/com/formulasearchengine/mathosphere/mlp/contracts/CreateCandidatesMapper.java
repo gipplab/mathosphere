@@ -43,8 +43,6 @@ public class CreateCandidatesMapper implements MapFunction<ParsedWikiDocument, W
 
   private WikiDocumentOutput moiMapping( ParsedWikiDocument doc ) {
     LOG.info("Start MOI-definiens mapping.");
-
-    // TODO, lets do it, no more identifier
     List<Relation> relations = Lists.newArrayList();
 
     Collection<MathTag> formulae = doc.getFormulae();
@@ -334,7 +332,7 @@ public class CreateCandidatesMapper implements MapFunction<ParsedWikiDocument, W
     Position wordP = def.getPosition();
     return formulae.stream()
             .flatMap(f -> f.getPositions().stream())
-            .filter( f -> wordP.getSection() == f.getSection() && wordP.getLine() == f.getLine())
+            .filter( f -> wordP.getSection() == f.getSection() && wordP.getSentence() == f.getSentence())
             .map( f -> Math.abs(wordP.compareTo(f)) )
             .min( Integer::compareTo )
             .orElse(Integer.MIN_VALUE);

@@ -131,7 +131,8 @@ public class PosTagger {
               textToken += underscore;
             }
             specialToken = lib.getCiteLib().get(textToken);
-            words.add(new Word(p, textToken, PosTag.CITE));
+            // in the lib, but no longer in the text
+//            words.add(new Word(p, textToken, PosTag.CITE));
           } else if ( textToken.toLowerCase().matches("polynomials?") ) {
             words.add(new Word(p, textToken, PosTag.NOUN));
           } else {

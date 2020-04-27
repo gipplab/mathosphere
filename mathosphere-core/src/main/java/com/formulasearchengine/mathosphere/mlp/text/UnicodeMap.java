@@ -66,7 +66,8 @@ public class UnicodeMap {
       if (tex.endsWith("}") || tex.length() == 1) {
         return tex;
       }
-      return "{" + tex + "}";
+//      return "{" + tex + "}";
+      return tex;
     }
 
     LOGGER.debug("invalid char", codePoint);
