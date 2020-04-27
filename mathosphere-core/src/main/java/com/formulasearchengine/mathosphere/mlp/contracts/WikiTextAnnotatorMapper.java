@@ -4,7 +4,6 @@ import com.formulasearchengine.mathosphere.mlp.cli.BaseConfig;
 import com.formulasearchengine.mathosphere.mlp.pojos.*;
 import com.formulasearchengine.mathosphere.mlp.text.TextAnnotator;
 import com.formulasearchengine.mathosphere.mlp.text.WikiTextParser;
-import com.formulasearchengine.mathosphere.mlp.text.WikiTextUtils;
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Multiset;
 import org.apache.flink.api.common.functions.RichMapFunction;
@@ -17,8 +16,7 @@ import java.util.List;
 import java.util.Map;
 
 public class WikiTextAnnotatorMapper extends RichMapFunction<RawWikiDocument, ParsedWikiDocument> {
-
-  private static final Logger LOGGER = LogManager.getLogger(WikiTextAnnotatorMapper.class.getName());
+  private static final Logger LOG = LogManager.getLogger(WikiTextAnnotatorMapper.class.getName());
 
   private final BaseConfig config;
   private TextAnnotator annotator;
@@ -34,11 +32,10 @@ public class WikiTextAnnotatorMapper extends RichMapFunction<RawWikiDocument, Pa
 
   @Override
   public ParsedWikiDocument map(RawWikiDocument doc) {
-    LOGGER.info("processing \"{}\"...", doc.getTitle());
+    LOG.info("Processing \"{}\"...", doc.getTitle());
 
     final ParsedWikiDocument parse = parse(doc);
-    LOGGER.debug("identifiers in \"{}\" from {} formulas: {}", doc.getTitle(), parse.getFormulas().size(),
-        parse.getIdentifiers());
+    LOG.debug("Extract {} formulae from document {}.", parse.getFormulae().size(), doc.getTitle());
     return parse;
   }
 
@@ -51,13 +48,15 @@ public class WikiTextAnnotatorMapper extends RichMapFunction<RawWikiDocument, Pa
       lib = c.getMetaLibrary();
       sentences = annotator.annotate(cleanText, lib);
     } catch (Exception e) {
-      LOGGER.warn("Unable to parse wikitext", doc.getTitle(), e);
+      LOG.warn("Unable to parse wikitext from document {}. Reason: {}", doc.getTitle(), e);
       sentences = new ArrayList<>();
       if ( lib == null ) lib = new DocumentMetaLib();
     }
 
     Multiset<String> allIdentifiers = getAllIdentifiers(lib.getFormulaLib(), config);
-    return new ParsedWikiDocument(doc.getTitle(), allIdentifiers, sentences, lib);
+    ParsedWikiDocument pwd = new ParsedWikiDocument(doc.getTitle(), sentences, lib);
+    pwd.setIdentifiers(allIdentifiers);
+    return pwd;
   }
 
   public ParsedWikiDocument parse(String wikitext) {

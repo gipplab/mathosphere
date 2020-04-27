@@ -2,7 +2,9 @@ package com.formulasearchengine.mathosphere.mlp.pojos;
 
 import com.google.common.collect.Multiset;
 
+import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import static com.formulasearchengine.mathosphere.mlp.pojos.StringEntry.fromSet;
@@ -11,34 +13,16 @@ public class WikiDocumentOutput {
 
   private String title;
 
-  public String getqId() {
-    return qId;
-  }
-
-  public void setqId(String qId) {
-    this.qId = qId;
-  }
-
   private String qId;
+
   private List<Relation> relations;
   private Set<StringEntry> identifiers;
-
-  public double getMaxSentenceLength() {
-    return maxSentenceLength;
-  }
-
-  public void setMaxSentenceLength(double maxSentenceLength) {
-    this.maxSentenceLength = maxSentenceLength;
-  }
+  private Map<String, MathTag> formulae;
 
   /**
    * The length of the longest sentence in this document.
    */
   private double maxSentenceLength;
-
-  public boolean isSuccess() {
-    return success;
-  }
 
   private boolean success = true;
 
@@ -53,12 +37,37 @@ public class WikiDocumentOutput {
     this(title, null, relations, identifiers);
   }
 
+  public WikiDocumentOutput(String title, List<Relation> relations, Map<String, MathTag> formulae) {
+    this(title, null, relations, null);
+    this.formulae = formulae;
+  }
+
   public WikiDocumentOutput(String title, String qId, List<Relation> relations, Multiset<String> identifiers) {
     this.title = title;
     this.qId = qId;
     this.relations = relations;
     if (identifiers != null)
       this.identifiers = fromSet(identifiers.entrySet());
+  }
+
+  public String getqId() {
+    return qId;
+  }
+
+  public void setqId(String qId) {
+    this.qId = qId;
+  }
+
+  public double getMaxSentenceLength() {
+    return maxSentenceLength;
+  }
+
+  public void setMaxSentenceLength(double maxSentenceLength) {
+    this.maxSentenceLength = maxSentenceLength;
+  }
+
+  public boolean isSuccess() {
+    return success;
   }
 
   public String getTitle() {

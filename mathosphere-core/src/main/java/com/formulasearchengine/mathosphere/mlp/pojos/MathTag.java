@@ -17,11 +17,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.nio.charset.StandardCharsets;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.regex.Pattern;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.formulasearchengine.mathosphere.mlp.text.MathMLUtils.extractIdentifiers;
@@ -35,7 +31,7 @@ public class MathTag implements SpecialToken {
     private final List<Position> positions;
     private final String content;
     private final MathMarkUpType markUpType;
-    private Multiset<String> indentifiers = null;
+    private Multiset<String> identifiers = null;
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
     public MathTag(String content, MathMarkUpType markUp) {
@@ -65,12 +61,22 @@ public class MathTag implements SpecialToken {
         return extractIdentifiersFromMathML(getContent(), useTeX, useBlacklist);
     }
 
+    public Multiset<String> getIdentifiers() {
+        if ( identifiers == null )
+            throw new NullPointerException("No identifiers found. Use getIdentifiers with config method to retrieve them.");
+        return identifiers;
+    }
+
     public Multiset<String> getIdentifiers(BaseConfig config) {
-        if (indentifiers == null) {
+        if (identifiers == null) {
             // TODO we might don't want to differ between tex/mathml anymore. decide on the fly instead
-            indentifiers = extractIdentifiers(this, config.getUseTeXIdentifiers(), config.getTexvcinfoUrl());
+            identifiers = extractIdentifiers(this, config.getUseTeXIdentifiers(), config.getTexvcinfoUrl());
         }
-        return indentifiers;
+        return identifiers;
+    }
+
+    public boolean containsIdentifier(Collection<String> identifier) {
+        return getIdentifiers().containsAll(identifier);
     }
 
     public boolean containsIdentifier(String identifier, BaseConfig config) {

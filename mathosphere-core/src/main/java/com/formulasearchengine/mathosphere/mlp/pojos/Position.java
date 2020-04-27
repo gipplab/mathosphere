@@ -1,14 +1,17 @@
 package com.formulasearchengine.mathosphere.mlp.pojos;
 
-import com.formulasearchengine.mathosphere.mlp.text.PosTag;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * @author Andre Greiner-Petter
  */
-public class Position {
+public class Position implements Comparable<Position> {
     private int section;
     private int line;
     private int word;
+
+    private DocumentMetaLib lib;
 
     public Position() {
         this(0, 0);
@@ -50,5 +53,36 @@ public class Position {
 
     public void setWord(int word) {
         this.word = word;
+    }
+
+    public void setDocumentLib(DocumentMetaLib lib) {
+        this.lib = lib;
+    }
+
+    public int getSentenceDistance(Position p2) {
+        if ( this.compareTo(p2) == 0 ) return 0;
+        List<Position> p = new LinkedList<>();
+        p.add(this);
+        p.add(p2);
+
+        p.sort(Position::compareTo);
+
+        int startLine = p.get(0).line;
+        int endLine = startLine;
+        for ( int i = p.get(0).section+1; i < p.get(1).section; i++ ) {
+            endLine += lib.getSectionLength(i);
+        }
+        endLine += p.get(1).line;
+        return endLine - startLine;
+    }
+
+    @Override
+    public int compareTo(Position position) {
+        int d = section - position.section;
+        if ( d != 0 ) return d;
+        d = line - position.line;
+        if ( d != 0 ) return d;
+        d = word - position.word;
+        return d;
     }
 }

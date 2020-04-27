@@ -770,7 +770,7 @@ public class WikiTextParser extends AstVisitor<WtNode> {
                 .replaceAll("_{$1}")
                 .replaceAll("[{<]sup[}>](.+?)[{<]/sup[}>]", "^{$1}")
                 .replaceAll("'''\\[{0,2}(\\S)]{0,2}'''", "\\\\mathbf{$1}")
-                .replaceAll("''\\[{0,2}(\\S)]{0,2}''", "\\\\mathit{$1}");
+                .replaceAll("''\\[{0,2}(\\S)]{0,2}''", "{$1}");
     }
 
     public static String replaceMathUnicode(String content) {

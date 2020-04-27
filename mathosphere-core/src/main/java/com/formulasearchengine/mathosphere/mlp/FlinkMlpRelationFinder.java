@@ -127,7 +127,7 @@ public class FlinkMlpRelationFinder {
                         final Integer formulaId = Integer.parseInt((String) formula.get("fid"));
                         final String tex = (String) formula.get("math_inputtex");
                         final String qId = (String) formula.get("qID");
-                        final MathTag seed = parsedWikiDocument.getFormulas().values().stream()
+                        final MathTag seed = parsedWikiDocument.getFormulaeMap().values().stream()
                                 .filter(f -> f.getMarkUpType().equals(WikiTextUtils.MathMarkUpType.LATEX)).collect(Collectors.toList())
                                 .get(formulaId);
                         //WikiTextUtils.getLatexFormula(parsedWikiDocument, formulaId);

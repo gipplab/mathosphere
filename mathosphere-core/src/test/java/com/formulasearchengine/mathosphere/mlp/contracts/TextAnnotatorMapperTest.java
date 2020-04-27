@@ -45,7 +45,7 @@ public class TextAnnotatorMapperTest {
     assertTrue(identifiers.containsAll(Arrays.asList("Ψ", "V", "h", "λ", "ρ", "τ")));
 
     MathTag formula = null;
-    for (MathTag f : shroedingerOut.getFormulas().values()) {
+    for (MathTag f : shroedingerOut.getFormulae()) {
       if (placeholder.equals(f.getKey())) {
         formula = f;
         break;
@@ -101,7 +101,7 @@ public class TextAnnotatorMapperTest {
     RawWikiDocument doc = new RawWikiDocument("some doc", 1, text);
     ParsedWikiDocument result = TEST_INSTANCE.map(doc);
 
-    assertEquals(1, result.getFormulas().size());
+    assertEquals(1, result.getFormulae());
 
     Sentence sentence = result.getSentences().get(0);
 

@@ -20,6 +20,7 @@ public class PosTag {
   public static final String NOUN_PROPER_PLURAL = "NNPS";
   public static final String ANY_NOUN_REGEX = "N(?:P|N[PS]?|NPS)";
 
+
   public static final String QUOTE = "``";
   public static final String UNQUOTE = "''";
 
@@ -29,4 +30,6 @@ public class PosTag {
   public static final String FOREIGN_WORD = "FW";
 
   public static final String SUFFIX = "-SUF";
+
+  public static final String DEFINIEN_REGEX = ANY_NOUN_REGEX+"|"+FOREIGN_WORD+"|"+LINK;
 }

@@ -101,6 +101,8 @@ public class PosTagger {
           String textToken = token.get(TextAnnotation.class);
           String pos = token.get(PartOfSpeechAnnotation.class);
           SpecialToken specialToken = null;
+          Position p = new Position(result.size(), sentences.size(), words.size());
+          p.setDocumentLib(lib);
           // underscores are split in v3.9.2, see: https://github.com/stanfordnlp/CoreNLP/issues/942
           if (textToken.startsWith(PlaceholderLib.FORMULA)) {
             String underscore = handleUnderscore(coreLabels, i);
@@ -109,11 +111,11 @@ public class PosTagger {
               textToken += underscore;
             }
             specialToken = lib.getFormulaLib().get(textToken);
-            words.add(new Word(textToken, PosTag.MATH));
+            words.add(new Word(p, textToken, PosTag.MATH));
           } else if (SYMBOLS.contains(textToken)) {
-            words.add(new Word(textToken, PosTag.SYMBOL));
+            words.add(new Word(p, textToken, PosTag.SYMBOL));
           } else if (BRACKET_CODES.containsKey(textToken)) {
-            words.add(new Word(BRACKET_CODES.get(textToken), pos));
+            words.add(new Word(p, BRACKET_CODES.get(textToken), pos));
           } else if (textToken.startsWith(PlaceholderLib.LINK)) {
             String underscore = handleUnderscore(coreLabels, i);
             if ( underscore != null ){
@@ -121,7 +123,7 @@ public class PosTagger {
               textToken += underscore;
             }
             specialToken = lib.getLinkLib().get(textToken);
-            words.add(new Word(specialToken.getContent(), PosTag.LINK));
+            words.add(new Word(p, specialToken.getContent(), PosTag.LINK));
           } else if (textToken.startsWith(PlaceholderLib.CITE)) {
             String underscore = handleUnderscore(coreLabels, i);
             if ( underscore != null ){
@@ -129,12 +131,13 @@ public class PosTagger {
               textToken += underscore;
             }
             specialToken = lib.getCiteLib().get(textToken);
-            words.add(new Word(textToken, PosTag.CITE));
+            words.add(new Word(p, textToken, PosTag.CITE));
+          } else if ( textToken.toLowerCase().matches("polynomials?") ) {
+            words.add(new Word(p, textToken, PosTag.NOUN));
           } else {
-            words.add(new Word(textToken, pos));
+            words.add(new Word(p, textToken, pos));
           }
           if ( specialToken != null ) {
-            Position p = new Position(result.size(), sentences.size(), words.size());
             specialToken.addPosition(p);
           }
         }
@@ -143,6 +146,7 @@ public class PosTagger {
       result.add(sentences);
     }
 
+    lib.setDocumentLength(result);
     return result;
   }
 

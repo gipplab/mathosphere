@@ -11,10 +11,17 @@ public class Word {
   private String word;
   private String posTag;
 
+  private Position position;
+
   public Word() {
   }
 
   public Word(String word, String posTag) {
+    this(new Position(0), word, posTag);
+  }
+
+  public Word(Position position, String word, String posTag) {
+    this.position = position;
     this.word = word;
     this.posTag = posTag;
   }
@@ -30,6 +37,10 @@ public class Word {
 
   public String getPosTag() {
     return posTag;
+  }
+
+  public Position getPosition(){
+    return position;
   }
 
   @Override

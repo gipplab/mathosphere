@@ -1,6 +1,9 @@
 package com.formulasearchengine.mathosphere.mlp.pojos;
 
+import com.formulasearchengine.mathosphere.mlp.text.PosTag;
+
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * A sentence is a list of words. For convenience, it contains information about all special tokens
@@ -26,8 +29,29 @@ public class Sentence {
     return words;
   }
 
-  public boolean containsIdentifier(String identifier) {
-    return sentenceIdentifier.contains(identifier);
+  public List<Word> getNouns() {
+    List<Word> nouns = new LinkedList<>();
+    for ( int i = 0; i < words.size(); i++ ) {
+      Word w = words.get(i);
+      if ( w.getPosTag().matches(PosTag.DEFINIEN_REGEX) ) {
+        nouns.add(w);
+      }
+    }
+    return nouns;
+  }
+
+  public boolean containsFormulaWithAllIdentifier(MathTag formula) {
+    return !getFormulaWithAllIdentifiers(formula).isEmpty();
+  }
+
+  public Set<MathTag> getFormulaWithAllIdentifiers(MathTag formula) {
+    return sentenceMath.stream()
+            .filter(m -> m.containsIdentifier(formula.getIdentifiers().elementSet()))
+            .collect(Collectors.toSet());
+  }
+
+  public boolean containsIdentifier(String... identifier) {
+    return sentenceIdentifier.containsAll(Arrays.asList(identifier));
   }
 
   public int getSection() {

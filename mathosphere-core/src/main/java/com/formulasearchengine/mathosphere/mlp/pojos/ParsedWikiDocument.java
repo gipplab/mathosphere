@@ -2,60 +2,70 @@ package com.formulasearchengine.mathosphere.mlp.pojos;
 
 import com.google.common.collect.Multiset;
 
-import java.util.HashMap;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
 public class ParsedWikiDocument {
   private String title;
-  private Multiset<String> identifiers;
   private List<Sentence> sentences;
   private DocumentMetaLib lib;
+  private Multiset<String> identifier;
 
   public ParsedWikiDocument() {
   }
 
-  public ParsedWikiDocument(String title, Multiset<String> identifiers, List<Sentence> sentences, DocumentMetaLib lib) {
+  public ParsedWikiDocument(String title, List<Sentence> sentences, DocumentMetaLib lib) {
     this.title = title;
-    this.identifiers = identifiers;
     this.lib = lib;
     this.sentences = sentences;
   }
 
-
   public String getTitle() {
     return title;
-  }
-
-  public void setTitle(String title) {
-    this.title = title;
   }
 
   public List<Sentence> getSentences() {
     return sentences;
   }
 
-  public Multiset<String> getIdentifiers() {
-    return identifiers;
+  public Collection<MathTag> getFormulae() {
+    return lib.getFormulaLib().values();
   }
 
-  public void setIdentifiers(Multiset<String> identifiers) {
-    this.identifiers = identifiers;
-  }
-
-  public Map<String, MathTag> getFormulas() {
+  public Map<String, MathTag> getFormulaeMap() {
     return lib.getFormulaLib();
   }
 
-  public void setFormulas(List<MathTag> formulas) {
-    lib.setAllFormula(formulas);
-  }
-
-  public void setSentences(List<Sentence> sentences) {
-    this.sentences = sentences;
+  public Map<String, SpecialToken> getCitationMap() {
+    return lib.getCiteLib();
   }
 
   public Map<String, SpecialToken> getLinkMap() {
     return lib.getLinkLib();
   }
+
+  /**
+   * @deprecated we switching to MOI instead of single identifiers.
+   */
+  @Deprecated
+  public void setIdentifiers(Multiset<String> identifier) {
+    this.identifier = identifier;
+  }
+
+  /**
+   * @deprecated we switching to MOI instead of single identifiers.
+   */
+  @Deprecated
+  public Multiset<String> getIdentifiers() {
+    return this.identifier;
+  }
+
+//  public void setTitle(String title) {
+//    this.title = title;
+//  }
+//
+//  public void setSentences(List<Sentence> sentences) {
+//    this.sentences = sentences;
+//  }
 }

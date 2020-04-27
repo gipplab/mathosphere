@@ -10,119 +10,126 @@ import java.util.Properties;
 
 public class BaseConfig implements Serializable {
     protected static final String DEFAULT_POS_MODEL =
-    "edu/stanford/nlp/models/pos-tagger/english-left3words/english-left3words-distsim.tagger";
-  @Parameter(names = {"-pos", "--posModel"}, description = "POS model to use")
-  protected String model = DEFAULT_POS_MODEL;
+            "edu/stanford/nlp/models/pos-tagger/english-left3words/english-left3words-distsim.tagger";
+    @Parameter(names = {"-pos", "--posModel"}, description = "POS model to use")
+    protected String model = DEFAULT_POS_MODEL;
 
-  @Parameter(names = {"-l", "--language"}, description = "Language of the input")
-  protected String language = "en";
+    @Parameter(names = {"-l", "--language"}, description = "Language of the input")
+    protected String language = "en";
 
-  @Parameter(names = {"-a", "--alpha"})
-  protected double alpha = 1.0;
+    @Parameter(names = {"-a", "--alpha"})
+    protected double alpha = 1.0;
 
-  @Parameter(names = {"-b", "--beta"})
-  protected double beta = 1.0;
+    @Parameter(names = {"-b", "--beta"})
+    protected double beta = 1.0;
 
-  @Parameter(names = {"-g", "--gamma"})
-  protected double gamma = 0.1;
+    @Parameter(names = {"-g", "--gamma"})
+    protected double gamma = 0.1;
 
-  @Parameter(names = {"-t", "--threshold"})
-  protected double threshold = 0.4;
+    @Parameter(names = {"-t", "--threshold"})
+    protected double threshold = 0.4;
 
-  @Parameter(names = {"-w", "--wikiDataList"})
-  protected String wikiDataFile = null;
+    @Parameter(names = {"-w", "--wikiDataList"})
+    protected String wikiDataFile = null;
 
-  @Parameter(names = {"--tex"})
-  protected boolean useTeXIdentifiers = false;
+    @Parameter(names = {"--tex"})
+    protected boolean useTeXIdentifiers = false;
 
-  @Parameter(names = {"--texvcinfo"})
-  protected String texvcinfoUrl = "https://en.wikipedia.org/api/rest_v1/media/math/check/tex";
+    @Parameter(names = {"--texvcinfo"})
+    protected String texvcinfoUrl = "https://en.wikipedia.org/api/rest_v1/media/math/check/tex";
 
-  @Parameter(names = {"--definitionMerging"}, description = "apply definition merging algorithm")
-  protected Boolean definitionMerging = false;
+    @Parameter(names = {"--definitionMerging"}, description = "apply definition merging algorithm")
+    protected Boolean definitionMerging = false;
 
-  public BaseConfig() {
-    Properties prop = new Properties();
-    String propFileName = "mathosphere.properties";
+    @Parameter(names = {"--moi"}, description = "Use MOI instead of single identifier")
+    protected boolean moi = false;
 
-    InputStream inputStream = getClass().getClassLoader().getResourceAsStream(propFileName);
+    public BaseConfig() {
+        Properties prop = new Properties();
+        String propFileName = "mathosphere.properties";
 
-    if (inputStream != null) {
-      try {
-        prop.load(inputStream);
-        if (prop.stringPropertyNames().contains("texvcinfo")) {
-          final String texvcinfo = prop.getProperty("texvcinfo");
-          if (texvcinfo.length() > 0) {
-            texvcinfoUrl = texvcinfo;
-          }
+        InputStream inputStream = getClass().getClassLoader().getResourceAsStream(propFileName);
+
+        if (inputStream != null) {
+            try {
+                prop.load(inputStream);
+                if (prop.stringPropertyNames().contains("texvcinfo")) {
+                    final String texvcinfo = prop.getProperty("texvcinfo");
+                    if (texvcinfo.length() > 0) {
+                        texvcinfoUrl = texvcinfo;
+                    }
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
-      } catch (IOException e) {
-        e.printStackTrace();
-      }
     }
-  }
 
-  public BaseConfig(String model, String language, double alpha, double beta, double gamma,
-                    double threshold, boolean useTeXIdentifiers) {
-    this.model = model;
-    this.language = language;
-    this.alpha = alpha;
-    this.beta = beta;
-    this.gamma = gamma;
-    this.threshold = threshold;
-    this.useTeXIdentifiers = useTeXIdentifiers;
-  }
+    public BaseConfig(String model, String language, double alpha, double beta, double gamma,
+                      double threshold, boolean useTeXIdentifiers) {
+        this.model = model;
+        this.language = language;
+        this.alpha = alpha;
+        this.beta = beta;
+        this.gamma = gamma;
+        this.threshold = threshold;
+        this.useTeXIdentifiers = useTeXIdentifiers;
+    }
 
     public Boolean getDefinitionMerging() {
         return definitionMerging;
     }
 
-  public String getModel() {
-    return model;
-  }
+    public String getModel() {
+        return model;
+    }
 
     public void setModel(String model) {
         this.model = model;
     }
 
-  public double getAlpha() {
-    return alpha;
-  }
+    public double getAlpha() {
+        return alpha;
+    }
 
-  public double getBeta() {
-    return beta;
-  }
+    public double getBeta() {
+        return beta;
+    }
 
-  public double getGamma() {
-    return gamma;
-  }
+    public double getGamma() {
+        return gamma;
+    }
 
-  public double getThreshold() {
-    return threshold;
-  }
+    public double getThreshold() {
+        return threshold;
+    }
 
-  public String getLanguage() {
-    return language;
-  }
+    public String getLanguage() {
+        return language;
+    }
 
-  public boolean getUseTeXIdentifiers() {
-    return useTeXIdentifiers;
-  }
+    public boolean getUseTeXIdentifiers() {
+        return useTeXIdentifiers;
+    }
 
-  public void setUseTeXIdentifiers(boolean useTeXIdentifiers) {
-    this.useTeXIdentifiers = useTeXIdentifiers;
-  }
+    public void setUseTeXIdentifiers(boolean useTeXIdentifiers) {
+        this.useTeXIdentifiers = useTeXIdentifiers;
+    }
 
-  public String getWikiDataFile() {
-    return wikiDataFile;
-  }
+    public boolean useMOI() {
+        return moi;
+    }
 
-  public BaseConfig setWikiDataFile(String wikiDataFile) {
-    this.wikiDataFile = wikiDataFile;
-    return this;
-  }
+    public String getWikiDataFile() {
+        return wikiDataFile;
+    }
 
-  public String getTexvcinfoUrl() {
-    return texvcinfoUrl;
-  }
+    public BaseConfig setWikiDataFile(String wikiDataFile) {
+        this.wikiDataFile = wikiDataFile;
+        return this;
+    }
+
+    public String getTexvcinfoUrl() {
+        return texvcinfoUrl;
+    }
 }

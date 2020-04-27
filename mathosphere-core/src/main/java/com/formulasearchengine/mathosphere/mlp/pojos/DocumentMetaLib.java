@@ -1,5 +1,6 @@
 package com.formulasearchengine.mathosphere.mlp.pojos;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
 import java.util.List;
@@ -13,6 +14,8 @@ public class DocumentMetaLib {
     private Map<String, MathTag> formulaLib;
     private Map<String, SpecialToken> linkLib;
     private Map<String, SpecialToken> citeLib;
+
+    private List<List<Integer>> sectionSentenceLengths = null;
 
     public DocumentMetaLib() {
         formulaLib = Maps.newHashMap();
@@ -53,6 +56,21 @@ public class DocumentMetaLib {
         cites.forEach(
                 f -> citeLib.put(f.placeholder(), f)
         );
+    }
+
+    public void setDocumentLength(List<List<List<Word>>> documentStructure) {
+        sectionSentenceLengths = Lists.newArrayListWithCapacity(documentStructure.size());
+        for ( List<List<Word>> sections : documentStructure ) {
+            List<Integer> sentenceLength = Lists.newArrayListWithCapacity(sections.size());
+            for ( List<Word> sentence : sections ) {
+                sentenceLength.add(sentence.size());
+            }
+            sectionSentenceLengths.add(sentenceLength);
+        }
+    }
+
+    public int getSectionLength(int section) {
+        return sectionSentenceLengths.get(section).stream().reduce(0, Integer::sum);
     }
 
     public Map<String, MathTag> getFormulaLib() {

@@ -1,27 +1,25 @@
 package com.formulasearchengine.mathosphere.mlp.contracts;
 
+import com.formulasearchengine.mathosphere.mlp.cli.BaseConfig;
+import com.formulasearchengine.mathosphere.mlp.pojos.*;
 import com.formulasearchengine.mathosphere.mlp.text.PosTag;
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multiset;
 import com.google.common.collect.Multiset.Entry;
-
-import com.formulasearchengine.mathosphere.mlp.cli.BaseConfig;
-import com.formulasearchengine.mathosphere.mlp.pojos.ParsedWikiDocument;
-import com.formulasearchengine.mathosphere.mlp.pojos.Relation;
-import com.formulasearchengine.mathosphere.mlp.pojos.Sentence;
-import com.formulasearchengine.mathosphere.mlp.pojos.WikiDocumentOutput;
-import com.formulasearchengine.mathosphere.mlp.pojos.Word;
-
 import org.apache.flink.api.common.functions.MapFunction;
+import org.apache.flink.api.java.tuple.Tuple2;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.*;
 
 /**
  * Mapper that finds a list of possible identifiers and their definitions. As described in section 2 step 4 of
- * https://www.google.co.jp/url?sa=t&rct=j&q=&esrc=s&source=web&cd=4&cad=rja&uact=8&ved=0ahUKEwjbo8bF5J3PAhWMcT4KHesdCRMQFgg0MAM&url=https%3A%2F%2Fwww.gipp.com%2Fwp-content%2Fpapercite-data%2Fpdf%2Fschubotz16.pdf&usg=AFQjCNG8WcokDbLBSdzddbijH-bJh4w5sA&sig2=ofIftBvBlsOdwikq2d1fag
+ * https://www.gipp.com/wp-content/papercite-data/pdf/schubotz16.pdf
  */
 public class CreateCandidatesMapper implements MapFunction<ParsedWikiDocument, WikiDocumentOutput> {
+  private static final Logger LOG = LogManager.getLogger(CreateCandidatesMapper.class.getName());
 
   private final BaseConfig config;
   private double alpha;
@@ -38,8 +36,49 @@ public class CreateCandidatesMapper implements MapFunction<ParsedWikiDocument, W
 
   @Override
   public WikiDocumentOutput map(ParsedWikiDocument doc) {
-    Set<String> identifiers = doc.getIdentifiers().elementSet();
+    if ( config.useMOI() ) {
+      return moiMapping(doc);
+    } else return identifierMapping(doc);
+  }
+
+  private WikiDocumentOutput moiMapping( ParsedWikiDocument doc ) {
+    LOG.info("Start MOI-definiens mapping.");
+
+    // TODO, lets do it, no more identifier
     List<Relation> relations = Lists.newArrayList();
+
+    Collection<MathTag> formulae = doc.getFormulae();
+    if ( formulae == null || formulae.isEmpty() )
+      return new WikiDocumentOutput(doc.getTitle(), relations, doc.getFormulaeMap());
+
+    Collection<MathTag> math = doc.getFormulae();
+    for ( MathTag m : math ) {
+      List<Relation> candidates = generateCandidates(doc, m);
+      if(config.getDefinitionMerging()){
+        selfMerge(candidates);
+      } else {
+        Collections.sort(candidates);
+        Collections.reverse(candidates);
+      }
+      for (Relation rel : candidates) {
+        if (rel.getScore() >= config.getThreshold()) {
+          relations.add(rel);
+        }
+      }
+    }
+
+    return new WikiDocumentOutput(doc.getTitle(), relations, doc.getFormulaeMap());
+  }
+
+  private WikiDocumentOutput identifierMapping(ParsedWikiDocument doc) {
+    LOG.info("Start identifier-definiens mapping.");
+    List<Relation> relations = Lists.newArrayList();
+    Multiset<String> idents = doc.getIdentifiers();
+    if ( idents == null ) {
+      LOG.warn("No identifiers available.");
+      return new WikiDocumentOutput(doc.getTitle(), relations, HashMultiset.create());
+    }
+    Set<String> identifiers = doc.getIdentifiers().elementSet();
     for (String identifier : identifiers) {
       List<Relation> candidates = generateCandidates(doc, identifier);
       if(config.getDefinitionMerging()){
@@ -82,9 +121,59 @@ public class CreateCandidatesMapper implements MapFunction<ParsedWikiDocument, W
     candidates.sort(Relation::compareTo);
   }
 
+  private List<Relation> generateCandidates(ParsedWikiDocument doc, MathTag formula) {
+    List<Relation> result = Lists.newArrayList();
+    List<Tuple2<Sentence, Set<MathTag>>> sentences = findSentencesWithFormula(doc.getSentences(), formula);
+    if ( sentences.isEmpty() ) return result;
+
+    Multiset<String> wordFrequencies = HashMultiset.create();
+    sentences.stream()
+            .flatMap(f -> f.f0.getWords().stream())
+            .filter(this::isGood)
+            .map(Word::toLowerCase)
+            .forEach(wordFrequencies::add);
+    if ( wordFrequencies.isEmpty() ) return result;
+
+    int maxNounFrequency = calculateMax(wordFrequencies);
+
+    Position firstAppearancePosition = sentences.get(0).f0.getWords().get(0).getPosition();
+
+    for (int sentenceIdx = 0; sentenceIdx < sentences.size(); sentenceIdx++) {
+      Tuple2<Sentence, Set<MathTag>> entry = sentences.get(sentenceIdx);
+      Sentence sentence = entry.f0;
+      List<Word> definiens = sentence.getNouns();
+
+//      List<Integer> positions = identifierPositions(words, identifier);
+
+      for ( Word def : definiens ) {
+
+        int distance = calculateClosestDistance(def, entry.f1);
+        int freq = wordFrequencies.count(def.getWord().toLowerCase());
+        double score = calculateScore(
+                distance,
+                freq,
+                maxNounFrequency,
+                firstAppearancePosition.getSentenceDistance(def.getPosition())
+        );
+
+        Relation relation = new Relation();
+        relation.setMathTag(formula);
+        relation.setIdentifierPosition(formula.getPositions().get(0).getWord());
+        relation.setDefinition(def, doc);
+        relation.setWordPosition(def.getPosition().getWord());
+        relation.setScore(score);
+        relation.setSentence(sentence);
+
+        result.add(relation);
+      }
+    }
+
+    return result;
+  }
+
   /**
    * Find a list of possible definitions for an identifier. As described in section 2 step 4 of
-   * https://www.google.co.jp/url?sa=t&rct=j&q=&esrc=s&source=web&cd=4&cad=rja&uact=8&ved=0ahUKEwjbo8bF5J3PAhWMcT4KHesdCRMQFgg0MAM&url=https%3A%2F%2Fwww.gipp.com%2Fwp-content%2Fpapercite-data%2Fpdf%2Fschubotz16.pdf&usg=AFQjCNG8WcokDbLBSdzddbijH-bJh4w5sA&sig2=ofIftBvBlsOdwikq2d1fag
+   * https://www.gipp.com/wp-content/papercite-data/pdf/schubotz16.pdf
    *
    * @param doc        Where to search for definitions
    * @param identifier What to define.
@@ -125,11 +214,10 @@ public class CreateCandidatesMapper implements MapFunction<ParsedWikiDocument, W
         Relation relation = new Relation();
         relation.setIdentifier(identifier);
         relation.setIdentifierPosition(identifierPosition);
-        relation.setDefinition(word, doc);
+        relation.setDefinition(word);
         relation.setWordPosition(wordIdx);
         relation.setScore(score);
         relation.setSentence(sentence);
-        // relation.setSentence(sentence);
 
         result.add(relation);
       }
@@ -140,7 +228,7 @@ public class CreateCandidatesMapper implements MapFunction<ParsedWikiDocument, W
 
   /**
    * Find a list of possible definitions for an identifier. As described in section 2 step 5 of
-   * https://www.google.co.jp/url?sa=t&rct=j&q=&esrc=s&source=web&cd=4&cad=rja&uact=8&ved=0ahUKEwjbo8bF5J3PAhWMcT4KHesdCRMQFgg0MAM&url=https%3A%2F%2Fwww.gipp.com%2Fwp-content%2Fpapercite-data%2Fpdf%2Fschubotz16.pdf&usg=AFQjCNG8WcokDbLBSdzddbijH-bJh4w5sA&sig2=ofIftBvBlsOdwikq2d1fag
+   * https://www.gipp.com/wp-content/papercite-data/pdf/schubotz16.pdf
    *
    * @param distance     Number of tokens between identifier and definiens.
    * @param frequency    The term frequency of the possible definiendum.
@@ -201,7 +289,7 @@ public class CreateCandidatesMapper implements MapFunction<ParsedWikiDocument, W
 
   public static int calculateMax(Multiset<String> frequencies) {
     Entry<String> max = Collections.max(frequencies.entrySet(),
-      (e1, e2) -> Integer.compare(e1.getCount(), e2.getCount()));
+            Comparator.comparingInt(Entry::getCount));
     return max.getCount();
   }
 
@@ -239,8 +327,41 @@ public class CreateCandidatesMapper implements MapFunction<ParsedWikiDocument, W
 //      return false;
 //    }
     // we're only interested in nouns, entities and links
-    return posTag.matches(PosTag.ANY_NOUN_REGEX+"|"+PosTag.FOREIGN_WORD+"|LNK");
+    return posTag.matches(PosTag.DEFINIEN_REGEX);
+  }
 
+  public static int calculateClosestDistance(Word def, Set<MathTag> formulae) {
+    Position wordP = def.getPosition();
+    return formulae.stream()
+            .flatMap(f -> f.getPositions().stream())
+            .filter( f -> wordP.getSection() == f.getSection() && wordP.getLine() == f.getLine())
+            .map( f -> Math.abs(wordP.compareTo(f)) )
+            .min( Integer::compareTo )
+            .orElse(Integer.MIN_VALUE);
+  }
+
+  /**
+   * First approach, identify sentences that share all identifiers that are given in the formula.
+   * @param sentences
+   * @param formula
+   * @return
+   */
+  public static List<Tuple2<Sentence, Set<MathTag>>> findSentencesWithFormula(List<Sentence> sentences, MathTag formula) {
+    // first approach
+    List<Tuple2<Sentence, Set<MathTag>>> out = new LinkedList<>();
+
+    for ( Sentence s : sentences ) {
+      Set<MathTag> allMath = s.getFormulaWithAllIdentifiers(formula);
+      if ( !allMath.isEmpty() ) {
+        Tuple2<Sentence, Set<MathTag>> entry = new Tuple2<>(s, allMath);
+        out.add(entry);
+      }
+    }
+
+    return out;
+
+//    Set<String> idents = formula.getIdentifiers().elementSet();
+//    return findSentencesWithIdentifier(sentences, idents.toArray(new String[0]));
   }
 
   /**
@@ -248,7 +369,7 @@ public class CreateCandidatesMapper implements MapFunction<ParsedWikiDocument, W
    *
    * @return {@link ArrayList} with the sentences containing the identifier.
    */
-  public static List<Sentence> findSentencesWithIdentifier(List<Sentence> sentences, String identifier) {
+  public static List<Sentence> findSentencesWithIdentifier(List<Sentence> sentences, String... identifier) {
     List<Sentence> result = Lists.newArrayList();
 
     for (Sentence sentence : sentences) {
