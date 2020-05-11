@@ -98,6 +98,14 @@ public class MathTag implements SpecialToken {
         return positions;
     }
 
+    @JsonIgnore
+    public Set<Position> getPositionsInSentence(Sentence s) {
+        Set<Position> pos = new HashSet<>();
+        if ( s.getWords().isEmpty() ) return pos;
+        Position sentencePos = s.getWords().get(0).getPosition();
+        return positions.stream().filter( p -> Position.inSameSentence(p, sentencePos) ).collect(Collectors.toSet());
+    }
+
     public void addPosition(Position p) {
         this.positions.add(p);
     }

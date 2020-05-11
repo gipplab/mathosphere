@@ -46,7 +46,7 @@ public class PatternMatcher {
     Matcher<Word> the = pos("DT");
 
     Matcher<Word> identifier = BeanMatchers.in(Word.class, "word", identifiers).captureAs("identifier");
-    Matcher<Word> definition = posRegExp("(NN[PS]{0,2}|NP\\+?|NN\\+|LNK)").captureAs("definition");
+    Matcher<Word> definition = posRegExp("("+PosTag.DEFINIEN_REGEX+")").captureAs("definition");
 
     List<Pattern<Word>> patterns = Arrays.asList(
       //0

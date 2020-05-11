@@ -1,5 +1,7 @@
 package com.formulasearchengine.mathosphere.mlp.pojos;
 
+import com.formulasearchengine.mathosphere.mlp.text.PosTag;
+
 import java.util.LinkedList;
 import java.util.List;
 
@@ -74,6 +76,10 @@ public class Position implements Comparable<Position> {
         }
         endLine += p.get(1).sentence;
         return endLine - startLine;
+    }
+
+    public static boolean inSameSentence(Position p1, Position p2) {
+        return p1.section == p2.section && p1.sentence == p2.sentence;
     }
 
     @Override

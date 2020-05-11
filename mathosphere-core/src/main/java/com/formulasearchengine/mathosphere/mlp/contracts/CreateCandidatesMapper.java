@@ -7,12 +7,17 @@ import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multiset;
 import com.google.common.collect.Multiset.Entry;
+import gov.nist.drmf.interpreter.mlp.MLPWrapper;
+import gov.nist.drmf.interpreter.mlp.extensions.MatchablePomTaggedExpression;
+import gov.nist.drmf.interpreter.mlp.extensions.PrintablePomTaggedExpression;
+import mlp.ParseException;
 import org.apache.flink.api.common.functions.MapFunction;
 import org.apache.flink.api.java.tuple.Tuple2;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Mapper that finds a list of possible identifiers and their definitions. As described in section 2 step 4 of
@@ -26,12 +31,15 @@ public class CreateCandidatesMapper implements MapFunction<ParsedWikiDocument, W
   private double beta;
   private double gamma;
 
+  private MLPWrapper mlp;
+
   public CreateCandidatesMapper(BaseConfig config) {
     this.config = config;
     //copy alpha, beta and gamma for convince
     this.alpha = config.getAlpha();
     this.beta = config.getBeta();
     this.gamma = config.getGamma();
+    this.mlp = new MLPWrapper("/mnt/share/Projects/LaCASt/libs/ReferenceData");
   }
 
   @Override
@@ -121,7 +129,7 @@ public class CreateCandidatesMapper implements MapFunction<ParsedWikiDocument, W
 
   private List<Relation> generateCandidates(ParsedWikiDocument doc, MathTag formula) {
     List<Relation> result = Lists.newArrayList();
-    List<Tuple2<Sentence, Set<MathTag>>> sentences = findSentencesWithFormula(doc.getSentences(), formula);
+    List<Tuple2<Sentence, Set<Position>>> sentences = findSentencesWithFormula(doc.getSentences(), formula);
     if ( sentences.isEmpty() ) return result;
 
     Multiset<String> wordFrequencies = HashMultiset.create();
@@ -137,7 +145,7 @@ public class CreateCandidatesMapper implements MapFunction<ParsedWikiDocument, W
     Position firstAppearancePosition = sentences.get(0).f0.getWords().get(0).getPosition();
 
     for (int sentenceIdx = 0; sentenceIdx < sentences.size(); sentenceIdx++) {
-      Tuple2<Sentence, Set<MathTag>> entry = sentences.get(sentenceIdx);
+      Tuple2<Sentence, Set<Position>> entry = sentences.get(sentenceIdx);
       Sentence sentence = entry.f0;
       List<Word> definiens = sentence.getNouns();
 
@@ -157,7 +165,7 @@ public class CreateCandidatesMapper implements MapFunction<ParsedWikiDocument, W
         Relation relation = new Relation();
         relation.setMathTag(formula);
         relation.setIdentifierPosition(formula.getPositions().get(0).getWord());
-        relation.setDefinition(def, doc);
+        relation.setDefinition(def);
         relation.setWordPosition(def.getPosition().getWord());
         relation.setScore(score);
         relation.setSentence(sentence);
@@ -328,10 +336,10 @@ public class CreateCandidatesMapper implements MapFunction<ParsedWikiDocument, W
     return posTag.matches(PosTag.DEFINIEN_REGEX);
   }
 
-  public static int calculateClosestDistance(Word def, Set<MathTag> formulae) {
+  public static int calculateClosestDistance(Word def, Set<Position> positions) {
     Position wordP = def.getPosition();
-    return formulae.stream()
-            .flatMap(f -> f.getPositions().stream())
+    return positions.stream()
+//            .flatMap(f -> f.getPositions().stream())
             .filter( f -> wordP.getSection() == f.getSection() && wordP.getSentence() == f.getSentence())
             .map( f -> Math.abs(wordP.compareTo(f)) )
             .min( Integer::compareTo )
@@ -344,22 +352,118 @@ public class CreateCandidatesMapper implements MapFunction<ParsedWikiDocument, W
    * @param formula
    * @return
    */
-  public static List<Tuple2<Sentence, Set<MathTag>>> findSentencesWithFormula(List<Sentence> sentences, MathTag formula) {
+  private List<Tuple2<Sentence, Set<Position>>> findSentencesWithFormula(List<Sentence> sentences, MathTag formula) {
     // first approach
-    List<Tuple2<Sentence, Set<MathTag>>> out = new LinkedList<>();
+    List<Tuple2<Sentence, Set<Position>>> out = new LinkedList<>();
 
-    for ( Sentence s : sentences ) {
-      Set<MathTag> allMath = s.getFormulaWithAllIdentifiers(formula);
-      if ( !allMath.isEmpty() ) {
-        Tuple2<Sentence, Set<MathTag>> entry = new Tuple2<>(s, allMath);
+    MatchablePomTaggedExpression patternTree = null;
+    try {
+      LOG.info("Search for math formula: " + formula.getContent());
+      // first, create patterns of the formula where all identifiers are replaced by wildcards
+      Set<String> idInFormula = formula.getIdentifiers().elementSet();
+      int counter = 1;
+      String expression = formula.getContent();
+      for (String id : idInFormula) {
+        String regex = "";
+        if ( !id.startsWith("\\") ) {
+          regex = "(?<!\\\\[A-Za-z]{0,30})";
+        }
+        regex += "\\Q"+id+"\\E([^a-zA-Z]|$)";
+        expression = expression.replaceAll(regex, "var" + counter + "$1");
+        counter++;
+      }
+      LOG.info("Generated pattern of formula: " + expression);
+      if ( expression.matches("\\s*[a-z\\d\\s]+\\s*|.*(?:var\\d+\\s*){2}.*") || expression.contains("\\begin") ) { // illegal matches, fallback to standard approach
+        if ( idInFormula.size() > 1 || expression.contains("\\begin") ) {
+          LOG.info("Unable to generate pattern for complex expression. Consider it as single appearance");
+          for (Sentence s : sentences) {
+            Set<Position> p = formula.getPositionsInSentence(s);
+            if ( !p.isEmpty() ) {
+              Tuple2<Sentence, Set<Position>> e = new Tuple2<>(s, p);
+              out.add(e);
+            }
+          }
+          return out;
+        }
+
+        LOG.info("Actually, found that it is only one identifier. So fall back to standard task");
+        // fall back to identifier solution.
+        sentences.stream().filter( s -> s.getIdentifiers().containsAll(idInFormula) )
+                .forEach( s -> {
+                  Position pos = s.getWords().get(0).getPosition();
+                  Set<Position> mathPositions = s.getMath().stream()
+                          .filter(m -> m.getIdentifiers().containsAll(idInFormula))
+                          .flatMap( m -> m.getPositions().stream() )
+                          .filter( p -> Position.inSameSentence(p, pos) )
+                          .collect(Collectors.toSet());
+                  Tuple2<Sentence, Set<Position>> entry = new Tuple2<>(s, mathPositions);
+                  out.add(entry);
+                });
+        return out;
+      }
+
+      patternTree = new MatchablePomTaggedExpression(mlp, expression, "var\\d+");
+      LOG.info("Generated matchable pom tagged expression");
+    } catch (ParseException e) {
+      LOG.error("Cannot generate pattern of expression: " + e.getMessage(), e);
+    }
+
+    List<Position> allFormulaePosition = formula.getPositions();
+
+    for ( Sentence sentence : sentences ) {
+      if ( sentence.getWords().isEmpty() ) continue;
+      Set<Position> entries = new HashSet<>();
+      Position firstWordInSentencePos = sentence.getWords().get(0).getPosition();
+      // first, check if given formulae actually appear in this sentence at it is (exact hits based on content)
+      for ( Position p : allFormulaePosition ) {
+        if ( Position.inSameSentence(firstWordInSentencePos, p) ) {
+          entries.add(p);
+        }
+      }
+
+      // next, lets try to find pattern matches
+      if ( patternTree != null ) {
+        Set<MathTag> formulaeInSentence = sentence.getMath();
+        for ( MathTag m : formulaeInSentence ) {
+          if ( m.getContent().contains("\\begin") ) {
+            // skip being stuff... its too difficult for PoM-Tagger
+            continue;
+          }
+          try {
+            PrintablePomTaggedExpression pom = this.mlp.parse(m.getContent());
+            if ( patternTree.matchWithinPlace(pom) ) {
+              LOG.info("Found a pattern match with " + m.getContent());
+              LOG.info("Captured Groups: " + patternTree.getStringMatches());
+              for ( Position p : m.getPositions() ) {
+                if ( Position.inSameSentence(firstWordInSentencePos, p) )
+                  entries.add(p);
+              }
+            } else if ( !patternTree.getStringMatches().isEmpty() ) {
+              LOG.warn("Found partial match in " + m.getContent());
+            }
+          } catch (Exception e) {
+            LOG.warn("Unable to parse because: " + e.getMessage() + "\n"+m.getContent());
+          }
+        }
+      }
+
+//        Set<MathTag> formulae = sentence.getMath();
+      if ( !entries.isEmpty() ) {
+        Tuple2<Sentence, Set<Position>> entry = new Tuple2<>(sentence, entries);
         out.add(entry);
       }
     }
 
-    return out;
 
-//    Set<String> idents = formula.getIdentifiers().elementSet();
-//    return findSentencesWithIdentifier(sentences, idents.toArray(new String[0]));
+//    for ( Sentence s : sentences ) {
+//      Set<MathTag> allMath = s.getFormulaWithAllIdentifiers(formula);
+//      if ( !allMath.isEmpty() ) {
+//        Tuple2<Sentence, Set<MathTag>> entry = new Tuple2<>(s, allMath);
+//        out.add(entry);
+//      }
+//    }
+
+    return out;
   }
 
   /**

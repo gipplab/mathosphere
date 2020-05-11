@@ -17,15 +17,23 @@ public class Main {
                 TokenCounter.run(params.getCount());
                 break;
             case CliParams.LIST:
+                // OLD, should be deleted or fixed for MOIs if really needed
+                // it just extracts all identifiers from a document and lists them...
                 RelationExtractor.list(params.getListCommandConfig());
                 break;
             case CliParams.EXTRACT:
+                // extract and MLP are identical!!!
+                // The only difference is that MLP starts flink for multiple docs while extract
+                // only presumes a single doc input.
                 RelationExtractor.run(params.getExtractCommandConfig());
                 break;
             case CliParams.MLP:
+                // identical to EXTRACT
                 FlinkMlpRelationFinder.run(params.getMlpCommandConfig());
                 break;
             case CliParams.EVAL:
+                // identical to EXTRACT and MLP but also takes the gold dataset as input
+                // to evaluate the results (true positives, etc).
                 FlinkMlpRelationFinder.evaluate(params.getEvalCommandConfig());
                 break;
             case CliParams.ML:
