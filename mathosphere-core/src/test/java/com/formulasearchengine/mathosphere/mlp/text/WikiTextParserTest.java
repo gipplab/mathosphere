@@ -4,7 +4,6 @@ import com.formulasearchengine.mathosphere.mlp.contracts.WikiTextPageExtractorMa
 import com.formulasearchengine.mathosphere.mlp.pojos.MathTag;
 import com.formulasearchengine.mathosphere.mlp.pojos.RawWikiDocument;
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.StringEscapeUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -12,11 +11,8 @@ import org.junit.Test;
 
 import java.time.Duration;
 import java.time.Instant;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.TimeUnit;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 import static org.hamcrest.CoreMatchers.containsString;
@@ -64,21 +60,52 @@ public class WikiTextParserTest {
     }
 
     @Test
-    public void testGo10() throws Exception {
+    public void testFollowingSub() throws Exception {
         String wikiText = "''a''<sub>x</sub>.";
         final WikiTextParser mathConverter = new WikiTextParser(wikiText);
-        final String real = mathConverter.parse().get(0);
+        final List<String> res = mathConverter.parse();
+        final String real = res.get(0);
 
         Map<String, MathTag> mathTags = mathConverter.getMetaLibrary().getFormulaLib();
         assertEquals(1, mathTags.size());
 
         String key = mathTags.keySet().stream().findFirst().get();
         assertEquals("a_{x}", mathTags.get(key).getContent());
-        assertEquals(key + ".", real);
+        assertEquals(" " + key + " . ", real);
     }
 
     @Test
-    public void testGo11() throws Exception {
+    public void testNonSuccessiveFollowingSub() throws Exception {
+        String wikiText = "''a'' but <sub>x</sub>.";
+        final WikiTextParser mathConverter = new WikiTextParser(wikiText);
+        final List<String> res = mathConverter.parse();
+        final String real = res.get(0);
+
+        Map<String, MathTag> mathTags = mathConverter.getMetaLibrary().getFormulaLib();
+        assertEquals(2, mathTags.size());
+
+        List<MathTag> tags = new ArrayList<>(mathTags.values());
+        int aTagIdx = tags.get(0).getContent().equals("a") ? 0 : 1;
+        int xTagIdx = 1-aTagIdx;
+        assertEquals(" " + tags.get(aTagIdx).placeholder() + " but "+ tags.get(xTagIdx).placeholder() +" . ", real);
+    }
+
+    @Test
+    public void testSuccessiveFollowingSub() throws Exception {
+        String wikiText = "Lets test ''d''&lt;sup&gt;''j''&lt;/sup&gt;&lt;sub&gt;''m''’,''m''&lt;/sub&gt;, a rather complex wikitext.";
+        wikiText = StringEscapeUtils.unescapeXml(wikiText);
+        final WikiTextParser mathConverter = new WikiTextParser(wikiText);
+        mathConverter.parse();
+
+        Map<String, MathTag> mathTags = mathConverter.getMetaLibrary().getFormulaLib();
+        assertEquals(1, mathTags.size());
+
+        String key = mathTags.keySet().stream().findFirst().get();
+        assertEquals("d^{j}_{m’,m}", mathTags.get(key).getContent());
+    }
+
+    @Test
+    public void testNoWrapTemplate() throws Exception {
         String wikiText = "Let the coin tosses be represented by a sequence {{nowrap|1=''X''&lt;sub&gt;0&lt;/sub&gt;, ''X''&lt;sub&gt;1&lt;/sub&gt;, &amp;hellip;}}";
         wikiText = StringEscapeUtils.unescapeXml(wikiText);
         final WikiTextParser mathConverter = new WikiTextParser(wikiText);
@@ -118,7 +145,7 @@ public class WikiTextParserTest {
     }
 
     @Test
-    public void testGo3() throws Exception {
+    public void testItalicMathDouble() throws Exception {
         String wikiText = "Let '''<math> \\Omega </math>''' be an [[open subset]] of ℝ''<sup>n</sup>''. A  function '''<math> u </math>''' belonging to '''[[Lp space|<math>L^1(\\Omega)</math>]]''' is said of '''bounded variation''' ('''BV function'''), and written";
         wikiText = StringEscapeUtils.unescapeXml(wikiText);
         final WikiTextParser mathConverter = new WikiTextParser(wikiText);
@@ -130,7 +157,7 @@ public class WikiTextParserTest {
     }
 
     @Test
-    public void testGo4() throws Exception {
+    public void testLongInput() throws Exception {
         String wikiText = "{| style=&quot;margin: 1em auto 1em auto;&quot;\n" +
                 "|-\n" +
                 "| style=&quot;width:350px&quot; |\n" +
@@ -193,7 +220,7 @@ public class WikiTextParserTest {
     }
 
     @Test
-    public void testGo5() throws Exception {
+    public void testMVarTemplate() throws Exception {
         String wikiText = "{{mvar|φ}}";
         wikiText = StringEscapeUtils.unescapeXml(wikiText);
         final WikiTextParser mathConverter = new WikiTextParser(wikiText);
@@ -204,22 +231,22 @@ public class WikiTextParserTest {
 
         String key = mathTags.keySet().stream().findFirst().get();
         assertEquals("\\varphi", mathTags.get(key).getContent());
-        assertEquals(key, real);
+        assertEquals(key, real.trim());
     }
 
     @Test
-    public void testGo6() throws Exception {
+    public void testMathTemplateWithUnicode() throws Exception {
         String wikiText = "{{math|10/19 &amp;middot; 7000 &amp;minus; 18/38 &amp;middot; 7000 {{=}} 368.42}}";
         wikiText = RawWikiDocument.unescapeText(wikiText);
         final WikiTextParser mathConverter = new WikiTextParser(wikiText);
         mathConverter.parse();
         Map<String, MathTag> mathTags = mathConverter.getMetaLibrary().getFormulaLib();
         List<String> maths = mathTags.values().stream().map(MathTag::getContent).collect(Collectors.toList());
-        assertTrue(maths.contains("10/19 {\\cdot} 7000 - 18/38 {\\cdot} 7000 = 368.42"));
+        assertTrue(maths.toString(), maths.contains("10/19 \\cdot 7000 - 18/38 \\cdot 7000 = 368.42"));
     }
 
     @Test
-    public void testGo7() throws Exception {
+    public void testNumBlk() throws Exception {
         String wikiText = "{{NumBlk|::|Input &amp;nbsp; &lt;math&gt;\\int_{-\\infty}^{\\infty} c_{\\omega}\\,x_{\\omega}(t) \\, \\operatorname{d}\\omega&lt;/math&gt; &amp;nbsp; produces output &amp;nbsp; &lt;math&gt;\\int_{-\\infty}^{\\infty} c_{\\omega}\\,y_{\\omega}(t) \\, \\operatorname{d}\\omega\\,&lt;/math&gt;|{{EquationRef|Eq.1}}}}\n";
         wikiText = StringEscapeUtils.unescapeXml(wikiText);
         final WikiTextParser mathConverter = new WikiTextParser(wikiText);
@@ -230,25 +257,27 @@ public class WikiTextParserTest {
     }
 
     @Test
-    public void testGo8() throws Exception {
+    public void testMathInTextTest() throws Exception {
         String wikiText =
-                "&lt;ref&gt;&lt;math&gt;\\beta= \\alpha/3&lt;/math&gt; where &lt;math&gt;\\alpha&lt;/math&gt; is the\n"
+                "&lt;math&gt;\\beta= \\alpha/3&lt;/math&gt; where &lt;math&gt;\\alpha&lt;/math&gt; is the\n"
                         +
-                        "quantity used by Deshpande–Fleck&lt;/ref&gt;";
+                        "quantity used by &lt;ref&gt;Deshpande–Fleck&lt;/ref&gt;";
         wikiText = StringEscapeUtils.unescapeXml(wikiText);
         final WikiTextParser mathConverter = new WikiTextParser(wikiText);
-        final String real = mathConverter.parse().get(0);
+        List<String> sections = mathConverter.parse();
+        final String real = sections.get(0);
+
         Collection<MathTag> mathTags = mathConverter.getMetaLibrary().getFormulaLib().values();
         MathTag f1 = null;
         for ( MathTag t : mathTags ) {
             if ( t.getContent().equals("\\beta= \\alpha/3") ) f1 = t;
         }
-        assertNotNull(f1);
+        assertNotNull(real, f1);
         assertThat(real, containsString(f1.placeholder()));
     }
 
     @Test
-    public void testGo9() throws Exception {
+    public void testMultilineTest() throws Exception {
         String wikiText = "Word\n<math>x</math>\nend.";
         final WikiTextParser mathConverter = new WikiTextParser(wikiText);
         final String real = mathConverter.parse().get(0);
@@ -269,5 +298,34 @@ public class WikiTextParserTest {
         assertThat(real, containsString("\\mathbf{c}"));
         assertThat(real, containsString("\\mathit{d}"));
         assertThat(real, equalTo("_{a}, ^{b}, \\mathbf{c}, \\mathit{d}"));
+    }
+
+    @Test
+    public void testWrongMathAnnotationInWikitext() throws Exception {
+        String wikiText = "The term is uniform on the interval [ε, {{pi}}-ε] for every ε &gt; 0.";
+        wikiText = StringEscapeUtils.unescapeXml(wikiText);
+        final WikiTextParser mathConverter = new WikiTextParser(wikiText);
+        List<String> sections = mathConverter.parse();
+
+        assertEquals(1, sections.size());
+        String sentence = sections.get(0);
+        System.out.println(sentence);
+
+        Map<String, MathTag> mathTags = mathConverter.getMetaLibrary().getFormulaLib();
+        assertEquals(2, mathTags.size());
+
+        List<MathTag> mTagList = new ArrayList<>(mathTags.values());
+        int idxFirst = mTagList.get(0).getContent().contains("pi") ? 0 : 1;
+        int idxSecond = 1-idxFirst;
+
+        assertEquals("[\\epsilon, \\pi-\\epsilon]", mTagList.get(idxFirst).getContent());
+        assertEquals("\\epsilon > 0", mTagList.get(idxSecond).getContent());
+
+        String expectedOutput = "The term is uniform on the interval " +
+                mTagList.get(idxFirst).placeholder() +
+                " for every " +
+                mTagList.get(idxSecond).placeholder() +
+                ".";
+        assertEquals( expectedOutput, sentence.trim() );
     }
 }

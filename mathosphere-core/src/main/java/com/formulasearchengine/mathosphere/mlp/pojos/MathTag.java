@@ -29,7 +29,7 @@ public class MathTag implements SpecialToken {
 
     private static final HashFunction HASHER = Hashing.goodFastHash(64);
     private final List<Position> positions;
-    private final String content;
+    private String content;
     private final MathMarkUpType markUpType;
     private Multiset<String> identifiers = null;
     private static final ObjectMapper objectMapper = new ObjectMapper();
@@ -113,6 +113,14 @@ public class MathTag implements SpecialToken {
     @JsonIgnore
     public String getTagContent() {
         return content.replaceAll("<math.*?>", "").replaceAll("</math>", "");
+    }
+
+    public void extendContent(String extension) {
+        // should be only supported for tex...
+        if ( MathMarkUpType.MATHML.equals(markUpType) ) {
+            throw new IllegalArgumentException("Extend the content of MathML is not supported.");
+        }
+        content += extension;
     }
 
     @Override

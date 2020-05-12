@@ -55,6 +55,11 @@ public class WikiTextAnnotatorMapper extends RichMapFunction<RawWikiDocument, Pa
 
     Multiset<String> allIdentifiers = getAllIdentifiers(lib.getFormulaLib(), config);
     ParsedWikiDocument pwd = new ParsedWikiDocument(doc.getTitle(), sentences, lib);
+
+    /*
+    sentences.stream().flatMap(s -> s.getWords().stream()).forEach(w -> {if (w.getWord().contains("Jacobi")){ System.out.println(w.getWord() + ": " + w.getPosition());}});
+     */
+
     pwd.setIdentifiers(allIdentifiers);
     return pwd;
   }

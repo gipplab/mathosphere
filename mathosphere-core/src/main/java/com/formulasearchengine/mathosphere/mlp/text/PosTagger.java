@@ -348,7 +348,7 @@ public class PosTagger {
           return words.get(0);
         }
 
-        return new Word(joinWords(words), newTag);
+        return new Word(words.get(0).getPosition(), joinWords(words), newTag);
       }
     });
   }

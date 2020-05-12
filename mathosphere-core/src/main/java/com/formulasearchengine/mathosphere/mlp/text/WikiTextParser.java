@@ -13,8 +13,9 @@ import com.formulasearchengine.mathosphere.mlp.cli.BaseConfig;
 import com.formulasearchengine.mathosphere.mlp.pojos.*;
 import com.formulasearchengine.mathosphere.utils.sweble.MlpConfigEnWpImpl;
 import com.google.common.collect.Multiset;
-import com.jcabi.log.Logger;
 import de.fau.cs.osr.ptk.common.AstVisitor;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.sweble.wikitext.engine.EngineException;
 import org.sweble.wikitext.engine.PageId;
 import org.sweble.wikitext.engine.PageTitle;
@@ -30,11 +31,10 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.xpath.XPathExpressionException;
 import java.io.IOException;
-import java.util.*;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import static de.fau.cs.osr.utils.StringTools.strrep;
 
 /**
  * A visitor to convert an article AST into a pure text representation. To better understand the
@@ -60,9 +60,15 @@ import static de.fau.cs.osr.utils.StringTools.strrep;
  *         sweble-wikitext/sweble-wikitext-components-parent/swc-engine/doc/ast-nodes.txt</a>
  * </p>
  */
-@SuppressWarnings("unused")
+//@SuppressWarnings("unused")
+@SuppressWarnings("all")
 public class WikiTextParser extends AstVisitor<WtNode> {
+    private static final Logger LOG = LogManager.getLogger(WikiTextParser.class.getName());
     private final static Pattern subMatch = Pattern.compile("[{<]sub[}>](.+?)[{<]/sub[}>]");
+
+    public final static Pattern MATH_IN_TEXT_SEQUENCE_PATTERN = Pattern.compile(
+            "(?<=^|[^A-Za-z]|)[\\p{IsGreek}\\p{N}\\p{P}\\p{Sm} ]+(?=[^A-Za-z]|$)"
+    );
 
     private final static Pattern MATH_END_PATTERN = Pattern.compile("^\\s*(.*)\\s*([.,;!?]+)\\s*$");
 
@@ -98,6 +104,10 @@ public class WikiTextParser extends AstVisitor<WtNode> {
     private LinkedList<String> sections;
     private PageTitle pageTitle;
     private String texInfoUrl;
+
+    private MathTag previousMathTag = null;
+    private String previousMathTagEndingSplit = null;
+
     private boolean suppressOutput = false;
 
     private boolean skipHiddenMath;
@@ -128,7 +138,7 @@ public class WikiTextParser extends AstVisitor<WtNode> {
         try {
             return (List<String>) this.go(page.getPage());
         } catch (Exception e) {
-            Logger.error(e, "Error parsing page " + this.pageTitle);
+            LOG.error("Error parsing page " + this.pageTitle, e);
             List<String> txt = new LinkedList<>();
             txt.add("");
             return txt;
@@ -209,6 +219,10 @@ public class WikiTextParser extends AstVisitor<WtNode> {
     // =========================================================================
 
     private void finishLine() {
+        if ( previousMathTagEndingSplit != null ) {
+            line.append(previousMathTagEndingSplit);
+            previousMathTagEndingSplit = null;
+        }
         sb.append(line.toString());
         sb.append(" ");
         line.setLength(0);
@@ -247,7 +261,7 @@ public class WikiTextParser extends AstVisitor<WtNode> {
         return null;
     }
 
-    private void handeLatexMathTag(WtNode n, String content) {
+    private void handleLatexMathTag(WtNode n, String content) {
         //content = content.replaceAll("'''([a-zA-Z]+)'''","\\mathbf{$1}");
         content = replaceMathUnicode(replaceClearMath(content));
         addMathTag(content, WikiTextUtils.MathMarkUpType.MATH_TEMPLATE);
@@ -292,7 +306,51 @@ public class WikiTextParser extends AstVisitor<WtNode> {
     }
 
     public void visit(WtText text) {
-        write(text.getContent());
+        Matcher m = MATH_IN_TEXT_SEQUENCE_PATTERN.matcher(text.getContent());
+
+        while (m.find()) {
+            int startIdx = m.start();
+            if ( startIdx > 0 && previousMathTag != null ) {
+                // well, there were actually text, before we hit first... so
+                // time to reset previous hit...
+                resetPreviousMath();
+            }
+
+            String potentialMath = m.group(0);
+            String replaced = replaceClearMath(potentialMath);
+            replaced = replaceMathUnicode(replaced);
+
+            if ( !replaced.equals(potentialMath) ) {
+                // so there were replacements, we can assume that's math...
+                // delete the hit
+                m.appendReplacement(line, "");
+                // add math tag at same position.
+                if ( previousMathTag != null ) {
+                    if ( previousMathTagEndingSplit != null ) {
+                        replaced = previousMathTagEndingSplit + replaced;
+                        previousMathTagEndingSplit = null;
+                    }
+
+                    Matcher mm = MATH_END_PATTERN.matcher(replaced);
+                    if ( mm.matches() ){
+                        replaced = mm.group(1);
+                        previousMathTagEndingSplit = mm.group(2);
+                    } else previousMathTagEndingSplit = null;
+
+                    previousMathTag.extendContent(replaced);
+                } else {
+                    addMathTag(replaced, WikiTextUtils.MathMarkUpType.LATEX);
+                }
+            } else {
+                // ok, that seems to be no math... so let's continue
+                m.appendReplacement(line, potentialMath);
+                previousMathTag = null;
+            }
+        }
+
+        // done, lets add the rest
+        m.appendTail(line);
+//        write(text.getContent());
     }
 
     public void visit(WtWhitespace w) {
@@ -440,7 +498,7 @@ public class WikiTextParser extends AstVisitor<WtNode> {
             // Don't care about errors
             iterate(s.getBody());
         } catch (Exception e) {
-            Logger.info(e, "Problem processing page ", pageTitle.getTitle());
+            LOG.info("Problem processing page ", pageTitle.getTitle(), e);
             e.printStackTrace();
         }
 
@@ -463,6 +521,7 @@ public class WikiTextParser extends AstVisitor<WtNode> {
 
     public void visit(WtXmlElement e) {
         String name = e.getName();
+        boolean sup = true;
         switch ( name.toLowerCase() ) {
             case "br":
                 newline(1);
@@ -472,18 +531,61 @@ public class WikiTextParser extends AstVisitor<WtNode> {
                 String content;
                 if (wtNodes instanceof WtText) {
                     content = ((WtText) wtNodes).getContent().trim();
-                    handeLatexMathTag(e, content);
+                    handleLatexMathTag(e, content);
                 } else if (wtNodes instanceof WtInternalLink) {
                     //TODO: do not throw away the information of the link from WtInternalLink.getTarget()
                     //Identifier is more important than link. Link maybe helpful for wikidata.
                     content = ((WtText) ((WtInternalLink) e.getBody().get(0)).getTitle().get(0)).getContent().trim();
-                    handeLatexMathTag(e, content);
+                    handleLatexMathTag(e, content);
                 }
                 break;
             case "text":
                 iterate(e.getBody());
                 break;
+            case "sub":
+                sup = false;
+            case "sup":
+                WtNode bodyNode = e.getBody();
+                String contentStr = handleSuccessiveSubSups(bodyNode);
+                String c = sup ? "^{" : "_{";
+                c += contentStr + "}";
+                if ( previousMathTag != null ) {
+                    try {
+                        if ( previousMathTagEndingSplit != null ){
+                            c = previousMathTagEndingSplit + c;
+                            previousMathTagEndingSplit = null;
+                        }
+                        previousMathTag.extendContent(c);
+                    } catch ( IllegalArgumentException ie ) {
+                        LOG.warn("Unable to extend previous math expression");
+                    }
+                } else {
+                    LOG.warn("Found sub/sup but not after a math expression. We just put it as math to the text.");
+                    addMathTag(c, WikiTextUtils.MathMarkUpType.LATEX);
+                }
         }
+    }
+
+    private String handleSuccessiveSubSups(WtNode element) {
+        StringBuilder content = new StringBuilder();
+        for (WtNode e : element) {
+            if (e.size() > 1) {
+                content.append(handleSuccessiveSubSups(e));
+                continue;
+            }
+
+            if (e instanceof WtItalics) {
+                e = e.get(0); // text node inside italics
+            }
+
+            if (e instanceof WtText) {
+                String c = ((WtText) e).getContent();
+                content.append(c);
+            } else {
+                LOG.warn("Unable to parse " + e + " inside Sub/Sup tag. Ignore it.");
+            }
+        }
+        return content.toString();
     }
 
     public void visit(WtImageLink n) {
@@ -550,11 +652,11 @@ public class WikiTextParser extends AstVisitor<WtNode> {
                         } else if ( node instanceof WtTemplate ) {
                             content += innerMathTemplateReplacement((WtTemplate)node);
                         } else {
-                            Logger.warn(node, "Ignore unknown node within math template: " + node.toString());
+                            LOG.warn("Ignore unknown node within math template: " + node.toString());
                         }
                     }
 
-                    handeLatexMathTag(n, content);
+                    handleLatexMathTag(n, content);
                     break;
                 case "mvar":
                     arg0 = (WtTemplateArgument) n.getArgs().get(0);
@@ -579,13 +681,16 @@ public class WikiTextParser extends AstVisitor<WtNode> {
                 case "short description":
                 case "for":
                 case "use american english":
-                    Logger.warn(n, "Ignore template: " + name);
+                    LOG.warn("Ignore template: " + name);
                     break;
+                case "pi":
+                    // I can't believe we are doing this... who thought its a good idea to create a freaking template for PI!!!
+                    addMathTag("\\pi", WikiTextUtils.MathMarkUpType.LATEX);
                 default:
                     iterate(n.getArgs());
             }
         } catch (Exception e) {
-            Logger.info(e, "Problem prcessing page", pageTitle.getTitle());
+            LOG.info("Problem prcessing page", pageTitle.getTitle(), e);
         }
     }
 
@@ -681,7 +786,7 @@ public class WikiTextParser extends AstVisitor<WtNode> {
                 if (chem) {
                     markUpType = WikiTextUtils.MathMarkUpType.LATEXCE;
                 } else if ( hasMathMLNamespaceAttribute(n.getXmlAttributes()) || hasMathMLTokens(n.getBody()) ) {
-                    Logger.debug(n, "Identified MathML");
+                    LOG.debug("Identified MathML");
                     markUpType = WikiTextUtils.MathMarkUpType.MATHML;
                 } else {
                     markUpType= WikiTextUtils.MathMarkUpType.LATEX;
@@ -732,14 +837,31 @@ public class WikiTextParser extends AstVisitor<WtNode> {
     }
 
     private void addMathTag(String content, WikiTextUtils.MathMarkUpType type) {
-        Matcher m = MATH_END_PATTERN.matcher(content);
-        String end = null;
-        if ( m.matches() ){
-            content = m.group(1);
-            end = m.group(2);
+        if ( previousMathTag != null ) {
+            try {
+                previousMathTag.extendContent(previousMathTagEndingSplit+" ");
+
+                Matcher m = MATH_END_PATTERN.matcher(content);
+                if ( m.matches() ){
+                    content = m.group(1);
+                    previousMathTagEndingSplit = m.group(2);
+                } else previousMathTagEndingSplit = null;
+
+                previousMathTag.extendContent(content);
+                return;
+            } catch (IllegalArgumentException iae) {
+                LOG.warn("Unable to extend previous mathematical expression. Continue as usually.");
+            }
         }
 
+        Matcher m = MATH_END_PATTERN.matcher(content);
+        if ( m.matches() ){
+            content = m.group(1);
+            previousMathTagEndingSplit = m.group(2);
+        } else previousMathTagEndingSplit = null;
+
         MathTag tag = new MathTag(content, type);
+        previousMathTag = tag;
 
         lib.addFormula(tag);
         if (needNewlines > 0) {
@@ -748,7 +870,6 @@ public class WikiTextParser extends AstVisitor<WtNode> {
 
         needSpace = true;
         writeWord(tag.placeholder());
-        if ( end != null ) write(end);
         needSpace = true;
     }
 
@@ -774,6 +895,10 @@ public class WikiTextParser extends AstVisitor<WtNode> {
     }
 
     private void write(String s) {
+        if ( !s.matches("\\s*FORMULA.*") ) {
+            resetPreviousMath();
+        }
+
         if (suppressOutput){
             return;
         }
@@ -825,7 +950,19 @@ public class WikiTextParser extends AstVisitor<WtNode> {
         needSpace = false;
     }
 
+    private void resetPreviousMath() {
+        previousMathTag = null;
+        if ( previousMathTagEndingSplit != null ) {
+            line.append(previousMathTagEndingSplit);
+            previousMathTagEndingSplit = null;
+        }
+    }
+
     private void writeWord(String s) {
+        if ( !s.matches("\\s*FORMULA.*") ) {
+            resetPreviousMath();
+        }
+
         int length = s.length();
         if (length == 0) {
             return;
