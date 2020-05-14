@@ -70,20 +70,23 @@ public class RawWikiDocument extends RawDocument {
       String attributes = textMatcher.group(1);
       String content = textMatcher.group(2);
       content = unescapeText(content);
-      String newText = "<text" + attributes + ">" + content + "</text>";
-      // if we append directly newText, it may through an IndexOutOfBoundsException, strange...
-      textMatcher.appendReplacement(sb, "");
-      sb.append(newText);
+      setContent(content);
+      return;
+
+//      String newText = "<text" + attributes + ">" + content + "</text>";
+//      // if we append directly newText, it may through an IndexOutOfBoundsException, strange...
+//      textMatcher.appendReplacement(sb, "");
+//      sb.append(newText);
     } else {
       throw new NullPointerException("No text in this page.");
     }
 
-    if ( textMatcher.find() )
-      throw new IllegalArgumentException("Multiple text tags in a single page are not supported." +
-              " Use TextExtractorMapper instead.");
+//    if ( textMatcher.find() )
+//      throw new IllegalArgumentException("Multiple text tags in a single page are not supported." +
+//              " Use TextExtractorMapper instead.");
 
-    textMatcher.appendTail(sb);
-    setContent(sb.toString());
+//    textMatcher.appendTail(sb);
+//    setContent(sb.toString());
   }
 
   @Override

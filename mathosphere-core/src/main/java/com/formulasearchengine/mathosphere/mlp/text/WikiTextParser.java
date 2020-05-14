@@ -33,6 +33,7 @@ import javax.xml.xpath.XPathExpressionException;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -60,83 +61,104 @@ import java.util.regex.Pattern;
  *         sweble-wikitext/sweble-wikitext-components-parent/swc-engine/doc/ast-nodes.txt</a>
  * </p>
  */
-//@SuppressWarnings("unused")
-@SuppressWarnings("all")
+@SuppressWarnings("unused")
+//@SuppressWarnings("all")
 public class WikiTextParser extends AstVisitor<WtNode> {
     private static final Logger LOG = LogManager.getLogger(WikiTextParser.class.getName());
-    private final static Pattern subMatch = Pattern.compile("[{<]sub[}>](.+?)[{<]/sub[}>]");
 
-    public final static Pattern MATH_IN_TEXT_SEQUENCE_PATTERN = Pattern.compile(
-            "(?<=^|[^A-Za-z]|)[\\p{IsGreek}\\p{N}\\p{P}\\p{Sm} ]+(?=[^A-Za-z]|$)"
+    private final static Pattern MATH_ONLY_END_PATTERN = Pattern.compile("^\\s*([.,;!?]+)\\s*$");
+    private final static Pattern MATH_END_PATTERN = Pattern.compile("^\\s*(.*)\\s*([\"'`´.,;!?]+)\\s*$");
+    private static final Pattern SUB_PATTERN = Pattern.compile("[{<]sub[}>](.+?)[{<]/sub[}>]");
+    private static final Pattern MATH_IN_TEXT_SEQUENCE_PATTERN = Pattern.compile(
+            "(?<=^|[^A-Za-z]|)[\\p{InGreek}\\p{N}\\p{Ps}\\p{Pe}\\p{Pd}\\p{Sm}\\p{Sk}\\p{Po} ]+(?=[^A-Za-z]|$)"
     );
-
-    private final static Pattern MATH_END_PATTERN = Pattern.compile("^\\s*(.*)\\s*([.,;!?]+)\\s*$");
-
+    private static final Pattern MATH_SPECIAL_CHAR_PATTERN = Pattern.compile(
+            "[^\\p{InGreek}\\p{N}]*[\\p{P}\\p{Sm}][^\\p{InGreek}\\p{N}]*"
+    );
     private final static Pattern MML_TOKENS_PATTERN = Pattern.compile(
             "<(?:m[a-z]+|apply|c[in]|csymbol|semantics)>"
     );
 
-    private final static WikiConfig config = MlpConfigEnWpImpl.generate();
-    private final static WtEngineImpl engine = new WtEngineImpl(config);
-    private static final Pattern ws = Pattern.compile("\\s+");
-    private static int i = 0;
+    private final static Pattern FORMULA_PATTERN = Pattern.compile(
+            "FORMULA_[A-Za-z0-9]+"
+    );
+
+    private final static WikiConfig CONFIG = MlpConfigEnWpImpl.generate();
+    private final static WtEngineImpl ENGINE = new WtEngineImpl(CONFIG);
 
     private final EngProcessedPage page;
 
-//    private List<MathTag> mathTags = new ArrayList<>();
-//    private List<WikidataLink> links = new ArrayList<>();
-//    private Map<Integer, WikiCitation> citations = new HashMap<>();
-
-    private DocumentMetaLib lib;
-
-    private StringBuilder sb;
-    private StringBuilder line;
     private int extLinkNum;
     private WikidataLinkMap wl = null;
 
-    /**
-     * Becomes true if we are no long at the Beginning Of the whole Document.
-     */
-    private boolean pastBod;
-    private int needNewlines;
-    private boolean needSpace;
-    private boolean noWrap;
-    private LinkedList<String> sections;
-    private PageTitle pageTitle;
+    // just for better error handling
+    private final PageTitle pageTitle;
     private String texInfoUrl;
 
-    private MathTag previousMathTag = null;
-    private String previousMathTagEndingSplit = null;
-
-    private boolean suppressOutput = false;
-
     private boolean skipHiddenMath;
+
+//    private final RawText rawText;
+
+    private final DocumentMetaLib metaLib;
+    private MathTag previousMathTag;
+    private String previousMathTagEnding;
+
+    private final LinkedList<String> sections;
+
+    boolean innerMathMode = false;
+
+    public WikiTextParser(RawWikiDocument wikidoc, BaseConfig config) throws LinkTargetException, EngineException {
+        this(wikidoc);
+        if (config.getWikiDataFile() != null) {
+            this.wl = new WikidataLinkMap(config.getWikiDataFile());
+        } else this.wl = null;
+        this.texInfoUrl = config.getTexvcinfoUrl();
+    }
 
     public WikiTextParser(String partialWikiDoc) throws LinkTargetException, EngineException {
         this(new RawWikiDocument("unknown-title", -1, partialWikiDoc));
     }
 
     public WikiTextParser(RawWikiDocument wikidoc) throws LinkTargetException, EngineException {
-        pageTitle = PageTitle.make(config, wikidoc.getTitle());
+        this.pageTitle = PageTitle.make(CONFIG, wikidoc.getTitle());
         PageId pageId = new PageId(pageTitle, -1);
-        page = engine.postprocess(pageId, wikidoc.getContent(), null);
-        texInfoUrl = (new BaseConfig()).getTexvcinfoUrl();
-        lib = new DocumentMetaLib();
+        String content = preProcess(wikidoc.getContent());
+        this.page = ENGINE.postprocess(pageId, content, null);
+        this.texInfoUrl = (new BaseConfig()).getTexvcinfoUrl();
+//        this.rawText = new RawText();
+        this.metaLib = new DocumentMetaLib();
+        this.sections = new LinkedList<>();
     }
 
-    public WikiTextParser(RawWikiDocument wikidoc, BaseConfig config) throws LinkTargetException, EngineException {
-        this(wikidoc);
-        if (config.getWikiDataFile() != null) {
-            wl = new WikidataLinkMap(config.getWikiDataFile());
-        } else {
-            wl = null;
-        }
-        texInfoUrl = config.getTexvcinfoUrl();
+    public DocumentMetaLib getMetaLibrary() {
+        return metaLib;
+    }
+
+    /**
+     * Process only the tags without to generate text output.
+     * Suppressing the output might be useful if one is only interested in the math tags and not in the text.
+     * In that case this option speeds up the process
+     */
+    public void processTags() {
+//        this.rawText.suppressOutput(true);
+        this.parse();
+//        this.rawText.suppressOutput(false);
     }
 
     public List<String> parse() {
         try {
-            return (List<String>) this.go(page.getPage());
+            this.sections.clear();
+            Object result = this.go(page.getPage());
+            if ( sections.isEmpty() ) {
+                if ( result instanceof String ) {
+                    List<String> tmp = new LinkedList<>();
+                    tmp.add((String)result);
+                    return tmp;
+                } else {
+                    LOG.error("Unable to create result. Result was: " + result);
+                    return null;
+                }
+            } else return this.sections;
         } catch (Exception e) {
             LOG.error("Error parsing page " + this.pageTitle, e);
             List<String> txt = new LinkedList<>();
@@ -145,87 +167,673 @@ public class WikiTextParser extends AstVisitor<WtNode> {
         }
     }
 
-    public DocumentMetaLib getMetaLibrary() {
-        return lib;
-    }
-
-    public boolean isSkipHiddenMath() {
-        return skipHiddenMath;
-    }
-
     public void setSkipHiddenMath(boolean skipHiddenMath) {
         this.skipHiddenMath = skipHiddenMath;
     }
 
-    @Override
-    protected Object after(WtNode node, Object result) {
-        finishLine();
-
-        // This method is called by go() after visitation has finished
-        // The return value will be passed to go() which passes it to the caller
-
-        // flush the last section
-        sections.addLast(sb.toString());
-        return sections;
-    }
-
     // =========================================================================
+    // Time for all visitation methods
 
     @Override
     protected WtNode before(WtNode node) {
         // This method is called by go() before visitation starts
-        sb = new StringBuilder();
-        line = new StringBuilder();
-        extLinkNum = 1;
-        pastBod = false;
-        needNewlines = 0;
-        needSpace = false;
-        noWrap = false;
-        sections = new LinkedList<>();
+        this.extLinkNum = 1;
+        this.previousMathTag = null;
+        this.previousMathTagEnding = null;
         return super.before(node);
     }
 
-    private boolean detectHiddenMath(WtNode i) {
-        if (skipHiddenMath){
-            return false;
+    /**
+     * This method is called by go() after visitation has finished
+     * The return value will be passed to go() which passes it to the caller
+     * @param node the node to parse
+     * @param result the returned result (should be of type string)
+     * @return {@link RawText}
+     */
+    @Override
+    protected Object after(WtNode node, Object result) {
+        return result;
+    }
+
+    private String iterateString(WtNode node) {
+        return iterateString(node, " ");
+    }
+
+    private String iterateString(WtNode node, String betweenElements) {
+        return iterateString(node, betweenElements, false);
+    }
+
+    private String iterateString(WtNode node, String betweenElements, boolean resetMath) {
+        StringBuilder sb = new StringBuilder();
+        if (node == null) return "";
+        for (WtNode n : node) {
+            Object o = dispatch(n);
+            addLatestElement(o, sb, betweenElements, resetMath);
         }
-        if (i.size() == 1 && i.get(0) instanceof WtText) {
-            final String tex = getTex(i, false);
-            if (tex != null) {
-                addMathTag(tex, WikiTextUtils.MathMarkUpType.MATH_TEMPLATE);
-                return true;
+        return sb.toString();
+    }
+
+    private void addLatestElement(Object o, StringBuilder sb, String betweenElements, boolean resetMath) {
+        if ( o instanceof String && !((String)o).isBlank()) {
+            sb.append(((String)o).trim());
+        } else if ( o == null ) {
+            LOG.warn("A node returned null, miss implementation? Node: " + o);
+        }
+
+        if ( resetMath )
+            resetPreviousMath(sb);
+        if ( !betweenElements.isEmpty() && (sb.lastIndexOf(betweenElements) != (sb.length()-1) ) )
+            sb.append(betweenElements);
+    }
+
+    /**
+     * Entry point of parse method...
+     */
+    public String visit(EngPage p) {
+        // just in case there were a page before... yeah... i know...
+        StringBuilder sb = new StringBuilder();
+
+        boolean preSection = true;
+        for ( WtNode n : p ) {
+            if ( preSection && n instanceof WtSection ) {
+                this.sections.add(sb.toString());
+                preSection = false;
             }
-        } else {
-            if (i.size() == 2 && i.get(0) instanceof WtText && i.get(1) instanceof WtXmlElement) {
-                //discover hidden subscripts
-                final WtXmlElement xml = (WtXmlElement) i.get(1);
-                if (xml.getName().matches("sub") &&
-                        xml.getBody().size() == 1 &&
-                        xml.getBody().get(0) instanceof WtText) {
-                    //String subtext = ((WtText) ((WtXmlElement) i.get(1)).getBody().get(0)).getContent();
-                    final String subTex = getTex(xml.getBody(), true);
-                    final String mainTex = getTex(i, true);
-                    if (mainTex != null) {
-                        String tex = mainTex + "_{" + subTex + "}";
-                        addMathTag(tex, WikiTextUtils.MathMarkUpType.MATH_TEMPLATE);
-                        return true;
+
+            Object o = dispatch(n);
+            addLatestElement(o, sb, " ", true);
+        }
+
+        // flush math, if any
+        resetPreviousMath(sb);
+        return sb.toString();
+    }
+
+    /**
+     * If there are sections, we will visit this node. It will not only return the text of the
+     * current section but also (more importantly) fill up {@link #sections}.
+     * @param s the section
+     * @return the string section
+     */
+    public String visit(WtSection s) {
+        StringBuilder sb = new StringBuilder();
+
+        boolean finishedOnSection = false;
+        for ( WtNode n : s.getBody() ) {
+            if ( n instanceof WtSection ) {
+                resetPreviousMath(sb);
+                if ( !sb.toString().isBlank() ) {
+                    sections.add(sb.toString());
+                    sb = new StringBuilder();
+                }
+                String innerSec = (String)dispatch((WtSection)n);
+                // since that's a section, it were already added to the list of sections
+                // so nothing to do here.
+                finishedOnSection = true;
+                continue;
+            }
+
+            Object o = dispatch(n);
+            addLatestElement(o, sb, " ", true);
+            finishedOnSection = false;
+        }
+
+        resetPreviousMath(sb);
+        if ( !sb.toString().isBlank() && !finishedOnSection )
+            sections.add(sb.toString());
+        return sb.toString();
+    }
+
+    public String visit(WtParagraph p) {
+        StringBuilder sb = new StringBuilder();
+        return resetPreviousMath(sb).append(iterateString(p, " ")).toString();
+    }
+
+    public String visit(WtNodeList n) {
+        return iterateString(n, " ", true);
+    }
+
+    public String visit(WtDefinitionList list) {
+        return iterateString(list, " ", true);
+    }
+
+    public String visit(WtDefinitionListDef d) {
+        return iterateString(d, " ");
+    }
+
+    public String visit(WtDefinitionListTerm t) {
+        return iterateString(t, " ");
+    }
+
+    public String visit(WtUnorderedList e) {
+        return iterateString(e);
+    }
+
+    public String visit(WtOrderedList e) {
+        return iterateString(e);
+    }
+
+    public String visit(WtListItem item) {
+        return iterateString(item, "\n");
+    }
+
+    public String visit(WtText text) {
+        if ( text.getContent().isBlank() ) return "";
+
+        if ( innerMathMode ) return text.getContent(); // lol
+
+        StringBuilder stringBuilder = new StringBuilder();
+        Matcher m = MATH_IN_TEXT_SEQUENCE_PATTERN.matcher(text.getContent().trim());
+        int previousHitPosition = 0;
+        while (m.find()) {
+            int startIdx = m.start();
+
+            Matcher onlySpecialMatcher = MATH_SPECIAL_CHAR_PATTERN.matcher(m.group(0));
+            if ( (onlySpecialMatcher.matches() && previousMathTag == null) || m.group(0).isBlank()) {
+                previousHitPosition = m.end()+1;
+                m.appendReplacement(stringBuilder, m.group(0));
+                continue;
+            }
+
+            // first version, there was text between new hit and previous hit
+            // but the previous math tag was not added yet
+            if ( startIdx > previousHitPosition && previousMathTag != null ) {
+                // well, there were actually text, before we hit first... so
+                // time to reset previous hit...
+                resetPreviousMath(stringBuilder, false);
+
+                if ( onlySpecialMatcher.matches() ) {
+                    // so we have new math... but if this new math is just a special character and there
+                    // is no previous math now (and there is no, we just reset it), we have to do the same
+                    // as before and just add it as normal math...
+                    previousHitPosition = m.end()+1;
+
+                    StringBuilder tmp = new StringBuilder();
+                    m.appendReplacement(tmp, m.group(0));
+                    if ( stringBuilder.lastIndexOf(" ") != stringBuilder.length()-1
+                            && tmp.charAt(0) != ' ') {
+                        stringBuilder.append(" ");
                     }
+                    stringBuilder.append(tmp);
+                    continue;
                 }
             }
+
+            // ok, but wait... what if the previous ending is null and this just matches
+            // an ending: Then we dont need to update anything, just set the ending.
+            Matcher endMatcher = MATH_ONLY_END_PATTERN.matcher(m.group(0));
+            if ( endMatcher.matches() && previousMathTagEnding == null) {
+                // haha, indeed... just an ending and there is no previous ending... nice
+                previousMathTagEnding = endMatcher.group(1);
+                previousHitPosition = m.end();
+                m.appendReplacement(stringBuilder, "");
+                continue;
+            }
+
+            // otherwise we update or create a new math tag (if or if not previous Math exists
+            String potentialMath = fixMathInRow(m.group(0));
+            updateOrCreateNewMath(potentialMath, WikiTextUtils.MathMarkUpType.LATEX);
+
+            // and update our constraint
+            previousHitPosition = m.end()+1;
+            // nothing to add, we updated the previous hit.
+            m.appendReplacement(stringBuilder, "");
         }
-        return false;
+
+        // now it comes, if the string gets extended here, it means there was text after the previous
+        // hit. in this case... we must add the math first, if any and then add the end.
+        StringBuilder tmpBuilder = new StringBuilder();
+        m.appendTail(tmpBuilder);
+        if ( tmpBuilder.length() > 0 ) {
+            resetPreviousMath(stringBuilder);
+            stringBuilder.append(tmpBuilder);
+        }
+        return stringBuilder.toString();
+    }
+
+    public String visit(WtWhitespace w) {
+        // white space alone does not split math... so we dont update previous MathTag if any
+        return " ";
+    }
+
+    public String visit(WtBold b) {
+        return handleItalicBold(b);
+    }
+
+    public String visit(WtItalics i) {
+        return handleItalicBold(i);
+    }
+
+    private String handleItalicBold(WtNode n) {
+        StringBuilder sb = new StringBuilder();
+        String detectedTex = checkItalicBoldForMath(n);
+        if ( detectedTex != null ) {
+            if ( innerMathMode ) {
+                return detectedTex;
+            } else {
+                return updateOrCreateNewMath(detectedTex, WikiTextUtils.MathMarkUpType.LATEX);
+            }
+        } else {
+            return resetPreviousMath(sb)
+                    .append("\"").append(iterateString(n)).append("\"")
+                    .toString();
+        }
+    }
+
+    private String checkItalicBoldForMath(WtNode n) {
+        if ( n.get(0) instanceof WtInternalLink ) {
+            WtInternalLink in = (WtInternalLink)n.get(0);
+            WtNode title = in.getTitle();
+            if ( title == null || title.size() == 0) title = in.getTarget();
+            if ( title != null && title.size() != 0) {
+                return detectHiddenMath(title);
+            }
+        }
+        return detectHiddenMath(n);
+    }
+
+    public String visit(WtXmlCharRef cr) {
+        return new String(Character.toChars(cr.getCodePoint()));
+    }
+
+    public String visit(WtXmlEntityRef er) {
+        // I think, this should not happen if somebody really unescaped XML... so lets warn the user
+        LOG.warn("WikiTextParser assumes unescaped XML input but found " + er.getResolved());
+
+        String ch = er.getResolved();
+        return Objects.requireNonNullElseGet(ch, () -> "&" + er.getName() + ";");
     }
 
     // =========================================================================
+    // Stuff we want to hide
 
-    private void finishLine() {
-        if ( previousMathTagEndingSplit != null ) {
-            line.append(previousMathTagEndingSplit);
-            previousMathTagEndingSplit = null;
+    public String visit(WtUrl wtUrl) {
+        LOG.debug("Hide URL: " + wtUrl.getPath());
+        StringBuilder sb = new StringBuilder();
+        return resetPreviousMath(sb).toString();
+    }
+
+    public String visit(WtExternalLink link) {
+        StringBuilder sb = new StringBuilder();
+        resetPreviousMath(sb).append("[").append(extLinkNum).append("]");
+        extLinkNum++;
+        return sb.toString();
+    }
+
+    public String visit(WtInternalLink link) {
+        StringBuilder sb = new StringBuilder();
+        resetPreviousMath(sb);
+
+        String linkName = link.getTarget().getAsString().split("#")[0];
+
+        if (wl != null) {
+            String newName = wl.title2Data(linkName);
+            if (newName != null) {
+                WikidataLink wikiLink = new WikidataLink(newName);
+                sb.append(wikiLink.placeholder());
+                metaLib.addLink(wikiLink);
+                return sb.toString();
+            }
         }
-        sb.append(line.toString());
-        sb.append(" ");
-        line.setLength(0);
+
+        WikidataLink wl = new WikidataLink(linkName);
+        sb.append(wl.placeholder());
+
+        if (link.getTitle().size() > 0) {
+            String title = iterateString(link.getTitle(), " ");
+            wl.setTitle(title);
+        }
+
+        metaLib.addLink(wl);
+        return sb.toString();
+    }
+
+    public String visit(WtXmlElement e) {
+        StringBuilder sb = new StringBuilder();
+        String name = e.getName();
+        boolean sup = true;
+        switch ( name.toLowerCase() ) {
+            case "br":
+                // ignore but reset math if there was any before
+                return resetPreviousMath(sb).toString();
+            case "var":
+                WtNode contentNode = e.getBody().get(0);
+                Object objContent = dispatch(contentNode);
+                if ( objContent instanceof String ) {
+                    String content = fixMathInRow((String)objContent);
+                    return updateOrCreateNewMath(content, WikiTextUtils.MathMarkUpType.LATEX);
+                }
+                break;
+            case "text":
+                return iterateString(e.getBody(), " ");
+            case "sub":
+                sup = false;
+            case "sup":
+                WtNode bodyNode = e.getBody();
+                String contentStr = fixMathInRow(handleSuccessiveSubSups(bodyNode));
+                sb.append(sup ? "^{" : "_{");
+                sb.append(contentStr).append("}");
+                return updateOrCreateNewMath(sb.toString(), WikiTextUtils.MathMarkUpType.LATEX);
+            case "math":
+                LOG.warn("It seems <math> was not registered as special treatment. " +
+                        "Check config of WikiTextParser.");
+        }
+        return sb.toString();
+    }
+
+    private String handleSuccessiveSubSups(WtNode element) {
+        innerMathMode = true;
+        StringBuilder content = new StringBuilder();
+        for (WtNode e : element) {
+            if (e.size() > 1) {
+                content.append(handleSuccessiveSubSups(e));
+                continue;
+            }
+            content.append(dispatch(e));
+        }
+        innerMathMode = false;
+        return content.toString();
+    }
+
+    public String visit(WtTemplate n) {
+        try {
+            StringBuilder sb = new StringBuilder();
+            WtTemplateArgument arg0;
+            WikiCitation cite;
+            String name = n.getName().getAsString();
+
+            if ( name.toLowerCase().startsWith("equation") ) {
+                return handleEquationTemplate(n);
+            }
+
+            int mathElementIndex = 0;
+            boolean sub = false;
+
+            switch (name.toLowerCase()) {
+                case "numblk":
+                    arg0 = (WtTemplateArgument) n.getArgs().get(1);
+                    // there might be idiots who use num bulk just for text.. who knows man
+                    String numBlkArg = iterateString(arg0.getValue());
+                    sb.append(numBlkArg);
+                    resetPreviousMath(sb);
+                    return sb.toString();
+                case "math":
+                case "mvar":
+                    arg0 = (WtTemplateArgument) n.getArgs().get(mathElementIndex);
+                    return handleMathTemplateArgument(arg0, WikiTextUtils.MathMarkUpType.MATH_TEMPLATE);
+                case "pi":
+                    return updateOrCreateNewMath("\\pi", WikiTextUtils.MathMarkUpType.LATEX);
+                case "=":
+                    return updateOrCreateNewMath(" = ", WikiTextUtils.MathMarkUpType.LATEX);
+                case "su":
+                    return updateOrCreateNewMath(handleSuElement(n.getArgs()), WikiTextUtils.MathMarkUpType.LATEX);
+                case "sub":
+                    sub = true;
+                case "sup":
+                    arg0 = (WtTemplateArgument) n.getArgs().get(0);
+                    Object res = dispatch(arg0.getValue());
+                    if ( res instanceof String ) {
+                        String content = fixMathInRow((String)res);
+                        if ( sub ) content = "_{"+content+"}";
+                        else content = "^{"+content+"}";
+                        return content;
+                    } else {
+                        LOG.error("Unable to parse " + n);
+                        break;
+                    }
+                case "Citation":
+                    resetPreviousMath(sb);
+                    cite = new WikiCitation(n.toString());
+                    metaLib.addCite(cite);
+                    // we don't add this to the text
+                    return sb.toString();
+                case "dlmf":
+                    resetPreviousMath(sb);
+                    cite = new WikiCitation("dlmf", n.toString());
+                    metaLib.addCite(cite);
+                    // we don't add this to the text
+                    return sb.toString();
+                case "nowrap":
+                    arg0 = (WtTemplateArgument) n.getArgs().get(0);
+                    return iterateString(arg0.getValue());
+                case "short description":
+                case "for":
+                case "use american english":
+                default:
+                    LOG.warn("Template gets ignored: " + name);
+                    return resetPreviousMath(sb).toString();
+            }
+            return "";
+        } catch (Exception e) {
+            LOG.info("Problem prcessing page" + pageTitle.getTitle(), e);
+            return "";
+        }
+    }
+
+    private String handleSuElement(WtTemplateArguments args) {
+        String sub = "", sup = "";
+        for ( int i = 0; i < args.size(); i++ ) {
+            WtTemplateArgument arg = (WtTemplateArgument)args.get(i);
+            String key = arg.getName().getAsString();
+            Boolean subKey = null;
+            if ( key.equals("b") ) {
+                subKey = true;
+            } else if ( key.equals("p") ) {
+                subKey = false;
+            }
+
+            if ( subKey != null ) {
+                String c = ((WtText)arg.getValue().get(0)).getContent();
+                c = fixMathInRow(c);
+                if ( subKey ) sub = "_{"+c+"}";
+                else sup = "^{"+c+"}";
+            }
+        }
+        return sub+sup;
+    }
+
+    private String handleMathTemplateArgument(WtTemplateArgument arg, WikiTextUtils.MathMarkUpType type) {
+        StringBuilder sb = new StringBuilder();
+        innerMathMode = true;
+        for ( WtNode n : arg.getValue() ) {
+            if ( n instanceof WtText ) {
+                sb.append(fixMathInRow(((WtText) n).getContent()));
+            } else if ( n instanceof WtTemplate ) {
+                sb.append(visit((WtTemplate)n));
+                if ( previousMathTag != null ) {
+                    String content = previousMathTag.getContent();
+                    sb.append(content);
+                    if ( previousMathTagEnding != null ) {
+                        sb.append(previousMathTagEnding);
+                        previousMathTagEnding = null;
+                    }
+                    // is this in SB already? I dont think so
+                    previousMathTag = null;
+                }
+            } else {
+                sb.append(dispatch(n));
+            }
+        }
+        innerMathMode = false;
+
+        // well, math templates are always unique and should not be merged!
+        MathTag math = new MathTag(sb.toString(), WikiTextUtils.MathMarkUpType.LATEX);
+        metaLib.addFormula(math);
+        return " " + math.placeholder() + " ";
+    }
+
+    public String visit(WtTemplateArgument n) {
+        LOG.error("Parsing a template argument? That shouldn't happen. We handle templates differently.");
+        return "";
+    }
+
+    public String visit(WtTagExtension n) {
+        boolean chem = false;
+        StringBuilder sb = new StringBuilder();
+        switch (n.getName()) {
+            case "ce":
+            case "chem":
+                chem = true;
+            case "math":
+                WikiTextUtils.MathMarkUpType markUpType;
+                if (chem) {
+                    markUpType = WikiTextUtils.MathMarkUpType.LATEXCE;
+                } else if ( hasMathMLNamespaceAttribute(n.getXmlAttributes()) || hasMathMLTokens(n.getBody()) ) {
+                    markUpType = WikiTextUtils.MathMarkUpType.MATHML;
+                } else {
+                    markUpType= WikiTextUtils.MathMarkUpType.LATEX;
+                }
+
+                String content = n.getBody().getContent();
+                switch ( markUpType ) {
+                    case LATEXCE:
+                        return updateOrCreateNewMath(fixMathInRow(content), markUpType);
+                    case LATEX:
+                        content = fixMathInRow(content);
+                    case MATHML:
+                        resetPreviousMath(sb);
+                        updateOrCreateNewMath(content, markUpType);
+                        resetPreviousMath(sb);
+                        return sb.toString();
+                }
+            case "ref":
+                resetPreviousMath(sb);
+                String attribute = "";
+                if ( n.getXmlAttributes().size() > 0 ) {
+                    for (WtNode wtNode : n.getXmlAttributes()) {
+                        WtXmlAttribute att = (WtXmlAttribute) wtNode;
+                        if (att.getName().getAsString().equals("name")) {
+                            attribute = ((WtText) att.getValue().get(0)).getContent();
+                            break;
+                        }
+                    }
+                }
+                // we ignore citations in the text. They are just stored as meta information
+                addCitation(n.getBody().toString(), attribute);
+                break;
+            default:
+                resetPreviousMath(sb);
+                LOG.warn("Unknown tag extension we cannot handle.");
+        }
+        return sb.toString();
+    }
+
+    // =====================================================================
+    // We ignore some node types. Here they are:
+
+    public String visit(WtNode n) {
+        // Fallback for all nodes that are not explicitly handled elsewhere
+        // if there is something in between, we need to reset math
+        LOG.debug("Ignore node: " + n);
+        StringBuilder sb = new StringBuilder();
+        return resetPreviousMath(sb).toString();
+    }
+
+    /**
+     * The functions below should be ignored. So they return an empty string.
+     * By not implementing these methods, we take advantage of the fallback
+     * method above for a general WtNode.
+     */
+//    public void visit(WtTemplateParameter n) {}
+//
+//    public void visit(WtPageSwitch n) {}
+//
+//    public void visit(WtIllegalCodePoint n) {}
+//
+//    public void visit(WtXmlComment n) {}
+//
+//    public void visit(WtHorizontalRule hr) {}
+//
+//    public void visit(WtNewline n) {}
+
+
+//    public void visit(WtImageLink n) {
+//        LOG.debug("We ignore image links.");
+//        iterate(n.getTitle());
+//    }
+//
+//    public void visit(WtTable b) {
+//        iterate(b.getBody());
+//    }
+//
+//    public void visit(WtTableRow b) {
+//        iterate(b);
+//    }
+//
+//    public void visit(WtTableCell b) {
+//        iterate(b);
+//    }
+//
+//    public void visit(WtTableImplicitTableBody b) {
+//        iterate(b);
+//    }
+//
+//    public void visit(WtTableHeader b) {
+//        iterate(b);
+//    }
+//
+//    public void visit(WtTableCaption b) {
+//        iterate(b);
+//    }
+
+    // =====================================================================
+    // And some class specific helper methods.
+
+    public String addCitation(String content, String attribute) {
+        WikiCitation cite = new WikiCitation(
+                attribute,
+                content
+        );
+
+        metaLib.addCite(cite);
+        return cite.placeholder();
+    }
+
+    private StringBuilder resetPreviousMath(StringBuilder sb) {
+        return resetPreviousMath(sb, true);
+    }
+
+    private StringBuilder resetPreviousMath(StringBuilder sb, boolean endingSpace) {
+        if ( previousMathTag != null ) {
+            if ( sb.lastIndexOf(" ") != (sb.length()-1) && sb.length() > 0 )
+                sb.append(" ");
+            sb.append(previousMathTag.placeholder());
+            if (previousMathTagEnding != null) {
+                sb.append(previousMathTagEnding);
+                previousMathTagEnding = null;
+            }
+            metaLib.addFormula(previousMathTag);
+            previousMathTag = null;
+            if ( endingSpace )
+                sb.append(" ");
+        }
+        return sb;
+    }
+
+    private String updateOrCreateNewMath(String content, WikiTextUtils.MathMarkUpType type) {
+        if ( innerMathMode ) return content;
+
+        Matcher endingMatcher = MATH_END_PATTERN.matcher(content);
+        String newEndingString = null;
+        if ( endingMatcher.matches() ){
+            content = endingMatcher.group(1);
+            newEndingString = endingMatcher.group(2);
+        }
+
+        if ( previousMathTag != null ) {
+            if ( previousMathTagEnding != null ) {
+                previousMathTag.extendContent(previousMathTagEnding);
+                previousMathTagEnding = null;
+            }
+
+            previousMathTag.extendContent(content);
+        } else {
+            previousMathTag = new MathTag(content, type);
+        }
+
+        if ( newEndingString != null )
+            previousMathTagEnding = newEndingString;
+        return "";
     }
 
     private String getTex(WtNode i, boolean force) {
@@ -261,440 +869,7 @@ public class WikiTextParser extends AstVisitor<WtNode> {
         return null;
     }
 
-    private void handleLatexMathTag(WtNode n, String content) {
-        //content = content.replaceAll("'''([a-zA-Z]+)'''","\\mathbf{$1}");
-        content = replaceMathUnicode(replaceClearMath(content));
-        addMathTag(content, WikiTextUtils.MathMarkUpType.MATH_TEMPLATE);
-    }
-
-    private void newline(int num) {
-        if (pastBod) {
-            if (num > needNewlines) {
-                needNewlines = num;
-            }
-        }
-    }
-
-    public void visit(WtNode n) {
-        // Fallback for all nodes that are not explicitly handled below
-//		System.out.println(n.getNodeName());
-//		write("<");
-//		write(n.getNodeName());
-//		write(" />");
-    }
-
-    public void visit(WtNodeList n) {
-        iterate(n);
-    }
-
-    public void visit(WtUnorderedList e) {
-        iterate(e);
-    }
-
-    public void visit(WtOrderedList e) {
-        iterate(e);
-    }
-
-    public void visit(WtListItem item) {
-        writeNewlines(1);
-//        finishLine();
-        iterate(item);
-    }
-
-    public void visit(EngPage p) {
-        iterate(p);
-    }
-
-    public void visit(WtText text) {
-        Matcher m = MATH_IN_TEXT_SEQUENCE_PATTERN.matcher(text.getContent());
-
-        while (m.find()) {
-            int startIdx = m.start();
-            if ( startIdx > 0 && previousMathTag != null ) {
-                // well, there were actually text, before we hit first... so
-                // time to reset previous hit...
-                resetPreviousMath();
-            }
-
-            String potentialMath = m.group(0);
-            String replaced = replaceClearMath(potentialMath);
-            replaced = replaceMathUnicode(replaced);
-
-            if ( !replaced.equals(potentialMath) ) {
-                // so there were replacements, we can assume that's math...
-                // delete the hit
-                m.appendReplacement(line, "");
-                // add math tag at same position.
-                if ( previousMathTag != null ) {
-                    if ( previousMathTagEndingSplit != null ) {
-                        replaced = previousMathTagEndingSplit + replaced;
-                        previousMathTagEndingSplit = null;
-                    }
-
-                    Matcher mm = MATH_END_PATTERN.matcher(replaced);
-                    if ( mm.matches() ){
-                        replaced = mm.group(1);
-                        previousMathTagEndingSplit = mm.group(2);
-                    } else previousMathTagEndingSplit = null;
-
-                    previousMathTag.extendContent(replaced);
-                } else {
-                    addMathTag(replaced, WikiTextUtils.MathMarkUpType.LATEX);
-                }
-            } else {
-                // ok, that seems to be no math... so let's continue
-                m.appendReplacement(line, potentialMath);
-                previousMathTag = null;
-            }
-        }
-
-        // done, lets add the rest
-        m.appendTail(line);
-//        write(text.getContent());
-    }
-
-    public void visit(WtWhitespace w) {
-        write(" ");
-    }
-
-    public void visit(WtBold b) {
-        if ( checkItalicBoldForMath(b) ) {
-            return;
-        }
-        write("\"");
-        iterate(b);
-        write("\"");
-    }
-
-    public void visit(WtItalics i) {
-        if ( checkItalicBoldForMath(i) ) {
-            return;
-        }
-        write("\"");
-        iterate(i);
-        write("\"");
-    }
-
-    private boolean checkItalicBoldForMath(WtNode n) {
-        if ( n.get(0) instanceof WtInternalLink ) {
-            WtInternalLink in = (WtInternalLink)n.get(0);
-            WtNode title = in.getTitle();
-            if ( title == null || title.size() == 0) title = in.getTarget();
-            if ( title != null && title.size() != 0) {
-                return detectHiddenMath(title);
-            }
-        }
-        return detectHiddenMath(n);
-    }
-
-    public void visit(WtXmlCharRef cr) {
-        write(Character.toChars(cr.getCodePoint()));
-    }
-
-    public void visit(WtXmlEntityRef er) {
-        String ch = er.getResolved();
-        if (ch == null) {
-            write('&');
-            write(er.getName());
-            write(';');
-        } else {
-            write(ch);
-        }
-    }
-
-    // =========================================================================
-    // Stuff we want to hide
-
-    public void visit(WtUrl wtUrl) {
-        if (!wtUrl.getProtocol().isEmpty()) {
-            write(wtUrl.getProtocol());
-            write(':');
-        }
-        write(wtUrl.getPath());
-    }
-
-    public void visit(WtExternalLink link) {
-        write('[');
-        write(extLinkNum++);
-        write(']');
-    }
-
-    public void visit(WtInternalLink link) {
-        String linkName = link.getTarget().getAsString().split("#")[0];
-        if (wl != null) {
-            String newName = wl.title2Data(linkName);
-            if (newName != null) {
-                write("LINK_" + newName);
-                return;
-            }
-        }
-        WikidataLink wl = new WikidataLink(linkName);
-        write("LINK_" + wl.getContentHash());
-        needSpace = true;
-        if (link.getTitle().size() > 0) {
-            StringBuilder tmp = this.line;
-            this.line = new StringBuilder();
-            iterate(link.getTitle());
-            wl.setTitle(this.line.toString());
-            this.line = tmp;
-        }
-        lib.addLink(wl);
-    }
-
-    public void visit(WtSection s) {
-        finishLine();
-//        StringBuilder saveSb = sb;
-//        boolean saveNoWrap = noWrap;
-//
-//        // TODO shall we ignore title of section
-//        sb = new StringBuilder();
-//        noWrap = true;
-//
-//        iterate(s.getHeading());
-//        finishLine();
-//        String title = sb.toString().trim();
-//
-//        sb = saveSb;
-
-//        if (s.getLevel() >= 1) {
-//            while (sections.size() > s.getLevel()) {
-//                sections.removeLast();
-//            }
-//            while (sections.size() < s.getLevel()) {
-//                sections.add(1);
-//            }
-//
-//            StringBuilder sb2 = new StringBuilder();
-//            for (int i = 0; i < sections.size(); ++i) {
-//                if (i < 1) {
-//                    continue;
-//                }
-//
-//                sb2.append(sections.get(i));
-//                sb2.append('.');
-//            }
-//
-//            if (sb2.length() > 0) {
-//                sb2.append(' ');
-//            }
-//            sb2.append(title);
-//            title = sb2.toString();
-//        }
-//
-//        newline(2);
-//        write(title);
-//        newline(1);
-//        write(strrep('-', title.length()));
-//        newline(2);
-
-        // if there is stuff already in the string builder, flush it to sections
-        if ( sb.length() > 1 ) {
-            sections.addLast(sb.toString());
-            sb = new StringBuilder();
-        }
-
-//        noWrap = saveNoWrap;
-        try {
-            // Don't care about errors
-            iterate(s.getBody());
-        } catch (Exception e) {
-            LOG.info("Problem processing page ", pageTitle.getTitle(), e);
-            e.printStackTrace();
-        }
-
-//        while (sections.size() > s.getLevel()) {
-//            sections.removeLast();
-//        }
-//        sections.add(sections.removeLast() + 1);
-    }
-
-    public void visit(WtParagraph p) {
-        iterate(p);
-        newline(2);
-    }
-
-    public void visit(WtHorizontalRule hr) {
-        newline(1);
-//        write(strrep('-', 10));
-//        newline(2);
-    }
-
-    public void visit(WtXmlElement e) {
-        String name = e.getName();
-        boolean sup = true;
-        switch ( name.toLowerCase() ) {
-            case "br":
-                newline(1);
-                break;
-            case "var":
-                WtNode wtNodes = e.getBody().get(0);
-                String content;
-                if (wtNodes instanceof WtText) {
-                    content = ((WtText) wtNodes).getContent().trim();
-                    handleLatexMathTag(e, content);
-                } else if (wtNodes instanceof WtInternalLink) {
-                    //TODO: do not throw away the information of the link from WtInternalLink.getTarget()
-                    //Identifier is more important than link. Link maybe helpful for wikidata.
-                    content = ((WtText) ((WtInternalLink) e.getBody().get(0)).getTitle().get(0)).getContent().trim();
-                    handleLatexMathTag(e, content);
-                }
-                break;
-            case "text":
-                iterate(e.getBody());
-                break;
-            case "sub":
-                sup = false;
-            case "sup":
-                WtNode bodyNode = e.getBody();
-                String contentStr = handleSuccessiveSubSups(bodyNode);
-                String c = sup ? "^{" : "_{";
-                c += contentStr + "}";
-                if ( previousMathTag != null ) {
-                    try {
-                        if ( previousMathTagEndingSplit != null ){
-                            c = previousMathTagEndingSplit + c;
-                            previousMathTagEndingSplit = null;
-                        }
-                        previousMathTag.extendContent(c);
-                    } catch ( IllegalArgumentException ie ) {
-                        LOG.warn("Unable to extend previous math expression");
-                    }
-                } else {
-                    LOG.warn("Found sub/sup but not after a math expression. We just put it as math to the text.");
-                    addMathTag(c, WikiTextUtils.MathMarkUpType.LATEX);
-                }
-        }
-    }
-
-    private String handleSuccessiveSubSups(WtNode element) {
-        StringBuilder content = new StringBuilder();
-        for (WtNode e : element) {
-            if (e.size() > 1) {
-                content.append(handleSuccessiveSubSups(e));
-                continue;
-            }
-
-            if (e instanceof WtItalics) {
-                e = e.get(0); // text node inside italics
-            }
-
-            if (e instanceof WtText) {
-                String c = ((WtText) e).getContent();
-                content.append(c);
-            } else {
-                LOG.warn("Unable to parse " + e + " inside Sub/Sup tag. Ignore it.");
-            }
-        }
-        return content.toString();
-    }
-
-    public void visit(WtImageLink n) {
-        iterate(n.getTitle());
-    }
-
-    public void visit(WtIllegalCodePoint n) {
-    }
-
-    public void visit(WtXmlComment n) {
-    }
-
-    public void visit(WtTable b) {
-        iterate(b.getBody());
-    }
-
-    public void visit(WtTableRow b) {
-        iterate(b);
-    }
-
-    public void visit(WtTableCell b) {
-        iterate(b);
-    }
-
-    public void visit(WtTableImplicitTableBody b) {
-        iterate(b);
-    }
-
-    public void visit(WtTableHeader b) {
-        iterate(b);
-    }
-
-    public void visit(WtTableCaption b) {
-        iterate(b);
-    }
-
-    public void visit(WtNewline n) {
-        // ignore new lines
-        writeNewlines(1);
-    }
-
-    // =========================================================================
-
-    public void visit(WtTemplate n) {
-        try {
-            WtTemplateArgument arg0;
-            String content;
-            WikiCitation cite;
-            String name = n.getName().getAsString();
-
-            if ( name.toLowerCase().startsWith("equation") ) {
-                handleEquationTemplate(n);
-                return;
-            }
-
-            switch (name.toLowerCase()) {
-                case "math":
-                    arg0 = (WtTemplateArgument) n.getArgs().get(0);
-                    content = "";
-                    for ( int i = 0; i < arg0.getValue().size(); i++ ){
-                        WtNode node = arg0.getValue().get(i);
-                        if ( node instanceof WtText ) {
-                            content += ((WtText) node).getContent().trim();
-                        } else if ( node instanceof WtTemplate ) {
-                            content += innerMathTemplateReplacement((WtTemplate)node);
-                        } else {
-                            LOG.warn("Ignore unknown node within math template: " + node.toString());
-                        }
-                    }
-
-                    handleLatexMathTag(n, content);
-                    break;
-                case "mvar":
-                    arg0 = (WtTemplateArgument) n.getArgs().get(0);
-                    content = ((WtText) arg0.getValue().get(0)).getContent().trim();
-                    content = replaceMathUnicode(replaceClearMath(content));
-                    addMathTag(content, WikiTextUtils.MathMarkUpType.MVAR_TEMPLATE);
-                    break;
-                case "numblk":
-                    // https://en.wikipedia.org/wiki/Template:NumBlk
-                    // the second argument is always math, so iterate just over the math
-                    arg0 = (WtTemplateArgument) n.getArgs().get(1);
-                    iterate(arg0.getValue());
-                    break;
-                case "Citation":
-                    cite = new WikiCitation(n.toString());
-                    lib.addCite(cite);
-                    break;
-                case "dlmf":
-                    cite = new WikiCitation("dlmf", n.toString());
-                    lib.addCite(cite);
-                    break;
-                case "short description":
-                case "for":
-                case "use american english":
-                    LOG.warn("Ignore template: " + name);
-                    break;
-                case "pi":
-                    // I can't believe we are doing this... who thought its a good idea to create a freaking template for PI!!!
-                    addMathTag("\\pi", WikiTextUtils.MathMarkUpType.LATEX);
-                default:
-                    iterate(n.getArgs());
-            }
-        } catch (Exception e) {
-            LOG.info("Problem prcessing page", pageTitle.getTitle(), e);
-        }
-    }
-
-    private void handleEquationTemplate(WtTemplate equation) {
+    private String handleEquationTemplate(WtTemplate equation) {
         WtTemplateArguments args = equation.getArgs();
         WtTemplateArgument titleArg = null, equationArg = null;
         for (WtNode wtNode : args) {
@@ -708,17 +883,64 @@ public class WikiTextParser extends AstVisitor<WtNode> {
             }
         }
 
+        StringBuilder sb = new StringBuilder();
         if ( titleArg != null ) {
-            dispatch(titleArg.getValue());
-            write(": ");
+            sb.append(dispatch(titleArg.getValue()));
+            sb.append(": ");
         }
 
         if ( equationArg != null ) {
-            dispatch(equationArg.getValue());
+            sb.append(dispatch(equationArg.getValue()));
+            resetPreviousMath(sb);
         }
+        return sb.toString();
     }
 
-    public String innerMathTemplateReplacement(WtTemplate t) {
+    private String detectHiddenMath(WtNode i) {
+        if (skipHiddenMath){
+            return null;
+        }
+
+        if (i.size() == 1 && i.get(0) instanceof WtText) {
+            return getTex(i, false);
+        } else {
+            if (i.size() == 2 && i.get(0) instanceof WtText && i.get(1) instanceof WtXmlElement) {
+                //discover hidden subscripts
+                final WtXmlElement xml = (WtXmlElement) i.get(1);
+                if (xml.getName().matches("sub") &&
+                        xml.getBody().size() == 1 &&
+                        xml.getBody().get(0) instanceof WtText) {
+                    final String subTex = getTex(xml.getBody(), true);
+                    final String mainTex = getTex(i, true);
+                    if (mainTex != null) {
+                        String tex = mainTex + "_{" + subTex + "}";
+                        return tex;
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    // ====================================================================
+    // And of course we need some static stuff to handle typical procedures
+
+    public static String getContentFromMathTemplate(WtTemplateArgument arg) {
+        String content = "";
+        for ( int i = 0; i < arg.getValue().size(); i++ ){
+            WtNode node = arg.getValue().get(i);
+            if ( node instanceof WtText) {
+                content += ((WtText) node).getContent().trim();
+            } else if ( node instanceof WtTemplate) {
+                content += innerMathTemplateReplacement((WtTemplate)node);
+            } else {
+                LOG.warn("Ignore unknown node within math template: " + node.toString());
+            }
+        }
+        return content;
+    }
+
+    public static String innerMathTemplateReplacement(WtTemplate t) {
         String name = t.getName().getAsString();
         WtTemplateArgument arg;
         String result = "";
@@ -765,57 +987,7 @@ public class WikiTextParser extends AstVisitor<WtNode> {
         return result;
     }
 
-    public void visit(WtTemplateArgument n) {
-        if (!detectHiddenMath(n.getValue())) {
-            iterate(n.getValue());
-        }
-    }
-
-    public void visit(WtTemplateParameter n) {
-    }
-
-    public void visit(WtTagExtension n) {
-        boolean chem = false;
-        switch (n.getName()) {
-            case "ce":
-            case "chem":
-                chem = true;
-            case "math":
-                WikiTextUtils.MathMarkUpType markUpType;
-                String content = "";
-                if (chem) {
-                    markUpType = WikiTextUtils.MathMarkUpType.LATEXCE;
-                } else if ( hasMathMLNamespaceAttribute(n.getXmlAttributes()) || hasMathMLTokens(n.getBody()) ) {
-                    LOG.debug("Identified MathML");
-                    markUpType = WikiTextUtils.MathMarkUpType.MATHML;
-                } else {
-                    markUpType= WikiTextUtils.MathMarkUpType.LATEX;
-                }
-                addMathTag(n.getBody().getContent(), markUpType);
-                break;
-            case "ref":
-                String attribute = "";
-                if ( n.getXmlAttributes().size() > 0 ) {
-                    for (WtNode wtNode : n.getXmlAttributes()) {
-                        WtXmlAttribute att = (WtXmlAttribute) wtNode;
-                        if (att.getName().getAsString().equals("name")) {
-                            attribute = ((WtText) att.getValue().get(0)).getContent();
-                            break;
-                        }
-                    }
-                }
-
-                WikiCitation cite = new WikiCitation(
-                        attribute,
-                        n.getBody().toString()
-                );
-
-                lib.addCite(cite);
-                write(" "+cite.placeholder());
-        }
-    }
-
-    private boolean hasMathMLNamespaceAttribute(WtXmlAttributes attributes) {
+    private static boolean hasMathMLNamespaceAttribute(WtXmlAttributes attributes) {
         for (WtNode attribute : attributes) {
             WtXmlAttribute att = (WtXmlAttribute) attribute;
             String name = att.getName().getAsString();
@@ -830,60 +1002,19 @@ public class WikiTextParser extends AstVisitor<WtNode> {
         return false;
     }
 
-    private boolean hasMathMLTokens(WtTagExtensionBody body) {
+    private static boolean hasMathMLTokens(WtTagExtensionBody body) {
         String mightBeMathML = body.getContent();
         Matcher mmlMatcher = MML_TOKENS_PATTERN.matcher(mightBeMathML);
         return mmlMatcher.find();
     }
 
-    private void addMathTag(String content, WikiTextUtils.MathMarkUpType type) {
-        if ( previousMathTag != null ) {
-            try {
-                previousMathTag.extendContent(previousMathTagEndingSplit+" ");
-
-                Matcher m = MATH_END_PATTERN.matcher(content);
-                if ( m.matches() ){
-                    content = m.group(1);
-                    previousMathTagEndingSplit = m.group(2);
-                } else previousMathTagEndingSplit = null;
-
-                previousMathTag.extendContent(content);
-                return;
-            } catch (IllegalArgumentException iae) {
-                LOG.warn("Unable to extend previous mathematical expression. Continue as usually.");
-            }
-        }
-
-        Matcher m = MATH_END_PATTERN.matcher(content);
-        if ( m.matches() ){
-            content = m.group(1);
-            previousMathTagEndingSplit = m.group(2);
-        } else previousMathTagEndingSplit = null;
-
-        MathTag tag = new MathTag(content, type);
-        previousMathTag = tag;
-
-        lib.addFormula(tag);
-        if (needNewlines > 0) {
-            write(" ");
-        }
-
-        needSpace = true;
-        writeWord(tag.placeholder());
-        needSpace = true;
-    }
-
-    public void visit(WtPageSwitch n) {
-    }
-
-    private void wantSpace() {
-        if (pastBod) {
-            needSpace = true;
-        }
+    public static String fixMathInRow(String content) {
+        content = replaceClearMath(content);
+        return replaceMathUnicode(content);
     }
 
     public static String replaceClearMath(String content) {
-        return subMatch.matcher(content)
+        return SUB_PATTERN.matcher(content)
                 .replaceAll("_{$1}")
                 .replaceAll("[{<]sup[}>](.+?)[{<]/sup[}>]", "^{$1}")
                 .replaceAll("'''\\[{0,2}(\\S)]{0,2}'''", "\\\\mathbf{$1}")
@@ -894,103 +1025,20 @@ public class WikiTextParser extends AstVisitor<WtNode> {
         return UnicodeMap.string2TeX(content);
     }
 
-    private void write(String s) {
-        if ( !s.matches("\\s*FORMULA.*") ) {
-            resetPreviousMath();
+    private static final Pattern NOWRAP_PATTERN = Pattern.compile(
+            "\\{{2}nowrap\\|(?:\\d+=)?([^{]*?)}{2}"
+    );
+
+    public static String preProcess(String input) {
+        // the nowrap template is always WtText... even if there is ''x'' or even XML like <sub>
+        // are just in WtText which simply breaks EVERYTHING... Simple idea... delete the nowrap shit.
+        StringBuilder sb = new StringBuilder();
+        Matcher m = NOWRAP_PATTERN.matcher(input);
+        while ( m.find() ) {
+            m.appendReplacement(sb, m.group(1));
         }
-
-        if (suppressOutput){
-            return;
-        }
-        if (s.isEmpty()) {
-            return;
-        }
-
-        if (Character.isSpaceChar(s.charAt(0))) {
-            wantSpace();
-        }
-
-        String[] words = ws.split(s);
-        for (int i = 0; i < words.length; ) {
-            writeWord(words[i]);
-            if (++i < words.length) {
-                wantSpace();
-            }
-        }
-
-        final char lastChar = s.charAt(s.length() - 1);
-        if (Character.isSpaceChar(lastChar) || lastChar == '\n') {
-            wantSpace();
-        }
-    }
-
-    private void write(char[] cs) {
-        write(String.valueOf(cs));
-    }
-
-    private void write(char ch) {
-        writeWord(String.valueOf(ch));
-    }
-
-    private void write(int num) {
-        writeWord(String.valueOf(num));
-    }
-
-    /**
-     * New lines are problematic for the PoS-Tagger. Hence, it is better to not add line breaks, since we
-     * have a system implemented that handles sections well.
-     * @param num .
-     * @deprecated just do not use new lines anymore.
-     */
-    @Deprecated
-    private void writeNewlines(int num) {
-        finishLine();
-//        sb.append(strrep('\n', num));
-        needNewlines = 0;
-        needSpace = false;
-    }
-
-    private void resetPreviousMath() {
-        previousMathTag = null;
-        if ( previousMathTagEndingSplit != null ) {
-            line.append(previousMathTagEndingSplit);
-            previousMathTagEndingSplit = null;
-        }
-    }
-
-    private void writeWord(String s) {
-        if ( !s.matches("\\s*FORMULA.*") ) {
-            resetPreviousMath();
-        }
-
-        int length = s.length();
-        if (length == 0) {
-            return;
-        }
-
-        if (needSpace && needNewlines <= 0) {
-            line.append(' ');
-        }
-
-        if (needNewlines > 0) {
-            writeNewlines(needNewlines);
-        }
-
-        needSpace = false;
-        pastBod = true;
-        line.append(s);
-    }
-
-    /**
-     * Process only the tags without to generate text output.
-     * Suppressing the output might be useful if one is only interested in the math tags and not in the text.
-     * In that case this option speeds up the process
-     *
-     */
-    public void processTags() {
-        this.suppressOutput = true;
-        this.parse();
-        this.suppressOutput = false;
+        m.appendTail(sb);
+        return sb.toString();
     }
 }
 

@@ -38,6 +38,10 @@ public class DocumentMetaLib {
         );
     }
 
+    public MathTag removeFormula(String id) {
+        return this.formulaLib.remove(id);
+    }
+
     public void addLink(SpecialToken link) {
         linkLib.put(link.placeholder(), link);
     }
