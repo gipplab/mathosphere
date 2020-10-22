@@ -122,6 +122,13 @@
                         <configuration>
                             <doclint>none</doclint>
                             <javadocExecutable>${java.home}/bin/javadoc</javadocExecutable>
+                            <sourcepath>src/main/java</sourcepath>
+                            <!--
+                            We ran into issues with Java 11 (named vs unnamed modules)
+                            Checkout the solution here: https://stackoverflow.com/a/63475569
+                            -->
+                            <source>1.8</source>
+                            <detectJavaApiLink>false</detectJavaApiLink>
                         </configuration>
                     </execution>
                 </executions>
