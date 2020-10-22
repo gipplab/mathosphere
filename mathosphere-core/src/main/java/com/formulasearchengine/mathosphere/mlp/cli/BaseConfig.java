@@ -9,10 +9,20 @@ import java.io.Serializable;
 import java.util.Properties;
 
 public class BaseConfig implements Serializable {
+    // way faster than english-bidiractional-distsim.tagger
     protected static final String DEFAULT_POS_MODEL =
-            "edu/stanford/nlp/models/pos-tagger/english-left3words/english-left3words-distsim.tagger";
+            "edu/stanford/nlp/models/pos-tagger/english-left3words-distsim.tagger";
+
+    // look here:
+    // https://nlp.stanford.edu/software/nndep.html
+    private static final String DEFAULT_DEPENDENCY_PARSER_MODEL =
+            "edu/stanford/nlp/models/parser/nndep/english_SD.gz";
+
     @Parameter(names = {"-pos", "--posModel"}, description = "POS model to use")
     protected String model = DEFAULT_POS_MODEL;
+
+    @Parameter(names = {"--dependencyParserModel"}, description = "Location of the model for the dependency parser.")
+    protected String dependencyParserModel = DEFAULT_DEPENDENCY_PARSER_MODEL;
 
     @Parameter(names = {"-l", "--language"}, description = "Language of the input")
     protected String language = "en";
@@ -82,6 +92,10 @@ public class BaseConfig implements Serializable {
 
     public String getModel() {
         return model;
+    }
+
+    public String getDependencyParserModel() {
+        return dependencyParserModel;
     }
 
     public void setModel(String model) {

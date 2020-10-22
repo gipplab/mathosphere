@@ -384,7 +384,9 @@ public class WikiTextParser extends AstVisitor<WtNode> {
         // hit. in this case... we must add the math first, if any and then add the end.
         StringBuilder tmpBuilder = new StringBuilder();
         m.appendTail(tmpBuilder);
-        if ( tmpBuilder.length() > 0 ) {
+        String tmpString = tmpBuilder.toString();
+        // last test is this bullshit &nbsp; char
+        if ( tmpBuilder.length() > 0 && !tmpString.isBlank() && !tmpString.matches("\\s* \\s*")) {
             resetPreviousMath(stringBuilder);
             stringBuilder.append(tmpBuilder);
         }
@@ -517,6 +519,9 @@ public class WikiTextParser extends AstVisitor<WtNode> {
             case "math":
                 LOG.warn("It seems <math> was not registered as special treatment. " +
                         "Check config of WikiTextParser.");
+                break;
+            case "span":
+                return (String)dispatch(e.getBody());
         }
         return sb.toString();
     }

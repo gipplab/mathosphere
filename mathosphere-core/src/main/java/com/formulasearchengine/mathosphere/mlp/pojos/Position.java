@@ -69,13 +69,29 @@ public class Position implements Comparable<Position> {
 
         p.sort(Position::compareTo);
 
-        int startLine = p.get(0).sentence;
-        int endLine = startLine;
-        for ( int i = p.get(0).section+1; i < p.get(1).section; i++ ) {
-            endLine += lib.getSectionLength(i);
+        // if both are in the same section, just count the sentences between them
+        if ( p.get(0).section == p.get(1).section ) {
+            return p.get(1).sentence - p.get(0).sentence;
         }
-        endLine += p.get(1).sentence;
-        return endLine - startLine;
+
+        // otherwise, we must count the sentences until the end of the section first
+        int startSection = p.get(0).section;
+        int numberOfSectionsInStart = lib.getNumberOfSentencesInSection(startSection);
+        int startLine = p.get(0).sentence;
+
+        // +1 because the last line has 1 distance to next section
+        int distanceToNextSection = numberOfSectionsInStart - startLine + 1;
+
+        // now sum up sentences in between both sections.
+        int inBetween = 0;
+        for ( int i = p.get(0).section+1; i <= p.get(1).section-1; i++ ) {
+            inBetween += lib.getNumberOfSentencesInSection(i);
+        }
+
+        // for the end, the number of the sentence is also the distance to the beginning of the section
+        // sentence 3 has a distance of 3 to the beginning of the section
+        int distanceToEnd = p.get(1).sentence;
+        return distanceToNextSection + inBetween + distanceToEnd;
     }
 
     public static boolean inSameSentence(Position p1, Position p2) {

@@ -73,6 +73,10 @@ public class DocumentMetaLib {
         }
     }
 
+    public int getNumberOfSentencesInSection(int section) {
+        return sectionSentenceLengths.get(section).size();
+    }
+
     public int getSectionLength(int section) {
         return sectionSentenceLengths.get(section).stream().reduce(0, Integer::sum);
     }

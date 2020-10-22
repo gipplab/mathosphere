@@ -6,6 +6,7 @@ import com.formulasearchengine.mathosphere.mlp.text.TextAnnotator;
 import com.formulasearchengine.mathosphere.mlp.text.WikiTextParser;
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Multiset;
+import edu.stanford.nlp.parser.nndep.DependencyParser;
 import org.apache.flink.api.common.functions.RichMapFunction;
 import org.apache.flink.configuration.Configuration;
 import org.apache.logging.log4j.LogManager;

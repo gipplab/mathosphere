@@ -18,6 +18,9 @@ import com.alexeygrigorev.rseq.XMatcher;
 import com.formulasearchengine.mathosphere.mlp.cli.BaseConfig;
 import com.formulasearchengine.mathosphere.mlp.rus.RusPosAnnotator;
 
+import edu.stanford.nlp.ling.TaggedWord;
+import edu.stanford.nlp.parser.nndep.DependencyParser;
+import edu.stanford.nlp.trees.GrammaticalStructure;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
@@ -168,14 +171,18 @@ public class PosTagger {
 
   protected static List<Sentence> convertToSentences(
           List<List<List<Word>>> input,
-          Map<String, MathTag> formulaIndex
+          Map<String, MathTag> formulaIndex,
+          List<List<GrammaticalStructure>> strucs
   ) {
     List<Sentence> result = Lists.newArrayListWithCapacity(input.size());
 
     for ( int i = 0; i < input.size(); i++ ) {
-      List<List<Word>> sentence = input.get(i);
-      for (List<Word> words : sentence) {
-        Sentence s = toSentence(i, words, formulaIndex);
+      List<List<Word>> sentences = input.get(i);
+      List<GrammaticalStructure> innerStrucs = strucs.get(i);
+      for ( int j = 0; j < sentences.size(); j++ ) {
+        List<Word> sentence = sentences.get(j);
+        GrammaticalStructure gs = innerStrucs.get(j);
+        Sentence s = toSentence(i, sentence, formulaIndex, gs);
         result.add(s);
       }
     }
@@ -192,7 +199,8 @@ public class PosTagger {
   protected static Sentence toSentence(
           int section,
           List<Word> input,
-          Map<String, MathTag> formulaIndex
+          Map<String, MathTag> formulaIndex,
+          GrammaticalStructure gs
   ) {
     List<Word> words = Lists.newArrayListWithCapacity(input.size());
     Set<String> sentenceIdentifiers = Sets.newHashSet();
@@ -249,7 +257,7 @@ public class PosTagger {
       words.add(w);
     }
 
-    return new Sentence(section, words, sentenceIdentifiers, formulas);
+    return new Sentence(section, words, sentenceIdentifiers, formulas, gs);
   }
 
   /**
@@ -353,10 +361,12 @@ public class PosTagger {
     });
   }
 
-  protected static List<Word> concatenateTwoSuccessiveRegexTags(List<Word> in, String tag1, String tag2,
-                                                      String outputTag) {
+  protected static List<Word> concatenateTwoSuccessiveRegexTags(List<Word> in, String tag1, String tag2, String outputTag) {
     Pattern<Word> pattern = Pattern.create(pos(tag1), pos(tag2));
-    return pattern.replaceToOne(in, m -> new Word(joinWords(m.getMatchedSubsequence()), outputTag));
+    return pattern.replaceToOne(in, m -> {
+      List<Word> matchedSequence = m.getMatchedSubsequence();
+      return new Word(matchedSequence.get(0).getPosition(), joinWords(matchedSequence), outputTag);
+    });
   }
 
   private static String joinWords(List<Word> list) {

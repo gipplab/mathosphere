@@ -3,12 +3,16 @@ package com.formulasearchengine.mathosphere.mlp.contracts;
 import com.formulasearchengine.mathosphere.mlp.cli.BaseConfig;
 import com.formulasearchengine.mathosphere.mlp.pojos.*;
 import com.formulasearchengine.mathosphere.mlp.text.PosTag;
+import com.formulasearchengine.mathosphere.mlp.text.SimplePatternMatcher;
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multiset;
 import com.google.common.collect.Multiset.Entry;
 import gov.nist.drmf.interpreter.mlp.MLPWrapper;
+import gov.nist.drmf.interpreter.mlp.SemanticMLPWrapper;
 import gov.nist.drmf.interpreter.mlp.extensions.MatchablePomTaggedExpression;
+import gov.nist.drmf.interpreter.mlp.extensions.MatcherConfig;
+import gov.nist.drmf.interpreter.mlp.extensions.PomMatcher;
 import gov.nist.drmf.interpreter.mlp.extensions.PrintablePomTaggedExpression;
 import mlp.ParseException;
 import org.apache.flink.api.common.functions.MapFunction;
@@ -16,6 +20,7 @@ import org.apache.flink.api.java.tuple.Tuple2;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -32,6 +37,7 @@ public class CreateCandidatesMapper implements MapFunction<ParsedWikiDocument, W
   private double gamma;
 
   private MLPWrapper mlp;
+  private MatcherConfig matcherConfig;
 
   public CreateCandidatesMapper(BaseConfig config) {
     this.config = config;
@@ -39,7 +45,12 @@ public class CreateCandidatesMapper implements MapFunction<ParsedWikiDocument, W
     this.alpha = config.getAlpha();
     this.beta = config.getBeta();
     this.gamma = config.getGamma();
-    this.mlp = new MLPWrapper("/mnt/share/Projects/LaCASt/libs/ReferenceData");
+    try {
+      this.mlp = new SemanticMLPWrapper();
+      this.matcherConfig = MatcherConfig.getDefaultMatchConfig();
+    } catch (IOException e) {
+      LOG.fatal("Unable to initiate MLP!", e);
+    }
   }
 
   @Override
@@ -64,7 +75,7 @@ public class CreateCandidatesMapper implements MapFunction<ParsedWikiDocument, W
         selfMerge(candidates);
       } else {
         Collections.sort(candidates);
-        Collections.reverse(candidates);
+//        Collections.reverse(candidates);
       }
       for (Relation rel : candidates) {
         if (rel.getScore() >= config.getThreshold()) {
@@ -128,6 +139,15 @@ public class CreateCandidatesMapper implements MapFunction<ParsedWikiDocument, W
   }
 
   private List<Relation> generateCandidates(ParsedWikiDocument doc, MathTag formula) {
+    List<Position> formulaPositions = formula.getPositions();
+    if ( formulaPositions == null || formulaPositions.isEmpty() ) {
+      LOG.warn("No positions found for formula " + formula.getContent());
+      return new LinkedList<>();
+    }
+
+    // the positions are ordered on init
+    Position firstAppearancePosition = formulaPositions.get(0);
+
     List<Relation> result = Lists.newArrayList();
     List<Tuple2<Sentence, Set<Position>>> sentences = findSentencesWithFormula(doc.getSentences(), formula);
     if ( sentences.isEmpty() ) return result;
@@ -142,7 +162,10 @@ public class CreateCandidatesMapper implements MapFunction<ParsedWikiDocument, W
 
     int maxNounFrequency = calculateMax(wordFrequencies);
 
-    Position firstAppearancePosition = sentences.get(0).f0.getWords().get(0).getPosition();
+//    Position firstAppearancePosition = sentences.get(0).f1.stream().findFirst().get();
+
+    LOG.debug("First pos of formula is " + firstAppearancePosition + "; Identified " + sentences.size() + " sentences " +
+            "that include (partially) the formula.");
 
     for (int sentenceIdx = 0; sentenceIdx < sentences.size(); sentenceIdx++) {
       Tuple2<Sentence, Set<Position>> entry = sentences.get(sentenceIdx);
@@ -153,10 +176,12 @@ public class CreateCandidatesMapper implements MapFunction<ParsedWikiDocument, W
 
       for ( Word def : definiens ) {
 
-        int distance = calculateClosestDistance(def, entry.f1);
+        Position closestPosition = getClosestPosition(def, entry.f1);
+        int wordDistance = calculateClosestDistance(def, entry.f1);
+        int graphDistance = sentence.getGraphDistance(def.getPosition().getWord(), closestPosition.getWord());
         int freq = wordFrequencies.count(def.getWord().toLowerCase());
         double score = calculateScore(
-                distance,
+                graphDistance,
                 freq,
                 maxNounFrequency,
                 firstAppearancePosition.getSentenceDistance(def.getPosition())
@@ -254,7 +279,7 @@ public class CreateCandidatesMapper implements MapFunction<ParsedWikiDocument, W
   }
 
   private static double gaussian(double x, double std) {
-    return Math.exp(-x * x / (2 * std * std));
+    return Math.exp(-(x * x) / (2 * std * std));
   }
 
   /**
@@ -346,6 +371,14 @@ public class CreateCandidatesMapper implements MapFunction<ParsedWikiDocument, W
             .orElse(Integer.MIN_VALUE);
   }
 
+  public static Position getClosestPosition(Word def, Set<Position> positions) {
+    Position wordP = def.getPosition();
+    return positions.stream()
+            .filter( f -> wordP.getSection() == f.getSection() && wordP.getSentence() == f.getSentence())
+            .min( Position::compareTo )
+            .orElse(null);
+  }
+
   /**
    * First approach, identify sentences that share all identifiers that are given in the formula.
    * @param sentences
@@ -357,25 +390,37 @@ public class CreateCandidatesMapper implements MapFunction<ParsedWikiDocument, W
     List<Tuple2<Sentence, Set<Position>>> out = new LinkedList<>();
 
     MatchablePomTaggedExpression patternTree = null;
+    LOG.info("Search for math formula: " + formula.getContent());
+    // first, create patterns of the formula where all identifiers are replaced by wildcards
+    Set<String> idInFormula = new HashSet<>(formula.getIdentifiers().elementSet());
+    String firstIdentifier = null;
+    String expression = formula.getContent();
+    for ( String id : idInFormula ) {
+      if ( expression.startsWith(id) ) {
+        firstIdentifier = id;
+        idInFormula.remove(id);
+        LOG.debug("Expression starts with identifier, consider it as primary-identifier: " + id);
+        break;
+      }
+    }
+
     try {
-      LOG.info("Search for math formula: " + formula.getContent());
-      // first, create patterns of the formula where all identifiers are replaced by wildcards
-      Set<String> idInFormula = formula.getIdentifiers().elementSet();
       int counter = 1;
-      String expression = formula.getContent();
       for (String id : idInFormula) {
         String regex = "";
         if ( !id.startsWith("\\") ) {
           regex = "(?<!\\\\[A-Za-z]{0,30})";
         }
         regex += "\\Q"+id+"\\E([^a-zA-Z]|$)";
-        expression = expression.replaceAll(regex, "var" + counter + "$1");
+        expression = expression.replaceAll(regex, "{var" + counter + "}$1");
         counter++;
       }
-      LOG.info("Generated pattern of formula: " + expression);
-      if ( expression.matches("\\s*[a-z\\d\\s]+\\s*|.*(?:var\\d+\\s*){2}.*") || expression.contains("\\begin") ) { // illegal matches, fallback to standard approach
+      LOG.debug("Generated pattern of formula: " + expression);
+      if ( expression.matches("\\s*\\{[a-z\\d\\s]}?\\s*|.*(?:\\{var\\d+}\\s*){2}.*") || expression.contains("\\begin")
+              || idInFormula.isEmpty() || (idInFormula.size() == 1 && firstIdentifier == null)
+      ) { // illegal matches, fallback to standard approach
         if ( idInFormula.size() > 1 || expression.contains("\\begin") ) {
-          LOG.info("Unable to generate pattern for complex expression. Consider it as single appearance");
+          LOG.debug("Unable to generate pattern for complex expression. Consider it as single appearance");
           for (Sentence s : sentences) {
             Set<Position> p = formula.getPositionsInSentence(s);
             if ( !p.isEmpty() ) {
@@ -386,8 +431,21 @@ public class CreateCandidatesMapper implements MapFunction<ParsedWikiDocument, W
           return out;
         }
 
-        LOG.info("Actually, found that it is only one identifier. So fall back to standard task");
+        if ( idInFormula.isEmpty() && firstIdentifier == null ) {
+          LOG.debug("No identifier in this formula. Let's not check for subexpressions somewhere else.");
+          for (Sentence s : sentences) {
+            Set<Position> p = formula.getPositionsInSentence(s);
+            if ( !p.isEmpty() ) {
+              Tuple2<Sentence, Set<Position>> e = new Tuple2<>(s, p);
+              out.add(e);
+            }
+          }
+          return out;
+        }
+
+        LOG.debug("Actually, found that it is only one identifier. So fall back to standard task");
         // fall back to identifier solution.
+        if ( firstIdentifier != null ) idInFormula.add(firstIdentifier);
         sentences.stream().filter( s -> s.getIdentifiers().containsAll(idInFormula) )
                 .forEach( s -> {
                   Position pos = s.getWords().get(0).getPosition();
@@ -426,23 +484,41 @@ public class CreateCandidatesMapper implements MapFunction<ParsedWikiDocument, W
         Set<MathTag> formulaeInSentence = sentence.getMath();
         for ( MathTag m : formulaeInSentence ) {
           if ( m.getContent().contains("\\begin") ) {
-            // skip being stuff... its too difficult for PoM-Tagger
+            // skip this stuff... its too difficult for PoM-Tagger
             continue;
           }
+//          if ( m.equals(formula) ) continue; // already added before, don't need to test
           try {
-            PrintablePomTaggedExpression pom = this.mlp.parse(m.getContent());
-            if ( patternTree.matchWithinPlace(pom) ) {
-              LOG.info("Found a pattern match with " + m.getContent());
-              LOG.info("Captured Groups: " + patternTree.getStringMatches());
-              for ( Position p : m.getPositions() ) {
-                if ( Position.inSameSentence(firstWordInSentencePos, p) )
-                  entries.add(p);
+            PomMatcher matcher = patternTree.matcher(m.getContent());
+            if ( matcher.find() ) {
+              LOG.debug("Found a pattern match with " + m.getContent());
+              LOG.debug("Captured Groups: " + matcher.groups());
+//              if ( matcher.groups().values().size() != idInFormula.size() ) {
+//                LOG.debug("Not all groups matched. Hence it was only a partial match which we will skip now.");
+//                continue;
+//              }
+
+              // let's make it even more strict, there should be at least one (or even more?)
+              // identifiers from the original expression in the found match
+              Collection<String> hits = matcher.groups().values();
+              Set<String> originalIdsCopy = new HashSet<>(idInFormula);
+              originalIdsCopy.retainAll(hits);
+              // if there was no primary identifier, we want to see at least ONE match between captured groups
+              // and identifiers from the original expression. For example: f(x) should not match g(y).
+              if ( !originalIdsCopy.isEmpty() || firstIdentifier != null ) {
+//                if ( !originalIdsCopy.isEmpty() )
+//                  LOG.debug("Multiple hits were used in the original formula: " + originalIdsCopy);
+                //                  if ( Position.inSameSentence(firstWordInSentencePos, p) )
+                entries.addAll(m.getPositions());
+              } else {
+                LOG.debug("There is no match between the found captures and the originally extracted identifiers "
+                        + idInFormula + ". Hence, it doesn't count as a hit.");
               }
-            } else if ( !patternTree.getStringMatches().isEmpty() ) {
-              LOG.warn("Found partial match in " + m.getContent());
+            } else if ( !matcher.groups().isEmpty() ) {
+              LOG.debug("No find() but partially contains (ignore it): " + m.getContent());
             }
           } catch (Exception e) {
-            LOG.warn("Unable to parse because: " + e.getMessage() + "\n"+m.getContent());
+            LOG.warn("Unable to parse expression:\n"+m.getContent(), e);
           }
         }
       }

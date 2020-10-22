@@ -406,4 +406,20 @@ public class WikiTextParserTest {
         String output = sections.get(0);
         assertEquals("The term " + sTag.placeholder() + " for something. ", output);
     }
+
+    @Test
+    public void vanDerWaerdenTrickyXMLTest() throws Exception {
+        String wikiText = "We have &lt;math&gt;W(2, k) &gt; 2^k/k^\\varepsilon&lt;/math&gt;, for all.";
+        wikiText = RawWikiDocument.unescapeText(wikiText);
+        final WikiTextParser mathConverter = new WikiTextParser(wikiText);
+        List<String> sections = mathConverter.parse();
+
+        Collection<MathTag> mathTags = mathConverter.getMetaLibrary().getFormulaLib().values();
+
+        assertEquals(sections.toString(), 1, sections.size());
+        assertEquals(mathTags.toString(), 1, mathTags.size());
+
+        MathTag sTag = mathTags.stream().findFirst().get();
+        assertEquals(mathTags.toString(), "W(2, k) > 2^k/k^\\varepsilon", sTag.getContent());
+    }
 }

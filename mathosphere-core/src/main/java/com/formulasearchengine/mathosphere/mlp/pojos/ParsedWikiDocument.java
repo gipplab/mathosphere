@@ -1,8 +1,10 @@
 package com.formulasearchengine.mathosphere.mlp.pojos;
 
 import com.google.common.collect.Multiset;
+import edu.stanford.nlp.trees.GrammaticalStructure;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 

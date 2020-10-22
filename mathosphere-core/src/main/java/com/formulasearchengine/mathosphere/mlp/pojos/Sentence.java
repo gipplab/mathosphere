@@ -1,6 +1,11 @@
 package com.formulasearchengine.mathosphere.mlp.pojos;
 
 import com.formulasearchengine.mathosphere.mlp.text.PosTag;
+import edu.stanford.nlp.ling.IndexedWord;
+import edu.stanford.nlp.ling.TaggedWord;
+import edu.stanford.nlp.semgraph.SemanticGraph;
+import edu.stanford.nlp.semgraph.SemanticGraphEdge;
+import edu.stanford.nlp.trees.GrammaticalStructure;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -13,16 +18,26 @@ public class Sentence {
   private final List<Word> words;
   private final Set<String> sentenceIdentifier;
   private final Set<MathTag> sentenceMath;
+  private GrammaticalStructure parseTree;
+  private SemanticGraph graph;
 
   public Sentence(List<Word> words, Set<String> identifier, Set<MathTag> formulae) {
     this(0, words, identifier, formulae);
   }
 
-  public Sentence(int section, List<Word> words, Set<String> identifier, Set<MathTag> formulae) {
+  public Sentence(int section, List<Word> words, Set<String> identifier, Set<MathTag> formulae){
+    this(section, words, identifier, formulae, null);
+  }
+
+  public Sentence(int section, List<Word> words, Set<String> identifier, Set<MathTag> formulae, GrammaticalStructure parseTree) {
     this.section = section;
     this.words = words;
     this.sentenceIdentifier = identifier;
     this.sentenceMath = formulae;
+    this.parseTree = parseTree;
+    if ( parseTree != null ) {
+      this.graph = new SemanticGraph(parseTree.typedDependencies());
+    }
   }
 
   public List<Word> getWords() {
@@ -64,6 +79,18 @@ public class Sentence {
 
   public Set<MathTag> getMath() {
     return sentenceMath;
+  }
+
+  public int getGraphDistance(int word1, int word2){
+    try {
+      IndexedWord wi1 = graph.getNodeByIndex(word1+1);
+      IndexedWord wi2 = graph.getNodeByIndex(word2+1);
+      List<SemanticGraphEdge> edges = graph.getShortestUndirectedPathEdges(wi1, wi2);
+      return edges.size();
+    } catch (IllegalArgumentException iae) {
+      iae.printStackTrace();
+      return -1;
+    }
   }
 
   @Override
