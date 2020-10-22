@@ -55,13 +55,13 @@
     </distributionManagement>
 
     <modules>
+        <module>evaluation</module>
         <module>lib/MathMLTools</module>
         <module>mathosphere-core</module>
         <module>lib/MathMLCan</module>
         <module>lib/RTED</module>
         <module>basex</module>
         <module>restd</module>
-        <module>evaluation</module>
         <module>pomlp</module>
     </modules>
 
