@@ -10,10 +10,7 @@ import com.google.common.collect.Multiset;
 import com.google.common.collect.Multiset.Entry;
 import gov.nist.drmf.interpreter.mlp.MLPWrapper;
 import gov.nist.drmf.interpreter.mlp.SemanticMLPWrapper;
-import gov.nist.drmf.interpreter.mlp.extensions.MatchablePomTaggedExpression;
-import gov.nist.drmf.interpreter.mlp.extensions.MatcherConfig;
-import gov.nist.drmf.interpreter.mlp.extensions.PomMatcher;
-import gov.nist.drmf.interpreter.mlp.extensions.PrintablePomTaggedExpression;
+import gov.nist.drmf.interpreter.mlp.extensions.*;
 import mlp.ParseException;
 import org.apache.flink.api.common.functions.MapFunction;
 import org.apache.flink.api.java.tuple.Tuple2;
@@ -460,7 +457,7 @@ public class CreateCandidatesMapper implements MapFunction<ParsedWikiDocument, W
         return out;
       }
 
-      patternTree = new MatchablePomTaggedExpression(mlp, expression, "var\\d+");
+      patternTree = PomMatcherBuilder.compile(mlp, expression, "var\\d+");
       LOG.info("Generated matchable pom tagged expression");
     } catch (ParseException e) {
       LOG.error("Cannot generate pattern of expression: " + e.getMessage(), e);
