@@ -1,5 +1,6 @@
 package com.formulasearchengine.mathosphere.mlp.text;
 
+import com.formulasearchengine.mathosphere.mlp.cli.BaseConfig;
 import com.formulasearchengine.mathosphere.mlp.pojos.DocumentMetaLib;
 import com.formulasearchengine.mathosphere.mlp.pojos.MathTag;
 import com.formulasearchengine.mathosphere.mlp.pojos.WikiCitation;
@@ -35,7 +36,7 @@ public class RawText {
     private String previousMathTagEnding;
 
     public RawText() {
-        this.metaLib = new DocumentMetaLib();
+        this.metaLib = new DocumentMetaLib(new BaseConfig());
         this.sections = new LinkedList<>();
     }
 

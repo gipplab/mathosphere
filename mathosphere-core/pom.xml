@@ -63,17 +63,17 @@
             <artifactId>slf4j-api</artifactId>
             <version>1.7.30</version>
         </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-log4j12</artifactId>
-            <version>1.7.30</version>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.slf4j</groupId>-->
+<!--            <artifactId>slf4j-log4j12</artifactId>-->
+<!--            <version>1.7.30</version>-->
+<!--        </dependency>-->
 
-        <!--dependency>
+        <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-slf4j-impl</artifactId>
             <version>2.10.0</version>
-        </dependency-->
+        </dependency>
 
         <!-- Other things -->
         <dependency>
@@ -154,14 +154,28 @@
         </dependency>
         <dependency>
             <groupId>org.apache.flink</groupId>
-            <artifactId>flink-streaming-java_2.10</artifactId>
+            <artifactId>flink-streaming-java_2.12</artifactId>
             <version>${flink.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.flink</groupId>
-            <artifactId>flink-clients_2.10</artifactId>
+            <artifactId>flink-clients_2.12</artifactId>
             <version>${flink.version}</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>2.11.3</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-core -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+            <version>2.11.3</version>
+        </dependency>
+
+
         <dependency>
             <groupId>nz.ac.waikato.cms.weka</groupId>
             <artifactId>LibSVM</artifactId>
@@ -273,11 +287,6 @@
             <artifactId>commons-text</artifactId>
             <version>1.8</version>
         </dependency>
-        <dependency>
-            <groupId>gov.nist.drmf.interpreter</groupId>
-            <artifactId>interpreter.common</artifactId>
-            <version>2.1-SNAPSHOT</version>
-        </dependency>
 
         <dependency>
             <groupId>javax.annotation</groupId>
@@ -312,6 +321,8 @@
                 <configuration>
                     <includes>
                         <include>%regex[.*mathpd.*]</include>
+                        <include>%regex[.*mlp.*]</include>
+                        <include>%regex[.*wikitext.*]</include>
                     </includes>
                 </configuration>
             </plugin>

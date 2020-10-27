@@ -99,7 +99,7 @@ public class WikiTextParser extends AstVisitor<WtNode> {
 
 //    private final RawText rawText;
 
-    private final DocumentMetaLib metaLib;
+    private DocumentMetaLib metaLib;
     private MathTag previousMathTag;
     private String previousMathTagEnding;
 
@@ -113,6 +113,7 @@ public class WikiTextParser extends AstVisitor<WtNode> {
             this.wl = new WikidataLinkMap(config.getWikiDataFile());
         } else this.wl = null;
         this.texInfoUrl = config.getTexvcinfoUrl();
+        this.metaLib = new DocumentMetaLib(config);
     }
 
     public WikiTextParser(String partialWikiDoc) throws LinkTargetException, EngineException {
@@ -126,7 +127,7 @@ public class WikiTextParser extends AstVisitor<WtNode> {
         this.page = ENGINE.postprocess(pageId, content, null);
         this.texInfoUrl = (new BaseConfig()).getTexvcinfoUrl();
 //        this.rawText = new RawText();
-        this.metaLib = new DocumentMetaLib();
+        this.metaLib = new DocumentMetaLib(new BaseConfig());
         this.sections = new LinkedList<>();
     }
 
@@ -521,6 +522,10 @@ public class WikiTextParser extends AstVisitor<WtNode> {
                         "Check config of WikiTextParser.");
                 break;
             case "span":
+            case "p":
+                return (String)dispatch(e.getBody());
+            default:
+                LOG.warn("Encountered unknown XML tag: " + name + ". Try to ignore it and parse the body of it.");
                 return (String)dispatch(e.getBody());
         }
         return sb.toString();

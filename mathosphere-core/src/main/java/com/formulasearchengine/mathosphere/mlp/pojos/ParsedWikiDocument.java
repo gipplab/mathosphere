@@ -23,12 +23,36 @@ public class ParsedWikiDocument {
     this.sentences = sentences;
   }
 
+  public void setTitle(String title) {
+    this.title = title;
+  }
+
+  public void setSentences(List<Sentence> sentences) {
+    this.sentences = sentences;
+  }
+
+  public void setLib(DocumentMetaLib lib) {
+    this.lib = lib;
+  }
+
+  public void setIdentifier(Multiset<String> identifier) {
+    this.identifier = identifier;
+  }
+
   public String getTitle() {
     return title;
   }
 
   public List<Sentence> getSentences() {
     return sentences;
+  }
+
+  public DocumentMetaLib getLib() {
+    return lib;
+  }
+
+  public MathTagGraph getFormulaGraph() {
+    return lib.getGraph();
   }
 
   public Collection<MathTag> getFormulae() {
@@ -47,6 +71,10 @@ public class ParsedWikiDocument {
     return lib.getLinkLib();
   }
 
+  public Multiset<String> getIdentifier() {
+    return identifier;
+  }
+
   /**
    * @deprecated we switching to MOI instead of single identifiers.
    */
@@ -62,12 +90,4 @@ public class ParsedWikiDocument {
   public Multiset<String> getIdentifiers() {
     return this.identifier;
   }
-
-//  public void setTitle(String title) {
-//    this.title = title;
-//  }
-//
-//  public void setSentences(List<Sentence> sentences) {
-//    this.sentences = sentences;
-//  }
 }

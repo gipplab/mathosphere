@@ -49,7 +49,7 @@ public class PosTaggerTest {
     List<Word> sentence = result.get(1).getWords();
     sentence = TextAnnotator.unwrapPlaceholder(sentence, lib);
     assertTrue(sentence.size() >= expected.size());
-    assertEquals(expected, sentence.subList(0, expected.size()));
+    assertEquals(expected.toString(), sentence.subList(0, expected.size()).toString());
     LOGGER.debug("full result: {}", result);
   }
 
@@ -63,7 +63,7 @@ public class PosTaggerTest {
         w("momentum", PosTag.LINK), w("are", "VBP"), w("related", "VBN"));
 
     List<Word> actual = PosTagger.concatenateLinks(in, new HashSet<String>());
-    assertEquals(expected, actual);
+    assertEquals(expected.toString(), actual.toString());
   }
 
   @Test
@@ -72,7 +72,7 @@ public class PosTaggerTest {
         w("momentum", "NN"), w("are", "VBP"), w("related", "VBN"));
     List<Word> expected = in;
     List<Word> actual = PosTagger.concatenateLinks(in, new HashSet<String>());
-    assertEquals(expected, actual);
+    assertEquals(expected.toString(), actual.toString());
   }
 
   @Test
@@ -82,7 +82,7 @@ public class PosTaggerTest {
     List<Word> expected = Arrays.asList(w("Since", "IN"), w("energy momentum", "NP"),
         w("related", "VBN"));
     List<Word> actual = PosTagger.concatenateSuccessiveNounsToNounSequence(in);
-    assertEquals(expected, actual);
+    assertEquals(expected.toString(), actual.toString());
   }
 
   @Test
@@ -91,7 +91,7 @@ public class PosTaggerTest {
         w("momentum", "NN"), w("are", "VBP"), w("related", "VBN"));
     List<Word> expected = in;
     List<Word> actual = PosTagger.concatenateSuccessiveNounsToNounSequence(in);
-    assertEquals(expected, actual);
+    assertEquals(expected.toString(), actual.toString());
   }
 
   @Test
@@ -101,7 +101,7 @@ public class PosTaggerTest {
     List<Word> expected = Arrays.asList(w("to", "TO"), w("be", "VB"), w("the", "DT"),
         w("same type", "NP"));
     List<Word> actual = PosTagger.concatenateTwoSuccessiveRegexTags(in, "JJ", "NN", "NP");
-    assertEquals(expected, actual);
+    assertEquals(expected.toString(), actual.toString());
   }
 
   @Test
@@ -109,7 +109,7 @@ public class PosTaggerTest {
     List<Word> in = Arrays.asList(w("be", "VB"), w("the", "DT"), w("same", "JJ"), w("to", "TO"));
     List<Word> expected = in;
     List<Word> actual = PosTagger.concatenateTwoSuccessiveRegexTags(in, "JJ", "NN", "NP");
-    assertEquals(expected, actual);
+    assertEquals(expected.toString(), actual.toString());
   }
 
   @Test
@@ -117,7 +117,7 @@ public class PosTaggerTest {
     List<Word> in = Arrays.asList(w("to", "TO"), w("be", "VB"), w("the", "DT"), w("same", "JJ"));
     List<Word> expected = in;
     List<Word> actual = PosTagger.concatenateTwoSuccessiveRegexTags(in, "JJ", "NN", "NP");
-    assertEquals(expected, actual);
+    assertEquals(expected.toString(), actual.toString());
   }
 
   @Test
@@ -126,7 +126,7 @@ public class PosTaggerTest {
             w("going", "VB"));
     List<Word> expected = Arrays.asList(w("is", "TO"), w("very Jacobi polynomials", "NP"), w("going", "VB"));
     List<Word> actual = PosTagger.concatenatePhrases(in);
-    assertEquals(expected, actual);
+    assertEquals(expected.toString(), actual.toString());
   }
 
   public static Word w(String word, String tag) {

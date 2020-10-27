@@ -24,7 +24,9 @@ public class RawWikiDocument extends RawDocument {
           new LookupTranslator(EntityArrays.HTML40_EXTENDED_UNESCAPE)
   );
 
-  private int namespace;
+  public RawWikiDocument() {
+    super();
+  }
 
   public RawWikiDocument(String singleDoc) {
     super();
@@ -33,8 +35,7 @@ public class RawWikiDocument extends RawDocument {
   }
 
   public RawWikiDocument(String title, int namespace, String content) {
-    super(title, ""+namespace, content);
-    this.namespace = namespace;
+    super(title, namespace, content);
   }
 
   private void setMeta(String page) {
@@ -89,10 +90,9 @@ public class RawWikiDocument extends RawDocument {
 //    setContent(sb.toString());
   }
 
-  @Override
   public void setNamespace(String namespace) {
     try {
-      this.namespace = Integer.parseInt(namespace);
+      super.setNamespace(Integer.parseInt(namespace));
     } catch (NumberFormatException nfe) {
       throw new IllegalArgumentException("Wiki documents have only " +
               "integer namespaces but received " + namespace);
@@ -100,7 +100,7 @@ public class RawWikiDocument extends RawDocument {
   }
 
   public int getWikiNamespace() {
-    return namespace;
+    return getNamespace();
   }
 
   public static String unescapeText(String content) {

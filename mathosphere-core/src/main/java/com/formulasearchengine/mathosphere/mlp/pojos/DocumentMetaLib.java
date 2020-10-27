@@ -1,5 +1,6 @@
 package com.formulasearchengine.mathosphere.mlp.pojos;
 
+import com.formulasearchengine.mathosphere.mlp.cli.BaseConfig;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
@@ -11,6 +12,8 @@ import java.util.Map;
  */
 public class DocumentMetaLib {
 
+    private MathTagGraph graph;
+
     private Map<String, MathTag> formulaLib;
     private Map<String, SpecialToken> linkLib;
     private Map<String, SpecialToken> citeLib;
@@ -18,13 +21,35 @@ public class DocumentMetaLib {
     private List<List<Integer>> sectionSentenceLengths = null;
 
     public DocumentMetaLib() {
+        this(new BaseConfig());
+    }
+
+    /**
+     * Uses the default graph implementation {@link IdentifierGraphImpl} to build
+     * a graph of the given formulae.
+     */
+    public DocumentMetaLib(BaseConfig config) {
+        this(new IdentifierGraphImpl(config));
+    }
+
+    /**
+     * Uses the given graph interface to build a graph of the added formulae.
+     * @param graph an empty graph that represents the dependencies of the formulae
+     */
+    public DocumentMetaLib(MathTagGraph graph) {
+        this.graph = graph;
         formulaLib = Maps.newHashMap();
         linkLib = Maps.newHashMap();
         citeLib = Maps.newHashMap();
     }
 
+    public void setGraph(MathTagGraph graph) {
+        this.graph = graph;
+    }
+
     public void addFormula(MathTag mathTag) {
         formulaLib.put( mathTag.placeholder(), mathTag );
+        this.graph.addFormula(mathTag);
     }
 
     public void setAllFormula(List<MathTag> mathTags) {
@@ -34,12 +59,17 @@ public class DocumentMetaLib {
 
     public void addAllFormula(List<MathTag> mathTags) {
         mathTags.forEach(
-                f -> formulaLib.put(f.placeholder(), f)
+                f -> {
+                    formulaLib.put(f.placeholder(), f);
+                    graph.addFormula(f);
+                }
         );
     }
 
     public MathTag removeFormula(String id) {
-        return this.formulaLib.remove(id);
+        MathTag tag = this.formulaLib.remove(id);
+        if ( tag != null ) this.graph.removeFormula(tag);
+        return tag;
     }
 
     public void addLink(SpecialToken link) {
@@ -81,6 +111,10 @@ public class DocumentMetaLib {
         return sectionSentenceLengths.get(section).stream().reduce(0, Integer::sum);
     }
 
+    public MathTagGraph getGraph() {
+        return graph;
+    }
+
     public Map<String, MathTag> getFormulaLib() {
         return formulaLib;
     }
@@ -91,5 +125,25 @@ public class DocumentMetaLib {
 
     public Map<String, SpecialToken> getCiteLib() {
         return citeLib;
+    }
+
+    public void setFormulaLib(Map<String, MathTag> formulaLib) {
+        this.formulaLib = formulaLib;
+    }
+
+    public void setLinkLib(Map<String, SpecialToken> linkLib) {
+        this.linkLib = linkLib;
+    }
+
+    public void setCiteLib(Map<String, SpecialToken> citeLib) {
+        this.citeLib = citeLib;
+    }
+
+    public List<List<Integer>> getSectionSentenceLengths() {
+        return sectionSentenceLengths;
+    }
+
+    public void setSectionSentenceLengths(List<List<Integer>> sectionSentenceLengths) {
+        this.sectionSentenceLengths = sectionSentenceLengths;
     }
 }

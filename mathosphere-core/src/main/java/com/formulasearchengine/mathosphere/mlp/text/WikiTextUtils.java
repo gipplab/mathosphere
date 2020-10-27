@@ -58,7 +58,7 @@ public class WikiTextUtils {
 
         int offset = 0;
         for (MathTag tag : mathTags) {
-//      newText.append(text.substring(offset, tag.getPosition()));
+//            newText.append(text.substring(offset, tag.getPosition()));
             newText.append(tag.placeholder());
 //      offset = tag.getPosition() + tag.getContent().length();
             if (tag.getMarkUpType() == MathMarkUpType.LATEX && !tag.getContent().startsWith("<math")) {

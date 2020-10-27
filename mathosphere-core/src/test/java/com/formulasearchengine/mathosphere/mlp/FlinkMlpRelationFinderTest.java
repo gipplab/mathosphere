@@ -2,7 +2,6 @@ package com.formulasearchengine.mathosphere.mlp;
 
 import com.formulasearchengine.mathosphere.mlp.cli.FlinkMlpCommandConfig;
 import org.apache.commons.io.IOUtils;
-import org.apache.sling.commons.json.JSONObject;
 import org.junit.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -39,8 +38,7 @@ public class FlinkMlpRelationFinderTest {
               "<mi>a</mi><mo href=\"./front/introduction#Sx4.p1.t1.r28\">,</mo><mi>b</mi><mo href=\"./front/introduction#Sx4.p1.t1.r28\" stretchy=\"false\">)</mo>" +
             "</mrow></math> if</p>";
     final String s = finder.runFromText(config, input);
-    JSONObject json = new JSONObject(s);
-    System.out.println(json.toString(2));
+    System.out.println(s);
     assertThat(s, containsString("function"));
   }
 

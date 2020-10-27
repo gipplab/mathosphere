@@ -38,12 +38,12 @@ public class PosTaggerTestGer {
     cfg.setModel(GER);
     TextAnnotator annotator = new TextAnnotator(cfg);
     String text = "Dies ist ein simpler Beispieltext.";
-    List<Sentence> result = annotator.annotate(text, new DocumentMetaLib());
+    List<Sentence> result = annotator.annotate(text, new DocumentMetaLib(cfg));
     List<Word> expected = Arrays.asList(w("Dies", "PDS"), w("ist", "VAFIN"), w("ein", "ART"), w("simpler", "ADJA"), w("Beispieltext", "NN"),
         w(".", "$."));
 
     List<Word> sentence = result.get(0).getWords();
-    assertEquals(expected, sentence.subList(0, expected.size()));
+    assertEquals(expected.toString(), sentence.subList(0, expected.size()).toString());
     LOGGER.debug("full result: {}", result);
   }
 

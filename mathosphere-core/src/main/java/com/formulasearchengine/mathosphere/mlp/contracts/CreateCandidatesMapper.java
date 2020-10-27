@@ -8,10 +8,6 @@ import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multiset;
 import com.google.common.collect.Multiset.Entry;
-import gov.nist.drmf.interpreter.mlp.MLPWrapper;
-import gov.nist.drmf.interpreter.mlp.SemanticMLPWrapper;
-import gov.nist.drmf.interpreter.mlp.extensions.*;
-import mlp.ParseException;
 import org.apache.flink.api.common.functions.MapFunction;
 import org.apache.flink.api.java.tuple.Tuple2;
 import org.apache.logging.log4j.LogManager;
@@ -33,23 +29,21 @@ public class CreateCandidatesMapper implements MapFunction<ParsedWikiDocument, W
   private double beta;
   private double gamma;
 
-  private MLPWrapper mlp;
-  private MatcherConfig matcherConfig;
-
   public CreateCandidatesMapper(BaseConfig config) {
     this.config = config;
     //copy alpha, beta and gamma for convince
     this.alpha = config.getAlpha();
     this.beta = config.getBeta();
     this.gamma = config.getGamma();
-    try {
-      this.mlp = new SemanticMLPWrapper();
-      this.matcherConfig = MatcherConfig.getDefaultMatchConfig();
-    } catch (IOException e) {
-      LOG.fatal("Unable to initiate MLP!", e);
-    }
   }
 
+  /**
+   * There are two modes for generating definiens-math pairs. Either the original approach searching
+   * for single identifiers or for entire math objects (here called MOI). Which mode is used is defined by
+   * {@link BaseConfig#useMOI()}.
+   * @param doc the parsed document (no scoring, no definien-math pairs)
+   * @return a scored document
+   */
   @Override
   public WikiDocumentOutput map(ParsedWikiDocument doc) {
     if ( config.useMOI() ) {
@@ -146,7 +140,7 @@ public class CreateCandidatesMapper implements MapFunction<ParsedWikiDocument, W
     Position firstAppearancePosition = formulaPositions.get(0);
 
     List<Relation> result = Lists.newArrayList();
-    List<Tuple2<Sentence, Set<Position>>> sentences = findSentencesWithFormula(doc.getSentences(), formula);
+    List<Tuple2<Sentence, Set<Position>>> sentences = findSentencesWithFormula(doc.getSentences(), formula, doc.getFormulaGraph());
     if ( sentences.isEmpty() ) return result;
 
     Multiset<String> wordFrequencies = HashMultiset.create();
@@ -377,166 +371,184 @@ public class CreateCandidatesMapper implements MapFunction<ParsedWikiDocument, W
   }
 
   /**
-   * First approach, identify sentences that share all identifiers that are given in the formula.
-   * @param sentences
-   * @param formula
-   * @return
+   * Find the sentences in which the given formula appears in (also if the given formula is a subexpression of
+   * another formula).
+   * @param sentences the list of sentences to search for
+   * @param formula the formula to search for
+   * @return the list of sentences and positions in these sentences where the given formula appears
+   *         (or is a subexpression of a formula that appears in this sentence).
    */
-  private List<Tuple2<Sentence, Set<Position>>> findSentencesWithFormula(List<Sentence> sentences, MathTag formula) {
+  private List<Tuple2<Sentence, Set<Position>>> findSentencesWithFormula(List<Sentence> sentences, MathTag formula, MathTagGraph graph) {
     // first approach
     List<Tuple2<Sentence, Set<Position>>> out = new LinkedList<>();
 
-    MatchablePomTaggedExpression patternTree = null;
-    LOG.info("Search for math formula: " + formula.getContent());
-    // first, create patterns of the formula where all identifiers are replaced by wildcards
-    Set<String> idInFormula = new HashSet<>(formula.getIdentifiers().elementSet());
-    String firstIdentifier = null;
-    String expression = formula.getContent();
-    for ( String id : idInFormula ) {
-      if ( expression.startsWith(id) ) {
-        firstIdentifier = id;
-        idInFormula.remove(id);
-        LOG.debug("Expression starts with identifier, consider it as primary-identifier: " + id);
-        break;
-      }
-    }
-
-    try {
-      int counter = 1;
-      for (String id : idInFormula) {
-        String regex = "";
-        if ( !id.startsWith("\\") ) {
-          regex = "(?<!\\\\[A-Za-z]{0,30})";
-        }
-        regex += "\\Q"+id+"\\E([^a-zA-Z]|$)";
-        expression = expression.replaceAll(regex, "{var" + counter + "}$1");
-        counter++;
-      }
-      LOG.debug("Generated pattern of formula: " + expression);
-      if ( expression.matches("\\s*\\{[a-z\\d\\s]}?\\s*|.*(?:\\{var\\d+}\\s*){2}.*") || expression.contains("\\begin")
-              || idInFormula.isEmpty() || (idInFormula.size() == 1 && firstIdentifier == null)
-      ) { // illegal matches, fallback to standard approach
-        if ( idInFormula.size() > 1 || expression.contains("\\begin") ) {
-          LOG.debug("Unable to generate pattern for complex expression. Consider it as single appearance");
-          for (Sentence s : sentences) {
-            Set<Position> p = formula.getPositionsInSentence(s);
-            if ( !p.isEmpty() ) {
-              Tuple2<Sentence, Set<Position>> e = new Tuple2<>(s, p);
-              out.add(e);
-            }
-          }
-          return out;
-        }
-
-        if ( idInFormula.isEmpty() && firstIdentifier == null ) {
-          LOG.debug("No identifier in this formula. Let's not check for subexpressions somewhere else.");
-          for (Sentence s : sentences) {
-            Set<Position> p = formula.getPositionsInSentence(s);
-            if ( !p.isEmpty() ) {
-              Tuple2<Sentence, Set<Position>> e = new Tuple2<>(s, p);
-              out.add(e);
-            }
-          }
-          return out;
-        }
-
-        LOG.debug("Actually, found that it is only one identifier. So fall back to standard task");
-        // fall back to identifier solution.
-        if ( firstIdentifier != null ) idInFormula.add(firstIdentifier);
-        sentences.stream().filter( s -> s.getIdentifiers().containsAll(idInFormula) )
-                .forEach( s -> {
-                  Position pos = s.getWords().get(0).getPosition();
-                  Set<Position> mathPositions = s.getMath().stream()
-                          .filter(m -> m.getIdentifiers().containsAll(idInFormula))
-                          .flatMap( m -> m.getPositions().stream() )
-                          .filter( p -> Position.inSameSentence(p, pos) )
-                          .collect(Collectors.toSet());
-                  Tuple2<Sentence, Set<Position>> entry = new Tuple2<>(s, mathPositions);
-                  out.add(entry);
-                });
-        return out;
-      }
-
-      patternTree = PomMatcherBuilder.compile(mlp, expression, "var\\d+");
-      LOG.info("Generated matchable pom tagged expression");
-    } catch (ParseException e) {
-      LOG.error("Cannot generate pattern of expression: " + e.getMessage(), e);
-    }
-
-    List<Position> allFormulaePosition = formula.getPositions();
-
+    Collection<MathTag> superMathTags = graph.getOutgoingEdges(formula);
     for ( Sentence sentence : sentences ) {
-      if ( sentence.getWords().isEmpty() ) continue;
-      Set<Position> entries = new HashSet<>();
-      Position firstWordInSentencePos = sentence.getWords().get(0).getPosition();
-      // first, check if given formulae actually appear in this sentence at it is (exact hits based on content)
-      for ( Position p : allFormulaePosition ) {
-        if ( Position.inSameSentence(firstWordInSentencePos, p) ) {
-          entries.add(p);
-        }
+      // first we add all positions from the formula itself
+      Set<Position> poss = formula.getPositionsInSentence(sentence);
+
+      // now add all outgoing connected nodes as well.
+      for ( MathTag superTag : superMathTags ) {
+        Set<Position> superPoss = superTag.getPositionsInSentence(sentence);
+        poss.addAll(superPoss);
       }
 
-      // next, lets try to find pattern matches
-      if ( patternTree != null ) {
-        Set<MathTag> formulaeInSentence = sentence.getMath();
-        for ( MathTag m : formulaeInSentence ) {
-          if ( m.getContent().contains("\\begin") ) {
-            // skip this stuff... its too difficult for PoM-Tagger
-            continue;
-          }
-//          if ( m.equals(formula) ) continue; // already added before, don't need to test
-          try {
-            PomMatcher matcher = patternTree.matcher(m.getContent());
-            if ( matcher.find() ) {
-              LOG.debug("Found a pattern match with " + m.getContent());
-              LOG.debug("Captured Groups: " + matcher.groups());
-//              if ( matcher.groups().values().size() != idInFormula.size() ) {
-//                LOG.debug("Not all groups matched. Hence it was only a partial match which we will skip now.");
-//                continue;
-//              }
-
-              // let's make it even more strict, there should be at least one (or even more?)
-              // identifiers from the original expression in the found match
-              Collection<String> hits = matcher.groups().values();
-              Set<String> originalIdsCopy = new HashSet<>(idInFormula);
-              originalIdsCopy.retainAll(hits);
-              // if there was no primary identifier, we want to see at least ONE match between captured groups
-              // and identifiers from the original expression. For example: f(x) should not match g(y).
-              if ( !originalIdsCopy.isEmpty() || firstIdentifier != null ) {
-//                if ( !originalIdsCopy.isEmpty() )
-//                  LOG.debug("Multiple hits were used in the original formula: " + originalIdsCopy);
-                //                  if ( Position.inSameSentence(firstWordInSentencePos, p) )
-                entries.addAll(m.getPositions());
-              } else {
-                LOG.debug("There is no match between the found captures and the originally extracted identifiers "
-                        + idInFormula + ". Hence, it doesn't count as a hit.");
-              }
-            } else if ( !matcher.groups().isEmpty() ) {
-              LOG.debug("No find() but partially contains (ignore it): " + m.getContent());
-            }
-          } catch (Exception e) {
-            LOG.warn("Unable to parse expression:\n"+m.getContent(), e);
-          }
-        }
-      }
-
-//        Set<MathTag> formulae = sentence.getMath();
-      if ( !entries.isEmpty() ) {
-        Tuple2<Sentence, Set<Position>> entry = new Tuple2<>(sentence, entries);
-        out.add(entry);
-      }
+      if ( !poss.isEmpty() ) out.add(new Tuple2<>(sentence, poss));
     }
 
+    return out;
 
-//    for ( Sentence s : sentences ) {
-//      Set<MathTag> allMath = s.getFormulaWithAllIdentifiers(formula);
-//      if ( !allMath.isEmpty() ) {
-//        Tuple2<Sentence, Set<MathTag>> entry = new Tuple2<>(s, allMath);
+//    MatchablePomTaggedExpression patternTree = null;
+//    LOG.info("Search for math formula: " + formula.getContent());
+//    // first, create patterns of the formula where all identifiers are replaced by wildcards
+//    Set<String> idInFormula = new HashSet<>(formula.getIdentifiers().elementSet());
+//    String firstIdentifier = null;
+//    String expression = formula.getContent();
+//    for ( String id : idInFormula ) {
+//      if ( expression.startsWith(id) ) {
+//        firstIdentifier = id;
+//        idInFormula.remove(id);
+//        LOG.debug("Expression starts with identifier, consider it as primary-identifier: " + id);
+//        break;
+//      }
+//    }
+//
+//    try {
+//      int counter = 1;
+//      for (String id : idInFormula) {
+//        String regex = "";
+//        if ( !id.startsWith("\\") ) {
+//          regex = "(?<!\\\\[A-Za-z]{0,30})";
+//        }
+//        regex += "\\Q"+id+"\\E([^a-zA-Z]|$)";
+//        expression = expression.replaceAll(regex, "{var" + counter + "}$1");
+//        counter++;
+//      }
+//      LOG.debug("Generated pattern of formula: " + expression);
+//      if ( expression.matches("\\s*\\{[a-z\\d\\s]}?\\s*|.*(?:\\{var\\d+}\\s*){2}.*") || expression.contains("\\begin")
+//              || idInFormula.isEmpty() || (idInFormula.size() == 1 && firstIdentifier == null)
+//      ) { // illegal matches, fallback to standard approach
+//        if ( idInFormula.size() > 1 || expression.contains("\\begin") ) {
+//          LOG.debug("Unable to generate pattern for complex expression. Consider it as single appearance");
+//          for (Sentence s : sentences) {
+//            Set<Position> p = formula.getPositionsInSentence(s);
+//            if ( !p.isEmpty() ) {
+//              Tuple2<Sentence, Set<Position>> e = new Tuple2<>(s, p);
+//              out.add(e);
+//            }
+//          }
+//          return out;
+//        }
+//
+//        if ( idInFormula.isEmpty() && firstIdentifier == null ) {
+//          LOG.debug("No identifier in this formula. Let's not check for subexpressions somewhere else.");
+//          for (Sentence s : sentences) {
+//            Set<Position> p = formula.getPositionsInSentence(s);
+//            if ( !p.isEmpty() ) {
+//              Tuple2<Sentence, Set<Position>> e = new Tuple2<>(s, p);
+//              out.add(e);
+//            }
+//          }
+//          return out;
+//        }
+//
+//        LOG.debug("Actually, found that it is only one identifier. So fall back to standard task");
+//        // fall back to identifier solution.
+//        if ( firstIdentifier != null ) idInFormula.add(firstIdentifier);
+//        sentences.stream().filter( s -> s.getIdentifiers().containsAll(idInFormula) )
+//                .forEach( s -> {
+//                  Position pos = s.getWords().get(0).getPosition();
+//                  Set<Position> mathPositions = s.getMath().stream()
+//                          .filter(m -> m.getIdentifiers().containsAll(idInFormula))
+//                          .flatMap( m -> m.getPositions().stream() )
+//                          .filter( p -> Position.inSameSentence(p, pos) )
+//                          .collect(Collectors.toSet());
+//                  Tuple2<Sentence, Set<Position>> entry = new Tuple2<>(s, mathPositions);
+//                  out.add(entry);
+//                });
+//        return out;
+//      }
+//
+//      patternTree = PomMatcherBuilder.compile(mlp, expression, "var\\d+");
+//      LOG.info("Generated matchable pom tagged expression");
+//    } catch (ParseException e) {
+//      LOG.error("Cannot generate pattern of expression: " + e.getMessage(), e);
+//    }
+//
+//    List<Position> allFormulaePosition = formula.getPositions();
+//
+//    for ( Sentence sentence : sentences ) {
+//      if ( sentence.getWords().isEmpty() ) continue;
+//      Set<Position> entries = new HashSet<>();
+//      Position firstWordInSentencePos = sentence.getWords().get(0).getPosition();
+//      // first, check if given formulae actually appear in this sentence at it is (exact hits based on content)
+//      for ( Position p : allFormulaePosition ) {
+//        if ( Position.inSameSentence(firstWordInSentencePos, p) ) {
+//          entries.add(p);
+//        }
+//      }
+//
+//      // next, lets try to find pattern matches
+//      if ( patternTree != null ) {
+//        Set<MathTag> formulaeInSentence = sentence.getMath();
+//        for ( MathTag m : formulaeInSentence ) {
+//          if ( m.getContent().contains("\\begin") ) {
+//            // skip this stuff... its too difficult for PoM-Tagger
+//            continue;
+//          }
+////          if ( m.equals(formula) ) continue; // already added before, don't need to test
+//          try {
+//            PomMatcher matcher = patternTree.matcher(m.getContent());
+//            if ( matcher.find() ) {
+//              LOG.debug("Found a pattern match with " + m.getContent());
+//              LOG.debug("Captured Groups: " + matcher.groups());
+////              if ( matcher.groups().values().size() != idInFormula.size() ) {
+////                LOG.debug("Not all groups matched. Hence it was only a partial match which we will skip now.");
+////                continue;
+////              }
+//
+//              // let's make it even more strict, there should be at least one (or even more?)
+//              // identifiers from the original expression in the found match
+//              Collection<String> hits = matcher.groups().values();
+//              Set<String> originalIdsCopy = new HashSet<>(idInFormula);
+//              originalIdsCopy.retainAll(hits);
+//              // if there was no primary identifier, we want to see at least ONE match between captured groups
+//              // and identifiers from the original expression. For example: f(x) should not match g(y).
+//              if ( !originalIdsCopy.isEmpty() || firstIdentifier != null ) {
+////                if ( !originalIdsCopy.isEmpty() )
+////                  LOG.debug("Multiple hits were used in the original formula: " + originalIdsCopy);
+//                //                  if ( Position.inSameSentence(firstWordInSentencePos, p) )
+//                entries.addAll(m.getPositions());
+//              } else {
+//                LOG.debug("There is no match between the found captures and the originally extracted identifiers "
+//                        + idInFormula + ". Hence, it doesn't count as a hit.");
+//              }
+//            } else if ( !matcher.groups().isEmpty() ) {
+//              LOG.debug("No find() but partially contains (ignore it): " + m.getContent());
+//            }
+//          } catch (Exception e) {
+//            LOG.warn("Unable to parse expression:\n"+m.getContent(), e);
+//          }
+//        }
+//      }
+//
+////        Set<MathTag> formulae = sentence.getMath();
+//      if ( !entries.isEmpty() ) {
+//        Tuple2<Sentence, Set<Position>> entry = new Tuple2<>(sentence, entries);
 //        out.add(entry);
 //      }
 //    }
-
-    return out;
+//
+//
+////    for ( Sentence s : sentences ) {
+////      Set<MathTag> allMath = s.getFormulaWithAllIdentifiers(formula);
+////      if ( !allMath.isEmpty() ) {
+////        Tuple2<Sentence, Set<MathTag>> entry = new Tuple2<>(s, allMath);
+////        out.add(entry);
+////      }
+////    }
+//
+//    return out;
   }
 
   /**

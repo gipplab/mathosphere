@@ -51,7 +51,7 @@ public class WikiTextAnnotatorMapper extends RichMapFunction<RawWikiDocument, Pa
     } catch (Exception e) {
       LOG.warn("Unable to parse wikitext from document {}. Reason: {}", doc.getTitle(), e);
       sentences = new ArrayList<>();
-      if ( lib == null ) lib = new DocumentMetaLib();
+      if ( lib == null ) lib = new DocumentMetaLib(config);
     }
 
     Multiset<String> allIdentifiers = getAllIdentifiers(lib.getFormulaLib(), config);

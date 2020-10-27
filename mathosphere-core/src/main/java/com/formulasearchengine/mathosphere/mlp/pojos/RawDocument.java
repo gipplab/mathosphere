@@ -6,7 +6,7 @@ package com.formulasearchengine.mathosphere.mlp.pojos;
 public abstract class RawDocument {
 
     private String title;
-    private String namespace;
+    private int namespace;
     private String content;
 
     /**
@@ -14,7 +14,7 @@ public abstract class RawDocument {
      */
     RawDocument() {}
 
-    RawDocument(String title, String namespace, String content) {
+    RawDocument(String title, int namespace, String content) {
         this.title = title;
         this.namespace = namespace;
         this.content = content;
@@ -24,7 +24,7 @@ public abstract class RawDocument {
         return title;
     }
 
-    public String getNamespace() {
+    public int getNamespace() {
         return namespace;
     }
 
@@ -32,15 +32,15 @@ public abstract class RawDocument {
         return content;
     }
 
-    void setTitle(String title) {
+    public void setTitle(String title) {
         this.title = title;
     }
 
-    void setNamespace(String namespace) {
+    public void setNamespace(int namespace) {
         this.namespace = namespace;
     }
 
-    void setContent(String content) {
+    public void setContent(String content) {
         this.content = content;
     }
 }

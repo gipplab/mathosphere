@@ -51,7 +51,12 @@ public class WikiTextUtilsTest {
     assertEquals((List) expected, (List) actual);
   }
 
+  /**
+   * {@link WikiTextUtils#renderAllFormulae(String)} is no longer in use. Hence, this test
+   * is useless.
+   */
   @Test
+  @Ignore
   public void replaceAllFormulas() {
     String text = "Text text <math>V = V_0</math> text text <math>V = V_1</math> text. "
         + "Text <math>V = V_2</math>.";
