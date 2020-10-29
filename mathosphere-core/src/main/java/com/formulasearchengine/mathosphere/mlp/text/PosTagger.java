@@ -1,45 +1,23 @@
 package com.formulasearchengine.mathosphere.mlp.text;
 
-import com.formulasearchengine.mathosphere.mlp.pojos.*;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import com.google.common.collect.Multiset;
-import com.google.common.collect.Sets;
-
-import com.alexeygrigorev.rseq.BeanMatchers;
-import com.alexeygrigorev.rseq.Match;
-import com.alexeygrigorev.rseq.Matchers;
-import com.alexeygrigorev.rseq.Pattern;
-import com.alexeygrigorev.rseq.TransformerToElement;
-import com.alexeygrigorev.rseq.XMatcher;
+import com.alexeygrigorev.rseq.*;
 import com.formulasearchengine.mathosphere.mlp.cli.BaseConfig;
+import com.formulasearchengine.mathosphere.mlp.pojos.*;
 import com.formulasearchengine.mathosphere.mlp.rus.RusPosAnnotator;
-
-import edu.stanford.nlp.ling.TaggedWord;
-import edu.stanford.nlp.parser.nndep.DependencyParser;
-import edu.stanford.nlp.trees.GrammaticalStructure;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.LogManager;
-
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-import java.util.Set;
-import java.util.stream.Collectors;
-
-import edu.stanford.nlp.ling.CoreAnnotations.PartOfSpeechAnnotation;
-import edu.stanford.nlp.ling.CoreAnnotations.SentencesAnnotation;
-import edu.stanford.nlp.ling.CoreAnnotations.TextAnnotation;
-import edu.stanford.nlp.ling.CoreAnnotations.TokensAnnotation;
+import com.google.common.collect.*;
+import edu.stanford.nlp.ling.CoreAnnotations.*;
 import edu.stanford.nlp.ling.CoreLabel;
 import edu.stanford.nlp.pipeline.Annotation;
+import edu.stanford.nlp.pipeline.MorphaAnnotator;
 import edu.stanford.nlp.pipeline.POSTaggerAnnotator;
 import edu.stanford.nlp.pipeline.StanfordCoreNLP;
+import edu.stanford.nlp.trees.GrammaticalStructure;
 import edu.stanford.nlp.util.CoreMap;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import java.util.*;
 
 public class PosTagger {
   private static BaseConfig config;
@@ -56,8 +34,7 @@ public class PosTagger {
     config = cfg;
     Properties props = new Properties();
     props.put("annotators", "tokenize, ssplit");
-    props.put("tokenize.options", "untokenizable=firstKeep,strictTreebank3=true,"
-      + "ptb3Escaping=true,escapeForwardSlashAsterisk=false");
+    props.put("tokenize.options", "untokenizable=firstKeep,strictTreebank3=true,ptb3Escaping=true,escapeForwardSlashAsterisk=false");
     props.put("ssplit.newlineIsSentenceBreak", "two");
     props.put("maxLength", 50);
     StanfordCoreNLP pipeline = new StanfordCoreNLP(props);
@@ -65,8 +42,10 @@ public class PosTagger {
     if ("en".equals(cfg.getLanguage())) {
       POSTaggerAnnotator modelBasedPosAnnotator = new POSTaggerAnnotator(config.getModel(), false);
       pipeline.addAnnotator(modelBasedPosAnnotator);
+      pipeline.addAnnotator(new MorphaAnnotator(false)); // for lemmas
     } else if ("ru".equals(cfg.getLanguage())) {
       pipeline.addAnnotator(new RusPosAnnotator());
+      pipeline.addAnnotator(new MorphaAnnotator(false)); // for lemmas
     } else {
       throw new IllegalArgumentException("Cannot deal with language " + config.getLanguage());
     }
@@ -91,6 +70,10 @@ public class PosTagger {
     List<List<List<Word>>> result = Lists.newArrayList();
     for ( int sec = 0; sec < sections.size(); sec++ ) {
       String cleanText = sections.get(sec);
+
+      HashMap<String, WikidataLink> tempLinkMap = new HashMap<>();
+      cleanText = undoSingleTermTextLinkage(cleanText, tempLinkMap, lib);
+
       Annotation document = new Annotation(cleanText);
       nlpPipeline.annotate(document);
       List<List<Word>> sentences = Lists.newArrayList();
@@ -101,8 +84,9 @@ public class PosTagger {
         final List<CoreLabel> coreLabels = sentence.get(TokensAnnotation.class);
         for ( int i = 0; i < coreLabels.size(); i++ ) {
           CoreLabel token = coreLabels.get(i);
-          String textToken = token.get(TextAnnotation.class);
-          String pos = token.get(PartOfSpeechAnnotation.class);
+          String textToken = token.word();
+          String pos = token.tag();
+          String lemma = token.lemma();
           SpecialToken specialToken = null;
           Position p = new Position(result.size(), sentences.size(), words.size());
           p.setDocumentLib(lib);
@@ -114,11 +98,12 @@ public class PosTagger {
               textToken += underscore;
             }
             specialToken = lib.getFormulaLib().get(textToken);
-            words.add(new Word(p, textToken, PosTag.MATH));
+            words.add(new Word(p, textToken, lemma, PosTag.MATH));
           } else if (SYMBOLS.contains(textToken)) {
-            words.add(new Word(p, textToken, PosTag.SYMBOL));
+            words.add(new Word(p, textToken, lemma, PosTag.SYMBOL).setOriginalPosTag(pos));
           } else if (BRACKET_CODES.containsKey(textToken)) {
-            words.add(new Word(p, BRACKET_CODES.get(textToken), pos));
+//            words.add(new Word(p, BRACKET_CODES.get(textToken), pos));
+            words.add(new Word(p, textToken, lemma, pos));
           } else if (textToken.startsWith(PlaceholderLib.LINK)) {
             String underscore = handleUnderscore(coreLabels, i);
             if ( underscore != null ){
@@ -126,7 +111,9 @@ public class PosTagger {
               textToken += underscore;
             }
             specialToken = lib.getLinkLib().get(textToken);
-            words.add(new Word(p, specialToken.getContent(), PosTag.LINK));
+            WikidataLink link = (WikidataLink) specialToken;
+            String linkText = link.getTitle() == null ? link.getContent() : link.getTitle();
+            words.add(new Word(p, link.placeholder(), lemma, PosTag.LINK).setOriginalPosTag(pos));
           } else if (textToken.startsWith(PlaceholderLib.CITE)) {
             String underscore = handleUnderscore(coreLabels, i);
             if ( underscore != null ){
@@ -137,9 +124,13 @@ public class PosTagger {
             // in the lib, but no longer in the text
 //            words.add(new Word(p, textToken, PosTag.CITE));
           } else if ( textToken.toLowerCase().matches("polynomials?") ) {
-            words.add(new Word(p, textToken, PosTag.NOUN));
+            words.add(new Word(p, textToken, lemma, PosTag.NOUN));
+          } else if (tempLinkMap.containsKey(textToken) ) {
+            WikidataLink link = tempLinkMap.get(textToken);
+            String txt = link.getTitle() == null ? link.getContent() : link.getTitle();
+            words.add(new Word(p, link.placeholder(), lemma, PosTag.LINK).setOriginalPosTag(pos));
           } else {
-            words.add(new Word(p, textToken, pos));
+            words.add(new Word(p, textToken, lemma, pos));
           }
           if ( specialToken != null ) {
             specialToken.addPosition(p);
@@ -154,10 +145,45 @@ public class PosTagger {
     return result;
   }
 
+  private String undoSingleTermTextLinkage(String text, HashMap<String, WikidataLink> linkMap, DocumentMetaLib lib) {
+    Map<String, SpecialToken> linkLib = lib.getLinkLib();
+    java.util.regex.Pattern linkPattern = java.util.regex.Pattern.compile("LINK_[0-9a-zA-Z]+");
+    StringBuilder sb = new StringBuilder();
+    java.util.regex.Matcher matcher = linkPattern.matcher(text);
+    while(matcher.find()) {
+      String id = matcher.group();
+      WikidataLink link = (WikidataLink) linkLib.get(id);
+      if ( link == null ) {
+        matcher.appendReplacement(sb, id); // nothing to replace
+        continue;
+      }
+
+      String txt = link.getTitle() == null ? link.getContent() : link.getTitle();
+      txt = txt.trim();
+      // if the link is replaced by multiple words, it can be considered as a single noun. Hence,
+      // we keep the word as it is.
+      if ( txt.contains(" ") ) {
+        // multiple words, simply put back "LINK_id"
+        matcher.appendReplacement(sb, id);
+      } else {
+        // a single word, might be not a noun in the context
+        linkMap.put(txt, link);
+        txt = java.util.regex.Matcher.quoteReplacement(txt);
+        matcher.appendReplacement(sb, txt);
+      }
+    }
+
+    matcher.appendTail(sb);
+    return sb.toString();
+  }
+
   /**
    * Since 3.9.2, underscore expressions are split (e.g., LINK_3 is split into three tokens LINK, _, 3).
    * It was promised to be fixed in an issue: https://github.com/stanfordnlp/CoreNLP/issues/942
-   * However, the latest release is still 3.9.2, even though they working on release 4.0.0
+   * However, the latest release is still 3.9.2, even though they working on release 4.0.0.
+   *
+   * Luckily, the admit it was a regression and fixed it for 4.0.0. We are working now on 4.0.0,
+   * hence this method is no longer necessary. We just keep it, just in case.
    */
   private String handleUnderscore(List<CoreLabel> coreLabels, int i) {
     if ( i >= coreLabels.size()-2 ) return null;
@@ -301,9 +327,11 @@ public class PosTagger {
   }
 
   protected static List<Word> concatenatePhrases(List<Word> result) {
+    result = concatenateQuotes(result);
+    result = concatenateSuccessiveAdjectiveNounsSequence(result);
     result = concatenateSuccessiveNounsToNounSequence(result);
-    result = concatenateSuccessiveAdjectives(result);
-    result = concatenateTwoSuccessiveRegexTags(result, PosTag.ANY_ADJECTIVE_REGEX, PosTag.ANY_NOUN_REGEX, PosTag.NOUN_PHRASE);
+//    result = concatenateSuccessiveAdjectives(result);
+//    result = concatenateTwoSuccessiveRegexTags(result, PosTag.ANY_ADJECTIVE_REGEX, PosTag.ANY_NOUN_REGEX, PosTag.NOUN_PHRASE);
     return result;
   }
 
@@ -317,7 +345,7 @@ public class PosTagger {
    */
   @Deprecated
   protected static List<Word> concatenateLinks(List<Word> in, Set<String> allIdentifiers) {
-    Pattern<Word> linksPattern = Pattern.create(
+    com.alexeygrigorev.rseq.Pattern<Word> linksPattern = com.alexeygrigorev.rseq.Pattern.create(
             pos(PosTag.QUOTE),
             anyWord().oneOrMore().captureAs("link"),
             pos(PosTag.UNQUOTE)
@@ -336,6 +364,25 @@ public class PosTagger {
     });
   }
 
+  protected static List<Word> concatenateQuotes(List<Word> in) {
+    com.alexeygrigorev.rseq.Pattern<Word> pattern = com.alexeygrigorev.rseq.Pattern.create(
+            txt(PosTag.QUOTE),
+            anyWord().oneOrMore().captureAs("quoted"),
+            txt(PosTag.UNQUOTE)
+    );
+    return pattern.replaceToOne(in, (match) -> {
+      List<Word> matchSequence = match.getCapturedGroup("quoted");
+      return linkSaveWord(matchSequence, matchSequence.get(matchSequence.size()-1).getPosTag());
+    });
+  }
+
+  protected static List<Word> concatenateSuccessiveAdjectiveNounsSequence(List<Word> in) {
+    XMatcher<Word> noun = posIn(PosTag.FOREIGN_WORD, PosTag.NOUN, PosTag.NOUN_PHRASE, PosTag.NOUN_PROPER, PosTag.NOUN_PLURAL, PosTag.NOUN_PROPER_PLURAL);
+    XMatcher<Word> adjs = posIn(PosTag.ADJECTIVE, PosTag.ADJECTIVE_COMPARATIVE, PosTag.ADJECTIVE_SUPERLATIVE);
+    com.alexeygrigorev.rseq.Pattern<Word> pattern = com.alexeygrigorev.rseq.Pattern.create(adjs.oneOrMore(), noun.oneOrMore());
+    return pattern.replaceToOne(in, (m) -> linkSaveWord(m.getMatchedSubsequence(), PosTag.NOUN_PHRASE));
+  }
+
   protected static List<Word> concatenateSuccessiveNounsToNounSequence(List<Word> in) {
     XMatcher<Word> noun = posIn(PosTag.FOREIGN_WORD, PosTag.NOUN, PosTag.NOUN_PHRASE, PosTag.NOUN_PROPER, PosTag.NOUN_PLURAL, PosTag.NOUN_PROPER_PLURAL);
     return concatenateSuccessiveTags(in, noun, PosTag.NOUN_PHRASE);
@@ -346,8 +393,15 @@ public class PosTagger {
     return concatenateSuccessiveTags(in, adjs, PosTag.ADJECTIVE_SEQUENCE);
   }
 
+  private static Word linkSaveWord(List<Word> sequence, String posTag) {
+    Word link = sequence.stream().filter( w -> w.getPosTag().equals(PosTag.LINK) ).findFirst().orElse(null);
+    if ( link != null )
+      return new Word(sequence.get(0).getPosition(), link.getWord(), PosTag.LINK);
+    else return new Word(sequence.get(0).getPosition(), joinWords(sequence), posTag);
+  }
+
   private static List<Word> concatenateSuccessiveTags(List<Word> in, XMatcher<Word> matcher, String newTag) {
-    Pattern<Word> nounPattern = Pattern.create(matcher.oneOrMore());
+    com.alexeygrigorev.rseq.Pattern<Word> nounPattern = com.alexeygrigorev.rseq.Pattern.create(matcher.oneOrMore());
     return nounPattern.replaceToOne(in, new TransformerToElement<Word>() {
       @Override
       public Word transform(Match<Word> match) {
@@ -362,7 +416,7 @@ public class PosTagger {
   }
 
   protected static List<Word> concatenateTwoSuccessiveRegexTags(List<Word> in, String tag1, String tag2, String outputTag) {
-    Pattern<Word> pattern = Pattern.create(pos(tag1), pos(tag2));
+    com.alexeygrigorev.rseq.Pattern<Word> pattern = com.alexeygrigorev.rseq.Pattern.create(pos(tag1), pos(tag2));
     return pattern.replaceToOne(in, m -> {
       List<Word> matchedSequence = m.getMatchedSubsequence();
       return new Word(matchedSequence.get(0).getPosition(), joinWords(matchedSequence), outputTag);
@@ -370,17 +424,25 @@ public class PosTagger {
   }
 
   private static String joinWords(List<Word> list) {
-    List<String> toJoin = Lists.newArrayList();
+    LinkedList<String> toJoin = new LinkedList<>();
     list.forEach(w -> toJoin.add(w.getWord()));
+    toJoin.removeLast();
+    toJoin.add(list.get(list.size()-1).getLemma());
     return StringUtils.join(toJoin, " ");
   }
 
+  private static XMatcher<Word> txt(String txt) {
+    return BeanMatchers.regex(Word.class, "word", txt);
+  }
+
   private static XMatcher<Word> pos(String tag) {
-    return BeanMatchers.regex(Word.class, "posTag", tag);
+    XMatcher<Word> matcher = BeanMatchers.regex(Word.class, "originalPosTag", tag);
+    return Matchers.and(matcher, Matchers.not( txt("-.*-|"+PlaceholderLib.PATTERN_STRING) ));
   }
 
   private static XMatcher<Word> posIn(String... tags) {
-    return BeanMatchers.in(Word.class, "posTag", ImmutableSet.copyOf(tags));
+    XMatcher<Word> matcher = BeanMatchers.in(Word.class, "originalPosTag", ImmutableSet.copyOf(tags));
+    return Matchers.and(matcher, Matchers.not( txt("-.*-|"+PlaceholderLib.PATTERN_STRING) ));
   }
 
   private static XMatcher<Word> anyWord() {

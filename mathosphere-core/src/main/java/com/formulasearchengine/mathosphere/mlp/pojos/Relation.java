@@ -138,7 +138,13 @@ public class Relation implements Comparable<Relation> {
 
   @Override
   public int compareTo(Relation o) {
-    return (o.getScore()).compareTo(getScore());
+    if ( getString() == null || o.getString() == null ) return 0; // hmm
+    int comp = o.getString().compareTo(getString());
+    return comp == 0 ? (o.getScore()).compareTo(getScore()) : comp;
+  }
+
+  private String getString() {
+    return mathTag == null ? identifier : mathTag.getContent();
   }
 
 
@@ -154,12 +160,12 @@ public class Relation implements Comparable<Relation> {
   }
 
   public int compareNameScore(Relation o) {
-    int res = getIdentifier().compareTo(o.getIdentifier());
+    int res = getString().compareTo(o.getString());
     if (res == 0) {
       res = getDefinition().compareToIgnoreCase(o.getDefinition());
     }
     if (res == 0) {
-      res = compareTo(o); //Sort by score desc
+      res = o.getScore().compareTo(getScore()); //Sort by score desc
     }
     return res;
   }

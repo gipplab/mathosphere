@@ -9,7 +9,9 @@ import java.util.Objects;
 public class Word {
 
   private String word;
+  private String lemma;
   private String posTag;
+  private String originalPosTag;
 
   private Position position;
 
@@ -21,9 +23,33 @@ public class Word {
   }
 
   public Word(Position position, String word, String posTag) {
+    this(position, word, word, posTag);
+  }
+
+  public Word(Position position, String word, String lemma, String posTag) {
     this.position = position;
     this.word = word;
+    this.lemma = lemma;
     this.posTag = posTag;
+    this.originalPosTag = posTag;
+  }
+
+  public Word setOriginalPosTag(String originalPosTag) {
+    this.originalPosTag = originalPosTag;
+    return this;
+  }
+
+  public String getOriginalPosTag() {
+    return originalPosTag;
+  }
+
+  public String getLemma() {
+    return lemma;
+  }
+
+  public Word setLemma(String lemma) {
+    this.lemma = lemma;
+    return this;
   }
 
   @Override

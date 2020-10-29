@@ -15,7 +15,7 @@ public class PlaceholderLib {
     public static final String PREFIX_LINK = LINK+"_";
     public static final String PREFIX_CITE = CITE+"_";
 
-    public static final Pattern PATTERN = Pattern.compile(
-            "((?:"+PREFIX_FORMULA+"|"+PREFIX_LINK+"|"+PREFIX_CITE+")\\S+)"
-    );
+    public static final String PATTERN_STRING = "(?:"+PREFIX_FORMULA+"|"+PREFIX_LINK+"|"+PREFIX_CITE+")\\S+";
+
+    public static final Pattern PATTERN = Pattern.compile("("+PATTERN_STRING+")");
 }

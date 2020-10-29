@@ -418,7 +418,7 @@ public class WikiTextParser extends AstVisitor<WtNode> {
             }
         } else {
             return resetPreviousMath(sb)
-                    .append("\"").append(iterateString(n)).append("\"")
+                    .append("\"").append(iterateString(n).trim()).append("\"")
                     .toString();
         }
     }

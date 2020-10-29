@@ -36,7 +36,7 @@ public class WikiTextAnnotatorMapper extends RichMapFunction<RawWikiDocument, Pa
     LOG.info("Processing \"{}\"...", doc.getTitle());
 
     final ParsedWikiDocument parse = parse(doc);
-    LOG.debug("Extract {} formulae from document {}.", parse.getFormulae().size(), doc.getTitle());
+    if ( parse != null ) LOG.debug("Extract {} formulae from document {}.", parse.getFormulae().size(), doc.getTitle());
     return parse;
   }
 
@@ -50,8 +50,10 @@ public class WikiTextAnnotatorMapper extends RichMapFunction<RawWikiDocument, Pa
       sentences = annotator.annotate(cleanText, lib);
     } catch (Exception e) {
       LOG.warn("Unable to parse wikitext from document {}. Reason: {}", doc.getTitle(), e);
+      e.printStackTrace();
       sentences = new ArrayList<>();
       if ( lib == null ) lib = new DocumentMetaLib(config);
+      return null;
     }
 
     Multiset<String> allIdentifiers = getAllIdentifiers(lib.getFormulaLib(), config);

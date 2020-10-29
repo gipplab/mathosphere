@@ -16,6 +16,7 @@ import org.apache.logging.log4j.Logger;
 import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Mapper that finds a list of possible identifiers and their definitions. As described in section 2 step 4 of
@@ -60,22 +61,26 @@ public class CreateCandidatesMapper implements MapFunction<ParsedWikiDocument, W
       return new WikiDocumentOutput(doc.getTitle(), relations, doc.getFormulaeMap());
 
     Collection<MathTag> math = doc.getFormulae();
-    for ( MathTag m : math ) {
-      List<Relation> candidates = generateCandidates(doc, m);
-      if(config.getDefinitionMerging()){
-        selfMerge(candidates);
-      } else {
-        Collections.sort(candidates);
-//        Collections.reverse(candidates);
-      }
-      for (Relation rel : candidates) {
-        if (rel.getScore() >= config.getThreshold()) {
-          relations.add(rel);
-        }
-      }
-    }
+    relations = math.stream()
+            .filter( m -> m.getPositions() != null && m.getPositions().size() > 0 )
+            .sorted(Comparator.comparing(m -> m.getPositions().get(0)))
+            .flatMap( m -> relations(doc, m) )
+            .filter( rel -> rel.getScore() >= config.getThreshold() )
+            .sorted() // uses Relation.compareTo(Relation r) method
+            .collect(Collectors.toList());
 
     return new WikiDocumentOutput(doc.getTitle(), relations, doc.getFormulaeMap());
+  }
+
+  private Stream<Relation> relations(ParsedWikiDocument doc, MathTag mathTag) {
+    List<Relation> candidates = generateCandidates(doc, mathTag);
+    if(config.getDefinitionMerging()){
+      selfMerge(candidates);
+    }
+//    else {
+//      Collections.sort(candidates);
+//    }
+    return candidates.stream();
   }
 
   private WikiDocumentOutput identifierMapping(ParsedWikiDocument doc) {
@@ -105,7 +110,7 @@ public class CreateCandidatesMapper implements MapFunction<ParsedWikiDocument, W
   }
 
   private void selfMerge(List<Relation> candidates) {
-    Collections.sort(candidates,Relation::compareNameScore);
+    candidates.sort(Relation::compareNameScore);
     final Iterator<Relation> iterator = candidates.iterator();
     Relation lastLower = null;
     Relation lastElement = null;
@@ -113,7 +118,7 @@ public class CreateCandidatesMapper implements MapFunction<ParsedWikiDocument, W
     int multiplicity = 1;
     while (iterator.hasNext()) {
       final Relation relation = iterator.next();
-      Relation lower = new Relation(relation.getIdentifier(), relation.getDefinition().toLowerCase());
+      Relation lower = new Relation(relation.getMathTag().getContent(), relation.getDefinition().toLowerCase());
       if (lastLower != null && lower.compareToName(lastLower) == 0) {
         multiplicity++;
         decayFactor = Math.pow(2, -1.3*multiplicity);
@@ -127,6 +132,13 @@ public class CreateCandidatesMapper implements MapFunction<ParsedWikiDocument, W
       }
     }
     candidates.sort(Relation::compareTo);
+  }
+
+  private String getAppropriateText(Word word, DocumentMetaLib lib) {
+    if ( !PosTag.LINK.equals(word.getPosTag()) ) return word.getLemma();
+
+    SpecialToken token = lib.getLinkLib().get(word.getWord());
+    return token.getContent();
   }
 
   private List<Relation> generateCandidates(ParsedWikiDocument doc, MathTag formula) {
@@ -156,7 +168,7 @@ public class CreateCandidatesMapper implements MapFunction<ParsedWikiDocument, W
 //    Position firstAppearancePosition = sentences.get(0).f1.stream().findFirst().get();
 
     LOG.debug("First pos of formula is " + firstAppearancePosition + "; Identified " + sentences.size() + " sentences " +
-            "that include (partially) the formula.");
+            "that include (partially) the formula: " + formula.getContent());
 
     for (int sentenceIdx = 0; sentenceIdx < sentences.size(); sentenceIdx++) {
       Tuple2<Sentence, Set<Position>> entry = sentences.get(sentenceIdx);
@@ -181,7 +193,7 @@ public class CreateCandidatesMapper implements MapFunction<ParsedWikiDocument, W
         Relation relation = new Relation();
         relation.setMathTag(formula);
         relation.setIdentifierPosition(formula.getPositions().get(0).getWord());
-        relation.setDefinition(def);
+        relation.setDefinition(getAppropriateText(def, doc.getLib()));
         relation.setWordPosition(def.getPosition().getWord());
         relation.setScore(score);
         relation.setSentence(sentence);
@@ -236,7 +248,7 @@ public class CreateCandidatesMapper implements MapFunction<ParsedWikiDocument, W
         Relation relation = new Relation();
         relation.setIdentifier(identifier);
         relation.setIdentifierPosition(identifierPosition);
-        relation.setDefinition(word);
+        relation.setDefinition(getAppropriateText(word, doc.getLib()));
         relation.setWordPosition(wordIdx);
         relation.setScore(score);
         relation.setSentence(sentence);

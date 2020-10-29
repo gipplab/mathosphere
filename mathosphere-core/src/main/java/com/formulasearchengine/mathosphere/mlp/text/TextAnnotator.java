@@ -65,7 +65,7 @@ public class TextAnnotator {
             List<GrammaticalStructure> senStrucs = new LinkedList<>();
             for ( List<Word> sentence : sec ) {
                 List<TaggedWord> tws = sentence.stream()
-                        .map( w -> new TaggedWord(w.getWord(), undoPosTag(w.getPosTag())))
+                        .map( w -> new TaggedWord(w.getWord(), undoPosTag(w.getOriginalPosTag())))
                         .collect(Collectors.toList());
                 GrammaticalStructure gs = dependencyParser.predict(tws);
                 senStrucs.add(gs);

@@ -48,7 +48,8 @@ public class Sentence {
     List<Word> nouns = new LinkedList<>();
     for ( int i = 0; i < words.size(); i++ ) {
       Word w = words.get(i);
-      if ( w.getPosTag().matches(PosTag.DEFINIEN_REGEX) ) {
+      // if it is an -RBL- or something similar, we ignore that
+      if ( w.getPosTag().matches(PosTag.DEFINIEN_REGEX) && !w.getWord().matches("^-.*-$") ) {
         nouns.add(w);
       }
     }

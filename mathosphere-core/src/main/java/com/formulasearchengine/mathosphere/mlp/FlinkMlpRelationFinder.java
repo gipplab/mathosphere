@@ -18,6 +18,7 @@ import java.util.stream.Collectors;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.csv.CSVRecord;
+import org.apache.flink.api.common.functions.FlatMapFunction;
 import org.apache.flink.api.common.functions.GroupReduceFunction;
 import org.apache.flink.api.common.functions.MapFunction;
 import org.apache.flink.api.java.DataSet;
@@ -61,14 +62,21 @@ public class FlinkMlpRelationFinder {
         ExecutionEnvironment env = ExecutionEnvironment.getExecutionEnvironment();
 
         DataSource<String> source = readWikiDump(config, env);
-        DataSet<ParsedWikiDocument> documents =
-                source.flatMap(new WikiTextPageExtractorMapper())
-                        .map(new WikiTextAnnotatorMapper(config));
+        DataSet<ParsedWikiDocument> documents = source
+                .flatMap(new WikiTextPageExtractorMapper())
+                .map(new WikiTextAnnotatorMapper(config));
 
         DataSet<WikiDocumentOutput> result = documents.map(new CreateCandidatesMapper(config));
+        DataSet<String> tmp = result.map(new MapFunction<WikiDocumentOutput, String>() {
+            @Override
+            public String map(WikiDocumentOutput wikiDocumentOutput) throws Exception {
+                Util.writeExtractedDefinitionsAsCsv(config.getOutputDir() + "/extraction.csv", wikiDocumentOutput.getqId(), wikiDocumentOutput.getTitle().replaceAll("\\s", "_"), wikiDocumentOutput.getRelations());
+                return "";
+            }
+        });
 
-        result.map(new JsonSerializerMapper<>())
-                .writeAsText(config.getOutputDir(), WriteMode.OVERWRITE);
+        tmp.map(new JsonSerializerMapper<>())
+                .writeAsText(config.getOutputDir()+"/MLP.json", WriteMode.OVERWRITE);
         //int cores = Runtime.getRuntime().availableProcessors();
         //env.setParallelism(1); // rounds down
         final int parallelism = config.getParallelism();
@@ -83,7 +91,7 @@ public class FlinkMlpRelationFinder {
         TextInputFormat inp = new TextInputFormat(filePath);
         inp.setCharsetName("UTF-8");
         // no longer necessary, The wikitextpageextractormapper does the splitting
-//        inp.setDelimiter("</mediawiki>");
+        inp.setDelimiter("</mediawiki>");
         return env.readFile(inp, config.getDataset());
     }
 

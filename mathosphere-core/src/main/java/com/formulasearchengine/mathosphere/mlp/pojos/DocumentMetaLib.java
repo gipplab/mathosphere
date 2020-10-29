@@ -29,7 +29,8 @@ public class DocumentMetaLib {
      * a graph of the given formulae.
      */
     public DocumentMetaLib(BaseConfig config) {
-        this(new IdentifierGraphImpl(config));
+        this(new MOIGraphImpl());
+//        this(new IdentifierGraphImpl(config));
     }
 
     /**
