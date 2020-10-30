@@ -1,8 +1,8 @@
 package com.formulasearchengine.mathosphere.mlp.pojos;
 
-import gov.nist.drmf.interpreter.mlp.moi.MOIDependency;
-import gov.nist.drmf.interpreter.mlp.moi.MOIDependencyGraph;
-import gov.nist.drmf.interpreter.mlp.moi.MOINode;
+import gov.nist.drmf.interpreter.pom.moi.MOIDependency;
+import gov.nist.drmf.interpreter.pom.moi.MOIDependencyGraph;
+import gov.nist.drmf.interpreter.pom.moi.MOINode;
 import mlp.ParseException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
