@@ -136,13 +136,16 @@ public class FlinkMlpRelationFinder {
                         final String tex = (String) formula.get("math_inputtex");
                         final String qId = (String) formula.get("qID");
                         final MathTag seed = parsedWikiDocument.getFormulaeMap().values().stream()
-                                .filter(f -> f.getMarkUpType().equals(WikiTextUtils.MathMarkUpType.LATEX)).collect(Collectors.toList())
-                                .get(formulaId);
+                                .filter(mathTag -> mathTag.getContent().equals(tex))
+                                .findFirst().orElse(null);
+//                                parsedWikiDocument.getFormulaeMap().values().stream()
+//                                .filter(f -> f.getMarkUpType().equals(WikiTextUtils.MathMarkUpType.LATEX)).collect(Collectors.toList())
+//                                .get(formulaId);
                         //WikiTextUtils.getLatexFormula(parsedWikiDocument, formulaId);
-                        if (!seed.getContent().equals(tex)) {
-                            LOGGER.error("PROBLEM WITH" + title);
-                            LOGGER.error(seed.getContent());
-                            LOGGER.error(tex);
+                        if (tex == null || seed == null || !tex.equals(seed.getContent())) {
+                            LOGGER.error("PROBLEM WITH: " + title);
+                            LOGGER.error("Seed: " + (seed == null ? "Null" : seed.getContent()));
+                            LOGGER.error("TeX:  " + tex);
                             throw new Exception("Invalid numbering.");
                         }
                         final MapFunction<ParsedWikiDocument, WikiDocumentOutput> candidatesMapper = getCandidatesMapper(config);

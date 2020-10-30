@@ -2,12 +2,14 @@ package com.formulasearchengine.mathosphere.mlp.pojos;
 
 import com.formulasearchengine.mathosphere.mlp.text.PosTag;
 import edu.stanford.nlp.ling.IndexedWord;
-import edu.stanford.nlp.ling.TaggedWord;
 import edu.stanford.nlp.semgraph.SemanticGraph;
 import edu.stanford.nlp.semgraph.SemanticGraphEdge;
 import edu.stanford.nlp.trees.GrammaticalStructure;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -18,7 +20,6 @@ public class Sentence {
   private final List<Word> words;
   private final Set<String> sentenceIdentifier;
   private final Set<MathTag> sentenceMath;
-  private GrammaticalStructure parseTree;
   private SemanticGraph graph;
 
   public Sentence(List<Word> words, Set<String> identifier, Set<MathTag> formulae) {
@@ -34,7 +35,6 @@ public class Sentence {
     this.words = words;
     this.sentenceIdentifier = identifier;
     this.sentenceMath = formulae;
-    this.parseTree = parseTree;
     if ( parseTree != null ) {
       this.graph = new SemanticGraph(parseTree.typedDependencies());
     }
