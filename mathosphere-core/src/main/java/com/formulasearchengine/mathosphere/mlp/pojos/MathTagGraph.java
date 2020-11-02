@@ -1,6 +1,7 @@
 package com.formulasearchengine.mathosphere.mlp.pojos;
 
 import java.util.Collection;
+import java.util.List;
 
 /**
  * Represents a directed graph structure of {@link MathTag} elements.
@@ -33,6 +34,20 @@ public interface MathTagGraph {
      * @return true if the graph contains this formula, false otherwise.
      */
     boolean contains(MathTag mathTag);
+
+    /**
+     * Appends relation for the given node
+     * @param mathTag the formula
+     * @param relation the relation that should be appended
+     */
+    void appendMOIRelation(MathTag mathTag, Relation relation);
+
+    /**
+     * Gets the list of relations from the given formula
+     * @param mathTag the formula
+     * @return the appended list of relations
+     */
+    List<Relation> getRelations(MathTag mathTag);
 
     /**
      * Returns the outgoing edges of the given {@link MathTag}.

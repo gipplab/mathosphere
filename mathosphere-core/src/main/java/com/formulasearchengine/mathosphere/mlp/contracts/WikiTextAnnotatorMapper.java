@@ -41,10 +41,13 @@ public class WikiTextAnnotatorMapper extends RichMapFunction<RawWikiDocument, Pa
   }
 
   public ParsedWikiDocument parse(RawWikiDocument doc) {
-    DocumentMetaLib lib = null;
+    return parse(doc, null);
+  }
+
+  public ParsedWikiDocument parse(RawWikiDocument doc, DocumentMetaLib lib) {
     List<Sentence> sentences;
     try {
-      WikiTextParser c = new WikiTextParser(doc, config);
+      WikiTextParser c = new WikiTextParser(doc, config, lib);
       List<String> cleanText = c.parse();
       lib = c.getMetaLibrary();
       sentences = annotator.annotate(cleanText, lib);

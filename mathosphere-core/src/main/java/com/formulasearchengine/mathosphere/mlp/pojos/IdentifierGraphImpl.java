@@ -20,6 +20,8 @@ public class IdentifierGraphImpl implements MathTagGraph {
 
     private final Map<MathTag, Collection<MathTag>> edges;
 
+//    private final
+
     public IdentifierGraphImpl(BaseConfig config) {
         this.config = config;
         this.nodes = new HashSet<>();
@@ -62,6 +64,17 @@ public class IdentifierGraphImpl implements MathTagGraph {
     @Override
     public boolean contains(MathTag mathTag) {
         return nodes.contains(mathTag);
+    }
+
+    @Override
+    public void appendMOIRelation(MathTag mathTag, Relation relation) {
+        // TODO
+    }
+
+    @Override
+    public List<Relation> getRelations(MathTag mathTag) {
+        // TODO
+        return null;
     }
 
     @Override

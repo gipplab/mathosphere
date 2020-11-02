@@ -7,15 +7,20 @@ import mlp.ParseException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.Collection;
-import java.util.HashSet;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
  * @author Andre Greiner-Petter
  */
-public class MOIGraphImpl extends MOIDependencyGraph implements MathTagGraph {
+public class MOIGraphImpl extends MOIDependencyGraph<MathTag> implements MathTagGraph {
     private static final Logger LOG = LogManager.getLogger(MOIGraphImpl.class.getName());
+
+    private Map<String, List<Relation>> relations;
+
+    public MOIGraphImpl(){
+        this.relations = new HashMap<>();
+    }
 
     @Override
     public void addFormula(MathTag mathTag) {
@@ -38,8 +43,18 @@ public class MOIGraphImpl extends MOIDependencyGraph implements MathTagGraph {
     }
 
     @Override
+    public void appendMOIRelation(MathTag mathTag, Relation relation) {
+        this.relations.computeIfAbsent(mathTag.placeholder(), (key) -> new LinkedList<>()).add(relation);
+    }
+
+    @Override
+    public List<Relation> getRelations(MathTag mathTag) {
+        return relations.computeIfAbsent(mathTag.placeholder(), (key) -> new LinkedList<>());
+    }
+
+    @Override
     public Collection<MathTag> getOutgoingEdges(MathTag mathTag) {
-        MOINode<MathTag> node = (MOINode<MathTag>) super.getNode(mathTag.placeholder());
+        MOINode<MathTag> node = super.getNode(mathTag.placeholder());
         if ( node == null ) return new HashSet<>();
         return node.getOutgoingDependencies().stream()
                 .map( MOIDependency::getSink )
@@ -50,7 +65,7 @@ public class MOIGraphImpl extends MOIDependencyGraph implements MathTagGraph {
 
     @Override
     public Collection<MathTag> getIngoingEdges(MathTag mathTag) {
-        MOINode<MathTag> node = (MOINode<MathTag>) super.getNode(mathTag.placeholder());
+        MOINode<MathTag> node = super.getNode(mathTag.placeholder());
         if ( node == null ) return new HashSet<>();
         return node.getIngoingDependencies().stream()
                 .map( MOIDependency::getSource )

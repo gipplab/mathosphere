@@ -52,7 +52,7 @@ public class CreateCandidatesMapper implements MapFunction<ParsedWikiDocument, W
     } else return identifierMapping(doc);
   }
 
-  private WikiDocumentOutput moiMapping( ParsedWikiDocument doc ) {
+  public WikiDocumentOutput moiMapping( ParsedWikiDocument doc ) {
     LOG.info("Start MOI-definiens mapping.");
     List<Relation> relations = Lists.newArrayList();
 
@@ -197,6 +197,8 @@ public class CreateCandidatesMapper implements MapFunction<ParsedWikiDocument, W
         relation.setWordPosition(def.getPosition().getWord());
         relation.setScore(score);
         relation.setSentence(sentence);
+
+        doc.getFormulaGraph().appendMOIRelation(formula, relation);
 
         result.add(relation);
       }

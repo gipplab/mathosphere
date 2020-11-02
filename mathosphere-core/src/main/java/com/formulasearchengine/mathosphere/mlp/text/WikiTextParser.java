@@ -27,6 +27,7 @@ import org.sweble.wikitext.parser.nodes.*;
 import org.sweble.wikitext.parser.parser.LinkTargetException;
 import org.xml.sax.SAXException;
 
+import javax.print.Doc;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.xpath.XPathExpressionException;
@@ -107,13 +108,17 @@ public class WikiTextParser extends AstVisitor<WtNode> {
 
     boolean innerMathMode = false;
 
-    public WikiTextParser(RawWikiDocument wikidoc, BaseConfig config) throws LinkTargetException, EngineException {
+    public WikiTextParser(RawWikiDocument wikiDoc, BaseConfig config) throws LinkTargetException, EngineException {
+        this(wikiDoc, config, new DocumentMetaLib(config));
+    }
+
+    public WikiTextParser(RawWikiDocument wikidoc, BaseConfig config, DocumentMetaLib metaLib) throws LinkTargetException, EngineException {
         this(wikidoc);
         if (config.getWikiDataFile() != null) {
             this.wl = new WikidataLinkMap(config.getWikiDataFile());
         } else this.wl = null;
         this.texInfoUrl = config.getTexvcinfoUrl();
-        this.metaLib = new DocumentMetaLib(config);
+        this.metaLib = metaLib == null ? new DocumentMetaLib(config) : metaLib;
     }
 
     public WikiTextParser(String partialWikiDoc) throws LinkTargetException, EngineException {
