@@ -86,6 +86,10 @@ public class BaseConfig implements Serializable {
         this.useTeXIdentifiers = useTeXIdentifiers;
     }
 
+    public void setDefinitionMerging(boolean definitionMerging) {
+        this.definitionMerging = definitionMerging;
+    }
+
     public Boolean getDefinitionMerging() {
         return definitionMerging;
     }
@@ -130,6 +134,10 @@ public class BaseConfig implements Serializable {
         this.useTeXIdentifiers = useTeXIdentifiers;
     }
 
+    public void setUseMOI(boolean use) {
+        this.moi = use;
+    }
+
     public boolean useMOI() {
         return moi;
     }
@@ -141,6 +149,10 @@ public class BaseConfig implements Serializable {
     public BaseConfig setWikiDataFile(String wikiDataFile) {
         this.wikiDataFile = wikiDataFile;
         return this;
+    }
+
+    public void setTexvcinfoUrl(String url) {
+        this.texvcinfoUrl = url;
     }
 
     public String getTexvcinfoUrl() {
