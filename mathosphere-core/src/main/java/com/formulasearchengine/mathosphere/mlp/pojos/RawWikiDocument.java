@@ -6,11 +6,16 @@ import org.apache.commons.text.translate.AggregateTranslator;
 import org.apache.commons.text.translate.CharSequenceTranslator;
 import org.apache.commons.text.translate.EntityArrays;
 import org.apache.commons.text.translate.LookupTranslator;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class RawWikiDocument extends RawDocument {
+  private static final Logger LOG = LogManager.getLogger(RawWikiDocument.class.getName());
+  private static final int STANDARD_PAGE_NAMESPACE = 0;
+
   private static final Pattern TITLE_PATTERN = Pattern.compile("<title>(.+?)</title>", Pattern.DOTALL);
   private static final Pattern NAMESPACE_PATTERN = Pattern.compile("<ns>(\\d+)</ns>", Pattern.DOTALL);
   private static final Pattern TEXT_PATTERN = Pattern.compile("<text(.*?)>(.+?)</text>", Pattern.DOTALL);
@@ -50,7 +55,7 @@ public class RawWikiDocument extends RawDocument {
     if ( nsMatcher.find() ) {
       setNamespace(nsMatcher.group(1));
     } else {
-      setNamespace(""+Integer.MIN_VALUE);
+      setNamespace(STANDARD_PAGE_NAMESPACE);
     }
 
     if ( titleMatcher.find() || nsMatcher.find() )
@@ -73,21 +78,14 @@ public class RawWikiDocument extends RawDocument {
       content = unescapeText(content);
       setContent(content);
       return;
-
-//      String newText = "<text" + attributes + ">" + content + "</text>";
-//      // if we append directly newText, it may through an IndexOutOfBoundsException, strange...
-//      textMatcher.appendReplacement(sb, "");
-//      sb.append(newText);
     } else {
-      throw new NullPointerException("No text in this page.");
+      LOG.info("Did not find text-tag. Consider the entire content as pure wikitext.");
+      setContent(unescapeText(wikitext));
     }
 
-//    if ( textMatcher.find() )
-//      throw new IllegalArgumentException("Multiple text tags in a single page are not supported." +
-//              " Use TextExtractorMapper instead.");
-
-//    textMatcher.appendTail(sb);
-//    setContent(sb.toString());
+    if ( textMatcher.find() )
+      throw new IllegalArgumentException("Multiple text tags in a single page are not supported." +
+              " Use TextExtractorMapper instead.");
   }
 
   public void setNamespace(String namespace) {
