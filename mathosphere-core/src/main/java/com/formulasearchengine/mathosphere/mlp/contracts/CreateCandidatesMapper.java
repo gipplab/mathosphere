@@ -69,18 +69,15 @@ public class CreateCandidatesMapper implements MapFunction<ParsedWikiDocument, W
             .sorted() // uses Relation.compareTo(Relation r) method
             .collect(Collectors.toList());
 
-    if ( config.getDefinitionMerging() ) {
-      selfMerge(relations);
-    }
-
     return new WikiDocumentOutput(doc.getTitle(), relations, doc.getFormulaeMap());
   }
 
   private Stream<Relation> relations(ParsedWikiDocument doc, MathTag mathTag) {
     List<Relation> candidates = generateCandidates(doc, mathTag);
-//    if(config.getDefinitionMerging()){
-//      selfMerge(candidates);
-//    }
+    if(config.getDefinitionMerging()){
+      selfMerge(candidates);
+      selfMerge(doc.getFormulaGraph().getRelations(mathTag));
+    }
 //    else {
 //      Collections.sort(candidates);
 //    }
@@ -203,7 +200,6 @@ public class CreateCandidatesMapper implements MapFunction<ParsedWikiDocument, W
         relation.setSentence(sentence);
 
         doc.getFormulaGraph().appendMOIRelation(formula, relation);
-
         result.add(relation);
       }
     }
