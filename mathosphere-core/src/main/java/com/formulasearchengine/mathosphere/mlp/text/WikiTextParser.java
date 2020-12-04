@@ -596,6 +596,16 @@ public class WikiTextParser extends AstVisitor<WtNode> {
                         LOG.error("Unable to parse " + n);
                         break;
                     }
+                case "abs":
+                    arg0 = (WtTemplateArgument) n.getArgs().get(0);
+                    Object absValObj = dispatch(arg0.getValue());
+                    if ( absValObj instanceof String ) {
+                        String content = fixMathInRow((String)absValObj);
+                        return "\\left|" + content + "\\right|";
+                    } else {
+                        LOG.error("Unable to parse " + n);
+                        break;
+                    }
                 case "Citation":
                     resetPreviousMath(sb);
                     cite = new WikiCitation(n.toString());
@@ -715,12 +725,22 @@ public class WikiTextParser extends AstVisitor<WtNode> {
                 resetPreviousMath(sb);
                 String attribute = "";
                 if ( n.getXmlAttributes().size() > 0 ) {
+                    boolean wasNameBefore = false;
                     for (WtNode wtNode : n.getXmlAttributes()) {
                         WtXmlAttribute att = (WtXmlAttribute) wtNode;
                         if (att.getName().getAsString().equals("name")) {
-                            attribute = ((WtText) att.getValue().get(0)).getContent();
+                            if ( !att.getValue().isEmpty() )
+                                attribute = ((WtText) att.getValue().get(0)).getContent();
+                            else {
+                                wasNameBefore = true;
+                                continue;
+                            }
+                            break;
+                        } else if ( wasNameBefore ) {
+                            attribute = att.getName().getAsString();
                             break;
                         }
+                        wasNameBefore = false;
                     }
                 }
                 // we ignore citations in the text. They are just stored as meta information

@@ -3,6 +3,8 @@ package com.formulasearchengine.mathosphere.mlp.text;
 import com.formulasearchengine.mathosphere.mlp.contracts.WikiTextPageExtractorMapper;
 import com.formulasearchengine.mathosphere.mlp.pojos.MathTag;
 import com.formulasearchengine.mathosphere.mlp.pojos.RawWikiDocument;
+import com.formulasearchengine.mathosphere.mlp.pojos.SpecialToken;
+import com.formulasearchengine.mathosphere.mlp.pojos.WikiCitation;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.text.StringEscapeUtils;
 import org.apache.logging.log4j.LogManager;
@@ -225,6 +227,26 @@ public class WikiTextParserTest {
         assertEquals("", sections.get(0));
 //        List<String> maths = mathTags.values().stream().map(MathTag::getContent).collect(Collectors.toList());
 //        assertTrue(maths.toString(), maths.contains("\\exist x \\exist y Lxy"));
+    }
+
+    @Test
+    public void nonPerfectRefTest() throws Exception {
+        String wikiText = "where {{mvar|λ}} blabla numbers.&lt;ref name = Abramowitz_9_1_74&gt;Abramowitz and Stegun, [http://www.math.sfu.ca/~cbm/aands/page_363.htm p. 363, 9.1.74].&lt;/ref&gt; For {{math|{{abs|''λ''&lt;sup&gt;2&lt;/sup&gt; − 1}} &lt; 1}},&lt;ref name = Abramowitz_9_1_74 /&gt;";
+        wikiText = StringEscapeUtils.unescapeXml(wikiText);
+        final WikiTextParser mathConverter = new WikiTextParser(wikiText);
+
+        Map<String, SpecialToken> citeLib = mathConverter.getMetaLibrary().getCiteLib();
+        assertEquals(1, citeLib.size());
+        SpecialToken specialToken = citeLib.values().stream().findAny().orElseThrow();
+        assertTrue( specialToken instanceof WikiCitation );
+        assertNotNull( "Abramowitz_9_1_74", ((WikiCitation) specialToken).getCiteKey() );
+
+        Map<String, MathTag> mathTags = mathConverter.getMetaLibrary().getFormulaLib();
+        assertEquals(2, mathTags.size());
+
+        List<MathTag> maths = mathTags.values().stream().sorted(Comparator.comparing(MathTag::getKey)).collect(Collectors.toList());
+        assertEquals("\\lambda", maths.get(0).getContent());
+        assertEquals("\\left|\\lambda^{2} - 1\\right|< 1", maths.get(1).getContent());
     }
 
     @Test

@@ -44,7 +44,10 @@ public class UnicodeMap {
     StringBuilder res = new StringBuilder();
 
     for (int code : chars) {
-      res.append(char2TeX(code));
+      String s = char2TeX(code);
+      res.append(s);
+      if ( s.matches("^\\\\[a-zA-Z]+$") )
+        res.append(" ");
     }
     String s = res.toString().trim();
     if (chars.length == 1) {

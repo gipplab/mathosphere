@@ -2,6 +2,7 @@ package com.formulasearchengine.mathosphere.mlp.pojos;
 
 import com.formulasearchengine.mathosphere.mlp.text.PosTag;
 
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -106,6 +107,14 @@ public class Position implements Comparable<Position> {
         if ( d != 0 ) return d;
         d = word - position.word;
         return d;
+    }
+
+    private static final Comparator<Position> comparator = Comparator.comparingInt( Position::getSection )
+            .thenComparingInt( Position::getSentence )
+            .thenComparingInt( Position::getWord );
+
+    public static Comparator<Position> getComparator(){
+        return comparator;
     }
 
     @Override
