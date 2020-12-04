@@ -67,14 +67,15 @@ import java.util.regex.Pattern;
 public class WikiTextParser extends AstVisitor<WtNode> {
     private static final Logger LOG = LogManager.getLogger(WikiTextParser.class.getName());
 
-    private final static Pattern MATH_ONLY_END_PATTERN = Pattern.compile("^\\s*([.,;!?]+)\\s*$");
+    private final static Pattern MATH_ONLY_END_PATTERN = Pattern.compile("^\\s*([.,;!?]+)\\s*(.*)$");
     private final static Pattern MATH_END_PATTERN = Pattern.compile("^\\s*(.*)\\s*([\"'`´.,;!?]+)\\s*$");
     private static final Pattern SUB_PATTERN = Pattern.compile("[{<]sub[}>](.+?)[{<]/sub[}>]");
     private static final Pattern MATH_IN_TEXT_SEQUENCE_PATTERN = Pattern.compile(
             "(?<=^|[^A-Za-z]|)[\\p{InGreek}\\p{N}\\p{Ps}\\p{Pe}\\p{Pd}\\p{Sm}\\p{Sk}\\p{Po} ]+(?=[^A-Za-z]|$)"
     );
     private static final Pattern MATH_SPECIAL_CHAR_PATTERN = Pattern.compile(
-            "[^\\p{InGreek}\\p{N}]*[\\p{P}\\p{Sm}][^\\p{InGreek}\\p{N}]*"
+            "[^\\p{InGreek}\\p{N}]*[\\p{P}\\p{Sm}][^\\p{InGreek}\\p{N}]*|" +
+                    "[\\p{P}\\s]*[\\p{N}]+[\\p{P}\\s]*"
     );
     private final static Pattern MML_TOKENS_PATTERN = Pattern.compile(
             "<(?:m[a-z]+|apply|c[in]|csymbol|semantics)>"
@@ -262,8 +263,9 @@ public class WikiTextParser extends AstVisitor<WtNode> {
      * @return the string section
      */
     public String visit(WtSection s) {
-        StringBuilder sb = new StringBuilder();
+        if ( skipSection(s) ) return "";
 
+        StringBuilder sb = new StringBuilder();
         boolean finishedOnSection = false;
         for ( WtNode n : s.getBody() ) {
             if ( n instanceof WtSection ) {
@@ -368,7 +370,7 @@ public class WikiTextParser extends AstVisitor<WtNode> {
             // ok, but wait... what if the previous ending is null and this just matches
             // an ending: Then we dont need to update anything, just set the ending.
             Matcher endMatcher = MATH_ONLY_END_PATTERN.matcher(m.group(0));
-            if ( endMatcher.matches() && previousMathTagEnding == null) {
+            if ( endMatcher.matches() && endMatcher.group(2) == null && previousMathTagEnding == null) {
                 // haha, indeed... just an ending and there is no previous ending... nice
                 previousMathTagEnding = endMatcher.group(1);
                 previousHitPosition = m.end();
@@ -582,6 +584,10 @@ public class WikiTextParser extends AstVisitor<WtNode> {
                     return updateOrCreateNewMath(" = ", WikiTextUtils.MathMarkUpType.LATEX);
                 case "su":
                     return updateOrCreateNewMath(handleSuElement(n.getArgs()), WikiTextUtils.MathMarkUpType.LATEX);
+                case "frac":
+                    return updateOrCreateNewMath("/", WikiTextUtils.MathMarkUpType.LATEX);
+                case "sfrac":
+                    return handleSFrac(n.getArgs());
                 case "sub":
                     sub = true;
                 case "sup":
@@ -630,9 +636,28 @@ public class WikiTextParser extends AstVisitor<WtNode> {
             }
             return "";
         } catch (Exception e) {
-            LOG.info("Problem prcessing page" + pageTitle.getTitle(), e);
+            LOG.info("Problem prcessing page " + pageTitle.getTitle(), e);
             return "";
         }
+    }
+
+    private String handleSFrac(WtTemplateArguments args) {
+        String prefix = "", numerator = "1", denominator;
+        if ( args.size() == 1 ) {
+            denominator = (String) dispatch( ((WtTemplateArgument)args.get(0)).getValue() );
+        } else if ( args.size() == 2 ) {
+            numerator = (String) dispatch( ((WtTemplateArgument)args.get(0)).getValue() );
+            denominator = (String) dispatch( ((WtTemplateArgument)args.get(1)).getValue() );
+        } else if ( args.size() == 3 ) {
+            prefix = (String) dispatch( ((WtTemplateArgument)args.get(0)).getValue() );
+            numerator = (String) dispatch( ((WtTemplateArgument)args.get(1)).getValue() );
+            denominator = (String) dispatch( ((WtTemplateArgument)args.get(2)).getValue() );
+        } else {
+            LOG.error("SFrac must have 1-3 arguments. Cannot handle " + args.size() + " arguments. Simply skip it.");
+            return "";
+        }
+
+        return updateOrCreateNewMath( prefix + "\\frac{" + numerator + "}{" + denominator + "}", WikiTextUtils.MathMarkUpType.LATEX);
     }
 
     private String handleSuElement(WtTemplateArguments args) {
@@ -813,6 +838,19 @@ public class WikiTextParser extends AstVisitor<WtNode> {
 
     // =====================================================================
     // And some class specific helper methods.
+
+    public boolean skipSection(WtSection section) {
+        if ( section == null ) return true;
+
+        WtHeading heading = section.getHeading();
+        if ( heading.size() > 0 ) {
+            if ( heading.get(0) instanceof WtText ) {
+                String sectionHeading = ((WtText) heading.get(0)).getContent();
+                return sectionHeading.toLowerCase().matches("references?|nodes?|see\\s+also|external\\s+links?");
+            }
+        }
+        return false;
+    }
 
     public String addCitation(String content, String attribute) {
         WikiCitation cite = new WikiCitation(
@@ -1049,11 +1087,14 @@ public class WikiTextParser extends AstVisitor<WtNode> {
     }
 
     public static String replaceClearMath(String content) {
-        return SUB_PATTERN.matcher(content)
-                .replaceAll("_{$1}")
+        return SUB_PATTERN
+                .matcher(content).replaceAll("_{$1}")
                 .replaceAll("[{<]sup[}>](.+?)[{<]/sup[}>]", "^{$1}")
-                .replaceAll("'''\\[{0,2}(\\S)]{0,2}'''", "\\\\mathbf{$1}")
-                .replaceAll("''\\[{0,2}(\\S)]{0,2}''", "$1");
+                .replaceAll("'''(.*?)'''", "\\\\mathbf{$1}")
+                .replaceAll("''(.*?)''", "$1")
+                .replaceAll("\\s*~\\s*", "");
+//                .replaceAll("'''\\[{0,2}(\\S)]{0,2}'''", "\\\\mathbf{$1}")
+//                .replaceAll("''\\[{0,2}(\\S)]{0,2}''", "$1");
     }
 
     public static String replaceMathUnicode(String content) {

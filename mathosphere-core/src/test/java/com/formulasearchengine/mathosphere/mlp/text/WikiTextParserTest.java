@@ -10,6 +10,8 @@ import org.apache.commons.text.StringEscapeUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.Test;
+import org.sweble.wikitext.engine.EngineException;
+import org.sweble.wikitext.parser.parser.LinkTargetException;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -59,7 +61,7 @@ public class WikiTextParserTest {
 
     @Test
     public void testLegendreWiki() throws Exception {
-        String wikiText = IOUtils.toString(getClass().getResourceAsStream("legendre_wiki.txt"),"UTF-8");
+        String wikiText = IOUtils.toString(getClass().getResourceAsStream("legendre_wiki.txt"), "UTF-8");
         wikiText = StringEscapeUtils.unescapeXml(wikiText);
         final WikiTextParser mathConverter = new WikiTextParser(wikiText);
         final List<String> real = mathConverter.parse();
@@ -234,6 +236,7 @@ public class WikiTextParserTest {
         String wikiText = "where {{mvar|λ}} blabla numbers.&lt;ref name = Abramowitz_9_1_74&gt;Abramowitz and Stegun, [http://www.math.sfu.ca/~cbm/aands/page_363.htm p. 363, 9.1.74].&lt;/ref&gt; For {{math|{{abs|''λ''&lt;sup&gt;2&lt;/sup&gt; − 1}} &lt; 1}},&lt;ref name = Abramowitz_9_1_74 /&gt;";
         wikiText = StringEscapeUtils.unescapeXml(wikiText);
         final WikiTextParser mathConverter = new WikiTextParser(wikiText);
+        mathConverter.parse();
 
         Map<String, SpecialToken> citeLib = mathConverter.getMetaLibrary().getCiteLib();
         assertEquals(1, citeLib.size());
@@ -245,8 +248,78 @@ public class WikiTextParserTest {
         assertEquals(2, mathTags.size());
 
         List<MathTag> maths = mathTags.values().stream().sorted(Comparator.comparing(MathTag::getKey)).collect(Collectors.toList());
-        assertEquals("\\lambda", maths.get(0).getContent());
-        assertEquals("\\left|\\lambda^{2} - 1\\right|< 1", maths.get(1).getContent());
+        assertEquals("\\lambda", maths.get(1).getContent());
+        assertEquals("\\left|\\lambda^{2} - 1\\right|< 1", maths.get(0).getContent());
+    }
+
+    @Test
+    public void inlineMathDetectionTest() throws Exception {
+        String wikiText = "Gil, A., Segura, J., Temme, N. M. (2007). Numerical methods for special functions. Society for Industrial and Applied Mathematics.";
+        wikiText = StringEscapeUtils.unescapeXml(wikiText);
+        final WikiTextParser mathConverter = new WikiTextParser(wikiText);
+        mathConverter.parse();
+
+        Map<String, MathTag> mathTags = mathConverter.getMetaLibrary().getFormulaLib();
+        assertEquals(mathTags.entrySet().toString(), 0, mathTags.size());
+    }
+
+    @Test
+    public void skipSectionTest() throws Exception {
+        String wikiText = "Test\n\n" +
+                "==References==\n" +
+                "My reference";
+
+        wikiText = StringEscapeUtils.unescapeXml(wikiText);
+        final WikiTextParser mathConverter = new WikiTextParser(wikiText);
+        List<String> sections = mathConverter.parse();
+        assertEquals(sections.toString(), 1, sections.size());
+        assertEquals("Test ", sections.get(0));
+    }
+
+    @Test
+    public void mathTemplateOveruseOfQuotesTest() throws LinkTargetException, EngineException {
+        String wikiText = "Lets {{math|''H''{{su|b=''α''|p=(1)}} {{=}} ''J&lt;sub&gt;α&lt;/sub&gt;'' + ''iY&lt;sub&gt;α&lt;/sub&gt;''}}";
+        wikiText = StringEscapeUtils.unescapeXml(wikiText);
+        final WikiTextParser mathConverter = new WikiTextParser(wikiText);
+        mathConverter.parse();
+
+        Map<String, MathTag> mathTags = mathConverter.getMetaLibrary().getFormulaLib();
+        assertEquals(1, mathTags.size());
+
+        MathTag tag = mathTags.entrySet().stream().findFirst().orElseThrow().getValue();
+        assertEquals( "H_{\\alpha}^{(1)} = J_{\\alpha} + iY_{\\alpha}", tag.getContent() );
+    }
+
+    @Test
+    public void quotesTest() throws LinkTargetException, EngineException {
+        String wikiText = "Bessel functions of the first kind, denoted as {{math|''J&lt;sub&gt;α&lt;/sub&gt;''(''x'')}}";
+        wikiText = StringEscapeUtils.unescapeXml(wikiText);
+        final WikiTextParser mathConverter = new WikiTextParser(wikiText);
+        mathConverter.parse();
+
+        Map<String, MathTag> mathTags = mathConverter.getMetaLibrary().getFormulaLib();
+        assertEquals(1, mathTags.size());
+
+        MathTag tag = mathTags.entrySet().stream().findFirst().orElseThrow().getValue();
+        assertEquals( "J_{\\alpha}(x)", tag.getContent() );
+    }
+
+    @Test
+    public void mathDetectionFracTest() throws LinkTargetException, EngineException {
+        String wikiText = "Bessel &lt;math&gt;x^2 \\frac{d^2 y}{dx^2} + αx \\frac{dy}{dx} + \\left(x^2 - α^2 \\right)y = 0&lt;/math&gt;";
+        wikiText = StringEscapeUtils.unescapeXml(wikiText);
+        final WikiTextParser mathConverter = new WikiTextParser(wikiText);
+        mathConverter.parse();
+
+        Map<String, MathTag> mathTags = mathConverter.getMetaLibrary().getFormulaLib();
+        assertEquals(1, mathTags.size());
+
+        MathTag tag = mathTags.entrySet().stream().findFirst().orElseThrow().getValue();
+
+        // note there must be a space between the new generated \\alpha and x, otherwise it become \\alphax a non-existent macro
+        // and mathoid starts complaining. For better readability and to avoid further problems with Mathoid, PoM, LaCASt, we should
+        // not add space after the second \\alpha because \\alpha^2 is totally fine.
+        assertEquals( "x^2 \\frac{d^2 y}{dx^2} + \\alpha x \\frac{dy}{dx} + \\left(x^2 - \\alpha^2 \\right)y = 0", tag.getContent() );
     }
 
     @Test

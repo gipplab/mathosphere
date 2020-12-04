@@ -39,15 +39,15 @@ public class UnicodeMap {
   private static final Logger LOGGER = LogManager.getLogger(UnicodeMap.class.getName());
 
   public static String string2TeX(String in) {
-
     int[] chars = in.codePoints().toArray();
     StringBuilder res = new StringBuilder();
 
+    boolean previousHitIntroducedMacro = false;
     for (int code : chars) {
-      String s = char2TeX(code);
+      String s = normalizeMathTex(char2TeX(code));
+      if ( previousHitIntroducedMacro && s.matches("[a-zA-Z]+") ) res.append(" ");
+      previousHitIntroducedMacro = s.matches( "\\\\[a-zA-Z]+" );
       res.append(s);
-      if ( s.matches("^\\\\[a-zA-Z]+$") )
-        res.append(" ");
     }
     String s = res.toString().trim();
     if (chars.length == 1) {
@@ -55,6 +55,12 @@ public class UnicodeMap {
     }
 
     return s;
+  }
+
+  public static String normalizeMathTex(String in) {
+    if ( in.matches( "\\\\dashv" ) ) in = "-"; // well, let's be honest... there is no visible difference between "-" and dashv
+    else if ( in.matches( "\\\\hspace\\{.*}" ) ) in = " ";
+    return in;
   }
 
   public static String char2TeX(int codePoint) {

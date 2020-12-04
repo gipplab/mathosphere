@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -47,6 +48,33 @@ public class PosTaggerTest {
     );
 
     List<Word> sentence = result.get(1).getWords();
+    sentence = TextAnnotator.unwrapPlaceholder(sentence, lib);
+    assertTrue(sentence.size() >= expected.size());
+    assertEquals(expected.toString(), sentence.subList(0, expected.size()).toString());
+    LOGGER.debug("full result: {}", result);
+  }
+
+  @Test
+  public void annotationMathWordings() throws Exception {
+    FlinkMlpCommandConfig cfg = FlinkMlpCommandConfig.test();
+    TextAnnotator annotator = new TextAnnotator(cfg);
+    String text = "Bessel functions of the first kind, denoted as {{math|J<sub>α</sub>(x)}}, are solutions of Bessel's differential equation.";
+
+    WikiTextParser parser = new WikiTextParser(text);
+    List<String> cleanText = parser.parse();
+    DocumentMetaLib lib = parser.getMetaLibrary();
+
+    List<Sentence> result = annotator.annotate(cleanText, lib);
+
+    List<Word> expected = Arrays.asList(
+            w("Bessel function", "NP"), w("of", "IN"), w("the", "DT"), w("first kind", "NP"),
+            w(",", ","), w("denoted", "VBN"), w("as", "IN"), w("FORMULA_c60e75c1b449c3a8c1735102f828843d", "MATH"),
+            w("are", "VBP"), w("solutions", "NNS"), w("of", "IN"), w("Bessel", "NNP"), w("'s", "POS"),
+            w("differential equation", "NP"), w(".", ".")
+    );
+
+    List<Word> sentence = result.get(0).getWords();
+    LOGGER.debug("Words: {}", sentence);
     sentence = TextAnnotator.unwrapPlaceholder(sentence, lib);
     assertTrue(sentence.size() >= expected.size());
     assertEquals(expected.toString(), sentence.subList(0, expected.size()).toString());
