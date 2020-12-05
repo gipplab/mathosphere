@@ -7,6 +7,10 @@ public class PosTag {
   public static final String CITE = "CITE";
   public static final String SYMBOL = "SYM";
 
+  public static final String PREPOSITION = "IN";
+  public static final String DETERMINER = "DT";
+  public static final String POSSESSIVE_ENDING = "POS";
+
   public static final String ADJECTIVE = "JJ";
   public static final String ADJECTIVE_COMPARATIVE = "JJR";
   public static final String ADJECTIVE_SUPERLATIVE = "JJS";

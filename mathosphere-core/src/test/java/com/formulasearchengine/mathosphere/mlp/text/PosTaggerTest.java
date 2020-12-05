@@ -34,23 +34,21 @@ public class PosTaggerTest {
     WikiTextParser parser = new WikiTextParser(text);
     List<String> cleanText = parser.parse();
     DocumentMetaLib lib = parser.getMetaLibrary();
-    System.out.println(cleanText);
+//    System.out.println(cleanText);
 
     List<Sentence> result = annotator.annotate(cleanText, lib);
 
     // TODO planck constant is replaced by normal 'h' in UnicodeUtils.java Line 101 (why so ever)
     List<Word> expected = Arrays.asList(
-            w("where", "WRB"), w("Ψ", "ID"), w("is", "VBZ"), w("the", "DT"),
-            w("wave function", "LNK"), w("of", "IN"), w("the", "DT"), w("quantum system", "NP"),
-            w(",", ","), w("i", "ID"), w("is", "VBZ"), w("the", "DT"), w("imaginary unit", "LNK")
-//            w(",", ","), w("ħ", "ID"), w("is", "VBZ"), w("the", "DT"),
-//            w("reduced Planck constant", "LNK")
+            w("where", "WRB"), w("Ψ", "MATH"), w("is", "VBZ"), w("the", "DT"),
+            w("wave function", "LNK"), w("of", "IN"), w("the quantum system", "NP"),
+            w(",", ","), w("i", "MATH"), w("is", "VBZ"), w("the imaginary unit", "LNK")
     );
 
-    List<Word> sentence = result.get(1).getWords();
+    List<Word> sentence = result.get(0).getWords();
     sentence = TextAnnotator.unwrapPlaceholder(sentence, lib);
     assertTrue(sentence.size() >= expected.size());
-    assertEquals(expected.toString(), sentence.subList(0, expected.size()).toString());
+    assertEquals(expected.toString(), sentence.subList(12, 12 + expected.size()).toString());
     LOGGER.debug("full result: {}", result);
   }
 
@@ -67,17 +65,16 @@ public class PosTaggerTest {
     List<Sentence> result = annotator.annotate(cleanText, lib);
 
     List<Word> expected = Arrays.asList(
-            w("Bessel function", "NP"), w("of", "IN"), w("the", "DT"), w("first kind", "NP"),
+            w("Bessel function of the first kind", "NP"),
             w(",", ","), w("denoted", "VBN"), w("as", "IN"), w("FORMULA_c60e75c1b449c3a8c1735102f828843d", "MATH"),
-            w("are", "VBP"), w("solutions", "NNS"), w("of", "IN"), w("Bessel", "NNP"), w("'s", "POS"),
-            w("differential equation", "NP"), w(".", ".")
+            w("are", "VBP"), w("solutions of Bessel's differential equation", "NP"), w(".", ".")
     );
 
     List<Word> sentence = result.get(0).getWords();
     LOGGER.debug("Words: {}", sentence);
     sentence = TextAnnotator.unwrapPlaceholder(sentence, lib);
-    assertTrue(sentence.size() >= expected.size());
-    assertEquals(expected.toString(), sentence.subList(0, expected.size()).toString());
+    assertTrue(sentence.toString(), sentence.size() >= expected.size());
+    assertEquals(sentence.toString(), expected.toString(), sentence.subList(0, expected.size()).toString());
     LOGGER.debug("full result: {}", result);
   }
 

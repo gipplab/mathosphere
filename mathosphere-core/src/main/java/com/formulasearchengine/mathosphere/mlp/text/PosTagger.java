@@ -326,15 +326,6 @@ public class PosTagger {
     return concatenatePhrases(result);
   }
 
-  protected static List<Word> concatenatePhrases(List<Word> result) {
-    result = concatenateQuotes(result);
-    result = concatenateSuccessiveAdjectiveNounsSequence(result);
-    result = concatenateSuccessiveNounsToNounSequence(result);
-//    result = concatenateSuccessiveAdjectives(result);
-//    result = concatenateTwoSuccessiveRegexTags(result, PosTag.ANY_ADJECTIVE_REGEX, PosTag.ANY_NOUN_REGEX, PosTag.NOUN_PHRASE);
-    return result;
-  }
-
   /**
    * With the new sweble parser {@link WikiTextParser}, we do not need to take of links or identifiers in quotes
    * anymore. Please do not use this function anymore.
@@ -364,23 +355,86 @@ public class PosTagger {
     });
   }
 
+  /**
+   * Concatenates phrases to noun phrases
+   * @param result
+   * @return
+   */
+  protected static List<Word> concatenatePhrases(List<Word> result) {
+    result = concatenateQuotes(result);
+    result = concatenateSuccessiveNounsPossessiveEndingNounsSequence(result);
+    result = concatenateSuccessiveAdjectiveNounsSequence(result);
+    result = concatenateNounsPrepositionDeterminerAdjectiveNouns(result);
+    return result;
+  }
+
   protected static List<Word> concatenateQuotes(List<Word> in) {
     com.alexeygrigorev.rseq.Pattern<Word> pattern = com.alexeygrigorev.rseq.Pattern.create(
             txt(PosTag.QUOTE),
             anyWord().oneOrMore().captureAs("quoted"),
             txt(PosTag.UNQUOTE)
     );
-    return pattern.replaceToOne(in, (match) -> {
-      List<Word> matchSequence = match.getCapturedGroup("quoted");
-      return linkSaveWord(matchSequence, matchSequence.get(matchSequence.size()-1).getPosTag());
+    return pattern.replaceToOne(in, new TransformerToElement<Word>() {
+      @Override
+      public Word transform(Match<Word> match) {
+        List<Word> matchSequence = match.getCapturedGroup("quoted");
+        return linkSaveWord(matchSequence, matchSequence.get(matchSequence.size()-1).getPosTag());
+      }
+    });
+  }
+
+  protected static List<Word> concatenateSuccessiveNounsPossessiveEndingNounsSequence(List<Word> in) {
+    com.alexeygrigorev.rseq.Pattern<Word> pattern = com.alexeygrigorev.rseq.Pattern.create(
+            pos(PosTag.DETERMINER).optional(),
+            pos(PosTag.ANY_ADJECTIVE_REGEX).zeroOrMore(),
+            pos(PosTag.ANY_NOUN_REGEX + "|" + PosTag.FOREIGN_WORD).oneOrMore(),
+            pos(PosTag.POSSESSIVE_ENDING),
+            pos(PosTag.ANY_ADJECTIVE_REGEX).zeroOrMore(),
+            pos(PosTag.ANY_NOUN_REGEX + "|" + PosTag.FOREIGN_WORD).oneOrMore()
+    );
+
+    return pattern.replaceToOne(in, new TransformerToElement<Word>() {
+      @Override
+      public Word transform(Match<Word> match) {
+        List<Word> matchedSequence = match.getMatchedSubsequence();
+        return linkSaveWord(matchedSequence, PosTag.NOUN_PHRASE);
+      }
     });
   }
 
   protected static List<Word> concatenateSuccessiveAdjectiveNounsSequence(List<Word> in) {
-    XMatcher<Word> noun = posIn(PosTag.FOREIGN_WORD, PosTag.NOUN, PosTag.NOUN_PHRASE, PosTag.NOUN_PROPER, PosTag.NOUN_PLURAL, PosTag.NOUN_PROPER_PLURAL);
-    XMatcher<Word> adjs = posIn(PosTag.ADJECTIVE, PosTag.ADJECTIVE_COMPARATIVE, PosTag.ADJECTIVE_SUPERLATIVE);
-    com.alexeygrigorev.rseq.Pattern<Word> pattern = com.alexeygrigorev.rseq.Pattern.create(adjs.oneOrMore(), noun.oneOrMore());
-    return pattern.replaceToOne(in, (m) -> linkSaveWord(m.getMatchedSubsequence(), PosTag.NOUN_PHRASE));
+    com.alexeygrigorev.rseq.Pattern<Word> pattern = com.alexeygrigorev.rseq.Pattern.create(
+            pos(PosTag.DETERMINER).optional(),
+            pos(PosTag.ANY_ADJECTIVE_REGEX).zeroOrMore(),
+            pos(PosTag.ANY_NOUN_REGEX + "|" + PosTag.FOREIGN_WORD).oneOrMore()
+    );
+
+    return pattern.replaceToOne(in, new TransformerToElement<Word>() {
+      @Override
+      public Word transform(Match<Word> match) {
+        List<Word> matchedSequence = match.getMatchedSubsequence();
+        return linkSaveWord(matchedSequence, PosTag.NOUN_PHRASE);
+      }
+    });
+  }
+
+  protected static List<Word> concatenateNounsPrepositionDeterminerAdjectiveNouns(List<Word> in) {
+    com.alexeygrigorev.rseq.Pattern<Word> pattern = com.alexeygrigorev.rseq.Pattern.create(
+            pos(PosTag.DETERMINER).optional(),
+            pos(PosTag.ANY_ADJECTIVE_REGEX).zeroOrMore(),
+            pos(PosTag.ANY_NOUN_REGEX + "|" + PosTag.FOREIGN_WORD).oneOrMore(),
+            pos(PosTag.PREPOSITION).optional(),
+            pos(PosTag.DETERMINER).optional(),
+            pos(PosTag.ANY_ADJECTIVE_REGEX).zeroOrMore(),
+            pos(PosTag.ANY_NOUN_REGEX + "|" + PosTag.FOREIGN_WORD).zeroOrMore()
+    );
+    return pattern.replaceToOne(in, new TransformerToElement<Word>() {
+      @Override
+      public Word transform(Match<Word> match) {
+        List<Word> matchedSequence = match.getMatchedSubsequence();
+        return linkSaveWord(matchedSequence, matchedSequence.get(matchedSequence.size()-1).getPosTag());
+      }
+    });
   }
 
   protected static List<Word> concatenateSuccessiveNounsToNounSequence(List<Word> in) {
