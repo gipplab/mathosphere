@@ -2,6 +2,7 @@ package com.formulasearchengine.mathosphere.mlp.contracts;
 
 import com.formulasearchengine.mathosphere.mlp.cli.BaseConfig;
 import com.formulasearchengine.mathosphere.mlp.pojos.*;
+import com.formulasearchengine.mathosphere.mlp.text.PatternMatcher;
 import com.formulasearchengine.mathosphere.mlp.text.PosTag;
 import com.formulasearchengine.mathosphere.mlp.text.SimplePatternMatcher;
 import com.google.common.collect.HashMultiset;
@@ -77,11 +78,9 @@ public class CreateCandidatesMapper implements MapFunction<ParsedWikiDocument, W
     List<Relation> candidates = generateCandidates(doc, mathTag);
     if(config.getDefinitionMerging()){
       selfMerge(candidates);
-      selfMerge(doc.getFormulaGraph().getRelations(mathTag));
     }
-//    else {
-//      Collections.sort(candidates);
-//    }
+
+    doc.getFormulaGraph().setMOIRelation(mathTag, candidates);
     return candidates.stream();
   }
 
@@ -172,36 +171,51 @@ public class CreateCandidatesMapper implements MapFunction<ParsedWikiDocument, W
     LOG.debug("First pos of formula is " + firstAppearancePosition + "; Identified " + sentences.size() + " sentences " +
             "that include (partially) the formula: " + formula.getContent());
 
+    PatternMatcher patternMatcher = PatternMatcher.generateMOIPatternMatcher(formula);
+    Set<String> addedDefiniens = new HashSet<>();
+
     for (int sentenceIdx = 0; sentenceIdx < sentences.size(); sentenceIdx++) {
       Tuple3<Sentence, Set<Position>, List<Word>> entry = sentences.get(sentenceIdx);
       Sentence sentence = entry.f0;
       List<Word> definiens = sentence.getNouns();
+      Set<Word> patternMatchedDefinitions = patternMatcher.match( sentence.getWords() );
+      Set<String> patternStrings = patternMatchedDefinitions.stream().map( w -> getAppropriateText(w, doc.getLib()) ).collect(Collectors.toSet());
+
+      // note: it is impossible that there are patternMatchedDefinitions that are not also in definiens list.
+      // makes sense right? Because definiens contains simply all definiens in the sentence
+      // while patternMatchedDefinitions only contains the nouns that matches the pattern IN the same sentence
+      // and to match the pattern, it must be nouns... quite simply
 
 //      List<Integer> positions = identifierPositions(words, identifier);
-
       for ( Word def : definiens ) {
+        String defAppropriateString = getAppropriateText(def, doc.getLib());
 
 //        Position closestPosition = getClosestPosition(def, entry.f1);
 //        int wordDistance = calculateClosestDistance(def, entry.f1);
-        int graphDistance = getClosestGraphDistance(sentence, def, entry.f2);
-        int freq = wordFrequencies.count(def.getWord().toLowerCase());
-        double score = calculateScore(
-                graphDistance,
-                freq,
-                maxNounFrequency,
-                firstAppearancePosition.getSentenceDistance(def.getPosition())
-        );
+        double score = -1;
+        if ( patternStrings.contains(defAppropriateString) ) {
+          score = 1;
+        } else {
+          int graphDistance = getClosestGraphDistance(sentence, def, entry.f2);
+          int freq = wordFrequencies.count(def.getWord().toLowerCase());
+          score = calculateScore(
+                  graphDistance,
+                  freq,
+                  maxNounFrequency,
+                  firstAppearancePosition.getSentenceDistance(def.getPosition())
+          );
+        }
 
         Relation relation = new Relation();
         relation.setMathTag(formula);
         relation.setIdentifierPosition(formula.getPositions().get(0).getWord());
-        relation.setDefinition(getAppropriateText(def, doc.getLib()));
+        relation.setDefinition(defAppropriateString);
         relation.setWordPosition(def.getPosition().getWord());
         relation.setScore(score);
         relation.setSentence(sentence);
 
-        doc.getFormulaGraph().appendMOIRelation(formula, relation);
         result.add(relation);
+        addedDefiniens.add(defAppropriateString);
       }
     }
 

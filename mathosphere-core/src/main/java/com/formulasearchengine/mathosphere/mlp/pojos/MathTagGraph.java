@@ -43,6 +43,14 @@ public interface MathTagGraph {
     void appendMOIRelation(MathTag mathTag, Relation relation);
 
     /**
+     * Sets the relations for the given formula all at once in contrast to
+     * {@link #appendMOIRelation(MathTag, Relation)} which simply appends single relations.
+     * @param mathTag the formula
+     * @param relations the collection of relations
+     */
+    void setMOIRelation(MathTag mathTag, Collection<Relation> relations);
+
+    /**
      * Gets the list of relations from the given formula
      * @param mathTag the formula
      * @return the appended list of relations

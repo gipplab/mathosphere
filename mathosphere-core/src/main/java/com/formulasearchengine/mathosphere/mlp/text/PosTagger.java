@@ -125,12 +125,15 @@ public class PosTagger {
             specialToken = lib.getCiteLib().get(textToken);
             // in the lib, but no longer in the text
 //            words.add(new Word(p, textToken, PosTag.CITE));
-          } else if ( textToken.toLowerCase().matches("polynomials?") ) {
+          }
+//          else if (tempLinkMap.containsKey(textToken) ) {
+//            WikidataLink link = tempLinkMap.get(textToken);
+//            // if before was another word that is also a link to the same page, we dont add any new words here
+//            if ( !link.placeholder().equals( sentenceWords.get(sentenceWords.size()-1).getWord() ) )
+//              sentenceWords.add(new Word(p, link.placeholder(), lemma, PosTag.LINK).setOriginalPosTag(pos).setOriginalIndex(index));
+//          }
+          else if ( textToken.toLowerCase().matches("polynomials?") ) {
             sentenceWords.add(new Word(p, textToken, lemma, PosTag.NOUN).setOriginalIndex(index));
-          } else if (tempLinkMap.containsKey(textToken) ) {
-            WikidataLink link = tempLinkMap.get(textToken);
-            String txt = link.getTitle() == null ? link.getContent() : link.getTitle();
-            sentenceWords.add(new Word(p, link.placeholder(), lemma, PosTag.LINK).setOriginalPosTag(pos).setOriginalIndex(index));
           } else {
             sentenceWords.add(new Word(p, textToken, lemma, pos).setOriginalIndex(index));
           }
@@ -169,13 +172,16 @@ public class PosTagger {
       // we keep the word as it is.
       if ( txt.contains(" ") ) {
         // multiple words, simply put back "LINK_id"
-        matcher.appendReplacement(sb, id);
+//        matcher.appendReplacement(sb, id);
+        String[] words = txt.split(" ");
+        for ( String w : words ) linkMap.put(w, link);
       } else {
         // a single word, might be not a noun in the context
         linkMap.put(txt, link);
-        txt = java.util.regex.Matcher.quoteReplacement(txt);
-        matcher.appendReplacement(sb, txt);
       }
+      txt = java.util.regex.Matcher.quoteReplacement(txt);
+      matcher.appendReplacement(sb, txt);
+//      }
     }
 
     matcher.appendTail(sb);
@@ -347,7 +353,7 @@ public class PosTagger {
   protected static List<Word> concatenateLinks(List<Word> in, Set<String> allIdentifiers) {
     com.alexeygrigorev.rseq.Pattern<Word> linksPattern = com.alexeygrigorev.rseq.Pattern.create(
             pos(PosTag.QUOTE),
-            anyWord().oneOrMore().captureAs("link"),
+            Matchers.group(anyWord().oneOrMore()).captureAs("link"),
             pos(PosTag.UNQUOTE)
     );
 
@@ -380,7 +386,7 @@ public class PosTagger {
   protected static List<Word> concatenateQuotes(List<Word> in) {
     com.alexeygrigorev.rseq.Pattern<Word> pattern = com.alexeygrigorev.rseq.Pattern.create(
             txt(PosTag.QUOTE),
-            anyWord().oneOrMore().captureAs("quoted"),
+            Matchers.group(anyWord().oneOrMore()).captureAs("quoted"),
             txt(PosTag.UNQUOTE)
     );
     return pattern.replaceToOne(in, new TransformerToElement<Word>() {
@@ -500,21 +506,25 @@ public class PosTagger {
     return StringUtils.join(toJoin, " ");
   }
 
-  private static XMatcher<Word> txt(String txt) {
+  public static XMatcher<Word> txt(String txt) {
     return BeanMatchers.regex(Word.class, "word", txt);
   }
 
-  private static XMatcher<Word> pos(String tag) {
+  public static XMatcher<Word> txtIn(String... txt) {
+    return BeanMatchers.in(Word.class, "word", ImmutableSet.copyOf(txt) );
+  }
+
+  public static XMatcher<Word> pos(String tag) {
     XMatcher<Word> matcher = BeanMatchers.regex(Word.class, "originalPosTag", tag);
     return Matchers.and(matcher, Matchers.not( txt("-.*-|"+PlaceholderLib.PATTERN_STRING) ));
   }
 
-  private static XMatcher<Word> posIn(String... tags) {
+  public static XMatcher<Word> posIn(String... tags) {
     XMatcher<Word> matcher = BeanMatchers.in(Word.class, "originalPosTag", ImmutableSet.copyOf(tags));
     return Matchers.and(matcher, Matchers.not( txt("-.*-|"+PlaceholderLib.PATTERN_STRING) ));
   }
 
-  private static XMatcher<Word> anyWord() {
+  public static XMatcher<Word> anyWord() {
     return Matchers.anything();
   }
 }

@@ -20,12 +20,13 @@ public class IdentifierGraphImpl implements MathTagGraph {
 
     private final Map<MathTag, Collection<MathTag>> edges;
 
-//    private final
+    private final Map<MathTag, List<Relation>> relations;
 
     public IdentifierGraphImpl(BaseConfig config) {
         this.config = config;
         this.nodes = new HashSet<>();
         this.edges = new HashMap<>();
+        this.relations = new HashMap<>();
     }
 
     @Override
@@ -68,13 +69,17 @@ public class IdentifierGraphImpl implements MathTagGraph {
 
     @Override
     public void appendMOIRelation(MathTag mathTag, Relation relation) {
-        // TODO
+        this.relations.computeIfAbsent(mathTag, (key) -> new LinkedList<>()).add(relation);
+    }
+
+    @Override
+    public void setMOIRelation(MathTag mathTag, Collection<Relation> relations) {
+        this.relations.computeIfAbsent(mathTag, (key) -> new LinkedList<>()).addAll(relations);
     }
 
     @Override
     public List<Relation> getRelations(MathTag mathTag) {
-        // TODO
-        return null;
+        return relations.computeIfAbsent(mathTag, (key) -> new LinkedList<>());
     }
 
     @Override

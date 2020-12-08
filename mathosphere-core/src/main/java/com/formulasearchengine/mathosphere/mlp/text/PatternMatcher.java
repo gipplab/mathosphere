@@ -1,18 +1,21 @@
 package com.formulasearchengine.mathosphere.mlp.text;
 
 import com.alexeygrigorev.rseq.*;
+import com.formulasearchengine.mathosphere.mlp.pojos.MathTag;
 import com.formulasearchengine.mathosphere.mlp.pojos.ParsedWikiDocument;
 import com.formulasearchengine.mathosphere.mlp.pojos.WikidataLink;
 import com.formulasearchengine.mathosphere.mlp.pojos.Word;
 
 import com.google.common.collect.Lists;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import static com.formulasearchengine.mathosphere.mlp.text.WikiTextUtils.deLinkify;
 
+/**
+ * @author extended for MOIs by Andre Greiner-Petter
+ */
 public class PatternMatcher {
   private List<Pattern<Word>> patterns;
 
@@ -33,6 +36,57 @@ public class PatternMatcher {
       }
     }
     return result;
+  }
+
+  public Set<Word> match(List<Word> words) {
+    Set<Word> matchedDefiniens = new HashSet<>();
+    for ( Pattern<Word> pattern : patterns ) {
+      List<Match<Word>> matches = pattern.find(words);
+      for ( Match<Word> match : matches ) {
+        Word matchedDefinition = match.getVariable("definition");
+        matchedDefiniens.add( matchedDefinition );
+      }
+    }
+    return matchedDefiniens;
+  }
+
+  public static PatternMatcher generateMOIPatternMatcher(MathTag... formulae) {
+    if ( formulae == null ) return null;
+    return generateMOIPatternMatcher( Arrays.asList(formulae) );
+  }
+
+  /**
+   * The following pattern matcher is a copy of the patterns published in
+   * <url>https://www.gipp.com/wp-content/papercite-data/pdf/schubotz2017.pdf</url>
+   * but updated for MOI.
+   *
+   * It only implements the rules 1, 2, 5-6 via two replacement rules.
+   * The reason is simple. First those rules are the only one that can be applied directly to MOI
+   * and second, these rules performed best.
+   *
+   * You must use {@link #match(List, ParsedWikiDocument)}
+   *
+   * @param formulae the math tags you want to match
+   * @return the pattern matcher
+   * @author Andre
+   */
+  public static PatternMatcher generateMOIPatternMatcher(Collection<MathTag> formulae) {
+    String[] formulaePlaceholders = formulae.stream().map(MathTag::placeholder).toArray(String[]::new);
+    List<Pattern<Word>> patterns = Arrays.asList(
+            // 1. <definiens> <identifier>
+            Pattern.create(
+                    PosTagger.pos( PosTag.DEFINIEN_REGEX ).captureAs("definition"),
+                    PosTagger.txtIn(formulaePlaceholders).captureAs("moi")
+            ),
+            // 2, 5-6. <identifier> DT? <definiens>
+            Pattern.create(
+                    PosTagger.txtIn(formulaePlaceholders).captureAs("moi"),
+                    PosTagger.txtIn( "is", "are" ).optional(),
+                    PosTagger.pos( PosTag.DETERMINER ).optional(),
+                    PosTagger.pos( PosTag.DEFINIEN_REGEX ).captureAs("definition")
+            )
+    );
+    return new PatternMatcher(patterns);
   }
 
   public static PatternMatcher generatePatterns(Set<String> identifiers) {

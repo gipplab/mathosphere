@@ -48,6 +48,11 @@ public class MOIGraphImpl extends MOIDependencyGraph<MathTag> implements MathTag
     }
 
     @Override
+    public void setMOIRelation(MathTag mathTag, Collection<Relation> relations) {
+        this.relations.computeIfAbsent(mathTag.placeholder(), (key) -> new LinkedList<>()).addAll(relations);
+    }
+
+    @Override
     public List<Relation> getRelations(MathTag mathTag) {
         return relations.computeIfAbsent(mathTag.placeholder(), (key) -> new LinkedList<>());
     }

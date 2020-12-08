@@ -85,10 +85,10 @@ public class Sentence {
       IndexedWord wi1 = graph.getNodeByIndex(word1.getOriginalIndex());
       IndexedWord wi2 = graph.getNodeByIndex(word2.getOriginalIndex());
       List<SemanticGraphEdge> edges = graph.getShortestUndirectedPathEdges(wi1, wi2);
-      return edges.size();
+      return (int) edges.stream().filter( e -> !e.getRelation().getShortName().equals("compound") ).count();
     } catch (IllegalArgumentException iae) {
       iae.printStackTrace();
-      return -1;
+      return Integer.MAX_VALUE; // if something is going wrong
     }
   }
 
