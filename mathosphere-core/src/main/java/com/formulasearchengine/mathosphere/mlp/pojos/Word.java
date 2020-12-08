@@ -15,6 +15,8 @@ public class Word {
 
   private Position position;
 
+  private int originalIndex = 0;
+
   public Word() {
   }
 
@@ -41,6 +43,15 @@ public class Word {
 
   public String getOriginalPosTag() {
     return originalPosTag;
+  }
+
+  public Word setOriginalIndex(int index) {
+    this.originalIndex = index;
+    return this;
+  }
+
+  public int getOriginalIndex() {
+    return this.originalIndex;
   }
 
   public String getLemma() {

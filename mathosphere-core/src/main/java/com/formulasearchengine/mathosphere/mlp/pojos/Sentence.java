@@ -30,14 +30,12 @@ public class Sentence {
     this(section, words, identifier, formulae, null);
   }
 
-  public Sentence(int section, List<Word> words, Set<String> identifier, Set<MathTag> formulae, GrammaticalStructure parseTree) {
+  public Sentence(int section, List<Word> words, Set<String> identifier, Set<MathTag> formulae, SemanticGraph graph) {
     this.section = section;
     this.words = words;
     this.sentenceIdentifier = identifier;
     this.sentenceMath = formulae;
-    if ( parseTree != null ) {
-      this.graph = new SemanticGraph(parseTree.typedDependencies());
-    }
+    this.graph = graph;
   }
 
   public List<Word> getWords() {
@@ -82,10 +80,10 @@ public class Sentence {
     return sentenceMath;
   }
 
-  public int getGraphDistance(int word1, int word2){
+  public int getGraphDistance(Word word1, Word word2){
     try {
-      IndexedWord wi1 = graph.getNodeByIndex(word1+1);
-      IndexedWord wi2 = graph.getNodeByIndex(word2+1);
+      IndexedWord wi1 = graph.getNodeByIndex(word1.getOriginalIndex());
+      IndexedWord wi2 = graph.getNodeByIndex(word2.getOriginalIndex());
       List<SemanticGraphEdge> edges = graph.getShortestUndirectedPathEdges(wi1, wi2);
       return edges.size();
     } catch (IllegalArgumentException iae) {

@@ -10,6 +10,7 @@ import com.google.common.collect.Multiset;
 import com.google.common.collect.Multiset.Entry;
 import org.apache.flink.api.common.functions.MapFunction;
 import org.apache.flink.api.java.tuple.Tuple2;
+import org.apache.flink.api.java.tuple.Tuple3;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -153,7 +154,7 @@ public class CreateCandidatesMapper implements MapFunction<ParsedWikiDocument, W
     Position firstAppearancePosition = formulaPositions.get(0);
 
     List<Relation> result = Lists.newArrayList();
-    List<Tuple2<Sentence, Set<Position>>> sentences = findSentencesWithFormula(doc.getSentences(), formula, doc.getFormulaGraph());
+    List<Tuple3<Sentence, Set<Position>, List<Word>>> sentences = findSentencesWithFormula(doc.getSentences(), formula, doc.getFormulaGraph());
     if ( sentences.isEmpty() ) return result;
 
     Multiset<String> wordFrequencies = HashMultiset.create();
@@ -172,7 +173,7 @@ public class CreateCandidatesMapper implements MapFunction<ParsedWikiDocument, W
             "that include (partially) the formula: " + formula.getContent());
 
     for (int sentenceIdx = 0; sentenceIdx < sentences.size(); sentenceIdx++) {
-      Tuple2<Sentence, Set<Position>> entry = sentences.get(sentenceIdx);
+      Tuple3<Sentence, Set<Position>, List<Word>> entry = sentences.get(sentenceIdx);
       Sentence sentence = entry.f0;
       List<Word> definiens = sentence.getNouns();
 
@@ -180,9 +181,9 @@ public class CreateCandidatesMapper implements MapFunction<ParsedWikiDocument, W
 
       for ( Word def : definiens ) {
 
-        Position closestPosition = getClosestPosition(def, entry.f1);
-        int wordDistance = calculateClosestDistance(def, entry.f1);
-        int graphDistance = sentence.getGraphDistance(def.getPosition().getWord(), closestPosition.getWord());
+//        Position closestPosition = getClosestPosition(def, entry.f1);
+//        int wordDistance = calculateClosestDistance(def, entry.f1);
+        int graphDistance = getClosestGraphDistance(sentence, def, entry.f2);
         int freq = wordFrequencies.count(def.getWord().toLowerCase());
         double score = calculateScore(
                 graphDistance,
@@ -376,6 +377,14 @@ public class CreateCandidatesMapper implements MapFunction<ParsedWikiDocument, W
             .orElse(Integer.MIN_VALUE);
   }
 
+  public static int getClosestGraphDistance(Sentence sentence, Word definien, List<Word> mathWordsInSentence) {
+    return mathWordsInSentence.stream()
+            .map( mathWord -> sentence.getGraphDistance(definien, mathWord) )
+            .mapToInt(i -> i)
+            .min()
+            .orElse( -1 );
+  }
+
   public static Position getClosestPosition(Word def, Set<Position> positions) {
     Position wordP = def.getPosition();
     return positions.stream()
@@ -392,22 +401,24 @@ public class CreateCandidatesMapper implements MapFunction<ParsedWikiDocument, W
    * @return the list of sentences and positions in these sentences where the given formula appears
    *         (or is a subexpression of a formula that appears in this sentence).
    */
-  private List<Tuple2<Sentence, Set<Position>>> findSentencesWithFormula(List<Sentence> sentences, MathTag formula, MathTagGraph graph) {
+  private List<Tuple3<Sentence, Set<Position>, List<Word>>> findSentencesWithFormula(List<Sentence> sentences, MathTag formula, MathTagGraph graph) {
     // first approach
-    List<Tuple2<Sentence, Set<Position>>> out = new LinkedList<>();
+    List<Tuple3<Sentence, Set<Position>, List<Word>>> out = new LinkedList<>();
 
     Collection<MathTag> superMathTags = graph.getOutgoingEdges(formula);
     for ( Sentence sentence : sentences ) {
       // first we add all positions from the formula itself
       Set<Position> poss = formula.getPositionsInSentence(sentence);
+      List<Word> wordss = formula.getWordsInSentence(sentence);
 
       // now add all outgoing connected nodes as well.
       for ( MathTag superTag : superMathTags ) {
         Set<Position> superPoss = superTag.getPositionsInSentence(sentence);
         poss.addAll(superPoss);
+        wordss.addAll(superTag.getWordsInSentence(sentence));
       }
 
-      if ( !poss.isEmpty() ) out.add(new Tuple2<>(sentence, poss));
+      if ( !poss.isEmpty() ) out.add(new Tuple3<>(sentence, poss, wordss));
     }
 
     return out;

@@ -42,11 +42,12 @@ public class TextAnnotator {
      * @return annotated sentences
      */
     public List<Sentence> annotate(List<String> text, DocumentMetaLib lib) {
-        List<List<List<Word>>> annotated = posTagger.annotate(text, lib);
-        List<List<List<Word>>> concatenated = PosTagger.concatenateTags(annotated);
-        List<List<GrammaticalStructure>> strucs = getGrammaticalStructures(concatenated);
-        updatePositions(concatenated);
-        return PosTagger.convertToSentences(concatenated, lib.getFormulaLib(), strucs);
+        return posTagger.annotate(text, lib);
+
+//        List<List<GrammaticalStructure>> strucs = getGrammaticalStructures(annotated);
+//        List<List<List<Word>>> concatenated = PosTagger.concatenateTags(annotated);
+//        updatePositions(concatenated);
+//        return PosTagger.convertToSentences(concatenated, lib.getFormulaLib(), strucs);
     }
 
     private void updatePositions(List<List<List<Word>>> words) {

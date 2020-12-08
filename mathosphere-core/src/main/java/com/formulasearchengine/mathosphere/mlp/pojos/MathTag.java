@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.formulasearchengine.mathosphere.mlp.cli.BaseConfig;
+import com.formulasearchengine.mathosphere.mlp.text.PosTag;
 import com.formulasearchengine.mathosphere.mlp.text.WikiTextUtils.MathMarkUpType;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Multiset;
@@ -104,6 +105,18 @@ public class MathTag implements SpecialToken {
         if ( s.getWords().isEmpty() ) return pos;
         Position sentencePos = s.getWords().get(0).getPosition();
         return positions.stream().filter( p -> Position.inSameSentence(p, sentencePos) ).collect(Collectors.toSet());
+    }
+
+    @JsonIgnore
+    public List<Word> getWordsInSentence(Sentence s) {
+        List<Word> words = new LinkedList<>();
+        if ( s.getWords().isEmpty() ) return words;
+        for ( Word w : s.getWords() ) {
+            if ( w.getPosTag().equals(PosTag.MATH) && w.getWord().equals(placeholder()) ) {
+                words.add(w);
+            }
+        }
+        return words;
     }
 
     public void addPosition(Position p) {

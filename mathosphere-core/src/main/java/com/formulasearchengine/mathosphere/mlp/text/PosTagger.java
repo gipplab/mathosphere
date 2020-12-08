@@ -7,10 +7,9 @@ import com.formulasearchengine.mathosphere.mlp.rus.RusPosAnnotator;
 import com.google.common.collect.*;
 import edu.stanford.nlp.ling.CoreAnnotations.*;
 import edu.stanford.nlp.ling.CoreLabel;
-import edu.stanford.nlp.pipeline.Annotation;
-import edu.stanford.nlp.pipeline.MorphaAnnotator;
-import edu.stanford.nlp.pipeline.POSTaggerAnnotator;
-import edu.stanford.nlp.pipeline.StanfordCoreNLP;
+import edu.stanford.nlp.pipeline.*;
+import edu.stanford.nlp.semgraph.SemanticGraph;
+import edu.stanford.nlp.semgraph.SemanticGraphCoreAnnotations;
 import edu.stanford.nlp.trees.GrammaticalStructure;
 import edu.stanford.nlp.util.CoreMap;
 import org.apache.commons.lang3.StringUtils;
@@ -43,6 +42,7 @@ public class PosTagger {
       POSTaggerAnnotator modelBasedPosAnnotator = new POSTaggerAnnotator(config.getModel(), false);
       pipeline.addAnnotator(modelBasedPosAnnotator);
       pipeline.addAnnotator(new MorphaAnnotator(false)); // for lemmas
+      pipeline.addAnnotator(new ParserAnnotator(false, 50));
     } else if ("ru".equals(cfg.getLanguage())) {
       pipeline.addAnnotator(new RusPosAnnotator());
       pipeline.addAnnotator(new MorphaAnnotator(false)); // for lemmas
@@ -66,8 +66,8 @@ public class PosTagger {
    *            tokenize by the StanfordNLP tagger.
    * @return POS-tagged list of sentences.
    */
-  public List<List<List<Word>>> annotate(List<String> sections, DocumentMetaLib lib) {
-    List<List<List<Word>>> result = Lists.newArrayList();
+  public List<Sentence> annotate(List<String> sections, DocumentMetaLib lib) {
+    List<Sentence> totalDocumentSentenceList = Lists.newArrayList();
     for ( int sec = 0; sec < sections.size(); sec++ ) {
       String cleanText = sections.get(sec);
 
@@ -76,19 +76,21 @@ public class PosTagger {
 
       Annotation document = new Annotation(cleanText);
       nlpPipeline.annotate(document);
-      List<List<Word>> sentences = Lists.newArrayList();
+      List<Sentence> sectionSentences = Lists.newArrayList();
 
-      for (CoreMap sentence : document.get(SentencesAnnotation.class)) {
-        List<Word> words = Lists.newArrayList();
+      for (CoreMap coreSentence : document.get(SentencesAnnotation.class)) {
+        List<Word> sentenceWords = Lists.newArrayList();
+        SemanticGraph graph = coreSentence.get(SemanticGraphCoreAnnotations.BasicDependenciesAnnotation.class);
 
-        final List<CoreLabel> coreLabels = sentence.get(TokensAnnotation.class);
+        final List<CoreLabel> coreLabels = coreSentence.get(TokensAnnotation.class);
         for ( int i = 0; i < coreLabels.size(); i++ ) {
           CoreLabel token = coreLabels.get(i);
           String textToken = token.word();
           String pos = token.tag();
           String lemma = token.lemma();
+          int index = token.index();
           SpecialToken specialToken = null;
-          Position p = new Position(result.size(), sentences.size(), words.size());
+          Position p = new Position(sec, sectionSentences.size(), sentenceWords.size());
           p.setDocumentLib(lib);
           // underscores are split in v3.9.2, see: https://github.com/stanfordnlp/CoreNLP/issues/942
           if (textToken.startsWith(PlaceholderLib.FORMULA)) {
@@ -98,12 +100,12 @@ public class PosTagger {
               textToken += underscore;
             }
             specialToken = lib.getFormulaLib().get(textToken);
-            words.add(new Word(p, textToken, lemma, PosTag.MATH));
+            sentenceWords.add(new Word(p, textToken, lemma, PosTag.MATH).setOriginalIndex(index));
           } else if (SYMBOLS.contains(textToken)) {
-            words.add(new Word(p, textToken, lemma, PosTag.SYMBOL).setOriginalPosTag(pos));
+            sentenceWords.add(new Word(p, textToken, lemma, PosTag.SYMBOL).setOriginalPosTag(pos).setOriginalIndex(index));
           } else if (BRACKET_CODES.containsKey(textToken)) {
 //            words.add(new Word(p, BRACKET_CODES.get(textToken), pos));
-            words.add(new Word(p, textToken, lemma, pos));
+            sentenceWords.add(new Word(p, textToken, lemma, pos).setOriginalIndex(index));
           } else if (textToken.startsWith(PlaceholderLib.LINK)) {
             String underscore = handleUnderscore(coreLabels, i);
             if ( underscore != null ){
@@ -113,7 +115,7 @@ public class PosTagger {
             specialToken = lib.getLinkLib().get(textToken);
             WikidataLink link = (WikidataLink) specialToken;
             String linkText = link.getTitle() == null ? link.getContent() : link.getTitle();
-            words.add(new Word(p, link.placeholder(), lemma, PosTag.LINK).setOriginalPosTag(pos));
+            sentenceWords.add(new Word(p, link.placeholder(), lemma, PosTag.LINK).setOriginalPosTag(pos).setOriginalIndex(index));
           } else if (textToken.startsWith(PlaceholderLib.CITE)) {
             String underscore = handleUnderscore(coreLabels, i);
             if ( underscore != null ){
@@ -124,25 +126,28 @@ public class PosTagger {
             // in the lib, but no longer in the text
 //            words.add(new Word(p, textToken, PosTag.CITE));
           } else if ( textToken.toLowerCase().matches("polynomials?") ) {
-            words.add(new Word(p, textToken, lemma, PosTag.NOUN));
+            sentenceWords.add(new Word(p, textToken, lemma, PosTag.NOUN).setOriginalIndex(index));
           } else if (tempLinkMap.containsKey(textToken) ) {
             WikidataLink link = tempLinkMap.get(textToken);
             String txt = link.getTitle() == null ? link.getContent() : link.getTitle();
-            words.add(new Word(p, link.placeholder(), lemma, PosTag.LINK).setOriginalPosTag(pos));
+            sentenceWords.add(new Word(p, link.placeholder(), lemma, PosTag.LINK).setOriginalPosTag(pos).setOriginalIndex(index));
           } else {
-            words.add(new Word(p, textToken, lemma, pos));
+            sentenceWords.add(new Word(p, textToken, lemma, pos).setOriginalIndex(index));
           }
           if ( specialToken != null ) {
             specialToken.addPosition(p);
           }
         }
-        sentences.add(words);
+
+        sentenceWords = concatenateTagsInSingleSentence( sentenceWords );
+        Sentence sentence = toSentence( sec, sentenceWords, lib.getFormulaLib(), graph );
+        sectionSentences.add(sentence);
       }
-      result.add(sentences);
+      lib.addDocumentLength(sections.size(), sec, sectionSentences);
+      totalDocumentSentenceList.addAll(sectionSentences);
     }
 
-    lib.setDocumentLength(result);
-    return result;
+    return totalDocumentSentenceList;
   }
 
   private String undoSingleTermTextLinkage(String text, HashMap<String, WikidataLink> linkMap, DocumentMetaLib lib) {
@@ -208,7 +213,7 @@ public class PosTagger {
       for ( int j = 0; j < sentences.size(); j++ ) {
         List<Word> sentence = sentences.get(j);
         GrammaticalStructure gs = innerStrucs.get(j);
-        Sentence s = toSentence(i, sentence, formulaIndex, gs);
+        Sentence s = toSentence(i, sentence, formulaIndex, null);
         result.add(s);
       }
     }
@@ -226,7 +231,7 @@ public class PosTagger {
           int section,
           List<Word> input,
           Map<String, MathTag> formulaIndex,
-          GrammaticalStructure gs
+          SemanticGraph graph
   ) {
     List<Word> words = Lists.newArrayListWithCapacity(input.size());
     Set<String> sentenceIdentifiers = Sets.newHashSet();
@@ -283,7 +288,7 @@ public class PosTagger {
       words.add(w);
     }
 
-    return new Sentence(section, words, sentenceIdentifiers, formulas, gs);
+    return new Sentence(section, words, sentenceIdentifiers, formulas, graph);
   }
 
   /**
@@ -297,13 +302,17 @@ public class PosTagger {
     for ( List<List<Word>> sec : sentences ) {
       List<List<Word>> innerRes = Lists.newArrayListWithCapacity(sec.size());
       for (List<Word> sentence : sec) {
-        List<Word> res = concatenatePhrases(sentence);
+        List<Word> res = concatenateTagsInSingleSentence(sentence);
         innerRes.add(res);
       }
       results.add(innerRes);
     }
 
     return results;
+  }
+
+  public static List<Word> concatenateTagsInSingleSentence(List<Word> sentence) {
+    return concatenatePhrases(sentence);
   }
 
   /**
@@ -385,7 +394,7 @@ public class PosTagger {
 
   protected static List<Word> concatenateSuccessiveNounsPossessiveEndingNounsSequence(List<Word> in) {
     com.alexeygrigorev.rseq.Pattern<Word> pattern = com.alexeygrigorev.rseq.Pattern.create(
-            pos(PosTag.DETERMINER).optional(),
+//            pos(PosTag.DETERMINER).optional(),
             pos(PosTag.ANY_ADJECTIVE_REGEX).zeroOrMore(),
             pos(PosTag.ANY_NOUN_REGEX + "|" + PosTag.FOREIGN_WORD).oneOrMore(),
             pos(PosTag.POSSESSIVE_ENDING),
@@ -404,7 +413,7 @@ public class PosTagger {
 
   protected static List<Word> concatenateSuccessiveAdjectiveNounsSequence(List<Word> in) {
     com.alexeygrigorev.rseq.Pattern<Word> pattern = com.alexeygrigorev.rseq.Pattern.create(
-            pos(PosTag.DETERMINER).optional(),
+//            pos(PosTag.DETERMINER).optional(),
             pos(PosTag.ANY_ADJECTIVE_REGEX).zeroOrMore(),
             pos(PosTag.ANY_NOUN_REGEX + "|" + PosTag.FOREIGN_WORD).oneOrMore()
     );
@@ -420,7 +429,7 @@ public class PosTagger {
 
   protected static List<Word> concatenateNounsPrepositionDeterminerAdjectiveNouns(List<Word> in) {
     com.alexeygrigorev.rseq.Pattern<Word> pattern = com.alexeygrigorev.rseq.Pattern.create(
-            pos(PosTag.DETERMINER).optional(),
+//            pos(PosTag.DETERMINER).optional(),
             pos(PosTag.ANY_ADJECTIVE_REGEX).zeroOrMore(),
             pos(PosTag.ANY_NOUN_REGEX + "|" + PosTag.FOREIGN_WORD).oneOrMore(),
             pos(PosTag.PREPOSITION).optional(),
@@ -448,10 +457,16 @@ public class PosTagger {
   }
 
   private static Word linkSaveWord(List<Word> sequence, String posTag) {
+    int idx = sequence.stream()
+            .filter(w -> w.getPosTag().matches(PosTag.ANY_NOUN_REGEX))
+            .map(Word::getOriginalIndex)
+            .findFirst()
+            .orElse( sequence.get(0).getOriginalIndex() );
     Word link = sequence.stream().filter( w -> w.getPosTag().equals(PosTag.LINK) ).findFirst().orElse(null);
     if ( link != null )
-      return new Word(sequence.get(0).getPosition(), link.getWord(), PosTag.LINK);
-    else return new Word(sequence.get(0).getPosition(), joinWords(sequence), posTag);
+      return new Word(sequence.get(0).getPosition(), link.getWord(), PosTag.LINK).setOriginalIndex(idx);
+    else
+      return new Word(sequence.get(0).getPosition(), joinWords(sequence), posTag).setOriginalIndex(idx);
   }
 
   private static List<Word> concatenateSuccessiveTags(List<Word> in, XMatcher<Word> matcher, String newTag) {

@@ -4,6 +4,7 @@ import com.formulasearchengine.mathosphere.mlp.cli.BaseConfig;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -102,6 +103,15 @@ public class DocumentMetaLib {
             }
             sectionSentenceLengths.add(sentenceLength);
         }
+    }
+
+    public void addDocumentLength(int maxSections, int section, List<Sentence> sentencesInSection) {
+        if ( sectionSentenceLengths == null ) sectionSentenceLengths = Lists.newArrayListWithCapacity(maxSections);
+        List<Integer> sentenceLengths = new LinkedList<>();
+        for ( Sentence s : sentencesInSection ) {
+            sentenceLengths.add(s.getWords().size());
+        }
+        sectionSentenceLengths.add(section, sentenceLengths);
     }
 
     public int getNumberOfSentencesInSection(int section) {
