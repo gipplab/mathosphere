@@ -21,11 +21,9 @@ import java.util.stream.Collectors;
 public class TextAnnotator {
 
     private final PosTagger posTagger;
-    private final DependencyParser dependencyParser;
 
     public TextAnnotator(BaseConfig config) {
         this.posTagger = PosTagger.create(config);
-        this.dependencyParser = DependencyParser.loadFromModelFile(config.getDependencyParserModel());
     }
 
     protected List<Sentence> annotate(String text, DocumentMetaLib lib) {
@@ -43,37 +41,6 @@ public class TextAnnotator {
      */
     public List<Sentence> annotate(List<String> text, DocumentMetaLib lib) {
         return posTagger.annotate(text, lib);
-
-//        List<List<GrammaticalStructure>> strucs = getGrammaticalStructures(annotated);
-//        List<List<List<Word>>> concatenated = PosTagger.concatenateTags(annotated);
-//        updatePositions(concatenated);
-//        return PosTagger.convertToSentences(concatenated, lib.getFormulaLib(), strucs);
-    }
-
-    private void updatePositions(List<List<List<Word>>> words) {
-        words.stream()
-                .flatMap(Collection::stream)
-                .forEach( sentence -> {
-                    for ( int i = 0; i < sentence.size(); i++ ){
-                        sentence.get(i).getPosition().setWord(i);
-                    }
-                });
-    }
-
-    public List<List<GrammaticalStructure>> getGrammaticalStructures(List<List<List<Word>>> doc) {
-        List<List<GrammaticalStructure>> secStrucs = new LinkedList<>();
-        for ( List<List<Word>> sec : doc ) {
-            List<GrammaticalStructure> senStrucs = new LinkedList<>();
-            for ( List<Word> sentence : sec ) {
-                List<TaggedWord> tws = sentence.stream()
-                        .map( w -> new TaggedWord(w.getWord(), undoPosTag(w.getOriginalPosTag())))
-                        .collect(Collectors.toList());
-                GrammaticalStructure gs = dependencyParser.predict(tws);
-                senStrucs.add(gs);
-            }
-            secStrucs.add(senStrucs);
-        }
-        return secStrucs;
     }
 
     public String undoPosTag(String posTag) {

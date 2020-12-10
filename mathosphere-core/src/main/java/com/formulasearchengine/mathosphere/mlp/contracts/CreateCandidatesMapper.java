@@ -63,15 +63,30 @@ public class CreateCandidatesMapper implements MapFunction<ParsedWikiDocument, W
       return new WikiDocumentOutput(doc.getTitle(), relations, doc.getFormulaeMap());
 
     Collection<MathTag> math = doc.getFormulae();
-    relations = math.stream()
+    relations = analyzeFormulae(doc, math);
+    return new WikiDocumentOutput(doc.getTitle(), relations, doc.getFormulaeMap());
+  }
+
+  public void analyzeSingleFormulaWithDependencies( ParsedWikiDocument doc, MathTag formula ) {
+    MathTagGraph graph = doc.getFormulaGraph();
+    if ( !graph.contains( formula ) ) {
+      LOG.info("The requested formula is not part of the dependency tree. Adding it as a node to the tree.");
+      graph.addFormula(formula);
+    }
+    List<MathTag> formulae = new LinkedList<>(graph.getIngoingEdges(formula));
+    formulae.add(0, formula); // the formula itself must be an element as well... lol
+
+    analyzeFormulae(doc, formulae);
+  }
+
+  private List<Relation> analyzeFormulae( ParsedWikiDocument doc, Collection<MathTag> formulae ) {
+    return formulae.stream()
             .filter( m -> m.getPositions() != null && m.getPositions().size() > 0 )
             .sorted(Comparator.comparing(m -> m.getPositions().get(0)))
             .flatMap( m -> relations(doc, m) )
             .filter( rel -> rel.getScore() >= config.getThreshold() )
             .sorted() // uses Relation.compareTo(Relation r) method
             .collect(Collectors.toList());
-
-    return new WikiDocumentOutput(doc.getTitle(), relations, doc.getFormulaeMap());
   }
 
   private Stream<Relation> relations(ParsedWikiDocument doc, MathTag mathTag) {

@@ -7,6 +7,7 @@ import com.formulasearchengine.mathosphere.mlp.rus.RusPosAnnotator;
 import com.google.common.collect.*;
 import edu.stanford.nlp.ling.CoreAnnotations.*;
 import edu.stanford.nlp.ling.CoreLabel;
+import edu.stanford.nlp.parser.nndep.DependencyParser;
 import edu.stanford.nlp.pipeline.*;
 import edu.stanford.nlp.semgraph.SemanticGraph;
 import edu.stanford.nlp.semgraph.SemanticGraphCoreAnnotations;
@@ -19,7 +20,7 @@ import org.apache.logging.log4j.Logger;
 import java.util.*;
 
 public class PosTagger {
-  private static BaseConfig config;
+  private final BaseConfig config;
 
   private static final Logger LOGGER = LogManager.getLogger(PosTagger.class.getName());
 
@@ -29,8 +30,15 @@ public class PosTagger {
     .put("-LRB-", "(").put("-RRB-", ")").put("-LCB-", "{").put("-RCB-", "}").put("-LSB-", "[")
     .put("-RSB-", "]").build();
 
+  private static final Map<String, PosTagger> taggerMap = new HashMap<>();
+
   public static PosTagger create(BaseConfig cfg) {
-    config = cfg;
+    String key = cfg.getLanguage() + cfg.getModel();
+    return taggerMap.computeIfAbsent(key, (str) -> PosTagger.createNewTagger(cfg));
+  }
+
+  private static PosTagger createNewTagger(BaseConfig cfg) {
+    LOGGER.debug("Create a new pos tagger instance for language " + cfg.getLanguage() + ", model path: " + cfg.getModel());
     Properties props = new Properties();
     props.put("annotators", "tokenize, ssplit");
     props.put("tokenize.options", "untokenizable=firstKeep,strictTreebank3=true,ptb3Escaping=true,escapeForwardSlashAsterisk=false");
@@ -39,7 +47,7 @@ public class PosTagger {
     StanfordCoreNLP pipeline = new StanfordCoreNLP(props);
 
     if ("en".equals(cfg.getLanguage())) {
-      POSTaggerAnnotator modelBasedPosAnnotator = new POSTaggerAnnotator(config.getModel(), false);
+      POSTaggerAnnotator modelBasedPosAnnotator = new POSTaggerAnnotator(cfg.getModel(), false);
       pipeline.addAnnotator(modelBasedPosAnnotator);
       pipeline.addAnnotator(new MorphaAnnotator(false)); // for lemmas
       pipeline.addAnnotator(new ParserAnnotator(false, 50));
@@ -47,16 +55,17 @@ public class PosTagger {
       pipeline.addAnnotator(new RusPosAnnotator());
       pipeline.addAnnotator(new MorphaAnnotator(false)); // for lemmas
     } else {
-      throw new IllegalArgumentException("Cannot deal with language " + config.getLanguage());
+      throw new IllegalArgumentException("Cannot deal with language " + cfg.getLanguage());
     }
 
-    return new PosTagger(pipeline);
+    return new PosTagger(pipeline, cfg);
   }
 
   private final StanfordCoreNLP nlpPipeline;
 
-  public PosTagger(StanfordCoreNLP nlpPipeline) {
+  public PosTagger(StanfordCoreNLP nlpPipeline, BaseConfig config) {
     this.nlpPipeline = nlpPipeline;
+    this.config = config;
   }
 
   /**
@@ -206,7 +215,7 @@ public class PosTagger {
     return null;
   }
 
-  protected static List<Sentence> convertToSentences(
+  protected List<Sentence> convertToSentences(
           List<List<List<Word>>> input,
           Map<String, MathTag> formulaIndex,
           List<List<GrammaticalStructure>> strucs
@@ -233,7 +242,7 @@ public class PosTagger {
    * @param formulaIndex
    * @return
    */
-  protected static Sentence toSentence(
+  protected Sentence toSentence(
           int section,
           List<Word> input,
           Map<String, MathTag> formulaIndex,
@@ -328,7 +337,7 @@ public class PosTagger {
    * @return ..
    */
   @Deprecated
-  private static List<Word> concatenateSingleWordList(List<Word> sentence, Set<String> allIdentifiers) {
+  private List<Word> concatenateSingleWordList(List<Word> sentence, Set<String> allIdentifiers) {
     // links
     List<Word> result;
     if (config.getUseTeXIdentifiers()) {

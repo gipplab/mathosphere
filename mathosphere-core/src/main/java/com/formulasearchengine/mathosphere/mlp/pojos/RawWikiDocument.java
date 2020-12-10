@@ -43,6 +43,10 @@ public class RawWikiDocument extends RawDocument {
     super(title, namespace, content);
   }
 
+  public RawWikiDocument(RawWikiDocument reference) {
+    super(reference.getTitle(), reference.getNamespace(), reference.getContent());
+  }
+
   private void setMeta(String page) {
     Matcher titleMatcher = TITLE_PATTERN.matcher(page);
     if ( titleMatcher.find() ) {
