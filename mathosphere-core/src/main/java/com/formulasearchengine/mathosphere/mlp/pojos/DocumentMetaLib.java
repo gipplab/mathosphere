@@ -50,7 +50,7 @@ public class DocumentMetaLib {
     }
 
     public void addFormula(MathTag mathTag) {
-        formulaLib.put( mathTag.placeholder(), mathTag );
+        formulaLib.putIfAbsent( mathTag.placeholder(), mathTag );
         this.graph.addFormula(mathTag);
     }
 
