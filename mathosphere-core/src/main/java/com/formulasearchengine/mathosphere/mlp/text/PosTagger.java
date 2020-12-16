@@ -447,16 +447,16 @@ public class PosTagger {
 //            pos(PosTag.DETERMINER).optional(),
             pos(PosTag.ANY_ADJECTIVE_REGEX).zeroOrMore(),
             pos(PosTag.ANY_NOUN_REGEX + "|" + PosTag.FOREIGN_WORD).oneOrMore(),
-            pos(PosTag.PREPOSITION).optional(),
+            pos(PosTag.PREPOSITION),
             pos(PosTag.DETERMINER).optional(),
             pos(PosTag.ANY_ADJECTIVE_REGEX).zeroOrMore(),
-            pos(PosTag.ANY_NOUN_REGEX + "|" + PosTag.FOREIGN_WORD).zeroOrMore()
+            pos(PosTag.ANY_NOUN_REGEX + "|" + PosTag.FOREIGN_WORD).oneOrMore()
     );
     return pattern.replaceToOne(in, new TransformerToElement<Word>() {
       @Override
       public Word transform(Match<Word> match) {
         List<Word> matchedSequence = match.getMatchedSubsequence();
-        return linkSaveWord(matchedSequence, matchedSequence.get(matchedSequence.size()-1).getPosTag());
+        return linkSaveWord(matchedSequence, PosTag.NOUN_PHRASE);
       }
     });
   }
