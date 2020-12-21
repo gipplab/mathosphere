@@ -303,9 +303,11 @@ public class CreateCandidatesMapper implements MapFunction<ParsedWikiDocument, W
    * @return Score how likely the definiendum is the correct definition for the identifier.
    */
   private double calculateScore(int distance, int frequency, int maxFrequency, int sentenceIdx) {
+    // sigma_d
     double std1 = Math.sqrt(Math.pow(5d, 2d) / (2d * Math.log(2)));
     double dist = gaussian(distance, std1);
 
+    // sigma_s
     double std2 = Math.sqrt(Math.pow(3d, 2d) / (2d * Math.log(2)));
     double seq = gaussian(sentenceIdx, std2);
 
@@ -313,8 +315,10 @@ public class CreateCandidatesMapper implements MapFunction<ParsedWikiDocument, W
     return (alpha * dist + beta * seq + gamma * relativeFrequency) / (alpha + beta + gamma);
   }
 
+  private static final double SQRT_DOUBLE_PI = Math.sqrt( 2d * Math.PI );
+
   private static double gaussian(double x, double std) {
-    return Math.exp(-(x * x) / (2 * std * std));
+    return Math.exp(-(x * x) / (2 * std * std)) / (std * SQRT_DOUBLE_PI);
   }
 
   /**
