@@ -191,5 +191,10 @@ public class MathTag implements SpecialToken {
         ));
         return allIdentifiers;
     }
+
+    public static String getID(String tex) {
+        String hash = HASHER.hashString(tex, StandardCharsets.UTF_8).toString();
+        return "FORMULA_"+hash;
+    }
 }
 

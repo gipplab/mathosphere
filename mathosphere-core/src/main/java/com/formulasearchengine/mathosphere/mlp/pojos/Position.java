@@ -1,5 +1,6 @@
 package com.formulasearchengine.mathosphere.mlp.pojos;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.formulasearchengine.mathosphere.mlp.text.PosTag;
 
@@ -20,6 +21,7 @@ public class Position implements Comparable<Position> {
     @JsonProperty("word")
     private int word;
 
+    @JsonIgnore
     private DocumentMetaLib lib;
 
     public Position() {

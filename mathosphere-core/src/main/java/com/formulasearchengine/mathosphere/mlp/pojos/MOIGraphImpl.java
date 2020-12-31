@@ -1,5 +1,6 @@
 package com.formulasearchengine.mathosphere.mlp.pojos;
 
+import gov.nist.drmf.interpreter.pom.moi.IDependency;
 import gov.nist.drmf.interpreter.pom.moi.MOIDependency;
 import gov.nist.drmf.interpreter.pom.moi.MOIDependencyGraph;
 import gov.nist.drmf.interpreter.pom.moi.MOINode;
@@ -62,9 +63,9 @@ public class MOIGraphImpl extends MOIDependencyGraph<MathTag> implements MathTag
         MOINode<MathTag> node = super.getNode(mathTag.placeholder());
         if ( node == null ) return new HashSet<>();
         return node.getOutgoingDependencies().stream()
-                .map( MOIDependency::getSink )
+                .map( IDependency::getSink )
+                .map( o -> (MOINode<MathTag>)o)
                 .map( MOINode::getAnnotation )
-                .map( o -> (MathTag)o)
                 .collect(Collectors.toSet());
     }
 
@@ -73,9 +74,9 @@ public class MOIGraphImpl extends MOIDependencyGraph<MathTag> implements MathTag
         MOINode<MathTag> node = super.getNode(mathTag.placeholder());
         if ( node == null ) return new HashSet<>();
         return node.getIngoingDependencies().stream()
-                .map( MOIDependency::getSource )
+                .map( IDependency::getSource )
+                .map( o -> (MOINode<MathTag>)o)
                 .map( MOINode::getAnnotation )
-                .map( o -> (MathTag)o)
                 .collect(Collectors.toSet());
     }
 }
