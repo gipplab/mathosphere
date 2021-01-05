@@ -318,7 +318,7 @@ public class CreateCandidatesMapper implements MapFunction<ParsedWikiDocument, W
   private static final double SQRT_DOUBLE_PI = Math.sqrt( 2d * Math.PI );
 
   private static double gaussian(double x, double std) {
-    return Math.exp(-(x * x) / (2 * std * std)) / (std * SQRT_DOUBLE_PI);
+    return Math.exp(-(x * x) / (2 * std * std)); // / (std * SQRT_DOUBLE_PI);
   }
 
   /**

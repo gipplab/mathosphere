@@ -12,12 +12,14 @@ import com.google.common.collect.Multiset;
 import com.google.common.collect.Sets;
 import com.google.common.hash.HashFunction;
 import com.google.common.hash.Hashing;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -54,7 +56,7 @@ public class MathTag implements SpecialToken {
 
     @JsonGetter("inputhash")
     public String getContentHash() {
-        return HASHER.hashString(content, StandardCharsets.UTF_8).toString();
+        return hash(content);
     }
 
     @Deprecated
@@ -143,7 +145,7 @@ public class MathTag implements SpecialToken {
 
     @JsonIgnore
     public String placeholder() {
-        return "FORMULA_" + getContentHash();
+        return getID(content);
     }
 
     public String toJson()  {
@@ -192,9 +194,16 @@ public class MathTag implements SpecialToken {
         return allIdentifiers;
     }
 
+    public static String hash(String in) {
+        // the old version (HASHER come from Hashing.goodFastHash(64); from import com.google.common.hash.HashFunction;)
+        // was time dependant (or instance dependant, what ever...) restarting the damn VM generated other hashes... man
+        //        return HASHER.hashString(content, StandardCharsets.UTF_8).toString();
+        return DigestUtils.md5Hex(in);
+    }
+
     public static String getID(String tex) {
-        String hash = HASHER.hashString(tex, StandardCharsets.UTF_8).toString();
-        return "FORMULA_"+hash;
+        String hash = hash(tex);
+        return "FORMULA_" + hash;
     }
 }
 
