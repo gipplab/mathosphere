@@ -302,6 +302,36 @@ public class WikiTextParserTest {
 
         MathTag tag = mathTags.entrySet().stream().findFirst().orElseThrow().getValue();
         assertEquals( "J_{\\alpha}(x)", tag.getContent() );
+
+
+    }
+
+    @Test
+    public void utf8Test() throws LinkTargetException, EngineException {
+        String wikiText = "This is true because {{math|−π &lt; arg ''z'' ≤ {{sfrac|π|2}}}}.";
+        wikiText = StringEscapeUtils.unescapeXml(wikiText);
+        final WikiTextParser mathConverter = new WikiTextParser(wikiText);
+        mathConverter.parse();
+
+        Map<String, MathTag> mathTags = mathConverter.getMetaLibrary().getFormulaLib();
+        assertEquals(1, mathTags.size());
+
+        MathTag tag = mathTags.entrySet().stream().findFirst().orElseThrow().getValue();
+        assertEquals( "-\\pi < arg z \\leq\\frac{\\pi}{2}", tag.getContent() );
+    }
+
+    @Test
+    public void utf8MathTest() throws LinkTargetException, EngineException {
+        String wikiText = "0&amp;nbsp;≤&amp;nbsp;''x''&amp;nbsp;≤&amp;nbsp;1";
+        wikiText = StringEscapeUtils.unescapeXml(wikiText);
+        final WikiTextParser mathConverter = new WikiTextParser(wikiText);
+        mathConverter.parse();
+
+        Map<String, MathTag> mathTags = mathConverter.getMetaLibrary().getFormulaLib();
+        assertEquals(1, mathTags.size());
+
+        MathTag tag = mathTags.entrySet().stream().findFirst().orElseThrow().getValue();
+        assertEquals( "0 \\leq x\\leq 1", tag.getContent() );
     }
 
     @Test

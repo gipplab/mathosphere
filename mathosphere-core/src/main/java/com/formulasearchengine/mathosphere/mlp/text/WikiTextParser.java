@@ -214,8 +214,12 @@ public class WikiTextParser extends AstVisitor<WtNode> {
         StringBuilder sb = new StringBuilder();
         if (node == null) return "";
         for (WtNode n : node) {
-            Object o = dispatch(n);
-            addLatestElement(o, sb, betweenElements, resetMath);
+            try {
+                Object o = dispatch(n);
+                addLatestElement(o, sb, betweenElements, resetMath);
+            } catch ( Exception e ) {
+                LOG.error("Something went wrong dispatching a node in Wikitext: " + n.toString());
+            }
         }
         return sb.toString();
     }
@@ -657,7 +661,8 @@ public class WikiTextParser extends AstVisitor<WtNode> {
             return "";
         }
 
-        return updateOrCreateNewMath( prefix + "\\frac{" + numerator + "}{" + denominator + "}", WikiTextUtils.MathMarkUpType.LATEX);
+        String math = prefix + "\\frac{" + fixMathInRow(numerator) + "}{" + fixMathInRow(denominator) + "}";
+        return updateOrCreateNewMath( math, WikiTextUtils.MathMarkUpType.LATEX);
     }
 
     private String handleSuElement(WtTemplateArguments args) {
@@ -1102,7 +1107,7 @@ public class WikiTextParser extends AstVisitor<WtNode> {
     }
 
     private static final Pattern NOWRAP_PATTERN = Pattern.compile(
-            "\\{{2}nowrap\\|(?:\\d+=)?([^{]*?)}{2}"
+            "\\{{2}nowrap\\|(?:\\d+=)?([^{]*?)}{2}|(?: |&nbsp;)"
     );
 
     public static String preProcess(String input) {
@@ -1111,7 +1116,9 @@ public class WikiTextParser extends AstVisitor<WtNode> {
         StringBuilder sb = new StringBuilder();
         Matcher m = NOWRAP_PATTERN.matcher(input);
         while ( m.find() ) {
-            m.appendReplacement(sb, m.group(1));
+            if ( m.group(1) == null )
+                m.appendReplacement(sb, " ");
+            else m.appendReplacement(sb, m.group(1));
         }
         m.appendTail(sb);
         return sb.toString();

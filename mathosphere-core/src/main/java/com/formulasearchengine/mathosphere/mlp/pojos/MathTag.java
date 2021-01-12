@@ -21,6 +21,8 @@ import org.apache.logging.log4j.Logger;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import static com.formulasearchengine.mathosphere.mlp.text.MathMLUtils.extractIdentifiers;
@@ -40,6 +42,7 @@ public class MathTag implements SpecialToken {
     public MathTag(String content, MathMarkUpType markUp) {
         this.positions = new LinkedList<>();
         this.content = content.trim();
+        if ( content.endsWith("\\") ) this.content = this.content.substring(0, this.content.length()-1);
         this.markUpType = markUp;
     }
 
@@ -127,13 +130,30 @@ public class MathTag implements SpecialToken {
 
     @JsonIgnore
     public String getTagContent() {
-        return content.replaceAll("<math.*?>", "").replaceAll("</math>", "");
+        return clean(content);
+    }
+
+    private static final Pattern EOM_PATTERN = Pattern.compile("\\\\([,;.!]|$)");
+
+    private String clean(String in) {
+        in = in.replaceAll("<math.*?>", "").replaceAll("</math>", "");
+        StringBuilder sb = new StringBuilder();
+        Matcher m = EOM_PATTERN.matcher(in);
+        while ( m.find() ) {
+            m.appendReplacement(sb, "");
+        }
+        m.appendTail(sb);
+        return sb.toString();
     }
 
     public void extendContent(String extension) {
         // should be only supported for tex...
         if ( MathMarkUpType.MATHML.equals(markUpType) ) {
             throw new IllegalArgumentException("Extend the content of MathML is not supported.");
+        }
+        if ( content != null && !content.isBlank() ) {
+            if ( content.matches(".*\\\\[a-zA-Z]+$") && extension.matches("^[a-zA-Z].*") )
+                extension = " " + extension;
         }
         content += extension;
     }

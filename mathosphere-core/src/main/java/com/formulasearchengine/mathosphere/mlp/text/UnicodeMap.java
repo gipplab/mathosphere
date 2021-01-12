@@ -45,8 +45,8 @@ public class UnicodeMap {
     boolean previousHitIntroducedMacro = false;
     for (int code : chars) {
       String s = normalizeMathTex(char2TeX(code));
-      if ( previousHitIntroducedMacro && s.matches("[a-zA-Z]+") ) res.append(" ");
-      previousHitIntroducedMacro = s.matches( "\\\\[a-zA-Z]+" );
+      if ( previousHitIntroducedMacro && s.matches("^[a-zA-Z].*") ) res.append(" ");
+      previousHitIntroducedMacro = s.matches( "^\\\\.+" );
       res.append(s);
     }
     String s = res.toString().trim();
