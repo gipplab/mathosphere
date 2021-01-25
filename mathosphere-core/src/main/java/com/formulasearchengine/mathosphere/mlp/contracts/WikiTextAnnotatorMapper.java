@@ -27,7 +27,7 @@ public class WikiTextAnnotatorMapper extends RichMapFunction<RawWikiDocument, Pa
   }
 
   @Override
-  public void open(Configuration cfg) {
+  public synchronized void open(Configuration cfg) {
     annotator = new TextAnnotator(config);
   }
 
@@ -50,6 +50,7 @@ public class WikiTextAnnotatorMapper extends RichMapFunction<RawWikiDocument, Pa
       WikiTextParser c = new WikiTextParser(doc, config, lib);
       List<String> cleanText = c.parse();
       lib = c.getMetaLibrary();
+      if ( doc != null ) LOG.info("NLP analyzing document " + doc.getTitle());
       sentences = annotator.annotate(cleanText, lib);
     } catch (Exception e) {
       LOG.warn("Unable to parse wikitext from document {}. Reason: {}", doc.getTitle(), e);

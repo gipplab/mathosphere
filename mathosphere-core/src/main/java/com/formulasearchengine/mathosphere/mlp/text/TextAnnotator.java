@@ -39,7 +39,7 @@ public class TextAnnotator {
      * @param lib ..
      * @return annotated sentences
      */
-    public List<Sentence> annotate(List<String> text, DocumentMetaLib lib) {
+    public synchronized List<Sentence> annotate(List<String> text, DocumentMetaLib lib) {
         return posTagger.annotate(text, lib);
     }
 

@@ -32,12 +32,12 @@ public class PosTagger {
 
   private static final Map<String, PosTagger> taggerMap = new HashMap<>();
 
-  public static PosTagger create(BaseConfig cfg) {
+  public synchronized static PosTagger create(BaseConfig cfg) {
     String key = cfg.getLanguage() + cfg.getModel();
     return taggerMap.computeIfAbsent(key, (str) -> PosTagger.createNewTagger(cfg));
   }
 
-  private static PosTagger createNewTagger(BaseConfig cfg) {
+  private synchronized static PosTagger createNewTagger(BaseConfig cfg) {
     LOGGER.debug("Create a new pos tagger instance for language " + cfg.getLanguage() + ", model path: " + cfg.getModel());
     Properties props = new Properties();
     props.put("annotators", "tokenize, ssplit");
@@ -75,9 +75,11 @@ public class PosTagger {
    *            tokenize by the StanfordNLP tagger.
    * @return POS-tagged list of sentences.
    */
-  public List<Sentence> annotate(List<String> sections, DocumentMetaLib lib) {
+  public synchronized List<Sentence> annotate(List<String> sections, DocumentMetaLib lib) {
+    LOGGER.info("Start annotating document via CoreNLP.");
     List<Sentence> totalDocumentSentenceList = Lists.newArrayList();
     for ( int sec = 0; sec < sections.size(); sec++ ) {
+      LOGGER.info("Annotating section " + sec + "/" + sections.size());
       String cleanText = sections.get(sec);
 
       HashMap<String, WikidataLink> tempLinkMap = new HashMap<>();
@@ -159,6 +161,7 @@ public class PosTagger {
       totalDocumentSentenceList.addAll(sectionSentences);
     }
 
+    LOGGER.info("Finished annotating document with CoreNLP");
     return totalDocumentSentenceList;
   }
 
