@@ -12,6 +12,7 @@ import com.google.common.collect.Multiset;
 import com.google.common.collect.Sets;
 import com.google.common.hash.HashFunction;
 import com.google.common.hash.Hashing;
+import gov.nist.drmf.interpreter.common.latex.TeXPreProcessor;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -143,7 +144,7 @@ public class MathTag implements SpecialToken {
             m.appendReplacement(sb, "");
         }
         m.appendTail(sb);
-        return sb.toString();
+        return TeXPreProcessor.preProcessingTeX(sb.toString());
     }
 
     public void extendContent(String extension) {
