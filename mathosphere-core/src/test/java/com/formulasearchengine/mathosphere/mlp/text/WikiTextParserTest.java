@@ -114,6 +114,20 @@ public class WikiTextParserTest {
     }
 
     @Test
+    public void utf8SingleCharTest() throws Exception {
+        String wikiText = "Gegenbauer polynomials with ''α''=2";
+        wikiText = StringEscapeUtils.unescapeXml(wikiText);
+        final WikiTextParser mathConverter = new WikiTextParser(wikiText);
+        mathConverter.parse();
+
+        Map<String, MathTag> mathTags = mathConverter.getMetaLibrary().getFormulaLib();
+        assertEquals(mathTags.values().toString(), 1, mathTags.size());
+
+        String key = mathTags.keySet().stream().findFirst().get();
+        assertEquals(mathTags.values().toString(), "\\alpha=2", mathTags.get(key).getContent());
+    }
+
+    @Test
     public void testNoWrapTemplate() throws Exception {
         String wikiText = "Let the coin tosses be represented by a sequence {{nowrap|1=''X''&lt;sub&gt;0&lt;/sub&gt;, ''X''&lt;sub&gt;1&lt;/sub&gt;, &amp;hellip;}}";
         wikiText = RawWikiDocument.unescapeText(wikiText);
