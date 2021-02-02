@@ -79,6 +79,32 @@ public class PosTaggerTest {
   }
 
   @Test
+  public void dashWordingTest() throws Exception {
+    FlinkMlpCommandConfig cfg = FlinkMlpCommandConfig.test();
+    TextAnnotator annotator = new TextAnnotator(cfg);
+    String text = "The first few Meixner–Pollaczek polynomials are <math>x</math>";
+
+    WikiTextParser parser = new WikiTextParser(text);
+    List<String> cleanText = parser.parse();
+    DocumentMetaLib lib = parser.getMetaLibrary();
+
+    List<Sentence> result = annotator.annotate(cleanText, lib);
+
+    List<Word> expected = Arrays.asList(
+            w("The", "DT"),
+            w("first few Meixner -- Pollaczek polynomial", "NP"),
+            w("are", "VBP"), w("x", "MATH")
+    );
+
+    List<Word> sentence = result.get(0).getWords();
+    LOGGER.debug("Words: {}", sentence);
+    sentence = TextAnnotator.unwrapPlaceholder(sentence, lib);
+    assertTrue(sentence.toString(), sentence.size() >= expected.size());
+    assertEquals(sentence.toString(), expected.toString(), sentence.subList(0, expected.size()).toString());
+    LOGGER.debug("full result: {}", result);
+  }
+
+  @Test
   public void joinLinks_withLinks() {
     List<Word> in = Arrays.asList(w("Since", "IN"), w("``", "``"), w("energy", "NN"), w("''", "''"),
         w("and", "CC"), w("``", "``"), w("momentum", "NN"), w("''", "''"), w("are", "VBP"),

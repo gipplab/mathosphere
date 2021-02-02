@@ -389,6 +389,7 @@ public class PosTagger {
    */
   protected static List<Word> concatenatePhrases(List<Word> result) {
     result = concatenateQuotes(result);
+    result = concatenateDashNouns(result);
     result = concatenateSuccessiveNounsPossessiveEndingNounsSequence(result);
     result = concatenateSuccessiveAdjectiveNounsSequence(result);
     result = concatenateNounsPrepositionDeterminerAdjectiveNouns(result);
@@ -406,6 +407,21 @@ public class PosTagger {
       public Word transform(Match<Word> match) {
         List<Word> matchSequence = match.getCapturedGroup("quoted");
         return linkSaveWord(matchSequence, matchSequence.get(matchSequence.size()-1).getPosTag());
+      }
+    });
+  }
+
+  protected static List<Word> concatenateDashNouns(List<Word> in) {
+    com.alexeygrigorev.rseq.Pattern<Word> pattern = com.alexeygrigorev.rseq.Pattern.create(
+            pos(PosTag.ANY_NOUN_REGEX + "|" + PosTag.FOREIGN_WORD).oneOrMore(),
+            txt("-{1,3}"),
+            pos(PosTag.ANY_NOUN_REGEX + "|" + PosTag.FOREIGN_WORD).oneOrMore()
+    );
+    return pattern.replaceToOne(in, new TransformerToElement<Word>() {
+      @Override
+      public Word transform(Match<Word> match) {
+        List<Word> matchedSequence = match.getMatchedSubsequence();
+        return linkSaveWord(matchedSequence, PosTag.NOUN_PHRASE);
       }
     });
   }
