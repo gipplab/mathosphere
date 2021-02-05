@@ -33,6 +33,8 @@ import static com.formulasearchengine.mathosphere.mlp.text.MathMLUtils.extractId
 public class MathTag implements SpecialToken {
     private static final Logger logger = LogManager.getLogger(MathTag.class.getName());
 
+    public static final Pattern FORMULA_PATTERN = Pattern.compile("FORMULA_[a-zA-Z0-9]{32}");
+
     private static final HashFunction HASHER = Hashing.goodFastHash(64);
     private final List<Position> positions;
     private String content;

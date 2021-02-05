@@ -17,6 +17,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.regex.Matcher;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -91,12 +92,33 @@ public class CreateCandidatesMapper implements MapFunction<ParsedWikiDocument, W
 
   private Stream<Relation> relations(ParsedWikiDocument doc, MathTag mathTag) {
     List<Relation> candidates = generateCandidates(doc, mathTag);
+
+    for ( Relation rel : candidates ) {
+      String def = rel.getDefinition();
+      def = resolveFormulae(def, doc);
+      rel.setDefinition(def);
+    }
+
     if(config.getDefinitionMerging()){
       selfMerge(candidates);
     }
 
     doc.getFormulaGraph().setMOIRelation(mathTag, candidates);
     return candidates.stream();
+  }
+
+  private static String resolveFormulae(String def, ParsedWikiDocument doc) {
+    Map<String, MathTag> formulaMap = doc.getFormulaeMap();
+    StringBuilder sb = new StringBuilder();
+    Matcher m = MathTag.FORMULA_PATTERN.matcher(def);
+    while ( m.find() ) {
+      MathTag tag = formulaMap.get(m.group(0));
+      if ( tag != null ) {
+        m.appendReplacement(sb, tag.getContent());
+      } else m.appendReplacement(sb, m.group(0));
+    }
+    m.appendTail(sb);
+    return sb.toString();
   }
 
   private WikiDocumentOutput identifierMapping(ParsedWikiDocument doc) {
