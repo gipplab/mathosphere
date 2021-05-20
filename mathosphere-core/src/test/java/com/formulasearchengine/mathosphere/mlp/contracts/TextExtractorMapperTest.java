@@ -23,7 +23,7 @@ public class TextExtractorMapperTest {
     assertTrue(rawImput.contains("&lt;math"));
 
     String[] pages = rawImput.split("</page>");
-    TextExtractorMapper textExtractor = new TextExtractorMapper();
+    WikiTextPageExtractorMapper textExtractor = new WikiTextPageExtractorMapper();
 
     ListCollector<RawWikiDocument> out = new ListCollector<>();
     for (String page : pages) {
@@ -34,12 +34,12 @@ public class TextExtractorMapperTest {
     assertEquals(2, output.size());
 
     RawWikiDocument doc1 = output.get(0);
-    assertEquals("Schrödinger equation", doc1.title);
-    assertFalse(doc1.text.contains("&lt;math"));
-    assertTrue(doc1.text.contains("<math"));
+    assertEquals("Schrödinger equation", doc1.getTitle());
+    assertFalse(doc1.getContent().contains("&lt;math"));
+    assertTrue(doc1.getContent().contains("<math"));
 
     RawWikiDocument doc2 = output.get(1);
-    assertEquals(doc2.title, "Gas constant");
+    assertEquals(doc2.getTitle(), "Gas constant");
   }
 
   @Test
@@ -50,7 +50,7 @@ public class TextExtractorMapperTest {
     assertTrue(rawImput.contains("&lt;math"));
 
     String[] pages = rawImput.split("</page>");
-    TextExtractorMapper textExtractor = new TextExtractorMapper();
+    WikiTextPageExtractorMapper textExtractor = new WikiTextPageExtractorMapper();
 
     ListCollector<RawWikiDocument> out = new ListCollector<>();
     for (String page : pages) {
@@ -61,10 +61,10 @@ public class TextExtractorMapperTest {
     assertEquals(1, output.size());
 
     RawWikiDocument doc1 = output.get(0);
-    assertEquals("Clapeyron-Gleichung", doc1.title);
-    assertThat(doc1.text, not(containsString("&lt;math")));
-    assertThat(doc1.text, containsString("<math"));
-    assertEquals(expected, doc1.text);
+    assertEquals("Clapeyron-Gleichung", doc1.getTitle());
+    assertThat(doc1.getContent(), not(containsString("&lt;math")));
+    assertThat(doc1.getContent(), containsString("<math"));
+    assertEquals(expected, doc1.getTitle());
   }
 
 }

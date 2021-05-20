@@ -22,7 +22,7 @@ public class TextAnnotatorMapperTest {
 
   private static final Random RND = new Random();
 
-  public static final TextAnnotatorMapper TEST_INSTANCE = createTestInstance();
+  public static final WikiTextAnnotatorMapper TEST_INSTANCE = createTestInstance();
 
   @Test
   public void readRecentPlainWikiDump() throws Exception {
@@ -36,17 +36,16 @@ public class TextAnnotatorMapperTest {
     List<RawWikiDocument> docs = readWikiTextDocuments("com/formulasearchengine/mathosphere/mlp/augmentendwikitext.xml");
 
     RawWikiDocument schroedingerIn = docs.get(0);
-    assertTrue("the seed math tag was not found", schroedingerIn.text.contains(mathMLExtract));
-    MathTag tag = new MathTag(0, mathMLExtract, WikiTextUtils.MathMarkUpType.MATHML);
+    assertTrue("the seed math tag was not found", schroedingerIn.getContent().contains(mathMLExtract));
+    MathTag tag = new MathTag(mathMLExtract, WikiTextUtils.MathMarkUpType.MATHML);
     String placeholder = tag.placeholder();
     ParsedWikiDocument shroedingerOut = TEST_INSTANCE.map(schroedingerIn);
 
     Set<String> identifiers = shroedingerOut.getIdentifiers().elementSet();
     assertTrue(identifiers.containsAll(Arrays.asList("Ψ", "V", "h", "λ", "ρ", "τ")));
 
-    List<MathTag> formulas = shroedingerOut.getFormulas();
     MathTag formula = null;
-    for (MathTag f : formulas) {
+    for (MathTag f : shroedingerOut.getFormulae()) {
       if (placeholder.equals(f.getKey())) {
         formula = f;
         break;
@@ -76,7 +75,7 @@ public class TextAnnotatorMapperTest {
   public static List<RawWikiDocument> readWikiTextDocuments(String testFile) throws Exception {
     String rawImput = WikiTextUtilsTest.getTestResource(testFile);
     String[] pages = rawImput.split("</page>");
-    TextExtractorMapper textExtractor = new TextExtractorMapper();
+    WikiTextPageExtractorMapper textExtractor = new WikiTextPageExtractorMapper();
 
     ListCollector<RawWikiDocument> out = new ListCollector<>();
     for (String page : pages) {
@@ -86,9 +85,9 @@ public class TextAnnotatorMapperTest {
     return out.getList();
   }
 
-  private static TextAnnotatorMapper createTestInstance() {
+  private static WikiTextAnnotatorMapper createTestInstance() {
     try {
-      TextAnnotatorMapper textAnnotator = new TextAnnotatorMapper(FlinkMlpCommandConfig.test());
+      WikiTextAnnotatorMapper textAnnotator = new WikiTextAnnotatorMapper(FlinkMlpCommandConfig.test());
       textAnnotator.open(null);
       return textAnnotator;
     } catch (Exception e) {
@@ -102,8 +101,7 @@ public class TextAnnotatorMapperTest {
     RawWikiDocument doc = new RawWikiDocument("some doc", 1, text);
     ParsedWikiDocument result = TEST_INSTANCE.map(doc);
 
-    List<MathTag> formulas = result.getFormulas();
-    assertEquals(1, formulas.size());
+    assertEquals(1, result.getFormulae());
 
     Sentence sentence = result.getSentences().get(0);
 

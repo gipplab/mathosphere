@@ -9,120 +9,153 @@ import java.io.Serializable;
 import java.util.Properties;
 
 public class BaseConfig implements Serializable {
+    // way faster than english-bidiractional-distsim.tagger
     protected static final String DEFAULT_POS_MODEL =
-    "edu/stanford/nlp/models/pos-tagger/english-left3words/english-left3words-distsim.tagger";
-  @Parameter(names = {"-pos", "--posModel"}, description = "POS model to use")
-  protected String model = DEFAULT_POS_MODEL;
+            "edu/stanford/nlp/models/pos-tagger/english-left3words-distsim.tagger";
 
-  @Parameter(names = {"-l", "--language"}, description = "Language of the input")
-  protected String language = "en";
+    // look here:
+    // https://nlp.stanford.edu/software/nndep.html
+    private static final String DEFAULT_DEPENDENCY_PARSER_MODEL =
+            "edu/stanford/nlp/models/parser/nndep/english_SD.gz";
 
-  @Parameter(names = {"-a", "--alpha"})
-  protected double alpha = 1.0;
+    @Parameter(names = {"-pos", "--posModel"}, description = "POS model to use")
+    protected String model = DEFAULT_POS_MODEL;
 
-  @Parameter(names = {"-b", "--beta"})
-  protected double beta = 1.0;
+    @Parameter(names = {"--dependencyParserModel"}, description = "Location of the model for the dependency parser.")
+    protected String dependencyParserModel = DEFAULT_DEPENDENCY_PARSER_MODEL;
 
-  @Parameter(names = {"-g", "--gamma"})
-  protected double gamma = 0.1;
+    @Parameter(names = {"-l", "--language"}, description = "Language of the input")
+    protected String language = "en";
 
-  @Parameter(names = {"-t", "--threshold"})
-  protected double threshold = 0.4;
+    @Parameter(names = {"-a", "--alpha"})
+    protected double alpha = 1.0;
 
-  @Parameter(names = {"-w", "--wikiDataList"})
-  protected String wikiDataFile = null;
+    @Parameter(names = {"-b", "--beta"})
+    protected double beta = 1.0;
 
-  @Parameter(names = {"--tex"})
-  protected boolean useTeXIdentifiers = false;
+    @Parameter(names = {"-g", "--gamma"})
+    protected double gamma = 0.1;
 
-  @Parameter(names = {"--texvcinfo"})
-  protected String texvcinfoUrl = "https://en.wikipedia.org/api/rest_v1/media/math/check/tex";
+    @Parameter(names = {"-t", "--threshold"})
+    protected double threshold = 0.4;
 
-  @Parameter(names = {"--definitionMerging"}, description = "apply definition merging algorithm")
-  protected Boolean definitionMerging = false;
+    @Parameter(names = {"-w", "--wikiDataList"})
+    protected String wikiDataFile = null;
 
-  public BaseConfig() {
-    Properties prop = new Properties();
-    String propFileName = "mathosphere.properties";
+    @Parameter(names = {"--tex"})
+    protected boolean useTeXIdentifiers = false;
 
-    InputStream inputStream = getClass().getClassLoader().getResourceAsStream(propFileName);
+    @Parameter(names = {"--texvcinfo"})
+    protected String texvcinfoUrl = "https://en.wikipedia.org/api/rest_v1/media/math/check/tex";
 
-    if (inputStream != null) {
-      try {
-        prop.load(inputStream);
-        if (prop.stringPropertyNames().contains("texvcinfo")) {
-          final String texvcinfo = prop.getProperty("texvcinfo");
-          if (texvcinfo.length() > 0) {
-            texvcinfoUrl = texvcinfo;
-          }
+    @Parameter(names = {"--definitionMerging"}, description = "apply definition merging algorithm")
+    protected Boolean definitionMerging = false;
+
+    @Parameter(names = {"--moi"}, description = "Use MOI instead of single identifier")
+    protected boolean moi = false;
+
+    public BaseConfig() {
+        Properties prop = new Properties();
+        String propFileName = "mathosphere.properties";
+
+        InputStream inputStream = getClass().getClassLoader().getResourceAsStream(propFileName);
+
+        if (inputStream != null) {
+            try {
+                prop.load(inputStream);
+                if (prop.stringPropertyNames().contains("texvcinfo")) {
+                    final String texvcinfo = prop.getProperty("texvcinfo");
+                    if (texvcinfo.length() > 0) {
+                        texvcinfoUrl = texvcinfo;
+                    }
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
-      } catch (IOException e) {
-        e.printStackTrace();
-      }
     }
-  }
 
-  public BaseConfig(String model, String language, double alpha, double beta, double gamma,
-                    double threshold, boolean useTeXIdentifiers) {
-    this.model = model;
-    this.language = language;
-    this.alpha = alpha;
-    this.beta = beta;
-    this.gamma = gamma;
-    this.threshold = threshold;
-    this.useTeXIdentifiers = useTeXIdentifiers;
-  }
+    public BaseConfig(String model, String language, double alpha, double beta, double gamma,
+                      double threshold, boolean useTeXIdentifiers) {
+        this.model = model;
+        this.language = language;
+        this.alpha = alpha;
+        this.beta = beta;
+        this.gamma = gamma;
+        this.threshold = threshold;
+        this.useTeXIdentifiers = useTeXIdentifiers;
+    }
+
+    public void setDefinitionMerging(boolean definitionMerging) {
+        this.definitionMerging = definitionMerging;
+    }
 
     public Boolean getDefinitionMerging() {
         return definitionMerging;
     }
 
-  public String getModel() {
-    return model;
-  }
+    public String getModel() {
+        return model;
+    }
+
+    public String getDependencyParserModel() {
+        return dependencyParserModel;
+    }
 
     public void setModel(String model) {
         this.model = model;
     }
 
-  public double getAlpha() {
-    return alpha;
-  }
+    public double getAlpha() {
+        return alpha;
+    }
 
-  public double getBeta() {
-    return beta;
-  }
+    public double getBeta() {
+        return beta;
+    }
 
-  public double getGamma() {
-    return gamma;
-  }
+    public double getGamma() {
+        return gamma;
+    }
 
-  public double getThreshold() {
-    return threshold;
-  }
+    public double getThreshold() {
+        return threshold;
+    }
 
-  public String getLanguage() {
-    return language;
-  }
+    public String getLanguage() {
+        return language;
+    }
 
-  public boolean getUseTeXIdentifiers() {
-    return useTeXIdentifiers;
-  }
+    public boolean getUseTeXIdentifiers() {
+        return useTeXIdentifiers;
+    }
 
-  public void setUseTeXIdentifiers(boolean useTeXIdentifiers) {
-    this.useTeXIdentifiers = useTeXIdentifiers;
-  }
+    public void setUseTeXIdentifiers(boolean useTeXIdentifiers) {
+        this.useTeXIdentifiers = useTeXIdentifiers;
+    }
 
-  public String getWikiDataFile() {
-    return wikiDataFile;
-  }
+    public void setUseMOI(boolean use) {
+        this.moi = use;
+    }
 
-  public BaseConfig setWikiDataFile(String wikiDataFile) {
-    this.wikiDataFile = wikiDataFile;
-    return this;
-  }
+    public boolean useMOI() {
+        return moi;
+    }
 
-  public String getTexvcinfoUrl() {
-    return texvcinfoUrl;
-  }
+    public String getWikiDataFile() {
+        return wikiDataFile;
+    }
+
+    public BaseConfig setWikiDataFile(String wikiDataFile) {
+        this.wikiDataFile = wikiDataFile;
+        return this;
+    }
+
+    public void setTexvcinfoUrl(String url) {
+        this.texvcinfoUrl = url;
+    }
+
+    public String getTexvcinfoUrl() {
+        return texvcinfoUrl;
+    }
 }

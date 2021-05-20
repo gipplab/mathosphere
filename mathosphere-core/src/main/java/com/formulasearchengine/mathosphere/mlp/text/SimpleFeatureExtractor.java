@@ -40,7 +40,7 @@ public class SimpleFeatureExtractor implements MapFunction<ParsedWikiDocument, W
 
     GoldEntry goldEntry = goldEntries.stream().filter(e -> e.getTitle().equals(doc.getTitle().replaceAll(" ", "_"))).findFirst().get();
     final Integer fid = Integer.parseInt(goldEntry.getFid());
-    final MathTag seed = doc.getFormulas()
+    final MathTag seed = doc.getFormulaeMap().values()
       .stream().filter(e -> e.getMarkUpType().equals(WikiTextUtils.MathMarkUpType.LATEX)).collect(Collectors.toList())
       .get(fid);
     for (int i = 0; i < sentences.size(); i++) {
@@ -85,7 +85,7 @@ public class SimpleFeatureExtractor implements MapFunction<ParsedWikiDocument, W
     for (String identifier : identifiers) {
       for (int i = 0; i < sentences.size(); i++) {
         Sentence sentence = sentences.get(i);
-        if (sentence.contains(identifier)) {
+        if (sentence.containsIdentifier(identifier)) {
           result.put(identifier, i);
           break;
         }

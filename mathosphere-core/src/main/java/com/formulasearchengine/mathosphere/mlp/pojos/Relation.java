@@ -11,23 +11,17 @@ import java.util.Map;
 import static com.formulasearchengine.mathosphere.mlp.text.WikiTextUtils.deLinkify;
 
 public class Relation implements Comparable<Relation> {
-
-  public double getDistanceFromFirstIdentifierOccurence() {
-    return distanceFromFirstIdentifierOccurence;
-  }
-
-  public void setDistanceFromFirstIdentifierOccurence(double distanceFromFirstIdentifierOccurence) {
-    this.distanceFromFirstIdentifierOccurence = distanceFromFirstIdentifierOccurence;
-  }
-
   /**
    * The distance from the definiens distraction sentence to the sentence where the identifier occurs for the first time.
    * 0 if the definiens is found in the same sentence as the first occurrence of the identifier.
    * Normalized with the length of the document in sentences.
    */
   private double distanceFromFirstIdentifierOccurence;
+
+  private MathTag mathTag;
   private String identifier;
   private String definition;
+
   /**
    * The calculated score.
    */
@@ -39,10 +33,12 @@ public class Relation implements Comparable<Relation> {
   private double relativeTermFrequency;
 
   private int identifierPosition;
+
   /**
    * Position of the definiens.
    */
   private int wordPosition;
+
   /**
    * The sentence containing the relation.
    */
@@ -90,11 +86,12 @@ public class Relation implements Comparable<Relation> {
   }
 
   public void setDefinition(Word word) {
-    if (word.getPosTag().equals(PosTag.LINK)) {
-      this.definition = "[[" + word.getWord() + "]]";
-    } else {
-      this.definition = word.getWord();
-    }
+//    if (word.getPosTag().equals(PosTag.LINK)) {
+//      this.definition = "[[" + word.getWord() + "]]";
+//    } else {
+//      this.definition = word.getWord();
+//    }
+    this.definition = word.getWord();
   }
 
   public void setDefinition(String definition) {
@@ -125,14 +122,29 @@ public class Relation implements Comparable<Relation> {
     this.wordPosition = wordPosition;
   }
 
+  public void setMathTag(MathTag mtag) {
+    this.mathTag = mtag;
+  }
+
+  public MathTag getMathTag() {
+    return this.mathTag;
+  }
+
   @Override
   public String toString() {
-    return "Relation [" + identifier + ", score=" + score + ", word=" + definition + "]";
+    String f = mathTag == null ? identifier : mathTag.getContent();
+    return "Relation [" + f + ", score=" + score + ", word=" + definition + "]";
   }
 
   @Override
   public int compareTo(Relation o) {
-    return (o.getScore()).compareTo(getScore());
+    if ( getString() == null || o.getString() == null ) return 0; // hmm
+    int comp = o.getString().compareTo(getString());
+    return comp == 0 ? (o.getScore()).compareTo(getScore()) : comp;
+  }
+
+  private String getString() {
+    return mathTag == null ? identifier : mathTag.getContent();
   }
 
 
@@ -148,12 +160,12 @@ public class Relation implements Comparable<Relation> {
   }
 
   public int compareNameScore(Relation o) {
-    int res = getIdentifier().compareTo(o.getIdentifier());
+    int res = getString().compareTo(o.getString());
     if (res == 0) {
       res = getDefinition().compareToIgnoreCase(o.getDefinition());
     }
     if (res == 0) {
-      res = compareTo(o); //Sort by score desc
+      res = o.getScore().compareTo(getScore()); //Sort by score desc
     }
     return res;
   }
@@ -167,8 +179,12 @@ public class Relation implements Comparable<Relation> {
     return upperCase;
   }
 
+  @Deprecated
   public void setDefinition(Word word, ParsedWikiDocument doc) {
-    this.definition = deLinkify(word, doc);
+//    if ( word.getPosTag().equals(PosTag.LINK) ) {
+//      this.definition = doc.getLinkMap().get(word.getWord()).getContent();
+//    } else this.definition = word.getWord();
+    this.definition = word.getWord();
   }
 
   public Integer getRelevance() {
@@ -186,5 +202,13 @@ public class Relation implements Comparable<Relation> {
 
   public void setRelativeTermFrequency(double termFrequency) {
     this.relativeTermFrequency = termFrequency;
+  }
+
+  public double getDistanceFromFirstIdentifierOccurence() {
+    return distanceFromFirstIdentifierOccurence;
+  }
+
+  public void setDistanceFromFirstIdentifierOccurence(double distanceFromFirstIdentifierOccurence) {
+    this.distanceFromFirstIdentifierOccurence = distanceFromFirstIdentifierOccurence;
   }
 }

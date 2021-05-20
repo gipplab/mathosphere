@@ -1,5 +1,6 @@
 package com.formulasearchengine.mathosphere.mlp.rus;
 
+import edu.stanford.nlp.ling.CoreAnnotation;
 import edu.stanford.nlp.ling.CoreAnnotations;
 import edu.stanford.nlp.ling.CoreAnnotations.TextAnnotation;
 import edu.stanford.nlp.ling.CoreAnnotations.TokensAnnotation;
@@ -8,6 +9,7 @@ import edu.stanford.nlp.pipeline.Annotation;
 import edu.stanford.nlp.pipeline.Annotator;
 
 import com.formulasearchengine.mathosphere.mlp.rus.RuleBasedPosTagger.PosTag;
+import edu.stanford.nlp.pipeline.POSTaggerAnnotator;
 
 import java.util.Collections;
 import java.util.List;
@@ -27,13 +29,27 @@ public class RusPosAnnotator implements Annotator {
     }
   }
 
+  // for version 3.5.2
+//  @Override
+//  public Set<Requirement> requires() {
+//    return Collections.singleton(TOKENIZE_REQUIREMENT);
+//  }
+
+  // for version 3.5.2
+//  @Override
+//  public Set<Requirement> requirementsSatisfied() {
+//    return Collections.singleton(POS_REQUIREMENT);
+//  }
+
+  // for version 3.9.2
   @Override
-  public Set<Requirement> requires() {
-    return Collections.singleton(TOKENIZE_REQUIREMENT);
+  public Set<Class<? extends CoreAnnotation>> requires() {
+    return Collections.singleton(CoreAnnotations.TokensAnnotation.class);
   }
 
+  // for version 3.9.2
   @Override
-  public Set<Requirement> requirementsSatisfied() {
-    return Collections.singleton(POS_REQUIREMENT);
+  public Set<Class<? extends CoreAnnotation>> requirementsSatisfied() {
+    return Collections.singleton(CoreAnnotations.PartOfSpeechAnnotation.class);
   }
 }

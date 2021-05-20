@@ -23,9 +23,6 @@ public class MachineLearningDefinienClassifierConfig extends EvalCommandConfig {
   @Parameter(names = {"--svmModel"}, description = "File location of the svm model to use.")
   protected String svmModel;
 
-  @Parameter(names = {"--dependencyParserModel"}, description = "Location of the model for the dependency parser.")
-  protected String dependencyParserModel = "edu/stanford/nlp/models/parser/nndep/english_UD.gz";
-
   public static MachineLearningDefinienClassifierConfig test() {
     MachineLearningDefinienClassifierConfig test = new MachineLearningDefinienClassifierConfig();
     test.dataset = "c:/tmp/mlp/input/eval_dataset.xml";

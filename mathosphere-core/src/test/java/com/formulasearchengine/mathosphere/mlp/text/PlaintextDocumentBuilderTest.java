@@ -2,6 +2,7 @@ package com.formulasearchengine.mathosphere.mlp.text;
 
 import com.formulasearchengine.mathosphere.mlp.cli.BaseConfig;
 
+import com.formulasearchengine.mathosphere.mlp.pojos.RawWikiDocument;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -39,7 +40,8 @@ public class PlaintextDocumentBuilderTest {
         + "the wavefunction is the most complete description that can be given to a physical system.";
     BaseConfig c = new BaseConfig();
     c.setWikiDataFile(getClass().getResource("test-map-no-dup.csv").getFile());
-    String actual = (new MathConverter(input, "hamiltonian", c)).getOutput();
+    RawWikiDocument rwd = new RawWikiDocument("hamiltonian", -1, input);
+    String actual = (new WikiTextParser(rwd, c)).parse().get(0);
     String expected = "In [[quantum mechanics]] , the \"Schrödinger equation\" is a " +
         "[[partial differential equation]] that describes how the LINK_Q230883 of a " +
         "[[physical system]] changes with [[time]] . It was formulated in late 1925, and published in" +
@@ -71,7 +73,7 @@ public class PlaintextDocumentBuilderTest {
         " {{math|''E'' < ''V''<sub>0</sub>}}, corresponding to energies that are allowed " +
         "or disallowed in classical mechanics.";
 
-    String actual = (new MathConverter(input)).getOutput();
+    String actual = (new WikiTextParser(input)).parse().get(0);
     //TODO: add more templates
     String expected = "For a constant potential, <math>\\mathit{V}</math> , the solution is oscillatory for <math>\\mathit{E} > \\mathit{V}_{0}</math> "
       + "and exponential for <math>\\mathit{E} < \\mathit{V}_{0}</math> , corresponding to energies that are allowed or disallowed "

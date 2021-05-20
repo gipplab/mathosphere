@@ -9,11 +9,11 @@ import java.util.List;
 
 public class RussianWikiPipelineTest {
 
-    private static TextAnnotatorMapper ruTextAnnotator() throws Exception {
+    private static WikiTextAnnotatorMapper ruTextAnnotator() throws Exception {
         String[] params = {"--language", "ru", "-pos", "", "-in", "fake-input", "-out", "fake-output"};
         FlinkMlpCommandConfig config = FlinkMlpCommandConfig.from(params);
 
-        TextAnnotatorMapper textAnnotator = new TextAnnotatorMapper(config);
+        WikiTextAnnotatorMapper textAnnotator = new WikiTextAnnotatorMapper(config);
         textAnnotator.open(null);
         return textAnnotator;
     }
@@ -22,7 +22,7 @@ public class RussianWikiPipelineTest {
     public void fullPipeline() throws Exception {
         String wikiRuFile = "com/formulasearchengine/mathosphere/mlp/wikirusample.xml";
 
-        TextAnnotatorMapper textAnnotator = ruTextAnnotator();
+        WikiTextAnnotatorMapper textAnnotator = ruTextAnnotator();
 
         List<RawWikiDocument> docs = readDocs(wikiRuFile);
 

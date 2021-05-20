@@ -1,6 +1,7 @@
 package com.formulasearchengine.mathosphere.utils;
 
-import com.formulasearchengine.mathmltools.xmlhelper.XMLHelper;
+import com.formulasearchengine.mathmltools.helper.XMLHelper;
+import com.formulasearchengine.mathmltools.io.XmlDocumentReader;
 import org.apache.commons.cli.*;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
@@ -9,6 +10,7 @@ import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
@@ -62,13 +64,7 @@ public class HarvestFromFiles {
 
   private static void processDocs(CommandLine line) {
     File folder = new File(line.getOptionValue("datasource"));
-    Document doc;
-    try {
-      doc = XMLHelper.getNewDocument(true);
-    } catch (ParserConfigurationException e) {
-      e.printStackTrace();
-      return;
-    }
+    Document doc = XMLHelper.getNewDocument();
     Element har = doc.createElementNS("http://search.mathweb.org/ns", "harvest");
     for (final File fileEntry : folder.listFiles()) {
       if (!fileEntry.isDirectory()) {
@@ -97,8 +93,8 @@ public class HarvestFromFiles {
   }
 
   private static void addFile(Document doc, Element har, File fileEntry, String fname) throws ParserConfigurationException, IOException, SAXException {
-    DocumentBuilder builder = null;
-    builder = XMLHelper.getDocumentBuilder(true);
+    DocumentBuilderFactory dbf = XmlDocumentReader.getStandardDocumentBuilderFactory(false);
+    DocumentBuilder builder = dbf.newDocumentBuilder();
     Document xContent = builder.parse(fileEntry.getCanonicalFile());
     Node copiedXDocument = doc.importNode(xContent.getDocumentElement(), true);
     Node mwsExpr = doc.createElementNS("http://search.mathweb.org/ns", "expr");

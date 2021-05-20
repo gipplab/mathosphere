@@ -79,7 +79,7 @@ where ''[[Ψ]]'' is the [[wave function]] of the quantum system, ''i'' is the [[
     </annotation-xml>
     <annotation xml:id="p1.1.m1.1b" encoding="application/x-tex" xref="p1.1.m1.1.cmml">\hat{H}</annotation>
   </semantics>
-</math> is the [[Hamiltonian (quantum mechanics)|Hamiltonian]] [[operator (physics)|operator]], which characterizes the total energy of any given wavefunction and takes different forms depending on the situation.
+</math> is the [[Hamiltonian (quantum mechanics)|Hamiltonian]] [[operator (physics)|operator]], which characterizes the total energy of any given wave function and takes different forms depending on the situation.
 
 [[File:Wave packet (dispersion).gif|thumb|200px|A [[wave function]] which satisfies the non-relativistic Schrödinger equation with ''V''=0. In other words, this corresponds to a particle traveling freely through empty space. The [[real part]] of the [[wave function]] is plotted here.]]
 The most famous example is the [[relativistic quantum mechanics|non-relativistic]] Schrödinger equation for a single particle moving in an [[electric field]] (but not a [[magnetic field]]):

@@ -24,7 +24,7 @@
     <repositories>
         <repository>
             <id>www2.ph.ed.ac.uk-releases</id>
-            <url>http://www2.ph.ed.ac.uk/maven2</url>
+            <url>https://www2.ph.ed.ac.uk/maven2</url>
         </repository>
         <repository>
             <id>apache.snapshots</id>
@@ -39,6 +39,11 @@
         </repository>
     </repositories>
     <dependencies>
+        <dependency>
+            <groupId>gov.nist.drmf.interpreter</groupId>
+            <artifactId>interpreter.pom</artifactId>
+            <version>2.1-SNAPSHOT</version>
+        </dependency>
         <!-- Logging via log4j2 -->
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
@@ -58,11 +63,22 @@
             <version>2.10.0</version>
         </dependency>
 
-        <!--dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.7.30</version>
+        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.slf4j</groupId>-->
+<!--            <artifactId>slf4j-log4j12</artifactId>-->
+<!--            <version>1.7.30</version>-->
+<!--        </dependency>-->
+
+        <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-slf4j-impl</artifactId>
             <version>2.10.0</version>
-        </dependency-->
+        </dependency>
 
         <!-- Other things -->
         <dependency>
@@ -87,30 +103,44 @@
             <version>9.5.1-6</version>
         </dependency>
         <dependency>
-            <groupId>com.formulasearchengine</groupId>
-            <artifactId>mathmltools</artifactId>
-            <version>0.3.1-SNAPSHOT</version>
+            <groupId>com.formulasearchengine.mathmltools</groupId>
+            <artifactId>mathml-core</artifactId>
+            <version>2.0.5-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>cz.muni.fi.mir</groupId>
             <artifactId>mathml-canonicalizer</artifactId>
-            <version>1.2-Mathosphere-SNAPSHOT</version>
+            <version>1.3.1</version>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
-            <version>3.3.2</version>
+            <version>3.10</version>
         </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.eclipse.mylyn.wikitext/wikitext.mediawiki -->
         <dependency>
-            <groupId>org.fusesource.wikitext</groupId>
-            <artifactId>wikitext-core</artifactId>
-            <version>1.4</version>
+            <groupId>org.eclipse.mylyn.wikitext</groupId>
+            <artifactId>wikitext.mediawiki</artifactId>
+            <version>0.9.4.I20090220-1600-e3x</version>
         </dependency>
+
         <dependency>
-            <groupId>org.fusesource.wikitext</groupId>
-            <artifactId>mediawiki-core</artifactId>
-            <version>1.4</version>
+            <groupId>org.netbeans.external</groupId>
+            <artifactId>org-eclipse-mylyn-wikitext-core</artifactId>
+            <version>RELEASE113</version>
         </dependency>
+
+        <!--        <dependency>-->
+<!--            <groupId>org.fusesource.wikitext</groupId>-->
+<!--            <artifactId>wikitext-core</artifactId>-->
+<!--            <version>1.4</version>-->
+<!--        </dependency>-->
+<!--        <dependency>-->
+<!--            <groupId>org.fusesource.wikitext</groupId>-->
+<!--            <artifactId>mediawiki-core</artifactId>-->
+<!--            <version>1.4</version>-->
+<!--        </dependency>-->
         <dependency>
             <groupId>com.beust</groupId>
             <artifactId>jcommander</artifactId>
@@ -119,7 +149,7 @@
         <dependency>
             <groupId>org.sweble.wikitext</groupId>
             <artifactId>swc-engine</artifactId>
-            <version>3.1.5</version>
+            <version>3.1.9</version>
         </dependency>
         <!-- Flink -->
         <dependency>
@@ -129,14 +159,34 @@
         </dependency>
         <dependency>
             <groupId>org.apache.flink</groupId>
-            <artifactId>flink-streaming-java_2.10</artifactId>
+            <artifactId>flink-streaming-java_2.12</artifactId>
             <version>${flink.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.flink</groupId>
-            <artifactId>flink-clients_2.10</artifactId>
+            <artifactId>flink-clients_2.12</artifactId>
             <version>${flink.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.apache.flink</groupId>
+            <artifactId>flink-runtime-web_2.12</artifactId>
+            <version>${flink.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>2.11.3</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-core -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+            <version>2.11.3</version>
+        </dependency>
+
+
         <dependency>
             <groupId>nz.ac.waikato.cms.weka</groupId>
             <artifactId>LibSVM</artifactId>
@@ -167,7 +217,7 @@
         <dependency>
             <groupId>com.fasterxml.jackson.jr</groupId>
             <artifactId>jackson-jr-objects</artifactId>
-            <version>2.5.0</version>
+            <version>${jackson.version}</version>
         </dependency>
 
         <dependency>
@@ -180,20 +230,20 @@
         <dependency>
             <groupId>edu.stanford.nlp</groupId>
             <artifactId>stanford-corenlp</artifactId>
-            <version>3.5.2</version>
+            <version>4.0.0</version>
         </dependency>
 
         <dependency>
             <groupId>edu.stanford.nlp</groupId>
             <artifactId>stanford-corenlp</artifactId>
-            <version>3.5.2</version>
-            <classifier>models</classifier>         <!-- English models -->
+            <version>4.0.0</version>
+            <classifier>models</classifier>         <!-- basic English models -->
         </dependency>
 
         <dependency>
             <groupId>edu.stanford.nlp</groupId>
             <artifactId>stanford-corenlp</artifactId>
-            <version>3.5.2</version>
+            <version>3.9.2</version>
             <classifier>models-german</classifier>  <!-- German models -->
         </dependency>
 
@@ -246,12 +296,13 @@
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-text</artifactId>
-            <version>1.0</version>
+            <version>1.8</version>
         </dependency>
+
         <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-text</artifactId>
-            <version>1.0</version>
+            <groupId>javax.annotation</groupId>
+            <artifactId>javax.annotation-api</artifactId>
+            <version>1.3.2</version>
         </dependency>
     </dependencies>
     <developers>
@@ -281,11 +332,14 @@
                 <configuration>
                     <includes>
                         <include>%regex[.*mathpd.*]</include>
+                        <include>%regex[.*mlp.*]</include>
+                        <include>%regex[.*wikitext.*]</include>
                     </includes>
                 </configuration>
             </plugin>
             <plugin>
                 <artifactId>maven-assembly-plugin</artifactId>
+                <version>3.3.0</version>
                 <configuration>
                     <archive>
                         <manifest>

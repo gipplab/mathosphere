@@ -40,9 +40,6 @@ public class MachineLearningDefinienExtractionConfig extends FlinkMlpCommandConf
   protected boolean coarseSearch;
   @Parameter(names = {"--fineParameterSearch"}, description = "Searches for parameters in a fine grid of cost and gamma values.")
   protected boolean fineSearch;
-  @Parameter(names = {"--dependencyParserModel"}, description = "Location of the model for the dependency parser.")
-  protected String dependencyParserModel = "edu/stanford/nlp/models/parser/nndep/english_UD.gz";
-
   @Parameter(names = {"--leaveOneOutEvaluation"}, description = "Perform a leave one out evaluation of the models performance.")
   protected boolean leaveOneOutEvaluation = false;
 

@@ -1,11 +1,12 @@
 package com.formulasearchengine.mathosphere.mlp.text;
 
 import com.formulasearchengine.mathosphere.mlp.PatternMatchingRelationFinder;
-import com.formulasearchengine.mathosphere.mlp.contracts.TextExtractorMapper;
+import com.formulasearchengine.mathosphere.mlp.contracts.WikiTextPageExtractorMapper;
 import com.formulasearchengine.mathosphere.mlp.pojos.MathTag;
 import com.formulasearchengine.mathosphere.mlp.text.WikiTextUtils.MathMarkUpType;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.text.StringEscapeUtils;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -32,9 +33,12 @@ public class WikiTextUtilsTest {
         + "Text <math>V = V_2</math>.";
     List<MathTag> actual = WikiTextUtils.findMathTags(input);
     List<MathTag> expected = Arrays.asList(
-        new MathTag(10, "V = V_0", MathMarkUpType.LATEX),
-        new MathTag(41, "V = V_1", MathMarkUpType.LATEX),
-        new MathTag(73, "V = V_2", MathMarkUpType.LATEX));
+            new MathTag("V = V_0", MathMarkUpType.LATEX),
+            new MathTag("V = V_1", MathMarkUpType.LATEX),
+            new MathTag("V = V_2", MathMarkUpType.LATEX));
+//        new MathTag(10, "V = V_0", MathMarkUpType.LATEX),
+//        new MathTag(41, "V = V_1", MathMarkUpType.LATEX),
+//        new MathTag(73, "V = V_2", MathMarkUpType.LATEX));
     assertEquals(expected, actual);
   }
 
@@ -42,18 +46,27 @@ public class WikiTextUtilsTest {
   public void findMathTags_first() {
     String input = "<math>V = V_0</math> text text.";
     List<MathTag> actual = WikiTextUtils.findMathTags(input);
-    List<MathTag> expected = Collections.singletonList(new MathTag(0, "V = V_0", MathMarkUpType.LATEX));
+//    List<MathTag> expected = Collections.singletonList(new MathTag(0, "V = V_0", MathMarkUpType.LATEX));
+    List<MathTag> expected = Collections.singletonList(new MathTag("V = V_0", MathMarkUpType.LATEX));
     assertEquals((List) expected, (List) actual);
   }
 
+  /**
+   * {@link WikiTextUtils#renderAllFormulae(String)} is no longer in use. Hence, this test
+   * is useless.
+   */
   @Test
+  @Ignore
   public void replaceAllFormulas() {
     String text = "Text text <math>V = V_0</math> text text <math>V = V_1</math> text. "
         + "Text <math>V = V_2</math>.";
 
-    MathTag tag1 = new MathTag(10, "<math>V = V_0</math>", MathMarkUpType.LATEX);
-    MathTag tag2 = new MathTag(41, "<math>V = V_1</math>", MathMarkUpType.LATEX);
-    MathTag tag3 = new MathTag(73, "<math>V = V_2</math>", MathMarkUpType.LATEX);
+//    MathTag tag1 = new MathTag(10, "<math>V = V_0</math>", MathMarkUpType.LATEX);
+//    MathTag tag2 = new MathTag(41, "<math>V = V_1</math>", MathMarkUpType.LATEX);
+//    MathTag tag3 = new MathTag(73, "<math>V = V_2</math>", MathMarkUpType.LATEX);
+    MathTag tag1 = new MathTag("<math>V = V_0</math>", MathMarkUpType.LATEX);
+    MathTag tag2 = new MathTag("<math>V = V_1</math>", MathMarkUpType.LATEX);
+    MathTag tag3 = new MathTag("<math>V = V_2</math>", MathMarkUpType.LATEX);
     List<MathTag> tags = Arrays.asList(tag1, tag2, tag3);
 
     String actual = WikiTextUtils.replaceAllFormulas(text, tags);
@@ -90,7 +103,7 @@ public class WikiTextUtilsTest {
   @Test
   public void findFormulaFromWikiText() throws Exception {
     String text = getTestResource("com/formulasearchengine/mathosphere/mlp/gold/eval_dataset_sample.xml");
-    text = TextExtractorMapper.unescape(text);
+    text = StringEscapeUtils.unescapeXml(text);
     WikiTextUtils.findMathTags(text);
   }
 

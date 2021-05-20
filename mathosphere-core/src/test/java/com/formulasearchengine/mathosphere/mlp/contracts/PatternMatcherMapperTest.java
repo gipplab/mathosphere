@@ -35,7 +35,7 @@ public class PatternMatcherMapperTest {
     String text = IOUtils.toString(input,"UTF-8");
     RawWikiDocument documentText = new RawWikiDocument("Document", 0, text);
 
-    TextAnnotatorMapper textAnnotator = TextAnnotatorMapperTest.TEST_INSTANCE;
+    WikiTextAnnotatorMapper textAnnotator = TextAnnotatorMapperTest.TEST_INSTANCE;
     ParsedWikiDocument doc = textAnnotator.map(documentText);
 
     PatternMatcherMapper patternMatcher = new PatternMatcherMapper();

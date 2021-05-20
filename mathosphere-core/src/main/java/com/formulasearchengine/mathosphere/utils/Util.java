@@ -30,9 +30,10 @@ public class Util {
         String[] out = new String[]{
           qId,
           title,
-          relation.getIdentifier(),
-          relation.getDefinition(), "Word number: " + String.valueOf(relation.getIdentifierPosition()),
-          "\"" + "\"",
+          relation.getScore().toString(),
+          relation.getMathTag().getContent(),
+          relation.getDefinition(),
+          "Word number: " + String.valueOf(relation.getIdentifierPosition()),
           getHumanReadableSentence(relation)};
         printer.printRecord(out);
       }

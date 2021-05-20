@@ -28,6 +28,12 @@
             <groupId>io.restx</groupId>
             <artifactId>restx-core</artifactId>
             <version>${restx.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.sun.tools</groupId>
+                    <artifactId>tools</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>io.restx</groupId>
@@ -105,9 +111,9 @@
             <version>1.0.13</version>
         </dependency>
         <dependency>
-            <groupId>com.formulasearchengine.mathosphere</groupId>
-            <artifactId>basex</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
+            <groupId>com.formulasearchengine</groupId>
+            <artifactId>basex-backend</artifactId>
+            <version>1.0.0</version>
         </dependency>
         <dependency>
             <groupId>io.restx</groupId>
@@ -150,6 +156,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
+                <version>3.2.0</version>
                 <executions>
                     <execution>
                         <id>attach-docs</id>
@@ -162,20 +169,21 @@
                             <goal>jar</goal>
                         </goals>
                         <configuration>
-                            <additionalparam>-Xdoclint:none</additionalparam>
+                            <doclint>none</doclint>
+                            <javadocExecutable>${java.home}/bin/javadoc</javadocExecutable>
                         </configuration>
                     </execution>
                 </executions>
-                <configuration>
-                    <source>${maven.compiler.source}</source>
-                    <doclet>restx.apidocs.doclet.ApidocsDoclet</doclet>
-                    <docletArtifact>
-                        <groupId>io.restx</groupId>
-                        <artifactId>restx-apidocs-doclet</artifactId>
-                        <version>${restx.version}</version>
-                    </docletArtifact>
-                    <additionalparam>-restx-target-dir ${project.basedir}/target/classes</additionalparam>
-                </configuration>
+<!--                <configuration>-->
+<!--                    <source>${maven.compiler.source}</source>-->
+<!--                    <doclet>restx.apidocs.doclet.ApidocsDoclet</doclet>-->
+<!--                    <docletArtifact>-->
+<!--                        <groupId>io.restx</groupId>-->
+<!--                        <artifactId>restx-apidocs-doclet</artifactId>-->
+<!--                        <version>${restx.version}</version>-->
+<!--                    </docletArtifact>-->
+<!--                    <additionalparam>-restx-target-dir ${project.basedir}/target/classes</additionalparam>-->
+<!--                </configuration>-->
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

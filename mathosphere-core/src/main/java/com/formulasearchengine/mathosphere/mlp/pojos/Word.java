@@ -9,14 +9,58 @@ import java.util.Objects;
 public class Word {
 
   private String word;
+  private String lemma;
   private String posTag;
+  private String originalPosTag;
+
+  private Position position;
+
+  private int originalIndex = 0;
 
   public Word() {
   }
 
   public Word(String word, String posTag) {
+    this(new Position(0), word, posTag);
+  }
+
+  public Word(Position position, String word, String posTag) {
+    this(position, word, word, posTag);
+  }
+
+  public Word(Position position, String word, String lemma, String posTag) {
+    this.position = position;
     this.word = word;
+    this.lemma = lemma;
     this.posTag = posTag;
+    this.originalPosTag = posTag;
+  }
+
+  public Word setOriginalPosTag(String originalPosTag) {
+    this.originalPosTag = originalPosTag;
+    return this;
+  }
+
+  public String getOriginalPosTag() {
+    return originalPosTag;
+  }
+
+  public Word setOriginalIndex(int index) {
+    this.originalIndex = index;
+    return this;
+  }
+
+  public int getOriginalIndex() {
+    return this.originalIndex;
+  }
+
+  public String getLemma() {
+    return lemma;
+  }
+
+  public Word setLemma(String lemma) {
+    this.lemma = lemma;
+    return this;
   }
 
   @Override
@@ -30,6 +74,10 @@ public class Word {
 
   public String getPosTag() {
     return posTag;
+  }
+
+  public Position getPosition(){
+    return position;
   }
 
   @Override

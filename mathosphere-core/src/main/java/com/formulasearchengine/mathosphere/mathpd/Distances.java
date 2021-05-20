@@ -1,8 +1,8 @@
 package com.formulasearchengine.mathosphere.mathpd;
 
+import com.formulasearchengine.mathmltools.helper.XMLHelper;
 import com.formulasearchengine.mathmltools.mml.CMMLInfo;
-import com.formulasearchengine.mathmltools.xmlhelper.NonWhitespaceNodeList;
-import com.formulasearchengine.mathmltools.xmlhelper.XMLHelper;
+import com.formulasearchengine.mathmltools.xml.NonWhitespaceNodeList;
 import com.formulasearchengine.mathosphere.mathpd.distances.earthmover.EarthMoverDistanceWrapper;
 import com.formulasearchengine.mathosphere.mathpd.distances.earthmover.JFastEMD;
 import com.formulasearchengine.mathosphere.mathpd.distances.earthmover.Signature;
@@ -20,6 +20,9 @@ import javax.xml.xpath.XPathExpressionException;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.*;
+
+//import com.formulasearchengine.mathmltools.xmlhelper.NonWhitespaceNodeList;
+//import com.formulasearchengine.mathmltools.xmlhelper.XMLHelper;
 
 /**
  * Created by Felix Hamborg <felixhamborg@gmail.com> on 05.12.16.

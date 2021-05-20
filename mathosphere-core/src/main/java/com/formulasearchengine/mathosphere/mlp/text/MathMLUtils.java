@@ -1,14 +1,17 @@
 package com.formulasearchengine.mathosphere.mlp.text;
 
-import com.formulasearchengine.mathmltools.xmlhelper.NonWhitespaceNodeList;
-import com.formulasearchengine.mathmltools.xmlhelper.XMLHelper;
-import com.formulasearchengine.mathmltools.xmlhelper.XmlNamespaceTranslator;
+//import com.formulasearchengine.mathmltools.xmlhelper.NonWhitespaceNodeList;
+//import com.formulasearchengine.mathmltools.xmlhelper.XMLHelper;
+//import com.formulasearchengine.mathmltools.xmlhelper.XmlNamespaceTranslator;
+
+import com.formulasearchengine.mathmltools.helper.XMLHelper;
+import com.formulasearchengine.mathmltools.xml.NonWhitespaceNodeList;
+import com.formulasearchengine.mathmltools.xml.XmlNamespaceTranslator;
 import com.formulasearchengine.mathosphere.mlp.pojos.MathTag;
 import com.formulasearchengine.mathosphere.mlp.text.WikiTextUtils.MathMarkUpType;
 import com.google.common.base.Throwables;
 import com.google.common.collect.*;
 import org.apache.commons.lang3.CharUtils;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
@@ -179,7 +182,7 @@ public class MathMLUtils {
                 .setDefaultNamespace( "http://www.w3.org/1998/Math/MathML" )
                 .addTranslation(null, "http://www.w3.org/1998/Math/MathML")
                 .addTranslation("m", "http://www.w3.org/1998/Math/MathML")
-                .translateNamespaces( doc );
+                .translateNamespaces( doc, "m" );
 
         Element root = doc.getDocumentElement();
 
@@ -203,16 +206,16 @@ public class MathMLUtils {
                     LOGGER.debug("unexpected input: {} for {}", debugText, nmsubMathMl);
                     continue;
                 }
-                String id;
-                String sub;
-                if (useTeX) {
-
-                    id = UnicodeMap.string2TeX(nodeList.item(0).getTextContent());
-                    sub = "{" + UnicodeMap.string2TeX(nodeList.item(1).getTextContent()) + "}";
-                } else {
-                    id = UnicodeUtils.normalizeString(nodeList.item(0).getTextContent());
-                    sub = UnicodeUtils.normalizeString(nodeList.item(1).getTextContent());
-                }
+                // we use always tex now for identifier, no more normalization
+//                String id;
+//                String sub;
+//                if (useTeX) {
+                    String id = UnicodeMap.string2TeX(nodeList.item(0).getTextContent());
+                    String sub = "{" + UnicodeMap.string2TeX(nodeList.item(1).getTextContent()) + "}";
+//                } else {
+//                    id = UnicodeUtils.normalizeString(nodeList.item(0).getTextContent());
+//                    sub = UnicodeUtils.normalizeString(nodeList.item(1).getTextContent());
+//                }
                 if (useBlacklist && BLACKLIST.contains(id)) {
                     continue;
                 }
@@ -229,12 +232,12 @@ public class MathMLUtils {
             for (Node identifierNode : allIdentifiers) {
                 String rawId = identifierNode.getTextContent();
                 String id;
-                if (useTeX) {
+//                if (useTeX) {
                     id = UnicodeMap.string2TeX(rawId);
                     id = id.replaceAll("^\\{(.*)\\}$", "$1");
-                } else {
-                    id = UnicodeUtils.normalizeString(rawId);
-                }
+//                } else {
+//                    id = UnicodeUtils.normalizeString(rawId);
+//                }
                 if (useBlacklist && BLACKLIST.contains(id)) {
                     continue;
                 }
