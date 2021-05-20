@@ -24,7 +24,7 @@
     <repositories>
         <repository>
             <id>www2.ph.ed.ac.uk-releases</id>
-            <url>http://www2.ph.ed.ac.uk/maven2</url>
+            <url>https://www2.ph.ed.ac.uk/maven2</url>
         </repository>
         <repository>
             <id>apache.snapshots</id>
