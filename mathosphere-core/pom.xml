@@ -89,7 +89,7 @@
         <dependency>
             <groupId>com.formulasearchengine</groupId>
             <artifactId>mathmltools</artifactId>
-            <version>0.3.1-SNAPSHOT</version>
+            <version>0.4.0</version>
         </dependency>
         <dependency>
             <groupId>cz.muni.fi.mir</groupId>

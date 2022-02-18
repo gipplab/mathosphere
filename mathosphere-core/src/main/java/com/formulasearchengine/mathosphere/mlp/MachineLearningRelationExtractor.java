@@ -14,7 +14,6 @@ import com.formulasearchengine.mathosphere.mlp.text.SimpleFeatureExtractorMapper
 import com.formulasearchengine.mathosphere.utils.GoldUtil;
 import com.formulasearchengine.mlp.evaluation.Evaluator;
 import com.formulasearchengine.mlp.evaluation.pojo.GoldEntry;
-import javafx.scene.control.TextFormatter;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.lang.StringUtils;
