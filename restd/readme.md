@@ -26,7 +26,9 @@ An example dataset can be found in the [BaseX README](https://github.com/TU-Berl
 At first you have to set up a server in your local maven settings file  ~/.m2/settings.xml.
 For example
 ```XML
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1
+
+.0" encoding="UTF-8"?>
 <settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
           xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0
@@ -57,4 +59,7 @@ mvn tomcat7:redeploy
 ## Test
 Navigate to
 http://HOST:PORT(/restd?)/api/@/ui/api-docs/
-The default password is mathosphere.
+The default credentials are admin/mathosphere.
+
+by default URL is for the rest-ui is: 
+http://127.0.0.1:10043/api/@/ui/

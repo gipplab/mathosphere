@@ -14,6 +14,12 @@
             <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
         </license>
     </licenses>
+    <repositories>
+        <repository>
+            <id>Central Repo for net.xqj</id>
+            <url>https://repo.maven.apache.org/maven2/</url>
+        </repository>
+    </repositories>
     <developers>
         <developer>
             <name>Moritz Schubotz</name>
