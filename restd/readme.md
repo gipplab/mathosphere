@@ -59,7 +59,7 @@ mvn tomcat7:redeploy
 ## Test
 Navigate to
 http://HOST:PORT(/restd?)/api/@/ui/api-docs/
-The default password is mathosphere.
+The default credentials are admin/mathosphere.
 
-by default url is: 
+by default URL is for the rest-ui is: 
 http://127.0.0.1:10043/api/@/ui/
