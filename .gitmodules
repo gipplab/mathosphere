@@ -13,4 +13,4 @@
 [submodule "lib/MathMLTools"]
 	path = lib/MathMLTools
 	url = https://github.com/ag-gipp/MathMLTools.git
-	branch = mathosphere-fix
+	branch = master

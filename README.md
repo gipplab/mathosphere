@@ -68,3 +68,9 @@ If test fail due to encoding problems in windows, set the environment variable
 JAVA_TOOL_OPTIONS = -Dfile.encoding=UTF8
 ```
 as suggested on [stackoverflow.](http://stackoverflow.com/a/28470840)
+
+### Java 11
+This project is currently working for Java 11 (theoretically until Java 16 to be precise) but fails for Java 17 or newer.
+The reason is that the project uses flink with massive usages of reflections. Since Java 17, many of these reflections
+violate the visibility permissions. The errors are not obviously hinting towards visibility issues due to Java 17. 
+Hence, fixing the issues might be tricky. Simply make sure you run the project with Java 11 for now!

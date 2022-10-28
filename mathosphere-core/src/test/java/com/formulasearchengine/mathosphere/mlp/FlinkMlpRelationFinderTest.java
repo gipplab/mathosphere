@@ -49,7 +49,7 @@ public class FlinkMlpRelationFinderTest {
     final FlinkMlpRelationFinder finder = new FlinkMlpRelationFinder();
     String input = "The symbol ''r'' i.e. <math>r\\in\\mathbb{R}</math> denotes a real numbers.";
     final String s = finder.runFromText(config, input);
-    assertThat(s, containsString("real numbers"));
+    assertThat(s, containsString("real number"));
   }
 
   @Test

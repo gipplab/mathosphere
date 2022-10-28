@@ -14,6 +14,8 @@ import com.formulasearchengine.mathosphere.mlp.pojos.*;
 import com.formulasearchengine.mathosphere.utils.sweble.MlpConfigEnWpImpl;
 import com.google.common.collect.Multiset;
 import de.fau.cs.osr.ptk.common.AstVisitor;
+import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.sweble.wikitext.engine.EngineException;
@@ -616,7 +618,7 @@ public class WikiTextParser extends AstVisitor<WtNode> {
                         LOG.error("Unable to parse " + n);
                         break;
                     }
-                case "Citation":
+                case "citation":
                     resetPreviousMath(sb);
                     cite = new WikiCitation(n.toString());
                     metaLib.addCite(cite);
@@ -747,6 +749,7 @@ public class WikiTextParser extends AstVisitor<WtNode> {
                         content = fixMathInRow(content);
                     case MATHML:
                         resetPreviousMath(sb);
+                        content = rebuildMathMLContent(n).toString();
                         updateOrCreateNewMath(content, markUpType);
                         resetPreviousMath(sb);
                         return sb.toString();
@@ -783,6 +786,20 @@ public class WikiTextParser extends AstVisitor<WtNode> {
         return sb.toString();
     }
 
+    public String visit(WtImageLink n) {
+        // We ignore images but not the caption!
+
+        StringBuilder sb = new StringBuilder();
+        // captions are self-contained, hence no math across captions!
+        resetPreviousMath(sb);
+
+        WtLinkOptions options = n.getOptions();
+        // the last option is the image caption
+        sb.append( dispatch(options.get( options.size()-1 )) );
+        resetPreviousMath(sb);
+        return sb.toString();
+    }
+
     // =====================================================================
     // We ignore some node types. Here they are:
 
@@ -810,12 +827,6 @@ public class WikiTextParser extends AstVisitor<WtNode> {
 //    public void visit(WtHorizontalRule hr) {}
 //
 //    public void visit(WtNewline n) {}
-
-
-//    public void visit(WtImageLink n) {
-//        LOG.debug("We ignore image links.");
-//        iterate(n.getTitle());
-//    }
 //
 //    public void visit(WtTable b) {
 //        iterate(b.getBody());
@@ -1063,6 +1074,38 @@ public class WikiTextParser extends AstVisitor<WtNode> {
             default: return null;
         }
         return result;
+    }
+
+    private StringBuilder rebuildMathMLContent(WtTagExtension n) {
+        StringBuilder sb = new StringBuilder();
+
+        sb.append("<math");
+        for ( WtNode attribute : n.getXmlAttributes() ) {
+            sb.append(" ");
+            WtXmlAttribute att = (WtXmlAttribute) attribute;
+            String name = att.getName().getAsString();
+            sb.append(name);
+            if ( !att.getValue().isEmpty() ) {
+                sb.append("=\"");
+                for ( WtNode value : att.getValue() ) {
+                    if ( value instanceof WtText ) {
+                        sb.append(((WtText) value).getContent());
+                    } else if ( value instanceof WtXmlCharRef ) {
+                        sb.append("&#")
+                                .append(((WtXmlCharRef) value).getCodePoint())
+                                .append(";");
+                    } else {
+                        sb.append(value.toString());
+                    }
+                }
+                sb.append("\"");
+            }
+        }
+        sb.append(">");
+        sb.append(n.getBody().getContent());
+        sb.append("</math>\n");
+
+        return sb;
     }
 
     private static boolean hasMathMLNamespaceAttribute(WtXmlAttributes attributes) {

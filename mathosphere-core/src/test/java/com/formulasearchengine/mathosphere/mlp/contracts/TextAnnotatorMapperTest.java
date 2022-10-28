@@ -42,7 +42,8 @@ public class TextAnnotatorMapperTest {
     ParsedWikiDocument shroedingerOut = TEST_INSTANCE.map(schroedingerIn);
 
     Set<String> identifiers = shroedingerOut.getIdentifiers().elementSet();
-    assertTrue(identifiers.containsAll(Arrays.asList("Ψ", "V", "h", "λ", "ρ", "τ")));
+//    assertTrue(identifiers.containsAll(Arrays.asList("Ψ", "V", "h", "λ", "ρ", "τ")));
+    assertTrue(identifiers.containsAll(Arrays.asList("\\psi", "V", "h", "\\lambda", "\\rho", "\\tau")));
 
     MathTag formula = null;
     for (MathTag f : shroedingerOut.getFormulae()) {
@@ -57,11 +58,10 @@ public class TextAnnotatorMapperTest {
   }
 
   private static boolean contains(MathTag formula, List<Sentence> sentences) {
-    Word mathWord = new Word(formula.getKey(), PosTag.MATH);
     for (Sentence sentence : sentences) {
       List<Word> words = sentence.getWords();
-      if (words.contains(mathWord)) {
-        return true;
+      for ( Word w : words ) {
+        if ( w.getWord().equals(formula.getKey()) ) return true;
       }
     }
     return false;
@@ -74,13 +74,13 @@ public class TextAnnotatorMapperTest {
 
   public static List<RawWikiDocument> readWikiTextDocuments(String testFile) throws Exception {
     String rawImput = WikiTextUtilsTest.getTestResource(testFile);
-    String[] pages = rawImput.split("</page>");
+    //String[] pages = rawImput.split("</page>");
     WikiTextPageExtractorMapper textExtractor = new WikiTextPageExtractorMapper();
 
     ListCollector<RawWikiDocument> out = new ListCollector<>();
-    for (String page : pages) {
-      textExtractor.flatMap(page, out);
-    }
+    //for (String page : pages) {
+    textExtractor.flatMap(rawImput, out);
+    //}
 
     return out.getList();
   }
@@ -101,12 +101,12 @@ public class TextAnnotatorMapperTest {
     RawWikiDocument doc = new RawWikiDocument("some doc", 1, text);
     ParsedWikiDocument result = TEST_INSTANCE.map(doc);
 
-    assertEquals(1, result.getFormulae());
+    assertEquals(1, result.getFormulae().size());
 
     Sentence sentence = result.getSentences().get(0);
 
-    List<Word> expected = Arrays.asList(new Word("The", "DT"), new Word("x", "ID"), new Word("-axis",
-        "-SUF"), new Word("shows", "VBZ"), new Word("...", ":"));
+    List<Word> expected = Arrays.asList(new Word("The", "DT"), new Word("FORMULA_737c3ea59fc48d3fb11438cacd1dc10b", "MATH"),
+            new Word("-", "HYPH"), new Word("axis show", "NP"), new Word("...", "."));
     assertEquals(expected, sentence.getWords());
   }
 
